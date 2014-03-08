@@ -5,6 +5,11 @@ download that at:
 
 http://ge.tt/8CNVC3P1/v/0?c
 
+The most recently updated game manual can be downloaded here:
+
+http://ge.tt/300rTYP1/v/0
+
+
 THIS repository tracks changes in Lua, SQL, XML and some other
 files included in the main (non-media) Modbuddy project. It
 also includes the compiled CvGameCore_Ea.dll. This is the dll

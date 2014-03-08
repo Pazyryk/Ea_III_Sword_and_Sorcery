@@ -1,0 +1,93 @@
+PLAYERCOLOR_AMERICA
+PLAYERCOLOR_ARABIA
+PLAYERCOLOR_AZTEC
+PLAYERCOLOR_CHINA
+PLAYERCOLOR_EGYPT
+PLAYERCOLOR_ENGLAND
+PLAYERCOLOR_FRANCE
+PLAYERCOLOR_GERMANY
+PLAYERCOLOR_GREECE
+PLAYERCOLOR_INDIA
+PLAYERCOLOR_IROQUOIS
+PLAYERCOLOR_JAPAN
+PLAYERCOLOR_OTTOMAN
+PLAYERCOLOR_PERSIA
+PLAYERCOLOR_ROME
+PLAYERCOLOR_RUSSIA
+PLAYERCOLOR_SIAM
+PLAYERCOLOR_SONGHAI
+PLAYERCOLOR_AUSTRIA
+PLAYERCOLOR_BYZANTIUM
+PLAYERCOLOR_CARTHAGE
+PLAYERCOLOR_CELTS
+PLAYERCOLOR_ETHIOPIA
+PLAYERCOLOR_HUNS
+PLAYERCOLOR_MAYA
+PLAYERCOLOR_NETHERLANDS
+PLAYERCOLOR_SWEDEN
+PLAYERCOLOR_SPAIN
+
+
+PLAYERCOLOR_ASSYRIA
+PLAYERCOLOR_BRAZIL
+PLAYERCOLOR_INDONESIA
+PLAYERCOLOR_MOROCCO
+PLAYERCOLOR_POLAND
+PLAYERCOLOR_PORTUGAL
+PLAYERCOLOR_SHOSHONE
+PLAYERCOLOR_VENICE
+PLAYERCOLOR_ZULU
+
+
+
+
+VictComp, WondComp, MinorComp, Boldness, DiploBal, WarHate, WorkAgnst, WorkWith, Denounce, DoFWill, Loyalty, Neediness, Forgive, Chatty, Meanness, MjWar, MjHstl, MjDcpt, MjGrdd, MjAfrd, MjFdly, MjNtrl, MnIgnr, MnFdly, MnProt, MnConq, MnBlly, FOff, FDef, FCtDf, FMlTn, FRecon, FRngd, FMbl, FNav, FNvRec, FNvGrw, FNvImp, FAir, FExp, FGrw, FImp, FInf, FPrd, FGld, FSci, FClt, FHap, FGP, FWnd, FRlg, FDip, FSShp, FWtCn, FNuk, FUNuk, FEsp, FAntA, FAirC, FArch, FLTr, FSTr, FTrOri, FTrDes, FALift
+,	5,		  5,		5,		   5,		 5,		   5,		5,		   5,		 5,		   5,		5,		 5,		    5,		 5,		 5,		   5,	  5,	  5,	  5,	  5,	  5,	  5,	  5,	  5,	  5,	  5,	  5,	  5,	5,	  5,	 5,		5,		5,	   5,	 5,	   5,	   5,	   5,	   5,	 5,	   5,	 5,	   5,	 5,	   5,	 5,	   5,	 5,	   5,	5,	  5,	5,	  5,	 5,		5,	  5,	 5,	   5,	  5,	 5,		5,	  5,	5,		5,		5
+
+
+
+
+
+
+
+
+
+
+> for k, v in pairs(Players[1]:GetTradeRoutesAvailable()[1]) do print(k, v) end
+ EaMain: ToGPT	125
+ EaMain: ToFood	0
+ EaMain: FromID	1
+ EaMain: FromCity	table: 5AD3E078
+ EaMain: TurnsLeft	-1
+ EaMain: FromScience	300
+ EaMain: FromTourism	0
+ EaMain: ToProduction	0
+ EaMain: ToCivilizationType	7
+ EaMain: ToCityName	Eleutherios
+ EaMain: ToReligion	-1
+ EaMain: FromReligion	-1
+ EaMain: FromCityName	Bakar
+ EaMain: FromPressure	0
+ EaMain: ToID	5
+ EaMain: ToPressure	0
+ EaMain: ToCity	table: 5AD3C160
+ EaMain: ToTourism	0
+ EaMain: Domain	2
+ EaMain: ToScience	200
+ EaMain: FromGPT	406
+ EaMain: FromCivilizationType	0
+
+
+
+ > for k,v in pairs(Players[0]:GetPotentialInternationalTradeRouteDestinations(UI.GetHeadSelectedUnit())[1]) do print(k, v) end
+ EaMain: ToPressureAmount	0
+ EaMain: Y	37
+ EaMain: X	20
+ EaMain: ToReligion	-1
+ EaMain: OldTradeRoute	false
+ EaMain: FromReligion	-1
+ EaMain: TradeConnectionType	0
+ EaMain: Yields	table: 57FB2FC8
+ EaMain: FromPressureAmount	0
+
+

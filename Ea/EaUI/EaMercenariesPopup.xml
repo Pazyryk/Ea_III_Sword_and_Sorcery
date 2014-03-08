@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Context ColorSet="Beige_Black_Alpha" Font="EaTwCnMT16" FontStyle="Shadow">
+
+	<Instance Name="UnitInstance">
+		<Button Size="930,30" Color="0,0,0,0" ID="UnitButton">
+			<Stack StackGrowth="Right">
+				<Box Size="140,30" Color="0,0,0,0">
+					<Image Anchor="L,C" Size="48,48" Offset="0,0" Texture="assets/DLC/Expansion/UI/Art/Icons/ReligiousSymbolsWhite48_Expansion.dds" ID="UnitIcon"/>
+					<Label Anchor="L,C" Offset="45,0" TruncateWidth="140" Font="EaTwCnMT18" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" ID="UnitName"  />
+				</Box>
+				<Box Size="40,30" Color="0,0,0,0">
+					<Label Anchor="C,C" Font="EaTwCnMT18" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" ID="UnitRace"  />
+				</Box>
+				<Box Size="140,30" Color="0,0,0,0">
+					<Label Anchor="C,C" Font="EaTwCnMT18" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" ID="UnitStats"  />
+				</Box>
+				<Box Size="40,30" Color="0,0,0,0">
+					<Label Anchor="C,C" Font="EaTwCnMT18" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" ID="UnitLevel"  />
+				</Box>
+				<Box Size="190,30" Color="0,0,0,0">
+					<Label Anchor="C,C" Font="EaTwCnMT18" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" ID="UnitPromotions"  />
+				</Box>
+				<Box Size="120,30" Color="0,0,0,0">
+					<Label Anchor="C,C" Font="EaTwCnMT18" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" ID="UnitOrigin"  />
+				</Box>
+				<Box Size="160,30" Color="0,0,0,0">
+					<Label Anchor="C,C" Font="EaTwCnMT18" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" ID="UnitPrice"  />
+				</Box>
+				<Box Size="100,30" Color="0,0,0,0">
+					<Label Anchor="C,C" Font="EaTwCnMT18" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" ID="UnitSupport"  />
+				</Box>
+
+				
+			</Stack>
+		</Button>
+	</Instance>
+	
+	<Box Color="255,255,255,0" Size="Full.Full" ID="MainPopup" Hidden="0" ConsumeMouseOver="1" >
+		<Box Style="BGBlock_ClearTopBar" />
+		<Grid Size="990,653" Anchor="C,C" Offset="0,6" Padding="0,0" Style="Grid9DetailFive140">
+
+			<!-- Decoration -->
+			<!-- Top -->
+			<Image Anchor="C,T" AnchorSide="I.O" Size="256,64" Offset="0,-14" Texture="assets\UI\Art\Icons\Top512IconTrim.dds">
+				<Size="64,64" Offset="-1,-1" Anchor="C,C" Texture="Religion64.dds"/>
+			</Image>
+			<Image Anchor="L,C" AnchorSide="O.I"  Offset="-19,0" Texture="Dec32x64Left.dds" Size="32.64" />
+			<Image Anchor="R,C" AnchorSide="O.I"  Offset="-19,0" Texture="Dec32x64Right.dds" Size="32.64" />
+
+			<Label Anchor="C,T" Offset="0,20" WrapWidth="500" LeadingOffset="-4"  String="TXT_KEY_EA_MERCENARIES_POPUP" Font="EaTwCnMT20" Color0="30.50.80.255" Color1="133.184.186.255" Color2="133.184.186.255" FontStyle="SoftShadow" ID="SpellsHeader"/>
+
+			<!-- Top Panel  -->
+			<Box Anchor="C,T" Size="955,32" Offset="0,44" Color="0.0.0.128" >
+				<Stack Anchor="C,T" Size="971,32" Offset="0,0" Padding="0" StackGrowth="Right">
+
+					<Button  Anchor="L,T" Size="220,24" Offset="0,0" String="TXT_KEY_EA_MERCENARIES_TAB_AVAILABLE" ID="TabButtonAvailable" >
+						<ShowOnMouseOver>
+							<AlphaAnim Anchor="L,C" Size="220,27" Pause="0" Cycle="Bounce" Speed="1" AlphaStart="2" AlphaEnd="1"  >
+								<Grid   Size="220,27" Offset="0,2" Padding="0,0" Style="Grid9FrameTurnsHL" />
+							</AlphaAnim>
+						</ShowOnMouseOver>
+						<!-- Selected State  -->
+						<Grid Anchor="C,C" Offset="0,1" Size="220,26"  Style="Grid9FrameTurns" Hidden="0" ID="AvailableSelectHighlight" />
+					</Button>
+
+					<Button  Anchor="L,T" Size="220,24" Offset="0,0" String="TXT_KEY_EA_MERCENARIES_TAB_EMPLOYED" ID="TabButtonEmployed" >
+						<ShowOnMouseOver>
+							<AlphaAnim Anchor="L,C" Size="220,27" Pause="0" Cycle="Bounce" Speed="1" AlphaStart="2" AlphaEnd="1"  >
+								<Grid   Size="220,27" Offset="0,2" Padding="0,0" Style="Grid9FrameTurnsHL" />
+							</AlphaAnim>
+						</ShowOnMouseOver>
+						<!-- Selected State  -->
+						<Grid Anchor="C,C" Offset="0,1" Size="220,26"  Style="Grid9FrameTurns" Hidden="0" ID="EmployedSelectHighlight" />
+					</Button>
+
+					<Button  Anchor="L,T" Size="220,24" Offset="0,0" String="TXT_KEY_EA_MERCENARIES_TAB_YOURS_FOR_HIRE" ID="TabButtonYours" >
+						<ShowOnMouseOver>
+							<AlphaAnim Anchor="L,C" Size="220,27" Pause="0" Cycle="Bounce" Speed="1" AlphaStart="2" AlphaEnd="1"  >
+								<Grid   Size="220,27" Offset="0,2" Padding="0,0" Style="Grid9FrameTurnsHL" />
+							</AlphaAnim>
+						</ShowOnMouseOver>
+						<!-- Selected State  -->
+						<Grid Anchor="C,C" Offset="0,1" Size="220,26"  Style="Grid9FrameTurns" Hidden="1" ID="YoursSelectHighlight" />
+					</Button>
+
+				</Stack>
+
+				<Image Anchor="C,B" Offset="0,0" Texture="HorizontalTrim.dds" Size="971,5" />
+			</Box>
+
+			<!-- Content Panel -->
+			<Box Size ="953,459" Color="0,0,0,0" Offset="19,77">
+				<!--
+				<Image Anchor="L,T" Texture="Found_Religion_background.dds" Size="951,459" TextureOffset="0,125" Color="255,255,255,100" Offset="0,0" />
+				-->
+				<!-- Content-->
+	
+				<Label Anchor="C,C" String="TXT_KEY_EA_MERCENARIES_NONE_1" Font="EaTwCnMT18" ColorSet="Beige_Black_Alpha" FontStyle="Shadow"  ID="NoAvailableMercenaries"/>
+				<ScrollPanel Vertical="1" Size="935,459" Offset="0,0" AutoScrollBar="0" ID="ScrollPanel" >
+					<!-- Scroll Controls -->
+					<ScrollBar Style="VertSlider" Length="423" Anchor="R,C" AnchorSide="O,I"/>
+					<UpButton Style="ScrollBarUp" Anchor="R,T" AnchorSide="O,I"/>
+					<DownButton Style="ScrollBarDown" Anchor="R,B" AnchorSide="O,I"/>
+					<Stack StackGrowth="Bottom" ID="UnitStack" Padding="10">
+						<Box Size="935,23" Color="0,0,0,150">
+							<Stack Anchor="L,T" StackGrowth="Right">
+								<Box Anchor="L,T" Color="0,0,0,0"  Size="140,24" >
+									<Label Anchor="C,C" Offset="0,0" Font="EaTwCnMT18" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" String="TXT_KEY_EA_MERCENARIES_HEADER_UNIT"  />
+								</Box>
+								<Box Anchor="L,T" Color="0,0,0,0" Size="40,24" >
+									<Label Anchor="C,C" Font="EaTwCnMT18" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" String="TXT_KEY_EA_MERCENARIES_HEADER_RACE"  />
+								</Box>
+								<Box Anchor="L,T" Color="0,0,0,0" Size="140,24" >
+									<Label Anchor="C,C" Font="EaTwCnMT18" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" String="TXT_KEY_EA_MERCENARIES_HEADER_STATS"  />
+								</Box>
+								<Box Anchor="L,T" Color="0,0,0,0" Size="40,24" >
+									<Label Anchor="C,C" Font="EaTwCnMT18" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" String="TXT_KEY_EA_MERCENARIES_HEADER_LEVEL"  />
+								</Box>
+								<Box Anchor="L,T" Color="0,0,0,0" Size="190,24" >
+									<Label Anchor="C,C" Font="EaTwCnMT18" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" String="TXT_KEY_EA_MERCENARIES_HEADER_PROMOTIONS"  />
+								</Box>
+								<Box Anchor="L,T" Color="0,0,0,0" Size="120,24" >
+									<Label Anchor="C,C" Font="EaTwCnMT18" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" String="TXT_KEY_EA_MERCENARIES_HEADER_ORIGIN"  />
+								</Box>
+								<Box Anchor="L,T" Color="0,0,0,0" Size="160,24" >
+									<Label Anchor="C,C" Font="EaTwCnMT18" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" String="TXT_KEY_EA_MERCENARIES_HEADER_PRICE"  />
+								</Box>
+								<Box Anchor="L,T" Color="0,0,0,0" Size="100,24" >
+									<Label Anchor="C,C" Font="EaTwCnMT18" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" String="TXT_KEY_EA_MERCENARIES_HEADER_SUPPORT"  />
+								</Box>
+							</Stack>
+							<Image Anchor="L,T" Offset="0,24" TextureOffset="50,0" Texture="bar900x2.dds" Size="468,1" />
+							<Image Anchor="R,T" Offset="0,24" TextureOffset="368,0" Texture="bar900x2.dds" Size="467,1" />
+						</Box>
+					</Stack>
+				</ScrollPanel>
+	
+
+			</Box>
+
+			<!-- Bottom Panel -->
+			<Image Anchor="C,B" Offset="0,110" Texture="HorizontalTrim.dds" Size="971,5" />
+			<Box Anchor="C,B" AnchorSide="I.I" Offset="0,54"   Size="927,56" Color="255,255,255,0" >
+				<!-- Close Button  -->
+				<GridButton Anchor="L,B" Style="SmallButton" Size="150,32"  Offset="14,0" StateOffsetIncrement="0,0" ID="CloseButton"  >
+					<Label Anchor="C,C" Offset="0,0"  String="TXT_KEY_CLOSE" Font="EaTwCnMT18" ColorSet="Beige_Black_Alpha" FontStyle="Shadow"  />
+				</GridButton>
+				<!-- CS/All Toggle Button  -->
+				<GridButton Anchor="C,B"  Style="SmallButton" Size="150,32"  Offset="14,0" StateOffsetIncrement="0,0" ID="CityStateToggleButton"  >
+					<Label Anchor="C,C" ID="CityStateToggleLabel" Offset="0,0"  String="TXT_KEY_CLOSE" Font="EaTwCnMT18" ColorSet="Beige_Black_Alpha" FontStyle="Shadow"  />
+				</GridButton>			
+				<!-- Discount Footnote  -->
+				<Label Anchor="R,C" ID="DiscountFootnote" Font="EaTwCnMT18" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" String="TXT_KEY_EA_MERCENARIES_FOOTNOTE"  />
+			</Box>
+		</Grid>
+	</Box>
+
+	<!-- Select Unit Confirmation Popup -->
+
+	<Box Color="Black.100" Size="Full.Full" ID="UnitSelectConfirm" Hidden="1" ConsumeMouseOver="1" >
+		<Grid Size="500,450" Anchor="C,C" Offset="0,0" Padding="0,20" Style="Grid9DetailFive140"  Hidden="0" >
+
+			<!-- Side treatments -->
+			<Image Anchor="L,C" AnchorSide="O.I"  Offset="-19,0" Texture="Dec32x64Left.dds" Size="32.64" />
+			<Image Anchor="R,C" AnchorSide="O.I"  Offset="-19,0" Texture="Dec32x64Right.dds" Size="32.64" />
+
+			<Image Anchor="C,T" AnchorSide="I.O" Offset="0,-14" Size="256,64" Texture="Top512IconTrim.dds"  >
+				<Image Anchor="C,C" Offset="0,0" Size="80,80" Texture="NotificationFrameBase.dds"  >
+					<AlphaAnim Anchor="C,C" Offset="0,0" Size="80.80"  Texture="assets\UI\Art\Notification\NotificationGenericGlow.dds"  Pause="0" Cycle="Bounce" Speed="1" AlphaStart="1" AlphaEnd=".5"/>
+				</Image>
+			</Image>
+
+			<Label Anchor="C,T"  Offset="0,74"  WrapWidth="440" String="TXT_KEY_EA_NOTSHOWN" Font="EaTwCnMT22" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" ID="ConfirmString" />
+			<Stack Anchor="C,B" Offset="0,80" Padding="24" StackGrowth="Bottom" ID="ButtonStack">
+				<!-- Responce 1  -->
+				<GridButton Style="BaseButton"  ID="Response1" Size="400,42" Anchor="C,T" Offset="0,0"  Hidden="0">
+					<Label Anchor="C,C" Offset="0,0" ID="ResponseLabel1" String="TXT_KEY_YES_BUTTON" ColorSet="Beige_Black" Font="EaTwCnMT24" FontStyle="Shadow" />
+				</GridButton>
+				<!-- Responce 2  -->
+				<GridButton  Style="BaseButton" ID="Response2" Size="400,42" Anchor="C,T" Offset="0,0"  Hidden="0">
+					<Label Anchor="C,C" Offset="0,0" ID="ResponseLabel2" String="TXT_KEY_NO_BUTTON" ColorSet="Beige_Black" Font="EaTwCnMT24" FontStyle="Shadow" />
+				</GridButton>
+				<!-- Show On Map  -->
+				<GridButton  Style="BaseButton" ID="Response3" Size="400,42" Anchor="C,T" Offset="0,0"  Hidden="0">
+					<Label Anchor="C,C" Offset="0,0" ID="ResponseLabel3" String="TXT_KEY_EA_MERCENARIES_SHOW_ON_MAP" ColorSet="Beige_Black" Font="EaTwCnMT24" FontStyle="Shadow" />
+				</GridButton>				
+			</Stack>
+		</Grid>
+	</Box>
+
+	<!-- View On Map -->
+	
+	
+	<Grid Size="350,600" ID="ViewOnMapPopup" Anchor="C,C" Offset="500,0" Padding="0,20" Style="Grid9DetailFive140"  Hidden="1" ConsumeMouseOver="1" >
+
+		<!-- Side treatments -->
+		<Image Anchor="L,C" AnchorSide="O.I"  Offset="-19,0" Texture="Dec32x64Left.dds" Size="32.64" />
+		<Image Anchor="R,C" AnchorSide="O.I"  Offset="-19,0" Texture="Dec32x64Right.dds" Size="32.64" />
+
+		<Image Anchor="C,T" AnchorSide="I.O" Offset="0,-14" Size="256,64" Texture="Top512IconTrim.dds"  >
+			<Image Anchor="C,C" Offset="0,0" Size="80,80" Texture="NotificationFrameBase.dds"  >
+				<AlphaAnim Anchor="C,C" Offset="0,0" Size="80.80"  Texture="assets\UI\Art\Notification\NotificationGenericGlow.dds"  Pause="0" Cycle="Bounce" Speed="1" AlphaStart="1" AlphaEnd=".5"/>
+			</Image>
+		</Image>
+
+		<Stack Anchor="C,T" Offset="0,50" Padding="10" StackGrowth="Bottom">
+			<Label Anchor="C,T"  Offset="0,0"  WrapWidth="330" String="TXT_KEY_EA_NOTSHOWN" Font="EaTwCnMT22" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" ID="ViewOnMapString1" />
+			<Label Anchor="C,T"  Offset="0,0"  WrapWidth="330" String="TXT_KEY_EA_NOTSHOWN" Font="EaTwCnMT22" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" ID="ViewOnMapString2" />
+			
+			<GridButton Style="BaseButton"  ID="ViewOnMapResponse1" Size="250,35" Anchor="C,T" Offset="0,0"  Hidden="0">
+				<Label Anchor="C,C" Offset="0,0" ID="ViewOnMapResponseLabel1" String="TXT_KEY_YES_BUTTON" ColorSet="Beige_Black" Font="EaTwCnMT24" FontStyle="Shadow" />
+			</GridButton>
+			<GridButton  Style="BaseButton" ID="ViewOnMapResponse2" Size="250,35" Anchor="C,T" Offset="0,0"  Hidden="0">
+				<Label Anchor="C,C" Offset="0,0" ID="ViewOnMapResponseLabel2" String="TXT_KEY_NO_BUTTON" ColorSet="Beige_Black" Font="EaTwCnMT24" FontStyle="Shadow" />
+			</GridButton>
+			<GridButton  Style="BaseButton" ID="ViewOnMapResponse3" Size="250,35" Anchor="C,T" Offset="0,0"  Hidden="0">
+				<Label Anchor="C,C" Offset="0,0" ID="ViewOnMapResponseLabel3" String="TXT_KEY_EA_MERCENARIES_SHOW_ON_MAP" ColorSet="Beige_Black" Font="EaTwCnMT24" FontStyle="Shadow" />
+			</GridButton>
+			<GridButton  Style="BaseButton" ID="ViewOnMapResponse4" Size="250,35" Anchor="C,T" Offset="0,0"  Hidden="0">
+				<Label Anchor="C,C" Offset="0,0" ID="ViewOnMapResponseLabel4" String="TXT_KEY_EA_MERCENARIES_SHOW_ON_MAP" ColorSet="Beige_Black" Font="EaTwCnMT24" FontStyle="Shadow" />
+			</GridButton>
+			<GridButton  Style="BaseButton" ID="ViewOnMapResponse5" Size="250,35" Anchor="C,T" Offset="0,0"  Hidden="0">
+				<Label Anchor="C,C" Offset="0,0" ID="ViewOnMapResponseLabel5" String="TXT_KEY_EA_MERCENARIES_SHOW_ON_MAP" ColorSet="Beige_Black" Font="EaTwCnMT24" FontStyle="Shadow" />
+			</GridButton>
+			<Box Anchor="C,B" Size="250,28" Color="255,255,255,0" >
+				<Button Anchor="C,B" Size="32,32"  Offset="-20,0" TextureOffset="30,0" Texture="UnitPanelArrows.dds" ID="ViewOnMapCycleLeft" ToolTip="Toggle Left" />
+				<Button Anchor="C,B" Size="32,32"  Offset="20,0" Texture="UnitPanelArrows.dds" ID="ViewOnMapCycleRight" ToolTip="Toggle Right" />"
+			</Box>
+		</Stack>
+	</Grid>		
+		
+
+	
+	
+</Context>

@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- edited with XMLSPY v2004 rel. 2 U (http://www.xmlspy.com) by Anton Strenger (Firaxis Games) -->
+<Context ColorSet="Beige_Black_Alpha" Font="EaTwCnMT16" FontStyle="Shadow">
+	<!-- DiplomacyPanel this is the panel that pops up when you hit the diplo button. -->
+	<Grid Size="538,396" Anchor="R,T" Style="Grid9DetailTwo140" ConsumeMouse="1" ID="OuterGrid">
+		<Box Offset="18,116" Anchor="L,T" Size="478,24" Color="255,255,255,0">
+			<Stack Anchor="L,C" StackGrowth="Right" Offset="0,0" Padding="0">
+				<!--Paz changed x size for 3 buttons below; was 200, 180, 100 -->
+				<Button Offset="0,0" Anchor="R,C" Size="190,24">
+					<Label Anchor="C,C" Offset="0,-1" String="TXT_KEY_POPUP_CIVILIZATION" ColorSet="Beige_Black_Alpha" Font="EaTwCnMT20" FontStyle="Shadow"/>
+				</Button>
+				<Button Offset="0,0" Anchor="C,C" Size="200,24">
+					<Label Anchor="C,C" Offset="0,-1" String="TXT_KEY_STATUS" ColorSet="Beige_Black_Alpha" Font="EaTwCnMT20" FontStyle="Shadow"/>
+				</Button>
+				<Button Anchor="L,C" Size="100,24" ID="ScoreBox">
+					<Label Anchor="C,C" Offset="0,-1" String="TXT_KEY_POP_SCORE" ColorSet="Beige_Black_Alpha" Font="EaTwCnMT20" FontStyle="Shadow"/>
+				</Button>
+			</Stack>
+			<Image Anchor="L,B" Offset="0,-5" Texture="HorizontalTrim.dds" Size="503.5"/>
+			<Box Offset="0,0" Anchor="L,B" AnchorSide="I.O" Size="490,60" Color="255,255,255,0">
+				<Stack Anchor="L.C" StackGrowth="Right" Offset="0,0" Padding="0">
+					<Box ID="NameBox" Offset="0,0" Anchor="R,C" Size="380,48" Color="White.0">
+						<!--Paz disable <Image Anchor="L,C" Offset="0,0" Texture="LeaderPortraits512.dds" Size="64.64" ID="LeaderIcon"/>-->
+						<!--Paz swapped LeaderName and CivName IDs; changed x offset below from 64 -->
+						<Label Anchor="L,T" Offset="20,8" Font="EaTwCnMT22" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" String="Washington" ID="CivName"/>
+						<Label Anchor="L,B" Offset="20,8" Font="EaTwCnMT16" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" String="America" ID="LeaderName"/>
+						<!--Label Anchor="R,B" Offset="10,8" Font="EaTwCnMT14" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" String="Team 1" ID="TeamID" /-->
+						<Box Offset="0,0" Anchor="R,C" Size="180,48" Color="Black.0" ID="StatusBox">
+							<!--Paz added MyReligionIcon below; changed TeamID from Anchor="C,B" Offset="0,8"-->
+							<Image Anchor="L,C" Size="48,48" Offset="0,0" Texture="assets/DLC/Expansion/UI/Art/Icons/ReligiousSymbolsWhite48_Expansion.dds" ID="MyReligionIcon"/>
+							<Label Anchor="L,B" Offset="52,8" Font="EaTwCnMT14" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" String="Team 1" ID="TeamID"/>
+						</Box>
+					</Box>
+					<Box Anchor="L,C" Size="100,48" Color="Black.0">
+						<!--Paz disable <Box Color="255,255,255,0" Size="24,32" Anchor="R,C">
+							<Image ID="CivIconBG" Size="32.32" Anchor="C,C" Offset="0,0" TextureOffset="32,0" Texture="CivIconBGSizes.dds"/>
+							<Image ID="CivIconShadow" Size="24.24" Anchor="C,C" Offset="1,1" Texture="CivSymbolAtlas16.dds" Color="Black.128"/>
+							<Image ID="MyCivIcon" Size="24.24" Offset="0,0" Anchor="C,C" Texture="CivSymbolsColor256.dds"/>
+						</Box>-->
+						<!--Paz changed x offset below from 28 -->
+						<Label Anchor="R,C" Offset="20,0" Font="EaTwCnMT24" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" String="00" ID="MyScore"/>
+					</Box>
+				</Stack>
+				<Image Anchor="L,B" Offset="0,0" Texture="HorizontalTrim.dds" Size="503.5"/>
+			</Box>
+		</Box>
+		<!--Box Offset="18,136" Size="500,216" Color="255,255,255,255" ID="Box" /-->
+		<ScrollPanel Offset="18,202" AutoScrollBar="1" Size="483,216" Vertical="1" ID="ScrollPanel">
+			<!-- Scroll Controls -->
+			<ScrollBar Style="VertSlider" Length="364" Offset="0.18" Anchor="R,T" AnchorSide="O,I"/>
+			<UpButton Offset="0.0" Style="ScrollBarUp" Anchor="R,T" AnchorSide="O,I"/>
+			<DownButton Offset="0.0" Style="ScrollBarDown" Anchor="R,B" AnchorSide="O,I"/>
+			<Stack Anchor="L,T" Offset="0,0" Size="260,216" StackGrowth="Bottom" Padding="0" ID="OuterStack">
+				<Button ID="MajorButton" Size="478,26">
+					<Grid Anchor="C,C" Size="478,27" Offset="0,0" Padding="0,0" Style="Grid9FrameTurns"/>
+					<ShowOnMouseOver>
+						<AlphaAnim Anchor="C,C" Size="478,26" Pause="0" Cycle="Bounce" Speed="1" AlphaStart="2" AlphaEnd="1">
+							<Grid Anchor="C,C" Size="478,26" Offset="0,0" Padding="0,0" Style="Grid9FrameTurnsHL"/>
+						</AlphaAnim>
+					</ShowOnMouseOver>
+				</Button>
+				<Stack Anchor="L,T" Hidden="1" StackGrowth="Bottom" ID="MajorStack"/>
+				
+				<!--Paz added god stack (like minor stack) -->
+				<Button ID="GodButton" Size="478,26">
+					<Grid Anchor="C,C" Size="478,27" Offset="0,0" Padding="0,0" Style="Grid9FrameTurns"/>
+					<ShowOnMouseOver>
+						<AlphaAnim Anchor="C,C" Size="478,27" Pause="0" Cycle="Bounce" Speed="1" AlphaStart="2" AlphaEnd="1">
+							<Grid Anchor="C,C" Size="478,27" Offset="0,0" Padding="0,0" Style="Grid9FrameTurnsHL"/>
+						</AlphaAnim>
+					</ShowOnMouseOver>
+				</Button>
+				<Stack Anchor="L,T" Hidden="1" StackGrowth="Bottom" ID="GodStack"/>				
+				
+				<Button ID="MinorButton" Size="478,26">
+					<Grid Anchor="C,C" Size="478,27" Offset="0,0" Padding="0,0" Style="Grid9FrameTurns"/>
+					<ShowOnMouseOver>
+						<AlphaAnim Anchor="C,C" Size="478,27" Pause="0" Cycle="Bounce" Speed="1" AlphaStart="2" AlphaEnd="1">
+							<Grid Anchor="C,C" Size="478,27" Offset="0,0" Padding="0,0" Style="Grid9FrameTurnsHL"/>
+						</AlphaAnim>
+					</ShowOnMouseOver>
+				</Button>
+				<Stack Anchor="L,T" Hidden="1" StackGrowth="Bottom" ID="MinorStack"/>
+
+			</Stack>
+		</ScrollPanel>
+		<GridButton Anchor="L,T" Size="230,38" Offset="32,64" String="TXT_KEY_DIPLOMACY_OVERVIEW" ID="DiplomaticOverviewButton" Style="BaseButton"/>
+		<TextButton Offset="0,22" Anchor="C,B" Font="EaTwCnMT14" ColorSet="Beige_Black_Alpha" String="TXT_KEY_CLOSE" ToolTip="TXT_KEY_CLOSE" FontStyle="Shadow" MouseOverStyle="SoftShadow" ConsumeMouse="1" ID="CloseButton" Hidden="0"/>
+	</Grid>
+	<Grid Size="500,360" Anchor="C,C" Offset="0,-80" ID="WarConfirm" Padding="0,20" Style="Grid9DetailFive140" ConsumeMouse="1" Hidden="1">
+		<!-- Side treatments -->
+		<Image Anchor="L,C" AnchorSide="O.I" Offset="-19,0" Texture="Dec32x64Left.dds" Size="32.64"/>
+		<Image Anchor="R,C" AnchorSide="O.I" Offset="-19,0" Texture="Dec32x64Right.dds" Size="32.64"/>
+		<Image Anchor="C,T" AnchorSide="I.O" Offset="0,-14" Size="256,64" Texture="Top512IconTrim.dds">
+			<Image Anchor="C,C" Offset="0,0" Size="80,80" Texture="NotificationFrameBase.dds">
+				<AlphaAnim Anchor="C,C" Offset="0,0" Size="80.80" Texture="assets\UI\Art\Notification\NotificationGenericGlow.dds" Pause="0" Cycle="Bounce" Speed="1" AlphaStart="1" AlphaEnd=".5"/>
+			</Image>
+		</Image>
+		<Label ID="Message" String="TXT_KEY_CONFIRM_WAR" Anchor="C,T" Offset="0,74" WrapWidth="440" Font="EaTwCnMT22" ColorSet="Beige_Black_Alpha" FontStyle="Shadow"/>
+		<Stack Anchor="C,B" Offset="0,80" Padding="24" StackGrowth="Bottom" ID="ButtonStack">
+			<!-- Yes Button  -->
+			<GridButton Style="BaseButton" ID="Yes" Size="400,42" Anchor="C,T" Offset="0,0" Hidden="0">
+				<Label Anchor="C,C" Offset="0,0" String="TXT_KEY_YES_BUTTON" ColorSet="Beige_Black" Font="EaTwCnMT24" FontStyle="Shadow"/>
+			</GridButton>
+			<!-- No Button  -->
+			<GridButton Style="BaseButton" ID="No" Size="400,42" Anchor="C,T" Offset="0,0" Hidden="0">
+				<Label Anchor="C,C" Offset="0,0" String="TXT_KEY_NO_BUTTON" ColorSet="Beige_Black" Font="EaTwCnMT24" FontStyle="Shadow"/>
+			</GridButton>
+		</Stack>
+	</Grid>
+	<!-- LeaderButtonInstance -->
+	<Instance Name="LeaderButtonInstance">
+		<Button Size="478,58" Anchor="L,T" ID="LeaderButton">
+			<ShowOnMouseOver>
+				<AlphaAnim Anchor="L,C" Size="478,51" Pause="0" Cycle="Bounce" Speed="1" AlphaStart="2" AlphaEnd="1">
+					<Grid Size="478,51" Offset="0,0" Padding="0,0" Style="Grid9FrameTurnsHL"/>
+				</AlphaAnim>
+			</ShowOnMouseOver>
+			<Stack Anchor="L,C" StackGrowth="Right" Offset="0,0" Padding="0" ID="LeaderStack">
+				<Box ID="NameBox" Offset="0,0" Anchor="R,C" Size="200,48" Color="White.0">
+					<!--Paz disable <Image Anchor="L,C" Offset="0,0" Texture="LeaderPortraits512.dds" Size="64.64" ID="LeaderPortrait"/>-->
+					<!--Paz swapped LeaderName and CivName IDs; changed x offset below from 64-->
+					<Label Anchor="L,T" Offset="20.8" Font="EaTwCnMT22" TruncateWidth="180" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" String="TXT_KEY_DIPLO_CIVILIZATION_NAME" ID="CivName"/>
+					<Label Anchor="L,B" Offset="20,8" Font="EaTwCnMT16" TruncateWidth="180" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" String="TXT_KEY_DIPLO_LEADER_NAME" ID="LeaderName"/>
+				</Box>
+				<!-- Status -->
+				<Box Offset="0,0" Anchor="C,C" Size="180,48" Color="Red.0" ID="StatusBox">
+					<!--Paz added ReligionIcon icon below -->
+					<Image Anchor="L,C" Size="48,48" Offset="0,0" Texture="assets/DLC/Expansion/UI/Art/Icons/ReligiousSymbolsWhite48_Expansion.dds" ID="ReligionIcon"/>
+					<!--Paz changed StatusStack from Anchor="C,C" with no offset listed-->
+					<Stack Anchor="L,C" Offset="52,8" ID="StatusStack" Padding="5">
+						<TextButton Anchor="C,C" Font="EaTwCnMT14" ColorSet="Beige_Black_Alpha" String="{TXT_KEY_POP_CSTATE_DECLARE_WAR:upper}" FontStyle="Shadow" MouseOverStyle="SoftShadow" ConsumeMouse="1" ID="WarButton" Hidden="1"/>
+						<Label Anchor="C,C" Offset="0,0" Font="EaTwCnMT16" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" String="TXT_KEY_DIPLO_LEADER_NAME" ID="DiploState"/>
+						<Label Anchor="C,C" Offset="0,0" Font="EaTwCnMT14" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" ID="TeamID"/>
+					</Stack>
+				</Box>
+				<Box Anchor="L,C" Size="100,48" Color="White.0" ID="PlayerScoreBox">
+					<!--Paz disable <Box Color="255,255,255,0" Size="24,32" Anchor="R,C">
+						<Image ID="CivIconBG" Size="32.32" Anchor="C,C" Offset="0,0" TextureOffset="32,0" Texture="CivIconBGSizes.dds"/>
+						<Image ID="CivIconShadow" Size="24.24" Anchor="C,C" Offset="1,1" Texture="CivSymbolAtlas16.dds" Color="Black.128"/>
+						<Image ID="CivSymbol" Size="24.24" Offset="0,0" Anchor="C,C" Texture="CivSymbolsColor256.dds"/>
+					</Box>-->
+					<!--Paz changed x offset below from 28-->
+					<Label Anchor="R,C" Offset="20,0" Font="EaTwCnMT24" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" String="00" ID="Score"/>
+				</Box>
+			</Stack>
+		</Button>
+	</Instance>
+	
+	<Instance Name="CityStateInstance">
+		<Button Size="478,48" Anchor="L,T" ID="MinorButton">
+			<ShowOnMouseOver>
+				<AlphaAnim Anchor="L,C" Size="478,51" Pause="0" Cycle="Bounce" Speed="1" AlphaStart="2" AlphaEnd="1">
+					<Grid Size="478,51" Offset="0,0" Padding="0,0" Style="Grid9FrameTurnsHL"/>
+				</AlphaAnim>
+			</ShowOnMouseOver>
+			<!--Paz disable <Image Anchor="L,T" Offset="0,0" Texture="LeaderPortraits512.dds" Size="32.32" ID="LeaderPortrait">
+            </Image>-->
+			<!--Paz changed Stack from Offset="32.8"-->
+			<Stack Anchor="L,T" Size="195,48" Offset="20.8" StackGrowth="Right" Padding="12">
+				<Label Anchor="L,T" Offset="0,0" Font="EaTwCnMT22" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" String="TXT_KEY_DIPLO_LEADER_NAME" ID="MinorName">
+					<TextButton Anchor="R,B" AnchorSide="o,i" Offset="7,0" Font="EaTwCnMT22" String="[ICON_INFLUENCE]" ID="QuestIcon"/>
+				</Label>
+				<Label Anchor="L,T" Offset="0,2" Font="EaTwCnMT16" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" String="TXT_KEY_DIPLO_LEADER_NAME" ID="StatusText"/>
+			</Stack>
+			<Label Anchor="L,B" Offset="32,8" Font="EaTwCnMT16" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" String="TXT_KEY_DIPLO_CIVILIZATION_NAME" ID="MinorType"/>
+			<!--Paz added ReligionIcon icon below -->
+			<Image Anchor="L,C" Size="48,48" Offset="200,0" Texture="assets/DLC/Expansion/UI/Art/Icons/ReligiousSymbolsWhite48_Expansion.dds" ID="ReligionIcon"/>
+			
+			<!-- City State Meters-->
+			<Image ID="StatusIconBG" Anchor="R,T" Offset="-4,8" Texture="Assets/UI/Art/Notification/CityStateMeterBlack32.dds" Size="32.32" Hidden="0">
+				<Image ID="StatusIcon" Anchor="C,C" Texture="Assets/UI/Art/Notification/CityStateMilitaristic.dds" Size="32.32" Hidden="0"/>
+				<Container Anchor="L,C" Offset="16,0" AnchorSide="O.I" Size="161.11" Hidden="0">
+					<TextureBar ID="NegativeStatusMeter" Anchor="L,C" Size="81.7" Direction="Left" Texture="Assets/UI/Art/Notification/CityStateMeterBaseRed.dds" Hidden="0"/>
+					<TextureBar ID="PositiveStatusMeter" Anchor="R,C" Size="81.7" Direction="Right" Texture="Assets/UI/Art/Notification/CityStateMeterBaseBlue.dds" Hidden="0"/>
+					<Image Anchor="C,C" AnchorSide="O.I" Texture="Assets/UI/Art/Notification/CityStateMeterFrameQuartered.dds" Size="161.11" Hidden="0">
+						<Image ID="StatusMeterMarker" Anchor="C,C" Offset="0,1" Texture="Assets/UI/Art/Notification/CityStateMeterFrameIcon32.dds" Size="32.32" Hidden="0"/>
+					</Image>
+				</Container>
+			</Image>
+		</Button>
+	</Instance>
+
+	<!--Paz added god instance (mostly like a city state) -->
+	<Instance Name="GodInstance">
+		<Button Size="478,48" Anchor="L,T" ID="GodButton">
+			<ShowOnMouseOver>
+				<AlphaAnim Anchor="L,C" Size="478,51" Pause="0" Cycle="Bounce" Speed="1" AlphaStart="2" AlphaEnd="1">
+					<Grid Size="478,51" Offset="0,0" Padding="0,0" Style="Grid9FrameTurnsHL"/>
+				</AlphaAnim>
+			</ShowOnMouseOver>
+			<!--Paz disable <Image Anchor="L,T" Offset="0,0" Texture="LeaderPortraits512.dds" Size="32.32" ID="LeaderPortrait">
+            </Image>-->
+			<!--Paz changed Stack from Offset="32.8"-->
+			<Stack Anchor="L,T" Size="195,48" Offset="20.8" StackGrowth="Right" Padding="12">
+				<Label Anchor="L,T" Offset="0,0" Font="EaTwCnMT22" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" String="TXT_KEY_DIPLO_LEADER_NAME" ID="GodName">
+					<TextButton Anchor="R,B" AnchorSide="o,i" Offset="7,0" Font="EaTwCnMT22" String="[ICON_INFLUENCE]" ID="QuestIcon"/>
+				</Label>
+				<Label Anchor="L,T" Offset="0,2" Font="EaTwCnMT16" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" String="TXT_KEY_DIPLO_LEADER_NAME" ID="StatusText"/>
+			</Stack>
+			<Label Anchor="L,B" Offset="32,8" Font="EaTwCnMT16" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" String="TXT_KEY_DIPLO_CIVILIZATION_NAME" ID="GodType"/>
+			<!--Paz added ReligionIcon icon below -->
+			<Image Anchor="L,C" Size="48,48" Offset="200,0" Texture="assets/DLC/Expansion/UI/Art/Icons/ReligiousSymbolsWhite48_Expansion.dds" ID="ReligionIcon"/>
+
+			<!-- City State Meters-->
+			<Image ID="StatusIconBG" Anchor="R,T" Offset="-4,8" Texture="Assets/UI/Art/Notification/CityStateMeterBlack32.dds" Size="32.32" Hidden="0">
+				<Image ID="StatusIcon" Anchor="C,C" Texture="Assets/UI/Art/Notification/CityStateMilitaristic.dds" Size="32.32" Hidden="0"/>
+				<Container Anchor="L,C" Offset="16,0" AnchorSide="O.I" Size="161.11" Hidden="0">
+					<TextureBar ID="NegativeStatusMeter" Anchor="L,C" Size="81.7" Direction="Left" Texture="Assets/UI/Art/Notification/CityStateMeterBaseRed.dds" Hidden="0"/>
+					<TextureBar ID="PositiveStatusMeter" Anchor="R,C" Size="81.7" Direction="Right" Texture="Assets/UI/Art/Notification/CityStateMeterBaseBlue.dds" Hidden="0"/>
+					<Image Anchor="C,C" AnchorSide="O.I" Texture="Assets/UI/Art/Notification/CityStateMeterFrameQuartered.dds" Size="161.11" Hidden="0">
+						<Image ID="StatusMeterMarker" Anchor="C,C" Offset="0,1" Texture="Assets/UI/Art/Notification/CityStateMeterFrameIcon32.dds" Size="32.32" Hidden="0"/>
+					</Image>
+				</Container>
+			</Image>
+		</Button>
+	</Instance>
+</Context>

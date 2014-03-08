@@ -1,0 +1,53 @@
+
+------------------------------------------------------------------------------
+-- Misc
+-----------------------------------------------------------------------------
+Old trading post for festival: "med_trading_post* and mod_trading_post*"
+
+------------------------------------------------------------------------------
+-- plot:SetScenarioData(int)
+------------------------------------------------------------------------------
+Valid in the range from -2^31 to 2^31-1, so 4 bytes of data.
+
+
+
+
+------------------------------------------------------------------------------
+-- Understanding Unit Death
+------------------------------------------------------------------------------
+
+
+>GameEvents.CanSaveUnit.Add(function(...) print("Listener - CanSaveUnit( player, unitID ): ", unpack(arg)); return false end)
+>GameEvents.UnitKilledInCombat.Add(function(...) print("Listener - UnitKilledInCombat( killerID, ownerID, unitID ): ", unpack(arg)) end)
+
+--Damaged warrior attacks barb and dies in combat:
+
+ ActionInfoPanel: Listener - CanSaveUnit( player, unitID ): 	0	16385
+ ActionInfoPanel: Listener - UnitKilledInCombat( killerID, ownerID, unitID ): 	63	0	83
+ ActionInfoPanel: Listener - CanSaveUnit( player, unitID ): 	0	16385
+
+--83 is the killed UnitTypeID! 
+--Changed CanSaveUnit return to true; attacked weak barb unit:
+
+ ActionInfoPanel: Listener - CanSaveUnit( player, unitID ): 	63	114701
+ ActionInfoPanel: Listener - UnitKilledInCombat( killerID, ownerID, unitID ): 	0	63	85
+
+ --Graphics are all screwed up, but barb lived
+ --Barb attacks weak scout:
+
+ ActionInfoPanel: Listener - CanSaveUnit( player, unitID ): 	0	32768
+ ActionInfoPanel: Listener - UnitKilledInCombat( killerID, ownerID, unitID ): 	63	0	82
+
+ --Scout alive, everyone where they were originally
+
+ Seems to work reasonably well when immortal unit is attacked, but graphics screwy the other way.
+ Not sure what happens if we save unit on second check rather than first.
+
+
+
+
+Tested Events Listeners:
+LeavingLeaderViewMode nil
+
+Traits	StaysAliveZeroCities
+

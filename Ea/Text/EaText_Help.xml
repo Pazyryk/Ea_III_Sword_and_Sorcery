@@ -1,0 +1,929 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Created by ModBuddy on 8/23/2012 9:36:48 PM -->
+<GameData>
+	<Language_en_US>
+
+		
+		<!--
+
+		<Row Tag="">
+			<Text></Text>
+		</Row>
+		<Row Tag="">
+			<Text></Text>
+		</Row>
+		-->
+
+
+
+		<Row Tag="TXT_KEY_EA_BLANK_HELP">
+			<Text> </Text>
+		</Row>
+		
+		<!-- Core tables first then Ea tables; alphabetical -->
+
+		<!-- Buildings -->
+		<Row Tag="TXT_KEY_EA_BUILDING_MONUMENT_HELP">
+			<Text>The Monument increases the [ICON_CULTURE] Culture of a city, speeding the growth of the city's territory and the civilization's acquisition of Social Policies and improving relations with other highly cultured civilizations.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_MARKETPLACE_HELP">
+			<Text>+1 [ICON_GOLD] from every resource worked by this city. Increases the likelihood that a Merchant will appear.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_LIBRARY_HELP">
+			<Text>+1 [ICON_RESEARCH] Research for every 2 [ICON_CITIZEN] Citizens in this City. Increases the likelihood that a Sage will appear.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_FAIR_HELP">
+			<Text>+1 [ICON_CULTURE] Culture from Grapes, Dye, Silk and Spices worked by this city. Increases the likelihood that an Artist will appear.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_AMPHITHEATER_HELP">
+			<Text>Increases the likelihood that an Artist will appear.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_FORGE_HELP">
+			<Text>+10% [ICON_PRODUCTION] Production towards Melee Units. +2 [ICON_PRODUCTION] Production from Copper, Iron and Mithril. Increases the likelihood that an Engineer will appear.</Text>
+		</Row>		
+		<Row Tag="TXT_KEY_EA_BUILDING_WORKSHOP_HELP">
+			<Text>+10% [ICON_PRODUCTION] Production towards Buildings and Siege units. +2 [ICON_PRODUCTION] Production from Blasting Powder. Increases the likelihood that an Engineer will appear.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_SHRINE_HELP">
+			<Text>Increases the likelihood that a Devout will appear.[NEWLINE][NEWLINE]May only be built if you have opened either the [COLOR_POSITIVE_TEXT]Pantheism[ENDCOLOR] or [COLOR_POSITIVE_TEXT]Theism[ENDCOLOR] Policy Branch.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_SMOKEHOUSE_HELP">
+			<Text>+1 [ICON_FOOD] Food from [ICON_RES_DEER] Deer, [ICON_RES_TRUFFLES] Boars, [ICON_RES_FUR] Small Game and [ICON_RES_IVORY] Elephants worked by this city.[NEWLINE][NEWLINE]Each camp-improved resource owned by this city that is remote (>3 plots from city) provides +1 Food [ICON_FOOD] through this building.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_TANNERY_HELP">
+			<Text>+1 [ICON_PRODUCTION] Production and +1 Leather resource from Boars, Cows, Deer and Horses worked by this city.[NEWLINE][NEWLINE]City must have an improved source of at least one of these resources nearby:</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_IVORYWORKS_HELP">
+			<Text>+1 [ICON_CULTURE] Culture and +1 Ivory resource from Elephants and Whales resources worked by this city.[NEWLINE][NEWLINE]City must have an improved source of at least one of these resources nearby:</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_GRANARY_HELP">
+			<Text>10% of [ICON_FOOD] Food is carried over after growth.[NEWLINE]+2 [ICON_FOOD] Food from Wheat worked by this city.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_SALTWORKS_HELP">
+			<Text>10% of [ICON_FOOD] Food is carried over after growth.[NEWLINE]+1 [ICON_FOOD] Food and +1 [ICON_GOLD] Gold from Salt resources worked by this city.[NEWLINE][NEWLINE]City must have an improved source of Salt nearby.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_STABLE_HELP">
+			<Text>+30% [ICON_PRODUCTION] Production towards horse-mounted units.[NEWLINE]+2 [ICON_PRODUCTION] Production from Horses resources worked by this city.[NEWLINE][NEWLINE]City must have an improved source of Horses nearby.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_ELEPHANT_STOCKADE_HELP">
+			<Text>+20% [ICON_PRODUCTION] Production towards elephant-mounted units.[NEWLINE]+2 [ICON_PRODUCTION] Production from Elephants resources worked by this city.[NEWLINE][NEWLINE]City must have an improved source of Elephants nearby.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_HUNTING_LODGE_HELP">
+			<Text>+1 [ICON_FOOD] Food and +1 [ICON_GOLD] Gold from [ICON_RES_DEER] Deer, [ICON_RES_TRUFFLES] Boars, [ICON_RES_FUR] Small Game and [ICON_RES_IVORY] Elephants worked by this city.[NEWLINE][NEWLINE]Each camp-improved resource owned by this city that is remote (>3 plots from city) provides +1 Food [ICON_FOOD] and +1 [ICON_GOLD] Gold through this building.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_ABATTOIR_HELP">
+			<Text>+2 [ICON_FOOD] Food from Cows, Horse and Sheep resources worked by this city.[NEWLINE][NEWLINE]City must have an improved source of at least one of these resources nearby.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_KNACKERY_HELP">
+			<Text>+2 [ICON_PRODUCTION] PRODUCTION from Cows, Horse and Sheep resources worked by this city.[NEWLINE][NEWLINE]City must have an improved source of at least one of these resources nearby.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_HARBOR_HELP">
+			<Text>Allows the city to form [ICON_CONNECTED] Trade Routes across water.[NEWLINE]+1 [ICON_FOOD] Food from [ICON_RES_FISH] Fish, [ICON_RES_CRAB] Crabs, [ICON_RES_PEARLS] Oysters and [ICON_RES_WHALE] Whales worked by this city.[NEWLINE][NEWLINE]Each sea resource owned by this city that is remote (>3 plots from city) provides +1 Food [ICON_FOOD] through this building.[NEWLINE][NEWLINE]City must be coastal.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_TIMBERYARD_HELP">
+			<Text>+1 Timber resource from Sawmills near this City.[NEWLINE]+1 Timber resource for every 4 unimproved Forest and Jungle tiles for Pantheistic Civilizations.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_COTTON_GIN_HELP">
+			<Text>+1 [ICON_PRODUCTION] Production and +1 [ICON_GOLD] Gold from Cotton resources worked by this city.[NEWLINE][NEWLINE]City must have an improved source of Cotton nearby.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_WINERY_HELP">
+			<Text>+1 [ICON_FOOD] Food and +1 [ICON_CULTURE] Culture from Wine resources worked by this city.[NEWLINE][NEWLINE]City must have an improved source of Wine nearby.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_BREWERY_HELP">
+			<Text>+1 [ICON_CULTURE] Culture and +1 Ale resource from Wheat resources worked by this city.[NEWLINE][NEWLINE]City must have an improved source of Wheat nearby.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_APOTHECARY_HELP">
+			<Text>+2 [ICON_RESEARCH] Research from Reagents resources worked by this city.[NEWLINE]+2 Health in this city.[NEWLINE][NEWLINE]City must have an improved source of Reagents nearby.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_MINT_HELP">
+			<Text>+2 [ICON_GOLD] Gold from Gold, Silver and Mithril resources and +1 [ICON_GOLD] from Copper and Iron resources worked by this city.[NEWLINE][NEWLINE]City must have an improved source of at least one of these resources nearby.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_STONE_WORKS_HELP">
+			<Text>+1 [ICON_PRODUCTION] Production and +2 [ICON_CULTURE] from Stone and Marble resources worked by this city.[NEWLINE][NEWLINE]City must have an improved source of at least one of these resources nearby.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_MOUNDS_HELP">
+			<Text>May only be built if you have taken the Pantheism Social Policy.[NEWLINE][NEWLINE]May only be built by the Sídhe.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_GALLOWS_HELP">
+			<Text>Reduces extra [ICON_HAPPINESS_4] Unhappiness in an [ICON_OCCUPIED] Occupied City by 10%.[NEWLINE][NEWLINE]May only be built if you have taken the [COLOR_POSITIVE_TEXT]Slavery[ENDCOLOR] Social Policy.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_DEBTORS_COURT_HELP">
+			<Text>Can convert 1 [ICON_CITIZEN] Citizen per turn into a Slaves unit.[NEWLINE][NEWLINE]May only be built if you have taken the [COLOR_POSITIVE_TEXT]Debt Bondage[ENDCOLOR] Social Policy.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_GOVERNORS_COMPOUND_HELP">
+			<Text>Reduces extra [ICON_HAPPINESS_4] Unhappiness from an [ICON_OCCUPIED] Occupied City by 40%.[NEWLINE][NEWLINE]May only be built if you have taken the [COLOR_POSITIVE_TEXT]Militarism[ENDCOLOR] Social Policy.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_TRIBAL_COUNCIL_HELP">
+			<Text>May only be built in a City of a different race than your Civilization and if you have taken the [COLOR_POSITIVE_TEXT]Tradition[ENDCOLOR] Social Policy.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_FOREFATHERS_STATUE_HELP">
+			<Text>Eliminates extra [ICON_HAPPINESS_4] Unhappiness from an [ICON_OCCUPIED] Occupied City.[NEWLINE][NEWLINE]May only be built 100 turns after conquest, in a City of the same race as your Civilization and if you have taken the [COLOR_POSITIVE_TEXT]Tradition[ENDCOLOR] Social Policy.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_LIGHTHOUSE_HELP">
+			<Text>+20% [ICON_CONNECTED] Trade in this City.[NEWLINE][NEWLINE]City must be built on the coast.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_WATERMILL_HELP">
+			<Text>City must be built next to a River.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_WINDMILL_HELP">
+			<Text>City must have at least 5 flat adjacent plots.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_FLOATING_GARDENS_HELP">
+			<Text>On completion, improves a Lake plot with the Floating Gardens improvement, giving +2 [ICON_FOOD] Food.[NEWLINE][NEWLINE]Can be built repeatedly as long as there is an unimproved Lake plot in this city's borders.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_COURTHOUSE_HELP">
+			<Text>Reduces extra [ICON_HAPPINESS_4] Unhappiness from an [ICON_OCCUPIED] Occupied City by 30%.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_WALLS_HELP">
+			<Text>Walls increase a city's Defense Strength, making the city more difficult to capture. Walls are quite useful for cities located along a civilization's frontier.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_SMITHS_GUILD_HELP">
+			<Text>Increases the likelihood that an Engineer will appear.[NEWLINE][NEWLINE]May only be built if you have taken the [COLOR_POSITIVE_TEXT]Guilds[ENDCOLOR] Social Policy.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_TRADERS_GUILD_HELP">
+			<Text>Increases the likelihood that a Merchant will appear.[NEWLINE][NEWLINE]May only be built if you have taken the [COLOR_POSITIVE_TEXT]Guilds[ENDCOLOR] Social Policy.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_SCRIBES_GUILD_HELP">
+			<Text>Increases the likelihood that a Sage will appear.[NEWLINE][NEWLINE]May only be built if you have taken the [COLOR_POSITIVE_TEXT]Guilds[ENDCOLOR] Social Policy.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_ARTISANS_GUILD_HELP">
+			<Text>Increases the likelihood that an Artist will appear.[NEWLINE][NEWLINE]May only be built if you have taken the [COLOR_POSITIVE_TEXT]Guilds[ENDCOLOR] Social Policy.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_DISCIPLES_GUILD_HELP">
+			<Text>Increases the likelihood that a Devout will appear.[NEWLINE][NEWLINE]May only be built if you have taken the [COLOR_POSITIVE_TEXT]Guilds[ENDCOLOR] Social Policy.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_ADEPTS_GUILD_HELP">
+			<Text>Increases the likelihood that a Thaumaturge will appear.[NEWLINE][NEWLINE]May only be built if you have taken the [COLOR_POSITIVE_TEXT]Guilds[ENDCOLOR] Social Policy.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_FACTORY_HELP">
+			<Text>Increases the likelihood that an Engineer will appear.[NEWLINE][NEWLINE]City must have a Forge.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_BANK_HELP">
+			<Text>Increases the likelihood that a Merchant will appear.[NEWLINE][NEWLINE]+15% [ICON_GOLD] Gold with the [COLOR_POSITIVE_TEXT]Mercantilism[ENDCOLOR] Social Policy.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_PORT_HELP">
+			<Text>+1 [ICON_FOOD] Food and +1 [ICON_GOLD] Gold from each [ICON_RES_FISH] Fish, [ICON_RES_CRAB] Crabs, [ICON_RES_PEARLS] Oysters and [ICON_RES_WHALE] Whales worked by this city.[NEWLINE][NEWLINE]Each sea resource owned by this city that is remote (>3 plots from city) provides +1 Food [ICON_FOOD] and +1 [ICON_GOLD] Gold through this building.[NEWLINE][NEWLINE]City must be coastal and have a Harbor.[NEWLINE][NEWLINE]+15% [ICON_GOLD] Gold with the [COLOR_POSITIVE_TEXT]Merchant Navy[ENDCOLOR] Social Policy.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_MONASTIC_SCHOOL_HELP">
+			<Text>Increases the likelihood that a Sage will appear.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_UNIVERSITY_HELP">
+			<Text>Increases the likelihood that a Sage will appear.[NEWLINE][NEWLINE]+15% [ICON_RESEARCH] Research with the [COLOR_POSITIVE_TEXT]Academic Tradition[ENDCOLOR] Social Policy.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_THEATRE_HELP">
+			<Text>Increases the likelihood that an Artist will appear.[NEWLINE][NEWLINE]City must have an Amphitheater.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_OPERA_HOUSE_HELP">
+			<Text>Increases the likelihood that an Artist will appear.[NEWLINE][NEWLINE]City must have an Amphitheater.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_MONASTERY_HELP">
+			<Text>+1 [ICON_CULTURE] from Wine and Incense resources worked by this city. Increases the likelihood that a Devout will appear.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_BOWYER_HELP">
+			<Text>+20% [ICON_PRODUCTION] Production towards Archery units and they receive +5 XP.[NEWLINE]+1 [ICON_PRODUCTION] Production, [ICON_GOLD] Gold and [ICON_CULTURE] Culture from Yew resources worked by this city.[NEWLINE][NEWLINE]City must have an improved source of Yew nearby.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_DISTILLERY_HELP">
+			<Text>+1 [ICON_CULTURE] Culture and +1 Spirits resources from Sugar resources worked by this city.[NEWLINE][NEWLINE]City must have an improved source of Yew nearby.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_WHALERY_HELP">
+			<Text>+1 [ICON_FOOD] Food and +1 [ICON_PRODUCTION] Production from [ICON_RES_WHALE] Whales worked by this city.[NEWLINE][NEWLINE]Each Whale owned by this city that is remote (>3 plots from city) provides +1 Food [ICON_FOOD] and +1 [ICON_PRODUCTION] Production through this building.[NEWLINE][NEWLINE]City must be coastal and have a Harbor.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_ARMORY_HELP">
+			<Text>+5% [ICON_PRODUCTION] Production towards Melee units and they receive +5 XP.[NEWLINE]+1 [ICON_PRODUCTION] Production from Copper, Iron, Mithril and Blasting Powder resources worked by this city.[NEWLINE][NEWLINE]City must have a Forge and an improved source of at least one of these resources nearby.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_ARSENAL_HELP">
+			<Text>+5% [ICON_PRODUCTION] Production towards Melee units and they receive +5 XP.[NEWLINE]+1 [ICON_PRODUCTION] Production from Copper, Iron, Mithril and Blasting Powder resources worked by this city.[NEWLINE][NEWLINE]City must have an Armory and an improved source of at least one of these resources nearby.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_LABORATORY_HELP">
+			<Text>+2 [ICON_RESEARCH] Research from Blasting Powder, Mithril and Reagents resources worked by this city.[NEWLINE][NEWLINE]City must have a Library and an improved source of at least one of these resources nearby.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_TEXTILE_MILL_HELP">
+			<Text>+2 [ICON_GOLD] GOld and +2 [ICON_CULTURE] Culture from Sheep, Cotton, Silk and Dye resources worked by this city.[NEWLINE][NEWLINE]City an improved source of at least one of these resources nearby.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_SLAVE_MARKET_HELP">
+			<Text>Enables you to sell Slaves for [ICON_GOLD] Gold.[NEWLINE][NEWLINE]May only be built if you have taken the [COLOR_POSITIVE_TEXT]Slave Trade[ENDCOLOR] Social Policy.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_SLAVE_STOCKADE_HELP">
+			<Text>Has a small chance each turn of spawning a Slaves unit.[NEWLINE][NEWLINE]May only be built if you have taken the [COLOR_POSITIVE_TEXT]Slave Raiders[ENDCOLOR] Social Policy.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_SLAVE_KNACKERY_HELP">
+			<Text>Enables you to render Slaves for [ICON_PRODUCTION] Production.[NEWLINE][NEWLINE]May only be built if you have taken the [COLOR_POSITIVE_TEXT]Slave Castes[ENDCOLOR] Social Policy.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_SLAVE_BREEDING_PEN_HELP">
+			<Text>Halves the Growth Penalty when your empire is Unhappy and allows you to train Settlers regardless of unhappines.[NEWLINE][NEWLINE]May only be built if you have taken the [COLOR_POSITIVE_TEXT]Slave Breeding[ENDCOLOR] Social Policy.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_INTERNMENT_CAMP_HELP">
+			<Text>Nearby revolting units are eliminated or converted into Slaves.[NEWLINE][NEWLINE]May only be built if you have taken the [COLOR_POSITIVE_TEXT]Servi Aeternam[ENDCOLOR] Social Policy.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_BARRACKS_HELP">
+			<Text>+5 XP for all Land Units.[NEWLINE][NEWLINE]May only be built if you have taken the [COLOR_POSITIVE_TEXT]Discipline[ENDCOLOR] Social Policy.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_JEWELLER_HELP">
+			<Text>+1 Jewelry resource. +1 [ICON_CULTURE] Culture from Gold, Silver, Gems, Jade and Oysters resources worked by this city.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_KILN_HELP">
+			<Text>+1 Porcelain resource.[NEWLINE][NEWLINE]May only be built if you have taken the [COLOR_POSITIVE_TEXT]Crafting[ENDCOLOR] Social Policy.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_CASTLE_HELP">
+			<Text>placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_PAPERMILL_HELP">
+			<Text>May only be built if you have taken the [COLOR_POSITIVE_TEXT]Scholasticism[ENDCOLOR] Social Policy.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_AQUEDUCT_HELP">
+			<Text>+4 Health in this city.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_PUBLIC_BATHS_HELP">
+			<Text>+2 Health in this city.[NEWLINE][NEWLINE]City must have an Aqueduct.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_COLOSSEUM_HELP">
+			<Text>+2 Happiness and +1 [ICON_CULTURE] Culture</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_SEWERS_HELP">
+			<Text>+6 Health in this city.[NEWLINE][NEWLINE]City must have an Aqueduct.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_PRINTING_PRESS_HELP">
+			<Text>placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_OBSERVATORY_HELP">
+			<Text>City must be built next to a Mountain.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_SHIPYARD_HELP">
+			<Text>+20% [ICON_PRODUCTION] Production towards Naval units and they receive +5 XP.[NEWLINE][NEWLINE]City must have a Harbor.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_HOSPITAL_HELP">
+			<Text>+6 Health in this city.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_DEEP_FARMS_HELP">
+			<Text>+3 [ICON_FOOD] Food from Mine improvements worked by this city.[NEWLINE]+3 [ICON_FOOD] Food and +2 [ICON_PRODUCTION] Production from Mountains worked by this city.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_MUSEUM_HELP">
+			<Text>placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_FOUNDRY_HELP">
+			<Text>Must be built by an Engineer.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_ACADEMY_HELP">
+			<Text>Must be built by a Sage.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_FESTIVAL_HELP">
+			<Text>Must be built by an Artist.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_TEMPLE_HELP">
+			<Text>Must be built by a Devout.[NEWLINE][NEWLINE]May only be built if you have taken either the [COLOR_POSITIVE_TEXT]Pantheism[ENDCOLOR] or [COLOR_POSITIVE_TEXT]Theism[ENDCOLOR] Social Policies.</Text>
+		</Row>
+
+		<!-- Minor Civ Traits -->
+		<Row Tag="TXT_KEY_EA_MINOR_TRAIT_MERCENARY_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Mercenary[ENDCOLOR] City States excel in the training of one or more units (or unit lines) which are available for hire. Any civilization can hire mercenaries from these city states if they are friends or allies. Civilizations with the Mercenaries policy can hire these units regardless of friendship (so long as they are not at war) but receive a discount if friends (-10%) or allies (-20%). Theses city states will usually have some strategic resources available that are appropriate for their unit specialization. (Note: Unit specializations not implemented yet.)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_MINOR_TRAIT_SLAVERS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Slaver[ENDCOLOR] City States produce and capture slaves which can be purchased by civilizations that have opened the Slavery policy branch. These city states will occasionally declare war on their neighbors (either city state or full civ) but only when they see good opportunity for slave raiding. Being friends or allies reduces the cost of slaves and reduces, but does not eliminate, the chance of being raided for slaves (previous good relationship will be re-established after cessation of the slave raid) (Slavers CS trait not yet implemented!)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_MINOR_TRAIT_ARCANE_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Arcane[ENDCOLOR] City States are potential sources of [ICON_STAR] Mana for your civilization and arcane spells for your thaumaturges. These effects are not available to civilizations that follow Azzandarayasna. Friends and allies gain 4 and 8 [ICON_STAR] Mana per turn, respectively. Each magical city state has one unique arcane spell that will be learned by any visiting thaumaturge from an allied civilization (not yet implemented). An Arcane city state that has been converted to Azzandarayasna will no longer provide these benefits.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_MINOR_TRAIT_HOLY_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Holy[ENDCOLOR] City States are a potential source of [ICON_PEACE] Divine Favor for your civilization and divine spells for your devouts. These effects are only available to civilizations that follow Azzandarayasna. Friends and allies gain 4 and 8 [ICON_PEACE] Divine Favor per turn, respectively. Each holy city state has one unique divine spell that will be learned by any visiting devout from an allied civilization (not yet implemented). These city states will slowly accumulate Azzandarayasna followers after that religion has been founded, eventually converting on their own. A Holy city state that has been converted to The Weave of Éa or any of its cults will no longer provide these effects. A Holy city state that has been converted to Aŋra becomes Unholy, providing benefits (mana and altered divine spells) only to fallen civilizations.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_MINOR_TRAIT_UNHOLY_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Unholy[ENDCOLOR] City States were once Holy City States that have Fallen. They are potential sources of [ICON_STAR] Mana but only for Fallen civilization. Fallen civilizations that are Friends or allies gain 4 or 8 [ICON_STAR] Mana per turn, respectively. An Unholy City State converted to Azzandarayasna returns to its original Holy status.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_SPHERES_HELP">
+			<Text>(Spheres are not yet implemented!)</Text>
+		</Row>
+
+
+
+
+		<!-- Policies -->
+		<Row Tag="TXT_KEY_EA_POLICY_BRANCH_DOMINIONISM_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Dominionism[ENDCOLOR] allows your cities to grow very large, improving the land of Éa for productive use while subduing its wildlands.[NEWLINE][NEWLINE]Adopting Dominionism will provide +1 [ICON_FOOD] Food from every Farm and Pasture.[NEWLINE][NEWLINE]Adopting all policies in the Dominionism tree will result in 1/3 of culture being converted to Food divided among all of your cities.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_DOMINIONISM_HELP">
+			<Text>{TXT_KEY_EA_POLICY_BRANCH_DOMINIONISM_HELP}</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ARISTOCRACY_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Aristocracy[ENDCOLOR][NEWLINE][ICON_BULLET]+1[ICON_GOLD] Gold per [ICON_CITIZEN] Population in capital</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_FEUDALISM_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Feudalism[ENDCOLOR][NEWLINE][ICON_BULLET]-33% [ICON_HAPPINESS_4] Unhappiness from [ICON_CITIZEN] Population</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_GUILDS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Guilds[ENDCOLOR][NEWLINE][ICON_BULLET]+1[ICON_PRODUCTION] Production from specialists[NEWLINE][ICON_BULLET]Half [ICON_HAPPINESS_4] Unhappiness from specialists[NEWLINE][ICON_BULLET]Enables various Guild buildings</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_TRADE_UNIONS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Trade Unions[ENDCOLOR][NEWLINE][ICON_BULLET]+1[ICON_GOLD] Gold from specialists[NEWLINE][ICON_BULLET]Half [ICON_FOOD] Food support for specialists</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_TAXATION_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Taxation[ENDCOLOR][NEWLINE][ICON_BULLET]+1[ICON_GOLD] Gold per worked improvement</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_CIVIL_SERVICE_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Civil Service[ENDCOLOR][NEWLINE][ICON_BULLET]+0.5 [ICON_PRODUCTION] Production per [ICON_CITIZEN] Population in capital[NEWLINE][ICON_BULLET]Can draft militia units from [ICON_CITIZEN] Population (Not yet implemented!)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_INDUSTRIALIZATION_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Industrialization[ENDCOLOR][NEWLINE][ICON_BULLET]+1 [ICON_PRODUCTION] Production per worked improvement[NEWLINE][ICON_BULLET]Allows the [COLOR_POSITIVE_TEXT]Industrial Agriculture[ENDCOLOR] Process, which converts 25% of City [ICON_PRODUCTION] Production into food distributed in all cities</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_BRANCH_PANTHEISM_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Pantheism[ENDCOLOR] allows your civilization to interact with the Major Spirits of Éa and the land itself in ways not otherwise possible.[NEWLINE][NEWLINE]Adopting Pantheism will result in the spontaneous appearance of The Weave of Éa Religion in your cities, +1 [ICON_STAR] Mana in your capital, and enabling of the Shrine building. Pantheistic civilizations can build improvements on resource plots only. [NEWLINE][NEWLINE]A free Druid [ICON_GREAT_PEOPLE] will appear when the next policy is adopted within this branch. Each policy adopted in this branch will allow communication with one additional Major Spirit of Éa. Adopting all policies in the Pantheism tree will result in 1/3 of culture being converted to [ICON_STAR] Mana.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_PANTHEISM_HELP">
+			<Text>{TXT_KEY_EA_POLICY_BRANCH_PANTHEISM_HELP}</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ANIMAL_LORE_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Animal Lore[ENDCOLOR][NEWLINE][ICON_BULLET]+1 [ICON_FOOD] Food & +1 [ICON_PRODUCTION] Production from Camps, Pastures, Fishing Boats & Whaling Boats</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_FERAL_BOND_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Feral Bond[ENDCOLOR][NEWLINE][ICON_BULLET]+1 [ICON_CULTURE] Culture & +1 [ICON_STAR] Mana from Camps, Pastures, Fishing Boats & Whaling Boats</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_COMMUNE_WITH_NATURE_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Commune with Nature[ENDCOLOR][NEWLINE][ICON_BULLET]+1 [ICON_CULTURE] Culture & +1 [ICON_STAR] Mana gained civilization-wide for every four unimproved plots owned[NEWLINE][ICON_BULLET]Improved non-resource forest, jungle and marsh plots are slowly regenerated to unimproved (NOT YET IMPLEMENTED!)[NEWLINE][ICON_BULLET]Allows the [COLOR_POSITIVE_TEXT]World Weave[ENDCOLOR] Process, which uses City [ICON_PRODUCTION] Production to convert citizens worldwide into followers of The Weave of Éa (randomly converted from cities that already have at least one follower, with pantheistic cult followers considered followers of The Weave; 100 [ICON_PRODUCTION] Production needed to convert one non-religious citizen, 500 to convert a theistic citizen)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_WOODS_LORE_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Woods Lore[ENDCOLOR][NEWLINE][ICON_BULLET]+1 [ICON_FOOD] Food & +1 [ICON_PRODUCTION] Production from Farms, Vineyards & Plantations</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_FELLOWSHIP_OF_LEAVES_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Fellowship of Leaves[ENDCOLOR][NEWLINE][ICON_BULLET]Druids can build Temples[NEWLINE][ICON_BULLET]+1 [ICON_CULTURE] Culture & +1 [ICON_STAR] Mana from Farms, Vineyards & Plantations</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_FOREST_DOMINION_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Forest Dominion[ENDCOLOR][NEWLINE][ICON_BULLET]Cultural borders expand spontaneously through adjacent unimproved forest and jungle into unowned or foreign-owned territory[NEWLINE][ICON_BULLET]All forests, jungles and marshes in the world gain +1 strength[NEWLINE][ICON_BULLET]Allows the [COLOR_POSITIVE_TEXT]Éa Blessings[ENDCOLOR] Process, which converts 10% of City [ICON_PRODUCTION] Production into Living Terrain strength (randomly applied to non-improved forest, jungle or marsh plots worldwide)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_EARTH_LORE_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Earth Lore[ENDCOLOR][NEWLINE][ICON_BULLET]+1 [ICON_PRODUCTION] Production & +1 [ICON_GOLD] Gold from Mines & Quarries</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MANA_VORTEXES_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Mana Vortexes[ENDCOLOR][NEWLINE][ICON_BULLET]+1 [ICON_RESEARCH] Research & +2 [ICON_STAR] Mana from Mines & Quarries[NEWLINE][ICON_BULLET]Allows the [COLOR_POSITIVE_TEXT]Major Spirits' Tribute[ENDCOLOR] Process, which converts 25% of City [ICON_PRODUCTION] Production into [ICON_INFLUENCE] Influence divided among all Major Spirits of Éa that are friends or allies, or all contacted if none are currently friends or allies</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_THROUGH_THE_VEIL_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Through the Veil[ENDCOLOR][NEWLINE][ICON_BULLET]Allows your civilization to communicate with the Fey, a hidden civilization comprised of the Minor Spirits of trees, rocks, streams, and so on; the Queen of the Fay has various resources to trade[NEWLINE][ICON_BULLET]Allows the [COLOR_POSITIVE_TEXT]Faeries' Tribute[ENDCOLOR] Process, which converts City [ICON_PRODUCTION] Production into boosted relationship with The Fay (boost equals moving average of production contributed over the last 100 turns divided by 10)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_BRANCH_THEISM_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Theism[ENDCOLOR] involves the worship of Azzandara, the Creator, and allows your civilization (and others') to benefit in various ways from the Azzandarayasna Religion.[NEWLINE][NEWLINE]Adopting Theism will grant +1 [ICON_PEACE] Divine Favor in your capital, and enables the Shrine building.[NEWLINE][NEWLINE]A free Priest [ICON_GREAT_PEOPLE] will appear when the next policy is adopted within this branch. Adopting all policies in the Pantheism tree will result in 1/3 of culture being converted to [ICON_PEACE] Divine Favor.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_THEISM_HELP">
+			<Text>{TXT_KEY_EA_POLICY_BRANCH_THEISM_HELP}</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MYSTICISM_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Mysticism[ENDCOLOR][NEWLINE][ICON_BULLET]+3 [ICON_PEACE] Divine Favor in capital</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MONASTIC_TRADITION_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Monastic Tradition[ENDCOLOR][NEWLINE][ICON_BULLET]+2 [ICON_CULTURE] Culture from Monasteries</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_WAY_OF_THE_WISE_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Way of the Wise[ENDCOLOR][NEWLINE][ICON_BULLET]Azzandarayasna gains Follower effect: +30% healing in friendly territory</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_HEAVENS_MANDATE_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Heaven's Mandate[ENDCOLOR][NEWLINE][ICON_BULLET]+3 [ICON_PEACE] Divine Favor in capital[NEWLINE][ICON_BULLET]Azzandarayasna gains Founder effect: +2 [ICON_PEACE] Divine Favor for every foreign follower city[NEWLINE][ICON_BULLET]Allows the [COLOR_POSITIVE_TEXT]Azzandara's Tribute[ENDCOLOR] Process, which converts 25% of City [ICON_PRODUCTION] Production into [ICON_PEACE] Divine Favor (Not yet implemented!)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_PRIESTHOOD_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Priesthood[ENDCOLOR][NEWLINE][ICON_BULLET]Priests can build Temples[NEWLINE][ICON_BULLET]Azzandarayasna gains Enhancer effect: religion spreads 34% faster</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_HOLY_ORDER_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Holy Order[ENDCOLOR][NEWLINE][ICON_BULLET]Azzandarayasna gains Enhancer effect: +30% [ICON_WAR] Combat Strength near friendly follower cities[NEWLINE][ICON_BULLET]Paladins are generated in place of Warrior [ICON_GREAT_PEOPLE] great people</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_THEOCRACY_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Theocracy[ENDCOLOR][NEWLINE][ICON_BULLET]+20% [ICON_GOLD] Gold in capital[NEWLINE][ICON_BULLET]Azzandarayasna gains Founder effect: +2 [ICON_GOLD] Gold for every follower city[NEWLINE][ICON_BULLET]Allows the [COLOR_POSITIVE_TEXT]World Salvation[ENDCOLOR] Process, which uses City [ICON_PRODUCTION] Production to convert citizens worldwide into followers of Azzandarayasna (randomly converted from cities that already have at least one follower; 100 [ICON_PRODUCTION] Production needed to convert one non-religious citizen, 500 to convert a citizen of another religion)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_BRANCH_ANTI_THEISM_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Theism[ENDCOLOR] (in its purest form) involves the worship of Ahriman, the Anti-Creator, and allows your civilization to benifit in various ways from the Aŋra Religion.[NEWLINE][NEWLINE]Adopting Theism will grant +1 [ICON_STAR] Mana in your capital, and enables the Shrine building.[NEWLINE][NEWLINE]A free Priest [ICON_GREAT_PEOPLE] will appear when the next policy is adopted within this branch. Adopting all policies in the Theism tree will result in 1/3 of culture being converted to [ICON_STAR] Mana.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ANTI_THEISM_HELP">
+			<Text>{TXT_KEY_EA_POLICY_BRANCH_THEISM_HELP}</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ANTI_MYSTICISM_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Mysticism[ENDCOLOR][NEWLINE][ICON_BULLET]+3 [ICON_STAR] Mana in capital</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ANTI_MONASTIC_TRADITION_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Monastic Tradition[ENDCOLOR][NEWLINE][ICON_BULLET]+2 [ICON_RESEARCH] Research from Monasteries</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ANTI_WAY_OF_THE_WISE_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Way of the Wicked[ENDCOLOR][NEWLINE][ICON_BULLET]Aŋra gains Enhancer effect: Mana from kills</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ANTI_HEAVENS_MANDATE_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Hell's Mandate[ENDCOLOR][NEWLINE][ICON_BULLET]+5 [ICON_STAR] Mana in capital[NEWLINE][ICON_BULLET]Aŋra gains Founder effect: +1 [ICON_STAR] Mana for every follower[NEWLINE][ICON_BULLET]Allows the [COLOR_POSITIVE_TEXT]Ahriman's Tribute[ENDCOLOR] Process, which converts 25% of City [ICON_PRODUCTION] Production into consumed [ICON_STAR] Mana (the Mana is directly consumed and never made available to the civilization) (Not yet implemented!)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ANTI_PRIESTHOOD_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Priesthood[ENDCOLOR][NEWLINE][ICON_BULLET]Priests can build Temples[NEWLINE][ICON_BULLET]Aŋra gains Enhancer effect: religion spreads 50% farther</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ANTI_HOLY_ORDER_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Unholy Order[ENDCOLOR][NEWLINE][ICON_BULLET]Aŋra gains Enhancer effect: +40% [ICON_WAR] Combat Strength near enemy follower cities[NEWLINE][ICON_BULLET]Eidolons are generated in place of Warrior [ICON_GREAT_PEOPLE] great people</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ANTI_THEOCRACY_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Theocracy[ENDCOLOR][NEWLINE][ICON_BULLET]+20% [ICON_RESEARCH] Research in capital[NEWLINE][ICON_BULLET]Aŋra gains Founder effect: +1 [ICON_RESEARCH] Research for every follower[NEWLINE][ICON_BULLET]Allows the [COLOR_POSITIVE_TEXT]World Corruption[ENDCOLOR] Process, which uses City [ICON_PRODUCTION] Production to convert citizens worldwide into followers of Aŋra (randomly converted from cities that already have at least one follower; 100 [ICON_PRODUCTION] Production needed to convert one non-religious citizen, 500 to convert a citizen of another religion)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_BRANCH_MILITARISM_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Militarism[ENDCOLOR] allows your civilization to excel in military conquest.[NEWLINE][NEWLINE]Adopting Militarism will increase base free military units by 4.[NEWLINE][NEWLINE]A free Warrior will appear when the next policy is adopted within this branch. Each policy adopted within this branch will reduce unit maintanence by 10% (up to -70%). Adopting all policies in the Militarism tree will result in 1/3 of culture being converted to Experience divided among all military units.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MILITARISM_HELP">
+			<Text>{TXT_KEY_EA_POLICY_BRANCH_MILITARISM_HELP}</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_DISCIPLINE_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Discipline[ENDCOLOR][NEWLINE][ICON_BULLET]+20% [ICON_WAR] Combat Strength bonus for units in a tile next to other friendly military units</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MILITARY_TRADITION_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Military Tradition[ENDCOLOR][NEWLINE][ICON_BULLET]Garrisoned units have no [ICON_GOLD] Gold support and provide +1 [ICON_HAPPINESS_1] Happiness</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_WARRIOR_CODE_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Warrior Code[ENDCOLOR][NEWLINE]Gain [ICON_CULTURE] Culture for each unit killed</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_PROFESSIONAL_ARMY_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Professional Army[ENDCOLOR][NEWLINE][ICON_BULLET]Upgrading units requires 50% less [ICON_GOLD] Gold[NEWLINE][ICON_BULLET]Allows the [COLOR_POSITIVE_TEXT]Training Exercises[ENDCOLOR] Process, which converts 25% of City [ICON_PRODUCTION] Production into experience divided among all military units</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_WARCRAFT_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Warcraft[ENDCOLOR][NEWLINE][ICON_BULLET]Military units gain double experience from combat</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_WAR_SPIRIT_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Warspirit[ENDCOLOR][NEWLINE][ICON_BULLET]+10% baseline unit [ICON_HAPPINESS_1] Morale (does not affect Slaves, Mercenaries or non-living units)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_BERSERKER_RAGE_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Berserker Rage[ENDCOLOR][NEWLINE][ICON_BULLET]Baseline unit [ICON_HAPPINESS_1] Morale is boosted 1% for each hit point of damage sustained (does not affect Slaves or Mercenaries or non-living units)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_BRANCH_TRADITION_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Tradition[ENDCOLOR] allows your civilization to excel in the persuit of scholarship and the arts.[NEWLINE][NEWLINE]Adopting Tradition will provide +1 [ICON_RESEARCH] Research & +1 [ICON_CULTURE] Culture from your capital.[NEWLINE][NEWLINE]A free Artist or Sage will appear when the next policy is adopted within this branch (the latter for Scholasticism only). Adopting all policies in the Tradition tree will result in 1/3 of culture being converted to Research divided among all cities.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_TRADITION_HELP">
+			<Text>{TXT_KEY_EA_POLICY_BRANCH_TRADITION_HELP}</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_FOLKLORE_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Folklore[ENDCOLOR][NEWLINE][ICON_BULLET]Allows Artists to specialize becoming subclass Bard (in Lieu of taking promotion)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_BARDING_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Barding[ENDCOLOR][NEWLINE][ICON_BULLET]Allows Bards to craft several Epics, including Völuspá, Hávamál and others</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_FOLKART_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Folkart[ENDCOLOR][NEWLINE][ICON_BULLET]+1 [ICON_CULTURE] Culture per Fair, Ivoryworks, Jeweler</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_CRAFTING_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Crafting[ENDCOLOR][NEWLINE][ICON_BULLET]+1 [ICON_CULTURE] culture per Vineyard, Quarry[NEWLINE][ICON_BULLET]+1 [ICON_CULTURE] Culture per Winery, Brewery, Stoneworks, Textile Mill</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_SCHOLASTICISM_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Scholasticism[ENDCOLOR][NEWLINE][ICON_BULLET]+5% [ICON_RESEARCH] Research in all cities</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ACADEMIC_TRADITION_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Academic Tradition[ENDCOLOR][NEWLINE][ICON_BULLET]+5% [ICON_RESEARCH] Research in all cities[NEWLINE][ICON_BULLET]+15% [ICON_RESEARCH] Research from Universities</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_RATIONALISM_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Rationalism[ENDCOLOR][NEWLINE][ICON_BULLET]+5% [ICON_RESEARCH] Research in all cities[NEWLINE][ICON_BULLET]+15% [ICON_RESEARCH] Research from Laboratories[NEWLINE][ICON_BULLET]Allows the [COLOR_POSITIVE_TEXT]Research[ENDCOLOR] Process, which converts 25% of City [ICON_PRODUCTION] Production into [ICON_RESEARCH] Research</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_THE_ARTS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]The Arts[ENDCOLOR][NEWLINE][ICON_BULLET]+2 [ICON_CULTURE] Culture per Theater and Opera House[NEWLINE][ICON_BULLET]+20% [ICON_CULTURE] Culture from Wonders (NOT YET IMPLEMENTED!)[NEWLINE][ICON_BULLET]Allows [COLOR_POSITIVE_TEXT]The Arts[ENDCOLOR] Process, which converts 25% of City [ICON_PRODUCTION] Production into [ICON_CULTURE] Culture</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_BRANCH_COMMERCE_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Commerce[ENDCOLOR] allows your civilization to excel in trade.[NEWLINE][NEWLINE]Adopting Commerce will provide +3 [ICON_GOLD] Gold from your capital and allow Merchants to establish Trade Routes with foreign cities.[NEWLINE][NEWLINE]A free Merchant will appear when the next policy is adopted within this branch. Adopting all policies in the Commerce tree will result in 1/3 of culture being converted to [ICON_GOLD] Gold divided among all cities.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_COMMERCE_HELP">
+			<Text>{TXT_KEY_EA_POLICY_BRANCH_COMMERCE_HELP}</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MERCANTILISM_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Mercantilism[ENDCOLOR][NEWLINE][ICON_BULLET]-25% [ICON_GOLD] Gold required to rush buy buildings[NEWLINE][ICON_BULLET]+15% [ICON_GOLD] Gold from Banks[NEWLINE][ICON_BULLET]Allows the [COLOR_POSITIVE_TEXT]Trade Surplus[ENDCOLOR] Process, which converts 25% of City [ICON_PRODUCTION] Production into [ICON_GOLD] Gold</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_FREE_MARKETS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Free Markets[ENDCOLOR][NEWLINE][ICON_BULLET]+20% [ICON_GOLD] Gold from domestic trade routes[NEWLINE][ICON_BULLET][ICON_GREAT_PEOPLE] Merchants can establish Trade Houses in your cities that have foreign trade routes</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_FREE_TRADE_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Free Trade[ENDCOLOR][NEWLINE][ICON_BULLET]+20% [ICON_GOLD] gold from foreign trade routes[NEWLINE][ICON_BULLET][ICON_GREAT_PEOPLE] Merchants can establish Trade Missions in foreign cities that have trade routes with your cities</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MERCENARIES_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Mercenaries[ENDCOLOR][NEWLINE][ICON_BULLET]Allows your civilization to hire Mercenaries from non-friend City States or other civilizations that have Mercenaries for hire[NEWLINE][ICON_BULLET]Recieve a [ICON_GOLD] Gold discount when hireing Mercenaries from civilizations or City States with which you are friends or allies[NEWLINE][ICON_BULLET]Allows your civilization to put up military units for hire as Mercenaries (living, non-slave units only)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MERCHANT_NAVY_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Merchant Navy[ENDCOLOR][NEWLINE][ICON_BULLET]+1 [ICON_MOVES] Movement at sea[NEWLINE][ICON_BULLET]+15% [ICON_GOLD] Gold from Ports[NEWLINE][ICON_BULLET]+1 [ICON_GOLD] Gold from all coastal buildings (Harbor, Port, Shipyard, etc.)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_CULTURAL_DIPLOMACY_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Cultural Diplomacy[ENDCOLOR][NEWLINE][ICON_BULLET][ICON_GOLD] Gold gifts to [ICON_CITY_STATE] City States provide 25% more [ICON_INFLUENCE] influence</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_PATRONAGE_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Patronage[ENDCOLOR][NEWLINE][ICON_BULLET][ICON_INFLUENCE] Influence with [ICON_CITY_STATE] City States decays at half the normal rate[NEWLINE][ICON_BULLET]Allows the [COLOR_POSITIVE_TEXT]Patronage[ENDCOLOR] Process, which converts 25% of City [ICON_PRODUCTION] Production into [ICON_INFLUENCE] Influence divided among all City State friends and allies, or all contacted if none are currently friends or allies</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_BRANCH_SLAVERY_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Slavery[ENDCOLOR] allows your civilization to benifit from forced labor.[NEWLINE][NEWLINE]Adopting Slavery will grant you one free Slaves unit and allow you to capture Slaves from other civilization's Slaves, Workers or Settlers. Enables the Gallows building.[NEWLINE][NEWLINE]Adopting all policies in the Slavery tree will result in 1/3 of [ICON_CULTURE] Culture being converted to [ICON_PRODUCTION] Production divided among all cities.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_SLAVERY_HELP">
+			<Text>{TXT_KEY_EA_POLICY_BRANCH_SLAVERY_HELP}</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_DEBT_BONDAGE_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Debt Bondage[ENDCOLOR][NEWLINE][ICON_BULLET]Enables the Debtor's Court building which allows conversion of [ICON_CITIZEN] Population to Slaves</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_SLAVE_CASTES_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Slave Castes[ENDCOLOR][NEWLINE][ICON_BULLET]Enables the Slave Knackery building which allows rendering of slaves into [ICON_PRODUCTION] Production[NEWLINE][ICON_BULLET]Civilization [ICON_HAPPINESS_4] Unhappiness is converted to [ICON_PRODUCTION] Production divided among all cities</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_SLAVE_TRADE_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Slave Trade[ENDCOLOR][NEWLINE][ICON_BULLET]Enables the Slave Market building which allows selling of slaves for [ICON_GOLD] Gold</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_SLAVE_BREEDING_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Slave Breeding[ENDCOLOR][NEWLINE][ICON_BULLET]Enables the Slave Breeding Pen building which provides +2f, counteracts growth penalty for unhappiness by 50%, and allows production of settlers irrespective of civilization [ICON_HAPPINESS_4] Unhappiness</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_SERVI_AETERNAM_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Servi Aeternam[ENDCOLOR][NEWLINE][ICON_BULLET]Enables the Internment Camp building which provides +2p and eliminates or enslaves all nearby revolting units[NEWLINE][ICON_BULLET]Allows the [COLOR_POSITIVE_TEXT]Oppression[ENDCOLOR] Process, which converts 25% of City [ICON_PRODUCTION] Production into civilization [ICON_HAPPINESS_4] Unhappiness (Not yet implemented!)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_SLAVE_RAIDERS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Slave Raiders[ENDCOLOR][NEWLINE][ICON_BULLET]Enables the Slave Stockade building which provides +2p and occasionally spawns a Slaves unit (percent chance per turn equals city population) [NEWLINE][ICON_BULLET]Military units gain the Slave Raider promotion allowing killed military units and sacked city population to be converted to Slaves (the civilian Worker-type unit)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_SLAVE_ARMIES_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Slave Armies[ENDCOLOR][NEWLINE][ICON_BULLET]Military units (including enslaved units) gain the Slave Maker promotion allowing capture of other defeated military units (these maintain unit type, experience and promotions, but gain the Slave promotion)</Text>
+		</Row>
+
+
+		<Row Tag="TXT_KEY_EA_POLICY_BRANCH_CIV_ENABLED_HELP">
+			<Text>This policy branch opens when you acquire a civilization name. It contains policies enabled specifically for your civilization.</Text>
+		</Row>
+		
+		<!-- Processes -->
+
+		<Row Tag="TXT_KEY_EA_PROCESS_INDUSTRIAL_AGRICULTURE_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Industrial Agriculture[ENDCOLOR] converts 25% of the [ICON_PRODUCTION] Production of this City into food distributed in all cities.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROCESS_WORLD_WEAVE_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]World Weave[ENDCOLOR] uses [ICON_PRODUCTION] Production of this City to convert citizens worldwide into followers of The Weave of Éa (randomly converted from cities that already have at least one follower, with pantheistic cult followers considered followers of The Weave; 100 [ICON_PRODUCTION] Production needed to convert one non-religious citizen, 500 to convert a theistic citizen).</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROCESS_EA_BLESSINGS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Éa Blessings[ENDCOLOR] converts 10% of the [ICON_PRODUCTION] Production of this City into Living Terrain strength, randomly applied to non-improved forest, jungle or marsh plots worldwide.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROCESS_MAJOR_SPIRITS_TRIBUTE_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Major Spirits' Tribute[ENDCOLOR] converts 25% of the [ICON_PRODUCTION] Production of this City into [ICON_INFLUENCE] Influence divided among all Major Spirits of Éa that are friends or allies, or all contacted if none are currently friends or allies.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROCESS_FAERIES_TRIBUTE_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Faeries' Tribute[ENDCOLOR] converts [ICON_PRODUCTION] Production of this City into boosted relationship with The Fay (boost equals moving average of production contributed over the last 100 turns divided by 10).</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROCESS_AZZANDARAS_TRIBUTE_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Azzandara's Tribute[ENDCOLOR] converts 25% of the [ICON_PRODUCTION] Production of this City into [ICON_PEACE] Divine Favor.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROCESS_WORLD_SALVATION_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]World Salvation[ENDCOLOR] uses [ICON_PRODUCTION] Production of this City to convert citizens worldwide into followers of Azzandarayasna (randomly converted from cities that already have at least one follower; 100 [ICON_PRODUCTION] Production needed to convert one non-religious citizen, 500 to convert a citizen of another religion).</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROCESS_AHRIMANS_TRIBUTE_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Ahriman's Tribute[ENDCOLOR] converts 25% of the [ICON_PRODUCTION] Production of this City into consumed [ICON_STAR] Mana. The Mana is directly consumed and never made available to the civilization.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROCESS_WORLD_CORRUPTION_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]World Corruption[ENDCOLOR] uses [ICON_PRODUCTION] Production of this City to convert citizens worldwide into followers of Aŋra (randomly converted from cities that already have at least one follower; 100 [ICON_PRODUCTION] Production needed to convert one non-religious citizen, 500 to convert a citizen of another religion).</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROCESS_OPPRESSION_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Oppression[ENDCOLOR] converts 25% of the [ICON_PRODUCTION] Production of this City into civilization [ICON_HAPPINESS_4] Unhappiness.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROCESS_TRAINING_EXERCISES_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Training Exercises[ENDCOLOR] converts 25% of the [ICON_PRODUCTION] Production of this City into experience divided among all military units.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROCESS_THE_ARTS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]The Arts[ENDCOLOR] converts 25% of the [ICON_PRODUCTION] Production of this City into [ICON_CULTURE] Culture.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROCESS_RESEARCH_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Research[ENDCOLOR] converts 25% of the [ICON_PRODUCTION] Production of this City into [ICON_RESEARCH] Research.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROCESS_TRADE_SURPLUS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Trade Surplus[ENDCOLOR] converts 25% of the [ICON_PRODUCTION] Production of this City into [ICON_GOLD] Gold.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROCESS_PATRONAGE_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Patronage[ENDCOLOR] converts 25% of the [ICON_PRODUCTION] Production of this City into [ICON_INFLUENCE] Influence divided among all City State friends and allies, or all contacted if none are currently friends or allies.</Text>
+		</Row>
+
+
+		
+
+		<!-- Religions & Beliefs -->
+
+
+		<!-- Units -->
+		<Row Tag="TXT_KEY_EA_UNIT_FISHING_BOATS_HELP">
+			<Text>Establishes Fishing Boats on [ICON_RES_FISH] Fish, [ICON_RES_CRAB] Crabs, [ICON_RES_PEARLS] Oysters and Lakes. Can establish on sea resources (not lakes) up to 5 plots from cities with Sailing, up to 7 plots with Ship Construction, or up to 9 plots with Navigation.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_WHALING_BOATS_HELP">
+			<Text>Establishes Whaling Boats on [ICON_RES_WHALE] Whales. Can establish up to 5 plots from cities with Sailing, up to 7 plots with Ship Construction, up to 9 plots with Navigation, or up to 11 plots with Whaling.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_HUNTERS_HELP">
+			<Text>Establishes Camps on [ICON_RES_DEER] Deer, [ICON_RES_TRUFFLES] Boars, [ICON_RES_FUR] Small Game and [ICON_RES_IVORY] Elephants. Can establish up to 5 plots from cities with Tracking, or up to 7 plots with Animal Mastery.</Text>
+		</Row>
+
+		<!-- Unit Promotions -->
+
+
+		
+		<Row Tag="TXT_KEY_EA_PROMOTION_LEARN_SPELL_HELP">
+			<Text>Allows the caster to select a spell to learn.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_COMBAT_HELP">
+			<Text>+10% attack & ranged per level; increases the fighting prowess of Great Warriors.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_FORMATION_HELP">
+			<Text>+20% against horse-mounted per level per level.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_FORTIFICATION_HELP">
+			<Text>+20% defense, +10% ranged defense per level.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_SIEGE_HELP">
+			<Text>+20% against cities per level.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_FLANKING_HELP">
+			<Text>+20% flank attack per level.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_SHOCK_HELP">
+			<Text>+20% attack per level.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_NAVAL_HELP">
+			<Text>+20% against naval or embarked units per level.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_RAIDER_HELP">
+			<Text>+10% city attack, +20% plunder from city attack per level.</Text>
+		</Row>
+
+		<Row Tag="TXT_KEY_EA_PROMOTION_SURVIVALISM_HELP">
+			<Text>+5% healing, +10% defense.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_EAGLE_EYES_HELP">
+			<Text>+1 visibility.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_PATH_FINDER_HELP">
+			<Text>Ignores terrain movement cost.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_EXTENDED_RANGE_HELP">
+			<Text>+1 range.</Text>
+		</Row>
+
+		<Row Tag="TXT_KEY_EA_PROMOTION_INFANTRY_HELP">
+			<Text>+33% city attack.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_UNMOUNTED_ARCHER_HELP">
+			<Text>+20% defense in rough terrain.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_HORSE_MOUNTED_HELP">
+			<Text>Can move after attack.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_CITY_SIEGE_HELP">
+			<Text>+50% city attack.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_GREAT_BOMBARDE_HELP">
+			<Text>+100% city attack.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_STRONG_INFANTRY_HELP">
+			<Text>+30% attack/defense.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_STRONG_ARCHER_HELP">
+			<Text>+30% attack/defense.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_STRONG_CAVALRY_HELP">
+			<Text>+30% attack/defense.</Text>
+		</Row>
+
+
+		
+		<Row Tag="TXT_KEY_EA_PROMOTION_PIERCING_1_HELP">
+			<Text>+20% versus melee.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_PIERCING_2_HELP">
+			<Text>+40% versus melee.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_FOR_HIRE_HELP">
+			<Text>This unit has been put up for hire.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_MERCENARY_HELP">
+			<Text>This unit is a hired mercenary.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_STRONG_MERCENARY_HELP">
+			<Text>+20% attack/defense if this unit is a hired mercenary..</Text>
+		</Row>
+		
+		<Row Tag="TXT_KEY_EA_PROMOTION_SLAVERAIDER_HELP">
+			<Text>Captures enemy military units and conquered city population as Slaves.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_SLAVEMAKER_HELP">
+			<Text>Captures enemy military units as slave military units.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_SLAVE_HELP">
+			<Text>Base morale is -30%, not affected by civilization happiness; -50% experience.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_HEX_HELP">
+			<Text>-20% attack and defense.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_BLESSED_HELP">
+			<Text>+10% natural healing.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_SANCTIFIED_HELP">
+			<Text>Protected from evil-effect spells such as Hex, Curse and Defile; +5% natural healing.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_CURSED_HELP">
+			<Text>No natural healing.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_DEFILED_HELP">
+			<Text>Cannot be Blessed or Sanctified; -5% natural healing.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_RIDE_LIKE_THE_WINDS_HELP">
+			<Text>+2 movement.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_FAIR_WINDS_HELP">
+			<Text>+1 movement.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_STALLIONS_OF_EPONA_HELP">
+			<Text>+20% flanking attack; +5% healing.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_DRUNKARD_HELP">
+			<Text>+10 morale; -15% attack and defense.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_LEADERSHIP_HELP">
+			<Text>Increases the effectiveness of your civilization’s Leader, of City Residents, and of actions that involve leadership including Rally Troops and Train Unit.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_CONSTRUCTION_HELP">
+			<Text>Increases the permanent effect of most Wonders built by this Great Person and production from the Build action.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_COMBAT_ENGINEERING_HELP">
+			<Text>placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_TRADE_HELP">
+			<Text>Increases the bonus from Trade Houses and Trade Missions established by this Great Person and gold from the Trade action.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_ESPIONAGE_HELP">
+			<Text>placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_SCHOLARSHIP">
+			<Text>Increases the effect of Tomes written by this Great person and research from the Research action.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_BARDING_HELP">
+			<Text>Increases the effect of Epics crafted by this Great Person and culture from the Perform action.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_PROSELYTISM_HELP">
+			<Text>Increases religious conversion by the Proselytize action.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_RITUALISM_HELP">
+			<Text>Increases the effect of all Rituals.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_DIVINATION_HELP">
+			<Text>Increases the effect or durationof all Divine Spells and Mana or Divine Favor from the Worship action.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_ABJURATION_HELP">
+			<Text>placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_EVOCATION_HELP">
+			<Text>placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_TRANSMUTATION_HELP">
+			<Text>placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_CONJURATION_HELP">
+			<Text>placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_NECROMANCY_HELP">
+			<Text>placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_ENCHANTMENT_HELP">
+			<Text>placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_ILLUSION_HELP">
+			<Text>placeholder</Text>
+		</Row>
+		
+		
+		<Row Tag="TXT_KEY_EA_PROMOTION_SORCERER_HELP">
+			<Text>This Great Person consumes Mana.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_PROPHET_HELP">
+			<Text>This Great Person has made a Prophecy and has +2 Divination, Ritualism and Proselytizing.</Text>
+		</Row>
+
+
+		<!-- EaActions -->
+		<Row Tag="TXT_KEY_EA_ACTION_TAKE_LEADERSHIP_HELP">
+			<Text>Any great person can take leadership of your civilization, but must be in your capital</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_SELL_SLAVE_HELP">
+			<Text>Sell Slaves for 30 gold</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_RENDER_SLAVE_HELP">
+			<Text>Render Slaves for 20 production toward any unit or building</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_HIRE_OUT_MERC_HELP">
+			<Text>Unit will be available for other civilizations or city states to hire if any are interested</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_CANC_HIRE_OUT_MERC_HELP">
+			<Text>Unit will no longer be available for other civs to hire</Text>
+		</Row>
+		
+		
+		<Row Tag="TXT_KEY_EA_ACTION_PROPHECY_AHURADHATA_HELP">
+			<Text>Found the Azzandarayasna religion in this city</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_PROPHECY_MA_HELP">
+			<Text>placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_PROPHECY_VA_HELP">
+			<Text>All civilizations that know Maleficium will Fall</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_PROPHECY_ANRA_HELP">
+			<Text>Found the Aŋra religion in this city</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_PROPHECY_AESHEMA_HELP">
+			<Text>Summon the Demon of Wrath, Aeshema, and empower him with the annihilation of all of your cities and units</Text>
+		</Row>
+
+		<Row Tag="TXT_KEY_EA_ACTION_EPIC_VOLUSPA_HELP">
+			<Text>Raises your civilization's cultural level</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_EPIC_HAVAMAL_HELP">
+			<Text>Raises your civilization's happiness</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_EPIC_VAFTHRUTHNISMAL_HELP">
+			<Text>Raises your civilizations research</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_EPIC_GRIMNISMAL_HELP">
+			<Text>Raises the bonus provided by your leader</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_EPIC_HYMISKVITHA_HELP">
+			<Text>Raises culture from wine, ale and spirits (improvements and buildings)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_EPIC_NATIONAL_HELP">
+			<Text>Raises your civilization's generation of great people</Text>
+		</Row>
+
+		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_EQUUS_HELP">
+			<Text>Speeds research for horse-mounted knowledge (Horseback Riding and War Horses)[NEWLINE]Provides experience for horse-mounted units</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_BEASTS_HELP">
+			<Text>Speeds research of Mounted Elephants, War Elephants, Domestication, Animal Breeding, Tracking, Animal Mastery and Beast Breeding</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_THE_LEVIATHAN_HELP">
+			<Text>Speeds research of Harpoons, Sailing, Shipbuilding and Whaling[NEWLINE]+2 research from whales</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_HARVESTS_HELP">
+			<Text>Speeds research of Milling, Zymurgy, Irrigation, Calendar, Crop Rotation and Forestry[NEWLINE]+1 food from improved wheat, grapes and sugarcane</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_TOMES_HELP">
+			<Text>Provides +1/3 benifit from all Tomes that exist in the world, regardless of owner</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_AESTHETICS_HELP">
+			<Text>Speeds research of Drama, Literature, Music and Æsthetics[NEWLINE]Increases culture from all cities</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_AXIOMS_HELP">
+			<Text>Speeds research of Mathematics, Physics, Chemistry, Astronomy, Alchemy and Medicine[NEWLINE]+5% research from universities</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_FORM_HELP">
+			<Text>Speeds research of Masonry, Construction, Engineering and Architecture; +mod% construction of all buildings[NEWLINE]Lowers production cost of all wonders</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_METALLURGY_HELP">
+			<Text>Speeds research of Bronze Working, Iron Working, Metal Casting and Mithril Working[NEWLINE]+1 production from mined copper, iron and mithril[NEWLINE]+1 gold from mined silver and gold</Text>
+		</Row>
+
+		<Row Tag="TXT_KEY_EA_ACTION_FOUNDRY_HELP">
+			<Text>Generates 5 production</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_ACADEMY_HELP">
+			<Text>Generates 5 research</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_FESTIVAL_HELP">
+			<Text>Generates 5 culture</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_HELP">
+			<Text>Generates 5 Mana or 5 Divine Favor</Text>
+		</Row>
+		
+		<!-- EaActions, Spells -->
+
+		<Row Tag="TXT_KEY_EA_SPELL_MAGIC_MISSILE_HELP">
+			<Text>Gives the caster a range 2 attack with strength equal to the caster's modifier.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_HEX_HELP">
+			<Text>Adds the Hex promotion to an adjacent enemy unit lowering strength by 20%.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_HEAL_HELP">
+			<Text>Heals up to caster's modifier in HPs for one allied living unit on same or adjacent plot.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_EAS_BLESSING_HELP">
+			<Text>Increases the spread and regeneration strength of Living Terrain by the caster's modifier.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_BLESS_HELP">
+			<Text>Adds the Bless promotion to one living unit giving +10 hp natural healing.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_SANCTIFY_HELP">
+			<Text>Adds the Sanctified promotion to one living unit protecting from negative spell effects and giving +5 hp natural healing.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_HURT_HELP">
+			<Text>Damages adjacent enemy living unit up to the caster's modifier.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_CURSE_HELP">
+			<Text>Adds the Cursed promotion to one enemy living unit preventing all natural healing.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_DEFILE_HELP">
+			<Text>Adds the Defiled promotion to one enemy living unit preventing positive spell effects and giving -5 hp natural healing.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_BLOOM_HELP">
+			<Text>Creates a forest or jungle on any valid plot adjacent to an already existing forest or jungle.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_RIDE_LIKE_THE_WIND_HELP">
+			<Text>Adds Ride Like the Wind promotion to all adjacent or same plot horse-mounted units adding +2 movement.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_PURIFY_HELP">
+			<Text>Removes all bad bad spell effects and provides some healing to one unit.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_FAIR_WINDS_HELP">
+			<Text>Permanently adds the Fair Winds promotion to one nearby allied ship adding +1 movement.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_REVELRY_HELP">
+			<Text>Adds civilization happiness equal to the caster's modifier.</Text>
+		</Row>
+		
+		
+		
+		
+
+	</Language_en_US>
+
+	<EaDebugTableCheck>
+		<Row FileName="EaText_Help.xml"/>
+	</EaDebugTableCheck>
+</GameData>

@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Created by ModBuddy on 8/23/2012 9:33:05 PM -->
+<GameData>
+	<Language_en_US>
+		
+		<!--
+		<Row Tag="">
+			<Text></Text>
+		</Row>
+		<Row Tag="">
+			<Text></Text>
+		</Row>				
+		-->
+		
+		<!-- EaActions -->
+
+		<Row Tag="TXT_KEY_EA_ACTION_TAKE_LEADERSHIP">
+			<Text>Take Leadership</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TAKE_RESIDENCE">
+			<Text>Take Residence in City</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_JOIN">
+			<Text>Join</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_SELL_SLAVES">
+			<Text>Sell Slaves</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_RENDER_SLAVES">
+			<Text>Render Slaves</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_HIRE_OUT_MERC">
+			<Text>Hire Out Mercenary</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_CANC_HIRE_OUT_MERC">
+			<Text>Cancel Hire Out Order</Text>
+		</Row>
+
+
+		<Row Tag="TXT_KEY_EA_ACTION_BUILD">
+			<Text>Build</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TRADE">
+			<Text>Trade</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_RESEARCH">
+			<Text>Research</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_PERFORM">
+			<Text>Perform</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_WORSHIP">
+			<Text>Worship</Text>
+		</Row>
+
+		<Row Tag="TXT_KEY_EA_ACTION_LEAD_CHARGE">
+			<Text>Lead Charge</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_RALLY_TROOPS">
+			<Text>Rally Troops</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TRAIN_UNIT">
+			<Text>Train Unit</Text>
+		</Row>
+		
+		
+		<Row Tag="TXT_KEY_EA_ACTION_PROPHECY_AHURADHATA">
+			<Text>Prophecy of Ahuradhâta</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_PROPHECY_MITHRA">
+			<Text>Prophecy of Mithra</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_PROPHECY_MA">
+			<Text>Prophecy of Mâ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_PROPHECY_VA">
+			<Text>Prophecy of Vâ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_PROPHECY_ANRA">
+			<Text>Prophecy of Aŋra</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_PROPHECY_AESHEMA">
+			<Text>Prophecy of Aeshema</Text>
+		</Row>
+
+		<Row Tag="TXT_KEY_EA_ACTION_STANHENCG">
+			<Text>Build Stânhencg</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_KOLOSSOS">
+			<Text>Build Kolossós</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_MEGALOS_FAROS">
+			<Text>Build Megálos Fáros</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_HANGING_GARDENS">
+			<Text>Build Hanging Gardens</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_UUC_YABNAL">
+			<Text>Build Uuc-yabnal</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_THE_LONG_WALL">
+			<Text>Build the Long Wall</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_CLOG_MOR">
+			<Text>Build Clog Mór</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_DA_BAOEN_SI">
+			<Text>Build Da Bao'en Si</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_GREAT_LIBRARY">
+			<Text>Build Great Library</Text>
+		</Row>
+			
+		<Row Tag="TXT_KEY_EA_ACTION_NATIONAL_TREASURY">
+			<Text>Build National Treasury</Text>
+		</Row>
+		
+		<Row Tag="TXT_KEY_EA_ACTION_EPIC_VOLUSPA">
+			<Text>Craft the Völuspá</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_EPIC_HAVAMAL">
+			<Text>Craft the Hávamál</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_EPIC_VAFTHRUTHNISMAL">
+			<Text>Craft the Vafthrúthnismál</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_EPIC_GRIMNISMAL">
+			<Text>Craft the Grímnismál</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_EPIC_HYMISKVITHA">
+			<Text>Craft the Hymiskvitha</Text>
+		</Row>	
+		<Row Tag="TXT_KEY_EA_ACTION_EPIC_NATIONAL">
+			<Text>Craft your Civilization's National Epic</Text>
+		</Row>	
+		
+		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_EQUUS">
+			<Text>Write the Tome of Equus</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_BEASTS">
+			<Text>Write the Tome of Beasts</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_THE_LEVIATHAN">
+			<Text>Write the Tome of the Leviathan</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_HARVESTS">
+			<Text>Write the Tome of Harvests</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_TOMES">
+			<Text>Write the Tome of Tomes</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_AESTHETICS">
+			<Text>Write the Tome of Æsthetics</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_AXIOMS">
+			<Text>Write the Tome of Axioms</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_FORM">
+			<Text>Write the Tome of Form</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_METALLURGY">
+			<Text>Write the Tome of Metallurgy</Text>
+		</Row>
+
+		<Row Tag="TXT_KEY_EA_ACTION_FOUNDRY">
+			<Text>Build Foundry</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_ACADEMY">
+			<Text>Build Academy</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_FESTIVAL">
+			<Text>Create Festival</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE">
+			<Text>Build Temple</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TRADE_HOUSE">
+			<Text>Establish Trade House</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_LAND_TRADE_ROUTE">
+			<Text>Open land trade route</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_SEA_TRADE_ROUTE">
+			<Text>Open sea trade route</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TRADE_MISSION">
+			<Text>Establish Trade Mission</Text>
+		</Row>
+		
+		<Row Tag="TXT_KEY_EA_ACTION_PROSELYTIZE">
+			<Text>Proselytize</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_RITUAL_LEAVES">
+			<Text>Ritual of Leaves</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_RITUAL_EQUUS">
+			<Text>Ritual of Equus</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_RITUAL_CLEANSING">
+			<Text>Ritual of Cleansing</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_RITUAL_AEGIR">
+			<Text>Ritual of Ægir</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_RITUAL_BAKKHEIA">
+			<Text>Ritual of Bakkheia</Text>
+		</Row>
+		
+		<!-- Spells -->
+
+		<Row Tag="TXT_KEY_EA_SPELL_MAGIC_MISSILE">
+			<Text>Magic Missile</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_HEX">
+			<Text>Hex</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_EAS_BLESSING">
+			<Text>Éa's Blessing</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_HEAL">
+			<Text>Heal</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_BLESS">
+			<Text>Bless</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_SANCTIFY">
+			<Text>Sanctify</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_HURT">
+			<Text>Hurt</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_CURSE">
+			<Text>Curse</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_DEFILE">
+			<Text>Defile</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_BLOOM">
+			<Text>Bloom</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_RIDE_LIKE_THE_WIND">
+			<Text>Ride Like the Wind</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_PURIFY">
+			<Text>Purify</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_FAIR_WINDS">
+			<Text>Fair Winds</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_REVELRY">
+			<Text>Revelry</Text>
+		</Row>
+		
+	</Language_en_US>
+	
+	<EaDebugTableCheck>
+		<Row FileName="EaText_Actions.xml"/>
+	</EaDebugTableCheck>
+</GameData>

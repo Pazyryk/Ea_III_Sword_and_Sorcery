@@ -1,0 +1,17 @@
+#update only these files
+*
+/*
+!/Ea
+!/Ea/**/
+
+!**.sql
+!**.xml
+!**.lua
+!**.fxsxml
+!**.ggxml
+!**.gr2
+!**.dds
+!**.dll
+!**.civ5proj
+!**.txt
+!**.gitignore

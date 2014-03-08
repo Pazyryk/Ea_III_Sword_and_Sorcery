@@ -1,0 +1,65 @@
+-- EaFaithHelper
+-- Author: Pazyryk
+-- DateCreated: 6/30/2013 9:07:26 AM
+--------------------------------------------------------------
+-- Calculates certain faith yields (i.e., mana or divine favor) for FullCivPerCivTurn and Top Panel UI
+
+local MapModData = MapModData
+MapModData.gT = MapModData.gT or {}
+local gT = MapModData.gT
+
+--constants
+local POLICY_PANTHEISM_FINISHER =				GameInfoTypes.POLICY_PANTHEISM_FINISHER
+local POLICY_THEISM_FINISHER =					GameInfoTypes.POLICY_THEISM_FINISHER
+local POLICY_ANTI_THEISM_FINISHER =				GameInfoTypes.POLICY_ANTI_THEISM_FINISHER
+
+
+--localized tables and functions
+local Players = Players
+local Floor = math.floor
+
+
+MapModData.faithFromCityStates = 0
+MapModData.faithFromGPs = 0
+MapModData.faithFromAzzTribute = 0
+
+
+function GetTotalFaithPerTurnForUI(iPlayer)
+	--print("PazDebug GetTotalFaithPerTurnForUI")
+	local pPlayer = Players[iPlayer]
+	local eaPlayer = gT.gPlayers[iPlayer]
+	if not eaPlayer then return end
+
+	--copy from TopPanel.lua FaithTipHandler()
+	local faithFromCities = pPlayer:GetFaithPerTurnFromCities()
+	local faithFromGods = pPlayer:GetFaithPerTurnFromMinorCivs()	--game engine only sees this from Gods
+	local faithFromReligion = pPlayer:GetFaithPerTurnFromReligion()				--for Azz and Anra only since these use base follower counting mechanism
+	local manaForCultOfLeavesFounder = eaPlayer.manaForCultOfLeavesFounder or 0
+	local manaForCultOfEponaFounder = eaPlayer.manaForCultOfEponaFounder or 0
+	local manaForCultOfPureWatersFounder = eaPlayer.manaForCultOfPureWatersFounder or 0
+	local manaForCultOfAegirFounder = eaPlayer.manaForCultOfAegirFounder or 0
+	local manaForCultOfBakkheiaFounder = eaPlayer.manaForCultOfBakkheiaFounder or 0
+	local manaFromWildlands = eaPlayer.cultureManaFromWildlands or 0
+	local faithFromCityStates = MapModData.faithFromCityStates
+	local faithFromAzzTribute = MapModData.faithFromAzzTribute
+	local faithFromToAhrimanTribute = MapModData.faithFromToAhrimanTribute
+	local faithFromGPs = MapModData.faithFromGPs
+	local faithFromFinishedPolicyBranches = GetFaithFromPolicyFinisher(pPlayer)
+
+	local faithRate = faithFromCities + faithFromGods + faithFromReligion + manaForCultOfLeavesFounder + manaForCultOfEponaFounder + manaForCultOfPureWatersFounder + manaForCultOfAegirFounder + manaForCultOfBakkheiaFounder + manaFromWildlands + faithFromCityStates + faithFromAzzTribute + faithFromGPs + faithFromFinishedPolicyBranches
+
+	return faithRate
+
+	--return player:GetTotalFaithPerTurn() + (eaPlayer.cultureManaFromWildlands or 0) + GetFaithFromPolicyFinisher(player) + MapModData.faithFromCityStates + MapModData.faithFromGPs + MapModData.faithFromAzzTribute
+end
+
+function GetFaithFromPolicyFinisher(player)
+	if player:HasPolicy(POLICY_PANTHEISM_FINISHER) or player:HasPolicy(POLICY_THEISM_FINISHER) or player:HasPolicy(POLICY_ANTI_THEISM_FINISHER) then
+		return Floor(player:GetTotalJONSCulturePerTurn() / 3)		
+	end
+	return 0
+end
+
+
+
+--need faith notification for individual CSs

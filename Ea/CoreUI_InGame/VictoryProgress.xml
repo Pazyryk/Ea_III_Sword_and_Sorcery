@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- edited with XMLSPY v2004 rel. 2 U (http://www.xmlspy.com) by Anton Strenger (Firaxis Games) -->
+<!-- Paz note: this UI was completely overhauled so no "Paz" tags below -->
+
+<Context ColorSet="Beige_Black" Font="EaTwCnMT20" FontStyle="Shadow">
+
+	<!-- Screen Main Body -->
+	<Box Style="BGBlock_ClearTopBar"/>
+	<Box Size="1024,768" Anchor="C,C" Color="255,255,255,0"/>
+	<Grid Size="960,658" Anchor="C,C" Offset="0,36" Padding="0,0" Style="Grid9DetailFive140">
+		<Image Anchor="C,T" AnchorSide="I.O" Size="256,64" Offset="0,-14" Texture="assets\UI\Art\Icons\Top512IconTrim.dds">
+			<Image ID="Icon" Anchor="C,C" Size="64,64" Offset="-1,-1" Texture="assets\UI\Art\Icons\CivSymbolsColor512.dds"/>
+		</Image>
+		<!-- Side treatments -->
+		<Image Anchor="L,C" AnchorSide="O.I" Offset="-19,0" Texture="Dec32x64Left.dds" Size="32.64"/>
+		<Image Anchor="R,C" AnchorSide="O.I" Offset="-19,0" Texture="Dec32x64Right.dds" Size="32.64"/>
+
+		<!-- Panel Header Text -->
+		<Label Anchor="C,T" Offset="0,19" Font="EaTwCnMT20" Color0="30.50.80.255" Color1="133.184.186.255" Color2="133.184.186.255" FontStyle="SoftShadow" String="TXT_KEY_VP_TITLE"/>
+	
+		<!-- Left Panel  -->
+		<Stack Anchor="L,T" Size="0,0" Offset="18,44" Padding="0" StackGrowth="Bottom">
+			<!-- SUBDUER -->
+			<Box Size="462,144" Color="255,255,255,0">
+				<Label Offset="5,5" Font="EaTwCnMT24" String="TXT_KEY_EA_VICTORY_SUBDUER"/>
+				<Stack Anchor="L,T" Size="0,0" Offset="5,39" Padding="12" StackGrowth="Bottom">
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="L,T" String="World Population:"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="L,T" String="World Land:"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="L,T" String="Wld. Lv. Tr. Str.:"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="L,T" String="Your Score:"/>
+				</Stack>
+				<Stack Anchor="L,T" Size="0,0" Offset="150,39" Padding="12" StackGrowth="Bottom">
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" ID="SubduerA"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" ID="SubduerB"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" ID="SubduerC"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" ID="SubduerScore"/>
+				</Stack>
+				<Stack Anchor="L,T" Size="0,0" Offset="225,15" Padding="12" StackGrowth="Bottom">
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" String="Civilization"/>
+					<Box Offset="0,0" Anchor="C,T" Size="100,1" Color="255,255,255,0"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" ID="SubduerCiv1"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" ID="SubduerCiv2"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" ID="SubduerCiv3"/>
+				</Stack>
+				<Stack Anchor="L,T" Size="0,0" Offset="375,15" Padding="12" StackGrowth="Bottom">
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" String="Score"/>
+					<Box Offset="0,0" Anchor="C,T" Size="80,1" Color="255,255,255,0"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" ID="SubduerScore1"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" ID="SubduerScore2"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" ID="SubduerScore3"/>
+				</Stack>
+				<Image Offset="175,39" Anchor="L,T" Texture="bar300x2.dds" Size="300.1"/>
+				<Image Anchor="L,B" Offset="-3,0" Texture="HorizontalTrim.dds" Size="464,5"/>
+			</Box>
+			<!-- RESTORER -->
+			<Box Size="462,144" Color="255,255,255,0">
+				<Label Offset="5,5" Font="EaTwCnMT24" String="TXT_KEY_EA_VICTORY_RESTORER"/>
+				<Stack Anchor="L,T" Size="0,0" Offset="5,39" Padding="12" StackGrowth="Bottom">
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="L,T" String="Terrain Added:"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="L,T" String="Strength Added:"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="L,T" String="Wld. Lv. Tr. Str.:"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="L,T" String="Your Score:"/>
+				</Stack>
+				<Stack Anchor="L,T" Size="0,0" Offset="150,39" Padding="12" StackGrowth="Bottom">
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" ID="RestorerA"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" ID="RestorerB"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" ID="RestorerC"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" ID="RestorerScore"/>
+				</Stack>
+				<Stack Anchor="L,T" Size="0,0" Offset="225,15" Padding="12" StackGrowth="Bottom">
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" String="Civilization"/>
+					<Box Offset="0,0" Anchor="C,T" Size="100,1" Color="255,255,255,0"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" ID="RestorerCiv1"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" ID="RestorerCiv2"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" ID="RestorerCiv3"/>
+				</Stack>
+				<Stack Anchor="L,T" Size="0,0" Offset="375,15" Padding="12" StackGrowth="Bottom">
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" String="Score"/>
+					<Box Offset="0,0" Anchor="C,T" Size="80,1" Color="255,255,255,0"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" ID="RestorerScore1"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" ID="RestorerScore2"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" ID="RestorerScore3"/>
+				</Stack>
+				<Image Offset="175,39" Anchor="L,T" Texture="bar300x2.dds" Size="300.1"/>
+				<Image Anchor="L,B" Offset="-3,0" Texture="HorizontalTrim.dds" Size="464,5"/>
+			</Box>
+			<!-- DESTROYER -->
+			<Box Size="462,144" Color="255,255,255,0">
+				<Label Offset="5,5" Font="EaTwCnMT24" String="TXT_KEY_EA_VICTORY_DESTROYER"/>
+				<Stack Anchor="L,T" Size="0,0" Offset="5,39" Padding="12" StackGrowth="Bottom">
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="L,T" String="Mana Consumed:"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="L,T" String="Mana Stored:"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="L,T" String="Sum of all Mana:"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="L,T" String="Your Score:"/>
+				</Stack>
+				<Stack Anchor="L,T" Size="0,0" Offset="150,39" Padding="12" StackGrowth="Bottom">
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" ID="DestroyerA"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" ID="DestroyerB"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" ID="DestroyerC"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" ID="DestroyerScore"/>
+				</Stack>
+				<Stack Anchor="L,T" Size="0,0" Offset="225,15" Padding="12" StackGrowth="Bottom">
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" String="Civilization"/>
+					<Box Offset="0,0" Anchor="C,T" Size="100,1" Color="255,255,255,0"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" ID="DestroyerCiv1"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" ID="DestroyerCiv2"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" ID="DestroyerCiv3"/>
+				</Stack>
+				<Stack Anchor="L,T" Size="0,0" Offset="375,15" Padding="12" StackGrowth="Bottom">
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" String="Score"/>
+					<Box Offset="0,0" Anchor="C,T" Size="80,1" Color="255,255,255,0"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" ID="DestroyerScore1"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" ID="DestroyerScore2"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" ID="DestroyerScore3"/>
+				</Stack>
+				<Image Offset="175,39" Anchor="L,T" Texture="bar300x2.dds" Size="300.1"/>
+				<Image Anchor="L,B" Offset="-3,0" Texture="HorizontalTrim.dds" Size="464,5"/>
+			</Box>			
+			<!-- PROTECTOR -->
+			<Box Size="462,144" Color="255,255,255,0">
+				<Label Offset="5,5" Font="EaTwCnMT24" String="TXT_KEY_EA_VICTORY_PROTECTOR"/>
+				<Stack Anchor="L,T" Size="0,0" Offset="5,39" Padding="12" StackGrowth="Bottom">
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="L,T" String="Civs Corrected:"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="L,T" String="Sorcerers Destr.:"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="L,T" String="Artifacts Destr.:"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="L,T" String="Your Score:"/>
+				</Stack>
+				<Stack Anchor="L,T" Size="0,0" Offset="150,39" Padding="12" StackGrowth="Bottom">
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" ID="ProtectorA"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" ID="ProtectorB"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" ID="ProtectorC"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" ID="ProtectorScore"/>
+				</Stack>
+				<Stack Anchor="L,T" Size="0,0" Offset="225,15" Padding="12" StackGrowth="Bottom">
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" String="Civilization"/>
+					<Box Offset="0,0" Anchor="C,T" Size="100,1" Color="255,255,255,0"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" ID="ProtectorCiv1"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" ID="ProtectorCiv2"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" ID="ProtectorCiv3"/>
+				</Stack>
+				<Stack Anchor="L,T" Size="0,0" Offset="375,15" Padding="12" StackGrowth="Bottom">
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" String="Score"/>
+					<Box Offset="0,0" Anchor="C,T" Size="80,1" Color="255,255,255,0"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" ID="ProtectorScore1"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" ID="ProtectorScore2"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" ID="ProtectorScore3"/>
+				</Stack>
+				<Image Offset="175,39" Anchor="L,T" Texture="bar300x2.dds" Size="300.1"/>
+			</Box>
+		</Stack>
+		
+		<Image Anchor="C,T" Offset="0,44" Texture="VerticalTrim.dds" Size="5.572"/>
+		
+		<!-- Right Panel -->
+		<Stack Anchor="L,T" Size="0,0" Offset="480,44" Padding="0" StackGrowth="Bottom">
+			<!-- CONQUEROR -->
+			<Box Size="462,144" Color="255,255,255,0">
+				<Label Offset="5,5" Font="EaTwCnMT24" String="TXT_KEY_EA_VICTORY_CONQUEROR"/>
+				<Stack Anchor="L,T" Size="0,0" Offset="5,39" Padding="12" StackGrowth="Bottom">
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="L,T" String="Conquered Popul.:"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="L,T" String="Conquered Cities:"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="L,T" String="Uncontrolled Cities:"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="L,T" String="Your Score:"/>
+				</Stack>
+				<Stack Anchor="L,T" Size="0,0" Offset="150,39" Padding="12" StackGrowth="Bottom">
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" ID="ConquerorA"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" ID="ConquerorB"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" ID="ConquerorC"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" ID="ConquerorScore"/>
+				</Stack>
+				<Stack Anchor="L,T" Size="0,0" Offset="225,15" Padding="12" StackGrowth="Bottom">
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" String="Civilization"/>
+					<Box Offset="0,0" Anchor="C,T" Size="100,1" Color="255,255,255,0"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" ID="ConquerorCiv1"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" ID="ConquerorCiv2"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" ID="ConquerorCiv3"/>
+				</Stack>
+				<Stack Anchor="L,T" Size="0,0" Offset="375,15" Padding="12" StackGrowth="Bottom">
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" String="Score"/>
+					<Box Offset="0,0" Anchor="C,T" Size="80,1" Color="255,255,255,0"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" ID="ConquerorScore1"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" ID="ConquerorScore2"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" ID="ConquerorScore3"/>
+				</Stack>
+				<Image Offset="175,39" Anchor="L,T" Texture="bar300x2.dds" Size="300.1"/>
+				<Image Anchor="L,B" Offset="3,0" Texture="HorizontalTrim.dds" Size="463,5"/>
+			</Box>
+
+			<Box Size="462,288" Color="255,255,255,0">
+				<Label Offset="5,5" Font="EaTwCnMT24" String="Your Score:"/>
+				<Stack Anchor="L,T" Size="0,0" Offset="5,39" Padding="12" StackGrowth="Bottom">
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="L,T" ID="BestScoreType"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="L,T" String="Population:"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="L,T" String="Cities:"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="L,T" String="Land:"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="L,T" String="Wonders:"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="L,T" String="Techs:"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="L,T" String="Policies:"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="L,T" String="Religion:"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="L,T" String="TOTAL:"/>
+				</Stack>
+				<Stack Anchor="L,T" Size="0,0" Offset="150,39" Padding="12" StackGrowth="Bottom">
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" ID="BestModScore"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" ID="PopulationScore"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" ID="CitiesScore"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" ID="LandScore"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" ID="WondersScore"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" ID="TechsScore"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" ID="PoliciesScore"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" ID="ReligionScore"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="C,T" ID="TotalScore"/>
+				</Stack>
+			</Box>
+
+		</Stack>
+		
+		<!-- Close Button  -->
+		<GridButton Anchor="R,B"  Style="SmallButton" Size="150,32"  Offset="20,44" ID="CloseButton"  >
+			<Label Anchor="C,C"  Offset="0,0"  String="TXT_KEY_CLOSE" Font="EaTwCnMT18" ColorSet="Beige_Black_Alpha" FontStyle="Shadow"  />
+		</GridButton>
+		
+	</Grid>
+</Context>

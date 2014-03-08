@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Context Font="EaTwCnMT14" FontStyle="Base" Color="Beige" Color1="Black" >
+
+	<Grid Size="600,800" Anchor="C,C" Offset="0,0" Style="Grid9DetailSix140" ID="ImageGrid" ConsumeMouse="1">
+		<Image Size="404,1484" ID="Image404x1484" Anchor="C,T" Hidden="1" />
+		<Image Size="424,1416" ID="Image424x1416" Anchor="C,T" Hidden="1" />
+		<Image Size="448,1340" ID="Image448x1340" Anchor="C,T" Hidden="1" />
+		<Image Size="472,1272" ID="Image472x1272" Anchor="C,T" Hidden="1" />
+		<Image Size="492,1220" ID="Image492x1220" Anchor="C,T" Hidden="1" />
+		<Image Size="520,1152" ID="Image520x1152" Anchor="C,T" Hidden="1" />
+		<Image Size="548,1096" ID="Image548x1096" Anchor="C,T" Hidden="1" />
+		<Image Size="572,1048" ID="Image572x1048" Anchor="C,T" Hidden="1" />
+		<Image Size="604,992" ID="Image604x992" Anchor="C,T" Hidden="1" />
+		<Image Size="636,944" ID="Image636x944" Anchor="C,T" Hidden="1" />
+		<Image Size="668,900" ID="Image668x900" Anchor="C,T" Hidden="1" />
+		<Image Size="700,856" ID="Image700x856" Anchor="C,T" Hidden="1" />
+		<Image Size="736,816" ID="Image736x816" Anchor="C,T" Hidden="1" />
+		<Image Size="772,776" ID="Image772x776" Anchor="C,T" Hidden="1" />
+		<Image Size="816,736" ID="Image816x736" Anchor="C,T" Hidden="1" />
+		<Image Size="856,700" ID="Image856x700" Anchor="C,T" Hidden="1" />
+		<Image Size="900,668" ID="Image900x668" Anchor="C,T" Hidden="1" />
+		<Image Size="944,636" ID="Image944x636" Anchor="C,T" Hidden="1" />
+		<Image Size="996,604" ID="Image996x604" Anchor="C,T" Hidden="1" />
+		<Image Size="1044,576" ID="Image1044x576" Anchor="C,T" Hidden="1" />
+		<Image Size="1100,544" ID="Image1100x544" Anchor="C,T" Hidden="1" />
+		<Image Size="1156,520" ID="Image1156x520" Anchor="C,T" Hidden="1" />
+		<Image Size="1216,492" ID="Image1216x492" Anchor="C,T" Hidden="1" />
+		<Image Size="1276,472" ID="Image1276x472" Anchor="C,T" Hidden="1" />
+		<Image Size="1344,448" ID="Image1344x448" Anchor="C,T" Hidden="1" />
+		<Image Size="1412,424" ID="Image1412x424" Anchor="C,T" Hidden="1" />
+		<Image Size="1484,404" ID="Image1484x404" Anchor="C,T" Hidden="1" />
+		<Image Size="1556,384" ID="Image1556x384" Anchor="C,T" Hidden="1" />
+
+
+
+		<Box Size="928,96" Anchor="C,B" Color="Black.200" AnchorSide="O.I" Offset="0,42" ID="TextBox">
+
+
+			<Label ID="DescriptionLabel" Anchor="L,T" Offset="10,10" WrapWidth="400" LeadingOffset="-4"  Font="EaTwCnMT20" FontStyle="Shadow" ColorSet="Beige_Black_Alpha" String="CivName" />
+			<Label ID="QuoteLabel" Anchor="L,T" Offset="250,10" WrapWidth="300" Font="EaTwCnMT18" FontStyle="Shadow" ColorSet="Beige_Black_Alpha" String="Blah Blah" Hidden="1"/>
+			<Image Anchor="C,T" Offset="0,0" Texture="HorizontalTrim.dds" Size="928.5" ID="Trim"/>
+			<GridButton Anchor="R,B" AnchorSide="i,o" Size="100,32" Offset="0,-32" String="TXT_KEY_CLOSE" ID="CloseButton" Style="BaseButton" ConsumeMouse="1" />
+
+		</Box>
+
+	</Grid>
+</Context>

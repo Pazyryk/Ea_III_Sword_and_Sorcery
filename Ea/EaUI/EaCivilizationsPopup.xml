@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Context ColorSet="Beige_Black_Alpha" Font="EaTwCnMT16" FontStyle="Shadow">
+
+	<Instance Name="CivInstance">
+		<Button Size="930,30" Color="0,0,0,0" ID="CivButton">
+			<Stack StackGrowth="Right">
+				<Box Size="210,30" Color="0,0,0,0">
+					<Image Anchor="L,C" Size="48,48" Offset="0,0" Texture="assets/DLC/Expansion/UI/Art/Icons/ReligiousSymbolsWhite48_Expansion.dds" ID="civIcon"/>
+					<Label Anchor="L,C" Offset="45,0" TruncateWidth="150" Font="EaTwCnMT18" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" ID="CivName"  />
+				</Box>
+				<Box Size="335,30" Color="0,0,0,0">
+					<Label Anchor="L,C" Font="EaTwCnMT18" TruncateWidth="320" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" ID="CivTrigger"  />
+				</Box>
+				<Box Size="435,30" Color="0,0,0,0">
+					<Label Anchor="L,C" Font="EaTwCnMT18" TruncateWidth="420" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" ID="CivDescription"  />
+				</Box>
+			</Stack>
+		</Button>
+	</Instance>
+
+
+	<Box Style="BGBlock_ClearTopBar" />
+	<Grid Size="990,653" Anchor="C,C" Offset="0,6" Padding="0,0" Style="Grid9DetailFive140">
+
+		<!-- Decoration -->
+		<!-- Top -->
+		<Image Anchor="C,T" AnchorSide="I.O" Size="256,64" Offset="0,-14" Texture="assets\UI\Art\Icons\Top512IconTrim.dds">
+			<Size="64,64" Offset="-1,-1" Anchor="C,C" Texture="Religion64.dds"/>
+		</Image>
+		<Image Anchor="L,C" AnchorSide="O.I"  Offset="-19,0" Texture="Dec32x64Left.dds" Size="32.64" />
+		<Image Anchor="R,C" AnchorSide="O.I"  Offset="-19,0" Texture="Dec32x64Right.dds" Size="32.64" />
+
+		<Label Anchor="C,T" Offset="0,20" WrapWidth="500" LeadingOffset="-4"  String="TXT_KEY_EA_CIVILIZATIONS_POPUP" Font="EaTwCnMT20" Color0="30.50.80.255" Color1="133.184.186.255" Color2="133.184.186.255" FontStyle="SoftShadow"/>
+
+		<!-- Top Panel  -->
+		<Box Anchor="C,T" Size="955,32" Offset="0,44" Color="0.0.0.128" >
+			<Stack Anchor="C,T" Size="971,32" Offset="0,0" Padding="0" StackGrowth="Right">
+
+				<Button  Anchor="L,T" Size="300,24" Offset="0,0" String="TXT_KEY_EA_CIVS_TAB_AVAILABLE" ID="TabButtonAvailable" >
+					<ShowOnMouseOver>
+						<AlphaAnim Anchor="L,C" Size="300,27" Pause="0" Cycle="Bounce" Speed="1" AlphaStart="2" AlphaEnd="1"  >
+							<Grid   Size="300,27" Offset="0,2" Padding="0,0" Style="Grid9FrameTurnsHL" />
+						</AlphaAnim>
+					</ShowOnMouseOver>
+					<!-- Selected State  -->
+					<Grid Anchor="C,C" Offset="0,1" Size="300,26"  Style="Grid9FrameTurns" Hidden="0" ID="AvailableSelectHighlight" />
+				</Button>
+
+				<Button  Anchor="L,T" Size="300,24" Offset="0,0" String="TXT_KEY_EA_CIVS_TAB_TAKEN" ID="TabButtonTaken" >
+					<ShowOnMouseOver>
+						<AlphaAnim Anchor="L,C" Size="300,27" Pause="0" Cycle="Bounce" Speed="1" AlphaStart="2" AlphaEnd="1"  >
+							<Grid   Size="300,27" Offset="0,2" Padding="0,0" Style="Grid9FrameTurnsHL" />
+						</AlphaAnim>
+					</ShowOnMouseOver>
+					<!-- Selected State  -->
+					<Grid Anchor="C,C" Offset="0,1" Size="300,26"  Style="Grid9FrameTurns" Hidden="1" ID="TakenSelectHighlight" />
+				</Button>
+
+			</Stack>
+
+			<Image Anchor="C,B" Offset="0,0" Texture="HorizontalTrim.dds" Size="971,5" />
+		</Box>
+
+		<!-- Content Panel -->
+		<Box Size ="953,459" Color="0,0,0,0" Offset="19,77">
+
+			<Label Anchor="C,C" String="TXT_KEY_EA_CIVILIZATIONS_NO_CIVS" Font="EaTwCnMT18" ColorSet="Beige_Black_Alpha" FontStyle="Shadow"  ID="NoCivs"/>
+			
+			<Box Size="935,460" Color="0,0,0,150"  ID="ContentBox">
+				<Stack Anchor="L,T" StackGrowth="Right">
+					<Box Anchor="L,T" Color="0,0,0,0"  Size="210,23" >
+						<Label Anchor="L,C" Offset="45,0" Font="EaTwCnMT18" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" String="TXT_KEY_EA_CIVS_HEADER_NAME"  />
+					</Box>
+					<Box Anchor="L,T" Color="0,0,0,0" Size="335,23" >
+						<Label Anchor="L,C" Font="EaTwCnMT18" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" String="TXT_KEY_EA_CIVS_HEADER_TRIGGER"  />
+					</Box>
+					<Box Anchor="L,T" Color="0,0,0,0" Size="435,23" >
+						<Label Anchor="L,C" Font="EaTwCnMT18" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" String="TXT_KEY_EA_CIVS_HEADER_DESCRIPTION"  />
+					</Box>
+				</Stack>
+				<Image Anchor="L,T" Offset="0,23" TextureOffset="50,0" Texture="bar900x2.dds" Size="468,1" />
+				<Image Anchor="R,T" Offset="0,23" TextureOffset="368,0" Texture="bar900x2.dds" Size="467,1" />
+	
+			
+				<ScrollPanel Vertical="1" Size="935,435" Offset="0,25" AutoScrollBar="0" ID="ScrollPanel" >
+				
+				
+					<!-- Scroll Controls -->
+					<ScrollBar Style="VertSlider" Length="400" Anchor="R,C" AnchorSide="O,I"/>
+					<UpButton Style="ScrollBarUp" Anchor="R,T" AnchorSide="O,I"/>
+					<DownButton Style="ScrollBarDown" Anchor="R,B" AnchorSide="O,I"/>
+					<Stack StackGrowth="Bottom" ID="CivStack" Padding="10">
+
+					</Stack>
+				</ScrollPanel>
+			</Box>	
+		</Box>
+
+		<!-- Bottom Panel -->
+		<Image Anchor="C,B" Offset="0,110" Texture="HorizontalTrim.dds" Size="971,5" />
+
+		<Box Anchor="C,B" AnchorSide="I.I" Offset="0,54"   Size="927,56" Color="255,255,255,0" >
+			<!-- Close Button  -->
+			<GridButton Anchor="L,B"  Style="SmallButton" Size="150,32"  Offset="14,0" StateOffsetIncrement="0,0" ID="CloseButton"  >
+				<Label Anchor="C,C"  Offset="0,0"  String="TXT_KEY_CLOSE" Font="EaTwCnMT18" ColorSet="Beige_Black_Alpha" FontStyle="Shadow"  />
+			</GridButton>
+		</Box>
+	</Grid>
+
+</Context>

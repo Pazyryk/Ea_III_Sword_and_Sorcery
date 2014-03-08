@@ -1,0 +1,520 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Created by ModBuddy on 8/23/2012 9:20:05 PM -->
+<GameData>
+	<Language_en_US>
+		<!-- Titles -->
+		<Row Tag="TXT_KEY_EA_PATRIARCH">
+			<Text>Patriarch</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_MATRIARCH">
+			<Text>Matriarch</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_KING">
+			<Text>King</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_QUEEN">
+			<Text>Queen</Text>
+		</Row>
+
+		<!-- Classes -->
+		<Row Tag="TXT_KEY_EA_ENGINEER">
+			<Text>Engineer</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_MERCHANT">
+			<Text>Merchant</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SAGE">
+			<Text>Sage</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ARTIST">
+			<Text>Artist</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WARRIOR">
+			<Text>Warrior</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_DEVOUT">
+			<Text>Devout</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_THAUMATURGE">
+			<Text>Thaumaturge</Text>
+		</Row>
+		
+		<!-- Subclasses -->
+		<Row Tag="TXT_KEY_EA_ALCHEMIST">
+			<Text>Alchemist</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SEA_WARRIOR">
+			<Text>Sea Warrior</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PALADIN">
+			<Text>Paladin</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_EIDOLON">
+			<Text>Eidolon</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PRIEST">
+			<Text>Priest</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_DRUID">
+			<Text>Druid</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WITCH">
+			<Text>Witch</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WIZARD">
+			<Text>Wizard</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SORCERER">
+			<Text>Sorcerer</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SUMMONER">
+			<Text>Summoner</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_NECROMANCER">
+			<Text>Necromancer</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_LICH">
+			<Text>Lich</Text>
+		</Row>
+
+		<!-- Housekeeping -->
+		<Row Tag="TXT_KEY_EAPERSON_NO_LEADER_MAN">
+			<Text>No Leader</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_NO_LEADER_SIDHE">
+			<Text>No Leader</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_NO_LEADER_HELDEOFOL">
+			<Text>No Leader</Text>
+		</Row>
+		
+		
+		<!-- Man -->
+		<Row Tag="TXT_KEY_EAPERSON_NEMED">
+			<Text>Nemed</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_THEANO">
+			<Text>Theano</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_PARTHOLON">
+			<Text>Partholón</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_LAGAD">
+			<Text>Lagad</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_SOPHRONISCUS">
+			<Text>Sophroniscus</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_NAL">
+			<Text>Nál</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_EYMUND">
+			<Text>Eymund</Text>
+		</Row>
+
+		<Row Tag="TXT_KEY_EAPERSON_ATLA">
+			<Text>Atla</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_BLITH">
+			<Text>Blíth</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_BORGNY">
+			<Text>Borgný</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_BRUTH">
+			<Text>Brúth</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_DRUMBA">
+			<Text>Drumba</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_EIKINJASNA">
+			<Text>Eikintjasna</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_EIR">
+			<Text>Eir</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_GROA">
+			<Text>Gróa</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_HERVOR">
+			<Text>Hervor</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_HLEDIS">
+			<Text>Hlédís</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_HROTHMARR">
+			<Text>Hróthmarr</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_HVETHNU">
+			<Text>Hvethnu</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_INGUNAR">
+			<Text>Ingunar</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_LIF">
+			<Text>Líf</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_MOTHIR">
+			<Text>Móthir</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_OKKVINKALFA">
+			<Text>Ökkvinkalfa</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_RISTILL">
+			<Text>Ristill</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_SAEREITH">
+			<Text>Særeith</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_THAIDOS">
+			<Text>Thaidos</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_YSJA">
+			<Text>Ysja</Text>
+		</Row>
+
+		<Row Tag="TXT_KEY_EAPERSON_AGNAR">
+			<Text>Agnar</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_BOLVERK">
+			<Text>Bölverk</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_BRAGI">
+			<Text>Bragi</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_GJUKI">
+			<Text>Gjúki</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_GOTTHORMI">
+			<Text>Gotthormi</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_HAR">
+			<Text>Hár</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_HJALMAR">
+			<Text>Hjalmar</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_ISUNG">
+			<Text>Ísung</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_JORMUNREK">
+			<Text>Jormunrek</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_ORVAR">
+			<Text>Örvar</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_OTTAR">
+			<Text>Óttar</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_ALI">
+			<Text>Áli</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_AMBATT">
+			<Text>Ambátt</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_ARINNEFJA">
+			<Text>Arinnefja</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_ATRITH">
+			<Text>Atríth</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_BALEYG">
+			<Text>Báleyg</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_BIFLINDI">
+			<Text>Biflindi</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_BORGHILD">
+			<Text>Borghild</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_DROTT">
+			<Text>Drótt</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_FAFNIR">
+			<Text>Fáfnir</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_FARMATYR">
+			<Text>Farmatýr</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_FRITH">
+			<Text>Fríth</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_HAEMING">
+			<Text>Hæming</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_HALFDAN">
+			<Text>Halfdan</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_HARBARTH">
+			<Text>Hárbarth</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_HEITH">
+			<Text>Heith</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_HEITHDRAUPNIR">
+			<Text>Heithdraupnir</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_HILDOLF">
+			<Text>Hildólf</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_HODDMIMIR">
+			<Text>Hoddmímir</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_HODDROFNIR">
+			<Text>Hoddrofnir</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_JALK">
+			<Text>Jálk</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_JONAK">
+			<Text>Jónak</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_KARA">
+			<Text>Kára</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_OLRUN">
+			<Text>Ölrún</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_SAEKONUNG">
+			<Text>Sækonung</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_SIGFORTHR">
+			<Text>Sigföthr</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_SIGRDRIFA">
+			<Text>Sigrdrífa</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_SKURHILDAR">
+			<Text>Skúrhildar</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_SVEIN">
+			<Text>Svein</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_TRONBEINA">
+			<Text>Trönubeina</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_UTH">
+			<Text>Uth</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_VALFOTHR">
+			<Text>Valföthr</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_VITHUR">
+			<Text>Vithur</Text>
+		</Row>
+		
+		<!-- Sidhe GPs -->
+
+		<Row Tag="TXT_KEY_EAPERSON_ERIU">
+			<Text>Ériu</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_MORRIGAN">
+			<Text>Mórrígan</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_DANU">
+			<Text>Danu</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_FODLA">
+			<Text>Fódla</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_GOIBNIU">
+			<Text>Goibniu</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_LUCHTA">
+			<Text>Luchta</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_AINE">
+			<Text>Áine</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_AIRMED">
+			<Text>Airmen</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_ANNAN">
+			<Text>Annan</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_BADB">
+			<Text>Badb</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_BEBINN">
+			<Text>Bé Binn</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_BEC">
+			<Text>Bec</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_BECHUILLE">
+			<Text>Bé Chuille</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_BOANN">
+			<Text>Boann</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_BREA">
+			<Text>Brea</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_BRIGID">
+			<Text>Brigid</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_CAER">
+			<Text>Cáer</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_CLIODHNA">
+			<Text>Clíodhna</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_DANAND">
+			<Text>Danand</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_ECNE">
+			<Text>Ecne</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_ERNMAS">
+			<Text>Ernmas</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_ETAIN">
+			<Text>Étaín</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_FIONNUALA">
+			<Text>Fionnuala</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_FLIDAIS">
+			<Text>Flidais</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_FUAMNACH">
+			<Text>Fúamnach</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_IUCHAR">
+			<Text>Iuchar</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_LUGH">
+			<Text>Lugh</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_NEAMH">
+			<Text>Neamh</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_IOANNA">
+			<Text>Ioanna</Text>
+		</Row>
+
+		<!-- The Little Gods -->	
+		<Row Tag="TXT_KEY_EAPERSON_FAND">
+			<Text>Fand</Text>
+		</Row>
+		
+		
+		
+		<!-- Orc GPs -->
+		<Row Tag="TXT_KEY_EAPERSON_LOTHIN">
+			<Text>Lothin</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_ASMUND">
+			<Text>Âsmund</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_THJAZI">
+			<Text>Thjazi</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_UTGARTHA">
+			<Text>Ûtgartha</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_YMIR">
+			<Text>Ymir</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_GOLLNIR">
+			<Text>Gollnir</Text>
+		</Row>
+
+		<!-- Orc Warriors with Civ and Capital namesakes -->
+
+		<Row Tag="TXT_KEY_EAPERSON_BERGELMIR">
+			<Text>Bergelmir</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_BERGELMIR_CIV">
+			<Text>Clan of Bergelmir</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_BERGELMIR_CAPITAL">
+			<Text>Bergelmir</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_HRIMGRIMNIR">
+			<Text>Hrîmgrimnir</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_HRIMGRIMNIR_CIV">
+			<Text>Clan of Hrîmgrimnir</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_HRIMGRIMNIR_CAPITAL">
+			<Text>Hrîmgrimnir</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_HROTH">
+			<Text>Hrôth</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_HROTH_CIV">
+			<Text>Clan of Hrôth</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_HROTH_CAPITAL">
+			<Text>Hrôth</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_HRYM">
+			<Text>Hrym</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_HRYM_CIV">
+			<Text>Clan of Hrym</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_HRYM_CAPITAL">
+			<Text>Hrym</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_SOKKMIMIR">
+			<Text>Sökkmîmir</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_SOKKMIMIR_CIV">
+			<Text>Clan of Sökkmîmir</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_SOKKMIMIR_CAPITAL">
+			<Text>Sökkmîmir</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_SURT">
+			<Text>Surt</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_SURT_CIV">
+			<Text>Clan of Surt</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_SURT_CAPITAL">
+			<Text>Surt</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_THRUTHGELMIR">
+			<Text>Thrûthgelmir</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_THRUTHGELMIR_CIV">
+			<Text>Clan of Thrûthgelmir</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_THRUTHGELMIR_CAPITAL">
+			<Text>Thrûthgelmir</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_THRYM">
+			<Text>Thrym</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_THRYM_CIV">
+			<Text>Clan of Thrym</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_THRYM_CAPITAL">
+			<Text>Thrym</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_YRD">
+			<Text>Yrd</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_YRD_CIV">
+			<Text>Clan of Yrd</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_YRD_CAPITAL">
+			<Text>Yrd</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_BRIMIR">
+			<Text>Brimir</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_BRIMIR_CIV">
+			<Text>Clan of Brimir</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EAPERSON_BRIMIR_CAPITAL">
+			<Text>Brimir</Text>
+		</Row>
+	</Language_en_US>
+
+	<EaDebugTableCheck>
+		<Row FileName="EaText_People.xml"/>
+	</EaDebugTableCheck>
+</GameData>

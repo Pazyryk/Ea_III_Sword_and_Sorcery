@@ -1,12 +1,41 @@
 -- Contains Yields, Terrains, Features, Resources, Improvements and Routes
 
---Overview:
---Food per pop is now 4. Unresourced/unimporved tiles are intended to be less than sustaining (unlike base Civ5).
---No adjustment to base terrain yields except food boosts to sea/lakes.
---Resources mostly +3 something plus +2 gold without improvement (food resource gets you to growth, barely)
+-- Yield Overview:
+--
+-- Food per pop is now 3. Unresourced/unimporved tiles have no yield, except for oases and atols.
+-- No yield (rather than small yield) is important for AI. The AI will work a 1f plot rather than
+-- assign a specialist. With 0 yield the AI will properly assign a specialist. In general, a plot
+-- should have at least 3 total yield or nothing at all.
 
---Gold overview:
---No gold from water tiles. Gold is from pop., trade, and resources (boosted by market)
+
+-- Breach and Blight:
+--
+-- The system works around these existing Civ5 limitations:
+--	1. Only the "base features" will update graphically during game session (forest, jungle,
+--	   marsh, oasis and fallout (flood plains?). Renamed and new features WILL NOT UPDATE.
+--	2. Improvements and Resources can update plot graphics (both through ArtDefine_Landmarks).
+--	3. Features can give negative yields, but improvements and resources are only positive.
+--
+-- So, we use IMPROVEMENT_BLIGHT for graphic, but it has to displace any other improvments. For
+-- existing improvments that can't be displaced, use RESOURCE_BLIGHT (exact same graphic). 
+-- FEATURE_BLIGHT has no graphic effect but gives negative yield, and gives workers something to
+-- remove. (dll is currently hard-coded to prioritize fallout removal.  
+--
+-- A breach plot is just blight plus FEATURE_FALLOUT. We have to use the base feature name for the
+-- graphic to work. TO DO: change all cases of FEATURE_FALLOUT in dll to FEATURE_BLIGHT so that
+-- workers will remove blight (breach can't be removed by workers).
+--
+-- The mod Lua code expects FEATURE_BLIGHT and FEATURE_FALLOUT to always be paired with either
+-- IMPROVEMENT_BLIGHT or RESOURCE_BLIGHT. They are always added and removed together. If worker
+-- just finishes a build - detected by GameEvents.BuildFinished( iPlayer, x, y, -1 ) - then we
+-- look at plot to see if maybe blight was just removed, indicated by a plot that has no feature
+-- but has IMPROVEMENT_BLIGHT or RESOURCE_BLIGHT. If so, then remove it.
+--
+-- IMPROVEMENT_BLIGHT graphic currently obscures any resource on the plot since there is only one
+-- row in ArtDefine_Landmarks. In the future, we can add multiple ArtDefine_Landmarks variations
+-- that show resources. Also, we can add additional IMPROVEMENT_BLIGHT variations to show other
+-- effects like old burnt up forests (cosmetic only).
+
 
 -----------------------------------------------------------------------------------------
 --Yields
@@ -27,6 +56,10 @@ DELETE FROM Terrain_HillsYieldChanges;
 -----------------------------------------------------------------------------------------
 ALTER TABLE Features ADD COLUMN 'EaGod' TEXT DEFAULT NULL;
 ALTER TABLE Features ADD COLUMN 'EaUnhappiness' INTEGER DEFAULT 0;	-- UI only! 2 means net -1 happiness; 1 is a wash
+
+INSERT INTO Features (Type, Description, Civilopedia, Help, ArtDefineTag, PortraitIndex, IconAtlas) VALUES
+('FEATURE_BLIGHT',	'TXT_KEY_EA_FEATURE_BLIGHT',	'TXT_KEY_EA_FEATURE_BLIGHT_PEDIA',	'TXT_KEY_EA_FEATURE_BLIGHT_HELP',	'dummy',	17,	'TERRAIN_ATLAS');
+
 
 UPDATE Features SET YieldNotAdditive = 0;
 
@@ -65,7 +98,15 @@ INSERT INTO Feature_YieldChanges (FeatureType, YieldType, Yield) VALUES
 ('FEATURE_FOREST',	'YIELD_FOOD', -1),
 ('FEATURE_JUNGLE',	'YIELD_FOOD', -1),
 ('FEATURE_MARSH',	'YIELD_FOOD', -1),
-('FEATURE_OASIS',	'YIELD_FOOD', 3	);
+('FEATURE_OASIS',	'YIELD_FOOD', 3	),
+('FEATURE_ATOLL',	'YIELD_FOOD', 3	),
+('FEATURE_BLIGHT',	'YIELD_FOOD', -3),
+('FEATURE_BLIGHT',	'YIELD_PRODUCTION', -1),
+('FEATURE_BLIGHT',	'YIELD_GOLD', -1),
+('FEATURE_BLIGHT',	'YIELD_SCIENCE', -1),
+('FEATURE_BLIGHT',	'YIELD_CULTURE', -1),
+('FEATURE_BLIGHT',	'YIELD_FAITH', -1);
+
 
 -----------------------------------------------------------------------------------------
 --Resources (only Resource_YieldChanges entirely deleted and rebuilt)
@@ -88,7 +129,9 @@ INSERT INTO Resources (Type, Happiness, Description,							Civilopedia,									
 ('RESOURCE_TOBACCO',		4,			'TXT_KEY_EA_RESOURCE_TOBACCO',			'TXT_KEY_EA_CIV5_RESOURCE_TOBACCO_TEXT',			'TXT_KEY_EA_RESOURCE_TOBACCO_HELP',			NULL,					'TECH_CALENDAR',			'RESOURCECLASS_LUXURY',	'ART_DEF_RESOURCE_TOBACCO',		NULL,								NULL,								NULL,									0,					1,				50,					3,				90,				25,			25,			67,		0,		1,			1,				'[ICON_RES_URANIUM]',	5,				'RESOURCE_ATLAS'			),
 ('RESOURCE_TEA',			4,			'TXT_KEY_EA_RESOURCE_TEA',				'TXT_KEY_EA_CIV5_RESOURCE_TEA_TEXT',				'TXT_KEY_EA_RESOURCE_TEA_HELP',				NULL,					'TECH_CALENDAR',			'RESOURCECLASS_LUXURY',	'ART_DEF_RESOURCE_TEA',			NULL,								'ART_DEF_RESOURCE_TEA',				NULL,									0,					1,				50,					3,				90,				25,			25,			67,		1,		1,			1,				'[ICON_RES_URANIUM]',	26,				'RESOURCE_ATLAS'			),
 ('RESOURCE_OPIUM',			4,			'TXT_KEY_EA_RESOURCE_OPIUM',			'TXT_KEY_EA_CIV5_RESOURCE_OPIUM_TEXT',				'TXT_KEY_EA_RESOURCE_OPIUM_HELP',			NULL,					'TECH_CALENDAR',			'RESOURCECLASS_LUXURY',	'ART_DEF_RESOURCE_POPPY',		NULL,								NULL,								NULL,									0,					1,				50,					3,				90,				25,			25,			67,		0,		1,			1,				'[ICON_RES_URANIUM]',	5,				'RESOURCE_ATLAS'			),
-('RESOURCE_BERRIES',		0,			'TXT_KEY_EA_RESOURCE_BERRIES',			'TXT_KEY_EA_CIV5_RESOURCE_BERRIES_TEXT',			'TXT_KEY_EA_RESOURCE_BERRIES_HELP',			NULL,					'TECH_IRRIGATION',			'RESOURCECLASS_BONUS',	'ART_DEF_RESOURCE_BERRIES',		NULL,								NULL,								NULL,									0,					0,				50,					3,				90,				25,			25,			0,		1,		1,			1,				'[ICON_RES_URANIUM]',	26,				'RESOURCE_ATLAS'			);
+('RESOURCE_BERRIES',		0,			'TXT_KEY_EA_RESOURCE_BERRIES',			'TXT_KEY_EA_CIV5_RESOURCE_BERRIES_TEXT',			'TXT_KEY_EA_RESOURCE_BERRIES_HELP',			NULL,					'TECH_IRRIGATION',			'RESOURCECLASS_BONUS',	'ART_DEF_RESOURCE_BERRIES',		NULL,								NULL,								NULL,									0,					0,				50,					3,				90,				25,			25,			0,		1,		1,			1,				'[ICON_RES_URANIUM]',	26,				'RESOURCE_ATLAS'			),
+--blight - The "resource" is graphic only; use it where we can't use IMPROVEMENT_BLIGHT because there is a specific improvement (eg, Arcane Tower) that we don't want to displace.
+('RESOURCE_BLIGHT',			0,			'TXT_KEY_EA_RESOURCE_BLIGHT',			'TXT_KEY_EA_CIV5_RESOURCE_BLIGHT_PEDIA',			'TXT_KEY_EA_RESOURCE_BLIGHT_HELP',			NULL,					NULL,						'RESOURCECLASS_BONUS',	'ART_DEF_RESOURCE_BLIGHT',		NULL,								NULL,								NULL,									0,					0,				50,					3,				90,				0,			0,			0,		1,		1,			0,				'[ICON_RES_URANIUM]',	26,				'RESOURCE_ATLAS'			);
 
 UPDATE Resources SET TechCityTrade = 'TECH_AGRICULTURE' WHERE Type = 'RESOURCE_WHEAT';
 UPDATE Resources SET TechReveal = NULL, TechCityTrade = 'TECH_ALLOW_HORSE_TRADE' WHERE Type = 'RESOURCE_HORSE';

@@ -21,8 +21,6 @@ local sharedIntegerList = MapModData.sharedIntegerList
 --------------------------------------------------------------
 -- file control vars
 --------------------------------------------------------------
---local g_ArcaneManager = InstanceManager:new("ArcaneSpellInstance", "Base", Controls.ArcaneStack)
---local g_DivineManager = InstanceManager:new( "DivineSpellInstance", "Base", Controls.DivineStack)
 
 local g_SpellManager = InstanceManager:new( "SpellInstance", "SpellButton", Controls.SpellStack)
 
@@ -49,7 +47,7 @@ end
 
 function LearnSpell(iPerson)		--called from Learn Spell promotion selection
 	--info different then base popups; fields used: type, id, text, sound (not all required or used for all types)
-	print("Running LearnSpell ", iPerson, unit)
+	print("Running LearnSpell ", iPerson)
 	ContextPtr:SetHide(false)
 	g_iPlayer = Game.GetActivePlayer()
 	g_iPerson = iPerson
@@ -127,12 +125,8 @@ function OnYes()
 	Controls.SpellSelectConfirm:SetHide(true)
     ContextPtr:SetHide(true)
 	local eaPerson = gT.gPeople[g_iPerson]
-	local unit
-	if eaPerson.iUnit ~= -1 then
-		unit = Players[g_iPlayer]:GetUnitByID(eaPerson.iUnit)
-	end
 	eaPerson.spells[g_spellID] = true									--gives spell
-	LuaEvents.EaPeopleApplyGPLevelGain(g_iPlayer, unit, g_iPerson)		--sets level
+	Events.SerialEventUnitInfoDirty()
 end
 Controls.Yes:RegisterCallback( Mouse.eLClick, OnYes )
 
@@ -144,6 +138,13 @@ Controls.No:RegisterCallback( Mouse.eLClick, OnNo )
 
 function Close()
     ContextPtr:SetHide(true)
+	if g_iPerson ~= -1 then
+		--dll has already given level when popup occured; take it away so player has promotion selection again
+		local eaPerson = gT.gPeople[g_iPerson]
+		local unit = Players[g_iPlayer]:GetUnitByID(eaPerson.iUnit)
+		unit:SetLevel(unit:GetLevel() - 1)
+		unit:TestPromotionReady()
+	end
 end
 Controls.CloseButton:RegisterCallback(Mouse.eLClick, Close)
 

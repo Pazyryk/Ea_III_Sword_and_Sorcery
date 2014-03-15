@@ -6,6 +6,7 @@ print("Loading EaActions.lua...")
 local print = ENABLE_PRINT and print or function() end
 local Dprint = DEBUG_PRINT and print or function() end
 
+
 ---------------------------------------------------------------
 -- Local defines
 ---------------------------------------------------------------
@@ -13,12 +14,18 @@ local Dprint = DEBUG_PRINT and print or function() end
 --constants
 local PLOT_OCEAN =							PlotTypes.PLOT_OCEAN
 local PLOT_LAND =							PlotTypes.PLOT_LAND
+local PLOT_MOUNTAIN =						PlotTypes.PLOT_MOUNTAIN
 local TERRAIN_GRASS =						GameInfoTypes.TERRAIN_GRASS
 local TERRAIN_PLAINS =						GameInfoTypes.TERRAIN_PLAINS
 local TERRAIN_TUNDRA =						GameInfoTypes.TERRAIN_TUNDRA
 local FEATURE_FOREST = 						GameInfoTypes.FEATURE_FOREST
 local FEATURE_JUNGLE = 						GameInfoTypes.FEATURE_JUNGLE
 local FEATURE_MARSH =	 					GameInfoTypes.FEATURE_MARSH
+local FEATURE_BLIGHT =	 					GameInfoTypes.FEATURE_BLIGHT
+local FEATURE_FALLOUT =	 					GameInfoTypes.FEATURE_FALLOUT
+local IMPROVEMENT_BLIGHT =					GameInfoTypes.IMPROVEMENT_BLIGHT
+local RESOURCE_BLIGHT =						GameInfoTypes.RESOURCE_BLIGHT
+
 local LEADER_FAND =							GameInfoTypes.LEADER_FAND
 local RESOURCE_HORSE =						GameInfoTypes.RESOURCE_HORSE
 local RESOURCE_WINE =						GameInfoTypes.RESOURCE_WINE
@@ -61,9 +68,14 @@ local ENEMY_HEAL_RATE =						GameDefines.ENEMY_HEAL_RATE
 local NEUTRAL_HEAL_RATE =					GameDefines.NEUTRAL_HEAL_RATE
 local FRIENDLY_HEAL_RATE =					GameDefines.FRIENDLY_HEAL_RATE
 
-
 local UNIT_SUFFIXES =						UNIT_SUFFIXES
 local NUM_UNIT_SUFFIXES =					#UNIT_SUFFIXES
+local MOD_MEMORY_HALFLIFE =					MOD_MEMORY_HALFLIFE
+
+local MAP_W, MAP_H =						Map.GetGridSize()
+local MAX_RANGE =							Map.PlotDistance(0, 0, math.floor(MAP_W / 2 + 0.5), MAP_H - 1)	--other side of world (sort of)
+local FIRST_SPELL_ID =						FIRST_SPELL_ID
+local LAST_SPELL_ID =						LAST_SPELL_ID
 
 --global tables
 local MapModData =							MapModData
@@ -86,6 +98,7 @@ local IsLivingUnit =						IsLivingUnit
 local Floor =								math.floor
 local GetPlotFromXY =						Map.GetPlot
 local Distance =							Map.PlotDistance
+local Rand =								Map.Rand
 local HandleError =							HandleError
 local HandleError21 =						HandleError21
 local HandleError41 =						HandleError41
@@ -108,7 +121,7 @@ local g_SpellClass				-- nil, "Arcane" or "Devine"
 local g_bAIControl				--for AI control of unit (can be true for human if Autoplay)
 local g_iActivePlayer = Game.GetActivePlayer()
 
-local g_gameTurn = -1
+local g_gameTurn = 0
 
 local g_iPlayer
 local g_eaPlayer
@@ -143,7 +156,8 @@ local g_iOwner
 local g_x
 local g_y
 
-local g_modSpell	--g_mod plus plot Tower/Temple mod
+local g_bInTowerOrTemple	--these two are only set if g_eaAction.ApplyTowerTempleMod
+local g_modSpell			--g_mod plus plot Tower/Temple mod
 
 local g_bIsCity		--if true then the following values are always calculated (follows target g_x, g_y if provided; otherwise g_unit g_x,g_y)
 local g_iCity
@@ -709,9 +723,11 @@ function TestEaActionTarget(eaActionID, testX, testY, bAITargetTest)
 	--set g_modSpell for Tower or Temple
 	if g_eaAction.ApplyTowerTempleMod then
 		if gWonders[EA_WONDER_ARCANE_TOWER][g_iPerson] and gWonders[EA_WONDER_ARCANE_TOWER][g_iPerson].iPlot == g_iPlot then
-			g_modSpell = g_mod + gWonders[EA_WONDER_ARCANE_TOWER][g_iPerson][g_eaAction.GPModType1]		--Assume all spells have exactly one mod
+			g_modSpell = g_mod + gWonders[EA_WONDER_ARCANE_TOWER][g_iPerson][GameInfoTypes[g_eaAction.GPModType1] ]		--Assume all spells have exactly one mod
+			g_bInTowerOrTemple = true
 		else
 			g_modSpell = g_mod
+			g_bInTowerOrTemple = false
 		end
 	end
 
@@ -812,6 +828,19 @@ function DoEaAction(eaActionID, iPlayer, unit, iPerson, targetX, targetY)
 		end
 	end
 
+	if g_bGreatPerson then
+		--Memory for AI specialization
+		if g_eaAction.GPModType1 then
+			local memValue = 2 ^ (g_gameTurn / MOD_MEMORY_HALFLIFE)
+			local modID = GameInfoTypes[g_eaAction.GPModType1]
+			g_eaPerson.modMemory[modID] = (g_eaPerson.modMemory[modID] or 0) + memValue
+			if g_eaAction.GPModType2 then
+				local modID = GameInfoTypes[g_eaAction.GPModType2]
+				g_eaPerson.modMemory[modID] = (g_eaPerson.modMemory[modID] or 0) + memValue
+			end
+		end
+	end
+
 	if g_eaAction.StayInvisible then
 		g_unit:SetInvisibleType(GameInfoTypes.INVISIBLE_SUBMARINE)
 	else 
@@ -831,7 +860,8 @@ function DoEaAction(eaActionID, iPlayer, unit, iPerson, targetX, targetY)
 		GiveGreatPersonXP(g_iPlayer, g_iPerson, g_eaAction.DoXP)
 	end
 	if g_eaAction.DoGainPromotion then
-		ApplyGPPromotion(g_iPlayer, g_unit, g_iPerson, GameInfoTypes[g_eaAction.DoGainPromotion], false)
+		--ApplyGPPromotion(g_iPlayer, g_unit, g_iPerson, GameInfoTypes[g_eaAction.DoGainPromotion], false)
+		g_unit:SetHasPromotion(GameInfoTypes[g_eaAction.DoGainPromotion], true)
 	end
 
 	--Dissapear and/or finish moves
@@ -874,7 +904,7 @@ function DoEaAction(eaActionID, iPlayer, unit, iPerson, targetX, targetY)
 	end
 
 	if turnsToComplete == 1000 and g_bAIControl then turnsToComplete = 8 end	--AI will wake up and test other options
-	if turnsToComplete == 1 then	--we're done
+	if turnsToComplete == 1 then	--do it now!
 
 		--Plot Float Up Text
 		if not g_eaAction.NoFloatUpText or MapModData.bAutoplay then
@@ -1248,89 +1278,71 @@ function SpecialEffects()
 	end
 end
 
+function TestSpellLearnable(iPlayer, iPerson, spellID, spellClass)		--iPerson = nil to generate civ list; spellClass is optional restriction (used for separate UI panels)
+	local spellInfo = EaActionsInfo[spellID]
+	if spellClass and spellClass ~= spellInfo.SpellClass then return false end
+	--order exclusions by most common first for speed
+	if iPerson then
+		local eaPerson = gPeople[iPerson]
+		if spellInfo.SpellClass == "Arcane" then
+			if eaPerson.class1 ~= "Thaumaturge" and eaPerson.class2 ~= "Thaumaturge" then return false end
+		elseif spellInfo.SpellClass == "Divine" then
+			if eaPerson.class1 ~= "Devout" and eaPerson.class2 ~= "Devout" then return false end
+		else
+			error("spellID was not Arcane or Divine ", spellID)
+		end
+		if spellInfo.PantheismCult then return false end		--TO DO: Reactivate these!
+		if eaPerson.spells[spellID] then return false end	--already known
+	end
+	local eaPlayer = gPlayers[iPlayer]
+	if eaPlayer.bIsFallen then
+		if spellInfo.FallenAltSpell and spellInfo.FallenAltSpell ~= "IsFallen" then return false end
+	else
+		if spellInfo.FallenAltSpell == "IsFallen" then return false end
+	end
+	local player = Players[iPlayer]
+	local team = Teams[player:GetTeam()]
+	if spellInfo.TechReq and not team:IsHasTech(GameInfoTypes[spellInfo.TechReq]) then return false end
+	if spellInfo.PantheismCult and not player:HasPolicy(POLICY_PANTHEISM) then return end		--show cult spell only if Pantheistic
+	if spellInfo.ReligionNotFounded and gReligions[GameInfoTypes[spellInfo.ReligionNotFounded] ] then return false end
+	if spellInfo.ReligionFounded and not gReligions[GameInfoTypes[spellInfo.ReligionFounded] ] then return false end
+	if spellInfo.MaleficiumLearnedByAnyone and gWorld.maleficium ~= "Learned" then return false end
+	if spellInfo.ExcludeFallen and eaPlayer.bIsFallen then return false end
+	if spellInfo.CivReligion and eaPlayer.religionID ~= GameInfoTypes[spellInfo.CivReligion] then return false end
+	if spellInfo.PolicyReq and not player:HasPolicy(GameInfoTypes[spellInfo.PolicyReq]) then return false end
+	if spellInfo.AndTechReq and not team:IsHasTech(GameInfoTypes[spellInfo.AndTechReq]) then return false end
+	if spellInfo.TechDisallow and team:IsHasTech(GameInfoTypes[spellInfo.TechDisallow]) then return false end
+	if iPerson and (spellInfo.LevelReq or spellInfo.PromotionReq) then
+		local eaPerson = gPeople[iPerson]
+		local unit = player:GetUnitByID(eaPerson.iUnit)
+		if spellInfo.LevelReq and eaPerson.level < spellInfo.LevelReq then return false end
+		if spellInfo.PromotionReq and not eaPerson.promotions[GameInfoTypes[spellInfo.PromotionReq] ] then return false end
+	end
+	return true
+end
+
 MapModData.sharedIntegerList = MapModData.sharedIntegerList or {}
 local sharedIntegerList = MapModData.sharedIntegerList
-local aiSpecializedSpellList = {}
 
-function GenerateLearnableSpellList(iPlayer, iPerson, spellClass, aiSpecialization)	--iPerson = nil if this is civ test only; spellClass = nil for both 
-	Dprint("GenerateLearnableSpellList ", iPlayer, iPerson, spellClass, aiSpecialization)
-	--This is used for both human UI (Spell Panel) and AI generation of list by caster's specialization
-	local player = Players[iPlayer]
-	local eaPlayer = gPlayers[iPlayer]
-	local iTeam = player:GetTeam()
-	local team = Teams[iTeam]
-
-	local knownSpells, eaPerson
-	if iPerson then
-		eaPerson = gPeople[iPerson]
-		knownSpells = eaPerson.spells
-	end
-
-	local TestSpellLearnable = function(spellInfo)
-		if eaPlayer.bIsFallen then
-			if spellInfo.FallenAltSpell and spellInfo.FallenAltSpell ~= "IsFallen" then return false end
-		else
-			if spellInfo.FallenAltSpell == "IsFallen" then return false end
-		end
-		--if spellInfo.PantheismCult and not player:HasPolicy(POLICY_PANTHEISM) then return end		--show cult spell only if Pantheistic
-		if spellInfo.ReligionNotFounded and gReligions[GameInfoTypes[spellInfo.ReligionNotFounded] ] then return false end
-		if spellInfo.ReligionFounded and not gReligions[GameInfoTypes[spellInfo.ReligionFounded] ] then return false end
-		if spellInfo.MaleficiumLearnedByAnyone and gWorld.maleficium ~= "Learned" then return false end
-		if spellInfo.ExcludeFallen and eaPlayer.bIsFallen then return false end
-		if spellInfo.CivReligion and eaPlayer.religionID ~= GameInfoTypes[spellInfo.CivReligion] then return false end
-		if spellInfo.PolicyReq and not player:HasPolicy(GameInfoTypes[spellInfo.PolicyReq]) then return false end
-		if spellInfo.TechReq and not team:IsHasTech(GameInfoTypes[spellInfo.TechReq]) then return false end
-		if spellInfo.AndTechReq and not team:IsHasTech(GameInfoTypes[spellInfo.AndTechReq]) then return false end
-		if spellInfo.TechDisallow and team:IsHasTech(GameInfoTypes[spellInfo.TechDisallow]) then return false end
-		if iPerson then
-			if spellInfo.PantheismCult then return false end --Just disable learning for now	--and (not eaPerson.cult or eaPerson.cult ~= GameInfoTypes[spellInfo.PantheismCult]) then return false end
-			if spellInfo.LevelReq and eaPerson.level < spellInfo.LevelReq then return false end
-			if spellInfo.PromotionReq and not eaPerson.promotions[GameInfoTypes[spellInfo.PromotionReq] ] then return false end
-		end
-		return true
-	end
+function GenerateLearnableSpellList(iPlayer, iPerson, spellClass)	--iPerson = nil if this is civ test only; spellClass = nil for both 
+	print("GenerateLearnableSpellList ", iPlayer, iPerson, spellClass)
+	local TestSpellLearnable = TestSpellLearnable
+	--This is used for human UI (Spell Panel)
 
 	local numSpells = 0
-	local id = FIRST_SPELL_ID
-	local spellInfo = EaActionsInfo[id]
-	while spellInfo do
-		if spellInfo.SpellClass and (not spellClass or spellInfo.SpellClass == spellClass) then
-			if not knownSpells or not knownSpells[id] then
-				if TestSpellLearnable(spellInfo) then
-					if aiSpecialization then
-						local bFitsSpecialization = false
-						for row in GameInfo.EaAISpellSpecializations("ActionType = '" .. spellInfo.Type .."'") do
-							if row.Specialization == aiSpecialization then
-								numSpells = numSpells + 1
-								aiSpecializedSpellList[numSpells] = id
-								break
-							end
-						end
-					else
-						numSpells = numSpells + 1
-						sharedIntegerList[numSpells] = id		--table in MapModData for UI use
-					end
-				end
-			end
+	for spellID = FIRST_SPELL_ID, LAST_SPELL_ID do
+		if TestSpellLearnable(iPlayer, iPerson, spellID, spellClass) then
+			numSpells = numSpells + 1
+			sharedIntegerList[numSpells] = spellID
 		end
-		id = id + 1
-		spellInfo = EaActionsInfo[id]
 	end
 
-	--trim recycled table and return table for ai
-	if aiSpecialization then
-		for i = #aiSpecializedSpellList, numSpells + 1, -1 do
-			aiSpecializedSpellList[i] = nil
-		end		
-		return aiSpecializedSpellList
-	else
-		for i = #sharedIntegerList, numSpells + 1, -1 do
-			sharedIntegerList[i] = nil
-		end
+	--trim recycled table for UI
+	for i = #sharedIntegerList, numSpells + 1, -1 do
+		sharedIntegerList[i] = nil
 	end
 end
---LuaEvents.EaActionsGenerateLearnableSpellList.Add(GenerateLearnableSpellList)
-LuaEvents.EaActionsGenerateLearnableSpellList.Add(function(iPlayer, iPerson, spellClass, aiSpecialization) return HandleError41(GenerateLearnableSpellList, iPlayer, iPerson, spellClass, aiSpecialization) end)
+LuaEvents.EaActionsGenerateLearnableSpellList.Add(function(iPlayer, iPerson, spellClass) return HandleError41(GenerateLearnableSpellList, iPlayer, iPerson, spellClass) end)
 
 function SetWEAHelp(eaActionID, mod)
 	Dprint("SetWEAHelp ", eaActionID, mod)
@@ -1424,6 +1436,20 @@ function DoGotoPlot(iPlayer, unit, iPerson, gotoX, gotoY)
 	if movesAfter < movesBefore then	--success!
 		print("DoGotoPlot moved GP toward target plot")
 		eaPerson.eaActionID = 0
+
+		local gotoEaAction = EaActionsInfo[eaPerson.gotoEaActionID]
+		if gotoEaAction then	--AI has decided it is worth moving to do some action
+			if gotoEaAction.GPModType1 then
+				local memValue = 2 ^ (g_gameTurn / MOD_MEMORY_HALFLIFE)
+				local modID = GameInfoTypes[gotoEaAction.GPModType1]
+				eaPerson.modMemory[modID] = (eaPerson.modMemory[modID] or 0) + memValue
+				if gotoEaAction.GPModType2 then
+					local modID = GameInfoTypes[gotoEaAction.GPModType2]
+					eaPerson.modMemory[modID] = (eaPerson.modMemory[modID] or 0) + memValue
+				end
+			end
+		end
+
 		return true
 	end
 
@@ -1716,8 +1742,10 @@ Interrupt[GameInfoTypes.EA_ACTION_TAKE_RESIDENCE] = function(iPlayer, iPerson)
 		eaPerson.eaActionData = -1
 		RemoveResidentEffects(eaCity)
 		if iPlayer == g_iActivePlayer then
-			local iCity = Map.GetPlotByIndex(eaCity.iPlot):GetPlotCity():GetID()
-			UpdateCityYields(iPlayer, iCity, nil)	--instant UI update for human
+			local city = Map.GetPlotByIndex(eaCityIndex):GetPlotCity()
+			if city then
+				UpdateCityYields(iPlayer, city:GetID(), nil)	--instant UI update for human
+			end
 		end
 	end
 end
@@ -2672,7 +2700,7 @@ SetUI[GameInfoTypes.EA_ACTION_ARCANE_TOWER] = function()
 		if not g_eaPerson.name then
 			UngenericizePerson(g_iPlayer, g_iPerson, nil)
 		end
-		local str = g_eaPerson.name
+		local str = Locale.Lookup(g_eaPerson.name)
 		if string.sub(str, -1) == "s" then
 			str = str .. "' Tower"
 		else
@@ -2691,18 +2719,19 @@ Finish[GameInfoTypes.EA_ACTION_ARCANE_TOWER] = function()
 	if not g_eaPerson.name then
 		UngenericizePerson(g_iPlayer, g_iPerson, nil)
 	end
-	local str = g_eaPerson.name
+	local str = Locale.Lookup(g_eaPerson.name)
 	if string.sub(str, -1) == "s" then
 		str = str .. "' Tower"
 	else
 		str = str .. "'s Tower"
 	end
 	g_plot:SetScriptData(str)
-
 	gWonders[EA_WONDER_ARCANE_TOWER][g_iPerson] = {iPlot = g_iPlot, iNamedFor = g_iPerson}
-
 	SetTowerMods(g_iPerson)
-
+	if g_iOwner ~= g_iPlayer then
+		local city = GetNewOwnerCityForPlot(g_iPlayer, g_iPlot)
+		g_plot:SetOwner(g_iPlayer, city:GetID())
+	end
 	return true
 end
 
@@ -4099,6 +4128,128 @@ Finish[GameInfoTypes.EA_SPELL_EAS_BLESSING] = function()
 	UseManaOrDivineFavor(g_iPlayer, g_iPerson, g_int1)
 	g_eaPlayer.livingTerrainStrengthAdded = (g_eaPlayer.livingTerrainStrengthAdded or 0) + g_int1
 	return true
+end
+
+--EA_SPELL_BLIGHT
+TestTarget[GameInfoTypes.EA_SPELL_BLIGHT] = function()
+
+	--if true, then:
+	--g_obj1 = affected plot (this plot or distant plot from tower/temple)
+	--g_int2 = terrainStrength
+	--g_int3 = radius (tower/temple only)
+	--g_int4 = ownPlotsInDanger (tower/temple only)
+	--g_int5 = totalPlotsInDanger (tower/temple only)
+
+	if g_bInTowerOrTemple then	--Can distant plot be blighted? (max range = mod)
+		g_int1 = g_modSpell < g_faith and g_modSpell or g_faith
+		--random sector/direction, spiral in until valid plot found
+		local sector = Rand(6, "hello") + 1
+		local anticlock = Rand(2, "hello") == 0
+		local maxRadius = g_int1 < MAX_RANGE and g_int1 or MAX_RANGE
+		for radius = maxRadius, 1, -1 do	--test one full ring at a time (we test whole ring so AI can account for own plots in danger)
+			g_obj1 = nil
+			local ownPlotsInDanger, totalPlotsInDanger = 0, 0
+			for plot in PlotRingIterator(g_plot, radius, sector, anticlock) do	
+				if not (plot:IsWater() or plot:IsMountain() or plot:IsImpassable()) then
+					local featureID = plot:GetFeatureType()
+					if not (featureID == FEATURE_BLIGHT or featureID == FEATURE_FALLOUT) then
+						if featureID == FEATURE_FOREST or featureID == FEATURE_JUNGLE or featureID == FEATURE_MARSH then	--Must overpower any living terrain here (subtract range from mod)
+							local terrainStrength = plot:GetLivingTerrainStrength()
+							if g_int1 - radius > terrainStrength then
+								totalPlotsInDanger = totalPlotsInDanger + 1
+								if plot:IsPlayerCityRadius(g_iPlayer) then
+									ownPlotsInDanger = ownPlotsInDanger + 1
+								end		
+								g_int2 = terrainStrength		
+								g_obj1 = plot
+							end
+						else
+							totalPlotsInDanger = totalPlotsInDanger + 1
+							if plot:IsPlayerCityRadius(g_iPlayer) then
+								ownPlotsInDanger = ownPlotsInDanger + 1
+							end	
+							g_int2 = 0
+							g_obj1 = plot
+						end
+					end
+				end
+			end
+			if g_obj1 then
+				g_int3 = radius
+				g_int4 = ownPlotsInDanger
+				g_int5 = totalPlotsInDanger
+				return true
+			else
+				return false
+			end
+		end
+	else	--Can this plot be blighted?
+		if g_plot:IsWater() or g_plot:IsMountain() or g_plot:IsImpassable() then return false end	--IsImpassable protects Natural Wonders (unless they become passible) 
+		local featureID = g_plot:GetFeatureType()
+		if featureID == FEATURE_BLIGHT or featureID == FEATURE_FALLOUT then return false end
+		g_int1 = g_modSpell < g_faith and g_modSpell or g_faith
+		if featureID == FEATURE_FOREST or featureID == FEATURE_JUNGLE or featureID == FEATURE_MARSH then	--Must overpower any living terrain here
+			g_int2 = plot:GetLivingTerrainStrength()
+			if g_int1 <= g_int2 then
+				return false
+			end
+		else
+			g_int2 = 0	
+		end
+		g_obj1 = plot
+		return true
+	end
+end
+
+SetUI[GameInfoTypes.EA_SPELL_BLIGHT] = function()
+	if g_bNonTargetTestsPassed then		--has spell so show it
+		if g_bAllTestsPassed then
+			if g_bInTowerOrTemple then
+				MapModData.text = "Blight land at range " .. g_int3
+			else
+				if g_int2 > 0 then
+					MapModData.text = "Blight this land (overcome terrain strength " .. g_int2 .. ")"
+				else
+					MapModData.text = "Blight this land"
+				end
+			end			
+		else
+			if g_bInTowerOrTemple then
+				MapModData.text = "No land within the caster's " .. g_int1 .. "-plot range can be blighted"
+			else
+				if g_testTargetSwitch == 1 then
+					MapModData.text = "You cannot overcome this land's strength (" .. g_int2 .. ")"
+				else
+					MapModData.text = "This plot cannot be blighted"
+				end
+			end
+		end
+	end
+end
+
+SetAIValues[GameInfoTypes.EA_SPELL_BLIGHT] = function()
+	if g_bInTowerOrTemple then
+		gg_aiOptionValues.i = g_int1 * (1 - g_int4 / g_int5)	-- deduct for proportion of possibly affected plots in own city's 3-plot radius
+	elseif not g_plot:IsPlayerCityRadius(g_iPlayer) then
+		gg_aiOptionValues.i = g_int1 + g_int2	--prefer to kill strongest living terrain possible
+	end		--no value if in our city's 3-plot radius
+end
+
+Finish[GameInfoTypes.EA_SPELL_BLIGHT] = function()
+	local plot = g_obj1
+	g_specialEffectsPlot = plot
+	plot:SetFeatureType(FEATURE_BLIGHT)
+	local improvementID = plot:GetImprovementType()
+	if improvementID ~= -1 and blightSafeImprovement[improvementID] then
+		plot:SetImprovementType(IMPROVEMENT_BLIGHT)
+	else
+		local resourceID = plot:GetResourceType(-1)
+		if resourceID ~= -1 then
+			ChangeResource(plot, -1)
+		end
+		ChangeResource(plot, RESOURCE_BLIGHT, 1)
+	end
+	UseManaOrDivineFavor(g_iPlayer, g_iPerson, 10 + g_int2)		--uses 10 plus terrain strength overcome, if any
 end
 
 --EA_SPELL_HEAL

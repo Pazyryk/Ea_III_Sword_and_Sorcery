@@ -746,6 +746,24 @@
 		<Row Tag="TXT_KEY_EA_PROMOTION_LEADERSHIP_12">
 			<Text>Leadership XII</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_LEADERSHIP_13">
+			<Text>Leadership XIII</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_LEADERSHIP_14">
+			<Text>Leadership XIV</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_LEADERSHIP_15">
+			<Text>Leadership XV</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_LEADERSHIP_16">
+			<Text>Leadership XVI</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_LEADERSHIP_17">
+			<Text>Leadership XVII</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_LEADERSHIP_18">
+			<Text>Leadership XVIII</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_CONSTRUCTION_1">
 			<Text>Construction I</Text>
 		</Row>
@@ -763,6 +781,42 @@
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_CONSTRUCTION_6">
 			<Text>Construction VI</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_CONSTRUCTION_7">
+			<Text>Construction VII</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_CONSTRUCTION_8">
+			<Text>Construction VIII</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_CONSTRUCTION_9">
+			<Text>Construction IX</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_CONSTRUCTION_10">
+			<Text>Construction X</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_CONSTRUCTION_11">
+			<Text>Construction XI</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_CONSTRUCTION_12">
+			<Text>Construction XII</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_CONSTRUCTION_13">
+			<Text>Construction XIII</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_CONSTRUCTION_14">
+			<Text>Construction XIV</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_CONSTRUCTION_15">
+			<Text>Construction XV</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_CONSTRUCTION_16">
+			<Text>Construction XVI</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_CONSTRUCTION_17">
+			<Text>Construction XVII</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_CONSTRUCTION_18">
+			<Text>Construction XVIII</Text>
 		</Row>
 
 		<Row Tag="TXT_KEY_EA_PROMOTION_COMBAT_ENGINEERING_1">
@@ -783,6 +837,42 @@
 		<Row Tag="TXT_KEY_EA_PROMOTION_COMBAT_ENGINEERING_6">
 			<Text>Combat Engineering VI</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_COMBAT_ENGINEERING_7">
+			<Text>Combat Engineering VII</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_COMBAT_ENGINEERING_8">
+			<Text>Combat Engineering VIII</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_COMBAT_ENGINEERING_9">
+			<Text>Combat Engineering IX</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_COMBAT_ENGINEERING_10">
+			<Text>Combat Engineering X</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_COMBAT_ENGINEERING_11">
+			<Text>Combat Engineering XI</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_COMBAT_ENGINEERING_12">
+			<Text>Combat Engineering XII</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_COMBAT_ENGINEERING_13">
+			<Text>Combat Engineering XIII</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_COMBAT_ENGINEERING_14">
+			<Text>Combat Engineering XIV</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_COMBAT_ENGINEERING_15">
+			<Text>Combat Engineering XV</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_COMBAT_ENGINEERING_16">
+			<Text>Combat Engineering XVI</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_COMBAT_ENGINEERING_17">
+			<Text>Combat Engineering XVII</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_COMBAT_ENGINEERING_18">
+			<Text>Combat Engineering XVIII</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_TRADE_1">
 			<Text>Trade I</Text>
 		</Row>
@@ -800,6 +890,42 @@
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_TRADE_6">
 			<Text>Trade VI</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_TRADE_7">
+			<Text>Trade VII</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_TRADE_8">
+			<Text>Trade VIII</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_TRADE_9">
+			<Text>Trade IX</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_TRADE_10">
+			<Text>Trade X</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_TRADE_11">
+			<Text>Trade XI</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_TRADE_12">
+			<Text>Trade XII</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_TRADE_13">
+			<Text>Trade XIII</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_TRADE_14">
+			<Text>Trade XIV</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_TRADE_15">
+			<Text>Trade XV</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_TRADE_16">
+			<Text>Trade XVI</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_TRADE_17">
+			<Text>Trade XVII</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_TRADE_18">
+			<Text>Trade XVIII</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_ESPIONAGE_1">
 			<Text>Espionage I</Text>
@@ -819,6 +945,42 @@
 		<Row Tag="TXT_KEY_EA_PROMOTION_ESPIONAGE_6">
 			<Text>Espionage VI</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_ESPIONAGE_7">
+			<Text>Espionage VII</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_ESPIONAGE_8">
+			<Text>Espionage VIII</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_ESPIONAGE_9">
+			<Text>Espionage IX</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_ESPIONAGE_10">
+			<Text>Espionage X</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_ESPIONAGE_11">
+			<Text>Espionage XI</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_ESPIONAGE_12">
+			<Text>Espionage XII</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_ESPIONAGE_13">
+			<Text>Espionage XIII</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_ESPIONAGE_14">
+			<Text>Espionage XIV</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_ESPIONAGE_15">
+			<Text>Espionage XV</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_ESPIONAGE_16">
+			<Text>Espionage XVI</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_ESPIONAGE_17">
+			<Text>Espionage XVII</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_ESPIONAGE_18">
+			<Text>Espionage XVIII</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_SCHOLARSHIP_1">
 			<Text>Scholarship I</Text>
 		</Row>
@@ -836,6 +998,42 @@
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_SCHOLARSHIP_6">
 			<Text>Scholarship VI</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_SCHOLARSHIP_7">
+			<Text>Scholarship VII</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_SCHOLARSHIP_8">
+			<Text>Scholarship VIII</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_SCHOLARSHIP_9">
+			<Text>Scholarship IX</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_SCHOLARSHIP_10">
+			<Text>Scholarship X</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_SCHOLARSHIP_11">
+			<Text>Scholarship XI</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_SCHOLARSHIP_12">
+			<Text>Scholarship XII</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_SCHOLARSHIP_13">
+			<Text>Scholarship XIII</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_SCHOLARSHIP_14">
+			<Text>Scholarship XIV</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_SCHOLARSHIP_15">
+			<Text>Scholarship XV</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_SCHOLARSHIP_16">
+			<Text>Scholarship XVI</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_SCHOLARSHIP_17">
+			<Text>Scholarship XVII</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_SCHOLARSHIP_18">
+			<Text>Scholarship XVIII</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_BARDING_1">
 			<Text>Barding I</Text>
@@ -855,6 +1053,42 @@
 		<Row Tag="TXT_KEY_EA_PROMOTION_BARDING_6">
 			<Text>Barding VI</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_BARDING_7">
+			<Text>Barding VII</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_BARDING_8">
+			<Text>Barding VIII</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_BARDING_9">
+			<Text>Barding IX</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_BARDING_10">
+			<Text>Barding X</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_BARDING_11">
+			<Text>Barding XI</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_BARDING_12">
+			<Text>Barding XII</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_BARDING_13">
+			<Text>Barding XIII</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_BARDING_14">
+			<Text>Barding XIV</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_BARDING_15">
+			<Text>Barding XV</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_BARDING_16">
+			<Text>Barding XVI</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_BARDING_17">
+			<Text>Barding XVII</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_BARDING_18">
+			<Text>Barding XVIII</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_PROSELYTISM_1">
 			<Text>Proselytism I</Text>
 		</Row>
@@ -873,6 +1107,42 @@
 		<Row Tag="TXT_KEY_EA_PROMOTION_PROSELYTISM_6">
 			<Text>Proselytism VI</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_PROSELYTISM_7">
+			<Text>Proselytism VII</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_PROSELYTISM_8">
+			<Text>Proselytism VIII</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_PROSELYTISM_9">
+			<Text>Proselytism IX</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_PROSELYTISM_10">
+			<Text>Proselytism X</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_PROSELYTISM_11">
+			<Text>Proselytism XI</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_PROSELYTISM_12">
+			<Text>Proselytism XII</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_PROSELYTISM_13">
+			<Text>Proselytism XIII</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_PROSELYTISM_14">
+			<Text>Proselytism XIV</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_PROSELYTISM_15">
+			<Text>Proselytism XV</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_PROSELYTISM_16">
+			<Text>Proselytism XVI</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_PROSELYTISM_17">
+			<Text>Proselytism XVII</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_PROSELYTISM_18">
+			<Text>Proselytism XVIII</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_RITUALISM_1">
 			<Text>Ritualism I</Text>
 		</Row>
@@ -890,6 +1160,42 @@
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_RITUALISM_6">
 			<Text>Ritualism VI</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_RITUALISM_7">
+			<Text>Ritualism VII</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_RITUALISM_8">
+			<Text>Ritualism VIII</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_RITUALISM_9">
+			<Text>Ritualism IX</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_RITUALISM_10">
+			<Text>Ritualism X</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_RITUALISM_11">
+			<Text>Ritualism XI</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_RITUALISM_12">
+			<Text>Ritualism XII</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_RITUALISM_13">
+			<Text>Ritualism XIII</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_RITUALISM_14">
+			<Text>Ritualism XIV</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_RITUALISM_15">
+			<Text>Ritualism XV</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_RITUALISM_16">
+			<Text>Ritualism XVI</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_RITUALISM_17">
+			<Text>Ritualism XVII</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_RITUALISM_18">
+			<Text>Ritualism XVIII</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_DIVINATION_1">
 			<Text>Divination I</Text>

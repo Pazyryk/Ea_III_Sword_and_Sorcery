@@ -7,28 +7,13 @@ print("Loading EaPeople.lua...")
 local print = ENABLE_PRINT and print or function() end
 local Dprint = DEBUG_PRINT and print or function() end
 
---Note: text below is somewhat out-of-date. Need to re-write.
-
---GPs have to be removed from map between turns to allow stacking, presence in foreign cities, and true "invisibility".
---They also remain disappeared during most builds or other actions. Here is the turn logic:
-
---Begining of turn (function PeoplePerCivTurn), for each GP:
---Reappear all GPs that have eaActionID = -1
---If AI, Do eaActionID; if fails, inturrupt (called from Do) and reappear; this may or may not disappear the unit depending on eaAction.Disappear
---If human, Test eaAction
---	if passes, DO_NOTHING so base unit cycler will bypass this unit 
---	if fails, inturrupt action and reappear
---For AI, if on map and moves left call AIGPDoSomething until no moves left or no unit (disappeared)
-
---After turn (called first thing at begining of next player turn), for each unit"
---If human, Do eaActionID; if fails, inturrupt (called from Do) and reappear; this may or may not disappear the unit depending on eaAction.Disappear
---Disappear all GPs still on map
-
-
 --------------------------------------------------------------
 -- Local Defines
 --------------------------------------------------------------
 local HIGHEST_PROMOTION_ID =			HIGHEST_PROMOTION_ID
+local MOD_MEMORY_HALFLIFE =				MOD_MEMORY_HALFLIFE
+
+local EAMOD_LEADERSHIP =				GameInfoTypes.EAMOD_LEADERSHIP
 
 local EA_WONDER_ARCANE_TOWER =			GameInfoTypes.EA_WONDER_ARCANE_TOWER
 
@@ -42,8 +27,6 @@ local fullCivs =					MapModData.fullCivs
 
 local gPlayers =			gPlayers
 local gPeople =				gPeople
-
---local gg_gpAttackUnits =	gg_gpAttackUnits
 
 local Floor =				math.floor
 local Rand =				Map.Rand
@@ -89,20 +72,8 @@ local modsForUI = MapModData.modsForUI
 for i = 1, numModTypes do
 	local modType = modTypes[i]
 	modsForUI[i] = {text = modTexts[i], value = 0}
-	--[[
-	local numSubtableItems = 0
-	for modModRow in GameInfo.EaModifiers_ModifiesModifier() do
-		if modType == modModRow.ModifiesType then
-			modsForUI[i].subTable = modsForUI[i].subTable or {}
-			local subTable = modsForUI[i].subTable
-			numSubtableItems = numSubtableItems + 1
-			local modType2 = modModRow.ModType
-			local text = GameInfo.EaModifiers[modType2].Description
-			subTable[numSubtableItems] = {modType2 = modType2, text = text, value = 0}
-		end
-	end
-	]]
 end
+modsForUI.firstMagicMod = numModTypes - 7
 modsForUI[numModTypes + 1] = {text = "All Magic Schools", value = 0}
 modsForUI[numModTypes + 2] = {text = "Other Magic Schools", value = 0}
 
@@ -148,7 +119,6 @@ local function SetGPModsTable(iPerson)	--used by EaImagePopup for showing GP mod
 		end
 	end
 	modsForUI.bApplyTowerMods = bApplyTowerMods
-	modsForUI.firstMagicMod = numModTypes - 7
 
 	local highestMagicSchool, lowestMagicSchool = 0, 99999
 	for i = 1, numModTypes do
@@ -156,27 +126,18 @@ local function SetGPModsTable(iPerson)	--used by EaImagePopup for showing GP mod
 		local value = TestGPModValid(modType, class1, class2, subclass) and GetGPMod(iPerson, modType, nil) or 0
 
 		if value > 0 and i > numModTypes - 8 then		--last 8 are always magic schools (and value always > 0 for all spellcasters)
+			if bApplyTowerMods then
+				value = value + tower[i]
+			end
 			if highestMagicSchool < value then
 				highestMagicSchool = value
 			end
 			if lowestMagicSchool > value then
 				lowestMagicSchool = value
 			end
-			if bApplyTowerMods then
-				value = value + tower[i]
-			end
 		end
 		modsForUI[i].value = value
 
-		--[[
-		local subTable = modsForUI[i].subTable
-		if subTable then
-			for j = 1, #subTable do
-				local modType2 = subTable[j].modType2
-				subTable[j].value = GetGPMod(iPerson, modType, modType2)
-			end
-		end
-		]]
 	end
 	if highestMagicSchool == 0 then
 		modsForUI[numModTypes + 1].value = 0	--"All Magic Schools"
@@ -230,7 +191,6 @@ function PeoplePerGameTurn()
 		if iPerson ~= 0 and not fullCivs[eaPerson.iPlayer] then
 			print("!!!! WARNING: Found GP not owned by full civ; attempting to reconect")
 			AttemptToReconectGP(iPerson, nil)
-			--KillPerson(eaPerson.iPlayer, iPerson)		--could be recent civ conquest
 		end
 	end
 end
@@ -262,7 +222,7 @@ function PeoplePerCivTurn(iPlayer)
 
 	for iPerson, eaPerson in pairs(gPeople) do
 		if eaPerson.iPlayer == iPlayer then
-
+			
 			local age = gameTurn - eaPerson.birthYear
 
 			if bHumanPlayer and not eaPerson.name then		--could be true after autoplay
@@ -270,14 +230,6 @@ function PeoplePerCivTurn(iPlayer)
 			end
 
 			print("Cycle GP", iPerson, eaPerson.iUnit, eaPerson.name, (eaPerson.subclass or eaPerson.class1), eaPerson.eaActionID ~= -1 and GameInfo.EaActions[eaPerson.eaActionID].Type or -1)
-			
-			--print("eaPerson.gotoPlotIndex, .gotoEaActionID = ", eaPerson.gotoPlotIndex, eaPerson.gotoEaActionID)
-
-			--Reappear GP if not joined and not busy with EaAction that wants the unit disappeared
-			--if eaPerson.iUnit == -1 and eaPerson.iUnitJoined == -1 and (eaPerson.eaActionID == -1 or not GameInfo.EaActions[eaPerson.eaActionID].Disappear) then
-			--	print("Reappear 1")
-			--	ReappearGP(iPlayer, iPerson)
-			--end
 
 			local unit = eaPerson.iUnit ~= -1 and player:GetUnitByID(eaPerson.iUnit)
 			local bKill = not unit
@@ -297,41 +249,31 @@ function PeoplePerCivTurn(iPlayer)
 				end
 				
 			else
-				UpdateGreatPersonStatsFromUnit(unit, eaPerson)
+				local bIsLeader = iPerson == eaPlayer.leaderEaPersonIndex
+
+				--Leader modMemory
+				if bIsLeader then
+					local memValue = 2 ^ (gameTurn / MOD_MEMORY_HALFLIFE)
+					eaPerson.modMemory[EAMOD_LEADERSHIP] = eaPerson.modMemory[EAMOD_LEADERSHIP] + (memValue / 2)
+				end
 
 				--Do passive xp
 				local chance = 100 - age
 				chance = chance < 20 and 20 or chance
 				if Rand(100, "hello") < chance then
-					local xp = iPerson == eaPlayer.leaderEaPersonIndex and 4 or 2
+					local xp = bIsLeader and 4 or 2
 					GiveGreatPersonXP(iPlayer, iPerson, xp)
 				end
-	
-				--Level gain?
-				--local bWake = false
-				if eaPerson.iUnit == -1 then
-					if GPPromotionReady(eaPerson) then
-						if bHumanPlayer then
-							--bWake = true
-						else
-							AIPickGPPromotion(iPlayer, iPerson, nil)
-						end
-					end
-				elseif not bHumanPlayer then
-					if unit:GetExperience() >= unit:ExperienceNeeded() then
-						AIPickGPPromotion(iPlayer, iPerson, unit)
-					end
-				end
-	
-				--UpdateQuickAccessGPMods(iPerson)	--just do where needed (person init, level up, prophesy, etc.)
 
+				if not bHumanPlayer and unit:IsPromotionReady() then
+					AIPickGPPromotion(iPlayer, iPerson, unit)
+					unit:SetLevel(unit:GetLevel() + 1)
+				end
+				UpdateGreatPersonStatsFromUnit(unit, eaPerson)
+	
 				--Do or test action
 				if eaPerson.eaActionID ~= -1 then
 					if bHumanPlayer then	
-
-						--if eaPerson.eaActionID == 0 then
-						--	unit = unit or ReappearGP(iPlayer, iPerson)
-						--end
 		
 						print("About to TestEaAction for human", eaPerson.eaActionID, iPlayer, unit, iPerson)
 						if eaPerson.eaActionID == 0 or TestEaAction(eaPerson.eaActionID, iPlayer, unit, iPerson) then --skip as long as it is a move or a valid action (human does action after turn)
@@ -357,11 +299,6 @@ function PeoplePerCivTurn(iPlayer)
 					end
 				end
 
-				--if bWake then
-				--	ReappearGP(iPlayer, iPerson)
-				--	print("Reappear 2")
-				--end
-
 				--Make AI do something if unit on map with movement
 				if eaPerson.iUnit ~= -1 and not bHumanPlayer then
 					unit = player:GetUnitByID(eaPerson.iUnit)
@@ -386,14 +323,6 @@ function PeoplePerCivTurn(iPlayer)
 	UpdateLeaderEffects(iPlayer)
 end
 
-local xpNeeded = {[1] = GameDefines.EXPERIENCE_PER_LEVEL}
-for i = 2, 200 do
-	xpNeeded[i] = xpNeeded[i - 1] + i * GameDefines.EXPERIENCE_PER_LEVEL
-end
-
-function GPPromotionReady(eaPerson)
-	return eaPerson.xp >= xpNeeded[eaPerson.level]
-end
 
 function SkipPeople()
 	if bFullCivAI[g_iActivePlayer] then return end	--autoplay
@@ -416,15 +345,8 @@ end
 Events.ActivePlayerTurnStart.Add(SkipPeople)
 
 
---rewrite this!
+--TO DO: This could be done much better with new turn blocking types in dll
 
-
---call again after turn in case ActionInfoPanel call fails
-
---Game.DoControl(GameInfoTypes.CONTROL_ENDTURN) from here when safe (if bActionInfoPanelCall)
---Don't end turn if GPs awake with nothing to do
-
---local lastPeopleAfterTurnHumanTurn = 0 
 
 local bLastCallWasHumanPlayer = false
 
@@ -483,37 +405,9 @@ end
 --LuaEvents.EaPeoplePeopleAfterTurn.Add(PeopleAfterTurn)
 LuaEvents.EaPeoplePeopleAfterTurn.Add(function(iPlayer, bActionInfoPanelCall) return HandleError21(PeopleAfterTurn, iPlayer, bActionInfoPanelCall) end)
 
---[[ recode
-function RemoveGPAttackUnits(iPlayer)		--removed without xp gain or mana use (GP becomes disappeared)
-	local player = Players[iPlayer]
-	local gpList = gPlayers[iPlayer].gpList
-	local numGPs = #gpList
-	for i = 1, gg_gpAttackUnits.pos do
-		local iUnit = gg_gpAttackUnits[i]
-		for j = 1, numGPs do
-			local iPerson = gpList[j]
-			local eaPerson = gPeople[iPerson]
-			if eaPerson.iUnit == iUnit then
-				eaPerson.iUnit = -1
-			end
-		end
-		local unit = player:GetUnitByID(iUnit)
-		if unit then
-			unit:Kill(true, -1)	--unit:SetDamage(unit:GetMaxHitPoints())
-		end
-		local removedUnitData = gg_gpAttackUnitsRemovedUnit[i]
-		if removedUnitData then			--restore normal unit removed for this attack
-			player:RebuildUnitFromData(removedUnitData)
-			gg_gpAttackUnitsRemovedUnit[i] = nil
-		end
-
-	end
-	gg_gpAttackUnits.pos = 0
-end
-]]
 
 --------------------------------------------------------------
--- Generation
+-- GP Generation
 --------------------------------------------------------------
 
 local gpClassTable = {"Engineer", "Merchant", "Sage", "Artist", "Warrior", "Devout", "Thaumaturge"}
@@ -581,7 +475,8 @@ function GenerateGreatPerson(iPlayer, class, subclass, eaPersonRowID, bAsLeader,
 							gotoPlotIndex = -1,
 							gotoEaActionID = -1,
 							tempFaith = 0,
-							moves = 0	}		
+							moves = 0,
+							modMemory = {}	}		
 		
 		gPeople[iPerson] = eaPerson
 		unit:SetPersonIndex(iPerson)
@@ -607,8 +502,6 @@ function GenerateGreatPerson(iPlayer, class, subclass, eaPersonRowID, bAsLeader,
 				spellInfo = GameInfo.EaActions[spellID]
 			end
 		end
-
-		UpdateQuickAccessGPMods(iPerson)
 		
 		unit:SetInvisibleType(GameInfoTypes.INVISIBLE_SUBMARINE)
 		unit:SetSeeInvisibleType(GameInfoTypes.INVISIBLE_SUBMARINE)
@@ -863,7 +756,7 @@ function GetGPXY(eaPerson)
 end
 
 function UseManaOrDivineFavor(iPlayer, iPerson, pts)
-	--reduces player faith, adds GP xp and depletes Ea’s mana if appropriate
+	--reduces player faith, adds GP xp and depletes Ea's mana if appropriate
 	--returns false if player lacks sufficient mana or divine favor
 	--if iPerson is nil then no experience is given
 	local player = Players[iPlayer]
@@ -930,6 +823,18 @@ function MakeLeader(iPlayer, iPerson)
 	end
 	--apply "leader promotion"?
 	UpdateLeaderEffects(iPlayer)
+
+	--Since GP will stay leader from now on, adjust modMemory so they will take leadership promotions
+	local totalModMemory = 0
+	for modID, value in pairs(eaPerson.modMemory) do
+		if modID ~= EAMOD_LEADERSHIP then
+			totalModMemory = totalModMemory + value
+		end
+	end
+	eaPerson.modMemory[EAMOD_LEADERSHIP] = eaPerson.modMemory[EAMOD_LEADERSHIP] or 0
+	if eaPerson.modMemory[EAMOD_LEADERSHIP] < 0.667 * totalModMemory then
+		eaPerson.modMemory[EAMOD_LEADERSHIP] = 0.667 * totalModMemory
+	end
 
 	if iPlayer == g_iActivePlayer then
 		if eaPerson.class1 ~= "Warrior" and eaPerson.class2 ~= "Warrior" then
@@ -1081,176 +986,67 @@ function GiveGreatPersonXP(iPlayer, iPerson, xp)	--use if not on map or maybe no
 			unit:ChangeExperience(xp)
 		else
 			AttemptToReconectGP(iPerson, nil)
-			--KillPerson(iPlayer, iPerson)
 		end
 	end
 end
-
-
-local promotionTable = {}
-MapModData.promotionTable = promotionTable
-function GetAvailableGreatPersonPromotions(iPlayer, iPerson, aiSpecialization)
-	--if aiSpecialization then returns promos with specialization if any; otherwise return all allowed
-	Dprint("GetAvailableGreatPersonPromotions ", iPlayer, iPerson, aiSpecialization)
-	local TestGreatPersonPromotion = TestGreatPersonPromotion
-	local player = Players[iPlayer]
-	local eaPerson = gPeople[iPerson]
-	local promotions = eaPerson.promotions
-	local numPromotion = 0
-	for promotionInfo in GameInfo.UnitPromotions() do
-		if TestGreatPersonPromotion(player, eaPerson, promotions, promotionInfo) then
-			if aiSpecialization then
-				if promotionInfo.ID ~= PROMOTION_LEARN_SPELL then
-					numPromotion = numPromotion + 1
-					promotionTable[numPromotion] = promotionInfo.ID
-				end
-			else
-				numPromotion = numPromotion + 1
-				promotionTable[numPromotion] = promotionInfo.ID
-			end
-		end
-	end
-	for i = numPromotion + 1, #promotionTable do
-		promotionTable[i] = nil
-	end
-	return promotionTable, bSpecialization
-end
-LuaEvents.EaPeopleGetAvailableGreatPersonPromotions.Add(GetAvailableGreatPersonPromotions)
-
-function TestGreatPersonPromotion(player, eaPerson, promotions, promotionInfo)
-	if not promotionInfo.EaGPChosen then return false end
-	if promotions[promotionInfo.ID] then return false end
-
-	--Class/subclass
-	if promotionInfo.EaGPClass and eaPerson.class1 ~= promotionInfo.EaGPClass and eaPerson.class2 ~= promotionInfo.EaGPClass then
-		if not promotionInfo.EaGPOrClass or (eaPerson.class1 ~= promotionInfo.EaGPOrClass and eaPerson.class2 ~= promotionInfo.EaGPOrClass) then return false end
-	end
-	if promotionInfo.EaGPSubclass and eaPerson.subclass ~= promotionInfo.EaGPSubclass then
-		if not promotionInfo.EaGPOrSubclass or eaPerson.subclass ~= promotionInfo.EaGPOrSubclass then return false end
-	end
-	if promotionInfo.EaGPExcludeSubclass and eaPerson.subclass == promotionInfo.EaGPExcludeSubclass then return false end
-
-	--Promotions reqs
-	if (promotionInfo.PromotionPrereqOr1 and not promotions[GameInfoTypes[promotionInfo.PromotionPrereqOr1] ])			--base game never uses PromotionPrereq!
-		or (promotionInfo.PromotionPrereqOr2 and not promotions[GameInfoTypes[promotionInfo.PromotionPrereqOr2] ])
-		or (promotionInfo.PromotionPrereqOr3 and not promotions[GameInfoTypes[promotionInfo.PromotionPrereqOr3] ])
-		or (promotionInfo.PromotionPrereqOr4 and not promotions[GameInfoTypes[promotionInfo.PromotionPrereqOr4] ])
-		or (promotionInfo.PromotionPrereqOr5 and not promotions[GameInfoTypes[promotionInfo.PromotionPrereqOr5] ])
-		or (promotionInfo.PromotionPrereqOr6 and not promotions[GameInfoTypes[promotionInfo.PromotionPrereqOr6] ]) 
-		then return false
-	end
-	if promotionInfo.EaGPPromotionAbsolutePrereq and not promotions[GameInfoTypes[promotionInfo.EaGPPromotionAbsolutePrereq] ] then return false end
-	if promotionInfo.EaGPPromotionExclude and promotions[GameInfoTypes[promotionInfo.EaGPPromotionExclude] ] then return false end
-
-	--Tech
-	if promotionInfo.TechPrereq then
-		local team = Teams[player:GetTeam()]
-		if not team:IsHasTech(GameInfoTypes[promotionInfo.TechPrereq]) then return false end
-	end
-	return true
-end
-
-function ApplyGPPromotion(iPlayer, unit, iPerson, promoID, bLevelChange)	--must supply unit if on map; must supply iPerson
-	Dprint("ApplyGPPromotion ", iPlayer, unit, iPerson, promoID, bLevelChange)
-	local eaPerson = gPeople[iPerson]
-
-	if promoID == PROMOTION_LEARN_SPELL then
-		if iPlayer == g_iActivePlayer then
-			print("Human GP about to pick spell")
-			LuaEvents.LearnSpellPopup(iPerson)
-			return
-		else
-			print("AI GP picking spell")		--return for another random promo pick (temp; watch for infinite loop)
-			return
-		end
-	end
-
-	eaPerson.promotions[promoID] = true
-	if unit then
-		unit:SetHasPromotion(promoID, true)
-		--need sound?
-	end
-	if bLevelChange then
-		ApplyGPLevelGain(iPlayer, unit, iPerson)
-	else
-		UpdateQuickAccessGPMods(iPerson)
-	end
-end
-LuaEvents.EaPeopleApplyGPPromotion.Add(ApplyGPPromotion)
-
-function RemoveGPPromotion(unit, iPerson, promoID)	--must supply unit if on map; must supply iPerson
-	local eaPerson = gPeople[iPerson]
-	eaPerson.promotions[promoID] = nil
-	if unit then
-		unit:SetHasPromotion(promoID, false)
-	end
-	UpdateQuickAccessGPMods(iPerson)
-end
-
-
-function ApplyGPLevelGain(iPlayer, unit, iPerson)
-	Dprint("ApplyGPLevelGain ", iPlayer, unit, iPerson)
-	local eaPerson = gPeople[iPerson]
-	local class1 = eaPerson.class1
-	local class2 = eaPerson.class2
-	eaPerson.xp = eaPerson.xp - xpNeeded[eaPerson.level]
-	eaPerson.level = eaPerson.level + 1
-	if unit then
-		unit:SetExperience(unit:GetExperience() - unit:ExperienceNeeded())
-		unit:ChangeLevel(1)
-		--Unit combat
-		local newCombat
-		if class1 == "Warrior" or class2 == "Warrior" then
-			newCombat = GetGPMod(iPerson, "EAMOD_COMBAT", nil)
-		else
-			newCombat = 5 + Floor(eaPerson.level / 3)
-		end
-		local oldCombat = unit:GetBaseCombatStrength()
-		if newCombat ~= oldCombat then
-			unit:SetBaseCombatStrength(newCombat)
-			unit:GetPlot():AddFloatUpMessage("+" .. newCombat - oldCombat .. " Combat Strength")
-		end
-	end
-	UpdateQuickAccessGPMods(iPerson)
-	SetTowerMods(iPerson)
-end
-LuaEvents.EaPeopleApplyGPLevelGain.Add(ApplyGPLevelGain)
 
 
 --------------------------------------------------------------
 -- GP Modifier Functions
 --------------------------------------------------------------
-function UpdateQuickAccessGPMods(iPerson)
-	--use this to store mods for which we need quick access (otherwise, call GetGPMod as needed)
-	local eaPerson = gPeople[iPerson]
-	local class1 = eaPerson.class1
-	local class2 = eaPerson.class2
-	--if class1 == "Devout" or class2 == "Devout" then
-	--	eaPerson.modDevotion = GetGPMod(iPerson, "EAMOD_DIVINATION", nil)
-	--end
-	--if class1 == "Thaumaturge" or class2 == "Thaumaturge" then
-	--	eaPerson.modDevotion = GetGPMod(iPerson, "EAMOD_THAUMATURGY", nil)
-	--end
 
-end
+local subclassModLevelBonus = {
+	Witch = {		[GameInfoTypes.EAMOD_DIVINATION] =		0.25,
+					[GameInfoTypes.EAMOD_ENCHANTMENT] =		0.25,
+					[GameInfoTypes.EAMOD_ABJURATION] =		0.1,
+					[GameInfoTypes.EAMOD_EVOCATION] =		0.1,
+					[GameInfoTypes.EAMOD_TRANSMUTATION] =	0.1,
+					[GameInfoTypes.EAMOD_CONJURATION] =		0.1,
+					[GameInfoTypes.EAMOD_NECROMANCY] =		0.1,
+					[GameInfoTypes.EAMOD_ILLUSION] =		0.1		},
+	Wizard = {		[GameInfoTypes.EAMOD_DIVINATION] =		0.2,
+					[GameInfoTypes.EAMOD_ABJURATION] =		0.2,
+					[GameInfoTypes.EAMOD_EVOCATION] =		0.2,
+					[GameInfoTypes.EAMOD_TRANSMUTATION] =	0.2,
+					[GameInfoTypes.EAMOD_CONJURATION] =		0.2,
+					[GameInfoTypes.EAMOD_ENCHANTMENT] =		0.2		},
+	Sorcerer = {	[GameInfoTypes.EAMOD_DIVINATION] =		0.2,
+					[GameInfoTypes.EAMOD_EVOCATION] =		0.2,
+					[GameInfoTypes.EAMOD_TRANSMUTATION] =	0.2,
+					[GameInfoTypes.EAMOD_CONJURATION] =		0.2,
+					[GameInfoTypes.EAMOD_NECROMANCY] =		0.2,
+					[GameInfoTypes.EAMOD_ILLUSION] =		0.2		},
+	Necromancer = {	[GameInfoTypes.EAMOD_NECROMANCY] =		0.5		},
+	Illusionist = {	[GameInfoTypes.EAMOD_ILLUSION] =		0.5		}
+}
 
 function GetGPMod(iPerson, modType1, modType2)
 	--need unit or iPerson; modType2 is optional; assumes mod is valid for class/subclass
+
+	--TO DO: Memoize by turn so repeat calls aren't so expensive
 	local eaPerson = gPeople[iPerson]
-	local levelMod = 5 + Floor(eaPerson.level / 3)
+	local level = eaPerson.level
+	local levelMod = 5 + Floor(level / 3)
 	local promoMod = GetHighestPromotionLevel(modsPromotionTable[modType1], nil, iPerson)
-	--promoMod = promoMod * (modsMultiplier[modType1] or 1)
 	local bIsLevelMod1 = 0 < promoMod
 
 	if modType2 then
-		--print("modType2", modType2, modsPromotionTable[modType2])
 		local promoMod2 = GetHighestPromotionLevel(modsPromotionTable[modType2], nil, iPerson)
-		--promoMod2 = promoMod2 * (modsMultiplier[modType2] or 1)
 		promoMod = promoMod + promoMod2
 	end
+
 	local bonuses = 0
 	if eaPerson.promotions[PROMOTION_PROPHET] then
 		bonuses = (modsProphetBonus[modType1] or (modType2 and modsProphetBonus[modType2])) and 2 or 0
+	end
+	local subclass = eaPerson.subclass
+	if subclass then
+		local subclassBonuses = subclassModLevelBonus[subclass]
+		if subclassBonuses then
+			local bonus1 = subclassBonuses[modType1] or 0
+			local bonus2 = subclassBonuses[modType2] or 0
+			bonuses = bonuses + (bonus1 + bonus2) * level
+		end
 	end
 
 	return Floor(levelMod + promoMod + bonuses), bIsLevelMod1		--2nd arg used for actions that require at least 1 promotion level to do
@@ -1285,7 +1081,7 @@ function SetTowerMods(iPerson)
 		if not eaPerson.name then
 			UngenericizePerson(eaPerson.iPlayer, iPerson, nil)
 		end
-		local str = eaPerson.name
+		local str = Locale.Lookup(eaPerson.name)
 		if string.sub(str, -1) == "s" then
 			str = str .. "' Tower"
 		else

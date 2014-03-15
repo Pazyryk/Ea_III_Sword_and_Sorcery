@@ -1,16 +1,26 @@
-#update only these files
+#Ignore rules
 *
-/*
-!/Ea
-!/Ea/**/
+!*/
 
-!**.sql
-!**.xml
-!**.lua
-!**.fxsxml
-!**.ggxml
-!**.gr2
-!**.dds
-!**.civ5proj
-!**.txt
-!**.gitignore
+!*.sql
+!*.xml
+!*.lua
+!*.fxsxml
+!*.ggxml
+!*.gr2
+!*.dds
+!*.civ5proj
+!*.txt
+!*.gitignore
+
+/Build/
+/Packages/
+/Ea Media Pack/
+
+
+
+
+
+
+
+

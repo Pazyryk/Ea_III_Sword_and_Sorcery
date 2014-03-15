@@ -1,17 +1,10 @@
 #Ignore rules
-*
-!*/
 
-!*.sql
-!*.xml
-!*.lua
-!*.fxsxml
-!*.ggxml
-!*.gr2
-!*.dds
-!*.civ5proj
-!*.txt
-!*.gitignore
+*.dll
+*.civ5suo
+*.civ5sln
+*.vstemplate
+*.ico
 
 /Build/
 /Packages/

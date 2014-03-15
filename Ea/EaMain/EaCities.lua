@@ -375,6 +375,30 @@ end
 --------------------------------------------------------------
 -- Interface
 --------------------------------------------------------------
+
+function GetNewOwnerCityForPlot(iPlayer, iPlot)
+	local plot = GetPlotByIndex(iPlot)
+	for radius = 1, 30 do
+		local bestCity
+		local biggestSize = 0
+		for testPlot in PlotRingIterator(plot, radius, 1, false) do
+			local testCity = testPlot:GetPlotCity()
+			if testCity and testCity:GetOwner() == iPlayer then
+				local size = testCity:GetPopulation()
+				if biggestSize < size or (biggestSize == size and testCity:IsCapital()) then
+					biggestSize = size
+					bestCity = testCity
+				end
+			end
+		end
+		if bestCity then
+			return bestCity
+		end
+	end
+	error("Could not find city within 30 plots")
+end
+
+
 function GetCityRace(city)
 	local race
 	local debugCount = 0

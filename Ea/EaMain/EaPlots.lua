@@ -39,11 +39,13 @@ local RESOURCE_FISH =						GameInfoTypes.RESOURCE_FISH
 local RESOURCE_CRAB =						GameInfoTypes.RESOURCE_CRAB
 local RESOURCE_PEARLS =						GameInfoTypes.RESOURCE_PEARLS
 local RESOURCE_YEW =						GameInfoTypes.RESOURCE_YEW
+local RESOURCE_BLIGHT =						GameInfoTypes.RESOURCE_BLIGHT
 
 local IMPROVEMENT_BARBARIAN_CAMP =			GameInfoTypes.IMPROVEMENT_BARBARIAN_CAMP
 local IMPROVEMENT_FARM =					GameInfoTypes.IMPROVEMENT_FARM
 local IMPROVEMENT_VINEYARD =				GameInfoTypes.IMPROVEMENT_VINEYARD
 local IMPROVEMENT_LUMBERMILL =				GameInfoTypes.IMPROVEMENT_LUMBERMILL
+local IMPROVEMENT_BLIGHT =					GameInfoTypes.IMPROVEMENT_BLIGHT
 
 local BUILDING_TIMBERYARD_ALLOW =			GameInfoTypes.BUILDING_TIMBERYARD_ALLOW
 local BUILDING_TIMBERYARD =					GameInfoTypes.BUILDING_TIMBERYARD
@@ -457,6 +459,23 @@ local function ListenerSerialEventHexCultureChanged(hexX, hexY, iPlayer, bUnknow
 end
 Events.SerialEventHexCultureChanged.Add(ListenerSerialEventHexCultureChanged)
 
+
+-- GameEvents
+local function OnBuildFinished(iPlayer, x, y, improvementID)		--Is improvementID necessarily the one built, or is it any improvement that happens to be there???
+	print("OnBuildFinished ", iPlayer, x, y, improvementID)
+	if improvementID == -1 then
+		local plot = GetPlotFromXY(x, y)
+		if plot:GetImprovementType() == IMPROVEMENT_BLIGHT then
+			print("Worker must have removed FEATURE_BLIGHT; now removing IMPROVEMENT_BLIGHT")
+			plot:SetImprovementType(-1)
+		end
+		if plot:GetResourceType(-1) == RESOURCE_BLIGHT then
+			print("Worker must have removed FEATURE_BLIGHT; now removing RESOURCE_BLIGHT")
+			plot:SetResourceType(-1)
+		end
+	end
+end
+GameEvents.BuildFinished.Add(OnBuildFinished)
 
 --------------------------------------------------------------
 -- Main Per Turn Plot Loop

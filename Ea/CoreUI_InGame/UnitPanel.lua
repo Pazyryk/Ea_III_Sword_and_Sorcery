@@ -240,40 +240,6 @@ function UpdateUnitActions( unit )
  	--Paz add	********************************************************************************************************
 	if bGreatPerson then
 
-		--We do our own promotion handling
-		if unit:GetExperience() >= unit:ExperienceNeeded() then
-			hasPromotion = true
-			LuaEvents.EaPeopleGetAvailableGreatPersonPromotions(iPlayer, iPerson)
-			local promotionTable = MapModData.promotionTable
-			for i = 1, #promotionTable do
-				local promoID = promotionTable[i]
-				if not unit:IsHasPromotion(promoID) then
-
-					local promotion = GameInfo.UnitPromotions[promoID]
-
-					print("unitpanel adding promotion instance: ", promotion.Type)
-
-					local instance = g_PromotionIM:GetInstance()
-					instance.UnitActionButton:SetAnchor( "L,B" )
-					instance.UnitActionButton:SetOffsetVal( (numBuildActions % numberOfButtonsPerRow) * buttonSize + buttonPadding + buttonOffsetX, math.floor(numBuildActions / numberOfButtonsPerRow) * buttonSize + buttonPadding + buttonOffsetY )			
-					numBuildActions = numBuildActions + 1
-
-					if instance then
-
-						instance.UnitActionButton:SetAlpha( 1.0 )
-						instance.UnitActionButton:SetDisabled( false )                
-		
-						IconHookup(promotion.PortraitIndex, actionIconSize, promotion.IconAtlas, instance.UnitActionIcon)
-
-						instance.UnitActionButton:RegisterCallback( Mouse.eLClick, OnEaPromotionClicked )	--OnEaPromotionClicked
-						instance.UnitActionButton:SetVoid1( promoID )
-						instance.UnitActionButton:SetToolTipCallback( EaPromoTipHandler )
-					end
-				end
-			end
-			print("UnitPanel numBuildActions= ", numBuildActions)
-		end
-
 		--loop over all EaActions for Great People (these don't overlap with GameInfoActions, but use same UI)
 		if bUnitHasMovesLeft then
 			local x, y = plot:GetX(), plot:GetY()
@@ -670,8 +636,8 @@ function UpdateUnitPortrait( unit )
     -- Tool tip
     local strToolTip = Locale.ConvertTextKey("TXT_KEY_CURRENTLY_SELECTED_UNIT");
     
-    --Paz modified below: if unit:IsCombatUnit() or unit:GetDomainType() == DomainTypes.DOMAIN_AIR then
-	if unit:IsCombatUnit() or unit:IsGreatPerson() or unit:GetDomainType() == DomainTypes.DOMAIN_AIR then
+    if unit:IsCombatUnit() or unit:GetDomainType() == DomainTypes.DOMAIN_AIR then
+	--Paz undo change: if unit:IsCombatUnit() or unit:IsGreatPerson() or unit:GetDomainType() == DomainTypes.DOMAIN_AIR then
 		local iExperience = unit:GetExperience();
 	    
 		local iLevel = unit:GetLevel();
@@ -1198,17 +1164,6 @@ function OnEaActionClicked(eaActionID)
 	end
 end
 
-function OnEaPromotionClicked(promoID)
-	if bOkayToProcess then
-		local unit = UI.GetHeadSelectedUnit()
-		local iPlayer = unit:GetOwner()
-		local iPerson = unit:GetPersonIndex()
-		LuaEvents.EaPeopleApplyGPPromotion(iPlayer, unit, iPerson, promoID, true)
-	end
-end
-
-
---need EaPromoTipHandler
 --end Paz add
 
 --------------------------------------------------------------------------------
@@ -1300,32 +1255,6 @@ function EaTipHandler(control)
     end
 end
 
-function EaPromoTipHandler(control)
-	local unit = UI.GetHeadSelectedUnit()
-	if not unit then return	end
-	--local iPlayer = unit:GetOwner()
-	local promoID = control:GetVoid1()
-	local promotion = GameInfo.UnitPromotions[promoID]
-
-	tipControlTable.UnitActionHelp:SetText( "[NEWLINE]" .. Locale.ConvertTextKey(promotion.Help) )
-	   
-	-- Title
-
-    local strTitleString = "[COLOR_POSITIVE_TEXT]" .. Locale.ConvertTextKey( promotion.Description ) .. "[ENDCOLOR]"
-    tipControlTable.UnitActionText:SetText( strTitleString );
-    
-    -- HotKey
-    
-    tipControlTable.UnitActionHotKey:SetText( "J" )
-
-    -- Autosize tooltip
-    tipControlTable.UnitActionMouseover:DoAutoSize();
-    local mouseoverSize = tipControlTable.UnitActionMouseover:GetSize();
-    if mouseoverSize.x < 350 then
-		tipControlTable.UnitActionMouseover:SetSizeVal( 350, mouseoverSize.y );
-    end
-
-end
 --end Paz add
 
 function TipHandler( control )

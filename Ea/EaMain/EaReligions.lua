@@ -489,20 +489,6 @@ function BecomeFallen(iPlayer)		--this could happen before, during or after the 
 			
 				end
 
-				--[[convert Benevolence levels
-				local benevolenceLevel = GetHighestPromotionLevel("PROMOTION_BENEVOLENCE", unit, iPerson)
-				if benevolenceLevel > 0 then
-					print("converting Benevolence levels", iPerson, benevolenceLevel)
-					for j = benevolenceLevel, 1, -1 do
-						local benevolencePromoID = GameInfoTypes["PROMOTION_BENEVOLENCE_" .. j]
-						RemoveGPPromotion(unit, iPerson, benevolencePromoID)
-					end
-					for j = 1, benevolenceLevel do
-						local malusPromoID = GameInfoTypes["PROMOTION_MALUS_" .. j]
-						ApplyGPPromotion(iPlayer, unit, iPerson, malusPromoID, false)
-					end
-				end
-				]]
 			end
 		end
 	end

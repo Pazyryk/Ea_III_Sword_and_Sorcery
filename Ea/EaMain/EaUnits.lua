@@ -21,7 +21,16 @@ local DOMAIN_LAND =									DomainTypes.DOMAIN_LAND
 local DOMAIN_SEA =									DomainTypes.DOMAIN_SEA
 
 local BUILDING_INTERNMENT_CAMP =					GameInfoTypes.BUILDING_INTERNMENT_CAMP
+
+local EAMOD_DEVOTION =								GameInfoTypes.EAMOD_DEVOTION
 local EAMOD_CONJURATION =							GameInfoTypes.EAMOD_CONJURATION
+local EAMOD_EVOCATION =								GameInfoTypes.EAMOD_EVOCATION
+local EAMOD_ABJURATION =							GameInfoTypes.EAMOD_ABJURATION
+local EAMOD_TRANSMUTATION =							GameInfoTypes.EAMOD_TRANSMUTATION
+
+
+
+
 local EARACE_MAN =									GameInfoTypes.EARACE_MAN
 local EARACE_SIDHE =								GameInfoTypes.EARACE_SIDHE
 local EARACE_HELDEOFOL =							GameInfoTypes.EARACE_HELDEOFOL
@@ -38,6 +47,7 @@ local POLICY_SLAVERY =								GameInfoTypes.POLICY_SLAVERY
 local POLICY_WARSPIRIT =							GameInfoTypes.POLICY_WARSPIRIT
 local POLICY_BERSERKER_RAGE =						GameInfoTypes.POLICY_BERSERKER_RAGE
 local POLICY_MILITARISM_FINISHER =					GameInfoTypes.POLICY_MILITARISM_FINISHER
+local PROMOTION_LEARN_SPELL =						GameInfoTypes.PROMOTION_LEARN_SPELL
 local PROMOTION_OCEAN_IMPASSABLE_UNTIL_ASTRONOMY =	GameInfoTypes.PROMOTION_OCEAN_IMPASSABLE_UNTIL_ASTRONOMY
 local PROMOTION_OCEAN_IMPASSABLE =					GameInfoTypes.PROMOTION_OCEAN_IMPASSABLE
 local PROMOTION_SLAVE =								GameInfoTypes.PROMOTION_SLAVE
@@ -99,15 +109,14 @@ local gg_fishingRange =				gg_fishingRange
 local gg_whalingRange =				gg_whalingRange
 local gg_campRange =				gg_campRange
 
---localized game and library functions
+--localized functions
 local Rand = Map.Rand
 local Floor = math.floor
 local Distance = Map.PlotDistance
 local StrSubstitute = string.gsub
-
---localized global functions
 local GetPlotFromXY =			Map.GetPlot
 local PlotToRadiusIterator =	PlotToRadiusIterator
+local HandleError31 =			HandleError31
 
 --file functions
 local RemoveOwnedFishingResourcePlot
@@ -174,15 +183,22 @@ for unitInfo in GameInfo.Units() do
 end
 
 --Store promotions that have levels (i.e., any that end with "_" then digits)
+function GetPromoPrefixLevelFromType(promoType)
+	local suffixStart, suffixEnd = string.find(promoType, "_%d+$")	--match _digits only at end of string
+	if suffixStart then
+		local prefix = string.sub(promoType, 1, suffixStart - 1)
+		local level = tonumber(string.sub(promoType, suffixStart + 1, suffixEnd))
+		return prefix, level
+	end
+end
+
+
 local promotionLevels = {}		--promotionLevels[prefixStr][level] = ID; promotionLevels[prefixStr][0] = numLevels
 for promotion in GameInfo.UnitPromotions() do
-	local type = promotion.Type
-	local suffixStart, suffixEnd = string.find(type, "_%d+$")	--match _digits only at end of string
-	if suffixStart then
-		local prefix = string.sub(type, 1, suffixStart - 1)
-		local number = tonumber(string.sub(type, suffixStart + 1, suffixEnd))
+	local prefix, level = GetPromoPrefixLevelFromType(promotion.Type)
+	if prefix then
 		promotionLevels[prefix] = promotionLevels[prefix] or {}
-		promotionLevels[prefix][number] = promotion.ID
+		promotionLevels[prefix][level] = promotion.ID
 	end
 end
 for _, levels in pairs(promotionLevels) do
@@ -192,6 +208,7 @@ for _, levels in pairs(promotionLevels) do
 	end
 	levels.max = maxLevel
 end
+
 
 
 --------------------------------------------------------------
@@ -732,24 +749,7 @@ local function ResetForcedSelectionUnit()		--active player only
 			unit:SetInvisibleType(GameInfoTypes.INVISIBLE_SUBMARINE)
 		end
 	end
-	--[[
-	local removedUnitData = gg_gpAttackUnitsRemovedUnit[gg_gpAttackUnits.pos]
-	if removedUnitData then	--restore normal unit removed for this attack
-		player:RebuildUnitFromData(removedUnitData)
-		gg_gpAttackUnitsRemovedUnit[gg_gpAttackUnits.pos] = nil
-	end
 
-	gg_gpAttackUnits.pos = 0
-
-	for iPerson, eaPerson in pairs(gPeople) do
-		if eaPerson.iPlayer == g_iActivePlayer and eaPerson.iUnit == iUnit then
-			eaPerson.iUnit = -1
-			eaPerson.disappearTurn = Game.GetGameTurn()
-			ReappearGP(g_iActivePlayer, iPerson)		--reappar GP with previous movement
-			break
-		end
-	end
-	]]
 end
 LuaEvents.EaUnitsResetForcedSelectionUnit.Add(ResetForcedSelectionUnit)
 
@@ -1034,6 +1034,38 @@ end
 GameEvents.UnitKilledInCombat.Add(OnUnitKilledInCombat)
 
 
+local function OnUnitTakingPromotion(iPlayer, iUnit, promotionID)
+	print("OnUnitTakingPromotion ", iPlayer, iUnit, promotionID)
+	local player = Players[iPlayer]
+	local unit = player:GetUnitByID(iUnit)
+	if player:IsHuman() then
+		if promotionID == PROMOTION_LEARN_SPELL then
+			local iPerson = unit:GetPersonIndex()
+			LuaEvents.LearnSpellPopup(iPerson)
+			return false
+		else
+			if unit:IsGreatPerson() then	--quick access promo levels
+				local prefix, level = GetPromoPrefixLevelFromType(promoInfo.Type)
+				if prefix then
+					local iPerson = unit:GetPersonIndex()
+					gPeople[iPerson][prefix] = level
+				end
+			end
+			return true		--allow whatever human player picks
+		end
+	else
+		if unit:IsGreatPerson() then
+			local iPerson = unit:GetPersonIndex()
+			AIPickGPPromotion(iPlayer, iPerson, unit)
+			return false
+		else
+			return true
+		end
+	end
+end
+GameEvents.UnitTakingPromotion.Add(function(iPlayer, iUnit, promotionID) return HandleError31(OnUnitTakingPromotion, iPlayer, iUnit, promotionID) end)
+
+
 function AttemptToReconectGP(iPerson, unit)		--have either iPerson or unit but not both
 	print("AttemptToReconectGP ", iPerson, unit)
 
@@ -1062,337 +1094,34 @@ function AttemptToReconectGP(iPerson, unit)		--have either iPerson or unit but n
 end
 
 
---[[
-local function OnCanDisplaceCivilian(iPlayer, iUnit)
-	local unit = Players[iPlayer]:GetUnitByID(iUnit)
-	local unitTypeID = unit and unit:GetUnitType()
-	print("CanDisplaceCivilian Listener test; iPlayer, iUnit, unitType = ", iPlayer, iUnit, unitTypeID and GameInfo.Units[unitTypeID].Type)
-
-	if unit:IsGreatPerson() then
-		return SaveGreatPerson(iPlayer, iUnit)
-	end
-
-	return false
-end
-GameEvents.CanDisplaceCivilian.Add(OnCanDisplaceCivilian)
-
-
---TO DO: Redo GP attacks without disappearing
-
-function TestGPAttackUnit(iPlayer, iUnit, unit, unitTypeID, defendingUnit)
-
-	if gg_gpAttackUnits.pos == 0 then return end
-	local gpList = gPlayers[iPlayer].gpList
-	for i = 1, gg_gpAttackUnits.pos do
-		if gg_gpAttackUnits[i] == iUnit then
-			--We have a temp GP attack unit that has attacked!
-			print("A GP temp attack unit has attacked ", iPlayer, iUnit, unit)
-			local player = Players[iPlayer]
-			local direction, endingXP
-			local bKilled
-			if unit then		--call was from EndCombatSim and gp unit is still alive
-				bKilled = false
-				unitTypeID = unit:GetUnitType()
-				direction = unit:GetFacingDirection()
-				endingXP = unit:GetExperience()			--TO DO: Move xp to before gp disappear, so player sees it
-			else				--call was from OnUnitKilledInCombat and gp unit is dead
-				bKilled = true
-			end
-
-
-			-- find the person attacking and do stuff
-			for j = 1, #gpList do
-				local iPerson = gpList[j]
-				local eaPerson = gPeople[iPerson]
-				if eaPerson.iUnit == iUnit then
-					print("Found eaPerson for attack")
-					eaPerson.iUnit = -1				--returns to disappeared state without updating from unit stats
-					if eaGPCombatRoleByID[unitTypeID] == "Melee" then
-						local removedUnitData = gg_gpAttackUnitsRemovedUnit[gg_gpAttackUnits.pos]
-						if removedUnitData then			--restore normal melee unit removed for this attack
-							if unit then	--GP lived
-								local xpGained = endingXP - eaPerson.xp
-								eaPerson.xp = eaPerson.xp + 2 * xpGained
-								local endingX, endingY = unit:GetX(), unit:GetY()
-								unit:Kill(true, -1)		--remove attack GP unit
-								eaPerson.disappearTurn = Game.GetGameTurn()
-								eaPerson.moves = 0
-
-								local meleeUnit = player:RebuildUnitFromData(removedUnitData)
-								meleeUnit:ChangeMorale(removedUnitData.moraleBoost)
-								gg_gpAttackUnitsRemovedUnit[gg_gpAttackUnits.pos] = nil
-
-								--resolve the target of the attack
-								local targetX, targetY = removedUnitData.targetX, removedUnitData.targetY	--already known if AI charges
-								if not targetX then
-									--1. defendingUnit exists, so this is target; 2. defender unit or city defeated and GP moved to plot; 3. city not killed
-									if defendingUnit then
-										targetX, targetY = defendingUnit:GetX(), defendingUnit:GetY()
-									elseif endingX ~= eaPerson.x and endingY ~= eaPerson.y then
-										targetX, targetY = endingX, endingY
-									else
-										for x, y in PlotToRadiusIterator(endingX, endingY, 1, nil, nil, true) do
-											local plot = GetPlotFromXY(x, y)
-											local city = plot:GetPlotCity()
-											if city then
-												targetX, targetY = city:GetX(), city:GetY()
-												break
-											end
-										end
-									end
-								end
-								if not targetX and targetY then
-									error("TestGPAttackUnit could not resolve target plot for Lead Charge")
-								end
-
-								--attack (may need time delayed action here; timer for human? )
-								print("Melee unit storing info for follow up attack")
-								print(meleeUnit:GetX(), meleeUnit:GetY(), targetX, targetY)
-								--attack won't work now, so put in in queue
-								g_delayedAttacks.pos = g_delayedAttacks.pos + 1
-								g_delayedAttacks[g_delayedAttacks.pos] = {iUnit = meleeUnit:GetID(), x = targetX, y = targetY, iPerson = iPerson}
-								if player:IsHuman() then
-									Events.LocalMachineAppUpdate.Add(TimeDelayForHumanMeleeCharge)
-								end
-
-								--meleeUnit:PushMission(MissionTypes.MISSION_MOVE_TO, targetX, targetY) --, 0, 0, 1)
-	
-								--if meleeUnit then
-								--	eaPerson.x, eaPerson.y = meleeUnit:GetX() , meleeUnit:GetY()
-								--end
-							else	--don't follow or boost morale for a failed charge; just reappear with -10 morale
-								print("Lead Charge failed with killed GP; melee unit does not follow and gets -10 morale")
-								local meleeUnit = player:RebuildUnitFromData(removedUnitData)
-								meleeUnit:ChangeMorale(-10)
-								gg_gpAttackUnitsRemovedUnit[gg_gpAttackUnits.pos] = nil							
-							end						
-						
-						
-						else
-							error("No melee unit to follow Lead Charge")			
-						end
-
-					elseif eaGPCombatRoleByID[unitTypeID] == "MagicMissle" then
-						unit:Kill(true, -1)		--remove attack unit
-						eaPerson.disappearTurn = Game.GetGameTurn()
-						eaPerson.moves = 0
-
-						if iPlayer == g_iActivePlayer then
-
-							local reappearedUnit = ReappearGP(iPlayer, iPerson, direction)
-							--reappearedUnit:FinishMoves()
-						end
-
-						local pts = GetGPMod(iPerson, EAMOD_CONJURATION, nil)
-						local totalFaith = player:GetFaith()
-						pts = pts < totalFaith and pts or totalFaith
-						UseManaOrDivineFavor(iPlayer, iPerson, pts)		--this will also give xp
-
-					end
-					MapModData.forcedUnitSelection = -1
-					MapModData.forcedInterfaceMode = -1
-
-					if bKilled then
-						KillPerson(iPlayer, iPerson)
-
-					end
-					break
-				end
-			end
-			for j = i + 1, gg_gpAttackUnits.pos do
-				gg_gpAttackUnits[j - 1] = gg_gpAttackUnits[j] 
-				gg_gpAttackUnitsRemovedUnit[j - 1] = gg_gpAttackUnitsRemovedUnit[j] 
-			end
-			gg_gpAttackUnits.pos = gg_gpAttackUnits.pos - 1
-			return
-		end
-	end
-end
-
-
-
-]]
-
-
---[[ depreciated
-function TestUnitAttackAtRiskPerson(iPlayer, iUnit)
-	print("Running TestUnitAttackAtRiskPerson", iPlayer, iUnit)
-	--eaPlayer.unitAttackAtRiskPerson[iUnit].iPerson, .risk
-	local eaPlayer = gPlayers[iPlayer]
-	local personRisk = eaPlayer.unitAttackAtRiskPerson[iUnit]
-	if personRisk then
-		print("TestUnitAttackAtRiskPerson found table ", personRisk.iPerson, personRisk.risk)
-		local player = Players[iPlayer]
-		local unit = Players[iPlayer]:GetUnitByID(iUnit)
-		local bKillPerson = not unit or Rand(100, "hello") < personRisk.risk
-		if bKillPerson then
-			--debug print
-			if unit then
-				print("Attacking unit lived, but GP failed dice role and will be killed")
-			else
-				print("Attacking unit died so GP will be killed")
-			end
-			KillPerson(iPlayer, personRisk.iPerson)
-		else
-			--Success! give experience
-			print("GP survived and will be rewarded with xp")
-			GiveGreatPersonXP(iPlayer, personRisk.iPerson, 10)
-		end
-		eaPlayer.unitAttackAtRiskPerson[iUnit] = nil
-	end
-end
-
-function ResetUnitAttackAtRiskPerson(iPlayer)
-	print("Running ResetUnitAttackAtRiskPerson", iPlayer)
-	local eaPlayer = gPlayers[iPlayer]
-	local numProcessed = 0
-	for iUnit in pairs(eaPlayer.unitAttackAtRiskPerson) do
-		print("ResetUnitAttackAtRiskPerson found table; some Warrior didn't follow through on risky attack ", iUnit)
-		numProcessed = numProcessed + 1
-		integers[numProcessed] = iUnit
-	end
-	for i = 1, numProcessed do
-		local iUnit = integers[i]
-		eaPlayer.unitAttackAtRiskPerson[iUnit] = nil
-	end
-end
-]]
---GetLifetimeCombatExperience
---GetNavalCombatExperience
---SetNavalCombatExperience
-
-
-
-
---------------------------------------------------------------
--- Morale
---------------------------------------------------------------
-
---[[
-function GetUnitMoraleFromMapUnit(unit)			--use only at game init; otherwise, used cached value unitMorale[iPlayer][iUnit]
-	--print("GetUnitMoraleFromMapUnit", unit)
-	local morale = 0
-	for i = 1, numMoralePlusValues do
-		if unit:IsHasPromotion(moralePlusPromoID[i]) then
-			morale = morale + moralePlusValues[i]
-		end
-	end
-	for i = 1, numMoraleMinusValues do
-		if unit:IsHasPromotion(moraleMinusPromoID[i]) then
-			morale = morale - moraleMinusValues[i]
-		end
-	end
-	return morale
-end
-
-function ChangeUnitMorale(iPlayer, iUnit, changeMorale, bSet)		--must be a real map unit; last arg means change
-	print("ChangeUnitMorale", iPlayer, iUnit, changeMorale, bSet)
-	local prevMorale = bSet and 0 or (unitMorale[iPlayer][iUnit] or 0)
-	local morale = prevMorale + changeMorale
-	morale =  morale < -90 and -90 or morale
-
-	if morale ~= prevMorale then
-		unitMorale[iPlayer][iUnit] = morale
-		local unit = Players[iPlayer]:GetUnitByID(iUnit)
-		if morale == 0 then
-			for i = numMoralePlusValues, 1, -1 do
-				unit:SetHasPromotion(moralePlusPromoID[i], false)
-			end
-			for i = numMoraleMinusValues, 1, -1 do
-				unit:SetHasPromotion(moraleMinusPromoID[i], false)
-			end
-		elseif morale < 0 then
-			for i = numMoralePlusValues, 1, -1 do
-				unit:SetHasPromotion(moralePlusPromoID[i], false)
-			end
-			for i = numMoraleMinusValues, 1, -1 do
-				if -moraleMinusValues[i] < morale then
-					unit:SetHasPromotion(moraleMinusPromoID[i], false)
-				else
-					unit:SetHasPromotion(moraleMinusPromoID[i], true)
-					morale = morale + moraleMinusValues[i]
-				end
-			end
-		else
-			for i = numMoraleMinusValues, 1, -1 do
-				unit:SetHasPromotion(moraleMinusPromoID[i], false)
-			end
-			for i = numMoralePlusValues, 1, -1 do
-				if morale < moralePlusValues[i] then
-					unit:SetHasPromotion(moralePlusPromoID[i], false)
-				else
-					unit:SetHasPromotion(moralePlusPromoID[i], true)
-					morale = morale - moralePlusValues[i]
-				end
-			end
-		end
-	end
-end
-]]
-
---TO DO: Simplify!
---[[
-function AddMoraleWithPersonRisk(iPlayer, iUnit, moraleBoost, risk, iPerson)
-	print("AddMoraleWithPersonRisk", iPlayer, iUnit, moraleBoost, risk, iPerson)
-	--iPerson only needed if risk > 0
-	local player = Players[iPlayer]
-	local unit = player:GetUnitByID(iUnit)
-	local eaPlayer = gPlayers[iPlayer]
-	--eaPlayer.tempAttackMorale[iUnit] = moraleBoost
-	if risk > 0 then
-		eaPlayer.unitAttackAtRiskPerson[iUnit] = {iPerson = iPerson, risk = risk}
-	end
-	unit:ChangeMorale(moraleBoost)
-end
-
-
-function RemoveTempAttackMorale(iPlayer, iUnit)	--does nothing if there is none
-	print("RemoveTempAttackMorale", iPlayer, iUnit)
-	local eaPlayer = gPlayers[iPlayer]
-	local tempMorale = eaPlayer.tempAttackMorale[iUnit]
-	if tempMorale and tempMorale ~= 0 then
-		print("removing tempMorale ", tempMorale)
-		--ChangeUnitMorale(iPlayer, iUnit, -tempMorale)
-		local player = Players[iPlayer]
-		local unit = player:GetUnitByID(iUnit)
-		unit:ChangeMorale(-tempMorale)
-		eaPlayer.tempAttackMorale[iUnit] = nil
-	end
-end
-]]
 --------------------------------------------------------------
 -- Promotion utilities
 --------------------------------------------------------------
 
-function GetHighestPromotionLevel(prefixStr, unit, iPerson)
+function GetHighestPromotionLevel(prefixStr, unit, iPerson)		--unit is not used if iPerson supplied
 	--e.g., if 1st arg is "PROMOTION_COMBAT", then return 7 if unit has PROMOTION_COMBAT_7
-	--If unit is nil, assumes GP and needs iPerson (but supply unit if on map since it is more current)
+
+	if iPerson then		--for quick access, levels are kept in eaPlayer (faster than testing all promos)
+		local eaPerson = gPeople[iPerson]
+		local level = eaPerson[prefixStr] or 0
+
+		--debug
+		--local unit = Players[eaPerson.iPlayer]:GetUnitByID(eaPerson.iUnit)
+		--local debugUnitLevel = GetHighestPromotionLevel(prefixStr, unit, nil)
+		--if debugUnitLevel ~= level then
+		--	error("promo level from eaPerson not same as from unit: " .. prefixStr .. " " .. level .. " " .. debugUnitLevel)
+		--end
+		--
+
+		return level
+	end
+
 	local levels = promotionLevels[prefixStr]
 	if not levels then return 0 end
-	if unit then
-		for i = levels.max, 1, -1 do		--work down from highest level
-			if unit:IsHasPromotion(levels[i]) then
-				return i
-			end
+	for i = levels.max, 1, -1 do		--work down from highest level
+		if unit:IsHasPromotion(levels[i]) then
+			return i
 		end
-	else
-		local promotions = gPeople[iPerson].promotions
-		for i = levels.max, 1, -1 do		--work down from highest level
-			if promotions[levels[i] ] then
-				return i
-			end
-		end	
-		--[[
-		local promotions = gPeople[iPerson].promotions
-		local numPromotions = #promotions
-		for i = levels[0], 1, -1 do
-			for j = 1, numPromotions do
-				if promotions[j] == levels[i] then
-					return i
-				end
-			end
-		end
-		]]
 	end
 	return 0
 end
@@ -1643,16 +1372,38 @@ RemoveOwnedCampPlot = function(iPlot, iOwnerPlayer, iOwnerCity)
 end
 
 --sustained promotion system
-local ModelSustainedPromotionFunction = function(player, unit, iCaster)
+
+SustainedPromotionDo[GameInfoTypes.PROMOTION_HEX] = function(player, unit, iCaster)
 	local eaPerson = gPeople[iCaster]
-	if eaPerson.deathTurn or Rand(eaPerson.modDevotion, "hello") == 0 then return false end	--1/mod chance to wear off each turn
+	if not eaPerson then return false end	--caster died
+	local mod = GetGPMod(iPerson, EAMOD_CONJURATION, nil)
+	if Rand(mod, "hello") == 0 then return false end	--1/mod chance to wear off each turn
 	return UseManaOrDivineFavor(eaPerson.iPlayer, iCaster, 1)		--wear off if caster has no more mana or divine favor
 end
 
-SustainedPromotionDo[GameInfoTypes.PROMOTION_HEX] = ModelSustainedPromotionFunction
-SustainedPromotionDo[GameInfoTypes.PROMOTION_BLESSED] = ModelSustainedPromotionFunction
-SustainedPromotionDo[GameInfoTypes.PROMOTION_SANCTIFIED] = ModelSustainedPromotionFunction
-SustainedPromotionDo[GameInfoTypes.PROMOTION_CURSED] = ModelSustainedPromotionFunction
+SustainedPromotionDo[GameInfoTypes.PROMOTION_BLESSED] = function(player, unit, iCaster)
+	local eaPerson = gPeople[iCaster]
+	if not eaPerson then return false end	--caster died
+	local mod = GetGPMod(iPerson, EAMOD_DEVOTION, EAMOD_EVOCATION)
+	if Rand(mod, "hello") == 0 then return false end	--1/mod chance to wear off each turn
+	return UseManaOrDivineFavor(eaPerson.iPlayer, iCaster, 1)		--wear off if caster has no more mana or divine favor
+end
+
+SustainedPromotionDo[GameInfoTypes.PROMOTION_SANCTIFIED] = function(player, unit, iCaster)
+	local eaPerson = gPeople[iCaster]
+	if not eaPerson then return false end	--caster died
+	local mod = GetGPMod(iPerson, EAMOD_DEVOTION, EAMOD_ABJURATION)
+	if Rand(mod, "hello") == 0 then return false end	--1/mod chance to wear off each turn
+	return UseManaOrDivineFavor(eaPerson.iPlayer, iCaster, 1)		--wear off if caster has no more mana or divine favor
+end
+
+SustainedPromotionDo[GameInfoTypes.PROMOTION_CURSED] = function(player, unit, iCaster)
+	local eaPerson = gPeople[iCaster]
+	if not eaPerson then return false end	--caster died
+	local mod = GetGPMod(iPerson, EAMOD_DEVOTION, EAMOD_ABJURATION)
+	if Rand(mod, "hello") == 0 then return false end	--1/mod chance to wear off each turn
+	return UseManaOrDivineFavor(eaPerson.iPlayer, iCaster, 1)		--wear off if caster has no more mana or divine favor
+end
 
 SustainedPromotionDo[GameInfoTypes.PROMOTION_RIDE_LIKE_THE_WINDS] = function(player, unit, iCaster)
 	local eaPerson = gPeople[iCaster]

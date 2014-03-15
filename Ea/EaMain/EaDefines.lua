@@ -19,6 +19,7 @@ MapModData.bDebugShowHiddenBuildings = true
 --------------------------------------------------------------
 
 MapModData.STARTING_SUM_OF_ALL_MANA = 1000000
+MOD_MEMORY_HALFLIFE = 50	--What AI is doing now is twice as important as this many turns ago
 
 --------------------------------------------------------------
 -- Global Constants
@@ -97,6 +98,7 @@ for eaAction in GameInfo.EaActions() do
 	if eaAction.SpellClass and FIRST_SPELL_ID == 0 then
 		FIRST_SPELL_ID = eaAction.ID
 	end
+	LAST_SPELL_ID = eaAction.ID
 end
 MapModData.FIRST_SPELL_ID = FIRST_SPELL_ID
 --print("FIRST_SPELL_ID", FIRST_SPELL_ID)

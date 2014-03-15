@@ -36,21 +36,21 @@
 --    end
 --
 
-SECTOR_NORTH = 1
-SECTOR_NORTHEAST = 2
-SECTOR_SOUTHEAST = 3
-SECTOR_SOUTH = 4
-SECTOR_SOUTHWEST = 5
-SECTOR_NORTHWEST = 6
+local SECTOR_NORTH = 1
+local SECTOR_NORTHEAST = 2
+local SECTOR_SOUTHEAST = 3
+local SECTOR_SOUTH = 4
+local SECTOR_SOUTHWEST = 5
+local SECTOR_NORTHWEST = 6
 
-DIRECTION_CLOCKWISE = false
-DIRECTION_ANTICLOCKWISE = true
+local DIRECTION_CLOCKWISE = false
+local DIRECTION_ANTICLOCKWISE = true
 
-DIRECTION_OUTWARDS = false
-DIRECTION_INWARDS = true
+local DIRECTION_OUTWARDS = false
+local DIRECTION_INWARDS = true
 
-CENTRE_INCLUDE = true
-CENTRE_EXCLUDE = false
+local CENTRE_INCLUDE = true
+local CENTRE_EXCLUDE = false
 
 function PlotRingIterator(pPlot, r, sector, anticlock)
   --print(string.format("PlotRingIterator((%i, %i), r=%i, s=%i, d=%s)", pPlot:GetX(), pPlot:GetY(), r, (sector or SECTOR_NORTH), (anticlock and "rev" or "fwd")))

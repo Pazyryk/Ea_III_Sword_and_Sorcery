@@ -27,7 +27,6 @@ local RELIGION_AZZANDARAYASNA =				GameInfoTypes.RELIGION_AZZANDARAYASNA
 local RELIGION_ANRA =						GameInfoTypes.RELIGION_ANRA
 local POLICY_PANTHEISM =					GameInfoTypes.POLICY_PANTHEISM
 
-
 local DOMAIN_LAND =							DomainTypes.DOMAIN_LAND
 local DOMAIN_SEA =							DomainTypes.DOMAIN_SEA
 local PLOT_HILLS =							PlotTypes.PLOT_HILLS
@@ -39,8 +38,11 @@ local FEATURE_FOREST = 						GameInfoTypes.FEATURE_FOREST
 local FEATURE_JUNGLE = 						GameInfoTypes.FEATURE_JUNGLE
 local FEATURE_MARSH =	 					GameInfoTypes.FEATURE_MARSH
 
+local EA_WONDER_ARCANE_TOWER =	 			GameInfoTypes.EA_WONDER_ARCANE_TOWER
+
 local FIRST_COMBAT_ACTION_ID =				FIRST_COMBAT_ACTION_ID
 local FIRST_SPELL_ID =						FIRST_SPELL_ID
+local LAST_SPELL_ID =						LAST_SPELL_ID
 
 --global tables
 local fullCivs =							MapModData.fullCivs
@@ -305,25 +307,6 @@ end
 
 local AITarget = {}
 
-AITarget.NearbyNonFeature = function()
-	for x, y in PlotToRadiusIterator(g_gpX, g_gpY, 5) do
-		local plot = GetPlotFromXY(x, y)
-		if plot:GetFeatureType() == -1 then
-			TestAddOption("Plot", plot:GetX(), plot:GetY(), 0, nil)
-		end
-	end
-end
-
-AITarget.NearbyLivTerrain = function()
-	for x, y in PlotToRadiusIterator(g_gpX, g_gpY, 5) do
-		local plot = GetPlotFromXY(x, y)
-		local featureID = plot:GetFeatureType()
-		if featureID == FEATURE_FOREST or featureID == FEATURE_JUNGLE or featureID == FEATURE_MARSH then
-			TestAddOption("Plot", plot:GetX(), plot:GetY(), 0, nil)
-		end
-	end
-end
-
 AITarget.Self = function()
 	TestAddOption("Plot", g_gpX, g_gpY, 0, 0)		--targetType, index1, index2, tieBreaker, g
 end
@@ -367,6 +350,39 @@ AITarget.AllCities = function()
 		local loopPlayer = Players[iLoopPlayer]
 		for city in loopPlayer:Cities() do
 			TestAddOption("Plot", city:GetX(), city:GetY(), 0, nil)
+		end
+	end
+end
+
+AITarget.NearbyNonFeature = function()
+	for x, y in PlotToRadiusIterator(g_gpX, g_gpY, 5) do
+		local plot = GetPlotFromXY(x, y)
+		if plot:GetFeatureType() == -1 then
+			TestAddOption("Plot", plot:GetX(), plot:GetY(), 0, nil)
+		end
+	end
+end
+
+AITarget.NearbyLivTerrain = function()
+	for x, y in PlotToRadiusIterator(g_gpX, g_gpY, 5) do
+		local plot = GetPlotFromXY(x, y)
+		local featureID = plot:GetFeatureType()
+		if featureID == FEATURE_FOREST or featureID == FEATURE_JUNGLE or featureID == FEATURE_MARSH then
+			TestAddOption("Plot", plot:GetX(), plot:GetY(), 0, nil)
+		end
+	end
+end
+
+AITarget.NIMBY = function()					-- Not In My BackYard (e.g., Blight spell) - test in caster's tower and outside of own city 3-plot radius
+	local tower = gWonders[EA_WONDER_ARCANE_TOWER][g_iPerson]
+	if tower then
+		local x, y = GetXYFromPlotIndex(tower.iPlot)
+		TestAddOption("Plot", x, y, 0, nil)
+	end
+	for x, y in PlotToRadiusIterator(g_gpX, g_gpY, 5) do
+		local plot = GetPlotFromXY(x, y)
+		if not plot:IsPlayerCityRadius(g_iPlayer) then
+			TestAddOption("Plot", x, y, 0, nil)
 		end
 	end
 end

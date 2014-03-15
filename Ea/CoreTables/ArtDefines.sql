@@ -73,7 +73,9 @@ INSERT INTO ArtDefine_Landmarks (Era, State, Scale,	ImprovementType,					LayoutH
 --fishing on lakes
 ('Any',	'Any',					0.07000000029802322,'ART_DEF_IMPROVEMENT_FISHING_BOATS','ANIMATED',		'ART_DEF_RESOURCE_NONE',		'Fish.fxsxml',						1	),
 --Blight
-('Any',	'Any',					0.5,				'ART_DEF_IMPROVEMENT_BLIGHT',		'SNAPSHOT',		'ART_DEF_RESOURCE_ALL',			'feature_blight.fxsxml',			0	);
+('Any',	'Any',					0.5,				'ART_DEF_IMPROVEMENT_BLIGHT',		'SNAPSHOT',		'ART_DEF_RESOURCE_ALL',			'feature_blight.fxsxml',			0	),
+('Any',	'Any',					0.5,				'ART_DEF_IMPROVEMENT_NONE',			'SNAPSHOT',		'ART_DEF_RESOURCE_BLIGHT',		'feature_blight.fxsxml',			0	),
+('Any',	'Any',					0.5,				'ART_DEF_IMPROVEMENT_CHATEAU',		'SNAPSHOT',		'ART_DEF_RESOURCE_BLIGHT',		'feature_blight.fxsxml',			0	);	--Arcane Tower
 
 -----------------------------------------------------------------------------------------
 -- Units

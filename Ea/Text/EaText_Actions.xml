@@ -110,9 +110,12 @@
 		<Row Tag="TXT_KEY_EA_ACTION_GREAT_LIBRARY">
 			<Text>Build Great Library</Text>
 		</Row>
-			
+
 		<Row Tag="TXT_KEY_EA_ACTION_NATIONAL_TREASURY">
 			<Text>Build National Treasury</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_ARCANE_TOWER">
+			<Text>Build Arcane Tower</Text>
 		</Row>
 		
 		<Row Tag="TXT_KEY_EA_ACTION_EPIC_VOLUSPA">
@@ -216,6 +219,9 @@
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_EAS_BLESSING">
 			<Text>Éa's Blessing</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_BLIGHT">
+			<Text>Blight</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_HEAL">
 			<Text>Heal</Text>

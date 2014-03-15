@@ -1,17 +1,19 @@
-#update only these files
-*
-/*
-!/Ea
-!/Ea/**/
+#Ignore rules
 
-!**.sql
-!**.xml
-!**.lua
-!**.fxsxml
-!**.ggxml
-!**.gr2
-!**.dds
-!**.dll
-!**.civ5proj
-!**.txt
-!**.gitignore
+*.dll
+*.civ5suo
+*.civ5sln
+*.vstemplate
+*.ico
+
+/Build/
+/Packages/
+/Ea Media Pack/
+
+
+
+
+
+
+
+

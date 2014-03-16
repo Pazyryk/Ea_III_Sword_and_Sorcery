@@ -5,6 +5,7 @@
 *.civ5sln
 *.vstemplate
 *.ico
+*.pdb
 
 /Build/
 /Packages/

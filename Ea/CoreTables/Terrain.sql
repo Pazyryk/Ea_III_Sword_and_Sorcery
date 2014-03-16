@@ -56,6 +56,7 @@ DELETE FROM Terrain_HillsYieldChanges;
 -----------------------------------------------------------------------------------------
 ALTER TABLE Features ADD COLUMN 'EaGod' TEXT DEFAULT NULL;
 ALTER TABLE Features ADD COLUMN 'EaUnhappiness' INTEGER DEFAULT 0;	-- UI only! 2 means net -1 happiness; 1 is a wash
+ALTER TABLE Features ADD COLUMN 'NaturalWonderHappiness' INTEGER DEFAULT 1; -- ls612: This allows to remove the kludgy NW hack from lua.
 
 INSERT INTO Features (Type, Description, Civilopedia, Help, ArtDefineTag, PortraitIndex, IconAtlas) VALUES
 ('FEATURE_BLIGHT',	'TXT_KEY_EA_FEATURE_BLIGHT',	'TXT_KEY_EA_FEATURE_BLIGHT_PEDIA',	'TXT_KEY_EA_FEATURE_BLIGHT_HELP',	'dummy',	17,	'TERRAIN_ATLAS');

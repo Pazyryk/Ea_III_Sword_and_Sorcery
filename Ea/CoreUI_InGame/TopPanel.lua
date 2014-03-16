@@ -714,10 +714,15 @@ function HappinessTipHandler( control )
 		local iReligionHappiness = pPlayer:GetHappinessFromReligion();
 		local iNaturalWonderHappiness = pPlayer:GetHappinessFromNaturalWonders() - iNWReverseHappiness;	--Paz: iNWReverseHappiness (compensate for two NWs that should not have given any)
 		local iExtraHappinessPerCity = pPlayer:GetExtraHappinessPerCity() * pPlayer:GetNumCities();
-	
+		--ls612: NW Discovery
+		local iNWDiscoveryHappiness = 0;
+		if (pPlayer.getHappinessFromNWDiscovery) then
+			iNWDiscoveryHappiness = pPlayer:getHappinessFromNWDiscovery();
+		end
+
 		local iMinorCivHappiness = pPlayer:GetHappinessFromMinorCivs();
 	
-		local iHandicapHappiness = pPlayer:GetHappiness() - iPoliciesHappiness - iResourcesHappiness - iCityHappiness - iBuildingHappiness - iTradeRouteHappiness - iReligionHappiness - iNaturalWonderHappiness - iMinorCivHappiness - iExtraHappinessPerCity;
+		local iHandicapHappiness = pPlayer:GetHappiness() - iPoliciesHappiness - iResourcesHappiness - iCityHappiness - iBuildingHappiness - iTradeRouteHappiness - iReligionHappiness - iNaturalWonderHappiness - iMinorCivHappiness - iExtraHappinessPerCity - iNWDiscoveryHappiness;
 		--Paz add
 		iHandicapHappiness = iHandicapHappiness + iBadNWsUnhappiness - iRacialHarmony
 		--end Paz add
@@ -806,6 +811,12 @@ function HappinessTipHandler( control )
 			strText = strText .. "[NEWLINE]";
 			strText = strText .. "  [ICON_BULLET]" .. Locale.ConvertTextKey("TXT_KEY_TP_HAPPINESS_CITY_COUNT", iExtraHappinessPerCity);
 		end
+		-- ls612: Discovery of Natural Wonders
+		if (iNWDiscoveryHappiness >= 0) then
+			strText = strText .. "[NEWLINE]";
+			strText = strText .. "  [ICON_BULLET]" .. Locale.ConvertTextKey("TXT_KEY_EA_TP_HAPPINESS_NATURAL_WONDER_DISCOVERY_GOOD", iNWDiscoveryHappiness);
+		end
+
 		if (iMinorCivHappiness ~= 0) then
 			strText = strText .. "[NEWLINE]";
 			strText = strText .. "  [ICON_BULLET]" .. Locale.ConvertTextKey("TXT_KEY_TP_HAPPINESS_CITY_STATE_FRIENDSHIP", iMinorCivHappiness);
@@ -863,6 +874,13 @@ function HappinessTipHandler( control )
 		end		
 		
 		--end Paz add
+
+		-- ls612: Discovery of Bad Natural Wonders
+		if (iNWDiscoveryHappiness < 0) then
+			strText = strText .. "[NEWLINE]";
+			strText = strText .. "  [ICON_BULLET]" .. Locale.ConvertTextKey("TXT_KEY_EA_TP_HAPPINESS_NATURAL_WONDER_DISCOVERY_BAD", -iNWDiscoveryHappiness);
+		end
+
 		if (iUnhappinessFromUnits ~= "0") then
 			strText = strText .. "[NEWLINE]";
 			strText = strText .. "  [ICON_BULLET]" .. Locale.ConvertTextKey("TXT_KEY_TP_UNHAPPINESS_UNITS", iUnhappinessFromUnits);

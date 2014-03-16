@@ -229,8 +229,8 @@
 		<Row Tag="TXT_KEY_EA_SPELL_BLESS">
 			<Text>Bless</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_SPELL_SANCTIFY">
-			<Text>Sanctify</Text>
+		<Row Tag="TXT_KEY_EA_SPELL_PROTECTION_FROM_EVIL">
+			<Text>Protection from Evil</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_HURT">
 			<Text>Hurt</Text>
@@ -238,8 +238,8 @@
 		<Row Tag="TXT_KEY_EA_SPELL_CURSE">
 			<Text>Curse</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_SPELL_DEFILE">
-			<Text>Defile</Text>
+		<Row Tag="TXT_KEY_EA_SPELL_EVIL_EYE">
+			<Text>Evil-Eye</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_BLOOM">
 			<Text>Bloom</Text>

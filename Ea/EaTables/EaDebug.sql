@@ -12,6 +12,7 @@ INSERT INTO Ea_ExpectedTableFiles (FileName) VALUES
 	('EaDebug.sql'),
 	('EaModifiers.sql'),
 	('EaPeople.sql'),
+	('EaPlotEffects.sql'),
 	('EaRaces.sql'),
 	('AI.sql'),
 	('Buildings.sql'),
@@ -42,7 +43,7 @@ CREATE TABLE Ea_DBErrors ('ErrorText' TEXT NOT NULL, 'ItemText' TEXT DEFAULT NUL
 
 INSERT INTO Ea_DBErrors (ErrorText, ItemText)
 SELECT 'Unit No AI', Type FROM Units WHERE Type NOT IN (SELECT UnitType FROM Unit_AITypes) AND Special IS NULL UNION ALL
-SELECT 'Unit No Flavor', Type FROM Units WHERE Type NOT IN (SELECT UnitType FROM Unit_Flavors) UNION ALL
-SELECT 'Building No Flavor', Type FROM Buildings WHERE Type NOT IN (SELECT BuildingType FROM Building_Flavors);
+SELECT 'Unit No Flavor', Type FROM Units WHERE Type NOT IN (SELECT UnitType FROM Unit_Flavors) AND Cost != -1 AND EaNoTrain IS NULL AND Special IS NULL UNION ALL
+SELECT 'Building No Flavor', Type FROM Buildings WHERE Type NOT IN (SELECT BuildingType FROM Building_Flavors) AND Cost != -1;
 
 INSERT INTO EaDebugTableCheck(FileName) SELECT 'EaDebug.sql';

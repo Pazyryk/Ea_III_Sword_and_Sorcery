@@ -47,9 +47,9 @@ local BUILDING_TRADE_HOUSE =				GameInfoTypes.BUILDING_TRADE_HOUSE
 local UNITCOMBAT_MOUNTED =					GameInfoTypes.UNITCOMBAT_MOUNTED
 local PROMOTION_HEX =						GameInfoTypes.PROMOTION_HEX
 local PROMOTION_BLESSED =					GameInfoTypes.PROMOTION_BLESSED
-local PROMOTION_SANCTIFIED =				GameInfoTypes.PROMOTION_SANCTIFIED
+local PROMOTION_PROTECTION_FROM_EVIL =				GameInfoTypes.PROMOTION_PROTECTION_FROM_EVIL
 local PROMOTION_CURSED =					GameInfoTypes.PROMOTION_CURSED
-local PROMOTION_DEFILED =					GameInfoTypes.PROMOTION_DEFILED
+local PROMOTION_EVIL_EYE =					GameInfoTypes.PROMOTION_EVIL_EYE
 local PROMOTION_RIDE_LIKE_THE_WINDS =		GameInfoTypes.PROMOTION_RIDE_LIKE_THE_WINDS
 local PROMOTION_FAIR_WINDS =				GameInfoTypes.PROMOTION_FAIR_WINDS
 local YIELD_PRODUCTION =					GameInfoTypes.YIELD_PRODUCTION
@@ -412,8 +412,12 @@ function TestEaAction(eaActionID, iPlayer, unit, iPerson, testX, testY, bAINonTa
 		if g_eaAction.PolicyReq and not g_player:HasPolicy(GameInfoTypes[g_eaAction.PolicyReq]) and (not g_eaAction.OrPolicyReq or not g_player:HasPolicy(GameInfoTypes[g_eaAction.OrPolicyReq])) then return false end
 		g_iTeam = g_player:GetTeam()
 		g_team = Teams[g_iTeam]	
-		if g_eaAction.TechReq and not g_team:IsHasTech(GameInfoTypes[g_eaAction.TechReq]) then return false end
-		if g_eaAction.AndTechReq and not g_team:IsHasTech(GameInfoTypes[g_eaAction.AndTechReq]) then return false end
+		if g_eaAction.TechReq then
+			if not (g_eaAction.PolicyTrumpsTechReq and g_player:HasPolicy(GameInfoTypes[g_eaAction.PolicyTrumpsTechReq])) then
+				if not g_team:IsHasTech(GameInfoTypes[g_eaAction.TechReq]) then return false end
+				if spellInfo.AndTechReq and not g_team:IsHasTech(GameInfoTypes[g_eaAction.AndTechReq]) then return false end
+			end
+		end
 		if g_eaAction.TechDisallow and g_team:IsHasTech(GameInfoTypes[g_eaAction.TechDisallow]) then return false end
 		g_iPlayer = iPlayer
 	end
@@ -1302,7 +1306,12 @@ function TestSpellLearnable(iPlayer, iPerson, spellID, spellClass)		--iPerson = 
 	end
 	local player = Players[iPlayer]
 	local team = Teams[player:GetTeam()]
-	if spellInfo.TechReq and not team:IsHasTech(GameInfoTypes[spellInfo.TechReq]) then return false end
+	if spellInfo.TechReq then
+		if not (spellInfo.PolicyTrumpsTechReq and player:HasPolicy(GameInfoTypes[spellInfo.PolicyTrumpsTechReq])) then
+			if not team:IsHasTech(GameInfoTypes[spellInfo.TechReq]) then return false end
+			if spellInfo.AndTechReq and not team:IsHasTech(GameInfoTypes[spellInfo.AndTechReq]) then return false end
+		end
+	end
 	if spellInfo.PantheismCult and not player:HasPolicy(POLICY_PANTHEISM) then return end		--show cult spell only if Pantheistic
 	if spellInfo.ReligionNotFounded and gReligions[GameInfoTypes[spellInfo.ReligionNotFounded] ] then return false end
 	if spellInfo.ReligionFounded and not gReligions[GameInfoTypes[spellInfo.ReligionFounded] ] then return false end
@@ -1310,7 +1319,6 @@ function TestSpellLearnable(iPlayer, iPerson, spellID, spellClass)		--iPerson = 
 	if spellInfo.ExcludeFallen and eaPlayer.bIsFallen then return false end
 	if spellInfo.CivReligion and eaPlayer.religionID ~= GameInfoTypes[spellInfo.CivReligion] then return false end
 	if spellInfo.PolicyReq and not player:HasPolicy(GameInfoTypes[spellInfo.PolicyReq]) then return false end
-	if spellInfo.AndTechReq and not team:IsHasTech(GameInfoTypes[spellInfo.AndTechReq]) then return false end
 	if spellInfo.TechDisallow and team:IsHasTech(GameInfoTypes[spellInfo.TechDisallow]) then return false end
 	if iPerson and (spellInfo.LevelReq or spellInfo.PromotionReq) then
 		local eaPerson = gPeople[iPerson]
@@ -4003,132 +4011,6 @@ Do[GameInfoTypes.EA_SPELL_MAGIC_MISSILE] = function()
 	return true
 end
 ]]
---EA_SPELL_HEX
-TestTarget[GameInfoTypes.EA_SPELL_HEX] = function()
-	--Priority: strongest adjacent enemy (cost x current hp)
-	--g_obj1 = unit
-	--g_value = unit cost for AI
-	local value = 0
-	for x, y in PlotToRadiusIterator(g_x, g_y, 1, nil, nil, false) do
-		local plot = GetPlotFromXY(x, y)
-		local unitCount = plot:GetNumUnits()
-		for i = 0, unitCount - 1 do
-			local unit = plot:GetUnit(i)
-			if not unit:IsHasPromotion(PROMOTION_HEX) and not unit:IsHasPromotion(PROMOTION_SANCTIFIED) then
-				if g_team:IsAtWar(Players[unit:GetOwner()]:GetTeam()) then
-					local unitTypeID = unit:GetUnitType()	
-					if bNormalCombatUnit[unitTypeID] then
-						local unitTypeInfo = GameInfo.Units[unitTypeID]
-						if value < unitTypeInfo.Cost * unit:GetCurrHitPoints() then
-							g_obj1 = unit
-							value = unitTypeInfo.Cost
-						end
-					end
-				end
-			end
-		end
-	end
-	if value == 0 then return false end	--no valid target
-	g_value = value
-	return true
-end
-
-SetUI[GameInfoTypes.EA_SPELL_HEX] = function()
-	if g_bNonTargetTestsPassed then		--has spell so show it
-		MapModData.bShow = true
-		if g_bAllTestsPassed then
-			local unitTypeInfo = GameInfo.Units[g_obj1:GetUnitType()]
-			local unitText = Locale.ConvertTextKey(unitTypeInfo.Description)
-			MapModData.text = "Hex adjacent " .. unitText
-		else
-			MapModData.text = "[COLOR_WARNING_TEXT]No valid target[ENDCOLOR]"
-		end
-	end
-end
-
-SetAIValues[GameInfoTypes.EA_SPELL_HEX] = function()
-	gg_aiOptionValues.i = g_value / 100
-end
-
-Do[GameInfoTypes.EA_SPELL_HEX] = function()
-	g_obj1:SetHasPromotion(PROMOTION_HEX, true)
-	local iOtherPlayer = g_obj1:GetOwner()
-	local iOtherUnit = g_obj1:GetID()
-	local sustainedPromotions = gPlayers[iOtherPlayer].sustainedPromotions
-	sustainedPromotions[iOtherUnit] = sustainedPromotions[iOtherUnit] or {}
-	sustainedPromotions[iOtherUnit][PROMOTION_HEX] = g_iPerson
-	g_specialEffectsPlot = g_obj1:GetPlot()
-	return true
-end
-
---EA_SPELL_EAS_BLESSING
-TestTarget[GameInfoTypes.EA_SPELL_EAS_BLESSING] = function()
-	local featureID = g_plot:GetFeatureType()
-	if featureID == FEATURE_FOREST or featureID == FEATURE_JUNGLE or featureID == FEATURE_MARSH then
-		g_int1 = g_modSpell < g_faith and g_modSpell or g_faith
-		g_int2 = featureID
-		return true
-	end
-	return false
-end
-
-SetUI[GameInfoTypes.EA_SPELL_EAS_BLESSING] = function()
-	if g_bNonTargetTestsPassed then		--has spell so show it
-		if g_bAllTestsPassed then
-			local featureInfo = GameInfo.Features[g_int2]
-			local featureName = Locale.ConvertTextKey(featureInfo.Description)
-			MapModData.text = "Increase spreading and regeneration strength of " .. featureName .. " by " .. g_int1
-		else
-			MapModData.text = "Plot must be Living Terrain (Forest, Jungle or Marsh)"
-		end
-	end
-end
-
-SetAIValues[GameInfoTypes.EA_SPELL_EAS_BLESSING] = function()
-	local countCanSpreadAdj = 0
-	for x, y in  PlotToRadiusIterator(g_x, g_y, 1, nil, nil, true) do
-		local adjPlot = GetPlotFromXY(x, y)
-		if adjPlot:GetFeatureType() == -1 and adjPlot:GetImprovementType() == -1 and not adjPlot:IsCity() then
-			local terrainID = adjPlot:GetTerrainType()
-			if g_int2 == FEATURE_FOREST then
-				if terrainID == TERRAIN_GRASS or terrainID == TERRAIN_PLAINS or terrainID == TERRAIN_TUNDRA then
-					countCanSpreadAdj = countCanSpreadAdj + 1
-				end
-			elseif g_int2 == FEATURE_JUNGLE then
-				if terrainID == TERRAIN_GRASS or terrainID == TERRAIN_PLAINS then
-					countCanSpreadAdj = countCanSpreadAdj + 1
-				end
-			elseif g_int2 == FEATURE_MARSH then
-				if terrainID == TERRAIN_GRASS and adjPlot:GetPlotType() == PLOT_LAND then
-					countCanSpreadAdj = countCanSpreadAdj + 1
-				end
-			end
-		end
-	end
-	local strength = g_plot:GetLivingTerrainStrength()
-	gg_aiOptionValues.i = g_int1 * (countCanSpreadAdj + 0.1) / (strength + 1)		--tiny positive even if it can't spread
-end
-
-Finish[GameInfoTypes.EA_SPELL_EAS_BLESSING] = function()
-	local type, present, strength, turnChopped = g_plot:GetLivingTerrainData()
-	if type == -1 then
-		if g_int2 == FEATURE_FOREST then
-			type = 1	--"forest"
-		elseif g_int2 == FEATURE_JUNGLE then
-			type = 2	--"jungle"
-		else
-			type = 3	--"marsh"
-		end
-		present = true
-		strength = 0
-		turnChopped = -100
-	end
-	strength = strength + g_int1
-	g_plot:SetLivingTerrainData(type, present, strength, turnChopped)
-	UseManaOrDivineFavor(g_iPlayer, g_iPerson, g_int1)
-	g_eaPlayer.livingTerrainStrengthAdded = (g_eaPlayer.livingTerrainStrengthAdded or 0) + g_int1
-	return true
-end
 
 --EA_SPELL_BLIGHT
 TestTarget[GameInfoTypes.EA_SPELL_BLIGHT] = function()
@@ -4252,6 +4134,68 @@ Finish[GameInfoTypes.EA_SPELL_BLIGHT] = function()
 	UseManaOrDivineFavor(g_iPlayer, g_iPerson, 10 + g_int2)		--uses 10 plus terrain strength overcome, if any
 end
 
+
+--EA_SPELL_HEX
+TestTarget[GameInfoTypes.EA_SPELL_HEX] = function()
+	--Priority: strongest adjacent enemy (cost x current hp)
+	--g_obj1 = unit
+	--g_value = unit cost for AI
+	local value = 0
+	for x, y in PlotToRadiusIterator(g_x, g_y, 1, nil, nil, false) do
+		local plot = GetPlotFromXY(x, y)
+		local unitCount = plot:GetNumUnits()
+		for i = 0, unitCount - 1 do
+			local unit = plot:GetUnit(i)
+			if not unit:IsHasPromotion(PROMOTION_HEX) and not unit:IsHasPromotion(PROMOTION_PROTECTION_FROM_EVIL) then
+				if g_team:IsAtWar(Players[unit:GetOwner()]:GetTeam()) then
+					local unitTypeID = unit:GetUnitType()	
+					if bNormalCombatUnit[unitTypeID] then
+						local unitTypeInfo = GameInfo.Units[unitTypeID]
+						if value < unitTypeInfo.Cost * unit:GetCurrHitPoints() then
+							g_obj1 = unit
+							value = unitTypeInfo.Cost
+						end
+					end
+				end
+			end
+		end
+	end
+	if value == 0 then return false end	--no valid target
+	g_value = value
+	return true
+end
+
+SetUI[GameInfoTypes.EA_SPELL_HEX] = function()
+	if g_bNonTargetTestsPassed then		--has spell so show it
+		MapModData.bShow = true
+		if g_bAllTestsPassed then
+			local unitTypeInfo = GameInfo.Units[g_obj1:GetUnitType()]
+			local unitText = Locale.ConvertTextKey(unitTypeInfo.Description)
+			MapModData.text = "Hex adjacent " .. unitText
+		else
+			MapModData.text = "[COLOR_WARNING_TEXT]No valid target[ENDCOLOR]"
+		end
+	end
+end
+
+SetAIValues[GameInfoTypes.EA_SPELL_HEX] = function()
+	gg_aiOptionValues.i = g_value / 100
+end
+
+Do[GameInfoTypes.EA_SPELL_HEX] = function()
+	g_obj1:SetHasPromotion(PROMOTION_HEX, true)
+	local iOtherPlayer = g_obj1:GetOwner()
+	local iOtherUnit = g_obj1:GetID()
+	local sustainedPromotions = gPlayers[iOtherPlayer].sustainedPromotions
+	sustainedPromotions[iOtherUnit] = sustainedPromotions[iOtherUnit] or {}
+	sustainedPromotions[iOtherUnit][PROMOTION_HEX] = g_iPerson
+	g_specialEffectsPlot = g_obj1:GetPlot()
+	return true
+end
+
+
+
+
 --EA_SPELL_HEAL
 TestTarget[GameInfoTypes.EA_SPELL_HEAL] = function()
 	--Heal same plot or adjacent living unit from my team. Priority:
@@ -4359,7 +4303,7 @@ TestTarget[GameInfoTypes.EA_SPELL_BLESS] = function()
 		for i = 0, unitCount - 1 do
 			local unit = plot:GetUnit(i)
 			if unit:GetOwner() == g_iPlayer then		--change to allied
-				if not unit:IsHasPromotion(PROMOTION_BLESSED) and not unit:IsHasPromotion(PROMOTION_DEFILED) then
+				if not unit:IsHasPromotion(PROMOTION_BLESSED) and not unit:IsHasPromotion(PROMOTION_EVIL_EYE) then
 					local unitTypeID = unit:GetUnitType()	
 					if bNormalLivingCombatUnit[unitTypeID] then
 						local unitTypeInfo = GameInfo.Units[unitTypeID]
@@ -4405,8 +4349,8 @@ Do[GameInfoTypes.EA_SPELL_BLESS] = function()
 	return true
 end
 
---EA_SPELL_SANCTIFY
-TestTarget[GameInfoTypes.EA_SPELL_SANCTIFY] = function()
+--EA_SPELL_PROTECTION_FROM_EVIL
+TestTarget[GameInfoTypes.EA_SPELL_PROTECTION_FROM_EVIL] = function()
 	--Priority: strongest same-tile oradjacent ally (cost x current hp)
 	--g_obj1 = unit
 	--g_value = unit cost for AI
@@ -4417,7 +4361,7 @@ TestTarget[GameInfoTypes.EA_SPELL_SANCTIFY] = function()
 		for i = 0, unitCount - 1 do
 			local unit = plot:GetUnit(i)
 			if unit:GetOwner() == g_iPlayer then		--change to allied
-				if not unit:IsHasPromotion(PROMOTION_SANCTIFIED) and not unit:IsHasPromotion(PROMOTION_DEFILED) then
+				if not unit:IsHasPromotion(PROMOTION_PROTECTION_FROM_EVIL) and not unit:IsHasPromotion(PROMOTION_EVIL_EYE) then
 					local unitTypeID = unit:GetUnitType()	
 					if bNormalLivingCombatUnit[unitTypeID] then
 						local unitTypeInfo = GameInfo.Units[unitTypeID]
@@ -4435,30 +4379,30 @@ TestTarget[GameInfoTypes.EA_SPELL_SANCTIFY] = function()
 	return true
 end
 
-SetUI[GameInfoTypes.EA_SPELL_SANCTIFY] = function()
+SetUI[GameInfoTypes.EA_SPELL_PROTECTION_FROM_EVIL] = function()
 	if g_bNonTargetTestsPassed then		--has spell so show it
 		MapModData.bShow = true
 		if g_bAllTestsPassed then
 			local unitTypeInfo = GameInfo.Units[g_obj1:GetUnitType()]
 			local unitText = Locale.ConvertTextKey(unitTypeInfo.Description)
-			MapModData.text = "Sanctify adjacent " .. unitText
+			MapModData.text = "Give Protection frm Evil to adjacent " .. unitText
 		else
 			MapModData.text = "[COLOR_WARNING_TEXT]No valid target[ENDCOLOR]"
 		end
 	end
 end
 
-SetAIValues[GameInfoTypes.EA_SPELL_SANCTIFY] = function()
+SetAIValues[GameInfoTypes.EA_SPELL_PROTECTION_FROM_EVIL] = function()
 	gg_aiOptionValues.i = g_modSpell * g_value / 1000
 end
 
-Do[GameInfoTypes.EA_SPELL_SANCTIFY] = function()
-	g_obj1:SetHasPromotion(PROMOTION_SANCTIFIED, true)
+Do[GameInfoTypes.EA_SPELL_PROTECTION_FROM_EVIL] = function()
+	g_obj1:SetHasPromotion(PROMOTION_PROTECTION_FROM_EVIL, true)
 	local iOtherPlayer = g_obj1:GetOwner()
 	local iOtherUnit = g_obj1:GetID()
 	local sustainedPromotions = gPlayers[iOtherPlayer].sustainedPromotions
 	sustainedPromotions[iOtherUnit] = sustainedPromotions[iOtherUnit] or {}
-	sustainedPromotions[iOtherUnit][PROMOTION_SANCTIFIED] = g_iPerson
+	sustainedPromotions[iOtherUnit][PROMOTION_PROTECTION_FROM_EVIL] = g_iPerson
 	g_specialEffectsPlot = g_obj1:GetPlot()
 	return true
 end
@@ -4571,7 +4515,7 @@ TestTarget[GameInfoTypes.EA_SPELL_CURSE] = function()
 		local unitCount = plot:GetNumUnits()
 		for i = 0, unitCount - 1 do
 			local unit = plot:GetUnit(i)
-			if not unit:IsHasPromotion(PROMOTION_CURSED) and not unit:IsHasPromotion(PROMOTION_SANCTIFIED) then
+			if not unit:IsHasPromotion(PROMOTION_CURSED) and not unit:IsHasPromotion(PROMOTION_PROTECTION_FROM_EVIL) then
 				if g_team:IsAtWar(Players[unit:GetOwner()]:GetTeam()) then
 					local unitTypeID = unit:GetUnitType()	
 					if bNormalLivingCombatUnit[unitTypeID] then
@@ -4618,8 +4562,8 @@ Do[GameInfoTypes.EA_SPELL_CURSE] = function()
 	return true
 end
 
---EA_SPELL_DEFILE
-TestTarget[GameInfoTypes.EA_SPELL_DEFILE] = function()
+--EA_SPELL_EVIL_EYE
+TestTarget[GameInfoTypes.EA_SPELL_EVIL_EYE] = function()
 	--Priority: strongest adjacent enemy (cost x current hp)
 	--g_obj1 = unit
 	--g_value = unit cost for AI
@@ -4629,7 +4573,7 @@ TestTarget[GameInfoTypes.EA_SPELL_DEFILE] = function()
 		local unitCount = plot:GetNumUnits()
 		for i = 0, unitCount - 1 do
 			local unit = plot:GetUnit(i)
-			if not unit:IsHasPromotion(PROMOTION_DEFILED) and not unit:IsHasPromotion(PROMOTION_SANCTIFIED) then
+			if not unit:IsHasPromotion(PROMOTION_EVIL_EYE) and not unit:IsHasPromotion(PROMOTION_PROTECTION_FROM_EVIL) then
 				if g_team:IsAtWar(Players[unit:GetOwner()]:GetTeam()) then
 					local unitTypeID = unit:GetUnitType()	
 					if bNormalCombatUnit[unitTypeID] then
@@ -4648,33 +4592,103 @@ TestTarget[GameInfoTypes.EA_SPELL_DEFILE] = function()
 	return true
 end
 
-SetUI[GameInfoTypes.EA_SPELL_DEFILE] = function()
+SetUI[GameInfoTypes.EA_SPELL_EVIL_EYE] = function()
 	if g_bNonTargetTestsPassed then		--has spell so show it
 		MapModData.bShow = true
 		if g_bAllTestsPassed then
 			local unitTypeInfo = GameInfo.Units[g_obj1:GetUnitType()]
 			local unitText = Locale.ConvertTextKey(unitTypeInfo.Description)
-			MapModData.text = "Defile adjacent " .. unitText
+			MapModData.text = "Cast Evil-Eye on adjacent " .. unitText
 		else
 			MapModData.text = "[COLOR_WARNING_TEXT]No valid target[ENDCOLOR]"
 		end
 	end
 end
 
-SetAIValues[GameInfoTypes.EA_SPELL_DEFILE] = function()
+SetAIValues[GameInfoTypes.EA_SPELL_EVIL_EYE] = function()
 	gg_aiOptionValues.i = g_modSpell * g_value / 1000
 end
 
-Do[GameInfoTypes.EA_SPELL_DEFILE] = function()
-	g_obj1:SetHasPromotion(PROMOTION_DEFILED, true)
+Do[GameInfoTypes.EA_SPELL_EVIL_EYE] = function()
+	g_obj1:SetHasPromotion(PROMOTION_EVIL_EYE, true)
 	local iOtherPlayer = g_obj1:GetOwner()
 	local iOtherUnit = g_obj1:GetID()
 	local sustainedPromotions = gPlayers[iOtherPlayer].sustainedPromotions
 	sustainedPromotions[iOtherUnit] = sustainedPromotions[iOtherUnit] or {}
-	sustainedPromotions[iOtherUnit][PROMOTION_DEFILED] = g_iPerson
+	sustainedPromotions[iOtherUnit][PROMOTION_EVIL_EYE] = g_iPerson
 	g_specialEffectsPlot = g_obj1:GetPlot()
 	return true
 end
+
+--EA_SPELL_EAS_BLESSING
+TestTarget[GameInfoTypes.EA_SPELL_EAS_BLESSING] = function()
+	local featureID = g_plot:GetFeatureType()
+	if featureID == FEATURE_FOREST or featureID == FEATURE_JUNGLE or featureID == FEATURE_MARSH then
+		g_int1 = g_modSpell < g_faith and g_modSpell or g_faith
+		g_int2 = featureID
+		return true
+	end
+	return false
+end
+
+SetUI[GameInfoTypes.EA_SPELL_EAS_BLESSING] = function()
+	if g_bNonTargetTestsPassed then		--has spell so show it
+		if g_bAllTestsPassed then
+			local featureInfo = GameInfo.Features[g_int2]
+			local featureName = Locale.ConvertTextKey(featureInfo.Description)
+			MapModData.text = "Increase spreading and regeneration strength of " .. featureName .. " by " .. g_int1
+		else
+			MapModData.text = "Plot must be Living Terrain (Forest, Jungle or Marsh)"
+		end
+	end
+end
+
+SetAIValues[GameInfoTypes.EA_SPELL_EAS_BLESSING] = function()
+	local countCanSpreadAdj = 0
+	for x, y in  PlotToRadiusIterator(g_x, g_y, 1, nil, nil, true) do
+		local adjPlot = GetPlotFromXY(x, y)
+		if adjPlot:GetFeatureType() == -1 and adjPlot:GetImprovementType() == -1 and not adjPlot:IsCity() then
+			local terrainID = adjPlot:GetTerrainType()
+			if g_int2 == FEATURE_FOREST then
+				if terrainID == TERRAIN_GRASS or terrainID == TERRAIN_PLAINS or terrainID == TERRAIN_TUNDRA then
+					countCanSpreadAdj = countCanSpreadAdj + 1
+				end
+			elseif g_int2 == FEATURE_JUNGLE then
+				if terrainID == TERRAIN_GRASS or terrainID == TERRAIN_PLAINS then
+					countCanSpreadAdj = countCanSpreadAdj + 1
+				end
+			elseif g_int2 == FEATURE_MARSH then
+				if terrainID == TERRAIN_GRASS and adjPlot:GetPlotType() == PLOT_LAND then
+					countCanSpreadAdj = countCanSpreadAdj + 1
+				end
+			end
+		end
+	end
+	local strength = g_plot:GetLivingTerrainStrength()
+	gg_aiOptionValues.i = g_int1 * (countCanSpreadAdj + 0.1) / (strength + 1)		--tiny positive even if it can't spread
+end
+
+Finish[GameInfoTypes.EA_SPELL_EAS_BLESSING] = function()
+	local type, present, strength, turnChopped = g_plot:GetLivingTerrainData()
+	if type == -1 then
+		if g_int2 == FEATURE_FOREST then
+			type = 1	--"forest"
+		elseif g_int2 == FEATURE_JUNGLE then
+			type = 2	--"jungle"
+		else
+			type = 3	--"marsh"
+		end
+		present = true
+		strength = 0
+		turnChopped = -100
+	end
+	strength = strength + g_int1
+	g_plot:SetLivingTerrainData(type, present, strength, turnChopped)
+	UseManaOrDivineFavor(g_iPlayer, g_iPerson, g_int1)
+	g_eaPlayer.livingTerrainStrengthAdded = (g_eaPlayer.livingTerrainStrengthAdded or 0) + g_int1
+	return true
+end
+
 
 --EA_SPELL_BLOOM
 TestTarget[GameInfoTypes.EA_SPELL_BLOOM] = function()
@@ -4765,7 +4779,7 @@ TestTarget[GameInfoTypes.EA_SPELL_RIDE_LIKE_THE_WIND] = function()
 		for i = 0, unitCount - 1 do
 			local unit = plot:GetUnit(i)
 			if unit:GetOwner() == g_iPlayer then
-				if not unit:IsHasPromotion(PROMOTION_RIDE_LIKE_THE_WINDS) and not unit:IsHasPromotion(PROMOTION_DEFILED) then
+				if not unit:IsHasPromotion(PROMOTION_RIDE_LIKE_THE_WINDS) and not unit:IsHasPromotion(PROMOTION_EVIL_EYE) then
 					local unitTypeID = unit:GetUnitType()	
 					if bNormalCombatUnit[unitTypeID] then
 						local unitTypeInfo = GameInfo.Units[unitTypeID]
@@ -4811,7 +4825,7 @@ Do[GameInfoTypes.EA_SPELL_RIDE_LIKE_THE_WIND] = function()
 	return true
 end
 
-local removedByPurify = {PROMOTION_HEX, PROMOTION_CURSED, PROMOTION_DEFILED}
+local removedByPurify = {PROMOTION_HEX, PROMOTION_CURSED, PROMOTION_EVIL_EYE}
 local numRemovedByPurify = #removedByPurify
 
 --EA_SPELL_PURIFY

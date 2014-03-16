@@ -1389,7 +1389,7 @@ SustainedPromotionDo[GameInfoTypes.PROMOTION_BLESSED] = function(player, unit, i
 	return UseManaOrDivineFavor(eaPerson.iPlayer, iCaster, 1)		--wear off if caster has no more mana or divine favor
 end
 
-SustainedPromotionDo[GameInfoTypes.PROMOTION_SANCTIFIED] = function(player, unit, iCaster)
+SustainedPromotionDo[GameInfoTypes.PROMOTION_PROTECTION_FROM_EVIL] = function(player, unit, iCaster)
 	local eaPerson = gPeople[iCaster]
 	if not eaPerson then return false end	--caster died
 	local mod = GetGPMod(iPerson, EAMOD_DEVOTION, EAMOD_ABJURATION)

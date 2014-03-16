@@ -457,14 +457,14 @@
 		<Row Tag="TXT_KEY_EA_PROMOTION_BLESSED">
 			<Text>Blessed</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_PROMOTION_SANCTIFIED">
-			<Text>Sanctified</Text>
+		<Row Tag="TXT_KEY_EA_PROMOTION_PROTECTION_FROM_EVIL">
+			<Text>Protection from Evil</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_CURSED">
 			<Text>Cursed</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_PROMOTION_DEFILED">
-			<Text>Defiled</Text>
+		<Row Tag="TXT_KEY_EA_PROMOTION_EVIL_EYE">
+			<Text>Evil-Eye</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_RIDE_LIKE_THE_WINDS">
 			<Text>Ride Like the Winds</Text>

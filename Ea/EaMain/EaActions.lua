@@ -415,7 +415,7 @@ function TestEaAction(eaActionID, iPlayer, unit, iPerson, testX, testY, bAINonTa
 		if g_eaAction.TechReq then
 			if not (g_eaAction.PolicyTrumpsTechReq and g_player:HasPolicy(GameInfoTypes[g_eaAction.PolicyTrumpsTechReq])) then
 				if not g_team:IsHasTech(GameInfoTypes[g_eaAction.TechReq]) then return false end
-				if spellInfo.AndTechReq and not g_team:IsHasTech(GameInfoTypes[g_eaAction.AndTechReq]) then return false end
+				if g_eaAction.AndTechReq and not g_team:IsHasTech(GameInfoTypes[g_eaAction.AndTechReq]) then return false end
 			end
 		end
 		if g_eaAction.TechDisallow and g_team:IsHasTech(GameInfoTypes[g_eaAction.TechDisallow]) then return false end

@@ -55,8 +55,7 @@ DELETE FROM Terrain_HillsYieldChanges;
 --Features
 -----------------------------------------------------------------------------------------
 ALTER TABLE Features ADD COLUMN 'EaGod' TEXT DEFAULT NULL;
-ALTER TABLE Features ADD COLUMN 'EaUnhappiness' INTEGER DEFAULT 0;	-- UI only! 2 means net -1 happiness; 1 is a wash
-ALTER TABLE Features ADD COLUMN 'NaturalWonderHappiness' INTEGER DEFAULT 1; -- ls612: This allows to remove the kludgy NW hack from lua.
+ALTER TABLE Features ADD COLUMN 'NaturalWonderHappiness' INTEGER DEFAULT 1;
 
 INSERT INTO Features (Type, Description, Civilopedia, Help, ArtDefineTag, PortraitIndex, IconAtlas) VALUES
 ('FEATURE_BLIGHT',	'TXT_KEY_EA_FEATURE_BLIGHT',	'TXT_KEY_EA_FEATURE_BLIGHT_PEDIA',	'TXT_KEY_EA_FEATURE_BLIGHT_HELP',	'dummy',	17,	'TERRAIN_ATLAS');
@@ -81,9 +80,9 @@ UPDATE Features SET Description = 'TXT_KEY_EA_FEATURE_DIS_PATERS_VAULT', EaGod =
 UPDATE Features SET Description = 'TXT_KEY_EA_FEATURE_MOUNT_NERGAL', EaGod = 'MINOR_CIV_GOD_NERGAL' WHERE Type = 'FEATURE_MT_SINAI';
 UPDATE Features SET Description = 'TXT_KEY_EA_FEATURE_WADDS_ROCK', EaGod = 'MINOR_CIV_GOD_WADD' WHERE Type = 'FEATURE_ULURU';
 UPDATE Features SET Description = 'TXT_KEY_EA_FEATURE_ABGALS_OUTCROP', EaGod = 'MINOR_CIV_GOD_ABGAL' WHERE Type = 'FEATURE_MESA';
-UPDATE Features SET Description = 'TXT_KEY_EA_FEATURE_NESRS_BOWL', EaGod = 'MINOR_CIV_GOD_NESR', EaUnhappiness = 1 WHERE Type = 'FEATURE_CRATER';
+UPDATE Features SET Description = 'TXT_KEY_EA_FEATURE_NESRS_BOWL', EaGod = 'MINOR_CIV_GOD_NESR', NaturalWonderHappiness = 0 WHERE Type = 'FEATURE_CRATER';
 UPDATE Features SET Description = 'TXT_KEY_EA_FEATURE_PYRAMID_AZZANDARA' WHERE Type = 'FEATURE_EL_DORADO';
-UPDATE Features SET Description = 'TXT_KEY_EA_FEATURE_VAULT_AHRIMAN', EaUnhappiness = 3 WHERE Type = 'FEATURE_SOLOMONS_MINES';
+UPDATE Features SET Description = 'TXT_KEY_EA_FEATURE_VAULT_AHRIMAN', NaturalWonderHappiness = -2 WHERE Type = 'FEATURE_SOLOMONS_MINES';
 
 
 UPDATE Features SET Civilopedia = Description || '_PEDIA' WHERE NaturalWonder = 1;

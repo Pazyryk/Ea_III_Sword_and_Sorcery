@@ -101,3 +101,16 @@ function HandleError41(f, arg1, arg2, arg3, arg4)
 	end
 	LuaEvents.EaErrorPopupDoErrorPopup(value)
 end
+
+function HandleError61(f, arg1, arg2, arg3, arg4, arg5, arg6)
+	--f can have up to 6 args and 0 or 1 return value
+	local g = function() return f(arg1, arg2, arg3, arg4, arg5, arg6) end
+	local success, value = xpcall(g, Traceback)
+	if success then
+		return value
+	end
+	if Game.GetAIAutoPlay() > 0 then
+		LuaEvents.EaAutoplay(1)		--stop autoplay session
+	end
+	LuaEvents.EaErrorPopupDoErrorPopup(value)
+end

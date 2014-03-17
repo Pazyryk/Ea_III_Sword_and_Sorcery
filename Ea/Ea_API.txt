@@ -16,12 +16,15 @@ EA_DLL_VERSION = 1
 --CallHook
 CombatResult(iAttackingPlayer, iAttackingUnit, attackerDamage, attackerFinalDamage, attackerMaxHP,iDefendingPlayer, iDefendingUnit, defenderDamage, defenderFinalDamage, defenderMaxHP, iInterceptingPlayer, iInterceptingUnit, interceptorDamage, plotX, plotY)
 CombatEnded(iAttackingPlayer, iAttackingUnit, attackerDamage, attackerFinalDamage, attackerMaxHP,iDefendingPlayer, iDefendingUnit, defenderDamage, defenderFinalDamage, defenderMaxHP, iInterceptingPlayer, iInterceptingUnit, interceptorDamage, plotX, plotY)
+UnitSetXYPlotEffect(iPlayer, iUnit, x, y, plotEffectID, plotEffectStrength)
+
 
 --CallTestAll
 CanAutoSave(bInitial, bPostTurn)
 MustAbortAttack(iAttackingPlayer, iAttackingUnit, attackerDamage, attackerFinalDamage, attackerMaxHP,iDefendingPlayer, iDefendingUnit, defenderDamage, defenderFinalDamage, defenderMaxHP, iInterceptingPlayer, iInterceptingUnit, interceptorDamage, plotX, plotY)
 CanMeetTeam(iTeam1, iTeam2)
 CanContactMajorTeam(iTeam1, iTeam2)
+CityCanAcquirePlot(iPlayer, iCity, x, y)	--not yet implemented
 
 --CallAccumulator
 PlayerTechCostMod(iPlayer, techID)
@@ -53,6 +56,8 @@ bool				GetLivingTerrainPresent()
 void				SetLivingTerrainPresent(bool)
 int, bool, int, int	GetLivingTerrainData()
 void				SetLivingTerrainData(int, bool, int, int)
+void				SetPlotEffect(effectID, effectStength)
+int, int			GetPlotEffect()								--effectID, effectStength
 
 --------------------------------------------------------------
 -- Unit

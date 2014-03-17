@@ -692,34 +692,30 @@ function HappinessTipHandler( control )
 			strText = Locale.ConvertTextKey("TXT_KEY_TP_TOTAL_UNHAPPINESS", "[ICON_HAPPINESS_3]", -iHappiness);
 		end
 
-		--Paz add: these don't change totals, but are used to move particular sources around (e.g., from hidden buildings to proper mod cause)
-		local iRacialHarmony = 2 * pPlayer:CountNumBuildings(GameInfoTypes.BUILDING_RACIAL_HARMONY)
-		--NWs (bad ones)
-		local capital = pPlayer:GetCapitalCity()
-		local iNesrNWNotFound = capital:GetNumRealBuilding(GameInfoTypes.BUILDING_NESR_NW_NOT_FOUND)
-		local iAhrimanNWNotFound = capital:GetNumRealBuilding(GameInfoTypes.BUILDING_AHRIMAN_NW_NOT_FOUND)
-		local iNWHappinessNotFoundHack = iNesrNWNotFound + 3 * iAhrimanNWNotFound	--subtract from buildings (hacked as building effect)			4	0
-		local iNWReverseHappiness = 2 - iNesrNWNotFound - iAhrimanNWNotFound	--compensate for amount given by engine for finding any NW		0	2
-		local iBadNWsUnhappiness = 2 * (1 - iAhrimanNWNotFound)					--show as new Unhappiness category								0	2
+		--Paz add: 
+		local eaPlayer = gT.gPlayers[iPlayerID]
 		
-		print("iRacialHarmony,iNesrNWNotFound,iAhrimanNWNotFound,iNWHappinessNotFoundHack,iNWReverseHappiness,iBadNWsUnhappiness = ", iRacialHarmony,iNesrNWNotFound,iAhrimanNWNotFound,iNWHappinessNotFoundHack,iNWReverseHappiness,iBadNWsUnhappiness)
+		
+		--these don't change totals, but are used to move particular sources around (e.g., from hidden buildings to proper mod cause)
+		local iRacialHarmony = 2 * pPlayer:CountNumBuildings(GameInfoTypes.BUILDING_RACIAL_HARMONY)
+		local iAhrimansVaultUnhappiness = (eaPlayer and eaPlayer.bHasDiscoveredAhrimansVault) and 2 or 0
 		--end Paz add
 	
 		local iPoliciesHappiness = pPlayer:GetHappinessFromPolicies();
 		local iResourcesHappiness = pPlayer:GetHappinessFromResources();
 		local iExtraLuxuryHappiness = pPlayer:GetExtraHappinessPerLuxury();
 		local iCityHappiness = pPlayer:GetHappinessFromCities();
-		local iBuildingHappiness = pPlayer:GetHappinessFromBuildings() - iNWHappinessNotFoundHack - iRacialHarmony;	--Paz: minuses
+		local iBuildingHappiness = pPlayer:GetHappinessFromBuildings() - iRacialHarmony;	--Paz: iRacialHarmony
 		local iTradeRouteHappiness = pPlayer:GetHappinessFromTradeRoutes();
 		local iReligionHappiness = pPlayer:GetHappinessFromReligion();
-		local iNaturalWonderHappiness = pPlayer:GetHappinessFromNaturalWonders() - iNWReverseHappiness;	--Paz: iNWReverseHappiness (compensate for two NWs that should not have given any)
+		local iNaturalWonderHappiness = pPlayer:GetHappinessFromNaturalWonders() + iAhrimansVaultUnhappiness;		--Paz: iAhrimansVaultUnhappiness
 		local iExtraHappinessPerCity = pPlayer:GetExtraHappinessPerCity() * pPlayer:GetNumCities();
 	
 		local iMinorCivHappiness = pPlayer:GetHappinessFromMinorCivs();
 	
 		local iHandicapHappiness = pPlayer:GetHappiness() - iPoliciesHappiness - iResourcesHappiness - iCityHappiness - iBuildingHappiness - iTradeRouteHappiness - iReligionHappiness - iNaturalWonderHappiness - iMinorCivHappiness - iExtraHappinessPerCity;
 		--Paz add
-		iHandicapHappiness = iHandicapHappiness + iBadNWsUnhappiness - iRacialHarmony
+		iHandicapHappiness = iHandicapHappiness - iRacialHarmony + iAhrimansVaultUnhappiness
 		--end Paz add
 
 		if (pPlayer:IsEmpireVeryUnhappy()) then
@@ -815,7 +811,7 @@ function HappinessTipHandler( control )
 		strText = strText .. "[/COLOR]";
 	
 		-- Unhappiness
-		local iTotalUnhappiness = pPlayer:GetUnhappiness() + iBadNWsUnhappiness  - iRacialHarmony;	--Paz added modifiers
+		local iTotalUnhappiness = pPlayer:GetUnhappiness()  - iRacialHarmony + iAhrimansVaultUnhappiness;	--Paz added modifiers
 		local iUnhappinessFromUnits = Locale.ToNumber( pPlayer:GetUnhappinessFromUnits() / 100, "#.##" );
 		local iUnhappinessFromCityCount = Locale.ToNumber(pPlayer:GetUnhappinessFromCityCount() / 100 - iRacialHarmony, "#.##" );	--Paz:  - iRacialHarmony
 		local iUnhappinessFromCapturedCityCount = Locale.ToNumber( pPlayer:GetUnhappinessFromCapturedCityCount() / 100, "#.##" );
@@ -857,12 +853,13 @@ function HappinessTipHandler( control )
 			strText = strText .. "[NEWLINE]";
 			strText = strText .. "  [ICON_BULLET]" .. Locale.ConvertTextKey("TXT_KEY_TP_UNHAPPINESS_OCCUPIED_POPULATION", iUnhappinessFromOccupiedCities);
 		end
-		--Paz add: iBadNWsUnhappiness
-		if(iBadNWsUnhappiness > 0) then
-			strText = strText .. "[NEWLINE]  [ICON_BULLET]" .. Locale.ConvertTextKey("TXT_KEY_EA_TP_UNHAPPINESS_FROM_NATURAL_WONDERS", iBadNWsUnhappiness);
+
+		--Paz add: Ahrimans Vault is the only NW that gives Unhappiness; we show here as negative so that we can show all positives above
+		if(iAhrimansVaultUnhappiness > 0) then
+			strText = strText .. "[NEWLINE]  [ICON_BULLET]" .. Locale.ConvertTextKey("TXT_KEY_EA_TP_UNHAPPINESS_FROM_NATURAL_WONDERS", iAhrimansVaultUnhappiness);
 		end		
-		
 		--end Paz add
+
 		if (iUnhappinessFromUnits ~= "0") then
 			strText = strText .. "[NEWLINE]";
 			strText = strText .. "  [ICON_BULLET]" .. Locale.ConvertTextKey("TXT_KEY_TP_UNHAPPINESS_UNITS", iUnhappinessFromUnits);

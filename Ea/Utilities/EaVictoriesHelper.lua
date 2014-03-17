@@ -109,7 +109,7 @@ function GetConquerorVictoryData(iPlayer)
 	local score = 50 * conqueredCities + 10 * conqueredPopulation
 
 	--Test victory conditions
-	local bVictory = uncontrolledCities < 1 
+	local bVictory = uncontrolledCities < 1 and Game.GetGameTurn() > 5
 
 	return score, bVictory, conqueredPopulation, conqueredCities, uncontrolledCities
 end

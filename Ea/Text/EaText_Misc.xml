@@ -147,15 +147,7 @@
 		<Row Tag="TXT_KEY_EA_TP_GREAT_PEOPLE_POINTS">
 			<Text>The liklihood for a specific Great Person class is proportional to the number of points accumulated below (specific subclasses may be generated depending on civilization factors):</Text>
 		</Row>
-		<!--ls612: NW Discovery Happiness-->
-		<Row Tag="TXT_KEY_EA_TP_HAPPINESS_NATURAL_WONDER_DISCOVERY_GOOD">
-			<Text>{1_Num} from being the first to find Natural Wonders.</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_TP_HAPPINESS_NATURAL_WONDER_DISCOVERY_BAD">
-			<Text>{1_Num} from being the first to find Natural Wonders.</Text>
-		</Row>
-		
-		
+
 		<!-- City View -->
 		<Row Tag="TXT_KEY_CITYVIEW_CONSCRIPT_BUTTON_TEXT">
 			<Text>Conscript/Indenture</Text>

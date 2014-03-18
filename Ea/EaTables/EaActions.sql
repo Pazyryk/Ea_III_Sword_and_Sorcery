@@ -13,7 +13,7 @@
 -- Tables
 CREATE TABLE EaActions ('ID' INTEGER PRIMARY KEY AUTOINCREMENT,
 						'Type' TEXT NOT NULL UNIQUE,
-						'Description' TEXT NOT NULL,
+						'Description' TEXT DEFAULT NULL,
 						'Help' TEXT DEFAULT NULL,			--Most help is provided in EaAction.lua; use this only if not set there
 						--UI
 						'UIType' TEXT DEFAULT NULL,		--Action, SecondaryAction, Build, [Spell, CityAction, CivAction]
@@ -37,6 +37,7 @@ CREATE TABLE EaActions ('ID' INTEGER PRIMARY KEY AUTOINCREMENT,
 						--Civ reqs
 						'TechReq' TEXT DEFAULT NULL,
 						'AndTechReq' TEXT DEFAULT NULL,
+						'PolicyTrumpsTechReq' TEXT DEFAULT NULL,	--with this policy, TechReq and AndTechReq ignored
 						'TechDisallow' TEXT DEFAULT NULL,
 						'PolicyReq' TEXT DEFAULT NULL,
 						'OrPolicyReq' TEXT DEFAULT NULL,
@@ -281,46 +282,56 @@ UPDATE EaActions SET OrGPSubclass = 'Eidolon' WHERE Type = 'EA_ACTION_ANTIPROSEL
 
 -----------------------------------------------------------------------------------------
 --Spells (MUST come last!)
+-----------------------------------------------------------------------------------------
 -- These are EaActions but treated in a special way: All non-target prereqs are only "learn" prereqs
 -- The spell is always castable if it is known and target is valid and player has sufficient mana or divine favor.
 
 --Arcane
-INSERT INTO EaActions (Type,			Description,							Help,										SpellClass,	GPModType1,				TechReq,						City,	AITarget,			AICombatRole,	TurnsToComplete,	FixedFaith,	HumanVisibleFX,	IconIndex,	IconAtlas) VALUES
-('EA_SPELL_MAGIC_MISSILE',				'TXT_KEY_EA_SPELL_MAGIC_MISSILE',		'TXT_KEY_EA_SPELL_MAGIC_MISSILE_HELP',		'Arcane',	'EAMOD_EVOCATION',		'TECH_THAUMATURGY',				NULL,	NULL,				'Any',			1,					0,			NULL,			7,			'TECH_ATLAS_2'			),
-('EA_SPELL_HEX',						'TXT_KEY_EA_SPELL_HEX',					'TXT_KEY_EA_SPELL_HEX_HELP',				'Arcane',	'EAMOD_NECROMANCY',		'TECH_MALEFICIUM',				NULL,	NULL,				'Any',			1,					0,			1,				9,			'TECH_ATLAS_2'			),
-('EA_SPELL_EAS_BLESSING',				'TXT_KEY_EA_SPELL_EAS_BLESSING',		'TXT_KEY_EA_SPELL_EAS_BLESSING_HELP',		'Arcane',	'EAMOD_TRANSMUTATION',	NULL,							'Not',	'NearbyLivTerrain',	NULL,			5,					0,			1,				10,			'EXPANSION_BW_ATLAS_2'	),
-('EA_SPELL_BLIGHT',						'TXT_KEY_EA_SPELL_BLIGHT',				'TXT_KEY_EA_SPELL_BLIGHT_HELP',				'Arcane',	'EAMOD_TRANSMUTATION',	'TECH_MALEFICIUM',				'Not',	'NIMBY',			NULL,			5,					0,			1,				9,			'TECH_ATLAS_2'			);
+INSERT INTO EaActions (Type,			SpellClass,	GPModType1,				TechReq,						City,	AITarget,			AICombatRole,	TurnsToComplete,	FixedFaith,	HumanVisibleFX,	IconIndex,	IconAtlas) VALUES
 
---Divine (normal)
-INSERT INTO EaActions (Type,			Description,							Help,										SpellClass,	GPModType1,				TechReq,						City,	AITarget,			AICombatRole,	FallenAltSpell,		TurnsToComplete,	FixedFaith,	HumanVisibleFX,	IconIndex,	IconAtlas) VALUES
-('EA_SPELL_HEAL',						'TXT_KEY_EA_SPELL_HEAL',				'TXT_KEY_EA_SPELL_HEAL_HELP',				'Divine',	'EAMOD_CONJURATION',	NULL,							NULL,	NULL,				'Any',			'EA_SPELL_HURT',	1,					0,			1,				3,			'UNIT_ACTION_ATLAS'	),
-('EA_SPELL_BLESS',						'TXT_KEY_EA_SPELL_BLESS',				'TXT_KEY_EA_SPELL_BLESS_HELP',				'Divine',	'EAMOD_CONJURATION',	'TECH_DIVINE_LITURGY',			NULL,	NULL,				'Any',			'EA_SPELL_CURSE',	1,					0,			1,				38,			'BW_ATLAS_1'		),
-('EA_SPELL_SANCTIFY',					'TXT_KEY_EA_SPELL_SANCTIFY',			'TXT_KEY_EA_SPELL_SANCTIFY_HELP',			'Divine',	'EAMOD_CONJURATION',	'TECH_DIVINE_LITURGY',			NULL,	NULL,				'Any',			'EA_SPELL_DEFILE',	1,					0,			1,				38,			'BW_ATLAS_1'		);
+('EA_SPELL_MAGIC_MISSILE',				'Arcane',	'EAMOD_EVOCATION',		'TECH_THAUMATURGY',				NULL,	NULL,				'Any',			1,					0,			NULL,			7,			'TECH_ATLAS_2'			),
+('EA_SPELL_BLIGHT',						'Arcane',	'EAMOD_TRANSMUTATION',	'TECH_MALEFICIUM',				'Not',	'NIMBY',			NULL,			5,					0,			1,				9,			'TECH_ATLAS_2'			),
+('EA_SPELL_HEX',						'Arcane',	'EAMOD_NECROMANCY',		'TECH_MALEFICIUM',				NULL,	NULL,				'Any',			1,					0,			1,				9,			'TECH_ATLAS_2'			);
 
---Divine (fallen)
-INSERT INTO EaActions (Type,			Description,							Help,										SpellClass,	GPModType1,				TechReq,						City,	AITarget,			AICombatRole,	FallenAltSpell,		TurnsToComplete,	FixedFaith,	HumanVisibleFX,	IconIndex,	IconAtlas) VALUES
-('EA_SPELL_HURT',						'TXT_KEY_EA_SPELL_HURT',				'TXT_KEY_EA_SPELL_HURT_HELP',				'Divine',	'EAMOD_NECROMANCY',		NULL,							NULL,	NULL,				'Any',			'IsFallen',			1,					0,			1,				9,			'TECH_ATLAS_2'		),
-('EA_SPELL_CURSE',						'TXT_KEY_EA_SPELL_CURSE',				'TXT_KEY_EA_SPELL_CURSE_HELP',				'Divine',	'EAMOD_NECROMANCY',		'TECH_MALEFICIUM',				NULL,	NULL,				'Any',			'IsFallen',			1,					0,			1,				9,			'TECH_ATLAS_2'		),
-('EA_SPELL_DEFILE',						'TXT_KEY_EA_SPELL_DEFILE',				'TXT_KEY_EA_SPELL_DEFILE_HELP',				'Divine',	'EAMOD_NECROMANCY',		'TECH_MALEFICIUM',				NULL,	NULL,				'Any',			'IsFallen',			1,					0,			1,				9,			'TECH_ATLAS_2'		);
+--Divine
+INSERT INTO EaActions (Type,			SpellClass,	GPModType1,				TechReq,						City,	AITarget,			AICombatRole,	FallenAltSpell,		TurnsToComplete,	FixedFaith,	HumanVisibleFX,	IconIndex,	IconAtlas) VALUES
+('EA_SPELL_HEAL',						'Divine',	'EAMOD_CONJURATION',	NULL,							NULL,	NULL,				'Any',			'EA_SPELL_HURT',	1,					0,			1,				3,			'UNIT_ACTION_ATLAS'		),
+('EA_SPELL_BLESS',						'Divine',	'EAMOD_CONJURATION',	'TECH_DIVINE_LITURGY',			NULL,	NULL,				'Any',			'EA_SPELL_CURSE',	1,					0,			1,				38,			'BW_ATLAS_1'			),
+('EA_SPELL_PROTECTION_FROM_EVIL',		'Divine',	'EAMOD_CONJURATION',	'TECH_DIVINE_LITURGY',			NULL,	NULL,				'Any',			'EA_SPELL_EVIL_EYE',1,					0,			1,				38,			'BW_ATLAS_1'			),
 
---Divine (free, not learnable)
-INSERT INTO EaActions (Type,			Description,							Help,										SpellClass,	GPModType1,				PantheismCult,					City,	AITarget,			AICombatRole,		TurnsToComplete,	FixedFaith,	HumanVisibleFX,	IconIndex,	IconAtlas) VALUES
-('EA_SPELL_BLOOM',						'TXT_KEY_EA_SPELL_BLOOM',				'TXT_KEY_EA_SPELL_BLOOM_HELP',				'Divine',	'EAMOD_TRANSMUTATION',	'RELIGION_CULT_OF_LEAVES',		'Not',	'NearbyNonFeature',	NULL,				5,					0,			1,				10,			'EXPANSION_BW_ATLAS_2'		),
-('EA_SPELL_RIDE_LIKE_THE_WIND',			'TXT_KEY_EA_SPELL_RIDE_LIKE_THE_WIND',	'TXT_KEY_EA_SPELL_RIDE_LIKE_THE_WIND_HELP',	'Divine',	'EAMOD_CONJURATION',	'RELIGION_CULT_OF_EPONA',		NULL,	NULL,				'Any',				1,					0,			1,				9,			'EXPANSION_SCEN_UNIT_ATLAS'	),
-('EA_SPELL_PURIFY',						'TXT_KEY_EA_SPELL_PURIFY',				'TXT_KEY_EA_SPELL_PURIFY_HELP',				'Divine',	'EAMOD_CONJURATION',	'RELIGION_CULT_OF_PURE_WATERS',	NULL,	NULL,				'Any',				1,					0,			1,				1,			'NW_ATLAS_DLC'				),
-('EA_SPELL_FAIR_WINDS',					'TXT_KEY_EA_SPELL_FAIR_WINDS',			'TXT_KEY_EA_SPELL_FAIR_WINDS_HELP',			'Divine',	'EAMOD_CONJURATION',	'RELIGION_CULT_OF_AEGIR',		NULL,	'OwnNavalUnits',	NULL,				1,					0,			1,				3,			'EXPANSION_SCEN_TECH_ATLAS'	),
-('EA_SPELL_REVELRY',					'TXT_KEY_EA_SPELL_REVELRY',				'TXT_KEY_EA_SPELL_REVELRY_HELP',			'Divine',	'EAMOD_CONJURATION',	'RELIGION_CULT_OF_BAKKHEIA',	'Own',	'OwnClosestCity',	NULL,				1000,				0,			1,				44,			'BW_ATLAS_1'				);
+--fallen
+('EA_SPELL_HURT',						'Divine',	'EAMOD_NECROMANCY',		NULL,							NULL,	NULL,				'Any',			'IsFallen',			1,					0,			1,				9,			'TECH_ATLAS_2'			),
+('EA_SPELL_CURSE',						'Divine',	'EAMOD_NECROMANCY',		'TECH_MALEFICIUM',				NULL,	NULL,				'Any',			'IsFallen',			1,					0,			1,				9,			'TECH_ATLAS_2'			),
+('EA_SPELL_EVIL_EYE',					'Divine',	'EAMOD_NECROMANCY',		'TECH_MALEFICIUM',				NULL,	NULL,				'Any',			'IsFallen',			1,					0,			1,				9,			'TECH_ATLAS_2'			),
+
+--druid only learned
+('EA_SPELL_EAS_BLESSING',				'Divine',	'EAMOD_TRANSMUTATION',	NULL,							'Not',	'NearbyLivTerrain',	NULL,			NULL,				5,					0,			1,				10,			'EXPANSION_BW_ATLAS_2'	);
 
 
+--druid cult spells (learned from ritual)
+INSERT INTO EaActions (Type,			SpellClass,	GPModType1,				PantheismCult,					City,	AITarget,			AICombatRole,		TurnsToComplete,	FixedFaith,	HumanVisibleFX,	IconIndex,	IconAtlas) VALUES
+('EA_SPELL_BLOOM',						'Divine',	'EAMOD_TRANSMUTATION',	'RELIGION_CULT_OF_LEAVES',		'Not',	'NearbyNonFeature',	NULL,				5,					0,			1,				10,			'EXPANSION_BW_ATLAS_2'		),
+('EA_SPELL_RIDE_LIKE_THE_WIND',			'Divine',	'EAMOD_CONJURATION',	'RELIGION_CULT_OF_EPONA',		NULL,	NULL,				'Any',				1,					0,			1,				9,			'EXPANSION_SCEN_UNIT_ATLAS'	),
+('EA_SPELL_PURIFY',						'Divine',	'EAMOD_CONJURATION',	'RELIGION_CULT_OF_PURE_WATERS',	NULL,	NULL,				'Any',				1,					0,			1,				1,			'NW_ATLAS_DLC'				),
+('EA_SPELL_FAIR_WINDS',					'Divine',	'EAMOD_CONJURATION',	'RELIGION_CULT_OF_AEGIR',		NULL,	'OwnNavalUnits',	NULL,				1,					0,			1,				3,			'EXPANSION_SCEN_TECH_ATLAS'	),
+('EA_SPELL_REVELRY',					'Divine',	'EAMOD_CONJURATION',	'RELIGION_CULT_OF_BAKKHEIA',	'Own',	'OwnClosestCity',	NULL,				1000,				0,			1,				44,			'BW_ATLAS_1'				);
+
+
+--Build out the table for dependent strings
+UPDATE EaActions SET Description = 'TXT_KEY_' || Type, Help = 'TXT_KEY_' || Type || '_HELP' WHERE Type GLOB 'EA_SPELL_*';
 UPDATE EaActions SET GPOnly = 1, ApplyTowerTempleMod = 1, UIType = 'Build' WHERE Type GLOB 'EA_SPELL_*';		--need spell UI
 UPDATE EaActions SET ProgressHolder = 'Person' WHERE Type GLOB 'EA_SPELL_*' AND TurnsToComplete > 1;
-UPDATE EaActions SET GPModType2 = 'EAMOD_DEVOTION' WHERE SpellClass = 'Divine';
 
+
+
+
+UPDATE EaActions SET PolicyTrumpsTechReq = 'POLICY_WITCHCRAFT' WHERE Type IN ('EA_SPELL_HEX');
+UPDATE EaActions SET GPModType2 = 'EAMOD_DEVOTION' WHERE SpellClass = 'Divine';
 
 UPDATE EaActions SET PolicyReq = 'POLICY_PANTHEISM' WHERE Type = 'EA_SPELL_EAS_BLESSING';
 UPDATE EaActions SET FreeSpellSubclass = 'Priest' WHERE Type = 'EA_SPELL_HEAL';
 UPDATE EaActions SET FreeSpellSubclass = 'FallenPriest' WHERE Type = 'EA_SPELL_HURT';
-UPDATE EaActions SET City = 'Own' WHERE Type = 'EA_SPELL_REVELRY';
+
 
 UPDATE EaActions SET ProgressHolder = 'Person' WHERE ProgressHolder IS NULL AND TurnsToComplete > 1;		--needs to be something
 
@@ -342,26 +353,6 @@ UPDATE EaActions SET ProgressHolder = 'Person' WHERE ProgressHolder IS NULL AND 
 -- Subtables
 -----------------------------------------------------------------------------------------
 
---This table is ignored for now. TO DO: Use it or depreciate.
-CREATE TABLE EaAISpellSpecializations ('ActionType'  TEXT NOT NULL, 'Specialization'  TEXT NOT NULL);	--used for AI GPs when picking a spell to learn
-INSERT INTO EaAISpellSpecializations (ActionType, Specialization) VALUES
-('EA_SPELL_MAGIC_MISSILE',			'Combat'	),
-('EA_SPELL_HEX',					'Combat'	),
-('EA_SPELL_EAS_BLESSING',			'Home'		),
-('EA_SPELL_EAS_BLESSING',			'Terraform'	),
-('EA_SPELL_BLIGHT',					'Terraform'	),
-('EA_SPELL_HEAL',					'Combat'	),
-('EA_SPELL_BLESS',					'Combat'	),
-('EA_SPELL_SANCTIFY',				'Combat'	),
-('EA_SPELL_HURT',					'Combat'	),
-('EA_SPELL_CURSE',					'Combat'	),
-('EA_SPELL_DEFILE',					'Combat'	),
-('EA_SPELL_BLOOM',					'Home'		),
-('EA_SPELL_BLOOM',					'Terraform'	),
-('EA_SPELL_RIDE_LIKE_THE_WIND',		'Combat'	),
-('EA_SPELL_PURIFY',					'Combat'	),
-('EA_SPELL_FAIR_WINDS',				'Home'		),
-('EA_SPELL_REVELRY',				'Home'		);
 
 
 

@@ -25,9 +25,6 @@ local RELIGION_CULT_OF_AEGIR =					GameInfoTypes.RELIGION_CULT_OF_AEGIR
 
 local FEATURE_CRATER =							GameInfoTypes.FEATURE_CRATER
 local FEATURE_SOLOMONS_MINES =					GameInfoTypes.FEATURE_SOLOMONS_MINES
-local BUILDING_NESR_NW_NOT_FOUND =				GameInfoTypes.BUILDING_NESR_NW_NOT_FOUND
-local BUILDING_AHRIMAN_NW_NOT_FOUND =			GameInfoTypes.BUILDING_AHRIMAN_NW_NOT_FOUND
-
 
 local MINOR_CIV_PERSONALITY_HOSTILE =			MinorCivPersonalityTypes.MINOR_CIV_PERSONALITY_HOSTILE
 
@@ -237,13 +234,12 @@ local function TestSetNaturalWonderEffects(iPlayer, x, y)	--if x, y nil then che
 end
 LuaEvents.EaCivsTestSetNaturalWonderEffects.Add(TestSetNaturalWonderEffects)	--call from popup for immediate effect
 
+
 OnNWFound[GameInfoTypes.FEATURE_SOLOMONS_MINES] = function(iPlayer, bPantheistic)	--Ahriman's Vault
-	CheckCapitalBuildings(iPlayer, "NW")
+	--unhappiness properly counted in dll, but we need this for good UI (so Ahriman's Vault adds negative rather than subtracting from positive)
+	gPlayers[iPlayer].bHasDiscoveredAhrimansVault = true
 end
 
-OnNWFound[GameInfoTypes.FEATURE_CRATER] = function(iPlayer, bPantheistic)			--Nesr's Crater
-	CheckCapitalBuildings(iPlayer, "NW")
-end
 
 --------------------------------------------------------------
 -- Interface
@@ -505,20 +501,6 @@ function CheckCapitalBuildings(iPlayer, checkType)
 	local capital = player:GetCapitalCity()
 	if capital then
 		local eaPlayer = gPlayers[iPlayer]
-		if not checkType or checkType == "NW" then
-			local revealedNWs = eaPlayer.revealedNWs
-			if revealedNWs[FEATURE_CRATER] then
-				capital:SetNumRealBuilding(BUILDING_NESR_NW_NOT_FOUND, 0)
-			else
-				capital:SetNumRealBuilding(BUILDING_NESR_NW_NOT_FOUND, 1)
-			end
-			if revealedNWs[FEATURE_SOLOMONS_MINES] then
-				capital:SetNumRealBuilding(BUILDING_AHRIMAN_NW_NOT_FOUND, 0)
-			else
-				capital:SetNumRealBuilding(BUILDING_AHRIMAN_NW_NOT_FOUND, 1)
-			end
-
-		end
 		if not checkType or checkType == "Civ" then
 			local nameID = eaPlayer.eaCivNameID
 			if nameID then
@@ -531,8 +513,6 @@ function CheckCapitalBuildings(iPlayer, checkType)
 		end
 	end
 end
-
-
 
 function UpdateFaithFromEaCityStatesForUI()
 	Dprint("UpdateFaithFromEaCityStatesForUI")

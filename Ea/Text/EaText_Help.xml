@@ -696,14 +696,14 @@
 		<Row Tag="TXT_KEY_EA_PROMOTION_BLESSED_HELP">
 			<Text>+10% natural healing.</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_PROMOTION_SANCTIFIED_HELP">
-			<Text>Protected from evil-effect spells such as Hex, Curse and Defile; +5% natural healing.</Text>
+		<Row Tag="TXT_KEY_EA_PROMOTION_PROTECTION_FROM_EVIL_HELP">
+			<Text>Protected from evil-effect spells such as Hex, Curse and Evil-Eye; +5% natural healing.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_CURSED_HELP">
 			<Text>No natural healing.</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_PROMOTION_DEFILED_HELP">
-			<Text>Cannot be Blessed or Sanctified; -5% natural healing.</Text>
+		<Row Tag="TXT_KEY_EA_PROMOTION_EVIL_EYE_HELP">
+			<Text>Cannot be Blessed or gain Protection from Evil; -5% natural healing.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_RIDE_LIKE_THE_WINDS_HELP">
 			<Text>+2 movement.</Text>
@@ -889,8 +889,8 @@
 		<Row Tag="TXT_KEY_EA_SPELL_BLESS_HELP">
 			<Text>Adds the Bless promotion to one living unit giving +10 hp natural healing.</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_SPELL_SANCTIFY_HELP">
-			<Text>Adds the Sanctified promotion to one living unit protecting from negative spell effects and giving +5 hp natural healing.</Text>
+		<Row Tag="TXT_KEY_EA_SPELL_PROTECTION_FROM_EVIL_HELP">
+			<Text>Adds Protection from Evil promotion to one living unit protecting from negative spell effects and giving +5 hp natural healing.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_HURT_HELP">
 			<Text>Damages adjacent enemy living unit up to the caster's modifier.</Text>
@@ -898,8 +898,8 @@
 		<Row Tag="TXT_KEY_EA_SPELL_CURSE_HELP">
 			<Text>Adds the Cursed promotion to one enemy living unit preventing all natural healing.</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_SPELL_DEFILE_HELP">
-			<Text>Adds the Defiled promotion to one enemy living unit preventing positive spell effects and giving -5 hp natural healing.</Text>
+		<Row Tag="TXT_KEY_EA_SPELL_EVIL_EYE_HELP">
+			<Text>Adds the Evil-Eye promotion to one enemy living unit preventing positive spell effects and giving -5 hp natural healing.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_BLOOM_HELP">
 			<Text>Creates a forest or jungle on any valid plot adjacent to an already existing forest or jungle.</Text>

@@ -141,6 +141,11 @@
       <Action>
         <Set>OnModActivated</Set>
         <Type>UpdateDatabase</Type>
+        <FileName>EaTables/EaPlotEffects.sql</FileName>
+      </Action>
+      <Action>
+        <Set>OnModActivated</Set>
+        <Type>UpdateDatabase</Type>
         <FileName>EaTables/EaCivAI.sql</FileName>
       </Action>
       <Action>
@@ -796,6 +801,10 @@
       <ImportIntoVFS>False</ImportIntoVFS>
     </Content>
     <Content Include="EaTables\EaModifiers.sql">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>False</ImportIntoVFS>
+    </Content>
+    <Content Include="EaTables\EaPlotEffects.sql">
       <SubType>Lua</SubType>
       <ImportIntoVFS>False</ImportIntoVFS>
     </Content>

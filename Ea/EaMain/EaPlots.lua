@@ -80,6 +80,10 @@ local Distance = Map.PlotDistance
 local GetPlotFromXY = Map.GetPlot
 local Floor = math.floor
 local StrChar = string.char
+local HandleError41 = HandleError41
+local HandleError61 = HandleError61
+
+
 
 local Rand = Map.Rand
 local GetPlotByIndex = Map.GetPlotByIndex
@@ -432,8 +436,9 @@ function ChangeLivingTerrainStrengthWorldWide(changeValue, iPlayer)		--leave iPl
 end
 
 
+--DEPRECIATE: Replace with function below when CityCanAcquirePlot comes on line
 local function ListenerSerialEventHexCultureChanged(hexX, hexY, iPlayer, bUnknown)	--fires for all owned plots at game init too
-	Dprint("ListenerSerialEventHexCultureChanged ", hexX, hexY, iPlayer, bUnknown)
+	--print("ListenerSerialEventHexCultureChanged ", hexX, hexY, iPlayer, bUnknown)
 	if bHidden[iPlayer] then	--these only ever own city plot
 		local x, y = ToGridFromHex( hexX, hexY )
 		local capital = Players[iPlayer]:GetCapitalCity()
@@ -461,6 +466,26 @@ Events.SerialEventHexCultureChanged.Add(ListenerSerialEventHexCultureChanged)
 
 
 -- GameEvents
+
+--[[	In preparation for CityCanAcquirePlot
+local function OnCityCanAcquirePlot(iPlayer, iCity, x, y)
+	print("OnCityCanAcquirePlot ", iPlayer, iCity, x, y)
+	local plot = GetPlotFromXY(x,y)
+	if plot:IsWater() then return false end
+	if plot:IsMountain() then return false end
+	return true
+end
+GameEvents.CityCanAcquirePlot.Add(OnCityCanAcquirePlot)
+]]
+
+
+local function OnUnitSetXYPlotEffect(iPlayer, iUnit, x, y, plotEffectID, plotEffectStrength)
+	print("OnUnitSetXYPlotEffect ", iPlayer, iUnit, x, y, plotEffectID, plotEffectStrength)
+
+
+end
+GameEvents.UnitSetXYPlotEffect.Add(function(iPlayer, iUnit, x, y, plotEffectID, plotEffectStrength) return HandleError61(OnUnitSetXYPlotEffect, iPlayer, iUnit, x, y, plotEffectID, plotEffectStrength) end)
+
 local function OnBuildFinished(iPlayer, x, y, improvementID)		--Is improvementID necessarily the one built, or is it any improvement that happens to be there???
 	print("OnBuildFinished ", iPlayer, x, y, improvementID)
 	if improvementID == -1 then
@@ -475,7 +500,7 @@ local function OnBuildFinished(iPlayer, x, y, improvementID)		--Is improvementID
 		end
 	end
 end
-GameEvents.BuildFinished.Add(OnBuildFinished)
+GameEvents.BuildFinished.Add(function(iPlayer, x, y, improvementID) return HandleError41(OnBuildFinished, iPlayer, x, y, improvementID) end)
 
 --------------------------------------------------------------
 -- Main Per Turn Plot Loop

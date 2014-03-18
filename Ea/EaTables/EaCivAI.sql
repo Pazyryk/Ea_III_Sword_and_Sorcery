@@ -1006,7 +1006,7 @@ INSERT INTO EaCivPlans_TechModules (TechModule, TechType) VALUES
 ('Marksmen',			'TECH_BOWYERS'					),
 ('Marksmen',			'TECH_CURRENCY'					),
 ('Marksmen',			'TECH_MATHEMATICS'				),
-('Marksmen',			'TECH_MUSIC_THEORY'				),
+('Marksmen',			'TECH_MUSIC'				),
 
 ('Whalers',				'TECH_HARPOONS'					),
 ('Whalers',				'TECH_CURRENCY'					),

@@ -440,6 +440,7 @@ function AddSmallButtonsToTechButton( thisTechButtonInstance, tech, maxSmallButt
 	end
 
 	--Paz add
+	--Add anything we want in Technology_EaTechButtonIncludeSpecials
 	for row in GameInfo.Technology_EaTechButtonIncludeSpecials(condition) do
 		local buttonName = "B"..tostring(buttonNum)
 		local thisButton = thisTechButtonInstance[buttonName]
@@ -455,6 +456,46 @@ function AddSmallButtonsToTechButton( thisTechButtonInstance, tech, maxSmallButt
 			thisButton:SetToolTipString(Locale.ConvertTextKey( row.SpecialText ))
 			buttonNum = buttonNum + 1
 		end		
+	end
+
+	--Spells
+	local spellSQL = "SpellClass IS NOT NULL AND TechReq = '" .. techType .. "'"
+	local arcaneToolTip
+	local divineToolTip
+	for spellInfo in GameInfo.EaActions(spellSQL) do
+		if spellInfo.SpellClass == "Arcane" then
+			if not arcaneToolTip then
+				arcaneToolTip = "Can learn Arcane Spells:"
+			end
+			arcaneToolTip = arcaneToolTip .. "[NEWLINE][ICON_BULLET][COLOR_POSITIVE_TEXT]" .. Locale.Lookup(spellInfo.Description) .. "[ENDCOLOR] " .. Locale.Lookup(spellInfo.Help)
+		elseif spellInfo.SpellClass == "Divine" then
+			if not divineToolTip then
+				divineToolTip = "Can learn Divine Spells:"
+			end
+			divineToolTip = divineToolTip .. "[NEWLINE][ICON_BULLET][COLOR_POSITIVE_TEXT]" .. Locale.Lookup(spellInfo.Description) .. "[ENDCOLOR] " .. Locale.Lookup(spellInfo.Help)
+		end
+	end
+	if arcaneToolTip then
+		local buttonName = "B"..tostring(buttonNum)
+		local thisButton = thisTechButtonInstance[buttonName]
+		if thisButton then
+			local iconAtlas, iconIndex = "GENERIC_FUNC_ATLAS", 0	--need generic arcane and divine spell icons
+			IconHookup(iconIndex, textureSize, iconAtlas, thisButton)
+			thisButton:SetHide( false )
+			thisButton:SetToolTipString(arcaneToolTip)
+			buttonNum = buttonNum + 1
+		end	
+	end
+	if divineToolTip then
+		local buttonName = "B"..tostring(buttonNum)
+		local thisButton = thisTechButtonInstance[buttonName]
+		if thisButton then
+			local iconAtlas, iconIndex = "GENERIC_FUNC_ATLAS", 0	--need generic arcane and divine spell icons
+			IconHookup(iconIndex, textureSize, iconAtlas, thisButton)
+			thisButton:SetHide( false )
+			thisButton:SetToolTipString(divineToolTip)
+			buttonNum = buttonNum + 1
+		end	
 	end
 	--end Paz add
 	

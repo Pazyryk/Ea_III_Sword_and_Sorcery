@@ -31,9 +31,9 @@ function OnPopup( popupInfo )
 	--Paz add
 	LuaEvents.EaCivsTestSetNaturalWonderEffects(Game.GetActivePlayer(), x, y)
 	local yieldString
-	if info.EaUnhappiness == 0 then
+	if info.NaturalWonderHappiness > 0 then
 		yieldString = Locale.ConvertTextKey("TXT_KEY_EA_POP_NATURAL_WONDER_FOUND_DEFAULT", info.Description)
-	elseif info.EaUnhappiness == 1 then
+	elseif info.NaturalWonderHappiness == 0 then
 		yieldString = Locale.ConvertTextKey("TXT_KEY_EA_POP_NATURAL_WONDER_FOUND_NEUTRAL", info.Description)
 	else
 		yieldString = Locale.ConvertTextKey("TXT_KEY_EA_POP_NATURAL_WONDER_FOUND_BAD", info.Description, info.EaUnhappiness - 1)

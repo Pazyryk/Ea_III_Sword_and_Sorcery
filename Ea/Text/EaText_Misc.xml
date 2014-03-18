@@ -1565,8 +1565,8 @@
 		<Row Tag="TXT_KEY_EA_TECH_LITERATURE">
 			<Text>Literature</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_TECH_MUSIC_THEORY">
-			<Text>Music Theory</Text>
+		<Row Tag="TXT_KEY_EA_TECH_MUSIC">
+			<Text>Music</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_ALCHEMY">
 			<Text>Alchemy</Text>
@@ -1770,18 +1770,11 @@
 		<Row Tag="TXT_KEY_EA_TECH_IRRIGATION_SPECIAL">
 			<Text>Can build Farms in Marsh</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_TECH_DIVINE_LITURGY_SPECIAL">
-			<Text>Devouts can learn Bless & Sanctify</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_TECH_MALEFICIUM_SPECIAL1">
+
+		<Row Tag="TXT_KEY_EA_TECH_MALEFICIUM_SPECIAL">
 			<Text>Civilization will Fall when anyone makes the Prophecy of Vâ</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_TECH_MALEFICIUM_SPECIAL2">
-			<Text>Thaumaturges can learn Hex, Curse & Defile</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_TECH_THAUMATURGY_SPECIAL">
-			<Text>Thaumaturges can learn Magic Missile</Text>
-		</Row>
+
 		<Row Tag="TXT_KEY_EA_TECH_PHILOSOPHY_SPECIAL">
 			<Text>Reduces Knowledge Maintenence by 1% per tech known</Text>
 		</Row>

@@ -4105,7 +4105,7 @@ TestTarget[GameInfoTypes.EA_SPELL_BLIGHT] = function()
 		if featureID == FEATURE_BLIGHT or featureID == FEATURE_FALLOUT then return false end
 		g_int1 = g_modSpell < g_faith and g_modSpell or g_faith
 		if featureID == FEATURE_FOREST or featureID == FEATURE_JUNGLE or featureID == FEATURE_MARSH then	--Must overpower any living terrain here
-			g_int2 = plot:GetLivingTerrainStrength()
+			g_int2 = g_plot:GetLivingTerrainStrength()
 			if g_int1 <= g_int2 then
 				return false
 			end

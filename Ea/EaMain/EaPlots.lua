@@ -436,7 +436,7 @@ function ChangeLivingTerrainStrengthWorldWide(changeValue, iPlayer)		--leave iPl
 end
 
 
---DEPRECIATE: Replace with function below when CityCanAcquirePlot comes on line
+--[[DEPRECIATE: Replace with function below when CityCanAcquirePlot comes on line
 local function ListenerSerialEventHexCultureChanged(hexX, hexY, iPlayer, bUnknown)	--fires for all owned plots at game init too
 	--print("ListenerSerialEventHexCultureChanged ", hexX, hexY, iPlayer, bUnknown)
 	if bHidden[iPlayer] then	--these only ever own city plot
@@ -463,11 +463,11 @@ local function ListenerSerialEventHexCultureChanged(hexX, hexY, iPlayer, bUnknow
 	end
 end
 Events.SerialEventHexCultureChanged.Add(ListenerSerialEventHexCultureChanged)
-
+]]
 
 -- GameEvents
 
---[[	In preparation for CityCanAcquirePlot
+--	In preparation for CityCanAcquirePlot
 local function OnCityCanAcquirePlot(iPlayer, iCity, x, y)
 	print("OnCityCanAcquirePlot ", iPlayer, iCity, x, y)
 	local plot = GetPlotFromXY(x,y)
@@ -476,7 +476,7 @@ local function OnCityCanAcquirePlot(iPlayer, iCity, x, y)
 	return true
 end
 GameEvents.CityCanAcquirePlot.Add(OnCityCanAcquirePlot)
-]]
+
 
 
 local function OnUnitSetXYPlotEffect(iPlayer, iUnit, x, y, plotEffectID, plotEffectStrength)

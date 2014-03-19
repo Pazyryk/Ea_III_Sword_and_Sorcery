@@ -1073,13 +1073,13 @@ INSERT INTO EaCivPlans_TechModules (TechModule, TechType) VALUES
 ('HighArcane',			'TECH_ESOTERIC_ARCANA'			),
 
 ('Summoner',			'TECH_MALEFICIUM'				),
-('Summoner',			'TECH_DEMONOLOGY'				),
+('Summoner',			'TECH_SORCERY'				),
 ('Summoner',			'TECH_SUMMONING'				),
 
 ('Necromancer',			'TECH_SOUL_BINDING'				),
 
 ('Armageddon',			'TECH_MALEFICIUM'				),
-('Armageddon',			'TECH_DEMONOLOGY'				),
+('Armageddon',			'TECH_SORCERY'				),
 ('Armageddon',			'TECH_LOGIC'					),
 ('Armageddon',			'TECH_SUMMONING'				),
 ('Armageddon',			'TECH_NECROMANCY'				),
@@ -1120,7 +1120,7 @@ INSERT INTO EaCivPlans_TechModules (TechModule, TechType) VALUES
 
 ('Illusionists',		'TECH_DRAMA'					),
 ('Illusionists',		'TECH_ILLUSION'					),
-('Illusionists',		'TECH_PHANTASMAGORA'			),
+('Illusionists',		'TECH_PHANTASMAGORIA'			),
 
 ('Scientists',			'TECH_MATHEMATICS'				),
 ('Scientists',			'TECH_PHILOSOPHY'				),

@@ -983,7 +983,7 @@ local function SaveGreatPerson(defendingPlayer, defendingUnit)
 	local sector = Rand(6, "hello") + 1
 	for testPlot in PlotAreaSpiralIterator(currentPlot, 15, sector, false, false, false) do
 		if defendingPlayer:GetPlotDanger(testPlot) == 0 then								--is this plot out of danger?
-			if defendingUnit:TurnsToReachTarget(testPlot, true, true, true) < 100 then		--is this plot accessible?
+			if defendingUnit:TurnsToReachTarget(testPlot, 1, 1, 1) < 100 then		--is this plot accessible?
 				defendingUnit:SetXY(testPlot:GetX(), testPlot:GetY())
 				defendingUnit:SetEmbarked(testPlot:IsWater())
 				testPlot:AddFloatUpMessage("Great Person has escaped!")		--TO DO: txt key

@@ -995,7 +995,7 @@ end
 -- GP Modifier Functions
 --------------------------------------------------------------
 
-local subclassModLevelBonus = {
+local subclassModLevelModifier = {
 	Witch = {		[GameInfoTypes.EAMOD_DIVINATION] =		0.25,
 					[GameInfoTypes.EAMOD_ENCHANTMENT] =		0.25,
 					[GameInfoTypes.EAMOD_ABJURATION] =		0.1,
@@ -1020,6 +1020,15 @@ local subclassModLevelBonus = {
 	Illusionist = {	[GameInfoTypes.EAMOD_ILLUSION] =		0.5		}
 }
 
+local subclassModModifier = {
+	Illusionist = {	[GameInfoTypes.EAMOD_DIVINATION] =		-2,
+					[GameInfoTypes.EAMOD_ABJURATION] =		-2,
+					[GameInfoTypes.EAMOD_EVOCATION] =		-2,
+					[GameInfoTypes.EAMOD_TRANSMUTATION] =	-2,
+					[GameInfoTypes.EAMOD_CONJURATION] =		-2,
+					[GameInfoTypes.EAMOD_NECROMANCY] =		-2		}
+}
+
 function GetGPMod(iPerson, modType1, modType2)
 	--need unit or iPerson; modType2 is optional; assumes mod is valid for class/subclass
 
@@ -1028,7 +1037,7 @@ function GetGPMod(iPerson, modType1, modType2)
 	local level = eaPerson.level
 	local levelMod = 5 + Floor(level / 3)
 	local promoMod = GetHighestPromotionLevel(modsPromotionTable[modType1], nil, iPerson)
-	local bIsLevelMod1 = 0 < promoMod
+	local bHasAnyLevelsMod1 = 0 < promoMod
 
 	if modType2 then
 		local promoMod2 = GetHighestPromotionLevel(modsPromotionTable[modType2], nil, iPerson)
@@ -1041,15 +1050,21 @@ function GetGPMod(iPerson, modType1, modType2)
 	end
 	local subclass = eaPerson.subclass
 	if subclass then
-		local subclassBonuses = subclassModLevelBonus[subclass]
-		if subclassBonuses then
-			local bonus1 = subclassBonuses[modType1] or 0
-			local bonus2 = subclassBonuses[modType2] or 0
-			bonuses = bonuses + (bonus1 + bonus2) * level
+		local modLevelModifier = subclassModLevelModifier[subclass]
+		if modLevelModifier then
+			local levelMod1 = modLevelModifier[modType1] or 0
+			local levelMod2 = modLevelModifier[modType2] or 0
+			bonuses = bonuses + (levelMod1 + levelMod2) * level
+		end
+		local modModifier = subclassModModifier[subclass]
+		if modModifier then
+			local mod1 = modModifier[modType1] or 0
+			local mod2 = modModifier[modType2] or 0
+			bonuses = bonuses + mod1 + mod2
 		end
 	end
 
-	return Floor(levelMod + promoMod + bonuses), bIsLevelMod1		--2nd arg used for actions that require at least 1 promotion level to do
+	return Floor(levelMod + promoMod + bonuses), bHasAnyLevelsMod1		--2nd arg used for actions that require at least 1 promotion level to do
 end
 
 function SetTowerMods(iPerson)

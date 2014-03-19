@@ -1550,8 +1550,8 @@
 		<Row Tag="TXT_KEY_EA_TECH_REANIMATION">
 			<Text>Reanimation</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_TECH_DEMONOLOGY">
-			<Text>Demonology</Text>
+		<Row Tag="TXT_KEY_EA_TECH_SORCERY">
+			<Text>Sorcery</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_CONJURATION">
 			<Text>Conjuration</Text>
@@ -1671,9 +1671,15 @@
 		<Row Tag="TXT_KEY_EA_TECH_TRANSCENDENTAL_THOUGHT">
 			<Text>Transcendental Thought</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_GREATER_ILLUSION">
+			<Text>Greater Illusion</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_GREATER_ENCHANTMENT">
+			<Text>Greater Enchantment</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_AESTHETICS">
 			<Text>Æsthetics</Text>
-		</Row>	
+		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_MEDICINE">
 			<Text>Medicine</Text>
 		</Row>
@@ -1716,8 +1722,8 @@
 		<Row Tag="TXT_KEY_EA_TECH_GREATER_ARCANA">
 			<Text>Greater Arcana</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_TECH_PHANTASMAGORA">
-			<Text>Phantasmagora</Text>
+		<Row Tag="TXT_KEY_EA_TECH_PHANTASMAGORIA">
+			<Text>Phantasmagoria</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_INVOCATION">
 			<Text>Invocation</Text>

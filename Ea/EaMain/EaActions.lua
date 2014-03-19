@@ -414,7 +414,9 @@ function TestEaAction(eaActionID, iPlayer, unit, iPerson, testX, testY, bAINonTa
 		g_team = Teams[g_iTeam]	
 		if g_eaAction.TechReq then
 			if not (g_eaAction.PolicyTrumpsTechReq and g_player:HasPolicy(GameInfoTypes[g_eaAction.PolicyTrumpsTechReq])) then
-				if not g_team:IsHasTech(GameInfoTypes[g_eaAction.TechReq]) then return false end
+				if not g_team:IsHasTech(GameInfoTypes[g_eaAction.TechReq]) then
+					if not g_eaAction.OrTechReq or not g_team:IsHasTech(GameInfoTypes[g_eaAction.OrTechReq]) then return false end
+				end
 				if g_eaAction.AndTechReq and not g_team:IsHasTech(GameInfoTypes[g_eaAction.AndTechReq]) then return false end
 			end
 		end
@@ -594,8 +596,14 @@ function TestEaAction(eaActionID, iPlayer, unit, iPerson, testX, testY, bAINonTa
 	--Specific action test (runs if it exists)
 	if Test[eaActionID] and not Test[eaActionID]() then return false end
 
-	--Test target reqs in separate function
 
+
+	--Spell development: disable until added (all spells need SetAIValues)
+	if g_SpellClass and not SetAIValues[eaActionID] then return false end
+
+
+
+	--All non-target tests have passed
 	g_bNonTargetTestsPassed = true
 
 	if not bAINonTargetTest then
@@ -1308,7 +1316,9 @@ function TestSpellLearnable(iPlayer, iPerson, spellID, spellClass)		--iPerson = 
 	local team = Teams[player:GetTeam()]
 	if spellInfo.TechReq then
 		if not (spellInfo.PolicyTrumpsTechReq and player:HasPolicy(GameInfoTypes[spellInfo.PolicyTrumpsTechReq])) then
-			if not team:IsHasTech(GameInfoTypes[spellInfo.TechReq]) then return false end
+			if not team:IsHasTech(GameInfoTypes[spellInfo.TechReq]) then
+				if not spellInfo.OrTechReq or not team:IsHasTech(GameInfoTypes[spellInfo.OrTechReq]) then return false end
+			end
 			if spellInfo.AndTechReq and not team:IsHasTech(GameInfoTypes[spellInfo.AndTechReq]) then return false end
 		end
 	end
@@ -3915,6 +3925,20 @@ end
 --Note: spells skip over generic civ and caster prereqs: Test function won't be called
 --Use TestTarget, SetUI, SetAIValues, Do (for 1 turn completion) and Finish (for >1 turn completion)
 
+
+--EA_SPELL_SCRYING
+--EA_SPELL_GLYPH_OF_SEEING
+--EA_SPELL_DETECT_GLYPHS_RUNES_WARDS
+--EA_SPELL_KNOW_WORLD
+--EA_SPELL_DISPEL_HEXES
+--EA_SPELL_DESPEL_GLYPHS_RUNES_WARDS
+--EA_SPELL_DISPEL_ILLUSIONS
+--EA_SPELL_BANISHMENT
+--EA_SPELL_PROTECTIVE_WARD
+--EA_SPELL_DISPEL_MAGIC
+--EA_SPELL_TIME_STOP
+
+
 --EA_SPELL_MAGIC_MISSILE
 TestTarget[GameInfoTypes.EA_SPELL_MAGIC_MISSILE] = function()	--TO DO: need better AI targeting logic (for now, value goes up with existing damage)
 	
@@ -4011,6 +4035,16 @@ Do[GameInfoTypes.EA_SPELL_MAGIC_MISSILE] = function()
 	return true
 end
 ]]
+
+--EA_SPELL_EXPLOSIVE_RUNES
+--EA_SPELL_MAGE_SWORD
+--EA_SPELL_BREACH
+--EA_SPELL_WISH
+--EA_SPELL_SLOW
+--EA_SPELL_HASTE
+--EA_SPELL_ENCHANT_WEAPONS
+--EA_SPELL_POLYMORPH
+
 
 --EA_SPELL_BLIGHT
 TestTarget[GameInfoTypes.EA_SPELL_BLIGHT] = function()
@@ -4193,7 +4227,29 @@ Do[GameInfoTypes.EA_SPELL_HEX] = function()
 	return true
 end
 
-
+--EA_SPELL_SUMMON_MONSTER
+--EA_SPELL_TELEPORT
+--EA_SPELL_SUMMON_MINOR_DEMON
+--EA_SPELL_PHASE_DOOR
+--EA_SPELL_REANIMATE_DEAD
+--EA_SPELL_RAISE_DEAD
+--EA_SPELL_VAMPIRIC_TOUCH
+--EA_SPELL_DEATH_STAY
+--EA_SPELL_BECOME_LICH
+--EA_SPELL_FINGER_OF_DEATH
+--EA_SPELL_CHARM_MONSTER
+--EA_SPELL_CAUSE_FEAR
+--EA_SPELL_CAUSE_DISPAIR
+--EA_SPELL_SLEEP
+--EA_SPELL_DREAM
+--EA_SPELL_NIGHTMARE
+--EA_SPELL_LESSER_GEAS
+--EA_SPELL_GREATER_GEAS
+--EA_SPELL_PRESTIDIGITATION
+--EA_SPELL_OBSCURE_TERRAIN
+--EA_SPELL_FOG_OF_WAR
+--EA_SPELL_SIMULACRUM
+--EA_SPELL_PHANTASMAGORIA
 
 
 --EA_SPELL_HEAL

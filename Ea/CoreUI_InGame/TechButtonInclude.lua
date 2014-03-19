@@ -459,7 +459,7 @@ function AddSmallButtonsToTechButton( thisTechButtonInstance, tech, maxSmallButt
 	end
 
 	--Spells
-	local spellSQL = "SpellClass IS NOT NULL AND TechReq = '" .. techType .. "'"
+	local spellSQL = "SpellClass IS NOT NULL AND (TechReq = '" .. techType .. "' OR OrTechReq = '" .. techType .. "')"
 	local arcaneToolTip
 	local divineToolTip
 	for spellInfo in GameInfo.EaActions(spellSQL) do

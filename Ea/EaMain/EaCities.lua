@@ -691,23 +691,32 @@ function CityPerCivTurn(iPlayer)		--Full civ only
 				classPoints[4] = classPoints[4] + city:GetSpecialistCount(SPECIALIST_ARTISAN) * 2
 				classPoints[6] = classPoints[6] + city:GetSpecialistCount(SPECIALIST_DISCIPLE) * 2
 
-				--update residence status and effects if GP walks away
+				--update residence status and effects if GP walks away or dies
 				if eaCity.resident ~= -1 then
 					local x, y = city:GetX(), city:GetY()
 					local iPerson = eaCity.resident
 					local eaPerson = gPeople[iPerson]
-					local iUnit = eaPerson.iUnit
-					local personX, personY = eaPerson.x, eaPerson.y
-					if iUnit ~= -1 then
-						local unit = player:GetUnitByID(iUnit)
-						if unit then
-							personX, personY = unit:GetX(), unit:GetY()
+					if eaPerson then
+						local iUnit = eaPerson.iUnit
+						if iUnit ~= -1 then
+							local unit = player:GetUnitByID(iUnit)
+							if unit then
+								local personX, personY = unit:GetX(), unit:GetY()
+								if personX ~= x or personY ~= y then
+									InterruptEaAction(iPlayer, iPerson)
+								end
+							else
+								InterruptEaAction(iPlayer, iPerson)
+								AttemptToReconectGP(iPerson, nil)
+							end
+						else
+							InterruptEaAction(iPlayer, iPerson)
 						end
+					else		--Person died, update city for no resident
+						eaCity.resident = -1
+						UpdateCityYields(iPlayer, iCity)
 					end
-					if personX ~= x or personY ~= y then
-						InterruptEaAction(iPlayer, iPerson)
-						--UpdateCityYields(iPlayer, iCity)
-					end
+
 				end
 
 				--auto-indenture

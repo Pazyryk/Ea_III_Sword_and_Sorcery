@@ -206,7 +206,7 @@ function SetNewCivName(iPlayer, eaCivID)
 	if eaCivInfo.FoundingGPClass or eaCivInfo.FoundingGPSubclass then
 		local class = eaCivInfo.FoundingGPClass
 		local subclass = (not class) and eaCivInfo.FoundingGPSubclass or nil
-		local eaPersonRowID = FoundingGPType
+		local eaPersonRowID = eaCivInfo.FoundingGPType
 		GenerateGreatPerson(iPlayer, class, subclass, eaPersonRowID, true)
 		if class and class == eaPlayer.delayedGPclass then
 			eaPlayer.delayedGPclass = nil
@@ -248,9 +248,11 @@ function SetNewCivName(iPlayer, eaCivID)
 			break
 		end
 	end
-	gWorld.bAllCivsHaveNames = bAllCivsHaveNames
-	print("bAllCivsHaveNames = ", bAllCivsHaveNames)
-
+	if bAllCivsHaveNames and not gWorld.bAllCivsHaveNames then
+		print("All civs have names now; unlocking reserved GPs")
+		gWorld.bAllCivsHaveNames = bAllCivsHaveNames
+		UnlockReservedGPs()
+	end
 
 end
 LuaEvents.EaCivNamingSetNewCivName.Add(function(iPlayer, eaCivID) return HandleError21(SetNewCivName, iPlayer, eaCivID) end)

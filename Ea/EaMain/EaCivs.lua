@@ -64,7 +64,8 @@ local specialistTypeInt = {	SPECIALIST_SMITH = 1,
 							SPECIALIST_TRADER = 2,
 							SPECIALIST_SCRIBE = 3,
 							SPECIALIST_ARTISAN = 4,
-							SPECIALIST_DISCIPLE = 6	}
+							SPECIALIST_DISCIPLE = 6,
+							SPECIALIST_ADEPT = 7	}
 
 local classTypeInt = {	Engineer = 1,
 						Merchant = 2,

@@ -498,6 +498,10 @@ function AddBuildingButton( pCity, building )
 				controlTable.BuildingFilledSpecialistSlot1:SetTexture(artistTexture);
 				controlTable.BuildingFilledSpecialistSlot2:SetTexture(artistTexture);
 				controlTable.BuildingFilledSpecialistSlot3:SetTexture(artistTexture);
+			elseif building.SpecialistType == "SPECIALIST_ADEPT" then
+				controlTable.BuildingFilledSpecialistSlot1:SetTexture(artistTexture);
+				controlTable.BuildingFilledSpecialistSlot2:SetTexture(artistTexture);
+				controlTable.BuildingFilledSpecialistSlot3:SetTexture(artistTexture);
 			else
 				controlTable.BuildingFilledSpecialistSlot1:SetTexture(workerTexture);
 				controlTable.BuildingFilledSpecialistSlot2:SetTexture(workerTexture);

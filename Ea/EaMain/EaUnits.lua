@@ -1045,6 +1045,7 @@ local function OnUnitTakingPromotion(iPlayer, iUnit, promotionID)
 			return false
 		else
 			if unit:IsGreatPerson() then	--quick access promo levels
+				local promoInfo = GameInfo.UnitPromotions[promotionID]
 				local prefix, level = GetPromoPrefixLevelFromType(promoInfo.Type)
 				if prefix then
 					local iPerson = unit:GetPersonIndex()

@@ -2538,6 +2538,9 @@ TestTarget[GameInfoTypes.EA_ACTION_PROPHECY_ANRA] = function()
 	return not g_city:IsHolyCityAnyReligion()
 end
 
+
+
+
 Do[GameInfoTypes.EA_ACTION_PROPHECY_ANRA] = function()
 	FoundReligion(g_iPlayer, g_iCity, RELIGION_ANRA)
 	BecomeFallen(g_iPlayer)

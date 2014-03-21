@@ -39,7 +39,7 @@ local int1 =			{}
 local int2 =			{}
 
 local g_iActivePlayer = Game.GetActivePlayer()
-
+local g_bReservedGPs = not gWorld.bAllCivsHaveNames
 
 --------------------------------------------------------------
 -- Cached Tables
@@ -76,6 +76,14 @@ end
 modsForUI.firstMagicMod = numModTypes - 7
 modsForUI[numModTypes + 1] = {text = "All Magic Schools", value = 0}
 modsForUI[numModTypes + 2] = {text = "Other Magic Schools", value = 0}
+
+--Reserved GPs
+local reservedGPs = {}		--nil all entries after all civs gain names
+for EaCivInfo in GameInfo.EaCivs() do
+	if EaCivInfo.FoundingGPType then
+		reservedGPs[GameInfoTypes[EaCivInfo.FoundingGPType] ] = true
+	end
+end
 
 --------------------------------------------------------------
 -- Local Functions
@@ -687,7 +695,7 @@ function PickPersonRowByClassOrSubclass(iPlayer, classOrSubclass, bAllowRedundan
 	local rowID = firstRow
 	local eaPersonRow = GameInfo.EaPeople[rowID]
 	while eaPersonRow do
-		if eaPersonRow[classOrSubclass] ~= -1 and (not eaPersonRow.bReserved or bAllCivsHaveNames) and (not gg_peopleEverLivedByRowID[eaPersonRow.ID] or bAllowRedundant) and eaPersonRow.Race == raceType then
+		if eaPersonRow[classOrSubclass] ~= -1 and not (g_bReservedGPs and reservedGPs[rowID]) and (not gg_peopleEverLivedByRowID[eaPersonRow.ID] or bAllowRedundant) and eaPersonRow.Race == raceType then
 			int1[rowID] = eaPersonRow[classOrSubclass]
 			totalPointsForSubclass = totalPointsForSubclass + eaPersonRow[classOrSubclass]
 		else
@@ -713,7 +721,7 @@ function PickPersonRowByClassOrSubclass(iPlayer, classOrSubclass, bAllowRedundan
 		rowID = firstRow
 		eaPersonRow = GameInfo.EaPeople[1]
 		while eaPersonRow do
-			if eaPersonRow[classOrSubclass] ~= -1 and not eaPersonRow.bReserved and (not gg_peopleEverLivedByRowID[eaPersonRow.ID] or bAllowRedundant) and eaPersonRow.Race == raceType then
+			if eaPersonRow[classOrSubclass] ~= -1 and not (g_bReservedGPs and reservedGPs[rowID]) and (not gg_peopleEverLivedByRowID[eaPersonRow.ID] or bAllowRedundant) and eaPersonRow.Race == raceType then
 				validPeople = validPeople + 1
 				int1[validPeople] = rowID
 			end		
@@ -733,6 +741,11 @@ function PickPersonRowByClassOrSubclass(iPlayer, classOrSubclass, bAllowRedundan
 
 	print("!!!! ERROR: Could not find any valid EaPeople")
 
+end
+
+function UnlockReservedGPs()
+	g_bReservedGPs = false
+	reservedGPs = nil		--garbage collect cached table
 end
 
 --------------------------------------------------------------

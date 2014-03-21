@@ -455,10 +455,8 @@ function BecomeFallen(iPlayer)		--this could happen before, during or after the 
 			local class1, class2 = eaPerson.class1, eaPerson.class2
 			if eaPerson.spells then
 				print("Converting spellcaster")
-				local unit
-				if eaPerson.iUnit ~= -1 then unit = player:GetUnitByID(eaPerson.iUnit) end
-				ApplyGPPromotion(iPlayer, unit, iPerson, PROMOTION_SORCERER, false)
-	
+				local unit = player:GetUnitByID(eaPerson.iUnit)
+				unit:SetHasPromotion(PROMOTION_SORCERER, true)
 				--convert spells
 				local numConvert = 0
 				for spellID in pairs(eaPerson.spells) do

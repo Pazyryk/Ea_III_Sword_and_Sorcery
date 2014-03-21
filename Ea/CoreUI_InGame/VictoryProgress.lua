@@ -33,6 +33,15 @@ local g_bestScoreType = GameInfoTypes.VICTORY_SUBDUER
 function SetupScreen(iPlayer)		--iPlayer only supplied to change player view from Fire Tuner for debugging
 	if gT.gPlayers then		--game inited
 		g_iActivePlayer = iPlayer or Game.GetActivePlayer()
+		if not MapModData.fullCivs[g_iActivePlayer] then		--probably autoplay; set to some player so we can watch progress
+			for i = 0, GameDefines.MAX_MAJOR_CIVS do
+				if MapModData.fullCivs[i] then
+					g_iActivePlayer = i
+					break
+				end
+			end
+		end
+
 		if MapModData.fullCivs[g_iActivePlayer] then
 			g_activePlayer = Players[g_iActivePlayer]
 			SimpleCivIconHookup( g_iActivePlayer, 64, Controls.Icon )

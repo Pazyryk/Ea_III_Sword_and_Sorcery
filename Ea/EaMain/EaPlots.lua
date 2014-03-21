@@ -435,49 +435,22 @@ function ChangeLivingTerrainStrengthWorldWide(changeValue, iPlayer)		--leave iPl
 	return totalStrengthAdded
 end
 
-
---[[DEPRECIATE: Replace with function below when CityCanAcquirePlot comes on line
-local function ListenerSerialEventHexCultureChanged(hexX, hexY, iPlayer, bUnknown)	--fires for all owned plots at game init too
-	--print("ListenerSerialEventHexCultureChanged ", hexX, hexY, iPlayer, bUnknown)
-	if bHidden[iPlayer] then	--these only ever own city plot
-		local x, y = ToGridFromHex( hexX, hexY )
-		local capital = Players[iPlayer]:GetCapitalCity()
-		if x ~= capital:GetX() or y ~= capital:GetY() then
-			Dprint("Cancelling hidden civ plot ownership")
-			local plot = GetPlotFromXY(x,y)
-			plot:SetOwner(-1, -1)
-		end	
-	elseif bInitialized then
-		Dprint(string.format("Hex ownership change at hex coordinates: %d, %d for player: %d", hexX, hexY, iPlayer))
-		if iPlayer ~= -1 then
-			local x, y = ToGridFromHex( hexX, hexY )
-			local plot = GetPlotFromXY(x,y)
-			if plot:IsWater() and gg_bPreventWaterOwnership then			--hills & mountains?
-				if plot:GetResourceType(-1) == -1 then	--allow if resource (can't seem to stop spread to these when city-adjacent)
-					--print("Cancelling water ownership")
-					plot:SetOwner(-1, -1)
-				end
-				gg_bPreventWaterOwnership = true
-			end
-		end
-	end
-end
-Events.SerialEventHexCultureChanged.Add(ListenerSerialEventHexCultureChanged)
-]]
-
 -- GameEvents
 
---	In preparation for CityCanAcquirePlot
+-- Plot acquisition
 local function OnCityCanAcquirePlot(iPlayer, iCity, x, y)
 	print("OnCityCanAcquirePlot ", iPlayer, iCity, x, y)
 	local plot = GetPlotFromXY(x,y)
-	if plot:IsWater() then return false end
+	if plot:IsWater() then
+		local featureID = plot:GetFeatureType()
+		if featureID ~= -1 and featureID ~= FEATURE_ICE then return true end	--Atoll or any natural wonder feature is OK (blight/fallout are never on water)
+		if plot:GetResourceType(-1) ~= -1 then return true end					--Any resource is ownable (all are visible for now; otherwise we'll need iTeam)
+		return false
+	end
 	if plot:IsMountain() then return false end
 	return true
 end
 GameEvents.CityCanAcquirePlot.Add(OnCityCanAcquirePlot)
-
-
 
 local function OnUnitSetXYPlotEffect(iPlayer, iUnit, x, y, plotEffectID, plotEffectStrength)
 	print("OnUnitSetXYPlotEffect ", iPlayer, iUnit, x, y, plotEffectID, plotEffectStrength)

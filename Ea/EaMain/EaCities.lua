@@ -34,6 +34,7 @@ local SPECIALIST_TRADER =					GameInfoTypes.SPECIALIST_TRADER
 local SPECIALIST_SCRIBE =					GameInfoTypes.SPECIALIST_SCRIBE
 local SPECIALIST_ARTISAN =					GameInfoTypes.SPECIALIST_ARTISAN
 local SPECIALIST_DISCIPLE =					GameInfoTypes.SPECIALIST_DISCIPLE
+local SPECIALIST_ADEPT =					GameInfoTypes.SPECIALIST_ADEPT
 local BUILDING_MAN =						GameInfoTypes.BUILDING_MAN
 local BUILDING_SIDHE =						GameInfoTypes.BUILDING_SIDHE
 local BUILDING_HELDEOFOL =					GameInfoTypes.BUILDING_HELDEOFOL
@@ -690,6 +691,7 @@ function CityPerCivTurn(iPlayer)		--Full civ only
 				classPoints[3] = classPoints[3] + city:GetSpecialistCount(SPECIALIST_SCRIBE) * 2
 				classPoints[4] = classPoints[4] + city:GetSpecialistCount(SPECIALIST_ARTISAN) * 2
 				classPoints[6] = classPoints[6] + city:GetSpecialistCount(SPECIALIST_DISCIPLE) * 2
+				classPoints[7] = classPoints[7] + city:GetSpecialistCount(SPECIALIST_ADEPT) * 2
 
 				--update residence status and effects if GP walks away or dies
 				if eaCity.resident ~= -1 then

@@ -393,6 +393,7 @@ function GetHelpTextForProcess(iProcessID, bIncludeRequirementsInfo)
 		strHelpText = strHelpText .. strWrittenHelpText;
 	end
 	
+	--[[Paz disabled
 	-- League Project text
 	if (not Game.IsOption("GAMEOPTION_NO_LEAGUES")) then
 		local tProject = nil;
@@ -411,6 +412,7 @@ function GetHelpTextForProcess(iProcessID, bIncludeRequirementsInfo)
 			strHelpText = strHelpText .. pLeague:GetProjectDetails(GameInfo.LeagueProjects[tProject.Type].ID, Game.GetActivePlayer());
 		end
 	end
+	]]
 
 	return strHelpText;
 end

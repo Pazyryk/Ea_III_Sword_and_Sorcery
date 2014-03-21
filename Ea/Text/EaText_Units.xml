@@ -100,7 +100,16 @@
 			<Text>Disciple Slots</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPECIALIST_DISCIPLE_STRATEGY">
-			<Text>Employ Disciples to increase a city's mana or divine favor and to generate Disciples</Text>
+			<Text>Employ Disciples to increase a city's mana or divine favor and to generate Devouts</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPECIALIST_ADEPT">
+			<Text>Adept</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPECIALIST_ADEPT_SLOTS">
+			<Text>Adept Slots</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPECIALIST_ADEPT_STRATEGY">
+			<Text>Employ Adepts to increase a city's mana and to generate Thaumaturges</Text>
 		</Row>
 		
 		<!-- Units -->

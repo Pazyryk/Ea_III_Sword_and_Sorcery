@@ -872,7 +872,6 @@ function DoEaAction(eaActionID, iPlayer, unit, iPerson, targetX, targetY)
 		GiveGreatPersonXP(g_iPlayer, g_iPerson, g_eaAction.DoXP)
 	end
 	if g_eaAction.DoGainPromotion then
-		--ApplyGPPromotion(g_iPlayer, g_unit, g_iPerson, GameInfoTypes[g_eaAction.DoGainPromotion], false)
 		g_unit:SetHasPromotion(GameInfoTypes[g_eaAction.DoGainPromotion], true)
 	end
 
@@ -2538,6 +2537,9 @@ end
 TestTarget[GameInfoTypes.EA_ACTION_PROPHECY_ANRA] = function()
 	return not g_city:IsHolyCityAnyReligion()
 end
+
+
+
 
 Do[GameInfoTypes.EA_ACTION_PROPHECY_ANRA] = function()
 	FoundReligion(g_iPlayer, g_iCity, RELIGION_ANRA)

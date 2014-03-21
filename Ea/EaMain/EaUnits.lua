@@ -1168,14 +1168,12 @@ UseUnit[GameInfoTypes.UNIT_FISHING_BOATS] = function(iPlayer, unit)
 		end
 		print("Nearest lake distance = ", nearestDist)
 		local lakePlot = Map.GetPlotByIndex(iNearestLakePlot)
-		gg_bPreventWaterOwnership = false
 		lakePlot:SetOwner(iPlayer, iCity)
 		lakePlot:SetImprovementType(IMPROVEMENT_FISHING_BOATS)
 		RemoveOwnedLakePlot(iNearestLakePlot, iPlayer, iCity)
 		--Do notification and special effect
 	elseif nearestResourceDist <= gg_fishingRange[iPlayer] then		--improve resource
 		local resourcePlot = Map.GetPlotByIndex(iNearestResourcePlot)
-		gg_bPreventWaterOwnership = false
 		resourcePlot:SetOwner(iPlayer, iCity)
 		resourcePlot:SetImprovementType(IMPROVEMENT_FISHING_BOATS)
 		RemoveOwnedFishingResourcePlot(iNearestResourcePlot, iPlayer, iCity)
@@ -1214,7 +1212,6 @@ UseUnit[GameInfoTypes.UNIT_WHALING_BOATS] = function(iPlayer, unit)
 	end
 	if nearestWhaleDist <= gg_whalingRange[iPlayer] then
 		local whalePlot = Map.GetPlotByIndex(iNearestWhalePlot)
-		gg_bPreventWaterOwnership = false
 		whalePlot:SetOwner(iPlayer, iCity)
 		whalePlot:SetImprovementType(IMPROVEMENT_WHALING_BOATS)
 		RemoveOwnedWhalePlot(iNearestWhalePlot, iPlayer, iCity)

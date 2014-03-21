@@ -477,7 +477,6 @@ OnMajorPlayerTechLearned[GameInfoTypes.TECH_SAILING] = function(iPlayer)
 					print(" -number surrounding land = ", adjLandPlots)
 					if 3 < adjLandPlots then
 						bHasNaturalHarbor = true
-						gg_bPreventWaterOwnership = false
 						plot:SetOwner(iPlayer, city:GetID())
 					end
 				end

@@ -165,9 +165,7 @@ INSERT INTO EaActions (Type,			Description,							Help,										GPOnly,	UIType,
 
 UPDATE EaActions SET CapitalOnly = 1, DoXP = 20 WHERE Type = 'EA_ACTION_TAKE_LEADERSHIP';
 UPDATE EaActions SET TurnsToComplete = 1000 WHERE Type = 'EA_ACTION_TAKE_RESIDENCE';
-UPDATE EaActions SET AICombatRole = 'Any', TurnsToComplete = 1, StayInvisible = 1 WHERE Type = 'EA_ACTION_HEAL';
---
-
+UPDATE EaActions SET TurnsToComplete = 1, StayInvisible = 1 WHERE Type = 'EA_ACTION_HEAL';
 
 --GP yield actions
 INSERT INTO EaActions (Type,			Description,						Help,										GPOnly,	NoGPNumLimit,	UIType,		AITarget,			GPClass,		City,		GPModType1,				TurnsToComplete,	ProgressHolder,	IconIndex,	IconAtlas) VALUES

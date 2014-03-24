@@ -1245,14 +1245,15 @@ function KillPerson(iPlayer, iPerson, deathType)
 	if unit then
 		unit:Kill(true, -1)
 	else
-		--Debug: find out if there is a GP around (or any unit) that has this person index
+		--Debug: find out if there is a GP around (or any unit) that isn't dying and has this person index
 		for iLoopPlayer = 0, BARB_PLAYER_INDEX do
 			local loopPlayer = Players[iLoopPlayer]
 			if loopPlayer:IsAlive() then
 				for unit in loopPlayer:Units() do
-					if unit:GetPersonIndex() == iPerson then
+					if unit:GetPersonIndex() == iPerson and not unit:IsDelayedDeath() then
 						unitType = GameInfo.Units[unit:GetUnitType()].Type
-						error("Tried to kill GP but a unit has this GP's person index; iOwner, unitType = ".. unit:GetOwner() .. ", " .. unitType)
+						print(unit:IsDead())
+						error("Tried to kill GP but a living unit has this GP's person index; iOwner, unitType = ".. unit:GetOwner() .. ", " .. unitType)
 					end
 				end
 			end

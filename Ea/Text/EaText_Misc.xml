@@ -830,6 +830,15 @@
 		<Row Tag="TXT_KEY_EA_BUILDING_BOWYER">
 			<Text>Bowyer</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_ROASTING_FURNACE">
+			<Text>Roasting Furnace</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_CHRYSOPOEIA_REACTOR">
+			<Text>Chrysopoeia Reactor</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_ARGENTOPOEIA_REACTOR">
+			<Text>Argentopoeia Reactor</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_WHALERY">
 			<Text>Whalery</Text>
 		</Row>
@@ -887,6 +896,14 @@
 		<Row Tag="TXT_KEY_EA_BUILDING_SHRINE">
 			<Text>Shrine</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_MAGE_SCHOOL">
+			<Text>Mage School</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_PHARMAKEIA">
+			<Text>Pharmakeia</Text>
+		</Row>
+		
+		
 		<Row Tag="TXT_KEY_EA_BUILDING_ABATTOIR">
 			<Text>Abattoir</Text>
 		</Row>

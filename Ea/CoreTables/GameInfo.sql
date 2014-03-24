@@ -97,7 +97,7 @@ UPDATE GameOptions SET Visible = 0 WHERE Type NOT IN ('GAMEOPTION_NO_CITY_RAZING
 -- Victories
 -------------------------------------------------------------------------
 
-DELETE FROM Victories WHERE Type != 'VICTORY_TIME';		--BNW crashes on gameload if only 1 victory
+DELETE FROM Victories;	-- WHERE Type != 'VICTORY_TIME';		--BNW crashes on gameload if only 1 victory
 INSERT INTO Victories (Type, Description,				VictoryStatement,						VictoryBackground,		Civilopedia,							WinsGame, Audio) VALUES
 ('VICTORY_DESTROYER',	'TXT_KEY_EA_VICTORY_DESTROYER',	'TXT_KEY_EA_VICTORY_DESTROYER_BANG',	'Victory_Score.dds',	'TXT_KEY_EA_VICTORY_DESTROYER_PEDIA',	1,		'AS2D_VICTORY_SPEECH_ALTERNATE_CONQUEST_VICTORY'),
 ('VICTORY_PROTECTOR',	'TXT_KEY_EA_VICTORY_PROTECTOR',	'TXT_KEY_EA_VICTORY_PROTECTOR_BANG',	'Victory_Score.dds',	'TXT_KEY_EA_VICTORY_PROTECTOR_PEDIA',	1,		'AS2D_VICTORY_SPEECH_ALTERNATE_CONQUEST_VICTORY'),

@@ -27,12 +27,19 @@ local function AchieveVictory(iPlayer, victoryTypeID, modScore)
 
 end
 
+--TO DO: Use this???
+local function OnGameCoreTestVictory()
+	print("OnGameCoreTestVictory")
+
+end
+GameEvents.GameCoreTestVictory.Add(OnGameCoreTestVictory)
+
 
 function TestUpdateVictory(iPlayer)
 	print("VictoryPerCivTurn ", iPlayer)
 	if Game.GetWinner() ~= -1 then
 		print("Someone already won; no longer testing victory conditions or adjusting mod scores")
-		if Game.GetAIAutoPlay() > 0 then
+		if Game.GetAIAutoPlay() > 1 then
 			Autoplay(1)		--stop autoplay session
 		end
 		return

@@ -490,24 +490,6 @@ function ConvertUnitProductionByMatch(iPlayer, fromStr, toStr)
 	end
 end
 
-local tableByOrderType = {	[OrderTypes.ORDER_TRAIN] = "Units",
-							[OrderTypes.ORDER_CONSTRUCT] = "Buildings",
-							[OrderTypes.ORDER_CREATE] = "Projects",
-							[OrderTypes.ORDER_MAINTAIN] = "Processes"	}
-
-function DebugPrintCityBuildQueue(iPlayer)
-	local player = Players[iPlayer]
-	for city in player:Cities() do
-		local name = city:GetName()
-		print("Build queue for ", name, ":")
-		local qLength = city:GetOrderQueueLength()
-		for i = 0, qLength - 1 do
-			local queuedOrderType, queuedData1, queuedData2, queuedSave, queuedRush = city:GetOrderFromQueue(i)
-			print("* ", GameInfo[tableByOrderType[queuedOrderType]][queuedData1].Type)
-		end
-	end
-end
-
 function CityPerCivTurn(iPlayer)		--Full civ only
 	local Floor = math.floor
 	print("CityPerCivTurn; City info (Name/Size/BuildQueue):")

@@ -98,7 +98,7 @@ function UpdateData()
 			local iGoldPerTurn = pPlayer:CalculateGoldRate();
 
 			--Paz add: these are deducted per turn so affect GPT (note that AI won't see these adjustments for trade purposes)
-			iGoldPerTurn = iGoldPerTurn - MapModData.gpGoldBuildCost - MapModData.mercenaryNet
+			iGoldPerTurn = iGoldPerTurn - MapModData.mercenaryNet
 			--end Paz add
 			
 			-- Accounting for positive or negative GPT - there's obviously a better way to do this.  If you see this comment and know how, it's up to you ;)
@@ -547,6 +547,22 @@ function ScienceTipHandler( control )
 	
 			strText = strText .. Locale.ConvertTextKey("TXT_KEY_TP_SCIENCE_FROM_RESEARCH_AGREEMENTS", iScienceFromRAs / 100);
 		end
+
+		--Paz add: Science from Leader
+		local iScienceFromLeader = pPlayer:GetLeaderYieldBoost(GameInfoTypes.YIELD_SCIENCE) * (iScienceFromOtherPlayers + iScienceFromHappiness + iScienceFromRAs) / 100
+		if (iScienceFromLeader ~= 0) then
+		
+			-- Add separator for non-initial entries
+			if (bFirstEntry) then
+				bFirstEntry = false;
+			else
+				strText = strText .. "[NEWLINE]";
+			end
+	
+			strText = strText .. Locale.ConvertTextKey("TXT_KEY_EA_TP_SCIENCE_FROM_LEADER", iScienceFromLeader / 100);
+		end
+		--end Paz add
+
 	end
 	
 	tipControlTable.TooltipLabel:SetText( strText );
@@ -588,8 +604,15 @@ function GoldTipHandler( control )
 
 	local fGoldPerTurnFromCities = pPlayer:GetGoldFromCitiesTimes100() / 100;
 	local fCityConnectionGold = pPlayer:GetCityConnectionGoldTimes100() / 100;
-	local fTotalIncome = fGoldPerTurnFromCities + iGoldPerTurnFromOtherPlayers + fCityConnectionGold + iGoldPerTurnFromReligion + iGoldFromMercenaries;	--Paz added iGoldFromMercenaries
-	
+
+	--[[Paz modified below
+	local fTotalIncome = fGoldPerTurnFromCities + iGoldPerTurnFromOtherPlayers + fCityConnectionGold + iGoldPerTurnFromReligion;
+	]]
+	local fNonCityLeaderGold = pPlayer:GetLeaderYieldBoost(GameInfoTypes.YIELD_GOLD) * (iGoldPerTurnFromOtherPlayers + fCityConnectionGold + iGoldPerTurnFromReligion) / 100
+
+	local fTotalIncome = fGoldPerTurnFromCities + iGoldPerTurnFromOtherPlayers + fCityConnectionGold + iGoldPerTurnFromReligion + fNonCityLeaderGold + iGoldFromMercenaries;	--Paz added iGoldFromMercenaries
+	--end Paz modified
+
 	if (not OptionsManager.IsNoBasicHelp()) then
 		strText = strText .. Locale.ConvertTextKey("TXT_KEY_TP_AVAILABLE_GOLD", iTotalGold);
 		strText = strText .. "[NEWLINE][NEWLINE]";
@@ -610,14 +633,18 @@ function GoldTipHandler( control )
 	if (iGoldPerTurnFromReligion > 0) then
 		strText = strText .. "[NEWLINE]  [ICON_BULLET]" .. Locale.ConvertTextKey("TXT_KEY_TP_GOLD_FROM_RELIGION", iGoldPerTurnFromReligion);
 	end
+	--Paz add
+	if fNonCityLeaderGold > 0 then
+		strText = strText .. "[NEWLINE]  [ICON_BULLET]" .. Locale.ConvertTextKey("TXT_KEY_EA_TP_GOLD_FROM_LEADER", fNonCityLeaderGold);
+	end
+	--end Paz add
 	strText = strText .. "[/COLOR]";
 	
 	local iUnitCost = pPlayer:CalculateUnitCost();
 	local iUnitSupply = pPlayer:CalculateUnitSupply();
 	local iBuildingMaintenance = pPlayer:GetBuildingGoldMaintenance();
-	local iGPGoldBuildCost = MapModData.gpGoldBuildCost		--Paz add
 	local iImprovementMaintenance = pPlayer:GetImprovementGoldMaintenance();
-	local iTotalExpenses = iUnitCost + iUnitSupply + iBuildingMaintenance + iImprovementMaintenance + iGoldPerTurnToOtherPlayers + iGPGoldBuildCost; --Paz added iGPGoldBuildCost
+	local iTotalExpenses = iUnitCost + iUnitSupply + iBuildingMaintenance + iImprovementMaintenance + iGoldPerTurnToOtherPlayers;
 	
 	strText = strText .. "[NEWLINE]";
 	strText = strText .. "[COLOR:255:150:150:255]";
@@ -630,17 +657,13 @@ function GoldTipHandler( control )
 	end
 	--Paz add
 	if iGoldForMercenaries > 0 then
-		strText = strText .. "[NEWLINE]  [ICON_BULLET]" .. Locale.ConvertTextKey("TXT_KEY_EA_TP_GOLD_FROM_MERCENARIES", iGoldForMercenaries);
+		strText = strText .. "[NEWLINE]  [ICON_BULLET]" .. Locale.ConvertTextKey("TXT_KEY_EA_TP_GOLD_FOR_MERCENARIES", iGoldForMercenaries);
 	end
 	--end Paz add
 	if (iBuildingMaintenance ~= 0) then
 		strText = strText .. "[NEWLINE]  [ICON_BULLET]" .. Locale.ConvertTextKey("TXT_KEY_TP_GOLD_BUILDING_MAINT", iBuildingMaintenance);
 	end
-	--Paz add
-	if iGPGoldBuildCost > 0 then
-		strText = strText .. "[NEWLINE]  [ICON_BULLET]" .. Locale.ConvertTextKey("TXT_KEY_EA_TP_GOLD_GP_BUILD_COST", iGPGoldBuildCost);
-	end
-	--end Paz add
+
 	if (iImprovementMaintenance ~= 0) then
 		strText = strText .. "[NEWLINE]  [ICON_BULLET]" .. Locale.ConvertTextKey("TXT_KEY_TP_GOLD_TILE_MAINT", iImprovementMaintenance);
 	end
@@ -1048,9 +1071,25 @@ function CultureTipHandler( control )
 			strText = strText .. "[NEWLINE]";
 			strText = strText .. Locale.ConvertTextKey("TXT_KEY_TP_CULTURE_FROM_RELIGION", iCultureFromReligion);
 		end
+
+		--Paz add: Culture from Leader
+		local iCultureFromLeader = pPlayer:GetLeaderYieldBoost(GameInfoTypes.YIELD_CULTURE) * (iCultureFromHappiness + iCultureForFree + iCultureFromMinors + iCultureFromReligion) / 100
+		if (iCultureFromLeader ~= 0) then
+		
+			-- Add separator for non-initial entries
+			if (bFirstEntry) then
+				strText = strText .. "[NEWLINE]";
+				bFirstEntry = false;
+			end
+
+			strText = strText .. "[NEWLINE]";
+			strText = strText .. Locale.ConvertTextKey("TXT_KEY_EA_TP_CULTURE_FROM_LEADER", iCultureFromLeader);
+		end
+
+		--end Paz add
 		
 		-- Culture from Golden Age
-		local iCultureFromGoldenAge = pPlayer:GetTotalJONSCulturePerTurn() - iCultureForFree - iCultureFromCities - iCultureFromHappiness - iCultureFromMinors - iCultureFromReligion;
+		local iCultureFromGoldenAge = pPlayer:GetTotalJONSCulturePerTurn() - iCultureForFree - iCultureFromCities - iCultureFromHappiness - iCultureFromMinors - iCultureFromReligion - iCultureFromLeader; --Paz deducted iCultureFromLeader
 		if (iCultureFromGoldenAge ~= 0) then
 		
 			-- Add separator for non-initial entries
@@ -1143,6 +1182,9 @@ function FaithTipHandler( control )
 		local faithFromCities = pPlayer:GetFaithPerTurnFromCities()
 		local faithFromGods = pPlayer:GetFaithPerTurnFromMinorCivs()	--game engine only sees this from Gods
 		local faithFromReligion = pPlayer:GetFaithPerTurnFromReligion()				--for Azz and Anra only since these use base follower counting mechanism
+		
+		local faithFromLeader = pPlayer:GetLeaderYieldBoost(GameInfoTypes.YIELD_FAITH) * (faithFromGods + faithFromReligion) / 100
+		
 		local manaForCultOfLeavesFounder = eaPlayer.manaForCultOfLeavesFounder or 0
 		local manaForCultOfEponaFounder = eaPlayer.manaForCultOfEponaFounder or 0
 		local manaForCultOfPureWatersFounder = eaPlayer.manaForCultOfPureWatersFounder or 0
@@ -1155,7 +1197,7 @@ function FaithTipHandler( control )
 		local faithFromGPs = MapModData.faithFromGPs
 		local faithFromFinishedPolicyBranches = GetFaithFromPolicyFinisher(pPlayer)
 
-		local faithRate = faithFromCities + faithFromGods + faithFromReligion + manaForCultOfLeavesFounder + manaForCultOfEponaFounder + manaForCultOfPureWatersFounder + manaForCultOfAegirFounder + manaForCultOfBakkheiaFounder + manaFromWildlands + faithFromCityStates + faithFromAzzTribute + faithFromGPs + faithFromFinishedPolicyBranches
+		local faithRate = faithFromCities + faithFromGods + faithFromReligion + faithFromLeader + manaForCultOfLeavesFounder + manaForCultOfEponaFounder + manaForCultOfPureWatersFounder + manaForCultOfAegirFounder + manaForCultOfBakkheiaFounder + manaFromWildlands + faithFromCityStates + faithFromAzzTribute + faithFromGPs + faithFromFinishedPolicyBranches
 
 		if faithRate + faithFromToAhrimanTribute ~= 0 then
 			if eaPlayer.bUsesDivineFavor then
@@ -1175,6 +1217,10 @@ function FaithTipHandler( control )
 		
 		if faithFromReligion ~= 0 then
 			strText = strText .. "[NEWLINE]" .. Locale.ConvertTextKey("TXT_KEY_TP_FAITH_FROM_RELIGION", faithFromReligion)
+		end	
+			
+		if faithFromLeader ~= 0 then
+			strText = strText .. "[NEWLINE]" .. Locale.ConvertTextKey("TXT_KEY_EA_TP_FAITH_FROM_LEADER", faithFromLeader)
 		end
 
 		if manaForCultOfLeavesFounder ~= 0 then

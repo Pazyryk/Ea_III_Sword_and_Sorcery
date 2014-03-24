@@ -199,7 +199,6 @@ MapModData.realCivs = MapModData.realCivs or {}
 
 
 --yields for human UI
-MapModData.gpGoldBuildCost = 0
 MapModData.mercenaryNet = 0
 
 --misc

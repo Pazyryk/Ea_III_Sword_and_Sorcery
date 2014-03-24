@@ -94,13 +94,13 @@ function AnalyzeUnitClusters(iPlayer)	--called by AfterPlayerTurn
 			cluster.intent = "Hostile"
 			local eaCity = gCities[closestEnemy]
 			cluster.iPlayerTarget = eaCity.iOwner
-			cluster.iPlotTarget = eaCity.iPlot
+			cluster.iPlotTarget = closestEnemy
 			print("Marking cluster as Hostile ", closestEnemyDist, closestOwnDist, cluster.iPlayerTarget, cluster.iPlotTarget)
 		elseif closestForeignDist < 10 and closestForeignDist < closestOwnDist then
 			cluster.intent = "PossibleSneak"
 			local eaCity = gCities[closestForeign]
 			cluster.iPlayerTarget = eaCity.iOwner
-			cluster.iPlotTarget = eaCity.iPlot
+			cluster.iPlotTarget = closestForeign
 			print("Marking cluster as PossibleSneak ", closestForeignDist, closestOwnDist, cluster.iPlayerTarget, cluster.iPlotTarget)
 		else
 			print("Cluster does not seem to be a threat to anyone")

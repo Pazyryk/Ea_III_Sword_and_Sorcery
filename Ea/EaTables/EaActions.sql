@@ -74,6 +74,7 @@ CREATE TABLE EaActions ('ID' INTEGER PRIMARY KEY AUTOINCREMENT,
 						--Target reqs
 						'City' TEXT DEFAULT NULL,			--'Own', 'Foreign', 'Any', 'Not' or NULL
 						'CapitalOnly' BOOLEAN DEFAULT NULL,
+						'TowerTempleOnly' BOOLEAN DEFAULT NULL,	--Must be appropriate for caster, e.g., a Thaumaturge's own Tower)
 						'BuildingReq' TEXT DEFAULT NULL,
 						'OwnTerritory' BOOLEAN DEFAULT NULL,
 						'OwnCityRadius' BOOLEAN DEFAULT NULL,
@@ -89,8 +90,6 @@ CREATE TABLE EaActions ('ID' INTEGER PRIMARY KEY AUTOINCREMENT,
 						'TurnsToComplete' INTEGER DEFAULT 1,	--1 immediate; >1 will run until done; 1000 means run forever for human (changes to 8 for AI; so resident will wake up and look around)
 						'ProgressHolder' TEXT DEFAULT NULL,			--Person, City or CityCiv or Plot
 						'BuildType' TEXT DEFAULT NULL,				--if above is Plot then this should be a valid BuildType
-						'GoldCostPerBuildTurn' INTEGER DEFAULT 0,
-						'ProductionCostPerBuildTurn' INTEGER DEFAULT 0,
 						'UniqueType' TEXT DEFAULT NULL,			-- "National" or "World"
 						'BuildingUnderConstruction' TEXT DEFAULT NULL,		--to show under construction when started
 						'DoXP' INTEGER DEFAULT 0,
@@ -166,19 +165,19 @@ INSERT INTO EaActions (Type,			Description,							Help,										GPOnly,	UIType,
 
 UPDATE EaActions SET CapitalOnly = 1, DoXP = 20 WHERE Type = 'EA_ACTION_TAKE_LEADERSHIP';
 UPDATE EaActions SET TurnsToComplete = 1000 WHERE Type = 'EA_ACTION_TAKE_RESIDENCE';
-UPDATE EaActions SET AICombatRole = 'Any', TurnsToComplete = 1, StayInvisible = 1 WHERE Type = 'EA_ACTION_HEAL';
---
-
+UPDATE EaActions SET TurnsToComplete = 1, StayInvisible = 1 WHERE Type = 'EA_ACTION_HEAL';
 
 --GP yield actions
-INSERT INTO EaActions (Type,			Description,						Help,										GPOnly,	NoGPNumLimit,	UIType,		AITarget,			GPClass,	City,		GPModType1,				TurnsToComplete,	ProgressHolder,	IconIndex,	IconAtlas) VALUES
-('EA_ACTION_BUILD',						'TXT_KEY_EA_ACTION_BUILD',			'TXT_KEY_EA_ACTION_BUILD_HELP',				1,		1,				'Action',	'OwnClosestCity',	'Engineer',	'Own',		'EAMOD_CONSTRUCTION',	1000,				'Person',		5,			'TECH_ATLAS_1'			),
-('EA_ACTION_TRADE',						'TXT_KEY_EA_ACTION_TRADE',			'TXT_KEY_EA_ACTION_TRADE_HELP',				1,		1,				'Action',	'OwnClosestCity',	'Merchant',	'Own',		'EAMOD_TRADE',			1000,				'Person',		17,			'TECH_ATLAS_1'			),
-('EA_ACTION_RESEARCH',					'TXT_KEY_EA_ACTION_RESEARCH',		'TXT_KEY_EA_ACTION_RESEARCH_HELP',			1,		1,				'Action',	'OwnClosestCity',	'Sage',		'Own',		'EAMOD_SCHOLARSHIP',	1000,				'Person',		11,			'BW_ATLAS_1'			),
-('EA_ACTION_PERFORM',					'TXT_KEY_EA_ACTION_PERFORM',		'TXT_KEY_EA_ACTION_PERFORM_HELP',			1,		1,				'Action',	'OwnClosestCity',	'Artist',	'Own',		'EAMOD_BARDING',		1000,				'Person',		44,			'BW_ATLAS_1'			),
-('EA_ACTION_WORSHIP',					'TXT_KEY_EA_ACTION_WORSHIP',		'TXT_KEY_EA_ACTION_WORSHIP_HELP',			1,		1,				'Action',	'OwnClosestCity',	'Devout',	'Own',		'EAMOD_PROSELYTISM',	1000,				'Person',		17,			'BW_ATLAS_2'			);
+INSERT INTO EaActions (Type,			Description,						Help,										GPOnly,	NoGPNumLimit,	UIType,		AITarget,			GPClass,		City,		GPModType1,				TurnsToComplete,	ProgressHolder,	IconIndex,	IconAtlas) VALUES
+('EA_ACTION_BUILD',						'TXT_KEY_EA_ACTION_BUILD',			'TXT_KEY_EA_ACTION_BUILD_HELP',				1,		1,				'Action',	'OwnClosestCity',	'Engineer',		'Own',		'EAMOD_CONSTRUCTION',	1000,				'Person',		5,			'TECH_ATLAS_1'			),
+('EA_ACTION_TRADE',						'TXT_KEY_EA_ACTION_TRADE',			'TXT_KEY_EA_ACTION_TRADE_HELP',				1,		1,				'Action',	'OwnClosestCity',	'Merchant',		'Own',		'EAMOD_TRADE',			1000,				'Person',		17,			'TECH_ATLAS_1'			),
+('EA_ACTION_RESEARCH',					'TXT_KEY_EA_ACTION_RESEARCH',		'TXT_KEY_EA_ACTION_RESEARCH_HELP',			1,		1,				'Action',	'OwnClosestCity',	'Sage',			'Own',		'EAMOD_SCHOLARSHIP',	1000,				'Person',		11,			'BW_ATLAS_1'			),
+('EA_ACTION_PERFORM',					'TXT_KEY_EA_ACTION_PERFORM',		'TXT_KEY_EA_ACTION_PERFORM_HELP',			1,		1,				'Action',	'OwnClosestCity',	'Artist',		'Own',		'EAMOD_BARDING',		1000,				'Person',		44,			'BW_ATLAS_1'			),
+('EA_ACTION_WORSHIP',					'TXT_KEY_EA_ACTION_WORSHIP',		'TXT_KEY_EA_ACTION_WORSHIP_HELP',			1,		1,				'Action',	'OwnClosestCity',	'Devout',		'Own',		'EAMOD_DEVOTION',		1000,				'Person',		17,			'BW_ATLAS_2'			),
+('EA_ACTION_CHANNEL',					'TXT_KEY_EA_ACTION_CHANNEL',		'TXT_KEY_EA_ACTION_CHANNEL_HELP',			1,		1,				'Action',	'OwnClosestCity',	'Thaumaturge',	'Not',		'EAMOD_EVOCATION',		1000,				'Person',		17,			'BW_ATLAS_2'			);
 
 UPDATE EaActions SET GPModType2 = 'EAMOD_RITUALISM' WHERE Type = 'EA_ACTION_WORSHIP';
+UPDATE EaActions SET NotGPClass = 'Devout', TowerTempleOnly = 1 WHERE Type = 'EA_ACTION_CHANNEL';
 
 
 --Warrior actions
@@ -206,18 +205,18 @@ UPDATE EaActions SET ReligionFounded = 'RELIGION_AZZANDARAYASNA', PolicyReq = 'P
 UPDATE EaActions SET DoGainPromotion = 'PROMOTION_PROPHET' WHERE Type GLOB 'EA_ACTION_PROPHECY_*';
 
 --Wonders
-INSERT INTO EaActions (Type,			Description,								GPOnly,	TechReq,				UIType,		FinishXP,	AITarget,			GPClass,		City,	OwnCityRadius,	GPModType1,				TurnsToComplete,	ProductionCostPerBuildTurn,	ProgressHolder,	BuildType,				ImprovementType,			UniqueType,	EaWonder,						BuildingUnderConstruction,	Building,					BuildingMod,					IconIndex,	IconAtlas) VALUES
-('EA_ACTION_STANHENCG',					'TXT_KEY_EA_ACTION_STANHENCG',				1,		NULL,					'Build',	100,		'OwnCities',		'Devout',		'Own',	NULL,			'EAMOD_RITUALISM',		25,					0,							'City',			NULL,					NULL,						'World',	'EA_WONDER_STANHENCG',			'BUILDING_STANHENCG',		'BUILDING_STANHENCG',		'BUILDING_STANHENCG_MOD',		2,			'BW_ATLAS_2'			),
-('EA_ACTION_KOLOSSOS',					'TXT_KEY_EA_ACTION_KOLOSSOS',				1,		'TECH_BRONZE_WORKING',	'Build',	100,		'OwnCities',		'Engineer',		'Own',	NULL,			'EAMOD_CONSTRUCTION',	25,					0,							'City',			NULL,					NULL,						'World',	'EA_WONDER_KOLOSSOS',			'BUILDING_KOLOSSOS',		'BUILDING_KOLOSSOS',		'BUILDING_KOLOSSOS_MOD',		4,			'BW_ATLAS_2'			),
-('EA_ACTION_MEGALOS_FAROS',				'TXT_KEY_EA_ACTION_MEGALOS_FAROS',			1,		'TECH_SAILING',			'Build',	100,		'OwnCities',		'Engineer',		'Own',	NULL,			'EAMOD_CONSTRUCTION',	25,					0,							'City',			NULL,					NULL,						'World',	'EA_WONDER_MEGALOS_FAROS',		'BUILDING_MEGALOS_FAROS',	'BUILDING_MEGALOS_FAROS',	'BUILDING_MEGALOS_FAROS_MOD',	5,			'BW_ATLAS_2'			),
-('EA_ACTION_HANGING_GARDENS',			'TXT_KEY_EA_ACTION_HANGING_GARDENS',		1,		'TECH_IRRIGATION',		'Build',	100,		'OwnCities',		'Engineer',		'Own',	NULL,			'EAMOD_CONSTRUCTION',	25,					0,							'City',			NULL,					NULL,						'World',	'EA_WONDER_HANGING_GARDENS',	'BUILDING_HANGING_GARDENS',	'BUILDING_HANGING_GARDENS',	'BUILDING_HANGING_GARDENS_MOD',	3,			'BW_ATLAS_2'			),
-('EA_ACTION_UUC_YABNAL',				'TXT_KEY_EA_ACTION_UUC_YABNAL',				1,		'TECH_MASONRY',			'Build',	100,		'OwnCities',		'Engineer',		'Own',	NULL,			'EAMOD_CONSTRUCTION',	25,					0,							'City',			NULL,					NULL,						'World',	'EA_WONDER_UUC_YABNAL',			'BUILDING_UUC_YABNAL',		'BUILDING_UUC_YABNAL',		'BUILDING_UUC_YABNAL_MOD',		12,			'BW_ATLAS_2'			),
-('EA_ACTION_THE_LONG_WALL',				'TXT_KEY_EA_ACTION_THE_LONG_WALL',			1,		'TECH_CONSTRUCTION',	'Build',	100,		'OwnCities',		'Engineer',		'Own',	NULL,			'EAMOD_CONSTRUCTION',	25,					0,							'City',			NULL,					NULL,						'World',	'EA_WONDER_THE_LONG_WALL',		'BUILDING_THE_LONG_WALL',	'BUILDING_THE_LONG_WALL',	'BUILDING_THE_LONG_WALL_MOD',	7,			'BW_ATLAS_2'			),
-('EA_ACTION_CLOG_MOR',					'TXT_KEY_EA_ACTION_CLOG_MOR',				1,		'TECH_MACHINERY',		'Build',	100,		'OwnCities',		'Engineer',		'Own',	NULL,			'EAMOD_CONSTRUCTION',	25,					0,							'City',			NULL,					NULL,						'World',	'EA_WONDER_CLOG_MOR',			'BUILDING_CLOG_MOR',		'BUILDING_CLOG_MOR',		'BUILDING_CLOG_MOR_MOD',		19,			'BW_ATLAS_2'			),
-('EA_ACTION_DA_BAOEN_SI',				'TXT_KEY_EA_ACTION_DA_BAOEN_SI',			1,		'TECH_ARCHITECTURE',	'Build',	100,		'OwnCities',		'Engineer',		'Own',	NULL,			'EAMOD_CONSTRUCTION',	25,					0,							'City',			NULL,					NULL,						'World',	'EA_WONDER_DA_BAOEN_SI',		'BUILDING_DA_BAOEN_SI',		'BUILDING_DA_BAOEN_SI',		'BUILDING_DA_BAOEN_SI_MOD',		16,			'BW_ATLAS_2'			),
---('EA_ACTION_GREAT_LIBRARY',			'TXT_KEY_EA_ACTION_GREAT_LIBRARY',			1,		'TECH_WRITING',			'Build',	100,		'OwnCities',		'Sage',			'Own',	NULL,			'EAMOD_SCHOLARSHIP',	25,					0,							'City',			NULL,					NULL,						'World',	'EA_WONDER_GREAT_LIBRARY',		'BUILDING_GREAT_LIBRARY',	'BUILDING_GREAT_LIBRARY',	NULL,							1,			'BW_ATLAS_2'			),	--Ughhh. This CTDs when completed. Did not CTD when substituting BUILDING_UUC_YABNAL. 'EA_WONDER_GREAT_LIBRARY',		'BUILDING_GREAT_LIBRARY',	'BUILDING_GREAT_LIBRARY',	'BUILDING_GREAT_LIBRARY_MOD'
-('EA_ACTION_NATIONAL_TREASURY',			'TXT_KEY_EA_ACTION_NATIONAL_TREASURY',		1,		'TECH_COINAGE',			'Build',	100,		'OwnCities',		'Merchant',		'Own',	NULL,			'EAMOD_TRADE',			25,					0,							'City',			NULL,					NULL,						'National',	NULL,							NULL,						NULL,						'BUILDING_NATIONAL_TREASURY',	1,			'NEW_BLDG_ATLAS_DLC'	),
-('EA_ACTION_ARCANE_TOWER',				'TXT_KEY_EA_ACTION_ARCANE_TOWER',			1,		'TECH_THAUMATURGY',		'Build',	100,		'WonderNoWorkPlot',	'Thaumaturge',	'Not',	1,				NULL,					4,					0,							'Plot',			'BUILD_ARCANE_TOWER',	'IMPROVEMENT_ARCANE_TOWER',	NULL,		NULL,							NULL,						NULL,						NULL,							3,			'UNIT_ACTION_ATLAS_EXP2'	);
+INSERT INTO EaActions (Type,			Description,								GPOnly,	TechReq,				UIType,		FinishXP,	AITarget,			GPClass,		City,	OwnCityRadius,	GPModType1,				TurnsToComplete,	ProgressHolder,	BuildType,				ImprovementType,			UniqueType,	EaWonder,						BuildingUnderConstruction,	Building,					BuildingMod,					IconIndex,	IconAtlas) VALUES
+('EA_ACTION_STANHENCG',					'TXT_KEY_EA_ACTION_STANHENCG',				1,		NULL,					'Build',	100,		'OwnCities',		'Devout',		'Own',	NULL,			'EAMOD_RITUALISM',		25,					'City',			NULL,					NULL,						'World',	'EA_WONDER_STANHENCG',			'BUILDING_STANHENCG',		'BUILDING_STANHENCG',		'BUILDING_STANHENCG_MOD',		2,			'BW_ATLAS_2'			),
+('EA_ACTION_KOLOSSOS',					'TXT_KEY_EA_ACTION_KOLOSSOS',				1,		'TECH_BRONZE_WORKING',	'Build',	100,		'OwnCities',		'Engineer',		'Own',	NULL,			'EAMOD_CONSTRUCTION',	25,					'City',			NULL,					NULL,						'World',	'EA_WONDER_KOLOSSOS',			'BUILDING_KOLOSSOS',		'BUILDING_KOLOSSOS',		'BUILDING_KOLOSSOS_MOD',		4,			'BW_ATLAS_2'			),
+('EA_ACTION_MEGALOS_FAROS',				'TXT_KEY_EA_ACTION_MEGALOS_FAROS',			1,		'TECH_SAILING',			'Build',	100,		'OwnCities',		'Engineer',		'Own',	NULL,			'EAMOD_CONSTRUCTION',	25,					'City',			NULL,					NULL,						'World',	'EA_WONDER_MEGALOS_FAROS',		'BUILDING_MEGALOS_FAROS',	'BUILDING_MEGALOS_FAROS',	'BUILDING_MEGALOS_FAROS_MOD',	5,			'BW_ATLAS_2'			),
+('EA_ACTION_HANGING_GARDENS',			'TXT_KEY_EA_ACTION_HANGING_GARDENS',		1,		'TECH_IRRIGATION',		'Build',	100,		'OwnCities',		'Engineer',		'Own',	NULL,			'EAMOD_CONSTRUCTION',	25,					'City',			NULL,					NULL,						'World',	'EA_WONDER_HANGING_GARDENS',	'BUILDING_HANGING_GARDENS',	'BUILDING_HANGING_GARDENS',	'BUILDING_HANGING_GARDENS_MOD',	3,			'BW_ATLAS_2'			),
+('EA_ACTION_UUC_YABNAL',				'TXT_KEY_EA_ACTION_UUC_YABNAL',				1,		'TECH_MASONRY',			'Build',	100,		'OwnCities',		'Engineer',		'Own',	NULL,			'EAMOD_CONSTRUCTION',	25,					'City',			NULL,					NULL,						'World',	'EA_WONDER_UUC_YABNAL',			'BUILDING_UUC_YABNAL',		'BUILDING_UUC_YABNAL',		'BUILDING_UUC_YABNAL_MOD',		12,			'BW_ATLAS_2'			),
+('EA_ACTION_THE_LONG_WALL',				'TXT_KEY_EA_ACTION_THE_LONG_WALL',			1,		'TECH_CONSTRUCTION',	'Build',	100,		'OwnCities',		'Engineer',		'Own',	NULL,			'EAMOD_CONSTRUCTION',	25,					'City',			NULL,					NULL,						'World',	'EA_WONDER_THE_LONG_WALL',		'BUILDING_THE_LONG_WALL',	'BUILDING_THE_LONG_WALL',	'BUILDING_THE_LONG_WALL_MOD',	7,			'BW_ATLAS_2'			),
+('EA_ACTION_CLOG_MOR',					'TXT_KEY_EA_ACTION_CLOG_MOR',				1,		'TECH_MACHINERY',		'Build',	100,		'OwnCities',		'Engineer',		'Own',	NULL,			'EAMOD_CONSTRUCTION',	25,					'City',			NULL,					NULL,						'World',	'EA_WONDER_CLOG_MOR',			'BUILDING_CLOG_MOR',		'BUILDING_CLOG_MOR',		'BUILDING_CLOG_MOR_MOD',		19,			'BW_ATLAS_2'			),
+('EA_ACTION_DA_BAOEN_SI',				'TXT_KEY_EA_ACTION_DA_BAOEN_SI',			1,		'TECH_ARCHITECTURE',	'Build',	100,		'OwnCities',		'Engineer',		'Own',	NULL,			'EAMOD_CONSTRUCTION',	25,					'City',			NULL,					NULL,						'World',	'EA_WONDER_DA_BAOEN_SI',		'BUILDING_DA_BAOEN_SI',		'BUILDING_DA_BAOEN_SI',		'BUILDING_DA_BAOEN_SI_MOD',		16,			'BW_ATLAS_2'			),
+--('EA_ACTION_GREAT_LIBRARY',			'TXT_KEY_EA_ACTION_GREAT_LIBRARY',			1,		'TECH_WRITING',			'Build',	100,		'OwnCities',		'Sage',			'Own',	NULL,			'EAMOD_SCHOLARSHIP',	25,					'City',			NULL,					NULL,						'World',	'EA_WONDER_GREAT_LIBRARY',		'BUILDING_GREAT_LIBRARY',	'BUILDING_GREAT_LIBRARY',	NULL,							1,			'BW_ATLAS_2'			),	--Ughhh. This CTDs when completed. Did not CTD when substituting BUILDING_UUC_YABNAL. 'EA_WONDER_GREAT_LIBRARY',		'BUILDING_GREAT_LIBRARY',	'BUILDING_GREAT_LIBRARY',	'BUILDING_GREAT_LIBRARY_MOD'
+('EA_ACTION_NATIONAL_TREASURY',			'TXT_KEY_EA_ACTION_NATIONAL_TREASURY',		1,		'TECH_COINAGE',			'Build',	100,		'OwnCities',		'Merchant',		'Own',	NULL,			'EAMOD_TRADE',			25,					'City',			NULL,					NULL,						'National',	NULL,							NULL,						NULL,						'BUILDING_NATIONAL_TREASURY',	1,			'NEW_BLDG_ATLAS_DLC'	),
+('EA_ACTION_ARCANE_TOWER',				'TXT_KEY_EA_ACTION_ARCANE_TOWER',			1,		'TECH_THAUMATURGY',		'Build',	100,		'WonderNoWorkPlot',	'Thaumaturge',	'Not',	1,				NULL,					4,					'Plot',			'BUILD_ARCANE_TOWER',	'IMPROVEMENT_ARCANE_TOWER',	NULL,		NULL,							NULL,						NULL,						NULL,							3,			'UNIT_ACTION_ATLAS_EXP2'	);
 
 UPDATE EaActions SET PolicyReq = 'POLICY_PANTHEISM', GPSubclass = 'Druid' WHERE Type = 'EA_ACTION_STANHENCG';
 UPDATE EaActions SET AndTechReq = 'TECH_MASONRY' WHERE Type = 'EA_ACTION_MEGALOS_FAROS';
@@ -248,33 +247,33 @@ INSERT INTO EaActions (Type,			Description,								Help,											GPOnly,	TechR
 ('EA_ACTION_TOME_OF_METALLURGY',		'TXT_KEY_EA_ACTION_TOME_OF_METALLURGY',		'TXT_KEY_EA_ACTION_TOME_OF_METALLURGY_HELP',	1,		'TECH_BRONZE_WORKING',		'TECH_WRITING',	'BUILDING_LIBRARY',	'Build',	100,		'OwnClosestLibraryCity',	1000,			'Sage',		'Own',	'EAMOD_SCHOLARSHIP',	25,					'Person',		'World',	'EA_ARTIFACT_TOME_OF_METALLURGY',	2,			'EXPANSION_SCEN_TECH_ATLAS'			);
 
 --GP non-unique builds
-INSERT INTO EaActions (Type,			Description,							Help,								GPOnly,	UIType,		TechReq,				PolicyReq,				FinishXP,	AITarget,		AISimpleYield,	GPClass,	City,		GPModType1,		TurnsToComplete,	GoldCostPerBuildTurn,	ProductionCostPerBuildTurn,	ProgressHolder,	Building,				BuildingMod,			HumanOnlySound,			IconIndex,	IconAtlas) VALUES
-('EA_ACTION_FOUNDRY',					'TXT_KEY_EA_ACTION_FOUNDRY',			'TXT_KEY_EA_ACTION_FOUNDRY_HELP',	1,		'Build',	'TECH_IRON_WORKING',	NULL,					25,			'OwnCities',	3,				'Engineer',	'Own',		NULL,			8,					0,						0,							'City',			'BUILDING_FOUNDRY',		NULL,					'AS2D_BUILD_UNIT',		1,			'NEW_BLDG_ATLAS2_DLC'	),
-('EA_ACTION_ACADEMY',					'TXT_KEY_EA_ACTION_ACADEMY',			'TXT_KEY_EA_ACTION_ACADEMY_HELP',	1,		'Build',	'TECH_PHILOSOPHY',		NULL,					25,			'OwnCities',	3,				'Sage',		'Own',		NULL,			8,					0,						0,							'City',			'BUILDING_ACADEMY',		NULL,					'AS2D_BUILD_UNIT',		1,			'BW_ATLAS_2'			),
-('EA_ACTION_FESTIVAL',					'TXT_KEY_EA_ACTION_FESTIVAL',			'TXT_KEY_EA_ACTION_FESTIVAL_HELP',	1,		'Build',	'TECH_CALENDAR',		NULL,					25,			'OwnCities',	3,				'Artist',	'Own',		NULL,			8,					0,						0,							'City',			'BUILDING_FESTIVAL',	NULL,					'AS2D_BUILD_UNIT',		44,			'BW_ATLAS_1'			),
-('EA_ACTION_TEMPLE',					'TXT_KEY_EA_ACTION_TEMPLE',				'TXT_KEY_EA_ACTION_TEMPLE_HELP',	1,		'Build',	NULL,					'POLICY_PRIESTHOOD',	25,			'OwnCities',	3,				'Devout',	'Own',		NULL,			8,					0,						0,							'City',			'BUILDING_TEMPLE',		NULL,					'AS2D_BUILD_UNIT',		37,			'BW_ATLAS_1'			),
-('EA_ACTION_TRADE_HOUSE',				'TXT_KEY_EA_ACTION_TRADE_HOUSE',		NULL,								1,		'Build',	NULL,					'POLICY_FREE_MARKETS',	25,			'OwnCities',	0,				'Merchant',	'Own',		'EAMOD_TRADE',	8,					0,						0,							'City',			NULL,					'BUILDING_TRADE_HOUSE',	'AS2D_BUILD_UNIT',		1,			'NEW_BLDG_ATLAS_DLC'	);
+INSERT INTO EaActions (Type,			Description,							Help,								GPOnly,	UIType,		TechReq,				PolicyReq,				FinishXP,	AITarget,		AISimpleYield,	GPClass,	City,		GPModType1,		TurnsToComplete,	ProgressHolder,	Building,				BuildingMod,			HumanOnlySound,			IconIndex,	IconAtlas) VALUES
+('EA_ACTION_FOUNDRY',					'TXT_KEY_EA_ACTION_FOUNDRY',			'TXT_KEY_EA_ACTION_FOUNDRY_HELP',	1,		'Build',	'TECH_IRON_WORKING',	NULL,					25,			'OwnCities',	3,				'Engineer',	'Own',		NULL,			8,					'City',			'BUILDING_FOUNDRY',		NULL,					'AS2D_BUILD_UNIT',		1,			'NEW_BLDG_ATLAS2_DLC'	),
+('EA_ACTION_ACADEMY',					'TXT_KEY_EA_ACTION_ACADEMY',			'TXT_KEY_EA_ACTION_ACADEMY_HELP',	1,		'Build',	'TECH_PHILOSOPHY',		NULL,					25,			'OwnCities',	3,				'Sage',		'Own',		NULL,			8,					'City',			'BUILDING_ACADEMY',		NULL,					'AS2D_BUILD_UNIT',		1,			'BW_ATLAS_2'			),
+('EA_ACTION_FESTIVAL',					'TXT_KEY_EA_ACTION_FESTIVAL',			'TXT_KEY_EA_ACTION_FESTIVAL_HELP',	1,		'Build',	'TECH_CALENDAR',		NULL,					25,			'OwnCities',	3,				'Artist',	'Own',		NULL,			8,					'City',			'BUILDING_FESTIVAL',	NULL,					'AS2D_BUILD_UNIT',		44,			'BW_ATLAS_1'			),
+('EA_ACTION_TEMPLE',					'TXT_KEY_EA_ACTION_TEMPLE',				'TXT_KEY_EA_ACTION_TEMPLE_HELP',	1,		'Build',	NULL,					'POLICY_PRIESTHOOD',	25,			'OwnCities',	3,				'Devout',	'Own',		NULL,			8,					'City',			'BUILDING_TEMPLE',		NULL,					'AS2D_BUILD_UNIT',		37,			'BW_ATLAS_1'			),
+('EA_ACTION_TRADE_HOUSE',				'TXT_KEY_EA_ACTION_TRADE_HOUSE',		NULL,								1,		'Build',	NULL,					'POLICY_FREE_MARKETS',	25,			'OwnCities',	0,				'Merchant',	'Own',		'EAMOD_TRADE',	8,					'City',			NULL,					'BUILDING_TRADE_HOUSE',	'AS2D_BUILD_UNIT',		1,			'NEW_BLDG_ATLAS_DLC'	);
 
 UPDATE EaActions SET OrPolicyReq = 'POLICY_FELLOWSHIP_OF_LEAVES' WHERE Type = 'EA_ACTION_TEMPLE';
 
 --Other GP builds
-INSERT INTO EaActions (Type,			Description,							GPOnly,	UIType,		TechReq,			PolicyReq,				FinishXP,	AITarget,			GPClass,	GPSubclass,		FoundsSpreadsCult,	City,		GPModType1,				TurnsToComplete,	GoldCostPerBuildTurn,	ProgressHolder,	HumanOnlySound,			PlayAnywhereSound,					IconIndex,	IconAtlas) VALUES
-('EA_ACTION_LAND_TRADE_ROUTE',			'TXT_KEY_EA_ACTION_LAND_TRADE_ROUTE',	1,		'Action',	'TECH_CURRENCY',	NULL,					25,			'LandTradeCities',	'Merchant',	NULL,			NULL,				'Any',		NULL,					8,					0,						'CityCiv',		'AS2D_BUILD_UNIT',		NULL,								0,			'UNIT_ACTION_ATLAS_TRADE'	),
-('EA_ACTION_SEA_TRADE_ROUTE',			'TXT_KEY_EA_ACTION_SEA_TRADE_ROUTE',	1,		'Action',	'TECH_SAILING',		NULL,					25,			'SeaTradeCities',	'Merchant',	NULL,			NULL,				'Any',		NULL,					8,					0,						'CityCiv',		'AS2D_BUILD_UNIT',		NULL,								0,			'UNIT_ACTION_ATLAS_TRADE'	),
-('EA_ACTION_TRADE_MISSION',				'TXT_KEY_EA_ACTION_TRADE_MISSION',		1,		'Action',	NULL,				'POLICY_FREE_TRADE',	100,		'ForeignCapitals',	'Merchant',	NULL,			NULL,				'Foreign',	'EAMOD_TRADE',			25,					0,						'CityCiv',		'AS2D_BUILD_UNIT',		NULL,								17,			'TECH_ATLAS_1'				);
+INSERT INTO EaActions (Type,			Description,							GPOnly,	UIType,		TechReq,			PolicyReq,				FinishXP,	AITarget,			GPClass,	GPSubclass,		FoundsSpreadsCult,	City,		GPModType1,				TurnsToComplete,	ProgressHolder,	HumanOnlySound,			PlayAnywhereSound,					IconIndex,	IconAtlas) VALUES
+('EA_ACTION_LAND_TRADE_ROUTE',			'TXT_KEY_EA_ACTION_LAND_TRADE_ROUTE',	1,		'Action',	'TECH_CURRENCY',	NULL,					25,			'LandTradeCities',	'Merchant',	NULL,			NULL,				'Any',		NULL,					8,					'CityCiv',		'AS2D_BUILD_UNIT',		NULL,								0,			'UNIT_ACTION_ATLAS_TRADE'	),
+('EA_ACTION_SEA_TRADE_ROUTE',			'TXT_KEY_EA_ACTION_SEA_TRADE_ROUTE',	1,		'Action',	'TECH_SAILING',		NULL,					25,			'SeaTradeCities',	'Merchant',	NULL,			NULL,				'Any',		NULL,					8,					'CityCiv',		'AS2D_BUILD_UNIT',		NULL,								0,			'UNIT_ACTION_ATLAS_TRADE'	),
+('EA_ACTION_TRADE_MISSION',				'TXT_KEY_EA_ACTION_TRADE_MISSION',		1,		'Action',	NULL,				'POLICY_FREE_TRADE',	100,		'ForeignCapitals',	'Merchant',	NULL,			NULL,				'Foreign',	'EAMOD_TRADE',			25,					'CityCiv',		'AS2D_BUILD_UNIT',		NULL,								17,			'TECH_ATLAS_1'				);
 
 UPDATE EaActions SET CapitalOnly = 1 WHERE Type = 'EA_ACTION_TRADE_MISSION';
 
 
 --Religious conversion and cult founding
-INSERT INTO EaActions (Type,			Description,							GPOnly,	UIType,		TechReq,				PolicyReq,				ReligionFounded,			FinishXP,	AITarget,			GPClass,	GPSubclass,		FoundsSpreadsCult,				City,		GPModType1,				TurnsToComplete,	GoldCostPerBuildTurn,	ProgressHolder,	HumanOnlySound,			PlayAnywhereSound,					IconIndex,	IconAtlas) VALUES
-('EA_ACTION_PROSELYTIZE',				'TXT_KEY_EA_ACTION_PROSELYTIZE',		1,		'Action',	NULL,					NULL,					'RELIGION_AZZANDARAYASNA',	25,			'AzzandaraSpread',	'Devout',	'Priest',		NULL,							'Any',		'EAMOD_PROSELYTISM',	8,					0,						'City',			NULL,					'AS2D_EVENT_NOTIFICATION_GOOD',		1,			'EXPANSION_UNIT_ACTION_ATLAS'	),
-('EA_ACTION_ANTIPROSELYTIZE',			'TXT_KEY_EA_ACTION_PROSELYTIZE',		1,		'Action',	NULL,					NULL,					'RELIGION_ANRA',			25,			'AnraSpread',		'Devout',	'FallenPriest',	NULL,							'Any',		'EAMOD_PROSELYTISM',	8,					0,						'City',			NULL,					'AS2D_EVENT_NOTIFICATION_VERY_BAD',	1,			'EXPANSION_UNIT_ACTION_ATLAS'	),
-('EA_ACTION_RITUAL_LEAVES',				'TXT_KEY_EA_ACTION_RITUAL_LEAVES',		1,		'Build',	NULL,					NULL,					'RELIGION_THE_WEAVE_OF_EA',	25,			'AllCities',		'Devout',	'Druid',		'RELIGION_CULT_OF_LEAVES',		'Any',		'EAMOD_RITUALISM',		8,					0,						'City',			NULL,					'AS2D_EVENT_NOTIFICATION_GOOD',		2,			'BW_ATLAS_2'					),
-('EA_ACTION_RITUAL_EQUUS',				'TXT_KEY_EA_ACTION_RITUAL_EQUUS',		1,		'Build',	NULL,					NULL,					'RELIGION_THE_WEAVE_OF_EA',	25,			'AllCities',		'Devout',	'Druid',		'RELIGION_CULT_OF_EPONA',		'Any',		'EAMOD_RITUALISM',		8,					0,						'City',			NULL,					'AS2D_EVENT_NOTIFICATION_GOOD',		2,			'BW_ATLAS_2'					),
-('EA_ACTION_RITUAL_CLEANSING',			'TXT_KEY_EA_ACTION_RITUAL_CLEANSING',	1,		'Build',	NULL,					NULL,					'RELIGION_THE_WEAVE_OF_EA',	25,			'AllCities',		'Devout',	'Druid',		'RELIGION_CULT_OF_PURE_WATERS',	'Any',		'EAMOD_RITUALISM',		8,					0,						'City',			NULL,					'AS2D_EVENT_NOTIFICATION_GOOD',		2,			'BW_ATLAS_2'					),
-('EA_ACTION_RITUAL_AEGIR',				'TXT_KEY_EA_ACTION_RITUAL_AEGIR',		1,		'Build',	NULL,					NULL,					'RELIGION_THE_WEAVE_OF_EA',	25,			'AllCities',		'Devout',	'Druid',		'RELIGION_CULT_OF_AEGIR',		'Any',		'EAMOD_RITUALISM',		8,					0,						'City',			NULL,					'AS2D_EVENT_NOTIFICATION_GOOD',		2,			'BW_ATLAS_2'					),
-('EA_ACTION_RITUAL_BAKKHEIA',			'TXT_KEY_EA_ACTION_RITUAL_BAKKHEIA',	1,		'Build',	NULL,					NULL,					'RELIGION_THE_WEAVE_OF_EA',	25,			'AllCities',		'Devout',	'Druid',		'RELIGION_CULT_OF_BAKKHEIA',	'Any',		'EAMOD_RITUALISM',		8,					0,						'City',			NULL,					'AS2D_EVENT_NOTIFICATION_GOOD',		2,			'BW_ATLAS_2'					);
+INSERT INTO EaActions (Type,			Description,							GPOnly,	UIType,		TechReq,				PolicyReq,				ReligionFounded,			FinishXP,	AITarget,			GPClass,	GPSubclass,		FoundsSpreadsCult,				City,		GPModType1,				TurnsToComplete,	ProgressHolder,	HumanOnlySound,			PlayAnywhereSound,					IconIndex,	IconAtlas) VALUES
+('EA_ACTION_PROSELYTIZE',				'TXT_KEY_EA_ACTION_PROSELYTIZE',		1,		'Action',	NULL,					NULL,					'RELIGION_AZZANDARAYASNA',	25,			'AzzandaraSpread',	'Devout',	'Priest',		NULL,							'Any',		'EAMOD_PROSELYTISM',	8,					'City',			NULL,					'AS2D_EVENT_NOTIFICATION_GOOD',		1,			'EXPANSION_UNIT_ACTION_ATLAS'	),
+('EA_ACTION_ANTIPROSELYTIZE',			'TXT_KEY_EA_ACTION_PROSELYTIZE',		1,		'Action',	NULL,					NULL,					'RELIGION_ANRA',			25,			'AnraSpread',		'Devout',	'FallenPriest',	NULL,							'Any',		'EAMOD_PROSELYTISM',	8,					'City',			NULL,					'AS2D_EVENT_NOTIFICATION_VERY_BAD',	1,			'EXPANSION_UNIT_ACTION_ATLAS'	),
+('EA_ACTION_RITUAL_LEAVES',				'TXT_KEY_EA_ACTION_RITUAL_LEAVES',		1,		'Build',	NULL,					NULL,					'RELIGION_THE_WEAVE_OF_EA',	25,			'AllCities',		'Devout',	'Druid',		'RELIGION_CULT_OF_LEAVES',		'Any',		'EAMOD_RITUALISM',		8,					'City',			NULL,					'AS2D_EVENT_NOTIFICATION_GOOD',		2,			'BW_ATLAS_2'					),
+('EA_ACTION_RITUAL_EQUUS',				'TXT_KEY_EA_ACTION_RITUAL_EQUUS',		1,		'Build',	NULL,					NULL,					'RELIGION_THE_WEAVE_OF_EA',	25,			'AllCities',		'Devout',	'Druid',		'RELIGION_CULT_OF_EPONA',		'Any',		'EAMOD_RITUALISM',		8,					'City',			NULL,					'AS2D_EVENT_NOTIFICATION_GOOD',		2,			'BW_ATLAS_2'					),
+('EA_ACTION_RITUAL_CLEANSING',			'TXT_KEY_EA_ACTION_RITUAL_CLEANSING',	1,		'Build',	NULL,					NULL,					'RELIGION_THE_WEAVE_OF_EA',	25,			'AllCities',		'Devout',	'Druid',		'RELIGION_CULT_OF_PURE_WATERS',	'Any',		'EAMOD_RITUALISM',		8,					'City',			NULL,					'AS2D_EVENT_NOTIFICATION_GOOD',		2,			'BW_ATLAS_2'					),
+('EA_ACTION_RITUAL_AEGIR',				'TXT_KEY_EA_ACTION_RITUAL_AEGIR',		1,		'Build',	NULL,					NULL,					'RELIGION_THE_WEAVE_OF_EA',	25,			'AllCities',		'Devout',	'Druid',		'RELIGION_CULT_OF_AEGIR',		'Any',		'EAMOD_RITUALISM',		8,					'City',			NULL,					'AS2D_EVENT_NOTIFICATION_GOOD',		2,			'BW_ATLAS_2'					),
+('EA_ACTION_RITUAL_BAKKHEIA',			'TXT_KEY_EA_ACTION_RITUAL_BAKKHEIA',	1,		'Build',	NULL,					NULL,					'RELIGION_THE_WEAVE_OF_EA',	25,			'AllCities',		'Devout',	'Druid',		'RELIGION_CULT_OF_BAKKHEIA',	'Any',		'EAMOD_RITUALISM',		8,					'City',			NULL,					'AS2D_EVENT_NOTIFICATION_GOOD',		2,			'BW_ATLAS_2'					);
 
 UPDATE EaActions SET OrGPSubclass = 'Paladin' WHERE Type = 'EA_ACTION_PROSELYTIZE';
 UPDATE EaActions SET OrGPSubclass = 'Eidolon' WHERE Type = 'EA_ACTION_ANTIPROSELYTIZE';

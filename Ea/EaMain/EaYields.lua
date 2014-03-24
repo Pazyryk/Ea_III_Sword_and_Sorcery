@@ -57,14 +57,8 @@ local BUILDING_HANGING_GARDENS_MOD =			GameInfoTypes.BUILDING_HANGING_GARDENS_MO
 local BUILDING_PLUS_1_LOCAL_HAPPY =				GameInfoTypes.BUILDING_PLUS_1_LOCAL_HAPPY
 local BUILDING_PLUS_1_UNHAPPINESS =				GameInfoTypes.BUILDING_PLUS_1_UNHAPPINESS
 
-local BUILDING_PLUS_1_PERCENT_GLOBAL_CULTURE =	GameInfoTypes.BUILDING_PLUS_1_PERCENT_GLOBAL_CULTURE
 local BUILDING_TRADE_PLUS_1_GOLD =				GameInfoTypes.BUILDING_TRADE_PLUS_1_GOLD
-local BUILDING_PLUS_1_PERCENT_PRODUCTION =		GameInfoTypes.BUILDING_PLUS_1_PERCENT_PRODUCTION
-local BUILDING_MINUS_1_PERCENT_PRODUCTION =		GameInfoTypes.BUILDING_MINUS_1_PERCENT_PRODUCTION
-local BUILDING_PLUS_1_PERCENT_GOLD =			GameInfoTypes.BUILDING_PLUS_1_PERCENT_GOLD
-local BUILDING_PLUS_1_PERCENT_SCIENCE =			GameInfoTypes.BUILDING_PLUS_1_PERCENT_SCIENCE
-local BUILDING_PLUS_1_PERCENT_CULTURE =			GameInfoTypes.BUILDING_PLUS_1_PERCENT_CULTURE
-local BUILDING_PLUS_1_FAITH =					GameInfoTypes.BUILDING_PLUS_1_FAITH
+
 local BUILDING_REMOTE_RES_1_FOOD =				GameInfoTypes.BUILDING_REMOTE_RES_1_FOOD
 local BUILDING_REMOTE_RES_1_PRODUCTION =		GameInfoTypes.BUILDING_REMOTE_RES_1_PRODUCTION
 local BUILDING_REMOTE_RES_1_GOLD =				GameInfoTypes.BUILDING_REMOTE_RES_1_GOLD
@@ -122,7 +116,7 @@ function EaYieldsInit(bNewGame)
 	if not bNewGame then
 		for iPlayer, eaPlayer in pairs(realCivs) do
 			if playerType[iPlayer] == "FullCiv" then
-				ResetYieldPolicies(iPlayer)
+
 				UpdateGlobalYields(iPlayer)
 			end
 			UpdateCityYields(iPlayer)
@@ -143,113 +137,6 @@ end
 
 --global yield adjusts from hidden policies
 local percentValues = {256,128,64,32,16,8,4,2,1}
-
-local foodPlusPercentID = {
-	GameInfoTypes.POLICY_FOOD_PLUS_PERCENT_0256,
-	GameInfoTypes.POLICY_FOOD_PLUS_PERCENT_0128,
-	GameInfoTypes.POLICY_FOOD_PLUS_PERCENT_0064,
-	GameInfoTypes.POLICY_FOOD_PLUS_PERCENT_0032,
-	GameInfoTypes.POLICY_FOOD_PLUS_PERCENT_0016,
-	GameInfoTypes.POLICY_FOOD_PLUS_PERCENT_0008,
-	GameInfoTypes.POLICY_FOOD_PLUS_PERCENT_0004,
-	GameInfoTypes.POLICY_FOOD_PLUS_PERCENT_0002,
-	GameInfoTypes.POLICY_FOOD_PLUS_PERCENT_0001	}
-local foodMinusPercentID = {}
-foodMinusPercentID[1] = GameInfoTypes.POLICY_FOOD_MINUS_PERCENT_0256
-foodMinusPercentID[2] = GameInfoTypes.POLICY_FOOD_MINUS_PERCENT_0128
-foodMinusPercentID[3] = GameInfoTypes.POLICY_FOOD_MINUS_PERCENT_0064
-foodMinusPercentID[4] = GameInfoTypes.POLICY_FOOD_MINUS_PERCENT_0032
-foodMinusPercentID[5] = GameInfoTypes.POLICY_FOOD_MINUS_PERCENT_0016
-foodMinusPercentID[6] = GameInfoTypes.POLICY_FOOD_MINUS_PERCENT_0008
-foodMinusPercentID[7] = GameInfoTypes.POLICY_FOOD_MINUS_PERCENT_0004
-foodMinusPercentID[8] = GameInfoTypes.POLICY_FOOD_MINUS_PERCENT_0002
-foodMinusPercentID[9] = GameInfoTypes.POLICY_FOOD_MINUS_PERCENT_0001
-
-local productionPlusPercentID = {}
-productionPlusPercentID[1] = GameInfoTypes.POLICY_PRODUCTION_PLUS_PERCENT_0256
-productionPlusPercentID[2] = GameInfoTypes.POLICY_PRODUCTION_PLUS_PERCENT_0128
-productionPlusPercentID[3] = GameInfoTypes.POLICY_PRODUCTION_PLUS_PERCENT_0064
-productionPlusPercentID[4] = GameInfoTypes.POLICY_PRODUCTION_PLUS_PERCENT_0032
-productionPlusPercentID[5] = GameInfoTypes.POLICY_PRODUCTION_PLUS_PERCENT_0016
-productionPlusPercentID[6] = GameInfoTypes.POLICY_PRODUCTION_PLUS_PERCENT_0008
-productionPlusPercentID[7] = GameInfoTypes.POLICY_PRODUCTION_PLUS_PERCENT_0004
-productionPlusPercentID[8] = GameInfoTypes.POLICY_PRODUCTION_PLUS_PERCENT_0002
-productionPlusPercentID[9] = GameInfoTypes.POLICY_PRODUCTION_PLUS_PERCENT_0001
-local productionMinusPercentID = {}
-productionMinusPercentID[1] = GameInfoTypes.POLICY_PRODUCTION_MINUS_PERCENT_0256
-productionMinusPercentID[2] = GameInfoTypes.POLICY_PRODUCTION_MINUS_PERCENT_0128
-productionMinusPercentID[3] = GameInfoTypes.POLICY_PRODUCTION_MINUS_PERCENT_0064
-productionMinusPercentID[4] = GameInfoTypes.POLICY_PRODUCTION_MINUS_PERCENT_0032
-productionMinusPercentID[5] = GameInfoTypes.POLICY_PRODUCTION_MINUS_PERCENT_0016
-productionMinusPercentID[6] = GameInfoTypes.POLICY_PRODUCTION_MINUS_PERCENT_0008
-productionMinusPercentID[7] = GameInfoTypes.POLICY_PRODUCTION_MINUS_PERCENT_0004
-productionMinusPercentID[8] = GameInfoTypes.POLICY_PRODUCTION_MINUS_PERCENT_0002
-productionMinusPercentID[9] = GameInfoTypes.POLICY_PRODUCTION_MINUS_PERCENT_0001
-
-local goldPlusPercentID = {}
-goldPlusPercentID[1] = GameInfoTypes.POLICY_GOLD_PLUS_PERCENT_0256
-goldPlusPercentID[2] = GameInfoTypes.POLICY_GOLD_PLUS_PERCENT_0128
-goldPlusPercentID[3] = GameInfoTypes.POLICY_GOLD_PLUS_PERCENT_0064
-goldPlusPercentID[4] = GameInfoTypes.POLICY_GOLD_PLUS_PERCENT_0032
-goldPlusPercentID[5] = GameInfoTypes.POLICY_GOLD_PLUS_PERCENT_0016
-goldPlusPercentID[6] = GameInfoTypes.POLICY_GOLD_PLUS_PERCENT_0008
-goldPlusPercentID[7] = GameInfoTypes.POLICY_GOLD_PLUS_PERCENT_0004
-goldPlusPercentID[8] = GameInfoTypes.POLICY_GOLD_PLUS_PERCENT_0002
-goldPlusPercentID[9] = GameInfoTypes.POLICY_GOLD_PLUS_PERCENT_0001
-local goldMinusPercentID = {}
-goldMinusPercentID[1] = GameInfoTypes.POLICY_GOLD_MINUS_PERCENT_0256
-goldMinusPercentID[2] = GameInfoTypes.POLICY_GOLD_MINUS_PERCENT_0128
-goldMinusPercentID[3] = GameInfoTypes.POLICY_GOLD_MINUS_PERCENT_0064
-goldMinusPercentID[4] = GameInfoTypes.POLICY_GOLD_MINUS_PERCENT_0032
-goldMinusPercentID[5] = GameInfoTypes.POLICY_GOLD_MINUS_PERCENT_0016
-goldMinusPercentID[6] = GameInfoTypes.POLICY_GOLD_MINUS_PERCENT_0008
-goldMinusPercentID[7] = GameInfoTypes.POLICY_GOLD_MINUS_PERCENT_0004
-goldMinusPercentID[8] = GameInfoTypes.POLICY_GOLD_MINUS_PERCENT_0002
-goldMinusPercentID[9] = GameInfoTypes.POLICY_GOLD_MINUS_PERCENT_0001
-
-local sciencePlusPercentID = {}
-sciencePlusPercentID[1] = GameInfoTypes.POLICY_SCIENCE_PLUS_PERCENT_0256
-sciencePlusPercentID[2] = GameInfoTypes.POLICY_SCIENCE_PLUS_PERCENT_0128
-sciencePlusPercentID[3] = GameInfoTypes.POLICY_SCIENCE_PLUS_PERCENT_0064
-sciencePlusPercentID[4] = GameInfoTypes.POLICY_SCIENCE_PLUS_PERCENT_0032
-sciencePlusPercentID[5] = GameInfoTypes.POLICY_SCIENCE_PLUS_PERCENT_0016
-sciencePlusPercentID[6] = GameInfoTypes.POLICY_SCIENCE_PLUS_PERCENT_0008
-sciencePlusPercentID[7] = GameInfoTypes.POLICY_SCIENCE_PLUS_PERCENT_0004
-sciencePlusPercentID[8] = GameInfoTypes.POLICY_SCIENCE_PLUS_PERCENT_0002
-sciencePlusPercentID[9] = GameInfoTypes.POLICY_SCIENCE_PLUS_PERCENT_0001
-local scienceMinusPercentID = {}
-scienceMinusPercentID[1] = GameInfoTypes.POLICY_SCIENCE_MINUS_PERCENT_0256
-scienceMinusPercentID[2] = GameInfoTypes.POLICY_SCIENCE_MINUS_PERCENT_0128
-scienceMinusPercentID[3] = GameInfoTypes.POLICY_SCIENCE_MINUS_PERCENT_0064
-scienceMinusPercentID[4] = GameInfoTypes.POLICY_SCIENCE_MINUS_PERCENT_0032
-scienceMinusPercentID[5] = GameInfoTypes.POLICY_SCIENCE_MINUS_PERCENT_0016
-scienceMinusPercentID[6] = GameInfoTypes.POLICY_SCIENCE_MINUS_PERCENT_0008
-scienceMinusPercentID[7] = GameInfoTypes.POLICY_SCIENCE_MINUS_PERCENT_0004
-scienceMinusPercentID[8] = GameInfoTypes.POLICY_SCIENCE_MINUS_PERCENT_0002
-scienceMinusPercentID[9] = GameInfoTypes.POLICY_SCIENCE_MINUS_PERCENT_0001
-
---don't need culture
-
-local faithPlusPercentID = {}
-faithPlusPercentID[1] = GameInfoTypes.POLICY_FAITH_PLUS_PERCENT_0256
-faithPlusPercentID[2] = GameInfoTypes.POLICY_FAITH_PLUS_PERCENT_0128
-faithPlusPercentID[3] = GameInfoTypes.POLICY_FAITH_PLUS_PERCENT_0064
-faithPlusPercentID[4] = GameInfoTypes.POLICY_FAITH_PLUS_PERCENT_0032
-faithPlusPercentID[5] = GameInfoTypes.POLICY_FAITH_PLUS_PERCENT_0016
-faithPlusPercentID[6] = GameInfoTypes.POLICY_FAITH_PLUS_PERCENT_0008
-faithPlusPercentID[7] = GameInfoTypes.POLICY_FAITH_PLUS_PERCENT_0004
-faithPlusPercentID[8] = GameInfoTypes.POLICY_FAITH_PLUS_PERCENT_0002
-faithPlusPercentID[9] = GameInfoTypes.POLICY_FAITH_PLUS_PERCENT_0001
-local faithMinusPercentID = {}
-faithMinusPercentID[1] = GameInfoTypes.POLICY_FAITH_MINUS_PERCENT_0256
-faithMinusPercentID[2] = GameInfoTypes.POLICY_FAITH_MINUS_PERCENT_0128
-faithMinusPercentID[3] = GameInfoTypes.POLICY_FAITH_MINUS_PERCENT_0064
-faithMinusPercentID[4] = GameInfoTypes.POLICY_FAITH_MINUS_PERCENT_0032
-faithMinusPercentID[5] = GameInfoTypes.POLICY_FAITH_MINUS_PERCENT_0016
-faithMinusPercentID[6] = GameInfoTypes.POLICY_FAITH_MINUS_PERCENT_0008
-faithMinusPercentID[7] = GameInfoTypes.POLICY_FAITH_MINUS_PERCENT_0004
-faithMinusPercentID[8] = GameInfoTypes.POLICY_FAITH_MINUS_PERCENT_0002
-faithMinusPercentID[9] = GameInfoTypes.POLICY_FAITH_MINUS_PERCENT_0001
 
 
 
@@ -276,20 +163,8 @@ function UpdateGlobalYields(iPlayer, effectType, bPerTurnCall)	--City States onl
 	local eaCivID = bFullCiv and eaPlayer.eaCivNameID or -1
 	local bHuman = not bFullCivAI[iPlayer]
 
-	if bHuman and bPerTurnCall then
-		if gg_playerValues[iPlayer].goldDelayNotification then
-			player:AddNotification(NotificationTypes.NOTIFICATION_GENERIC, "Great Person progress was delayed by gold shortfall!", -1, -1)
-			gg_playerValues[iPlayer].goldDelayNotification = false
-		end
-		if gg_playerValues[iPlayer].productionDelayNotification then
-			player:AddNotification(NotificationTypes.NOTIFICATION_GENERIC, "Great Person progress was delayed by production shortfall!", -1, -1)
-			gg_playerValues[iPlayer].productionDelayNotification = false
-		end
-	end
-
 	if effectType == nil or effectType == "Gold" then
 		local mercenaryNet = 0
-		local gpGoldBuildCost = 0
 		for iOriginalOwner, myMercs in pairs(eaPlayer.mercenaries) do	--mercenaries we have hired
 			for iMerc, gpt in pairs(myMercs) do
 				local merc = player:GetUnitByID(iMerc)
@@ -324,16 +199,6 @@ function UpdateGlobalYields(iPlayer, effectType, bPerTurnCall)	--City States onl
 				end
 			end
 
-			for iPerson, eaPerson in pairs(gPeople) do			--GP build costs
-				if eaPerson.iPlayer == iPlayer then
-
-					local eaActionID = eaPerson.eaActionID
-					if eaActionID ~= -1 then
-						local eaAction = GameInfo.EaActions[eaActionID]
-						gpGoldBuildCost = gpGoldBuildCost + eaAction.GoldCostPerBuildTurn
-					end
-				end
-			end
 		elseif player:GetMinorCivTrait() == MINOR_TRAIT_MERCENARY then
 			for iLoopPlayer, eaLoopPlayer in pairs(realCivs) do		--same loop as for full civ above
 				local myHiredMercs = eaLoopPlayer.mercenaries[iPlayer]
@@ -354,188 +219,14 @@ function UpdateGlobalYields(iPlayer, effectType, bPerTurnCall)	--City States onl
 			end
 		end
 		if bHuman then			--used to adjust top panel display only
-			MapModData.gpGoldBuildCost = gpGoldBuildCost
 			MapModData.mercenaryNet = mercenaryNet
 		end
 		if bPerTurnCall then	--do deduction from teasury and/or set shortfall
 			player:ChangeGold(mercenaryNet)
-			if bFullCiv then
-				local gold = player:GetGold()
-				if gpGoldBuildCost < gold then
-					player:SetGold(gold - gpGoldBuildCost)
-					eaPlayer.gpDelayChanceFromGoldShortfall = 0
-				else
-					player:SetGold(0)
-					eaPlayer.gpDelayChanceFromGoldShortfall = Floor(1000 * (gpGoldBuildCost - gold) / gpGoldBuildCost + 0.5)	--chance in 1000 of no progress when DoEaAction rolls around
-					print("Setting gpDelayChanceFromGoldShortfall (out of 1000)", eaPlayer.gpDelayChanceFromGoldShortfall)
-				end
-			end
-		end
-	end
-
-	if effectType == nil or effectType == "FoodPercent" then
-		--Hanging Gardens
-
-		--TEST!
-		local bHasHangingGardens = gWonders[EA_WONDER_HANGING_GARDENS] and Map.GetPlotByIndex(gWonders[EA_WONDER_HANGING_GARDENS].iPlot):GetOwner() == iPlayer
-		local hangingGardensMod = bHasHangingGardens and gWonders[EA_WONDER_HANGING_GARDENS].mod or 0
-
-		--[[
-		for city in player:Cities() do
-			hangingGardensMod = hangingGardensMod + city:GetNumBuilding(BUILDING_HANGING_GARDENS_MOD)
-		end
-		]]
-
-		local foodPercent = Floor(hangingGardensMod + 0.5) 	--add everything and round to nearest 1%
-		local lastFoodPercent = currentFoodPercentAdjByPlayer[iPlayer] or 0
-		if foodPercent ~= lastFoodPercent then
-			currentFoodPercentAdjByPlayer[iPlayer] = foodPercent
-			if foodPercent >= 0 then
-				for i = 1, 9 do
-					local value = percentValues[i]
-					if foodPercent >= value then
-						player:SetHasPolicy(foodPlusPercentID[i], true)
-						foodPercent = foodPercent - value
-					else
-						player:SetHasPolicy(foodPlusPercentID[i], false)
-					end
-					player:SetHasPolicy(foodMinusPercentID[i], false)
-				end
-			else
-				for i = 1, 9 do
-					local value = percentValues[i]
-					if -foodPercent >= value then
-						player:SetHasPolicy(foodMinusPercentID[i], true)
-						foodPercent = foodPercent + value
-					else
-						player:SetHasPolicy(foodMinusPercentID[i], false)
-					end
-					player:SetHasPolicy(foodPlusPercentID[i], false)
-				end
-			end
-		end
-	end
-
-	if effectType == nil or effectType == "CulturePercent" then
-		local capital = player:GetCapitalCity()				-- NEED TO ACCOUNT FOR CHANGING CAPITAL !!!! (intercept? or cycle every city every turn)
-		if capital then
-			local leaderCulture = eaPlayer.leaderCulture or 0
-			local culturePercent = Floor(leaderCulture + 0.5) 	--add everything and round to nearest 1%
-			local prevCulturePercent = capital:GetNumBuilding(BUILDING_PLUS_1_PERCENT_GLOBAL_CULTURE)
-			if culturePercent ~= prevCulturePercent then
-				capital:SetNumRealBuilding(BUILDING_PLUS_1_PERCENT_GLOBAL_CULTURE, culturePercent)
-			end
-		end
-	end
-	
-	if effectType == nil or effectType == "ProductionPercent" then
-		local leaderProduction = eaPlayer.leaderProduction or 0
-		local productionPercent = Floor(leaderProduction + 0.5) 	--add everything and round to nearest 1%
-		local lastProductionPercent = currentProductionPercentAdjByPlayer[iPlayer] or 0
-		if productionPercent ~= lastProductionPercent then
-			currentProductionPercentAdjByPlayer[iPlayer] = productionPercent
-			if productionPercent >= 0 then
-				for i = 1, 9 do
-					local value = percentValues[i]
-					if productionPercent >= value then
-						player:SetHasPolicy(productionPlusPercentID[i], true)
-						productionPercent = productionPercent - value
-					else
-						player:SetHasPolicy(productionPlusPercentID[i], false)
-					end
-					player:SetHasPolicy(productionMinusPercentID[i], false)
-				end
-			else
-				for i = 1, 9 do
-					local value = percentValues[i]
-					if -productionPercent >= value then
-						player:SetHasPolicy(productionMinusPercentID[i], true)
-						productionPercent = productionPercent + value
-					else
-						player:SetHasPolicy(productionMinusPercentID[i], false)
-					end
-					player:SetHasPolicy(productionPlusPercentID[i], false)
-				end
-			end
-		end
-	end
-
-	if effectType == nil or effectType == "GoldPercent" then
-		local leaderGold = eaPlayer.leaderGold or 0
-		local goldPercent = Floor(leaderGold + 0.5) 	--add everything and round to nearest 1%
-		local lastGoldPercent = currentGoldPercentAdjByPlayer[iPlayer] or 0
-		if goldPercent ~= lastGoldPercent then
-			currentGoldPercentAdjByPlayer[iPlayer] = goldPercent
-			if goldPercent >= 0 then
-				for i = 1, 9 do
-					local value = percentValues[i]
-					if goldPercent >= value then
-						player:SetHasPolicy(goldPlusPercentID[i], true)
-						goldPercent = goldPercent - value
-					else
-						player:SetHasPolicy(goldPlusPercentID[i], false)
-					end
-					player:SetHasPolicy(goldMinusPercentID[i], false)
-				end
-			else
-				for i = 1, 9 do
-					local value = percentValues[i]
-					if -goldPercent >= value then
-						player:SetHasPolicy(goldMinusPercentID[i], true)
-						goldPercent = goldPercent + value
-					else
-						player:SetHasPolicy(goldMinusPercentID[i], false)
-					end
-					player:SetHasPolicy(goldPlusPercentID[i], false)
-				end
-			end
-		end
-	end
-
-	if effectType == nil or effectType == "SciencePercent" then
-		local leaderScience = eaPlayer.leaderScience or 0
-
-		local sciencePercent = Floor(leaderScience + 0.5) 	--add everything and round to nearest 1%
-		local lastSciencePercent = currentSciencePercentAdjByPlayer[iPlayer] or 0
-		if sciencePercent ~= lastSciencePercent then
-			currentSciencePercentAdjByPlayer[iPlayer] = sciencePercent
-			if sciencePercent >= 0 then
-				for i = 1, 9 do
-					local value = percentValues[i]
-					if sciencePercent >= value then
-						player:SetHasPolicy(sciencePlusPercentID[i], true)
-						sciencePercent = sciencePercent - value
-					else
-						player:SetHasPolicy(sciencePlusPercentID[i], false)
-					end
-					player:SetHasPolicy(scienceMinusPercentID[i], false)
-				end
-			else
-				for i = 1, 9 do
-					local value = percentValues[i]
-					if -sciencePercent >= value then
-						player:SetHasPolicy(scienceMinusPercentID[i], true)
-						sciencePercent = sciencePercent + value
-					else
-						player:SetHasPolicy(scienceMinusPercentID[i], false)
-					end
-					player:SetHasPolicy(sciencePlusPercentID[i], false)
-				end
-			end
 		end
 	end
 
 end
---LuaEvents.EaFunctionsUpdateGlobalEffects.Add(UpdateGlobalYields)	--call when tech tree or tech popup closed
-
---local function UpdateGlobalEffectsDirty()
---	Dprint("UpdateGlobalEffectsDirty")
---	if MapModData.bRequestPlayerScienceUpdate then
---		MapModData.bRequestPlayerScienceUpdate = false
---		UpdateGlobalYields(g_iActivePlayer, "SciencePercent", false)
---	end
---end
---Events.SerialEventGameDataDirty.Add(UpdateGlobalEffectsDirty)
 
 
 function UpdateCityYields(iPlayer, iSpecificCity, effectType, bPerTurnCall)
@@ -550,12 +241,6 @@ function UpdateCityYields(iPlayer, iSpecificCity, effectType, bPerTurnCall)
 		effectType = "CityStateUpdate"
 	end
 	local bPerTurnFullCivUpdate = bFullCiv and bPerTurnCall
-	--local cityList
-	--if iCity then
-	--	cityList = {[iCity] = eaPlayer.eaCityIndexByiCity[iCity]}
-	--else
-	--	cityList = eaPlayer.eaCityIndexByiCity
-	--end
 	local numCities = player:GetNumCities()
 
 	local bHasMegalosFaros = gWonders[EA_WONDER_MEGALOS_FAROS] and Map.GetPlotByIndex(gWonders[EA_WONDER_MEGALOS_FAROS].iPlot):GetOwner() == iPlayer
@@ -669,49 +354,6 @@ function UpdateCityYields(iPlayer, iSpecificCity, effectType, bPerTurnCall)
 
 			end
 
-			--if effectType == nil or effectType == "FoodPercent" then
-			--end
-
-			if effectType == nil or effectType == "ProductionPercent" then
-				local residentProduction = eaCity.residentProduction or 0
-				local prevProductionPercent = city:GetNumBuilding(BUILDING_PLUS_1_PERCENT_PRODUCTION) - city:GetNumBuilding(BUILDING_MINUS_1_PERCENT_PRODUCTION)
-
-				--do gp production costs (take up to 80%)
-				local gpProductionBuildCost = 0
-	
-				for iPerson, eaPerson in pairs(gPeople) do
-					if eaPerson.iPlayer == iPlayer and eaPerson.eaActionID ~= -1 and eaPerson.x == city:GetX() and eaPerson.y == city:GetY() then
-						local eaAction = GameInfo.EaActions[eaPerson.eaActionID]
-						gpProductionBuildCost = gpProductionBuildCost + eaAction.ProductionCostPerBuildTurn
-					end
-				end
-				local gpTakePercentForBuild = 0
-				if gpProductionBuildCost > 0 then
-					local baseProduction = city:GetBaseYieldRate(YIELD_PRODUCTION)
-					local maxBuildPercentTake = city:GetBaseYieldRateModifier(YIELD_PRODUCTION) - prevProductionPercent + residentProduction - 20
-					local percentNeeded = 100 * gpProductionBuildCost / baseProduction
-					if percentNeeded <= maxBuildPercentTake then
-						gpTakePercentForBuild = percentNeeded
-					else
-						gpTakePercentForBuild = maxBuildPercentTake
-						eaCity.gpDelayChanceFromProductionShortfall = Floor(1000 * (1 - gpTakePercentForBuild / percentNeeded) + 0.5)	--chance in 1000 of no progress when DoEaAction rolls around
-					end
-				end
-
-
-				--Total
-				local productionPercent = Floor(residentProduction - gpTakePercentForBuild + 0.5) 	--add everything and round to nearest 1%
-				if productionPercent ~= prevProductionPercent then
-					if productionPercent > 0 then
-						city:SetNumRealBuilding(BUILDING_PLUS_1_PERCENT_PRODUCTION, productionPercent)
-						city:SetNumRealBuilding(BUILDING_MINUS_1_PERCENT_PRODUCTION, 0)
-					else
-						city:SetNumRealBuilding(BUILDING_PLUS_1_PERCENT_PRODUCTION, 0)
-						city:SetNumRealBuilding(BUILDING_MINUS_1_PERCENT_PRODUCTION, -productionPercent)
-					end
-				end
-			end
-
 			if effectType == nil or effectType == "LandXP" then
 				local residentLandXP = eaCity.residentLandXP or 0
 				local leaderLandXP = eaPlayer.leaderLandXP or 0
@@ -731,50 +373,6 @@ function UpdateCityYields(iPlayer, iSpecificCity, effectType, bPerTurnCall)
 				local prevXP = city:GetNumBuilding(BUILDING_PLUS_1_SEA_XP)
 				if xp ~= prevXP then
 					city:SetNumRealBuilding(BUILDING_PLUS_1_SEA_XP, xp)
-				end
-			end
-
-			if effectType == nil or effectType == "GoldPercent" then
-				local residentGold = eaCity.residentGold or 0
-				local goldPercent = Floor(residentGold + 0.5) 	--add everything and round to nearest 1%
-				local prevGoldPercent = city:GetNumBuilding(BUILDING_PLUS_1_PERCENT_GOLD)
-				if goldPercent ~= prevGoldPercent then
-					city:SetNumRealBuilding(BUILDING_PLUS_1_PERCENT_GOLD, goldPercent)
-				end
-			end
-
-			if effectType == nil or effectType == "SciencePercent" then
-				local residentScience = eaCity.residentScience or 0
-				local sciencePercent = Floor(residentScience + 0.5) 	--add everything and round to nearest 1%
-				local prevSciencePercent = city:GetNumBuilding(BUILDING_PLUS_1_PERCENT_SCIENCE)
-				if sciencePercent ~= prevSciencePercent then
-					city:SetNumRealBuilding(BUILDING_PLUS_1_PERCENT_SCIENCE, sciencePercent)
-				end
-			end
-
-			if effectType == nil or effectType == "CulturePercent" then
-				local residentCulture = eaCity.residentCulture or 0
-				local newCulturePercent = Floor(residentCulture + 0.5) 	--add everything and round to nearest 1%
-				local prevCulturePercent = eaCity.culturePercentBoost
-				if newCulturePercent ~= prevCulturePercent then
-					city:ChangeCultureRateModifier(newCulturePercent - prevCulturePercent)
-					eaCity.culturePercentBoost = newCulturePercent
-				end
-			end
-
-			if effectType == nil or effectType == "FaithPercent" then		--can only apply straight yield; apply resident and leader effects here
-				local residentFaith = eaCity.residentManaOrFavor or 0
-				local faithPoints = Floor(residentFaith * city:GetFaithPerTurn() / 100 + 0.5)
-
-				if city == capital then
-					local leaderFaith = eaPlayer.leaderManaOrFavor or 0
-					local playerFaithPoints = player:GetFaithPerTurnFromCities() + player:GetFaithPerTurnFromReligion()
-					faithPoints = faithPoints + Floor(leaderFaith * playerFaithPoints / 100 + 0.5)
-				end
-
-				local prevFaith = city:GetNumBuilding(BUILDING_PLUS_1_FAITH)
-				if faithPoints ~= prevFaith then
-					city:SetNumRealBuilding(BUILDING_PLUS_1_FAITH, faithPoints)
 				end
 			end
 
@@ -994,21 +592,6 @@ local function UpdateUIForProcessChange(iPlayer, iCity, updateTypeID)
 end
 Events.SpecificCityInfoDirty.Add(UpdateUIForProcessChange)
 
-function ResetYieldPolicies(iPlayer)
-	local player = Players[iPlayer]
-	for i = 1, #percentValues do
-		player:SetHasPolicy(foodPlusPercentID[i], false)
-		player:SetHasPolicy(foodMinusPercentID[i], false)
-		player:SetHasPolicy(productionPlusPercentID[i], false)
-		player:SetHasPolicy(productionMinusPercentID[i], false)
-		player:SetHasPolicy(goldPlusPercentID[i], false)
-		player:SetHasPolicy(goldMinusPercentID[i], false)
-		player:SetHasPolicy(sciencePlusPercentID[i], false)
-		player:SetHasPolicy(scienceMinusPercentID[i], false)
-		player:SetHasPolicy(faithPlusPercentID[i], false)
-		player:SetHasPolicy(faithMinusPercentID[i], false)
-	end
-end
 
 ----------------------------------------------------------------
 -- Player change

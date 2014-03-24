@@ -16,7 +16,7 @@ EA_DLL_VERSION = 1
 --CallHook
 CombatResult(iAttackingPlayer, iAttackingUnit, attackerDamage, attackerFinalDamage, attackerMaxHP,iDefendingPlayer, iDefendingUnit, defenderDamage, defenderFinalDamage, defenderMaxHP, iInterceptingPlayer, iInterceptingUnit, interceptorDamage, plotX, plotY)
 CombatEnded(iAttackingPlayer, iAttackingUnit, attackerDamage, attackerFinalDamage, attackerMaxHP,iDefendingPlayer, iDefendingUnit, defenderDamage, defenderFinalDamage, defenderMaxHP, iInterceptingPlayer, iInterceptingUnit, interceptorDamage, plotX, plotY)
-UnitSetXYPlotEffect(iPlayer, iUnit, x, y, plotEffectID, plotEffectStrength)
+UnitSetXYPlotEffect(iPlayer, iUnit, x, y, plotEffectID, plotEffectStrength, plotEffectPlayer, plotEffectCaster)
 
 
 --CallTestAll
@@ -33,12 +33,21 @@ PlayerTechCostMod(iPlayer, techID)
 //CityCanRangeStrikeAt(iAttacker, iCity, x, y)	CallTestAll
 
 --------------------------------------------------------------
+-- City
+--------------------------------------------------------------
+
+int		GetCityResidentYieldBoost(int yieldTypeID)
+void	SetCityResidentYieldBoost(int yieldTypeID, iNewValue)
+
+
+--------------------------------------------------------------
 -- Player
 --------------------------------------------------------------
 void	ChangeCivilizationType(eNewCivType)
 void	ChangeLeaderType(eNewLeaderType)
 void	SetFoundedFirstCity()
-
+int		GetLeaderYieldBoost(int yieldTypeID)
+void	SetLeaderYieldBoost(int yieldTypeID, iNewValue)
 
 --------------------------------------------------------------
 -- Plots
@@ -56,8 +65,8 @@ bool				GetLivingTerrainPresent()
 void				SetLivingTerrainPresent(bool)
 int, bool, int, int	GetLivingTerrainData()
 void				SetLivingTerrainData(int, bool, int, int)
-void				SetPlotEffect(effectID, effectStength)
-int, int			GetPlotEffect()								--effectID, effectStength
+void				SetPlotEffectData(effectID, effectStength, iPlayer, iCaster)
+int, int, int, int	GetPlotEffectData()								--args above
 
 --------------------------------------------------------------
 -- Unit

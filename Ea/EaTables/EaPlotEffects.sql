@@ -1,8 +1,6 @@
 
 -- Glyphs, Runes, Wards
--- Trigger GameEvents.SetXXPlotEffect(iPlayer, iUnit, x, y, effectID, effectStength) any time any unit moves onto plot with plot:GetPlotEffect() ~= -1
--- void								plot:SetPlotEffect(effectID, effectStength)
--- int effectID, int effectStength	plot:GetPlotEffect()
+
 
 
 CREATE TABLE EaPlotEffects ('ID' INTEGER PRIMARY KEY AUTOINCREMENT,

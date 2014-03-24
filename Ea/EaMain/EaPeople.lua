@@ -22,8 +22,14 @@ local PROMOTION_SORCERER =				GameInfoTypes.PROMOTION_SORCERER
 local PROMOTION_PROPHET =				GameInfoTypes.PROMOTION_PROPHET
 local EA_ACTION_GO_TO_PLOT =			GameInfoTypes.EA_ACTION_GO_TO_PLOT
 
-local bFullCivAI =					MapModData.bFullCivAI
-local fullCivs =					MapModData.fullCivs
+local YIELD_PRODUCTION = 				GameInfoTypes.YIELD_PRODUCTION
+local YIELD_GOLD = 						GameInfoTypes.YIELD_GOLD
+local YIELD_SCIENCE =					GameInfoTypes.YIELD_SCIENCE
+local YIELD_CULTURE = 					GameInfoTypes.YIELD_CULTURE
+local YIELD_FAITH = 					GameInfoTypes.YIELD_FAITH
+
+local bFullCivAI =						MapModData.bFullCivAI
+local fullCivs =						MapModData.fullCivs
 
 local gPlayers =			gPlayers
 local gPeople =				gPeople
@@ -32,6 +38,7 @@ local Floor =				math.floor
 local Rand =				Map.Rand
 local GetPlotFromXY =		Map.GetPlot
 local PlotDistance =		Map.PlotDistance
+local GetPlotByIndex =		Map.GetPlotByIndex
 local HandleError21 =		HandleError21
 
 local tempInteger =		{_ = 0}		--holder used and recycled without nilling; _ is position
@@ -868,13 +875,14 @@ function UpdateLeaderEffects(iPlayer)
 	local class2
 	local subclass
 	local mod
-	local leaderProduction
-	local leaderGold
-	local leaderScience
-	local leaderCulture
+	local leaderProduction = 0
+	local leaderGold = 0
+	local leaderScience = 0
+	local leaderCulture = 0
+	local leaderManaOrFavor = 0
 	local leaderLandXP
 	local leaderSeaXP
-	local leaderManaOrFavor
+
 
 	local iLeader = eaPlayer.leaderEaPersonIndex
 	if iLeader ~= -1 then
@@ -886,6 +894,7 @@ function UpdateLeaderEffects(iPlayer)
 		subclass = eaPerson.subclass
 		
 		--Check capital vicinity if not warrior
+		--[[ Not sure if we want to do this or not
 		if class1 ~= "Warrior" and class2 ~= "Warrior" then	--exceptions to capital vicinity rule
 			local player = Players[iPlayer]
 			local capital = player:GetCapitalCity()
@@ -905,6 +914,7 @@ function UpdateLeaderEffects(iPlayer)
 				end
 			end
 		end
+		]]
 	
 	end
 
@@ -932,27 +942,44 @@ function UpdateLeaderEffects(iPlayer)
 
 	if class2 then
 		if class2 == "Engineer" then
-			leaderProduction = (leaderProduction or 0) + mod
+			leaderProduction = leaderProduction + mod
 		elseif class2 == "Merchant" then
-			leaderGold = (leaderGold or 0) + mod
+			leaderGold = leaderGold + mod
 		elseif class2 == "Sage" then
-			leaderScience = (leaderScience or 0) + mod
+			leaderScience = leaderScience + mod
 		elseif class2 == "Artist" then
-			leaderCulture = (leaderCulture or 0) + mod
+			leaderCulture = leaderCulture + mod
 		elseif class2 == "Warrior" then
-			leaderLandXP = (leaderLandXP or 0) + mod
+			leaderLandXP = leaderLandXP + mod
 		elseif class2 == "Devout" or class2 == "Thaumaturge" then
-			leaderManaOrFavor = (leaderManaOrFavor or 0) + mod
+			leaderManaOrFavor = leaderManaOrFavor + mod
 		end
 	end
 
-	eaPlayer.leaderProduction = leaderProduction	--these are nil when not needed
-	eaPlayer.leaderGold = leaderGold
-	eaPlayer.leaderScience = leaderScience
-	eaPlayer.leaderCulture = leaderCulture
+	if player:GetLeaderYieldBoost(YIELD_PRODUCTION) ~= leaderProduction then
+		player:SetLeaderYieldBoost(YIELD_PRODUCTION, leaderProduction)
+	end
+	if player:GetLeaderYieldBoost(YIELD_GOLD) ~= leaderGold then
+		player:SetLeaderYieldBoost(YIELD_GOLD, leaderGold)
+	end
+	if player:GetLeaderYieldBoost(YIELD_SCIENCE) ~= leaderScience then
+		player:SetLeaderYieldBoost(YIELD_SCIENCE, leaderScience)
+	end
+	if player:GetLeaderYieldBoost(YIELD_CULTURE) ~= leaderCulture then
+		player:SetLeaderYieldBoost(YIELD_CULTURE, leaderCulture)
+	end
+	if player:GetLeaderYieldBoost(YIELD_FAITH) ~= leaderManaOrFavor then
+		player:SetLeaderYieldBoost(YIELD_FAITH, leaderManaOrFavor)
+	end
+
+
+	--eaPlayer.leaderProduction = leaderProduction	--these are nil when not needed
+	--eaPlayer.leaderGold = leaderGold
+	--eaPlayer.leaderScience = leaderScience
+	--eaPlayer.leaderCulture = leaderCulture
+	--eaPlayer.leaderManaOrFavor = leaderManaOrFavor
 	eaPlayer.leaderLandXP = leaderLandXP
 	eaPlayer.leaderSeaXP = leaderSeaXP
-	eaPlayer.leaderManaOrFavor = leaderManaOrFavor
 
 end
 
@@ -964,24 +991,31 @@ function SpawnNamesakeWarriorLeader(iPlayer)
 	SetNewCivName(iPlayer, 0)	--this names the civ after its current leader
 end
 
-function RemoveLeaderEffects(eaPlayer)	--if unit goes missing (disbanded) or >3 tiles from capital
-	eaPlayer.leaderProduction = nil
-	eaPlayer.leaderGold = nil
-	eaPlayer.leaderScience = nil
-	eaPlayer.leaderCulture = nil
+
+function RemoveLeaderEffects(iPlayer)
+	local player = Players[iPlayer]
+	player:SetLeaderYieldBoost(YIELD_PRODUCTION, 0)	--all but food
+	player:SetLeaderYieldBoost(YIELD_GOLD, 0)
+	player:SetLeaderYieldBoost(YIELD_SCIENCE, 0)
+	player:SetLeaderYieldBoost(YIELD_CULTURE, 0)
+	player:SetLeaderYieldBoost(YIELD_FAITH, 0)
+
+	local eaPlayer = gPlayers[iPlayer]
 	eaPlayer.leaderLandXP = nil
 	eaPlayer.leaderSeaXP = nil
-	eaPlayer.leaderManaOrFavor = nil
 end
 
-function RemoveResidentEffects(eaCity)	--if replaced or walks away
-	eaCity.residentProduction = nil
-	eaCity.residentGold = nil
-	eaCity.residentScience = nil
-	eaCity.residentCulture = nil
+function RemoveResidentEffects(city)	--if replaced or walks away
+
+	city:SetCityResidentYieldBoost(YIELD_PRODUCTION, 0)
+	city:SetCityResidentYieldBoost(YIELD_GOLD, 0)
+	city:SetCityResidentYieldBoost(YIELD_SCIENCE, 0)
+	city:SetCityResidentYieldBoost(YIELD_CULTURE, 0)
+	city:SetCityResidentYieldBoost(YIELD_FAITH, 0)
+
+	local eaCity = gCities[city:Plot():GetPlotIndex()]
 	eaCity.residentLandXP = nil
 	eaCity.residentSeaXP = nil
-	eaCity.residentManaOrFavor = nil
 end
 
 --------------------------------------------------------------
@@ -1115,7 +1149,7 @@ function SetTowerMods(iPerson)
 		else
 			str = str .. "'s Tower"
 		end
-		local plot = Map.GetPlotByIndex(tower.iPlot)
+		local plot = GetPlotByIndex(tower.iPlot)
 		plot:SetScriptData(str)
 		tower.iNamedFor = iPlayer
 	end
@@ -1200,7 +1234,7 @@ function KillPerson(iPlayer, iPerson, deathType)
 		end
 		PreGame.SetLeaderName(iPlayer, "TXT_KEY_EA_NO_LEADER")
 
-		RemoveLeaderEffects(eaPlayer)
+		RemoveLeaderEffects(iPlayer)
 		UpdateGlobalYields(iPlayer)
 		if bFullCivAI[iPlayer] then
 			AIInturruptGPsForLeadershipOpportunity(iPlayer)
@@ -1211,14 +1245,15 @@ function KillPerson(iPlayer, iPerson, deathType)
 	if unit then
 		unit:Kill(true, -1)
 	else
-		--Debug: find out if there is a GP around (or any unit) that has this person index
+		--Debug: find out if there is a GP around (or any unit) that isn't dying and has this person index
 		for iLoopPlayer = 0, BARB_PLAYER_INDEX do
 			local loopPlayer = Players[iLoopPlayer]
 			if loopPlayer:IsAlive() then
 				for unit in loopPlayer:Units() do
-					if unit:GetPersonIndex() == iPerson then
+					if unit:GetPersonIndex() == iPerson and not unit:IsDelayedDeath() then
 						unitType = GameInfo.Units[unit:GetUnitType()].Type
-						error("Tried to kill GP but a unit has this GP's person index; iOwner, unitType = ".. unit:GetOwner() .. ", " .. unitType)
+						print(unit:IsDead())
+						error("Tried to kill GP but a living unit has this GP's person index; iOwner, unitType = ".. unit:GetOwner() .. ", " .. unitType)
 					end
 				end
 			end

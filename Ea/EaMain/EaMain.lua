@@ -39,6 +39,7 @@ include("EaDefines.lua")			--1st after utils (before any files that reference mo
 include("TableSaverLoader.lua")		--2rd
 include("EaInit.lua")				--3rd
 
+include("_Debug.lua")
 include("EaActions.lua")
 include("EaAIActions.lua")			--depends on EaActions
 include("EaAIPeople.lua")
@@ -283,13 +284,11 @@ local function OnPlayerDoTurn(iPlayer)	-- Runs at begining of turn for all livin
 		UpdateGlobalYields(iPlayer, nil, true)		--for now, only GP effects so only full players
 		UpdateCityYields(iPlayer, nil, nil, true)
 		TestUpdateVictory(iPlayer)
-		DebugPrintCityBuildQueue(iPlayer)
 		print("****  Finished Lua functions for major player " .. iPlayer .. "  ****")
 	elseif playerType[iPlayer] == "Fay" then
 		--The Fay
 		UpdateFayScore(iPlayer)
 		DebugHidden(iPlayer)
-		DebugPrintCityBuildQueue(iPlayer)
 	elseif playerType[iPlayer] == "CityState" then
 		--City states
 		UnitPerCivTurn(iPlayer)
@@ -298,11 +297,9 @@ local function OnPlayerDoTurn(iPlayer)	-- Runs at begining of turn for all livin
 		AIMercenaryPerCivTurn(iPlayer)
 		UpdateGlobalYields(iPlayer, "Gold", true)
 		UpdateCityYields(iPlayer, nil, nil, true)
-		DebugPrintCityBuildQueue(iPlayer)
 	elseif playerType[iPlayer] == "God" then
 		--Gods
 		DebugHidden(iPlayer)
-		DebugPrintCityBuildQueue(iPlayer)
 	else	--Barbs and Animals
 		UnitPerCivTurn(iPlayer)
 	end

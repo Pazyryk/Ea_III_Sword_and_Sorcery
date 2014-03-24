@@ -490,24 +490,6 @@ function ConvertUnitProductionByMatch(iPlayer, fromStr, toStr)
 	end
 end
 
-local tableByOrderType = {	[OrderTypes.ORDER_TRAIN] = "Units",
-							[OrderTypes.ORDER_CONSTRUCT] = "Buildings",
-							[OrderTypes.ORDER_CREATE] = "Projects",
-							[OrderTypes.ORDER_MAINTAIN] = "Processes"	}
-
-function DebugPrintCityBuildQueue(iPlayer)
-	local player = Players[iPlayer]
-	for city in player:Cities() do
-		local name = city:GetName()
-		print("Build queue for ", name, ":")
-		local qLength = city:GetOrderQueueLength()
-		for i = 0, qLength - 1 do
-			local queuedOrderType, queuedData1, queuedData2, queuedSave, queuedRush = city:GetOrderFromQueue(i)
-			print("* ", GameInfo[tableByOrderType[queuedOrderType]][queuedData1].Type)
-		end
-	end
-end
-
 function CityPerCivTurn(iPlayer)		--Full civ only
 	local Floor = math.floor
 	print("CityPerCivTurn; City info (Name/Size/BuildQueue):")
@@ -716,7 +698,7 @@ function CityPerCivTurn(iPlayer)		--Full civ only
 						end
 					else		--Person died, update city for no resident
 						eaCity.resident = -1
-						UpdateCityYields(iPlayer, iCity)
+						RemoveResidentEffects(city)
 					end
 
 				end
@@ -786,10 +768,8 @@ local function OnPlayerCityFounded(iPlayer, x, y)
 
 	-- Ea city init
 	local eaCity = {iOwner = iPlayer,	-- !!!!!!!!!!!!!!!!  INIT NEW EaCity HERE !!!!!!!!!!!!!!!!
-					--iPlot = iPlot,	-- DEPRECIATED: this is index now
 					x = x,
 					y = y,
-					--tradeRoutes = {},		-- DEPRECIATED
 					openLandTradeRoutes = {},	-- index by other eaCityIndex; holds other city owner (so trade route is open on re-conqest)
 					openSeaTradeRoutes = {},	
 					progress = {},
@@ -797,7 +777,6 @@ local function OnPlayerCityFounded(iPlayer, x, y)
 					resident = -1,
 					size = 1,				--updated per turn; used to know how much pop lost from conquest
 					disease = 0,			-- +values represent turns remaining for disease, -values represents turns remaining for plague
-					gpDelayChanceFromProductionShortfall = 0,
 					remotePlots = {},		--index by iPlot (holds true for now...)
 					foodBoost = 0,
 					productionBoost = 0,
@@ -808,7 +787,6 @@ local function OnPlayerCityFounded(iPlayer, x, y)
 					}
 
 	gCities[iPlot] = eaCity
-	--eaPlayer.eaCityIndexByiCity[iCity] = iPlot
 
 	local raceInfo = GameInfo.EaRaces[eaPlayer.race]
 	--Set race

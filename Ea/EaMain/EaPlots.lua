@@ -81,7 +81,7 @@ local GetPlotFromXY = Map.GetPlot
 local Floor = math.floor
 local StrChar = string.char
 local HandleError41 = HandleError41
-local HandleError61 = HandleError61
+local HandleError = HandleError
 
 
 
@@ -439,7 +439,7 @@ end
 
 -- Plot acquisition
 local function OnCityCanAcquirePlot(iPlayer, iCity, x, y)
-	print("OnCityCanAcquirePlot ", iPlayer, iCity, x, y)
+	--print("OnCityCanAcquirePlot ", iPlayer, iCity, x, y)
 	local plot = GetPlotFromXY(x,y)
 	if plot:IsWater() then
 		local featureID = plot:GetFeatureType()
@@ -452,12 +452,12 @@ local function OnCityCanAcquirePlot(iPlayer, iCity, x, y)
 end
 GameEvents.CityCanAcquirePlot.Add(OnCityCanAcquirePlot)
 
-local function OnUnitSetXYPlotEffect(iPlayer, iUnit, x, y, plotEffectID, plotEffectStrength)
-	print("OnUnitSetXYPlotEffect ", iPlayer, iUnit, x, y, plotEffectID, plotEffectStrength)
+local function OnUnitSetXYPlotEffect(iPlayer, iUnit, x, y, plotEffectID, plotEffectStrength, plotEffectPlayer, plotEffectCaster)
+	print("OnUnitSetXYPlotEffect ", iPlayer, iUnit, x, y, plotEffectID, plotEffectStrength, plotEffectPlayer, plotEffectCaster)
 
 
 end
-GameEvents.UnitSetXYPlotEffect.Add(function(iPlayer, iUnit, x, y, plotEffectID, plotEffectStrength) return HandleError61(OnUnitSetXYPlotEffect, iPlayer, iUnit, x, y, plotEffectID, plotEffectStrength) end)
+GameEvents.UnitSetXYPlotEffect.Add(function(iPlayer, iUnit, x, y, plotEffectID, plotEffectStrength, plotEffectPlayer, plotEffectCaster) return HandleError(OnUnitSetXYPlotEffect, iPlayer, iUnit, x, y, plotEffectID, plotEffectStrength, plotEffectPlayer, plotEffectCaster) end)
 
 local function OnBuildFinished(iPlayer, x, y, improvementID)		--Is improvementID necessarily the one built, or is it any improvement that happens to be there???
 	print("OnBuildFinished ", iPlayer, x, y, improvementID)

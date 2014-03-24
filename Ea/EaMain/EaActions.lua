@@ -96,6 +96,7 @@ local gg_bToCheapToHire =					gg_bToCheapToHire
 local FindOpenTradeRoute =					FindOpenTradeRoute		--in EaTrade
 local IsLivingUnit =						IsLivingUnit
 local Floor =								math.floor
+local GetPlotByIndex =						Map.GetPlotByIndex
 local GetPlotFromXY =						Map.GetPlot
 local Distance =							Map.PlotDistance
 local Rand =								Map.Rand
@@ -733,11 +734,12 @@ function TestEaActionTarget(eaActionID, testX, testY, bAITargetTest)
 	end
 
 	--set g_modSpell for Tower or Temple
-	if g_eaAction.ApplyTowerTempleMod then
+	if g_eaAction.ApplyTowerTempleMod or g_eaAction.TowerTempleOnly then
 		if gWonders[EA_WONDER_ARCANE_TOWER][g_iPerson] and gWonders[EA_WONDER_ARCANE_TOWER][g_iPerson].iPlot == g_iPlot then
 			g_modSpell = g_mod + gWonders[EA_WONDER_ARCANE_TOWER][g_iPerson][GameInfoTypes[g_eaAction.GPModType1] ]		--Assume all spells have exactly one mod
 			g_bInTowerOrTemple = true
 		else
+			if g_eaAction.TowerTempleOnly then return false end
 			g_modSpell = g_mod
 			g_bInTowerOrTemple = false
 		end
@@ -776,7 +778,7 @@ function TestEaActionTarget(eaActionID, testX, testY, bAITargetTest)
 		gg_aiOptionValues.t = turnsToComplete															-- turns to complete (AI also uses turns to get to go to target, g)
 		gg_aiOptionValues.i = g_eaAction.AIAdHocValue													-- instant value at completion
 		gg_aiOptionValues.p = g_eaAction.AISimpleYield													-- per turn value after completion
-		gg_aiOptionValues.b = -g_eaAction.ProductionCostPerBuildTurn - g_eaAction.GoldCostPerBuildTurn	-- per turn value during action
+		gg_aiOptionValues.b = 0																			-- per turn value during action
 		gg_aiOptionValues.r = g_eaAction.AICombatRole and discountCombatRateTable or discountRateTable
 
 		if SetAIValues[eaActionID] then SetAIValues[eaActionID]() end	-- SetAIValues function (if exists) can override values above as needed
@@ -788,22 +790,10 @@ end
 
 function DoEaActionFromOtherState(eaActionID, iPlayer, unit, iPerson, targetX, targetY)	--UnitPanel.lua or WorldView.lua
 	print("DoEaActionFromOtherState ", eaActionID, iPlayer, unit, iPerson, targetX, targetY)
-	--g_bAllowUnitCycle = true
 	local bSuccess =  DoEaAction(eaActionID, iPlayer, unit, iPerson, targetX, targetY)
 	MapModData.bSuccess = bSuccess
 
-	--instant UI update (actual effect is per turn so this is just UI update)
-	if bSuccess then
-		if g_eaAction.GoldCostPerBuildTurn ~= 0 then
-			UpdateGlobalYields(g_iPlayer, "Gold")
-		end
-		if g_eaAction.ProductionCostPerBuildTurn ~= 0 then
-			UpdateCityYields(g_iPlayer, nil, "Production")
-		end
-	end
-
 end
---LuaEvents.EaActionsDoEaActionFromOtherState.Add(DoEaActionFromOtherState)
 LuaEvents.EaActionsDoEaActionFromOtherState.Add(function(eaActionID, iPlayer, unit, iPerson, targetX, targetY) return HandleError(DoEaActionFromOtherState, eaActionID, iPlayer, unit, iPerson, targetX, targetY) end)
 
 function DoEaAction(eaActionID, iPlayer, unit, iPerson, targetX, targetY)
@@ -959,33 +949,12 @@ function DoEaAction(eaActionID, iPlayer, unit, iPerson, targetX, targetY)
 
 		--Show under construction for city wonder // THIS DOESN'T WORK!!!
 		if g_eaAction.BuildingUnderConstruction then
-			g_city:SetBuildingProduction(GameInfoTypes[g_eaAction.BuildingUnderConstruction], 150)	--all have arbitrary build cost 300
-		end
-
-		--Cost not supported delay
-		local delayType
-		if g_eaAction.GoldCostPerBuildTurn ~= 0 and 0 < g_eaPlayer.gpDelayChanceFromGoldShortfall then
-			if Map.Rand(1000, "hello there!") < g_eaPlayer.gpDelayChanceFromGoldShortfall then
-				delayType = "gold"
-			end
-		elseif g_eaAction.ProductionCostPerBuildTurn ~= 0 and 0 < g_eaCity.gpDelayChanceFromProductionShortfall then
-			if Map.Rand(1000, "hello there!") < g_eaCity.gpDelayChanceFromProductionShortfall then
-				delayType = "production"
-			end
+			g_city:SetBuildingProduction(GameInfoTypes[g_eaAction.BuildingUnderConstruction], 290)	--all have arbitrary build cost 300
 		end
 
 		--Update progress
 		local progressHolder = g_eaAction.ProgressHolder
-		if delayType then		--no progress this turn
-			print("DoEaAction progress delayed by shortfall", g_iPlayer, g_iPerson, delayType, g_eaPlayer.gpDelayChanceFromGoldShortfall, g_eaCity.gpDelayChanceFromProductionShortfall)
-			if iPlayer == g_iActivePlayer then	--need to add notification on NEXT turn
-				if delayType == "gold" then
-					gg_playerValues[iPlayer].goldDelayNotification = true
-				elseif delayType == "production" then
-					gg_playerValues[iPlayer].productionDelayNotification = true
-				end
-			end
-		elseif progressHolder == "Plot" then
+		if progressHolder == "Plot" then
 			local buildID = GameInfoTypes[g_eaAction.BuildType]
 			local progress = g_plot:GetBuildProgress(buildID)
 			if progress >= turnsToComplete - 1 then
@@ -1077,16 +1046,6 @@ function InterruptEaAction(iPlayer, iPerson)
 	end
 
 	eaPlayer.aiUniqueTargeted[eaActionID] = nil
-
-	--Cost UI update (immediate UI update for human only; actual effect is at begining of turn)
-	if iPlayer == g_iActivePlayer then
-		if eaAction.GoldCostPerBuildTurn ~= 0 then
-			UpdateGlobalYields(iPlayer, "Gold")
-		end
-		if eaAction.ProductionCostPerBuildTurn ~= 0 then
-			UpdateCityYields(iPlayer, nil, "Production")
-		end
-	end
 
 	if Interrupt[eaActionID] then Interrupt[eaActionID](iPlayer, iPerson) end	
 
@@ -1631,7 +1590,7 @@ TestTarget[GameInfoTypes.EA_ACTION_TAKE_RESIDENCE] = function()
 	local yield2ID = -99
 	if g_class2 then yield2ID = classYields[g_class2] end		--dual class
 	if yield2ID == yield1ID then yield2ID = -99 end
-	if yield2ID ~= -99 then mod = mod / 2 end						--two different yields
+	if yield2ID == -99 then mod = mod * 2 end					--double mod for single class
 	local boost1, boost2 = 0, 0
 	if yield1ID ~= -1 then
 		boost1 = mod * g_city:GetBaseYieldRate(yield1ID) / 100
@@ -1722,7 +1681,7 @@ SetAIValues[GameInfoTypes.EA_ACTION_TAKE_RESIDENCE] = function()
 	gg_aiOptionValues.b = g_int3 + g_int4	--per turn value during "build" turns
 end
 
-local residentEffects = {[-2] = "residentSeaXP", [-1] = "residentLandXP", [YIELD_PRODUCTION] = "residentProduction", [YIELD_GOLD] = "residentGold", [YIELD_SCIENCE] = "residentScience", [YIELD_CULTURE] = "residentCulture", [YIELD_FAITH] = "residentManaOrFavor"}
+--local residentEffects = {[-2] = "residentSeaXP", [-1] = "residentLandXP", [YIELD_PRODUCTION] = "residentProduction", [YIELD_GOLD] = "residentGold", [YIELD_SCIENCE] = "residentScience", [YIELD_CULTURE] = "residentCulture", [YIELD_FAITH] = "residentManaOrFavor"}
 
 Do[GameInfoTypes.EA_ACTION_TAKE_RESIDENCE] = function()
 	--check for a previous resident
@@ -1733,18 +1692,30 @@ Do[GameInfoTypes.EA_ACTION_TAKE_RESIDENCE] = function()
 		--ReappearGP(g_iPlayer, iOldResident)
 	end
 
-	print(iOldResident, g_int1, g_int2, g_int3, g_int4, g_int5, residentEffects[g_int1], residentEffects[g_int2])
-
 	g_eaCity.resident = g_iPerson
-	local residentEffect = residentEffects[ g_int1 ]
-	g_eaCity[residentEffect] = g_int5
-	if g_int2 ~= -99 then
-		residentEffect = residentEffects[ g_int2 ]
-		g_eaCity[residentEffect] = g_int5
+
+	if -1 < g_int1 then		--This is a regular yield
+		if g_city:GetCityResidentYieldBoost(g_int1) ~= g_int5 then
+			g_city:SetCityResidentYieldBoost(g_int1, g_int5)
+		end
+	elseif g_int1 == -1 then
+		g_eaCity.residentLandXP = g_int5
+	elseif g_int1 == -1 then
+		g_eaCity.residentSeaXP = g_int5
 	end
-	if g_iPlayer == g_iActivePlayer then
-		UpdateCityYields(g_iPlayer, g_iCity) 	--show effect in UI now
+	if -1 < g_int2 then
+		if g_city:GetCityResidentYieldBoost(g_int2) ~= g_int5 then
+			g_city:SetCityResidentYieldBoost(g_int2, g_int5)
+		end
+	elseif g_int2 == -1 then
+		g_eaCity.residentLandXP = g_int5
+	elseif g_int2 == -1 then
+		g_eaCity.residentSeaXP = g_int5
 	end
+
+	--if g_iPlayer == g_iActivePlayer then
+	--	UpdateCityYields(g_iPlayer, g_iCity) 	--show effect in UI now
+	--end
 	g_eaPerson.eaActionData = g_iPlot
 	return true
 end
@@ -1757,12 +1728,9 @@ Interrupt[GameInfoTypes.EA_ACTION_TAKE_RESIDENCE] = function(iPlayer, iPerson)
 	if eaCity then
 		eaCity.resident = -1
 		eaPerson.eaActionData = -1
-		RemoveResidentEffects(eaCity)
-		if iPlayer == g_iActivePlayer then
-			local city = Map.GetPlotByIndex(eaCityIndex):GetPlotCity()
-			if city then
-				UpdateCityYields(iPlayer, city:GetID(), nil)	--instant UI update for human
-			end
+		local city = GetPlotByIndex(eaCityIndex):GetPlotCity()
+		if city then
+			RemoveResidentEffects(city)
 		end
 	end
 end
@@ -1820,25 +1788,6 @@ TestTarget[GameInfoTypes.EA_ACTION_BUILD] = function()
 	g_int1 = Floor(g_mod * (g_city:GetBaseYieldRateModifier(YIELD_PRODUCTION)) / 200 + 0.5)
 	return true
 end
---[[
-local tableByOrderType = {	[OrderTypes.ORDER_TRAIN] = "Units",
-							[OrderTypes.ORDER_CONSTRUCT] = "Buildings",
-							[OrderTypes.ORDER_CREATE] = "Projects",
-							[OrderTypes.ORDER_MAINTAIN] = "Processes"	}
-
-SetUI[GameInfoTypes.EA_ACTION_BUILD] = function()
-	if g_bAllTestsPassed then
-		local orderType, orderID = g_city:GetOrderFromQueue(0)
-		local orderTable = tableByOrderType[orderType]
-		if orderTable then
-			local orderName = Locale.ConvertTextKey(GameInfo[orderTable][orderID].Description)
-			MapModData.text = "Provide " .. g_int1 .. " production per turn toward " .. orderName
-		else
-			MapModData.text = "Provide " .. g_int1 .. " production per turn toward this city's next build selection"
-		end
-	end
-end
-]]
 
 SetUI[GameInfoTypes.EA_ACTION_BUILD] = function()
 	if g_bAllTestsPassed then
@@ -1876,7 +1825,7 @@ Interrupt[GameInfoTypes.EA_ACTION_BUILD] = function(iPlayer, iPerson)
 	if eaCity and eaCity.gpProduction then
 		eaCity.gpProduction[iPerson] = nil
 		if iPlayer == g_iActivePlayer then
-			local iCity = Map.GetPlotByIndex(eaCity.iPlot):GetPlotCity():GetID()
+			local iCity = GetPlotByIndex(eaCityIndex):GetPlotCity():GetID()
 			UpdateCityYields(iPlayer, iCity, "Production")
 		end
 	end
@@ -1917,7 +1866,7 @@ Interrupt[GameInfoTypes.EA_ACTION_TRADE] = function(iPlayer, iPerson)
 	if eaCity and eaCity.gpGold then
 		eaCity.gpGold[iPerson] = nil
 		if iPlayer == g_iActivePlayer then
-			local iCity = Map.GetPlotByIndex(eaCity.iPlot):GetPlotCity():GetID()
+			local iCity = GetPlotByIndex(eaCityIndex):GetPlotCity():GetID()
 			UpdateCityYields(iPlayer, iCity, "Gold")
 		end
 	end
@@ -1984,7 +1933,7 @@ Interrupt[GameInfoTypes.EA_ACTION_RESEARCH] = function(iPlayer, iPerson)
 	if eaCity and eaCity.gpScience then
 		eaCity.gpScience[iPerson] = nil
 		if iPlayer == g_iActivePlayer then
-			local iCity = Map.GetPlotByIndex(eaCity.iPlot):GetPlotCity():GetID()
+			local iCity = GetPlotByIndex(eaCityIndex):GetPlotCity():GetID()
 			UpdateCityYields(iPlayer, iCity, "Science")
 		end
 	end
@@ -2025,55 +1974,13 @@ Interrupt[GameInfoTypes.EA_ACTION_PERFORM] = function(iPlayer, iPerson)
 	if eaCity and eaCity.gpCulture then
 		eaCity.gpCulture[iPerson] = nil
 		if iPlayer == g_iActivePlayer then
-			local iCity = Map.GetPlotByIndex(eaCity.iPlot):GetPlotCity():GetID()
+			local iCity = GetPlotByIndex(eaCityIndex):GetPlotCity():GetID()
 			UpdateCityYields(iPlayer, iCity, "Culture")
 		end
 	end
 end
---[[
-SetUI[GameInfoTypes.EA_ACTION_PERFORM] = function()
-	if g_bAllTestsPassed then
-		local pts = Floor(g_mod / 2)
-		local cityName = g_city:GetName()
-		MapModData.text = "Provide " .. pts .. " culture to the civilization (no city modifier but it will expand " .. cityName .. "'s borders)"
-	end
-end
-
-SetAIValues[GameInfoTypes.EA_ACTION_PERFORM] = function()
-	gg_aiOptionValues.b = Floor(g_mod / 2)		--need AI for specific city evaluation 
-end
-
-Do[GameInfoTypes.EA_ACTION_PERFORM] = function()
-	local pts = Floor(g_mod / 2)
-	g_player:ChangeJONSCulture(pts)
-	g_city:ChangeJONSCultureStored(pts)
-	GiveGreatPersonXP(g_iPlayer, g_iPerson, pts)
-	return true
-end
-]]
 
 --EA_ACTION_WORSHIP
---[[
-SetUI[GameInfoTypes.EA_ACTION_WORSHIP] = function()
-	if g_bAllTestsPassed then
-		local pts = Floor(g_mod / 2)
-		local yieldText = g_eaPlayer.religionID == RELIGION_AZZANDARAYASNA and "Divine Favor" or "Mana"
-		MapModData.text = "Provide " .. pts .. " " .. yieldText .. " per turn"
-	end
-end
-
-SetAIValues[GameInfoTypes.EA_ACTION_WORSHIP] = function()
-	gg_aiOptionValues.b = Floor(g_mod / 2)
-end
-
-Do[GameInfoTypes.EA_ACTION_WORSHIP] = function()
-	local pts = Floor(g_mod / 2)
-	g_player:ChangeFaith(pts)
-	GiveGreatPersonXP(g_iPlayer, g_iPerson, pts)
-	return true
-end
-]]
-
 Test[GameInfoTypes.EA_ACTION_WORSHIP] = function()
 	g_value = g_gameTurn / (g_player:GetFaith() + 5)		--AI prioritizes when low; doesn't try to hoard early
 	return true
@@ -2111,12 +2018,62 @@ Interrupt[GameInfoTypes.EA_ACTION_WORSHIP] = function(iPlayer, iPerson)
 	if eaCity and eaCity.gpFaith then
 		eaCity.gpFaith[iPerson] = nil
 		if iPlayer == g_iActivePlayer then
-			local iCity = Map.GetPlotByIndex(eaCity.iPlot):GetPlotCity():GetID()
+			local iCity = GetPlotByIndex(eaCityIndex):GetPlotCity():GetID()
 			UpdateCityYields(iPlayer, iCity, "Faith")
 		end
 	end
 end
 
+--EA_ACTION_CHANNEL 
+Test[GameInfoTypes.EA_ACTION_CHANNEL] = function()
+	g_value = g_gameTurn / (g_player:GetFaith() + 5)		--AI prioritizes when low; doesn't try to hoard early
+	return true
+end
+
+SetUI[GameInfoTypes.EA_ACTION_CHANNEL] = function()
+	if g_bAllTestsPassed then
+		local pts = Floor(g_mod / 2)
+		local iCity = g_plot:GetCityPurchaseID()
+		local city = g_player:GetCityByID(iCity)
+		local cityName = city:GetName()
+		MapModData.text = "Provide " .. pts .. " Mana per turn from " .. cityName
+	end
+end
+
+SetAIValues[GameInfoTypes.EA_ACTION_CHANNEL] = function()
+	gg_aiOptionValues.b = Floor(g_mod / 2) * g_value
+end
+
+Do[GameInfoTypes.EA_ACTION_CHANNEL] = function()
+	local pts = Floor(g_mod / 2)
+	local iCity = g_plot:GetCityPurchaseID()
+	local city = g_player:GetCityByID(iCity)
+	local eaCity = gCities[city:Plot():GetPlotIndex()]
+
+
+	eaCity.gpFaith = g_eaCity.gpFaith or {}
+	eaCity.gpFaith[g_iPerson] = pts
+	g_eaPerson.eaActionData = g_iPlot
+	GiveGreatPersonXP(g_iPlayer, g_iPerson, pts)
+	if g_iPlayer == g_iActivePlayer then
+		UpdateCityYields(g_iPlayer, iCity, "Faith")	--instant UI update for human
+	end
+	return true
+end
+
+Interrupt[GameInfoTypes.EA_ACTION_CHANNEL] = function(iPlayer, iPerson)
+	local eaPerson = gPeople[iPerson]
+	local eaCityIndex = eaPerson.eaActionData
+	local eaCity = gCities[eaCityIndex]
+	eaPerson.eaActionData = -1
+	if eaCity and eaCity.gpFaith then
+		eaCity.gpFaith[iPerson] = nil
+		if iPlayer == g_iActivePlayer then
+			local iCity = GetPlotByIndex(eaCityIndex):GetPlotCity():GetID()
+			UpdateCityYields(iPlayer, iCity, "Faith")
+		end
+	end
+end
 
 ------------------------------------------------------------------------------------------------------------------------------
 -- Warrior Actions (only show when available)
@@ -3188,117 +3145,17 @@ end
 --EA_ACTION_TRADE_HOUSE
 TestTarget[GameInfoTypes.EA_ACTION_TRADE_HOUSE] = function()
 	return false	--rebuild for BNW
-	--[[
-	local thisCitySize = g_city:GetPopulation()
-	g_count = 0
-	local baseGold = 0
-	for otherCityEaIndex, _ in pairs(g_eaCity.tradeRoutes) do
-		g_count = g_count + 1
-		local otherEaCity = gCities[otherCityEaIndex]
-		local otherCity = Map.GetPlotByIndex(otherEaCity.iPlot):GetPlotCity()
-		if otherCity then
-			local otherCitySize = otherCity:GetPopulation()
-			baseGold = baseGold + (thisCitySize < otherCitySize and thisCitySize or otherCitySize)
-		end
-	end
-	--print("TestTarget EA_ACTION_TRADE_HOUSE g_count", g_count)
-	if g_count == 0 then
-		g_testTargetSwitch = 1
-		return false
-	else
-		g_value = baseGold * (1 + g_mod / 100)
-		g_testTargetSwitch = 2
-		return true
-	end
-	]]
-end
---[[
-SetUI[GameInfoTypes.EA_ACTION_TRADE_HOUSE] = function()
-	if g_testTargetSwitch == 1 then
-		MapModData.bShow = true
-		MapModData.text = "[COLOR_WARNING_TEXT]The city must have at least one foreign trade route[ENDCOLOR]"
-	elseif g_testTargetSwitch == 2 then
-		MapModData.text = "Increase revenue from this city's " .. g_count .. " trade routes (" .. g_value .. " gpt)"
-	end
+
 end
 
-SetAIValues[GameInfoTypes.EA_ACTION_TRADE_HOUSE] = function()
-	gg_aiOptionValues.p = g_value
-end
-
-Finish[GameInfoTypes.EA_ACTION_TRADE_HOUSE] = function()
-	if g_iPlayer == g_iActivePlayer then
-		UpdateCityYields(g_iPlayer, g_iCity, "Trade")
-	end
-	return true
-end
-]]
 
 --EA_ACTION_TRADE_MISSION
 TestTarget[GameInfoTypes.EA_ACTION_TRADE_MISSION] = function()
-	return false	--rebuild for BNW (also, no eaCityIndexByiCity!)
-	--[[
-	if g_eaPlayer.tradeMissions[g_iOwner] then
-		g_testTargetSwitch = 1
-		return false
-	else
-		g_count = 0	--number trade routes with this civ
-		local baseGold = 0
-		for myCity in g_player:Cities() do
-			local myCitySize = myCity:GetPopulation()
-			local eaMyCityIndex = g_eaPlayer.eaCityIndexByiCity[myCity:GetID()]
-			local eaMyCity = gCities[eaMyCityIndex]
-			for eaOtherCityIndex, _ in pairs(eaMyCity.tradeRoutes) do
-				local eaOtherCity = gCities[eaOtherCityIndex]
-				local otherPlot = Map.GetPlotByIndex(eaOtherCity.iPlot)
-				local otherCity = otherPlot:GetPlotCity()
-				local iOtherCityOwner = otherPlot:GetOwner()
-				if iOtherCityOwner == g_iOwner then
-					g_count = g_count + 1
-					local otherCitySize = otherCity:GetPopulation()
-					baseGold = baseGold + (myCitySize < otherCitySize and myCitySize or otherCitySize)
-				end
-			end
-		end
+	return false	--rebuild for BNW
 
-		if g_count == 0 then
-			g_testTargetSwitch = 2
-			return false
-		else
-			g_value = baseGold * (1 + g_mod / 100)
-			g_testTargetSwitch = 3
-			return true
-		end
-
-	end
-	]]
 end
 
---[[
-SetUI[GameInfoTypes.EA_ACTION_TRADE_MISSION] = function()
-	if g_testTargetSwitch == 1 then
-		MapModData.bShow = true
-		MapModData.text = "[COLOR_WARNING_TEXT]You already have a Trade Mission with this civilization[ENDCOLOR]"
-	elseif g_testTargetSwitch == 2 then
-		MapModData.bShow = true
-		MapModData.text = "[COLOR_WARNING_TEXT]You must have at least one trade route with this civilization[ENDCOLOR]"
-	elseif g_testTargetSwitch == 3 then
-		MapModData.text = "Increases yield from the " .. g_count .. " trade routes you have with this civilization (" .. g_value .. " gpt )"
-	end
-end
 
-SetAIValues[GameInfoTypes.EA_ACTION_TRADE_MISSION] = function()
-	gg_aiOptionValues.p = g_value
-end
-
-Finish[GameInfoTypes.EA_ACTION_TRADE_MISSION] = function()
-	g_eaPlayer.tradeMissions[g_iOwner] = g_mod
-	if g_iPlayer == g_iActivePlayer then
-		UpdateCityYields(g_iPlayer, nil, "Trade")
-	end
-	return true
-end
-]]
 
 
 
@@ -5099,7 +4956,7 @@ Interrupt[GameInfoTypes.EA_SPELL_REVELRY] = function(iPlayer, iPerson)
 		eaCity.gpHappiness[iPerson] = nil
 		eaPerson.eaActionData = -1
 		if iPlayer == g_iActivePlayer then
-			local iCity = Map.GetPlotByIndex(eaCity.iPlot):GetPlotCity():GetID()
+			local iCity = GetPlotByIndex(eaCityIndex):GetPlotCity():GetID()
 			UpdateCityYields(iPlayer, iCity, "Happiness")
 		end
 	end

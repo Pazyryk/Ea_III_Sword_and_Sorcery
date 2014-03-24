@@ -439,7 +439,7 @@ end
 
 -- Plot acquisition
 local function OnCityCanAcquirePlot(iPlayer, iCity, x, y)
-	print("OnCityCanAcquirePlot ", iPlayer, iCity, x, y)
+	--print("OnCityCanAcquirePlot ", iPlayer, iCity, x, y)
 	local plot = GetPlotFromXY(x,y)
 	if plot:IsWater() then
 		local featureID = plot:GetFeatureType()

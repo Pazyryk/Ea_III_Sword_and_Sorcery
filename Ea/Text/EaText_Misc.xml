@@ -32,7 +32,8 @@
 
 
 		<!-- UI -->
-		
+
+
 		<!-- Game Setup -->		
 		<Row Tag="TXT_KEY_EA_MODDING_SETUP_TITLE">
 			<Text>Éa Game Setup</Text>
@@ -53,6 +54,9 @@
 
 
 		<!-- Top Panel -->
+		<Row Tag="TXT_KEY_EA_TP_GOLD_FROM_LEADER">
+			<Text>{1_Num} from Leader bonus to non-city income.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_TP_GOLD_FROM_MERCENARIES">
 			<Text>{1_Num} from Mercenaries hired by other civilizations.</Text>
 		</Row>
@@ -100,6 +104,17 @@
 		<Row Tag="TXT_KEY_EA_TP_FAITH_FROM_GODS">
 			<Text>[ICON_BULLET][COLOR_POSITIVE_TEXT]+{1_Num}[ENDCOLOR] from the Gods.</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_TP_FAITH_FROM_LEADER">
+			<Text>[ICON_BULLET][COLOR_POSITIVE_TEXT]+{1_Num}[ENDCOLOR] from Leader bonus to non-city sources.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TP_SCIENCE_FROM_LEADER">
+			<Text>[ICON_BULLET][COLOR_POSITIVE_TEXT]+{1_Num}[ENDCOLOR] from Leader bonus to non-city sources.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TP_CULTURE_FROM_LEADER">
+			<Text>[ICON_BULLET][COLOR_POSITIVE_TEXT]+{1_Num}[ENDCOLOR] from Leader bonus to non-city sources.</Text>
+		</Row>
+
+		
 		<Row Tag="TXT_KEY_EA_TP_FAITH_FROM_CULT_OF_LEAVES_FOUNDER">
 			<Text>[ICON_BULLET][COLOR_POSITIVE_TEXT]+{1_Num}[ENDCOLOR] from Forest & Jungle world-wide (Cult of Leaves Founder).</Text>
 		</Row>
@@ -181,6 +196,15 @@
 		<Row Tag="TXT_KEY_EA_FAITH_FROM_GPS">
 			<Text>{1_Num} [ICON_PEACE] from Great People</Text>
 		</Row>
+		
+		<!-- Info Tooltip and Dll hard-coded -->
+		<Row Tag="TXT_KEY_EA_PRODMOD_YIELD_LEADER">
+			<Text>[NEWLINE][ICON_BULLET]Leader Modifier: {1_Num}%</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PRODMOD_YIELD_CITY_RESIDENT">
+			<Text>[NEWLINE][ICON_BULLET]City Resident Modifier: {1_Num}%</Text>
+		</Row>		
+		
 
 		<!-- EaCiv Naming Popup -->
 		<Row Tag="TXT_KEY_EA_POPUP_CIV_NAMING">

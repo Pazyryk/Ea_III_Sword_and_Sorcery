@@ -33,12 +33,21 @@ PlayerTechCostMod(iPlayer, techID)
 //CityCanRangeStrikeAt(iAttacker, iCity, x, y)	CallTestAll
 
 --------------------------------------------------------------
+-- City
+--------------------------------------------------------------
+
+int		GetCityResidentYieldBoost(int yieldTypeID)
+void	SetCityResidentYieldBoost(int yieldTypeID, iNewValue)
+
+
+--------------------------------------------------------------
 -- Player
 --------------------------------------------------------------
 void	ChangeCivilizationType(eNewCivType)
 void	ChangeLeaderType(eNewLeaderType)
 void	SetFoundedFirstCity()
-
+int		GetLeaderYieldBoost(int yieldTypeID)
+void	SetLeaderYieldBoost(int yieldTypeID, iNewValue)
 
 --------------------------------------------------------------
 -- Plots

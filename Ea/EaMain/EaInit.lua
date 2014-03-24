@@ -176,7 +176,6 @@ function InitPlayerVariables()
 			eaPlayer.rpFromConquest = 0
 			eaPlayer.tradeTotals = {}	--index by other iPlayer; holds only base trade so we can calculate Trade Mission value
 			eaPlayer.tradeMissions = {}	--index by other iPlayer, holds GP mod
-			eaPlayer.gpDelayChanceFromGoldShortfall = 0
 			eaPlayer.aiUniqueTargeted = {}	--some AI values here so we don't have to nil check
 			eaPlayer.actionPlotTargeted = {}
 			eaPlayer.aiMerchantTooSmallToConsider = 0

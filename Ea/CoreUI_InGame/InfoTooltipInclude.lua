@@ -639,6 +639,22 @@ function GetCultureTooltip(pCity)
 			strCultureToolTip = strCultureToolTip .. "[ICON_BULLET]" .. Locale.ConvertTextKey("TXT_KEY_CULTURE_WONDER_BONUS", iAmount);
 		end
 	end
+
+	--Paz add
+	-- Leader
+	local iLeaderMod = Players[pCity:GetOwner()]:GetLeaderYieldBoost(YieldTypes.YIELD_CULTURE)
+	if iLeaderMod ~= 0 then
+		strCultureToolTip = strCultureToolTip .. "[NEWLINE]";
+		strCultureToolTip = strCultureToolTip .. Locale.ConvertTextKey("TXT_KEY_EA_PRODMOD_YIELD_LEADER", iLeaderMod);
+	end
+
+	-- City Resident
+	local iResidentMod = pCity:GetCityResidentYieldBoost(YieldTypes.YIELD_CULTURE)
+	if iResidentMod ~= 0 then
+		strCultureToolTip = strCultureToolTip .. "[NEWLINE]";
+		strCultureToolTip = strCultureToolTip .. Locale.ConvertTextKey("TXT_KEY_EA_PRODMOD_YIELD_CITY_RESIDENT", iResidentMod);
+	end
+	--end Paz add
 	
 	-- Puppet modifier
 	if (pCity:IsPuppet()) then
@@ -715,12 +731,26 @@ function GetFaithTooltip(pCity)
 			table.insert(faithTips, "[ICON_BULLET]" .. Locale.ConvertTextKey("TXT_KEY_FAITH_FROM_RELIGION", iFaithFromReligion));
 		end
 
-		--Paz add: Faith from GPs 
+		--Paz add
+		--Faith from GPs 
 		local iFaithFromGPs = pCity:GetBaseYieldRateFromMisc(YieldTypes.YIELD_FAITH)
 		if (iFaithFromGPs ~= 0) then
 				
 			table.insert(faithTips, "[ICON_BULLET]" .. Locale.ConvertTextKey("TXT_KEY_EA_FAITH_FROM_GPS", iFaithFromGPs));
 		end
+
+		-- Leader
+		local iLeaderMod = Players[pCity:GetOwner()]:GetLeaderYieldBoost(YieldTypes.YIELD_FAITH)
+		if iLeaderMod ~= 0 then
+			table.insert(faithTips, Locale.ConvertTextKey("TXT_KEY_EA_PRODMOD_YIELD_LEADER", iLeaderMod));
+		end
+
+		-- City Resident
+		local iResidentMod = pCity:GetCityResidentYieldBoost(YieldTypes.YIELD_FAITH)
+		if iResidentMod ~= 0 then
+			table.insert(faithTips, Locale.ConvertTextKey("TXT_KEY_EA_PRODMOD_YIELD_CITY_RESIDENT", iResidentMod));
+		end
+
 		--end Paz add
 
 		-- Puppet modifier
@@ -797,6 +827,18 @@ function GetManaTooltip(pCity)
 			table.insert(faithTips, "[ICON_BULLET]" .. Locale.ConvertTextKey("TXT_KEY_EA_FAITH_FROM_GPS", iFaithFromGPs));
 		end
 
+		-- Leader
+		local iLeaderMod = Players[pCity:GetOwner()]:GetLeaderYieldBoost(YieldTypes.YIELD_FAITH)
+		if iLeaderMod ~= 0 then
+			table.insert(faithTips, Locale.ConvertTextKey("TXT_KEY_EA_PRODMOD_YIELD_LEADER", iLeaderMod));
+		end
+
+		-- City Resident
+		local iResidentMod = pCity:GetCityResidentYieldBoost(YieldTypes.YIELD_FAITH)
+		if iResidentMod ~= 0 then
+			table.insert(faithTips, Locale.ConvertTextKey("TXT_KEY_EA_PRODMOD_YIELD_CITY_RESIDENT", iResidentMod));
+		end
+	
 		-- Puppet modifier
 		if (pCity:IsPuppet()) then
 			iAmount = GameDefines.PUPPET_FAITH_MODIFIER;

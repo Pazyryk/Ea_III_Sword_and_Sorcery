@@ -716,7 +716,7 @@ function CityPerCivTurn(iPlayer)		--Full civ only
 						end
 					else		--Person died, update city for no resident
 						eaCity.resident = -1
-						UpdateCityYields(iPlayer, iCity)
+						RemoveResidentEffects(city)
 					end
 
 				end
@@ -786,10 +786,8 @@ local function OnPlayerCityFounded(iPlayer, x, y)
 
 	-- Ea city init
 	local eaCity = {iOwner = iPlayer,	-- !!!!!!!!!!!!!!!!  INIT NEW EaCity HERE !!!!!!!!!!!!!!!!
-					--iPlot = iPlot,	-- DEPRECIATED: this is index now
 					x = x,
 					y = y,
-					--tradeRoutes = {},		-- DEPRECIATED
 					openLandTradeRoutes = {},	-- index by other eaCityIndex; holds other city owner (so trade route is open on re-conqest)
 					openSeaTradeRoutes = {},	
 					progress = {},
@@ -797,7 +795,6 @@ local function OnPlayerCityFounded(iPlayer, x, y)
 					resident = -1,
 					size = 1,				--updated per turn; used to know how much pop lost from conquest
 					disease = 0,			-- +values represent turns remaining for disease, -values represents turns remaining for plague
-					gpDelayChanceFromProductionShortfall = 0,
 					remotePlots = {},		--index by iPlot (holds true for now...)
 					foodBoost = 0,
 					productionBoost = 0,
@@ -808,7 +805,6 @@ local function OnPlayerCityFounded(iPlayer, x, y)
 					}
 
 	gCities[iPlot] = eaCity
-	--eaPlayer.eaCityIndexByiCity[iCity] = iPlot
 
 	local raceInfo = GameInfo.EaRaces[eaPlayer.race]
 	--Set race

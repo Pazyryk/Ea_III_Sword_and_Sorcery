@@ -11,6 +11,7 @@ local Dprint = DEBUG_PRINT and print or function() end
 -- File Locals
 --------------------------------------------------------------
 
+--constants
 local BARB_PLAYER_INDEX =							BARB_PLAYER_INDEX
 local ANIMALS_PLAYER_INDEX =						ANIMALS_PLAYER_INDEX
 
@@ -34,6 +35,11 @@ local UNIT_WORKERS_MAN =							GameInfoTypes.UNIT_WORKERS_MAN
 local UNIT_WORKERS_SIDHE =							GameInfoTypes.UNIT_WORKERS_SIDHE
 local UNIT_WORKERS_ORC =							GameInfoTypes.UNIT_WORKERS_ORC
 
+--localized tables
+local gPlayers =					gPlayers
+local gPeople =						gPeople
+local Players =						Players
+local fullCivs =					MapModData.fullCivs
 
 --file control
 local g_iActivePlayer = Game.GetActivePlayer()

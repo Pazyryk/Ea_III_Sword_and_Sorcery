@@ -63,6 +63,7 @@ include("EaReligions.lua")
 include("EaTechs.lua")
 include("EaCivNaming.lua")
 
+include("EaUnitCombat.lua")
 include("EaUnits.lua")
 include("EaYields.lua")
 include("EaDiplomacy.lua")			--depends on EaPolicies
@@ -237,7 +238,6 @@ local function OnPlayerDoTurn(iPlayer)	-- Runs at begining of turn for all livin
 		AnimalsPerTurn()
 		ReligionPerGameTurn()
 		CityStateFollowerCityCounting()
-		PeoplePerGameTurn()
 
 	elseif iPlayer == 1 then
 		timerHuman = Clock() - startHuman

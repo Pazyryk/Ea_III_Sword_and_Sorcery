@@ -27,6 +27,7 @@ local FEATURE_ICE =							GameInfoTypes.FEATURE_ICE
 local FEATURE_FOREST = 						GameInfoTypes.FEATURE_FOREST
 local FEATURE_JUNGLE = 						GameInfoTypes.FEATURE_JUNGLE
 local FEATURE_MARSH =	 					GameInfoTypes.FEATURE_MARSH
+local FEATURE_BLIGHT =	 					GameInfoTypes.FEATURE_BLIGHT
 
 local RESOURCE_TIMBER =						GameInfoTypes.RESOURCE_TIMBER
 local RESOURCE_IVORY =						GameInfoTypes.RESOURCE_IVORY
@@ -138,6 +139,12 @@ end
 
 local typeIDTable = {[FEATURE_FOREST]="forest"; [FEATURE_JUNGLE]="jungle"; [FEATURE_MARSH]="marsh"}
 
+local blightSafeImprovement = {}
+for improvementInfo in GameInfo.Improvements() do
+	if improvementInfo.EaBlightSafe then
+		blightSafeImprovement[improvementInfo.ID] = true
+	end
+end
 --------------------------------------------------------------
 -- Init
 --------------------------------------------------------------
@@ -302,6 +309,33 @@ end
 --------------------------------------------------------------
 -- Interface
 --------------------------------------------------------------
+
+function BlightPlot(plot, iPlayer, iPerson, iMaxMana)		--last 3 are optional
+
+	local manaConsumed = plot:GetLivingTerrainStrength() + 10
+	if iMaxMana and iMaxMana < manaConsumed then return false end
+
+	plot:SetFeatureType(FEATURE_BLIGHT)
+	local improvementID = plot:GetImprovementType()
+	if improvementID == -1 or not blightSafeImprovement[improvementID] then
+		plot:SetImprovementType(IMPROVEMENT_BLIGHT)
+	else
+		local resourceID = plot:GetResourceType(-1)
+		if resourceID ~= -1 then
+			ChangeResource(plot, -1)
+		end
+		ChangeResource(plot, RESOURCE_BLIGHT, 1)
+	end
+
+	local player = iPlayer and Players[iPlayer]
+	if player and player:IsAlive() then
+		player:ChangeFaith(manaConsumed)						--generates mana as it consumes it
+		UseManaOrDivineFavor(iPlayer, iPerson, manaConsumed)
+	else
+		gWorld.sumOfAllMana = gWorld.sumOfAllMana - manaConsumed
+	end
+	return true
+end
 
 function PlaceResourceNearCity(city, resourceID, bWater)
 	print("Running PlaceResourceNearCity ", city, resourceID)

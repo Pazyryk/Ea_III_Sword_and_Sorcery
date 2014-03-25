@@ -330,8 +330,18 @@ function FoundReligion(iPlayer, iCity, religionID)	--call should make sure that 
 	local belief2ID = religion.EaInitialBelief2 and GameInfoTypes[religion.EaInitialBelief2] or -1
 	local belief3ID = religion.EaInitialBelief3 and GameInfoTypes[religion.EaInitialBelief3] or -1
 
-	
 	Game.FoundReligion(iPlayer, religionID, nil, beliefID, belief2ID, belief3ID, -1, city)
+
+	while city:GetReligiousMajority() ~= religionID do	--make it so
+		local convertID, followers
+		repeat
+			convertID = Rand(HIGHEST_RELIGION_ID + 2, "hello") - 1
+			followers = (convertID == -1 or gReligions[convertID]) and city:GetNumFollowers(convertID)
+		until followers
+		print("Converting random religions until founded is majority; converting religionID = ", convertID)
+		local convertPercent = Floor(1 + 100 / followers)
+		city:ConvertPercentFollowers(religionID, convertID, convertPercent)
+	end
 
 	if religionID == RELIGION_ANRA and not eaPlayer.bIsFallen then
 		BecomeFallen(iPlayer)

@@ -24,6 +24,7 @@ local FEATURE_MARSH =	 					GameInfoTypes.FEATURE_MARSH
 local FEATURE_BLIGHT =	 					GameInfoTypes.FEATURE_BLIGHT
 local FEATURE_FALLOUT =	 					GameInfoTypes.FEATURE_FALLOUT
 local IMPROVEMENT_BLIGHT =					GameInfoTypes.IMPROVEMENT_BLIGHT
+local INVISIBLE_SUBMARINE =					GameInfoTypes.INVISIBLE_SUBMARINE
 local RESOURCE_BLIGHT =						GameInfoTypes.RESOURCE_BLIGHT
 
 local LEADER_FAND =							GameInfoTypes.LEADER_FAND
@@ -682,7 +683,7 @@ function TestEaActionTarget(eaActionID, testX, testY, bAITargetTest)
 		if g_iOwner ~= g_iPlayer and g_team:IsAtWar(Players[g_iOwner]:GetTeam()) then return false end		--fail if enemy city
 
 		g_city = g_plot:GetPlotCity()
-		print("g_city from TestTarget ", g_city)
+
 
 		if g_eaAction.Building and g_city:GetNumBuilding(GameInfoTypes[g_eaAction.Building]) > 0 then return false end	--already has building
 		if g_eaAction.BuildingMod and g_city:GetNumBuilding(GameInfoTypes[g_eaAction.BuildingMod]) > 0 then return false end
@@ -800,7 +801,7 @@ function DoEaAction(eaActionID, iPlayer, unit, iPerson, targetX, targetY)
 	print("DoEaAction before test ", eaActionID, iPlayer, unit, iPerson, targetX, targetY)
 
 	if eaActionID == 0 then		--special go to plot function; just do or fail and skip the rest of this method
-		unit:SetInvisibleType(GameInfoTypes.INVISIBLE_SUBMARINE)
+		unit:SetInvisibleType(INVISIBLE_SUBMARINE)
 		return DoGotoPlot(iPlayer, unit, iPerson, targetX, targetY) 	--if targetX, Y == nil, then destination is from eaPerson.gotoPlotIndex
 	end
 
@@ -844,7 +845,7 @@ function DoEaAction(eaActionID, iPlayer, unit, iPerson, targetX, targetY)
 	end
 
 	if g_eaAction.StayInvisible then
-		g_unit:SetInvisibleType(GameInfoTypes.INVISIBLE_SUBMARINE)
+		g_unit:SetInvisibleType(INVISIBLE_SUBMARINE)
 	else 
 		g_unit:SetInvisibleType(-1)
 	end
@@ -859,7 +860,7 @@ function DoEaAction(eaActionID, iPlayer, unit, iPerson, targetX, targetY)
 
 	--effects on GP
 	if g_eaAction.DoXP > 0 then
-		GiveGreatPersonXP(g_iPlayer, g_iPerson, g_eaAction.DoXP)
+		g_unit:ChangeExperience(g_eaAction.DoXP)
 	end
 	if g_eaAction.DoGainPromotion then
 		g_unit:SetHasPromotion(GameInfoTypes[g_eaAction.DoGainPromotion], true)
@@ -912,12 +913,8 @@ function DoEaAction(eaActionID, iPlayer, unit, iPerson, targetX, targetY)
 			g_plot:AddFloatUpMessage(Locale.Lookup(g_eaAction.Description))
 		end
 
-		local faithUsed = g_eaAction.FixedFaith
-		if 0 < faithUsed then
-			GiveGreatPersonXP(g_iPlayer, g_iPerson, faithUsed)		-- add caster xp
-			if g_eaPlayer.bIsFallen then
-				gWorld.sumOfAllMana = gWorld.sumOfAllMana - faithUsed
-			end
+		if 0 < g_eaAction.FixedFaith then
+			UseManaOrDivineFavor(g_iPlayer, g_iPerson, g_eaAction.FixedFaith)
 		end
 
 		if g_eaAction.UniqueType then							--make NOT available permanently for any GP
@@ -1051,10 +1048,8 @@ function InterruptEaAction(iPlayer, iPerson)
 
 	--Make invisible again
 	local unit = player:GetUnitByID(eaPlayer.iUnit)
-	if unit then
-		unit:SetInvisibleType(GameInfoTypes.INVISIBLE_SUBMARINE)
-	else
-		AttemptToReconectGP(iPerson, nil)
+	if unit and not unit:IsDelayedDeath() then						--Could be interrupt for death, so no unit
+		unit:SetInvisibleType(INVISIBLE_SUBMARINE)
 	end
 
 
@@ -1091,26 +1086,22 @@ function FinishEaAction(eaActionID)		--only called from DoEaAction so file local
 	ClearActionPlotTargetedForPerson(g_eaPlayer, g_iPerson)
 	g_eaPerson.eaActionID = -1		--will bring back to map on next turn
 
-	--g_unit:SetInvisibleType(GameInfoTypes.INVISIBLE_SUBMARINE)
+	--g_unit:SetInvisibleType(INVISIBLE_SUBMARINE)
 
 	--Temp faith system (faith was "moved" to caster; use it now)
 	local faithUsed = g_eaPerson.tempFaith
 	if 0 < faithUsed then
 		g_eaPerson.tempFaith = 0 
-		GiveGreatPersonXP(g_iPlayer, g_iPerson, faithUsed)		-- add caster xp
+		g_unit:ChangeExperience(faithUsed)
 		if g_eaPlayer.bIsFallen then
 			gWorld.sumOfAllMana = gWorld.sumOfAllMana - faithUsed
 		end
 	end
 
 
-	--if not g_bMapUnit then		--bring back to map
-	--	g_unit = ReappearGP(g_iPlayer, g_iPerson)
-	--end
-
 	--XP
 	if g_eaAction.FinishXP > 0 then
-		GiveGreatPersonXP(g_iPlayer, g_iPerson, g_eaAction.FinishXP)
+		g_unit:ChangeExperience(g_eaAction.FinishXP)
 	end
 
 	g_eaPlayer.aiUniqueTargeted[eaActionID] = nil
@@ -1810,7 +1801,7 @@ Do[GameInfoTypes.EA_ACTION_BUILD] = function()
 	g_eaCity.gpProduction = g_eaCity.gpProduction or {}
 	g_eaCity.gpProduction[g_iPerson] = g_int1
 	g_eaPerson.eaActionData = g_iPlot
-	GiveGreatPersonXP(g_iPlayer, g_iPerson, g_int1)
+	g_unit:ChangeExperience(g_int1)
 	if g_iPlayer == g_iActivePlayer then
 		UpdateCityYields(g_iPlayer, g_iCity, "Production")	--instant UI update for human
 	end
@@ -1851,7 +1842,7 @@ Do[GameInfoTypes.EA_ACTION_TRADE] = function()
 	g_eaCity.gpGold = g_eaCity.gpGold or {}
 	g_eaCity.gpGold[g_iPerson] = g_int1
 	g_eaPerson.eaActionData = g_iPlot
-	GiveGreatPersonXP(g_iPlayer, g_iPerson, g_int1)
+	g_unit:ChangeExperience(g_int1)
 	if g_iPlayer == g_iActivePlayer then
 		UpdateCityYields(g_iPlayer, g_iCity, "Gold")	--instant UI update for human
 	end
@@ -1918,7 +1909,7 @@ Do[GameInfoTypes.EA_ACTION_RESEARCH] = function()
 	end
 
 	g_eaPerson.eaActionData = g_iPlot
-	GiveGreatPersonXP(g_iPlayer, g_iPerson, g_int1)
+	g_unit:ChangeExperience(g_int1)
 	if g_iPlayer == g_iActivePlayer then
 		UpdateCityYields(g_iPlayer, g_iCity, "Science")	--instant UI update for human
 	end
@@ -1959,7 +1950,7 @@ Do[GameInfoTypes.EA_ACTION_PERFORM] = function()
 	g_eaCity.gpCulture = g_eaCity.gpCulture or {}
 	g_eaCity.gpCulture[g_iPerson] = g_int1
 	g_eaPerson.eaActionData = g_iPlot
-	GiveGreatPersonXP(g_iPlayer, g_iPerson, g_int1)
+	g_unit:ChangeExperience(g_int1)
 	if g_iPlayer == g_iActivePlayer then
 		UpdateCityYields(g_iPlayer, g_iCity, "Culture")	--instant UI update for human
 	end
@@ -2003,7 +1994,7 @@ Do[GameInfoTypes.EA_ACTION_WORSHIP] = function()
 	g_eaCity.gpFaith = g_eaCity.gpFaith or {}
 	g_eaCity.gpFaith[g_iPerson] = pts
 	g_eaPerson.eaActionData = g_iPlot
-	GiveGreatPersonXP(g_iPlayer, g_iPerson, pts)
+	g_unit:ChangeExperience(pts)
 	if g_iPlayer == g_iActivePlayer then
 		UpdateCityYields(g_iPlayer, g_iCity, "Faith")	--instant UI update for human
 	end
@@ -2054,7 +2045,7 @@ Do[GameInfoTypes.EA_ACTION_CHANNEL] = function()
 	eaCity.gpFaith = g_eaCity.gpFaith or {}
 	eaCity.gpFaith[g_iPerson] = pts
 	g_eaPerson.eaActionData = g_iPlot
-	GiveGreatPersonXP(g_iPlayer, g_iPerson, pts)
+	g_unit:ChangeExperience(pts)
 	if g_iPlayer == g_iActivePlayer then
 		UpdateCityYields(g_iPlayer, iCity, "Faith")	--instant UI update for human
 	end
@@ -2241,7 +2232,7 @@ Do[GameInfoTypes.EA_ACTION_RALLY_TROOPS] = function()
 		unit:ChangeMorale(g_mod)
 	end
 	local xp = Floor(g_mod * g_value / 1000)
-	GiveGreatPersonXP(g_iPlayer, g_iPerson, xp)
+	g_unit:ChangeExperience(xp)
 	g_specialEffectsPlot = g_plot
 	return true
 end
@@ -2287,7 +2278,7 @@ Do[GameInfoTypes.EA_ACTION_TRAIN_UNIT] = function()
 	print("Do EA_ACTION_TRAIN_UNIT")
 	local xp = Floor(g_mod / 2)	--give to unit and GP
 	g_obj1:ChangeExperience(xp)
-	GiveGreatPersonXP(g_iPlayer, g_iPerson, xp)
+	g_unit:ChangeExperience(xp)
 	print("return true")
 	return true
 end
@@ -2409,7 +2400,7 @@ end
 --EA_ACTION_PROPHECY_VA
 --displays EaAction.Help, "All civilizations that know Maleficium will fall"
 SetAIValues[GameInfoTypes.EA_ACTION_PROPHECY_VA] = function()
-	gg_aiOptionValues.i = Game.GetGameTurn() / 4 - 25	--will happen sometime after turn 100
+	gg_aiOptionValues.i = 100							--Game.GetGameTurn() / 4 - 25	--will happen sometime after turn 100
 end
 
 Do[GameInfoTypes.EA_ACTION_PROPHECY_VA] = function()	--All civs with Maleficium will fall
@@ -3916,11 +3907,11 @@ TestTarget[GameInfoTypes.EA_SPELL_BLIGHT] = function()
 	--g_int5 = totalPlotsInDanger (tower/temple only)
 
 	if g_bInTowerOrTemple then	--Can distant plot be blighted? (max range = mod)
-		g_int1 = g_modSpell < g_faith and g_modSpell or g_faith
+
 		--random sector/direction, spiral in until valid plot found
 		local sector = Rand(6, "hello") + 1
 		local anticlock = Rand(2, "hello") == 0
-		local maxRadius = g_int1 < MAX_RANGE and g_int1 or MAX_RANGE
+		local maxRadius = g_modSpell < MAX_RANGE and g_modSpell or MAX_RANGE
 		for radius = maxRadius, 1, -1 do	--test one full ring at a time (we test whole ring so AI can account for own plots in danger)
 			g_obj1 = nil
 			local ownPlotsInDanger, totalPlotsInDanger = 0, 0
@@ -3930,7 +3921,7 @@ TestTarget[GameInfoTypes.EA_SPELL_BLIGHT] = function()
 					if not (featureID == FEATURE_BLIGHT or featureID == FEATURE_FALLOUT) then
 						if featureID == FEATURE_FOREST or featureID == FEATURE_JUNGLE or featureID == FEATURE_MARSH then	--Must overpower any living terrain here (subtract range from mod)
 							local terrainStrength = plot:GetLivingTerrainStrength()
-							if g_int1 - radius > terrainStrength then
+							if g_modSpell - radius > terrainStrength then
 								totalPlotsInDanger = totalPlotsInDanger + 1
 								if plot:IsPlayerCityRadius(g_iPlayer) then
 									ownPlotsInDanger = ownPlotsInDanger + 1
@@ -3962,16 +3953,15 @@ TestTarget[GameInfoTypes.EA_SPELL_BLIGHT] = function()
 		if g_plot:IsWater() or g_plot:IsMountain() or g_plot:IsImpassable() then return false end	--IsImpassable protects Natural Wonders (unless they become passible) 
 		local featureID = g_plot:GetFeatureType()
 		if featureID == FEATURE_BLIGHT or featureID == FEATURE_FALLOUT then return false end
-		g_int1 = g_modSpell < g_faith and g_modSpell or g_faith
 		if featureID == FEATURE_FOREST or featureID == FEATURE_JUNGLE or featureID == FEATURE_MARSH then	--Must overpower any living terrain here
 			g_int2 = g_plot:GetLivingTerrainStrength()
-			if g_int1 <= g_int2 then
+			if g_modSpell < g_int2 then
 				return false
 			end
 		else
 			g_int2 = 0	
 		end
-		g_obj1 = plot
+		g_obj1 = g_plot
 		return true
 	end
 end
@@ -3990,7 +3980,7 @@ SetUI[GameInfoTypes.EA_SPELL_BLIGHT] = function()
 			end			
 		else
 			if g_bInTowerOrTemple then
-				MapModData.text = "No land within the caster's " .. g_int1 .. "-plot range can be blighted"
+				MapModData.text = "No land within the caster's " .. g_modSpell .. "-plot range can be blighted"
 			else
 				if g_testTargetSwitch == 1 then
 					MapModData.text = "You cannot overcome this land's strength (" .. g_int2 .. ")"
@@ -4004,27 +3994,15 @@ end
 
 SetAIValues[GameInfoTypes.EA_SPELL_BLIGHT] = function()
 	if g_bInTowerOrTemple then
-		gg_aiOptionValues.i = g_int1 * (1 - g_int4 / g_int5)	-- deduct for proportion of possibly affected plots in own city's 3-plot radius
+		gg_aiOptionValues.i = g_modSpell * (1 - g_int4 / g_int5)	-- deduct for proportion of possibly affected plots in own city's 3-plot radius
 	elseif not g_plot:IsPlayerCityRadius(g_iPlayer) then
-		gg_aiOptionValues.i = g_int1 + g_int2	--prefer to kill strongest living terrain possible
+		gg_aiOptionValues.i = g_modSpell + g_int2	--prefer to kill strongest living terrain possible
 	end		--no value if in our city's 3-plot radius
 end
 
 Finish[GameInfoTypes.EA_SPELL_BLIGHT] = function()
-	local plot = g_obj1
-	g_specialEffectsPlot = plot
-	plot:SetFeatureType(FEATURE_BLIGHT)
-	local improvementID = plot:GetImprovementType()
-	if improvementID ~= -1 and blightSafeImprovement[improvementID] then
-		plot:SetImprovementType(IMPROVEMENT_BLIGHT)
-	else
-		local resourceID = plot:GetResourceType(-1)
-		if resourceID ~= -1 then
-			ChangeResource(plot, -1)
-		end
-		ChangeResource(plot, RESOURCE_BLIGHT, 1)
-	end
-	UseManaOrDivineFavor(g_iPlayer, g_iPerson, 10 + g_int2)		--uses 10 plus terrain strength overcome, if any
+	g_specialEffectsPlot = g_obj1
+	BlightPlot(g_obj1, g_iPlayer, g_iPerson)	--player doesn't lose mana, but gets credit for mana consummed
 end
 
 
@@ -4200,8 +4178,7 @@ end
 Do[GameInfoTypes.EA_SPELL_HEAL] = function()
 	--GetCurrHitPoints, GetMaxHitPoints, GetDamage, SetDamage
 	g_obj1:SetDamage(g_obj1:GetDamage() - g_int1, -1)		-- heal
-	g_player:ChangeFaith(-g_int1)						-- use some mana or divine favor
-	GiveGreatPersonXP(g_iPlayer, g_iPerson, g_int1)		-- add caster xp
+	UseManaOrDivineFavor(g_iPlayer, g_iPerson, g_int1)
 	g_specialEffectsPlot = g_obj1:GetPlot()
 	return true
 end
@@ -4412,9 +4389,7 @@ end
 Do[GameInfoTypes.EA_SPELL_HURT] = function()
 	--GetCurrHitPoints, GetMaxHitPoints, GetDamage, SetDamage
 	g_obj1:SetDamage(g_obj1:GetDamage() + g_int1, g_iPlayer)		-- hurt
-	g_player:ChangeFaith(-g_int1)						-- use some mana
-	GiveGreatPersonXP(g_iPlayer, g_iPerson, g_int1)		-- add caster xp
-	gWorld.sumOfAllMana = gWorld.sumOfAllMana - g_int1
+	UseManaOrDivineFavor(g_iPlayer, g_iPerson, g_int1)
 	g_specialEffectsPlot = g_obj1:GetPlot()
 	return true
 end

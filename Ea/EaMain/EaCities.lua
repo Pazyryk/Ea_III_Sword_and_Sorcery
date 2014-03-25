@@ -690,8 +690,7 @@ function CityPerCivTurn(iPlayer)		--Full civ only
 									InterruptEaAction(iPlayer, iPerson)
 								end
 							else
-								InterruptEaAction(iPlayer, iPerson)
-								AttemptToReconectGP(iPerson, nil)
+								error("No unit for GP")
 							end
 						else
 							InterruptEaAction(iPlayer, iPerson)

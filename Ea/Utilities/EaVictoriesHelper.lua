@@ -53,7 +53,7 @@ function GetRestorerVictoryData(iPlayer)
 	local aveWorldLivingTerrainStrength = MapModData.totalLivingTerrainStrength / MapModData.validForestJunglePlots
 
 	--Generate score
-	local score = livingTerrainAdded + livingTerrainStrengthAdded
+	local score = Floor(livingTerrainAdded + livingTerrainStrengthAdded / 5)
 
 	--Test victory conditions
 	local bVictory = score > 0 and aveWorldLivingTerrainStrength >= 5 

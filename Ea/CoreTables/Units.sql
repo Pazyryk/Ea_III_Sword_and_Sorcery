@@ -13,7 +13,7 @@ ALTER TABLE Units ADD COLUMN 'EaLiving' BOOLEAN DEFAULT NULL;
 ALTER TABLE Units ADD COLUMN 'EaUndead' BOOLEAN DEFAULT NULL;
 ALTER TABLE Units ADD COLUMN 'EaAnimal' BOOLEAN DEFAULT NULL;
 ALTER TABLE Units ADD COLUMN 'EaNoTrain' BOOLEAN DEFAULT NULL;
-ALTER TABLE Units ADD COLUMN 'EaGPCombatRole' TEXT DEFAULT NULL;
+ALTER TABLE Units ADD COLUMN 'EaGPTempType' TEXT DEFAULT NULL;
 
 ----------------------------------------------------------------------------------------
 -- Normal units (UnitClasses & Units)
@@ -226,15 +226,15 @@ UPDATE Units SET Cost = -1, AdvancedStartCost = -1, Domain = 'DOMAIN_LAND', Move
 -- People attack units
 ----------------------------------------------------------------------------------------
 /*
-INSERT INTO Units (Type,		EaGPCombatRole,	Combat,	RangedCombat,	Range,	Moves,	Immobile,	CombatClass,			DefaultUnitAI,			UnitArtInfo,							IconAtlas,					PortraitIndex,	UnitFlagIconOffset	) VALUES
-('UNIT_DRUID_MAGIC_MISSLE',		'MagicMissle',	0,		10,				2,		2,		1,			'UNITCOMBAT_ARCHER',	'UNITAI_RANGED',		'ART_DEF_UNIT_EA_DRUID_MAGIC_MISSLE',	'EXPANSION_UNIT_ATLAS_1',	17,				17					),
-('UNIT_PRIEST_MAGIC_MISSLE',	'MagicMissle',	0,		10,				2,		2,		1,			'UNITCOMBAT_ARCHER',	'UNITAI_RANGED',		'ART_DEF_UNIT_EA_PRIEST_MAGIC_MISSLE',	'EXPANSION_UNIT_ATLAS_1',	20,				20					),
-('UNIT_WARRIOR_ATTACK',			'Melee',		10,		0,				0,		2,		0,			'UNITCOMBAT_MELEE',		'UNITAI_ATTACK',		'ART_DEF_UNIT_EA_WARRIOR',				'UNIT_ATLAS_2',				48,				90					);
+INSERT INTO Units (Type,		EaGPTempType,	Combat,	RangedCombat,	Range,	Moves,	Immobile,	CombatClass,			DefaultUnitAI,			UnitArtInfo,							IconAtlas,					PortraitIndex,	UnitFlagIconOffset,	Special					) VALUES
+('UNIT_DRUID_MAGIC_MISSLE',		'MagicMissle',	0,		10,				2,		2,		1,			'UNITCOMBAT_ARCHER',	'UNITAI_RANGED',		'ART_DEF_UNIT_EA_DRUID_MAGIC_MISSLE',	'EXPANSION_UNIT_ATLAS_1',	17,				17,					'SPECIALUNIT_PEOPLE'	),
+('UNIT_PRIEST_MAGIC_MISSLE',	'MagicMissle',	0,		10,				2,		2,		1,			'UNITCOMBAT_ARCHER',	'UNITAI_RANGED',		'ART_DEF_UNIT_EA_PRIEST_MAGIC_MISSLE',	'EXPANSION_UNIT_ATLAS_1',	20,				20,					'SPECIALUNIT_PEOPLE'	),
+('UNIT_WARRIOR_ATTACK',			'Melee',		10,		0,				0,		2,		0,			'UNITCOMBAT_MELEE',		'UNITAI_ATTACK',		'ART_DEF_UNIT_EA_WARRIOR',				'UNIT_ATLAS_2',				48,				90,					'SPECIALUNIT_PEOPLE'	);
 
 
 --need attack warrior, paladins for Lead Charge
 
-UPDATE Units SET Cost = -1, AdvancedStartCost = -1, Domain = 'DOMAIN_LAND', Moves = 2, MoveRate = 'GREAT_PERSON', RivalTerritory = 1, NoMaintenance = 1, XPValueAttack = 3, XPValueDefense = 3 WHERE EaGPCombatRole IS NOT NULL;
+UPDATE Units SET Cost = -1, AdvancedStartCost = -1, Domain = 'DOMAIN_LAND', Moves = 2, MoveRate = 'GREAT_PERSON', RivalTerritory = 1, NoMaintenance = 1, XPValueAttack = 3, XPValueDefense = 3 WHERE EaGPTempType IS NOT NULL;
 
 
 CREATE TABLE Unit_EaGPCombatUnits (UnitType, EaGPCombatUnitType);

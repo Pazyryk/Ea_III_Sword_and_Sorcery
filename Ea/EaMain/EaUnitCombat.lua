@@ -40,8 +40,16 @@ local gPlayers =					gPlayers
 local gPeople =						gPeople
 local Players =						Players
 local fullCivs =					MapModData.fullCivs
+local gg_bNormalLivingCombatUnit =	gg_bNormalLivingCombatUnit
+
+--localized functions
+local HandleError =					HandleError
+local HandleError10 =				HandleError10
+local HandleError21 =				HandleError21
+
 
 --file control
+local g_bInitialized = false
 local g_iActivePlayer = Game.GetActivePlayer()
 local g_delayedAttacks = {pos = 0}
 local g_iDefendingPlayer = -1
@@ -51,9 +59,16 @@ local g_iAttackingUnit = -1
 
 
 --------------------------------------------------------------
--- Per Turn
+-- Cached Tables
 --------------------------------------------------------------
 
+
+--------------------------------------------------------------
+-- Init
+--------------------------------------------------------------
+function EaUnitCombatInit(bNewGame)
+	g_bInitialized = true
+end
 
 --------------------------------------------------------------
 -- Events DEPRECIATE!
@@ -61,14 +76,14 @@ local g_iAttackingUnit = -1
 
 --TO DO: Get rid of Events hook below. Replace with new GameEvents.
 
-Events.SerialEventUnitCreated.Add(function(iPlayer, iUnit, hexVec, unitType, cultureType, civID, primaryColor, secondaryColor, unitFlagIndex, fogState, selected, military, notInvisible)
+local function OnSerialEventUnitCreated(iPlayer, iUnit, hexVec, unitType, cultureType, civID, primaryColor, secondaryColor, unitFlagIndex, fogState, selected, military, notInvisible)
 	Dprint("Running SerialEventUnitCreated ", iPlayer, iUnit, hexVec, unitType, cultureType, civID, primaryColor, secondaryColor, unitFlagIndex, fogState, selected, military, notInvisible)
 	--WARNINGS:
 	--unitType is not unitTypeID
 	--runs for embark, disembark
 	
 		--what is unitType??? (...not unitTypeID)
-	if not bInitialized then return end
+	if not g_bInitialized then return end
 	local player = Players[iPlayer]
 	local unit = player:GetUnitByID(iUnit)
 	if not unit then return end
@@ -164,8 +179,8 @@ Events.SerialEventUnitCreated.Add(function(iPlayer, iUnit, hexVec, unitType, cul
 			end
 		end
 	end
-end)
-
+end
+Events.SerialEventUnitCreated.Add(function(iPlayer, iUnit, hexVec, unitType, cultureType, civID, primaryColor, secondaryColor, unitFlagIndex, fogState, selected, military, notInvisible) return HandleError(OnSerialEventUnitCreated, iPlayer, iUnit, hexVec, unitType, cultureType, civID, primaryColor, secondaryColor, unitFlagIndex, fogState, selected, military, notInvisible) end)
 
 --------------------------------------------------------------
 -- Combat GameEvents and supporting local functions
@@ -187,7 +202,7 @@ local function ResetForcedSelectionUnit()		--active player only
 	end
 
 end
-LuaEvents.EaUnitsResetForcedSelectionUnit.Add(ResetForcedSelectionUnit)
+LuaEvents.EaUnitsResetForcedSelectionUnit.Add(function() return HandleError10(ResetForcedSelectionUnit) end)
 
 local function DoForcedInterfaceMode()
 	Dprint("DoForcedInterfaceMode")
@@ -220,7 +235,7 @@ Events.SerialEventUnitInfoDirty.Add(DoForcedInterfaceMode)
 
 
 --Melee attack resulting from Lead Charge has to be delayed
-function DoDelayedAttacks(iPlayer)	--called by OnPlayerPreAIUnitUpdate for AI or by a delayed timed event for human
+local function DoDelayedAttacks(iPlayer)	--called by OnPlayerPreAIUnitUpdate for AI or by a delayed timed event for human
 	if g_delayedAttacks.pos == 0 then return end
 	print("DoDelayedAttacks iPlayer")
 	local player = Players[iPlayer]
@@ -257,7 +272,7 @@ end
 local MELEE_ATTACK_AFTER_THOUSANDTHS_SECONDS = 500
 local bStart = false
 local g_tickStart = 0
-function TimeDelayForHumanMeleeCharge(tickCount, timeIncrement)
+function TimeDelayForHumanMeleeCharge(tickCount, timeIncrement)		--DON'T LOCALIZE! Causes CTD with RemoveAll
 	if bStart then
 		if MELEE_ATTACK_AFTER_THOUSANDTHS_SECONDS < tickCount - tickStart then
 			Events.LocalMachineAppUpdate.RemoveAll()	--also removes tutorial checks (good riddence!)
@@ -287,7 +302,7 @@ local function WarriorLeadCharge(iPlayer, attackingUnit, targetX, targetY)
 		local unit = plot:GetUnit(i)
 		if unit ~= attackingUnit and unit:GetOwner() == iPlayer and not unit:IsOnlyDefensive() then
 			local unitTypeID = unit:GetUnitType()
-			if bNormalLivingCombatUnit[unitTypeID] then
+			if gg_bNormalLivingCombatUnit[unitTypeID] then
 				print("Found melee unit for Warrior charge ", unitTypeID)
 				local iPerson = attackingUnit:GetPersonIndex()
 				local moraleBoost = 2 * GetGPMod(iPerson, "EAMOD_COMBAT", nil)
@@ -319,8 +334,6 @@ local function UpdateWarriorPoints(iPlayer, bCombat)
 	end
 	eaPlayer.classPoints[5] = newPoints
 end
-
-
 
 local function OnCombatResult(iAttackingPlayer, iAttackingUnit, attackerDamage, attackerFinalDamage, attackerMaxHP, iDefendingPlayer, iDefendingUnit, defenderDamage, defenderFinalDamage, defenderMaxHP, iInterceptingPlayer, iInterceptingUnit, interceptorDamage, targetX, targetY)
 	--As currently coded in dll, iAttackingPlayer = -1 for a city ranged attack
@@ -364,7 +377,7 @@ local function OnCombatResult(iAttackingPlayer, iAttackingUnit, attackerDamage, 
 		end
 	end
 end
-GameEvents.CombatResult.Add(OnCombatResult)
+GameEvents.CombatResult.Add(function(iAttackingPlayer, iAttackingUnit, attackerDamage, attackerFinalDamage, attackerMaxHP, iDefendingPlayer, iDefendingUnit, defenderDamage, defenderFinalDamage, defenderMaxHP, iInterceptingPlayer, iInterceptingUnit, interceptorDamage, targetX, targetY) return HandleError(OnCombatResult, iAttackingPlayer, iAttackingUnit, attackerDamage, attackerFinalDamage, attackerMaxHP, iDefendingPlayer, iDefendingUnit, defenderDamage, defenderFinalDamage, defenderMaxHP, iInterceptingPlayer, iInterceptingUnit, interceptorDamage, targetX, targetY) end)
 
 local function OnCombatEnded(iAttackingPlayer, iAttackingUnit, attackerDamage, attackerFinalDamage, attackerMaxHP, iDefendingPlayer, iDefendingUnit, defenderDamage, defenderFinalDamage, defenderMaxHP, iInterceptingPlayer, iInterceptingUnit, interceptorDamage, plotX, plotY)
 	print("OnCombatEnded ", iAttackingPlayer, iAttackingUnit, attackerDamage, attackerFinalDamage, attackerMaxHP, iDefendingPlayer, iDefendingUnit, defenderDamage, defenderFinalDamage, defenderMaxHP, iInterceptingPlayer, iInterceptingUnit, interceptorDamage, plotX, plotY)
@@ -410,10 +423,11 @@ local function OnCombatEnded(iAttackingPlayer, iAttackingUnit, attackerDamage, a
 	end
 
 end
-GameEvents.CombatEnded.Add(OnCombatEnded)
-
+GameEvents.CombatEnded.Add(function(iAttackingPlayer, iAttackingUnit, attackerDamage, attackerFinalDamage, attackerMaxHP, iDefendingPlayer, iDefendingUnit, defenderDamage, defenderFinalDamage, defenderMaxHP, iInterceptingPlayer, iInterceptingUnit, interceptorDamage, plotX, plotY) return HandleError(OnCombatEnded, iAttackingPlayer, iAttackingUnit, attackerDamage, attackerFinalDamage, attackerMaxHP, iDefendingPlayer, iDefendingUnit, defenderDamage, defenderFinalDamage, defenderMaxHP, iInterceptingPlayer, iInterceptingUnit, interceptorDamage, plotX, plotY) end)
 
 local function OnCanSaveUnit(iPlayer, iUnit)	--fires for combat and non-combat death (disband, settler settled, etc)
+	--Uses and resets file locals set in OnCombatResult above; always fires after that function if this is a combat death
+	--Note that file locals could be anything if this is not a combat death
 	print("OnCanSaveUnit ", iPlayer, iUnit)
 	
 	local player = Players[iPlayer]
@@ -473,7 +487,7 @@ local function OnCanSaveUnit(iPlayer, iUnit)	--fires for combat and non-combat d
 	return false
 
 end
-GameEvents.CanSaveUnit.Add(OnCanSaveUnit)
+GameEvents.CanSaveUnit.Add(function(iPlayer, iUnit) return HandleError21(OnCanSaveUnit, iPlayer, iUnit) end)
 
 
 --local function OnUnitKilledInCombat(iKillerPlayer, iKilledPlayer, unitTypeID)

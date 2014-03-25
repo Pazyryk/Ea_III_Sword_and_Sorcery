@@ -79,6 +79,7 @@ function OnLoadEaMain()   --Called from the bottom of EaMain after all included 
 	EaCityInit(bNewGame)
 	EaYieldsInit(bNewGame)
 	EaAIUnitsInit(bNewGame)
+	EaUnitCombatInit(bNewGame)
 	EaUnitsInit(bNewGame)
 	AIMercInit(bNewGame)
 

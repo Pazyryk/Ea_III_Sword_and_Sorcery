@@ -82,12 +82,9 @@ local bHidden =						MapModData.bHidden
 local realCivs =					MapModData.realCivs
 local fullCivs =					MapModData.fullCivs
 local cityStates =					MapModData.cityStates
+local gg_bNormalCombatUnit =		gg_bNormalCombatUnit
 local gg_combatPointDiff =			gg_combatPointDiff
 local gg_unitPrefixUnitIDs =		gg_unitPrefixUnitIDs
---local gg_gpAttackUnits =			gg_gpAttackUnits
---local gg_gpAttackUnitsRemovedUnit =		gg_gpAttackUnitsRemovedUnit
-
-
 local gg_cityLakesDistMatrix =		gg_cityLakesDistMatrix
 local gg_cityFishingDistMatrix =	gg_cityFishingDistMatrix
 local gg_cityWhalingDistMatrix =	gg_cityWhalingDistMatrix
@@ -124,19 +121,6 @@ local bInitialized = false
 ---------------------------------------------------------------
 -- Cached Tables
 ---------------------------------------------------------------
-local bNormalCombatUnit = {}
-local bNormalLivingCombatUnit = {}
-local eaGPCombatRoleByID = {}
-for unitInfo in GameInfo.Units() do
-	if unitInfo.EaGPCombatRole then
-		eaGPCombatRoleByID[unitInfo.ID] = unitInfo.EaGPCombatRole
-	elseif unitInfo.CombatLimit == 100 then
-		bNormalCombatUnit[unitInfo.ID] = true
-		if unitInfo.EaLiving then
-			bNormalLivingCombatUnit[unitInfo.ID] = true
-		end
-	end
-end
 
 local nonTransferablePromos = {}
 local numNonTransferablePromos = 0
@@ -432,7 +416,7 @@ function UnitPerCivTurn(iPlayer)	--runs for full civs and city states
 			local bSlave = unit:IsHasPromotion(PROMOTION_SLAVE)
 			local bMercenary = unit:IsHasPromotion(PROMOTION_MERCENARY)
 
-			if bNormalCombatUnit[unitTypeID] then
+			if gg_bNormalCombatUnit[unitTypeID] then
 				countCombatUnits = countCombatUnits + 1
 				--Temp Attack Morale
 				--if eaPlayer.tempAttackMorale[iUnit] then
@@ -590,7 +574,7 @@ function UnitPerCivTurn(iPlayer)	--runs for full civs and city states
 				print("Adding XP to combat units for Training Exercises Process and/or Militarism Finisher (#units / unitXP): ", countCombatUnits, distributeXP)
 				for unit in player:Units() do
 					local unitTypeID = unit:GetUnitType()
-					if bNormalCombatUnit[unitTypeID] then
+					if gg_bNormalCombatUnit[unitTypeID] then
 						unit:ChangeExperience(distributeXP)
 					end
 				end				

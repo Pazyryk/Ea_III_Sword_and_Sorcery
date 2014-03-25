@@ -90,8 +90,10 @@ local gReligions =							gReligions
 local gWonders =							gWonders
 local gg_aiOptionValues =					gg_aiOptionValues
 local gg_playerValues =						gg_playerValues
---local gg_gpAttackUnits =					gg_gpAttackUnits
 local gg_bToCheapToHire =					gg_bToCheapToHire
+local gg_bNormalCombatUnit =				gg_bNormalCombatUnit
+local gg_bNormalLivingCombatUnit =			gg_bNormalLivingCombatUnit
+
 
 --localized functions
 local FindOpenTradeRoute =					FindOpenTradeRoute		--in EaTrade
@@ -202,17 +204,6 @@ local EaActionsInfo = {}
 for row in GameInfo.EaActions() do
 	local id = row.ID
 	EaActionsInfo[id] = row
-end
-
-local bNormalCombatUnit = {}
-local bNormalLivingCombatUnit = {}
-for unitInfo in GameInfo.Units() do
-	if unitInfo.CombatLimit == 100 and not unitInfo.EaGPCombatRole then
-		bNormalCombatUnit[unitInfo.ID] = true
-		if unitInfo.EaLiving then
-			bNormalLivingCombatUnit[unitInfo.ID] = true
-		end
-	end
 end
 
 ---------------------------------------------------------------
@@ -2096,7 +2087,7 @@ TestTarget[GameInfoTypes.EA_ACTION_LEAD_CHARGE] = function()
 		local unit = g_plot:GetUnit(i)
 		if unit ~= g_unit and unit:GetOwner() == g_iPlayer and not unit:IsOnlyDefensive() then
 			local unitTypeID = unit:GetUnitType()
-			if bNormalLivingCombatUnit[unitTypeID] then
+			if gg_bNormalLivingCombatUnit[unitTypeID] then
 				print("EA_ACTION_LEAD_CHARGE has a same-plot melee unit")
 				g_obj2 = unit
 				g_int4 = unit:GetCurrHitPoints()
@@ -2198,7 +2189,7 @@ TestTarget[GameInfoTypes.EA_ACTION_RALLY_TROOPS] = function()
 			local unit = plot:GetUnit(i)
 			if unit:GetOwner() == g_iPlayer and unit:IsCanAttack() then
 				local unitTypeID = unit:GetUnitType()
-				if bNormalLivingCombatUnit[unitTypeID] and unit:IsEnemyInMovementRange(false, false) then
+				if gg_bNormalLivingCombatUnit[unitTypeID] and unit:IsEnemyInMovementRange(false, false) then
 					numQualifiedUnits = numQualifiedUnits + 1
 					g_table[numQualifiedUnits] = unit
 					value = value + GameInfo.Units[unitTypeID].Cost * unit:GetCurrHitPoints()
@@ -2246,7 +2237,7 @@ TestTarget[GameInfoTypes.EA_ACTION_TRAIN_UNIT] = function()
 		local unit = g_plot:GetUnit(i)
 		if unit:GetOwner() == g_iPlayer and unit:GetDamage() == 0 then
 			local unitTypeID = unit:GetUnitType()
-			if bNormalLivingCombatUnit[unitTypeID] then
+			if gg_bNormalLivingCombatUnit[unitTypeID] then
 				g_obj1 = unit
 				g_obj2 = GameInfo.Units[unitTypeID]
 				print("return true")
@@ -3812,7 +3803,7 @@ TestTarget[GameInfoTypes.EA_SPELL_MAGIC_MISSILE] = function()	--TO DO: need bett
 			for i = 0, unitCount - 1 do
 				local unit = plot:GetUnit(i)
 				local unitTypeID = unit:GetUnitType()
-				if bNormalCombatUnit[unitTypeID] and g_team:IsAtWar(Players[unit:GetOwner()]:GetTeam()) then	--combat unit that we are at war with (need to cache at-war players for speed!)
+				if gg_bNormalCombatUnit[unitTypeID] and g_team:IsAtWar(Players[unit:GetOwner()]:GetTeam()) then	--combat unit that we are at war with (need to cache at-war players for speed!)
 					local damage = unit:GetDamage()
 					if maxDamage < damage then	
 						maxDamage = damage
@@ -4020,7 +4011,7 @@ TestTarget[GameInfoTypes.EA_SPELL_HEX] = function()
 			if not unit:IsHasPromotion(PROMOTION_HEX) and not unit:IsHasPromotion(PROMOTION_PROTECTION_FROM_EVIL) then
 				if g_team:IsAtWar(Players[unit:GetOwner()]:GetTeam()) then
 					local unitTypeID = unit:GetUnitType()	
-					if bNormalCombatUnit[unitTypeID] then
+					if gg_bNormalCombatUnit[unitTypeID] then
 						local unitTypeInfo = GameInfo.Units[unitTypeID]
 						if value < unitTypeInfo.Cost * unit:GetCurrHitPoints() then
 							g_obj1 = unit
@@ -4109,7 +4100,7 @@ TestTarget[GameInfoTypes.EA_SPELL_HEAL] = function()
 		for i = 0, unitCount - 1 do
 			local unit = plot:GetUnit(i)
 			local unitTypeID = unit:GetUnitType()
-			if bNormalLivingCombatUnit[unitTypeID] then
+			if gg_bNormalLivingCombatUnit[unitTypeID] then
 				local damage = unit:GetDamage()
 				if 0 < damage and Players[unit:GetOwner()]:GetTeam() == g_iTeam then
 					local unitTypeInfo = GameInfo.Units[unitTypeID]
@@ -4197,7 +4188,7 @@ TestTarget[GameInfoTypes.EA_SPELL_BLESS] = function()
 			if unit:GetOwner() == g_iPlayer then		--change to allied
 				if not unit:IsHasPromotion(PROMOTION_BLESSED) and not unit:IsHasPromotion(PROMOTION_EVIL_EYE) then
 					local unitTypeID = unit:GetUnitType()	
-					if bNormalLivingCombatUnit[unitTypeID] then
+					if gg_bNormalLivingCombatUnit[unitTypeID] then
 						local unitTypeInfo = GameInfo.Units[unitTypeID]
 						if value < unitTypeInfo.Cost * unit:GetCurrHitPoints() then
 							g_obj1 = unit
@@ -4255,7 +4246,7 @@ TestTarget[GameInfoTypes.EA_SPELL_PROTECTION_FROM_EVIL] = function()
 			if unit:GetOwner() == g_iPlayer then		--change to allied
 				if not unit:IsHasPromotion(PROMOTION_PROTECTION_FROM_EVIL) and not unit:IsHasPromotion(PROMOTION_EVIL_EYE) then
 					local unitTypeID = unit:GetUnitType()	
-					if bNormalLivingCombatUnit[unitTypeID] then
+					if gg_bNormalLivingCombatUnit[unitTypeID] then
 						local unitTypeInfo = GameInfo.Units[unitTypeID]
 						if value < unitTypeInfo.Cost * unit:GetCurrHitPoints() then
 							g_obj1 = unit
@@ -4320,7 +4311,7 @@ TestTarget[GameInfoTypes.EA_SPELL_HURT] = function()
 			local unit = plot:GetUnit(i)
 			if g_team:IsAtWar(Players[unit:GetOwner()]:GetTeam()) then
 				local unitTypeID = unit:GetUnitType()	
-				if bNormalLivingCombatUnit[unitTypeID] then
+				if gg_bNormalLivingCombatUnit[unitTypeID] then
 					local unitTypeInfo = GameInfo.Units[unitTypeID]
 					local currentHP = unit:GetCurrHitPoints()
 					if pts < currentHP then --won't kill
@@ -4408,7 +4399,7 @@ TestTarget[GameInfoTypes.EA_SPELL_CURSE] = function()
 			if not unit:IsHasPromotion(PROMOTION_CURSED) and not unit:IsHasPromotion(PROMOTION_PROTECTION_FROM_EVIL) then
 				if g_team:IsAtWar(Players[unit:GetOwner()]:GetTeam()) then
 					local unitTypeID = unit:GetUnitType()	
-					if bNormalLivingCombatUnit[unitTypeID] then
+					if gg_bNormalLivingCombatUnit[unitTypeID] then
 						local unitTypeInfo = GameInfo.Units[unitTypeID]
 						if value < unitTypeInfo.Cost * unit:GetCurrHitPoints() then
 							g_obj1 = unit
@@ -4466,7 +4457,7 @@ TestTarget[GameInfoTypes.EA_SPELL_EVIL_EYE] = function()
 			if not unit:IsHasPromotion(PROMOTION_EVIL_EYE) and not unit:IsHasPromotion(PROMOTION_PROTECTION_FROM_EVIL) then
 				if g_team:IsAtWar(Players[unit:GetOwner()]:GetTeam()) then
 					local unitTypeID = unit:GetUnitType()	
-					if bNormalCombatUnit[unitTypeID] then
+					if gg_bNormalCombatUnit[unitTypeID] then
 						local unitTypeInfo = GameInfo.Units[unitTypeID]
 						if value < unitTypeInfo.Cost * unit:GetCurrHitPoints() then
 							g_obj1 = unit
@@ -4671,7 +4662,7 @@ TestTarget[GameInfoTypes.EA_SPELL_RIDE_LIKE_THE_WIND] = function()
 			if unit:GetOwner() == g_iPlayer then
 				if not unit:IsHasPromotion(PROMOTION_RIDE_LIKE_THE_WINDS) and not unit:IsHasPromotion(PROMOTION_EVIL_EYE) then
 					local unitTypeID = unit:GetUnitType()	
-					if bNormalCombatUnit[unitTypeID] then
+					if gg_bNormalCombatUnit[unitTypeID] then
 						local unitTypeInfo = GameInfo.Units[unitTypeID]
 						numQualifiedUnits = numQualifiedUnits + 1
 						g_table[numQualifiedUnits] = unit
@@ -4733,7 +4724,7 @@ TestTarget[GameInfoTypes.EA_SPELL_PURIFY] = function()
 			local unit = plot:GetUnit(i)
 			if unit:GetOwner() == g_iPlayer then		--change to allied
 				local unitTypeID = unit:GetUnitType()	
-				if bNormalLivingCombatUnit[unitTypeID] then
+				if gg_bNormalLivingCombatUnit[unitTypeID] then
 					local damage = unit:GetDamage()
 					local hpHealed = healHP < damage and healHP or damage
 					local removeBonus = 0
@@ -4842,7 +4833,7 @@ TestTarget[GameInfoTypes.EA_SPELL_FAIR_WINDS] = function()
 			if unit:GetDomainType() == DOMAIN_SEA and unit:GetOwner() == g_iPlayer then
 				if not unit:IsHasPromotion(PROMOTION_FAIR_WINDS) then
 					local unitTypeID = unit:GetUnitType()	
-					if bNormalCombatUnit[unitTypeID] then
+					if gg_bNormalCombatUnit[unitTypeID] then
 						local unitTypeInfo = GameInfo.Units[unitTypeID]
 						if value < unitTypeInfo.Cost then
 							g_obj1 = unit

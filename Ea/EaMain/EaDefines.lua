@@ -150,6 +150,22 @@ for row in GameInfo.EaCiv_Races() do
 	end
 end
 
+
+gg_bNormalCombatUnit = {}
+gg_bNormalLivingCombatUnit = {}
+gg_eaGPTempType = {}
+for unitInfo in GameInfo.Units() do
+	if unitInfo.EaGPTempType then
+		gg_eaGPTempType[unitInfo.ID] = unitInfo.EaGPTempType
+	elseif not unitInfo.Special and unitInfo.CombatLimit == 100 then
+		gg_bNormalCombatUnit[unitInfo.ID] = true
+		if unitInfo.EaLiving then
+			gg_bNormalLivingCombatUnit[unitInfo.ID] = true
+		end
+	end
+end
+
+
 gg_naturalWonders = {}	--index by featureID; filled in EaPlots Init
 ----------------------------------------------------------------------------------------------------------------------------
 -- State Shared tables

@@ -11,14 +11,6 @@ DELETE FROM UnitPromotions WHERE Type NOT IN ('PROMOTION_INSTA_HEAL', 'PROMOTION
 CREATE TABLE TempPromoKeepList AS SELECT Type FROM UnitPromotions;
 UPDATE UnitPromotions SET CannotBeChosen = 1 WHERE Type IN (SELECT Type FROM TempPromoKeepList);
 
---ALTER TABLE UnitPromotions ADD COLUMN 'EaGPChosen' BOOLEAN DEFAULT NULL;		--DEPRECIATE ALL GP
---ALTER TABLE UnitPromotions ADD COLUMN 'EaGPClass' TEXT DEFAULT NULL;
---ALTER TABLE UnitPromotions ADD COLUMN 'EaGPOrClass' TEXT DEFAULT NULL;
---ALTER TABLE UnitPromotions ADD COLUMN 'EaGPSubclass' TEXT DEFAULT NULL;
---ALTER TABLE UnitPromotions ADD COLUMN 'EaGPOrSubclass' TEXT DEFAULT NULL;
---ALTER TABLE UnitPromotions ADD COLUMN 'EaGPExcludeSubclass' TEXT DEFAULT NULL;
---ALTER TABLE UnitPromotions ADD COLUMN 'EaGPPromotionAbsolutePrereq' TEXT DEFAULT NULL;		--ignores Ors
---ALTER TABLE UnitPromotions ADD COLUMN 'EaGPPromotionExclude' TEXT DEFAULT NULL;
 ALTER TABLE UnitPromotions ADD COLUMN 'EaHidden' BOOLEAN DEFAULT NULL;
 ALTER TABLE UnitPromotions ADD COLUMN 'EaNonTransferable' BOOLEAN DEFAULT NULL;				--don't transfer if unit hired as mercenary or captured (for hire, merc, strong merc, and morale promos have special handling so should not have this)
 

@@ -151,35 +151,30 @@ local function OnUnitCaptured(iPlayer, iUnit)
 		end
 	else	--civilian
 		local iOriginalOwner = unit:GetOriginalOwner()
-		if iOriginalOwner == iPlayer then	--returned civilian, remove Slave promo (unless it's a slave)
-			if unitTypeID == UNIT_SLAVES_MAN or unitTypeID == UNIT_SLAVES_SIDHE or unitTypeID == UNIT_SLAVES_ORC then
-				print("Recaptured a Slaves unit")
-				unit:SetHasPromotion(PROMOTION_SLAVE, true)
+		if iOriginalOwner == iPlayer then
+			print("Recaptured a civilian")
+		elseif gg_slaveryPlayer[iPlayer] then
+			print("Slavery civ captured a civilian")
+		elseif player:IsHuman() then	
+			local originalOwner = Players[iOriginalOwner]
+			if not originalOwner:IsAlive() or Teams[player:GetTeam()]:IsAtWar(originalOwner:GetTeam()) then
+				print("Non-Slavery human player captured a civilian that can't be returned to original owner; killing")
+				unit:Kill(true, -1)
+				return
 			else
-				unit:SetHasPromotion(PROMOTION_SLAVE, false)
-				print("Recaptured a civilian")
-			end
+				print("Non-Slavery human player captured a civilian; ReturnCivilianPopup will kill unit if not returned")
+				return
+			end				
 		else
-			if unitTypeID ~= UNIT_SLAVES_MAN and unitTypeID ~= UNIT_SLAVES_SIDHE and unitTypeID ~= UNIT_SLAVES_ORC then
-				error("Captured civilian was not originally ours and was not a Slave unit")
-			end
-			if gg_slaveryPlayer[iPlayer] then
-				print("Slavery civ captured a civilian")
-				unit:SetHasPromotion(PROMOTION_SLAVE, true)
-				for i = 1, numNonTransferablePromos do
-					unit:SetHasPromotion(nonTransferablePromos[i] , false)
-				end
-			else
-				print("Non-Slavery civ captured a civilian; will kill unless returned by active player")
-				if player:IsHuman() then	
-					local originalOwner = Players[iOriginalOwner]
-					if not originalOwner:IsAlive() or Teams[player:GetTeam()]:IsAtWar(originalOwner:GetTeam()) then
-						unit:Kill(true, -1)
-					end						--otherwise ReturnCivilianPopup will kill unit if not returned
-				else
-					unit:Kill(true, -1)
-				end
-			end
+			print("Non-Slavery computer player captured a civilian that wasn't returned; killing")
+			unit:Kill(true, -1)
+			return
+		end
+		--get slave promo to proper state
+		if unitTypeID == UNIT_SLAVES_MAN or unitTypeID == UNIT_SLAVES_SIDHE or unitTypeID == UNIT_SLAVES_ORC then
+			unit:SetHasPromotion(PROMOTION_SLAVE, true)
+		else
+			unit:SetHasPromotion(PROMOTION_SLAVE, false)
 		end
 	end
 end

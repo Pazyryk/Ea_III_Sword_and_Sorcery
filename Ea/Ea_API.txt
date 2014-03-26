@@ -88,16 +88,16 @@ int					GetGPAttackState()
 void				SetGPAttackState(int iIndex)
 int					TurnsToReachTarget(Plot targetPlot, bool bReusePaths, bool bIgnoreUnits, bool bIgnoreStacking)		--0 means can reach with movement left; returns 2147483647 if no path
 
-
+--------------------------------------------------------------
 Notes:
-PersonIndex has no effect on dll side; only used by Lua.
-Morale is used on dll side to modify combat strength.
-GPAttackState is set on Lua side but used by dll to control combat rules:
- -1  GP Default: can only attack other GPs; weak defender for defender unit selection
-  0  Warrior Default: strong defender if attack is from GP
-  1  Warrior Charge (temp): must be a normal combat unit to attack
-  2  Warrior Challenge (temp): must be a Warrior GP to attack
-Get/SetBaseCombatStrength are useful now because combat value is persisted and Get returns actual unit value rather than table value. 
+1. PersonIndex has no effect on dll side; only used by Lua.
+2. Morale is used on dll side to modify combat strength.
+3. GPAttackState is set on Lua side but used by dll to control combat rules:
+	 -1  GP Default: can only attack other GPs; weak defender for defender unit selection
+	  0  Warrior Default: strong defender if attack is from GP; otherwise weak defender
+	  1  Warrior Charge (temp): must be a normal combat unit to attack
+	  2  Warrior Challenge (temp): must be a Warrior GP to attack
+4. Get/SetBaseCombatStrength are useful now because combat value is persisted and Get returns actual unit value rather than table value. 
 
 
 

@@ -13,7 +13,7 @@ ALTER TABLE Units ADD COLUMN 'EaLiving' BOOLEAN DEFAULT NULL;
 ALTER TABLE Units ADD COLUMN 'EaUndead' BOOLEAN DEFAULT NULL;
 ALTER TABLE Units ADD COLUMN 'EaAnimal' BOOLEAN DEFAULT NULL;
 ALTER TABLE Units ADD COLUMN 'EaNoTrain' BOOLEAN DEFAULT NULL;
-ALTER TABLE Units ADD COLUMN 'EaGPTempType' TEXT DEFAULT NULL;
+ALTER TABLE Units ADD COLUMN 'EaGPTempRole' TEXT DEFAULT NULL;
 
 ----------------------------------------------------------------------------------------
 -- Normal units (UnitClasses & Units)
@@ -218,41 +218,38 @@ INSERT INTO Units (Type, UnitArtInfo,				IconAtlas,					PortraitIndex,	UnitFlagA
 ('UNIT_NECROMANCER',	'ART_DEF_UNIT_INQUISITOR',	'EXPANSION_UNIT_ATLAS_1',	17,				'EA_FLAG_ATLAS',		8,					'SPECIALUNIT_PEOPLE'	),
 ('UNIT_LICH',			'ART_DEF_UNIT_INQUISITOR',	'EXPANSION_UNIT_ATLAS_1',	17,				'EA_FLAG_ATLAS',		8,					'SPECIALUNIT_PEOPLE'	);
 
-UPDATE Units SET Cost = -1, AdvancedStartCost = -1, Domain = 'DOMAIN_LAND', Moves = 2, MoveRate = 'GREAT_PERSON', WorkRate = 100, Combat = 5, CombatLimit = 100, CombatClass = 'UNITCOMBAT_MELEE', RivalTerritory = 1, NoMaintenance = 1 WHERE Special = 'SPECIALUNIT_PEOPLE';
-
-
+UPDATE Units SET Cost = -1, AdvancedStartCost = -1, Domain = 'DOMAIN_LAND', Moves = 2, MoveRate = 'GREAT_PERSON', WorkRate = 100, Combat = 5, CombatLimit = 100, CombatClass = 'UNITCOMBAT_MELEE', RivalTerritory = 1, NoMaintenance = 1, XPValueAttack = 3, XPValueDefense = 3 WHERE Special = 'SPECIALUNIT_PEOPLE';
 
 ----------------------------------------------------------------------------------------
--- People attack units
-----------------------------------------------------------------------------------------
-/*
-INSERT INTO Units (Type,		EaGPTempType,	Combat,	RangedCombat,	Range,	Moves,	Immobile,	CombatClass,			DefaultUnitAI,			UnitArtInfo,							IconAtlas,					PortraitIndex,	UnitFlagIconOffset,	Special					) VALUES
-('UNIT_DRUID_MAGIC_MISSLE',		'MagicMissle',	0,		10,				2,		2,		1,			'UNITCOMBAT_ARCHER',	'UNITAI_RANGED',		'ART_DEF_UNIT_EA_DRUID_MAGIC_MISSLE',	'EXPANSION_UNIT_ATLAS_1',	17,				17,					'SPECIALUNIT_PEOPLE'	),
-('UNIT_PRIEST_MAGIC_MISSLE',	'MagicMissle',	0,		10,				2,		2,		1,			'UNITCOMBAT_ARCHER',	'UNITAI_RANGED',		'ART_DEF_UNIT_EA_PRIEST_MAGIC_MISSLE',	'EXPANSION_UNIT_ATLAS_1',	20,				20,					'SPECIALUNIT_PEOPLE'	),
-('UNIT_WARRIOR_ATTACK',			'Melee',		10,		0,				0,		2,		0,			'UNITCOMBAT_MELEE',		'UNITAI_ATTACK',		'ART_DEF_UNIT_EA_WARRIOR',				'UNIT_ATLAS_2',				48,				90,					'SPECIALUNIT_PEOPLE'	);
-
-
---need attack warrior, paladins for Lead Charge
-
-UPDATE Units SET Cost = -1, AdvancedStartCost = -1, Domain = 'DOMAIN_LAND', Moves = 2, MoveRate = 'GREAT_PERSON', RivalTerritory = 1, NoMaintenance = 1, XPValueAttack = 3, XPValueDefense = 3 WHERE EaGPTempType IS NOT NULL;
-
-
-CREATE TABLE Unit_EaGPCombatUnits (UnitType, EaGPCombatUnitType);
-INSERT INTO Unit_EaGPCombatUnits (UnitType, EaGPCombatUnitType) VALUES
-('UNIT_DRUID', 'UNIT_DRUID_MAGIC_MISSLE'),		--Lua will fallback to first in table with role, if no match here
-('UNIT_PRIEST', 'UNIT_PRIEST_MAGIC_MISSLE'),
-('UNIT_WARRIOR', 'UNIT_WARRIOR_ATTACK');
-*/
-
-
-
---Build out the Units table for dependent strings
+--Build out the Units table for dependent strings (more below)
 UPDATE Units SET Description = 'TXT_KEY_EA_' || Type;
 UPDATE Units SET Description = REPLACE(Description, '_MAN', '');
 UPDATE Units SET Description = REPLACE(Description, '_SIDHE', '');
 UPDATE Units SET Description = REPLACE(Description, '_ORC', '');
 UPDATE Units SET Civilopedia = Description || '_PEDIA', Strategy = Description || '_STRATEGY', Help = Description || '_HELP';
+
+
+----------------------------------------------------------------------------------------
+-- People temp type units
+----------------------------------------------------------------------------------------
+
+INSERT INTO Units (Type,		Description,			EaGPTempRole,	Combat,	RangedCombat,	Range,	Moves,	Immobile,	CombatClass,			DefaultUnitAI,			UnitArtInfo,							IconAtlas,					PortraitIndex,	UnitFlagIconOffset,	Special					) VALUES
+('UNIT_DRUID_MAGIC_MISSLE',		'TXT_KEY_UNIT_DRUID',	'MagicMissle',	5,		10,				2,		2,		1,			'UNITCOMBAT_ARCHER',	'UNITAI_RANGED',		'ART_DEF_UNIT_EA_DRUID_MAGIC_MISSLE',	'EXPANSION_UNIT_ATLAS_1',	17,				17,					'SPECIALUNIT_PEOPLE'	),
+('UNIT_PRIEST_MAGIC_MISSLE',	'TXT_KEY_UNIT_DRUID',	'MagicMissle',	5,		10,				2,		2,		1,			'UNITCOMBAT_ARCHER',	'UNITAI_RANGED',		'ART_DEF_UNIT_EA_PRIEST_MAGIC_MISSLE',	'EXPANSION_UNIT_ATLAS_1',	20,				20,					'SPECIALUNIT_PEOPLE'	);
+
+UPDATE Units SET Cost = -1, AdvancedStartCost = -1, Domain = 'DOMAIN_LAND', Moves = 2, MoveRate = 'GREAT_PERSON', CombatLimit = 100, RivalTerritory = 1, NoMaintenance = 1, XPValueAttack = 3, XPValueDefense = 3 WHERE EaGPTempRole IS NOT NULL;
+
+CREATE TABLE Unit_EaGPTempTypes (UnitType, TempUnitType);
+INSERT INTO Unit_EaGPTempTypes (UnitType, TempUnitType) VALUES
+('UNIT_DRUID', 'UNIT_DRUID_MAGIC_MISSLE'),		--Lua will fallback to something if no match here
+('UNIT_FALLENPRIEST', 'UNIT_PRIEST_MAGIC_MISSLE');
+
+
+
+----------------------------------------------------------------------------------------
+--Build out the Units table for dependent strings
 UPDATE Units SET Class = REPLACE(Type, 'UNIT_', 'UNITCLASS_');
+
 
 ----------------------------------------------------------------------------------------
 -- UnitClasses (this is soooooo much easier...)

@@ -25,8 +25,6 @@ local POLICY_THEISM_FINISHER =		GameInfoTypes.POLICY_THEISM_FINISHER
 local POLICY_ANTI_THEISM_FINISHER =	GameInfoTypes.POLICY_ANTI_THEISM_FINISHER
 local TECH_THAUMATURGY =			GameInfoTypes.TECH_THAUMATURGY
 
-local UNIT_EIDOLON =				GameInfoTypes.UNIT_EIDOLON
-
 local PROMOTION_SORCERER =			GameInfoTypes.PROMOTION_SORCERER
 
 local FALLEN_ID_SHIFT = POLICY_ANTI_THEISM - POLICY_THEISM
@@ -485,18 +483,21 @@ function BecomeFallen(iPlayer)		--this could happen before, during or after the 
 				if eaPerson.subclass == "Priest" then	--still uses priest unitType, but gains thaumaturge class
 					eaPerson.subclass = "FallenPriest"
 					eaPerson.class2 = "Thaumaturge"
+					eaPerson.unitTypeID = GameInfoTypes.UNIT_FALLENPRIEST
+					local newUnit = player:InitUnit(GameInfoTypes.UNIT_FALLENPRIEST, unit:GetX(), unit:GetY())
+					MapModData.bBypassOnCanSaveUnit = true
+					newUnit:Convert(unit, false)
+					newUnit:SetPersonIndex(iPerson)
+					eaPerson.iUnit = newUnit:GetID()
 				elseif eaPerson.subclass == "Paladin" then
 					eaPerson.subclass = "Eidolon"
-					eaPerson.unitTypeID = UNIT_EIDOLON
-					if unit then			
-						local newUnit = player:InitUnit(GameInfoTypes.UNIT_EIDOLON, unit:GetX(), unit:GetY())
-						newUnit:Convert(unit)
-						iNewUnit = newUnit:GetID()
-						eaPerson.iUnit = iNewUnit
-					end
-			
+					eaPerson.unitTypeID = GameInfoTypes.UNIT_EIDOLON
+					local newUnit = player:InitUnit(GameInfoTypes.UNIT_EIDOLON, unit:GetX(), unit:GetY())
+					MapModData.bBypassOnCanSaveUnit = true
+					newUnit:Convert(unit, false)
+					newUnit:SetPersonIndex(iPerson)
+					eaPerson.iUnit = newUnit:GetID()
 				end
-
 			end
 		end
 	end

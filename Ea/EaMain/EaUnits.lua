@@ -191,6 +191,7 @@ function EaUnitsInit(bNewGame)
 					end
 					if newUnitTypeID then
 						local newUnit = player:InitUnit(newUnitTypeID, unit:GetX(), unit:GetY())
+						MapModData.bBypassOnCanSaveUnit = true
 						newUnit:Convert(unit)
 					end
 				end
@@ -208,6 +209,7 @@ function EaUnitsInit(bNewGame)
 					end
 					if newUnitTypeID then
 						local newUnit = player:InitUnit(newUnitTypeID, unit:GetX(), unit:GetY())
+						MapModData.bBypassOnCanSaveUnit = true
 						newUnit:Convert(unit)
 					end
 				end
@@ -267,6 +269,7 @@ function ConvertUnitsByMatch(iPlayer, fromStr, toStr)	--preserves race (e.g., UN
 			local newUnitType = StrSubstitute(unitType, fromStr, toStr)
 			local newUnitTypeID = GameInfoTypes[newUnitType]
 			local newUnit = player:InitUnit(newUnitTypeID, unit:GetX(), unit:GetY())
+			MapModData.bBypassOnCanSaveUnit = true
 			newUnit:Convert(unit)
 		end
 	end
@@ -285,6 +288,7 @@ function HireMercenary(iPlayer, unit, upFront, gpt)
 		mercenaries[iOriginalOwner] = mercenaries[iOriginalOwner] or {}
 		mercenaries[iOriginalOwner][iNewUnit] = gpt
 		player:ChangeGold(-upFront)
+		MapModData.bBypassOnCanSaveUnit = true
 		newUnit:Convert(unit)		--sets xp, level, promotions (but not original owner)
 		newUnit:SetHasPromotion(PROMOTION_MERCENARY, true)
 		newUnit:SetHasPromotion(PROMOTION_FOR_HIRE, false)
@@ -328,6 +332,7 @@ function DismissMercenary(iPlayer, iUnit)
 			if newUnit then
 				print("Merc has been dismissed")				
 				bConverted = true
+				MapModData.bBypassOnCanSaveUnit = true
 				newUnit:Convert(unit)
 				newUnit:SetHasPromotion(PROMOTION_MERCENARY, false)
 				if newUnit:IsHasPromotion(PROMOTION_STRONG_MERCENARY) then
@@ -343,7 +348,8 @@ function DismissMercenary(iPlayer, iUnit)
 		end
 		if not bConverted then
 			print("!!!! WARNING: Merc was dismissed and original owner exists, but unit could not be returned for some reason")
-			unit:Kill(true, -1)	--unit:SetDamage(unit:GetMaxHitPoints())
+			MapModData.bBypassOnCanSaveUnit = true
+			unit:Kill(true, -1)
 		end
 	end
 end
@@ -704,7 +710,8 @@ UseUnit[GameInfoTypes.UNIT_FISHING_BOATS] = function(iPlayer, unit)
 	else
 		print("!!!! Warning: Fishingboats built but can't be used")
 	end
-	unit:Kill(true, -1)	--unit:SetDamage(unit:GetMaxHitPoints())	--remove fishing boats unit
+	MapModData.bBypassOnCanSaveUnit = true
+	unit:Kill(true, -1)		--remove fishing boats unit
 end
 
 UseUnit[GameInfoTypes.UNIT_WHALING_BOATS] = function(iPlayer, unit)
@@ -741,7 +748,8 @@ UseUnit[GameInfoTypes.UNIT_WHALING_BOATS] = function(iPlayer, unit)
 	else
 		print("!!!! Warning: Whaling Boats built but can't be used")
 	end
-	unit:Kill(true, -1)	--unit:SetDamage(unit:GetMaxHitPoints())	--remove whaling boats unit
+	MapModData.bBypassOnCanSaveUnit = true
+	unit:Kill(true, -1)		--remove whaling boats unit
 end
 
 UseUnit[GameInfoTypes.UNIT_HUNTERS] = function(iPlayer, unit)
@@ -778,7 +786,8 @@ UseUnit[GameInfoTypes.UNIT_HUNTERS] = function(iPlayer, unit)
 	else
 		print("!!!! Warning: Hunters built but can't be used")
 	end
-	unit:Kill(true, -1)	--unit:SetDamage(unit:GetMaxHitPoints())	--remove unit
+	MapModData.bBypassOnCanSaveUnit = true
+	unit:Kill(true, -1)		--remove unit
 end
 
 UseAIUnit[GameInfoTypes.UNIT_CARAVAN] = function(iPlayer, unit)
@@ -923,9 +932,9 @@ end
 
 SustainedPromotionDo[GameInfoTypes.PROMOTION_RIDE_LIKE_THE_WINDS] = function(player, unit, iCaster)
 	local eaPerson = gPeople[iCaster]
-	if eaPerson.deathTurn then return false end
-	local gpX, gpY = GetGPXY(eaPerson)
-	if eaPerson.modDevotion < Distance(gpX, gpY, unit:GetX(), unit:GetY()) then return false end
+	if not eaPerson then return false end	--caster died
+	local caster = Players[eaPerson.iPlayer]:GetUnitByID(eaPerson.iUnit)
+	if eaPerson.modDevotion < Distance(caster:GetX(), caster:GetY(), unit:GetX(), unit:GetY()) then return false end
 	return UseManaOrDivineFavor(eaPerson.iPlayer, iCaster, 1)
 end
 

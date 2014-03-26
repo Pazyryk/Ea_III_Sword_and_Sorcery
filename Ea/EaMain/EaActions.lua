@@ -200,10 +200,26 @@ local g_tradeAvailableTable = {}
 -- Cached table values
 ---------------------------------------------------------------
 
-local EaActionsInfo = {}
+local EaActionsInfo = {}			-- Contains the entire table for speed
 for row in GameInfo.EaActions() do
 	local id = row.ID
 	EaActionsInfo[id] = row
+end
+
+local gpTempTypeUnits = {}	--index by role, originalTypeID; holds tempTypeID
+for unitInfo in GameInfo.Units() do
+	if unitInfo.EaGPTempRole then
+		local role = unitInfo.EaGPTempRole
+		local tempType = unitInfo.Type
+		local tempTypeID = unitInfo.ID
+		for row in GameInfo.Unit_EaGPTempTypes() do
+			if row.TempUnitType == tempType then
+				local originalTypeID = GameInfoTypes[row.UnitType]
+				gpTempTypeUnits[role] = gpTempTypeUnits[role] or {}
+				gpTempTypeUnits[role][originalTypeID] = tempTypeID
+			end
+		end
+	end
 end
 
 ---------------------------------------------------------------
@@ -844,7 +860,8 @@ function DoEaAction(eaActionID, iPlayer, unit, iPerson, targetX, targetY)
 	--Alt unit upgrades
 	if g_eaAction.UnitUpgradeTypePrefix then
 		local newUnit = g_player:InitUnit(g_int1, g_x, g_y)
-		newUnit:Convert(g_unit)
+		MapModData.bBypassOnCanSaveUnit = true
+		newUnit:Convert(g_unit, true)
 		g_unit = newUnit		--this will finish moves below; watch out because g_unitTypeID is no longer correct
 		g_player:ChangeGold(-g_int2)
 	end
@@ -1471,7 +1488,8 @@ end
 --EA_ACTION_SELL_SLAVES
 Do[GameInfoTypes.EA_ACTION_SELL_SLAVES] = function()
 	g_player:ChangeGold(30)
-	g_unit:Kill(true, -1)	--g_unit:SetDamage(g_unit:GetMaxHitPoints())
+	MapModData.bBypassOnCanSaveUnit = true
+	g_unit:Kill(true, -1)
 	g_unit = nil
 	return true
 end
@@ -1496,7 +1514,8 @@ Do[GameInfoTypes.EA_ACTION_RENDER_SLAVES] = function()
 	else
 		g_city:ChangeBuildingProduction(g_int1, 20)
 	end
-	g_unit:Kill(true, -1)	--g_unit:SetDamage(g_unit:GetMaxHitPoints())
+	MapModData.bBypassOnCanSaveUnit = true
+	g_unit:Kill(true, -1)
 	g_unit = nil
 	return true
 end
@@ -2078,9 +2097,6 @@ end
 
 TestTarget[GameInfoTypes.EA_ACTION_LEAD_CHARGE] = function()
 	--Must be melee attack unit on same plot and enemy in range
-	--g_unit
-
-	--do return false end	--DISABLED
 
 	local unitCount = g_plot:GetNumUnits()
 	for i = 0, unitCount - 1 do
@@ -3782,8 +3798,6 @@ end
 
 --EA_SPELL_MAGIC_MISSILE
 TestTarget[GameInfoTypes.EA_SPELL_MAGIC_MISSILE] = function()	--TO DO: need better AI targeting logic (for now, value goes up with existing damage)
-	
-	do return false end	--DISABLED
 
 	g_bool1 = g_faith < g_modSpell
 	if g_bool1 then return false end
@@ -3814,7 +3828,7 @@ TestTarget[GameInfoTypes.EA_SPELL_MAGIC_MISSILE] = function()	--TO DO: need bett
 		end
 	end
 	if maxDamage == -1 then return false end	--no targets found
-	--if target found, then g_obj1 now holds plot for best potential target
+	--if target found, then g_obj1 now holds plot for best potential target for AI
 	g_value = 100 + maxDamage
 	return true
 end
@@ -3837,45 +3851,39 @@ end
 SetAIValues[GameInfoTypes.EA_SPELL_MAGIC_MISSILE] = function()
 	gg_aiOptionValues.i = g_value
 end
---[[
+
 Do[GameInfoTypes.EA_SPELL_MAGIC_MISSILE] = function()
 	--convert to ranged unit 
-	--UpdateGreatPersonStatsFromUnit(g_unit, g_eaPerson)
+	UpdateGreatPersonStatsFromUnit(g_unit, g_eaPerson)
 
 	local direction = g_unit:GetFacingDirection()
-	local scenData = g_unit:GetScenarioData()
-	--local newUnitType = GameInfo.Units[g_unit:GetUnitType()].EaMagicMissileUnit
-	--local newUnitTypeID = newUnitType and GameInfoTypes[newUnitType] or GameInfoTypes.UNIT_DRUID_MAGIC_MISSLE	--fallback to druid if we haven't added special unit yet
-	local newUnitTypeID = g_unit:GetGPCombatUnitType("MagicMissile")
+	local newUnitTypeID = gpTempTypeUnits.MagicMissle[g_unit:GetUnitType()] or GameInfoTypes.UNIT_DRUID_MAGIC_MISSLE	--fallback to druid if we haven't added tempType unit yet
+
 	local newUnit = g_player:InitUnit(newUnitTypeID, g_x, g_y, nil, direction)
-	newUnit:Convert(g_unit)
+	MapModData.bBypassOnCanSaveUnit = true
+	newUnit:Convert(g_unit, false)
+	newUnit:SetPersonIndex(g_iPerson)
 	local iNewUnit = newUnit:GetID()
-	newUnit:SetScenarioData(scenData)
-	--ChangeUnitMorale(g_iPlayer, iNewUnit, g_modSpell * 10 - 100)
-	newUnit:SetMorale(g_modSpell * 10 - 100)
 	g_eaPerson.iUnit = iNewUnit
-	gg_gpAttackUnits.pos = gg_gpAttackUnits.pos + 1
-	gg_gpAttackUnits[gg_gpAttackUnits.pos] = iNewUnit
-	gg_gpAttackUnitsRemovedUnit[gg_gpAttackUnits.pos] = nil
+
+	newUnit:SetMorale(g_modSpell * 10 - 100)	--Use morale to modify up or down from ranged strength 10 (can't change ranged strength)
 
 	if g_bAIControl then		--Carry out attack
 		newUnit:PushMission(MissionTypes.MISSION_RANGE_ATTACK, g_obj1:GetX(), g_obj1:GetY(), 0, 0, 1)
 		if newUnit:MovesLeft() > 0  then
-			print("!!!! WARNING: AI GP has movement after Magic Missile! Did it not fire?")
-			newUnit:FinishMoves()
+			error("AI GP has movement after Magic Missile! Did it not fire?")
 		end
-
-		--EaUnits.lua detects attack and does xp, mana and unit reversion (as it does when human does ranged attack)
 	elseif g_iPlayer == g_iActivePlayer then
 		MapModData.forcedUnitSelection = iNewUnit
 		MapModData.forcedInterfaceMode = InterfaceModeTypes.INTERFACEMODE_RANGE_ATTACK
 		UI.SelectUnit(newUnit)
 		UI.LookAtSelectionPlot(0)
 	end
+	--EaUnitCombat.lua detects attack and does xp, mana and unit reversion
 
 	return true
 end
-]]
+
 
 --EA_SPELL_EXPLOSIVE_RUNES
 --EA_SPELL_MAGE_SWORD

@@ -158,7 +158,7 @@ function UpdateUnitActions( unit )
 	local iUnit = unit:GetID()
 	local bGreatPerson = unit:IsGreatPerson()
 	local unitTypeInfo = GameInfo.Units[unit:GetUnitType()]
-	local eaGPTempType = unitTypeInfo.EaGPTempType
+	local eaGPTempType = unitTypeInfo.EaGPTempRole
 	local iPerson, eaPerson
 	local inProgressEaActionID = -1	
 
@@ -876,7 +876,7 @@ function UpdateUnitStats(unit)
     if(unit:GetDomainType() == DomainTypes.DOMAIN_AIR) then
         strength, morale = 0, 0
 		ranged = unit:GetBaseRangedCombatStrength()
-	elseif not unit:IsEmbarked() and not unit:IsGreatPerson() and not GameInfo.Units[unit:GetUnitType()].EaGPTempType then
+	elseif not unit:IsEmbarked() and not unit:IsGreatPerson() and not GameInfo.Units[unit:GetUnitType()].EaGPTempRole then
         strength = unit:GetBaseCombatStrength()
 		ranged = unit:GetBaseRangedCombatStrength()
 		morale = unit:GetMorale()

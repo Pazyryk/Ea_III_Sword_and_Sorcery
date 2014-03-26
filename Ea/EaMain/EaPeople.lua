@@ -355,10 +355,6 @@ function PeopleAfterTurn(iPlayer, bActionInfoPanelCall)
 	local bHumanPlayer = not bFullCivAI[iPlayer]
 	local bAllowHumanPlayerEndTurn = true	
 	local gameTurn = Game.GetGameTurn()
-	--if 0 < gg_gpAttackUnits.pos then
-	--	print("!!!! Warning: Player had GP Attack unit(s) at end of turn")
-	--	RemoveGPAttackUnits(iPlayer)
-	--end
 	local player = Players[iPlayer]
 	local eaPlayer = gPlayers[iPlayer]				
 	local deadCount = 0
@@ -596,10 +592,10 @@ function ResetAgeOfDeath(iPerson)
 	return
 end
 
-function GetInfoFromSubclassClass(subclass, class)	--2nd arg is optional if 1st has value
+function GetInfoFromSubclassClass(subclass, class)	--class is ignored if subclass has a valid value
 	--return unitTypeID, class1, class2
 	if subclass == "Alchemist" then
-		return GameInfoTypes.UNIT_SAGE, "Sage", nil
+		return GameInfoTypes.UNIT_ALCHEMIST, "Sage", nil
 	elseif subclass == "Paladin" then
 		return GameInfoTypes.UNIT_PALADIN, "Warrior", "Devout"
 	elseif subclass == "Eidolon" then
@@ -611,7 +607,7 @@ function GetInfoFromSubclassClass(subclass, class)	--2nd arg is optional if 1st 
 	elseif subclass == "Priest" then
 		return GameInfoTypes.UNIT_PRIEST, "Devout", nil
 	elseif subclass == "FallenPriest" then
-		return GameInfoTypes.UNIT_PRIEST, "Devout", "Thaumaturge"
+		return GameInfoTypes.UNIT_FALLENPRIEST, "Devout", "Thaumaturge"
 	elseif subclass == "Witch" then
 		return GameInfoTypes.UNIT_WITCH, "Thaumaturge", nil
 	elseif subclass == "Sorcerer" then
@@ -740,29 +736,13 @@ end
 -- GP Utilities
 --------------------------------------------------------------
 
-function GetGPXY(eaPerson)
-	local iPlayer = eaPerson.iPlayer
-	local iUnit = eaPerson.iUnit
-	if iUnit == -1 then
-		return eaPerson.x, eaPerson.y
-	else
-		local player = Players[eaPerson.iPlayer]
-		local unit = player:GetUnitByID(iUnit)
-		if unit then
-			return unit:GetX(), unit:GetY()
-		else
-			KillGP(eaPerson)
-		end
-	end
-end
-
 function UseManaOrDivineFavor(iPlayer, iPerson, pts)
 	--reduces player faith, adds GP xp and depletes Ea's mana if appropriate
 	--returns false if player lacks sufficient mana or divine favor
 	--if iPerson is nil then no experience is given
 	local player = Players[iPlayer]
 	local eaPlayer = gPlayers[iPlayer]
-	if player:GetFaith() < pts then return false end
+	--if player:GetFaith() < pts then return false end		TO DO: mod to allow deficit
 	player:ChangeFaith(-pts)
 	if iPerson then
 		local eaPerson = gPeople[iPerson]
@@ -1213,7 +1193,7 @@ function KillPerson(iPlayer, iPerson, unit, iKillerPlayer, deathType)
 
 	--remove unit if supplied
 	if unit then
-		unit:SetPersonIndex(-1)	--so OnCanSaveUnit won't call this function
+		MapModData.bBypassOnCanSaveUnit = true
 		unit:Kill(true, iKillerPlayer)
 	end
 

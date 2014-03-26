@@ -57,6 +57,7 @@ PopupLayouts[ButtonPopupTypes.BUTTONPOPUP_RETURN_CIVILIAN] = function(popupInfo)
 		Network.SendReturnCivilian(false, iGiftedPlayer, iUnitIndex);
 		--Paz add
 		if not bHasSlavery then
+			MapModData.bBypassOnCanSaveUnit = true
 			pUnit:Kill(true, -1)
 		end
 		--end Paz add

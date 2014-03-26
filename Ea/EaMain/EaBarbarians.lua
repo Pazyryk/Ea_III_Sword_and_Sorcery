@@ -232,6 +232,7 @@ local function UpdateBaseUnit(encampmentID)			--kick out present unit if obsolet
 					if unitTypeID ~= g_currentBaseUnit1[encampmentID] and unitTypeID ~= g_currentBaseUnit2[encampmentID] then	--check what's here; it might be OK
 						print("Killing current encampment unit before replacement: ", GameInfo.Units[unitTypeID].Type)
 						--unit:JumpToNearestValidPlot()
+						MapModData.bBypassOnCanSaveUnit = true
 						unit:Kill(true, -1)
 						AddEncampmentBaseUnit(iPlot, encampmentID)
 					end

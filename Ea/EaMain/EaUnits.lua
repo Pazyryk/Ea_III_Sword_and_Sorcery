@@ -122,15 +122,6 @@ local bInitialized = false
 -- Cached Tables
 ---------------------------------------------------------------
 
-local nonTransferablePromos = {}
-local numNonTransferablePromos = 0
-for promoInfo in GameInfo.UnitPromotions() do
-	if promoInfo.EaNonTransferable then
-		numNonTransferablePromos = numNonTransferablePromos + 1
-		nonTransferablePromos[numNonTransferablePromos] = promoInfo.ID
-	end
-end
-
 local bHorseMounted = {}	--mounted including archer types (but no chariots)
 for row in GameInfo.Unit_ResourceQuantityRequirements() do
 	if row.ResourceType == "RESOURCE_HORSE" then

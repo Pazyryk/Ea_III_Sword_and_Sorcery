@@ -41,6 +41,7 @@ local gPeople =						gPeople
 local Players =						Players
 local fullCivs =					MapModData.fullCivs
 local gg_bNormalLivingCombatUnit =	gg_bNormalLivingCombatUnit
+local gg_slaveryPlayer =			gg_slaveryPlayer
 
 --localized functions
 local HandleError =					HandleError
@@ -61,7 +62,14 @@ local g_iAttackingUnit = -1
 --------------------------------------------------------------
 -- Cached Tables
 --------------------------------------------------------------
-
+local nonTransferablePromos = {}
+local numNonTransferablePromos = 0
+for promoInfo in GameInfo.UnitPromotions() do
+	if promoInfo.EaNonTransferable then
+		numNonTransferablePromos = numNonTransferablePromos + 1
+		nonTransferablePromos[numNonTransferablePromos] = promoInfo.ID
+	end
+end
 
 --------------------------------------------------------------
 -- Init
@@ -74,7 +82,7 @@ end
 -- Events DEPRECIATE!
 --------------------------------------------------------------
 
---TO DO: Get rid of Events hook below. Replace with new GameEvents.
+--TO DO: Depreciate Events hook below. Replace with new GameEvents.
 
 local function OnSerialEventUnitCreated(iPlayer, iUnit, hexVec, unitType, cultureType, civID, primaryColor, secondaryColor, unitFlagIndex, fogState, selected, military, notInvisible)
 	Dprint("Running SerialEventUnitCreated ", iPlayer, iUnit, hexVec, unitType, cultureType, civID, primaryColor, secondaryColor, unitFlagIndex, fogState, selected, military, notInvisible)
@@ -82,7 +90,6 @@ local function OnSerialEventUnitCreated(iPlayer, iUnit, hexVec, unitType, cultur
 	--unitType is not unitTypeID
 	--runs for embark, disembark
 	
-		--what is unitType??? (...not unitTypeID)
 	if not g_bInitialized then return end
 	local player = Players[iPlayer]
 	local unit = player:GetUnitByID(iUnit)
@@ -90,6 +97,10 @@ local function OnSerialEventUnitCreated(iPlayer, iUnit, hexVec, unitType, cultur
 	Dprint("Actual unitTypeID = ", unit:GetUnitType())
 
 	if iPlayer == BARB_PLAYER_INDEX then	--includes new spawns and captured slaves
+		if unit:IsGreatPerson() then
+			error("Barb captured a GP?!")
+		end
+
 		--convert to slaves if spawned in or adjacent to border (i.e., rebels) and city has an internment camp
 		local plot = unit:GetPlot()
 		local city = plot:GetWorkingCity()
@@ -114,73 +125,49 @@ local function OnSerialEventUnitCreated(iPlayer, iUnit, hexVec, unitType, cultur
 			newUnit:JumpToNearestValidPlot()
 			newUnit:SetHasPromotion(PROMOTION_SLAVE, true)
 		end
-	else
-		if unit:GetOriginalOwner() == iPlayer then	--these are built or possibly recaptured units
-			--TO DO: Non-transferable promotions in case of recapture? (OK now because only Slave Armies civ can recapture a military unit)
+	end
+end
+Events.SerialEventUnitCreated.Add(function(iPlayer, iUnit, hexVec, unitType, cultureType, civID, primaryColor, secondaryColor, unitFlagIndex, fogState, selected, military, notInvisible) return HandleError(OnSerialEventUnitCreated, iPlayer, iUnit, hexVec, unitType, cultureType, civID, primaryColor, secondaryColor, unitFlagIndex, fogState, selected, military, notInvisible) end)
 
-			local unitTypeID = unit:GetUnitType()
-			if (unitTypeID == UNIT_SLAVES_MAN or unitTypeID == UNIT_SLAVES_SIDHE or unitTypeID == UNIT_SLAVES_ORC) and not player:HasPolicy(POLICY_SLAVERY) then	--freed slave
-				local convertID = GameInfoTypes.UNIT_WORKERS_MAN
-				if unitTypeID == UNIT_SLAVES_SIDHE then
-					convertID = GameInfoTypes.UNIT_WORKERS_SIDHE
-				elseif unitTypeID == UNIT_SLAVES_ORC then
-					convertID = GameInfoTypes.UNIT_WORKERS_ORC
-				end
-				local newUnit = player:InitUnit(convertID, unit:GetX(), unit:GetY() )
-				newUnit:Convert(unit)
+local function OnUnitCaptured(iPlayer, iUnit)
+	local player = Players[iPlayer]
+	local unit = player:GetUnitByID(iUnit)
+	if unit:IsCombatUnit() then
+		if unit:GetDomainType() == DOMAIN_LAND then	--must be captured land combat unit (only Slave Maker can do this)
+			unit:SetHasPromotion(PROMOTION_FOR_HIRE , false)
+			unit:SetHasPromotion(PROMOTION_MERCENARY , false)
+			unit:SetHasPromotion(PROMOTION_SLAVE, true)
+			unit:SetMorale(-30)
+		end
+		for i = 1, numNonTransferablePromos do
+			unit:SetHasPromotion(nonTransferablePromos[i] , false)
+		end
+	else	--civilian
+		local unitTypeID = unit:GetUnitType()
+		if unit:GetOriginalOwner() == iPlayer then	--returned civilian, remove Slave promo (unless it's a slave)
+			if unitTypeID == UNIT_SLAVES_MAN or unitTypeID == UNIT_SLAVES_SIDHE or unitTypeID == UNIT_SLAVES_ORC then
+				unit:SetHasPromotion(PROMOTION_SLAVE, true)
+			else
 				unit:SetHasPromotion(PROMOTION_SLAVE, false)
 			end
 		else
-			print("SerialEventUnitCreated: New unit does not belong to iPlayer (iPlayer, iUnit)", iPlayer, iUnit)
-			for i = 1, numNonTransferablePromos do
-				unit:SetHasPromotion(nonTransferablePromos[i] , false)
+			if unitTypeID ~= UNIT_SLAVES_MAN and unitTypeID ~= UNIT_SLAVES_SIDHE and unitTypeID ~= UNIT_SLAVES_ORC then
+				error("Captured civilian was not originally ours and was not a Slave unit")
 			end
-			if unit:GetDomainType() == DOMAIN_LAND then	--must be captured land unit or hired mercenary (ship capture will be handled separately)
-				if unit:GetUnitCombatType() == -1 then	--civilian so must be barb capture or a slave
-					if iPlayer == BARB_PLAYER_INDEX then
-						print("Barbs captured ", GameInfo.Units[unit:GetUnitType()].Type)
-					elseif iPlayer == ANIMALS_PLAYER_INDEX then
-						print("removing unit captured by animals ", GameInfo.Units[unit:GetUnitType()].Type)
-						unit:Kill(true, -1)
-					else
-						local unitTypeID = unit:GetUnitType()
-						
-						if unitTypeID ~= UNIT_SLAVES_MAN and unitTypeID ~= UNIT_SLAVES_SIDHE and unitTypeID ~= UNIT_SLAVES_ORC then
-							if unitTypeID == UNIT_WORKERS_MAN and unitTypeID == UNIT_WORKERS_SIDHE and unitTypeID == UNIT_WORKERS_ORC then
-								print("!!!! ???? Recapture of a worker from barbs? ", GameInfo.Units[unitTypeID].Type)
-							else
-								error("Something went wrong with unit capture " .. GameInfo.Units[unitTypeID].Type)
-							end
-						end
-					
-						if player:HasPolicy(POLICY_SLAVERY) then
-							print("Slavery civ captured a civilian slave")
-							unit:SetHasPromotion(PROMOTION_SLAVE, true)
-						else
-							print("removing slave from non-eligable civ")
-							unit:Kill(true, -1)
-						end
-					end
-				else		--must be newly hired mercenary or captured military unit	
-					local mercenaries = gPlayers[iPlayer].mercenaries
-					for _, mercs in pairs(mercenaries) do
-						if mercs[iUnit] then
-							print("SerialEventUnitCreated found newly hired mercenary")
-							return
-						end
-					end
-					print("SerialEventUnitCreated found newly captured military unit; setting Slave promotion, removing non-compatable promotions")
-					unit:SetHasPromotion(PROMOTION_FOR_HIRE , false)
-					unit:SetHasPromotion(PROMOTION_MERCENARY , false)						
-					unit:SetHasPromotion(PROMOTION_SLAVE, true)
-					--ChangeUnitMorale(iPlayer, iUnit, -30, true)
-					unit:SetMorale(-30)
+			if gg_slaveryPlayer[iPlayer] then
+				unit:SetHasPromotion(PROMOTION_SLAVE, true)
+				for i = 1, numNonTransferablePromos do
+					unit:SetHasPromotion(nonTransferablePromos[i] , false)
+				end
+			else
+				if not player:IsHuman() then		--for active player, will be killed by popup UI if not returned
+					unit:Kill(true, -1)
 				end
 			end
 		end
 	end
 end
-Events.SerialEventUnitCreated.Add(function(iPlayer, iUnit, hexVec, unitType, cultureType, civID, primaryColor, secondaryColor, unitFlagIndex, fogState, selected, military, notInvisible) return HandleError(OnSerialEventUnitCreated, iPlayer, iUnit, hexVec, unitType, cultureType, civID, primaryColor, secondaryColor, unitFlagIndex, fogState, selected, military, notInvisible) end)
+GameEvents.UnitCaptured.Add(function(iPlayer, iUnit) return HandleError21(OnUnitCaptured, iPlayer, iUnit) end)
 
 --------------------------------------------------------------
 -- Combat GameEvents and supporting local functions

@@ -239,6 +239,7 @@ gg_cityCampResDistMatrix = {}
 gg_fishingRange = {}
 gg_whalingRange = {}
 gg_campRange = {}
+gg_slaveryPlayer = {[BARB_PLAYER_INDEX] = true}
 
 --other tables using iPlayer
 gg_eaNamePlayerTable = {}

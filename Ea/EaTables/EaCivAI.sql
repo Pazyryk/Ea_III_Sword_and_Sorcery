@@ -78,7 +78,7 @@ INSERT INTO EaCivPlans (Type,		Function,		TechModule,					PolicyModule,				Build
 ('EACIVPLAN_O',						'Naming',		NULL,						'POLICY_ARCANE_TRADITION',	NULL,						200	),
 ('EACIVPLAN_MU',					'Naming',		NULL,						'POLICY_ARCANE_TRADITION',	NULL,						200	),
 ('EACIVPLAN_GRAEAE',				'Naming',		NULL,						'POLICY_WITCHCRAFT',		NULL,						200	),
-('EACIVPLAN_NEZELIBA',				'Naming',		NULL,						'POLICY_SLAVE_TRADE',		NULL,						300	),	--300 when only flavoring differences below
+('EACIVPLAN_NEZELIBA',				'Naming',		NULL,						'POLICY_SLAVE_TRADE',		NULL,						300	),
 ('EACIVPLAN_GAZIYA',				'Naming',		NULL,						'POLICY_SLAVE_RAIDERS',		NULL,						300	),
 ('EACIVPLAN_NEMEDIA',				'Naming',		NULL,						'POLICY_DISCIPLINE',		NULL,						280	),
 ('EACIVPLAN_MILESIA',				'Naming',		NULL,						'POLICY_WARCRAFT',			NULL,						280	),

@@ -129,6 +129,10 @@ local function OnSerialEventUnitCreated(iPlayer, iUnit, hexVec, unitType, cultur
 end
 Events.SerialEventUnitCreated.Add(function(iPlayer, iUnit, hexVec, unitType, cultureType, civID, primaryColor, secondaryColor, unitFlagIndex, fogState, selected, military, notInvisible) return HandleError(OnSerialEventUnitCreated, iPlayer, iUnit, hexVec, unitType, cultureType, civID, primaryColor, secondaryColor, unitFlagIndex, fogState, selected, military, notInvisible) end)
 
+--------------------------------------------------------------
+-- Combat GameEvents and supporting local functions
+--------------------------------------------------------------
+
 local function OnUnitCaptured(iPlayer, iUnit)
 	local player = Players[iPlayer]
 	local unit = player:GetUnitByID(iUnit)
@@ -146,7 +150,8 @@ local function OnUnitCaptured(iPlayer, iUnit)
 			unit:SetHasPromotion(nonTransferablePromos[i] , false)
 		end
 	else	--civilian
-		if unit:GetOriginalOwner() == iPlayer then	--returned civilian, remove Slave promo (unless it's a slave)
+		local iOriginalOwner = unit:GetOriginalOwner()
+		if iOriginalOwner == iPlayer then	--returned civilian, remove Slave promo (unless it's a slave)
 			if unitTypeID == UNIT_SLAVES_MAN or unitTypeID == UNIT_SLAVES_SIDHE or unitTypeID == UNIT_SLAVES_ORC then
 				print("Recaptured a Slaves unit")
 				unit:SetHasPromotion(PROMOTION_SLAVE, true)
@@ -166,7 +171,12 @@ local function OnUnitCaptured(iPlayer, iUnit)
 				end
 			else
 				print("Non-Slavery civ captured a civilian; will kill unless returned by active player")
-				if not player:IsHuman() then		--for active player, will be killed by popup UI if not returned
+				if player:IsHuman() then	
+					local originalOwner = Players[iOriginalOwner]
+					if not originalOwner:IsAlive() or Teams[player:GetTeam()]:IsAtWar(originalOwner:GetTeam()) then
+						unit:Kill(true, -1)
+					end						--otherwise ReturnCivilianPopup will kill unit if not returned
+				else
 					unit:Kill(true, -1)
 				end
 			end
@@ -174,10 +184,6 @@ local function OnUnitCaptured(iPlayer, iUnit)
 	end
 end
 GameEvents.UnitCaptured.Add(function(iPlayer, iUnit) return HandleError21(OnUnitCaptured, iPlayer, iUnit) end)
-
---------------------------------------------------------------
--- Combat GameEvents and supporting local functions
---------------------------------------------------------------
 
 --Forced interface mode - Active player only: must do something specific or drop this interface mode
 local function ResetForcedSelectionUnit()		--active player only

@@ -182,7 +182,7 @@ function EaPlotsInit(bNewGame)
 				end
 				if terrainID == TERRAIN_GRASS or terrainID == TERRAIN_PLAINS or terrainID == TERRAIN_TUNDRA then
 					validForestJunglePlots = validForestJunglePlots + 1
-					if featureID == GameInfoTypes.FEATURE_FOREST or featureID == GameInfoTypes.FEATURE_JUNGLE then
+					if featureID == FEATURE_FOREST or featureID == FEATURE_JUNGLE then
 						originalForestJunglePlots = originalForestJunglePlots + 1
 					end 
 				end
@@ -207,11 +207,14 @@ function EaPlotsInit(bNewGame)
 				for x, y in PlotToRadiusIterator(startX, startY, 3) do
 					local distance = Distance(x, y, startX, startY)
 					local plot = GetPlotFromXY(x, y)
-					if distance < 2 then
-						plot:SetFeatureType(-1)
-						plot:SetLivingTerrainData(-1, false, 0, -100)	--never existed
-					else
-						plot:SetLivingTerrainStrength(0)					
+					local featureID = plot:GetFeatureType()
+					if featureID == FEATURE_FOREST or featureID == FEATURE_JUNGLE or featureID == FEATURE_MARSH then
+						if distance < 2 then
+							plot:SetFeatureType(-1)
+							plot:SetLivingTerrainData(-1, false, 0, -100)	--never existed
+						else
+							plot:SetLivingTerrainStrength(0)					
+						end
 					end
 				end
 			end

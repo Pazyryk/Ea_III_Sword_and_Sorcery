@@ -386,6 +386,23 @@ AITarget.NearbyLivTerrain = function()
 	end
 end
 
+AITarget.OwnTower = function()
+	local tower = gWonders[EA_WONDER_ARCANE_TOWER][g_iPerson]
+	if tower then
+		local x, y = GetXYFromPlotIndex(tower.iPlot)
+		TestAddOption("Plot", x, y, 0, nil)
+	end
+end
+
+AITarget.VacantTower = function()
+	for iPerson, tower in pairs(gWonders[EA_WONDER_ARCANE_TOWER]) do
+		if not gPeople[iPerson] then	--tower's last occupant is dead
+			local x, y = GetXYFromPlotIndex(tower.iPlot)
+			TestAddOption("Plot", x, y, 0, nil)
+		end
+	end
+end
+
 AITarget.NIMBY = function()					-- Not In My BackYard (e.g., Blight spell) - test in caster's tower and outside of own city 3-plot radius
 	local tower = gWonders[EA_WONDER_ARCANE_TOWER][g_iPerson]
 	if tower then

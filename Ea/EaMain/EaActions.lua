@@ -24,6 +24,7 @@ local FEATURE_MARSH =	 					GameInfoTypes.FEATURE_MARSH
 local FEATURE_BLIGHT =	 					GameInfoTypes.FEATURE_BLIGHT
 local FEATURE_FALLOUT =	 					GameInfoTypes.FEATURE_FALLOUT
 local IMPROVEMENT_BLIGHT =					GameInfoTypes.IMPROVEMENT_BLIGHT
+local IMPROVEMENT_ARCANE_TOWER =			GameInfoTypes.IMPROVEMENT_ARCANE_TOWER
 local INVISIBLE_SUBMARINE =					GameInfoTypes.INVISIBLE_SUBMARINE
 local RESOURCE_BLIGHT =						GameInfoTypes.RESOURCE_BLIGHT
 
@@ -191,6 +192,7 @@ local g_text1, g_text2, g_text3, g_text4, g_text5 = "", "", "", "", ""
 local g_obj1, g_obj2
 
 local g_integers = {}
+local g_integers2 = {}
 local g_integersPos = 0
 local g_table = {}	--anything else
 
@@ -604,13 +606,6 @@ function TestEaAction(eaActionID, iPlayer, unit, iPerson, testX, testY, bAINonTa
 
 	--Specific action test (runs if it exists)
 	if Test[eaActionID] and not Test[eaActionID]() then return false end
-
-
-
-	--Spell development: disable until added (all spells need SetAIValues)
-	if g_SpellClass and not SetAIValues[eaActionID] then return false end
-
-
 
 	--All non-target tests have passed
 	g_bNonTargetTestsPassed = true
@@ -1248,6 +1243,9 @@ function SpecialEffects()
 end
 
 function TestSpellLearnable(iPlayer, iPerson, spellID, spellClass)		--iPerson = nil to generate civ list; spellClass is optional restriction (used for separate UI panels)
+	
+	if not SetAIValues[spellID] then return false end	--Spell hasn't really been added yet, even if in table
+	
 	local spellInfo = EaActionsInfo[spellID]
 	if spellClass and spellClass ~= spellInfo.SpellClass then return false end
 	--order exclusions by most common first for speed
@@ -2288,6 +2286,52 @@ Do[GameInfoTypes.EA_ACTION_TRAIN_UNIT] = function()
 	g_unit:ChangeExperience(xp)
 	print("return true")
 	return true
+end
+
+------------------------------------------------------------------------------------------------------------------------------
+-- Misc Actions
+------------------------------------------------------------------------------------------------------------------------------
+--EA_ACTION_OCCUPY_TOWER
+Test[GameInfoTypes.EA_ACTION_OCCUPY_TOWER] = function()
+	if g_eaPerson.bHasTower then return false end
+	--do quick tally of vacant towers
+	g_integersPos = 0
+	for iPerson, tower in pairs(gWonders[EA_WONDER_ARCANE_TOWER]) do
+		if not gPeople[iPerson] then	--last occupant is dead
+			g_integersPos = g_integersPos + 1
+			g_integers[g_integersPos] = iPerson
+		end
+	end
+	return 0 < g_integersPos
+end
+
+TestTarget[GameInfoTypes.EA_ACTION_OCCUPY_TOWER] = function()
+	if g_plot:GetImprovementType() ~= IMPROVEMENT_ARCANE_TOWER then return false end
+	if g_iOwner ~= g_iPlayer and (g_iOwner ~= -1 or not g_plot:IsCityRadius(g_iPlayer)) then return false end
+	--is it in vacant tower list?
+	for i = 1, g_integersPos do
+		local iPerson = g_integers[i]
+		local tower = gWonders[EA_WONDER_ARCANE_TOWER][iPerson]
+		if tower.iPlot == g_iPlot then
+			g_int1 = iPerson
+			return true
+		end
+	end
+	return false
+end
+
+SetUI[GameInfoTypes.EA_ACTION_OCCUPY_TOWER] = function()
+	local improvementStr = g_plot:GetScriptData()
+	MapModData.text = "Occupy " .. improvementStr .. " and make it your own"
+end
+
+Finish[GameInfoTypes.EA_ACTION_OCCUPY_TOWER] = function()
+	local tower = gWonders[EA_WONDER_ARCANE_TOWER][g_int1]
+	gWonders[EA_WONDER_ARCANE_TOWER][g_iPlayer] = tower
+	g_eaPerson.bHasTower = true
+	gWonders[EA_WONDER_ARCANE_TOWER][g_int1] = nil
+	g_unit:ChangeExperience(20)
+	g_specialEffectsPlot = g_plot
 end
 
 ------------------------------------------------------------------------------------------------------------------------------

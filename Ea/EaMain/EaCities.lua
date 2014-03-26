@@ -415,9 +415,29 @@ function GetCityRace(city)
 		race = EARACE_HELDEOFOL
 		debugCount = debugCount + 1
 	end
-	if debugCount ~= 1 then
-		error("City had 0 or >1 race; count, name, owner = " .. debugCount .. " " .. city:GetName() .. " " .. city:GetOwner())
+	if 1 < debugCount then
+		error("City had >1 race; count, name, owner = " .. debugCount .. " " .. city:GetName() .. " " .. city:GetOwner())
 	end
+	if debugCount == 0 then
+		--this shouldn't happen but does sometimes (on conquest? AI selling when it shouldn't?)
+		local iOriginalOwner = city:GetOriginalOwner()
+		print("!!!! ERROR: City had no race; name/owner/originalOwner = ", city:GetName(), city:GetOwner(), iOriginalOwner)
+		local race = gPlayers[iOriginalOwner].race
+		if race == EARACE_MAN then
+			city:SetNumRealBuilding(BUILDING_MAN, 1)
+			race = EARACE_MAN
+		elseif race == EARACE_SIDHE then
+			city:SetNumRealBuilding(BUILDING_SIDHE, 1)
+			race = EARACE_SIDHE
+		elseif race == EARACE_HELDEOFOL then
+			city:SetNumRealBuilding(BUILDING_HELDEOFOL, 1)
+			race = EARACE_HELDEOFOL
+		else
+			error("What race?")
+		end
+	end
+
+	--Heldeofol not implemented yet...
 	if race == EARACE_HELDEOFOL then
 		error("City had race Heldeofol; name, owner = " .. city:GetName() .. " " .. city:GetOwner())
 	end
@@ -756,7 +776,13 @@ function CityStateFollowerCityCounting()			--once per turn after plots (takes ca
 end
 
 local function OnPlayerCityFounded(iPlayer, x, y)
-	if playerType[iPlayer] ~= "FullCiv" and playerType[iPlayer] ~= "CityState" then return end
+	if not bInitialized then
+		print("WARNING!!!! running OnPlayerCityFounded before init")
+		return
+	end
+	if not realCivs[iPlayer] then
+		error("Non-civ founded a city " .. (playerType[iPlayer] or "nil") .. " " .. iPlayer)
+	end
 	print("PlayerCityFounded", iPlayer, x, y)
 	local player = Players[iPlayer]
 	local eaPlayer = gPlayers[iPlayer]
@@ -821,10 +847,11 @@ GameEvents.PlayerCityFounded.Add(function(iPlayer, x, y) return HandleError31(On
 
 local function OnSetPopulation(x, y, oldPopulation, newPopulation)
 	if oldPopulation == newPopulation then return end
-	if y == 0 then return end		--this is where the hidden civs live
 	if not bInitialized then
 		print("WARNING!!!! running SetPopulation before init")
+		return
 	end
+	--Warning! This fires before OnCityCaptureComplete. 
 	local plot = Map.GetPlot(x, y)
 	local city = plot:GetPlotCity()
 	print("Population change ", city:GetName(), oldPopulation, newPopulation)
@@ -875,15 +902,14 @@ local function OnCityCaptureComplete(iPlayer, bCapital, x, y, iNewOwner)		-- THI
 
 	--what about city destroyed on conquest?
 
-	print("CityCaptureComplete", iPlayer, bCapital, x, y, iNewOwner)
-
 	local oldOwner = Players[iPlayer]
 	local newOwner = Players[iNewOwner]
 	local iPlot = GetPlotIndexFromXY(x, y)
 	local plot = GetPlotByIndex(iPlot)
 	local city = plot:GetPlotCity()
+	print("CityCaptureComplete", iPlayer, bCapital, x, y, iNewOwner, city:GetName())
+
 	local iCity = city:GetID()
-	--local eaCityIndex = gCitiesByPlotIndexXXXXX[iPlot]
 	local eaCity = gCities[iPlot]
 	local eaPreviousOwner = gPlayers[iPlayer]
 	local eaNewOwner = gPlayers[iNewOwner]

@@ -4,6 +4,11 @@
 --------------------------------------------------------------
 print("Loading CityGraphicUpdater.lua...")
 
+--DISABLED for now to see if this is the cause for some city UI glitches in conquered cities
+--Renable by uncommenting Events below
+--Hook up to Error Handler for safety
+
+
 local ARTSTYLE_EUROPEAN =		GameInfoTypes.ARTSTYLE_EUROPEAN
 local ARTSTYLE_ASIAN =			GameInfoTypes.ARTSTYLE_ASIAN
 local ARTSTYLE_SOUTH_AMERICA =	GameInfoTypes.ARTSTYLE_SOUTH_AMERICA
@@ -41,7 +46,7 @@ local function ListenerSerialEventCityCreated(vHexPos, iPlayer, iCity, artStyleT
 		end
 	end
 end
-Events.SerialEventCityCreated.Add(ListenerSerialEventCityCreated)
+--Events.SerialEventCityCreated.Add(ListenerSerialEventCityCreated)
 
 local function UpdateCityGraphics()
 	--print("PazDebug UpdateCityGraphics")
@@ -61,7 +66,7 @@ local function UpdateCityGraphics()
 		end
 	end
 end
-Events.SerialEventGameDataDirty.Add(UpdateCityGraphics)
-Events.SequenceGameInitComplete.Add(UpdateCityGraphics)
-Events.SerialEventCityCaptured.Add(UpdateCityGraphics)	--not sure if this happens before or after city art change
+--Events.SerialEventGameDataDirty.Add(UpdateCityGraphics)
+--Events.SequenceGameInitComplete.Add(UpdateCityGraphics)
+--Events.SerialEventCityCaptured.Add(UpdateCityGraphics)	--not sure if this happens before or after city art change
 

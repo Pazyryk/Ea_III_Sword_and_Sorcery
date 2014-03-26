@@ -132,8 +132,11 @@ Events.SerialEventUnitCreated.Add(function(iPlayer, iUnit, hexVec, unitType, cul
 local function OnUnitCaptured(iPlayer, iUnit)
 	local player = Players[iPlayer]
 	local unit = player:GetUnitByID(iUnit)
+	local unitTypeID = unit:GetUnitType()
+	print("OnUnitCaptured ", iPlayer, iUnit, GameInfo.Units[unitTypeID].Type)
 	if unit:IsCombatUnit() then
 		if unit:GetDomainType() == DOMAIN_LAND then	--must be captured land combat unit (only Slave Maker can do this)
+			print("Captured combat land unit")
 			unit:SetHasPromotion(PROMOTION_FOR_HIRE , false)
 			unit:SetHasPromotion(PROMOTION_MERCENARY , false)
 			unit:SetHasPromotion(PROMOTION_SLAVE, true)
@@ -143,23 +146,26 @@ local function OnUnitCaptured(iPlayer, iUnit)
 			unit:SetHasPromotion(nonTransferablePromos[i] , false)
 		end
 	else	--civilian
-		local unitTypeID = unit:GetUnitType()
 		if unit:GetOriginalOwner() == iPlayer then	--returned civilian, remove Slave promo (unless it's a slave)
 			if unitTypeID == UNIT_SLAVES_MAN or unitTypeID == UNIT_SLAVES_SIDHE or unitTypeID == UNIT_SLAVES_ORC then
+				print("Recaptured a Slaves unit")
 				unit:SetHasPromotion(PROMOTION_SLAVE, true)
 			else
 				unit:SetHasPromotion(PROMOTION_SLAVE, false)
+				print("Recaptured a civilian")
 			end
 		else
 			if unitTypeID ~= UNIT_SLAVES_MAN and unitTypeID ~= UNIT_SLAVES_SIDHE and unitTypeID ~= UNIT_SLAVES_ORC then
 				error("Captured civilian was not originally ours and was not a Slave unit")
 			end
 			if gg_slaveryPlayer[iPlayer] then
+				print("Slavery civ captured a civilian")
 				unit:SetHasPromotion(PROMOTION_SLAVE, true)
 				for i = 1, numNonTransferablePromos do
 					unit:SetHasPromotion(nonTransferablePromos[i] , false)
 				end
 			else
+				print("Non-Slavery civ captured a civilian; will kill unless returned by active player")
 				if not player:IsHuman() then		--for active player, will be killed by popup UI if not returned
 					unit:Kill(true, -1)
 				end

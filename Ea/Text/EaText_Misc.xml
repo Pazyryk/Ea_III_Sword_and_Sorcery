@@ -290,9 +290,6 @@
 		<Row Tag="TXT_KEY_EA_RELIGION_WORLD_FOLLOWERS">
 			<Text>World Population: {1_pop}%</Text>
 		</Row>
-
-
-		
 		<Row Tag="TXT_KEY_EA_BY_POPULATION">
 			<Text>[NEWLINE]Your Civilization Religions:</Text>
 		</Row>
@@ -305,7 +302,6 @@
 		<Row Tag="TXT_KEY_EA_RELIGION_BY_CITY_ENTRY">
 			<Text>{1_followers} of {2_pop} citizens : {3_city}</Text>
 		</Row>
-
 		<Row Tag="TXT_KEY_EA_RELIGION_FOUNDER">
 			<Text>Founder: {1_civName}</Text>
 		</Row>
@@ -333,14 +329,12 @@
 		<Row Tag="TXT_KEY_EA_RELIGION_ADDED_WITH_POLICY">
 			<Text>(Added when any {1_fallenState} civilization adopts {2_policyName}.)</Text>
 		</Row>
-
 		<Row Tag="TXT_KEY_EA_RELIGION_FALLEN">
 			<Text>Fallen</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_RELIGION_NON_FALLEN">
 			<Text>non-Fallen</Text>
 		</Row>
-		
 		
 		<!-- Mercenary popup -->
 		<Row Tag="TXT_KEY_EA_HIRE_MERCENARY">
@@ -529,7 +523,6 @@
 		</Row>
 		
 		<!-- Wonders, Epics & Artifacts -->
-
 		<Row Tag="TXT_KEY_EA_WONDER_STANHENCG">
 			<Text>Stânhencg</Text>
 		</Row>
@@ -557,7 +550,6 @@
 		<Row Tag="TXT_KEY_EA_WONDER_GREAT_LIBRARY">
 			<Text>Great Library</Text>
 		</Row>
-
 		<Row Tag="TXT_KEY_EA_EPIC_VOLUSPA">
 			<Text>Völuspá</Text>
 		</Row>
@@ -573,7 +565,6 @@
 		<Row Tag="TXT_KEY_EA_EPIC_HYMISKVITHA">
 			<Text>Hymiskvitha</Text>
 		</Row>
-
 		<Row Tag="TXT_KEY_EA_ARTIFACT_TOME_OF_EQUUS">
 			<Text>Tome of Equus</Text>
 		</Row>
@@ -602,8 +593,14 @@
 			<Text>Tome of Metallurgy</Text>
 		</Row>
 
+		<!-- ReturnCivilianPopup -->
+		<Row Tag="TXT_KEY_EA_POP_RETURN_CIVILIAN_CONFIRMATION_TAKE_SLAVES">
+			<Text>Take them as slaves</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POP_RETURN_CIVILIAN_CONFIRMATION_TAKE_KILL">
+			<Text>Kill them</Text>
+		</Row>
 		
-	
 		<!-- Religious Conversion -->
 		<Row Tag="TXT_KEY_EA_RELIGIOUS_CONVERSION">
 			<Text>Your civilization has gained [COLOR_POSITIVE_TEXT]{1_religion}[ENDCOLOR] as its dominant religion.</Text>

@@ -9,6 +9,15 @@ include ("EaPlotUtils.lua")
 local MapModData = MapModData
 MapModData.gT = MapModData.gT or {}
 local gT = MapModData.gT
+
+--we do some tree customization by player
+local g_iActivePlayer = Game.GetActivePlayer()
+local g_activePlayer = Players[g_iActivePlayer]
+local function OnActivePlayerChanged(iActivePlayer, iPrevActivePlayer)
+	g_iActivePlayer = iActivePlayer
+	g_activePlayer = Players[g_iActivePlayer]
+end
+Events.GameplaySetActivePlayer.Add(OnActivePlayerChanged)
 --end Paz add
 
 -- List the textures that we will need here
@@ -168,22 +177,36 @@ function AddSmallButtonsToTechButton( thisTechButtonInstance, tech, maxSmallButt
 
 	-- if this tech grants this player the ability to perform this action (usually only workers can do these)
 	for thisBuildInfo in GameInfo.Builds(string.format("PrereqTech = '%s'", techType)) do
-		if thisBuildInfo.ImprovementType then
-			if validImprovementBuilds[thisBuildInfo.ImprovementType] == thisBuildInfo.ImprovementType then
+
+		--Paz add
+		local bShow = thisBuildInfo.ShowInTechTree
+		if thisBuildInfo.PrereqPolicy and not g_activePlayer:HasPolicy(GameInfoTypes[thisBuildInfo.PrereqPolicy]) then
+			bShow = false
+		end
+		if thisBuildInfo.DisallowPolicy and g_activePlayer:HasPolicy(GameInfoTypes[thisBuildInfo.DisallowPolicy]) then
+			bShow = false
+		end
+		--end Paz add
+
+		--Paz: enclosed block below in bShow test
+		if bShow then
+			if thisBuildInfo.ImprovementType then
+				if validImprovementBuilds[thisBuildInfo.ImprovementType] == thisBuildInfo.ImprovementType then
+					local buttonName = "B"..tostring(buttonNum);
+					local thisButton = thisTechButtonInstance[buttonName];
+					if thisButton then
+						AdjustArtOnGrantedActionButton( thisButton, thisBuildInfo, textureSize );
+ 						buttonNum = buttonNum + 1;
+ 					end
+ 				end
+			else
 				local buttonName = "B"..tostring(buttonNum);
 				local thisButton = thisTechButtonInstance[buttonName];
 				if thisButton then
 					AdjustArtOnGrantedActionButton( thisButton, thisBuildInfo, textureSize );
  					buttonNum = buttonNum + 1;
  				end
- 			end
-		else
-			local buttonName = "B"..tostring(buttonNum);
-			local thisButton = thisTechButtonInstance[buttonName];
-			if thisButton then
-				AdjustArtOnGrantedActionButton( thisButton, thisBuildInfo, textureSize );
- 				buttonNum = buttonNum + 1;
- 			end
+			end
 		end
 	end
 	

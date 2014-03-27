@@ -158,7 +158,7 @@ function UpdateUnitActions( unit )
 	local iUnit = unit:GetID()
 	local bGreatPerson = unit:IsGreatPerson()
 	local unitTypeInfo = GameInfo.Units[unit:GetUnitType()]
-	local eaGPCombatUnitRole = unitTypeInfo.EaGPCombatRole
+	local eaGPTempType = unitTypeInfo.EaGPTempRole
 	local iPerson, eaPerson
 	local inProgressEaActionID = -1	
 
@@ -356,7 +356,7 @@ function UpdateUnitActions( unit )
         end
         
 		--Paz add
-		bShowActionButton = not eaGPCombatUnitRole and bShowActionButton
+		bShowActionButton = not eaGPTempType and bShowActionButton
 		--end Paz add
 
 		-- test CanHandleAction w/ visible flag (ie COULD train if ... )
@@ -876,7 +876,7 @@ function UpdateUnitStats(unit)
     if(unit:GetDomainType() == DomainTypes.DOMAIN_AIR) then
         strength, morale = 0, 0
 		ranged = unit:GetBaseRangedCombatStrength()
-	elseif not unit:IsEmbarked() and not unit:IsGreatPerson() and not GameInfo.Units[unit:GetUnitType()].EaGPCombatRole then
+	elseif not unit:IsEmbarked() and not unit:IsGreatPerson() and not GameInfo.Units[unit:GetUnitType()].EaGPTempRole then
         strength = unit:GetBaseCombatStrength()
 		ranged = unit:GetBaseRangedCombatStrength()
 		morale = unit:GetMorale()

@@ -17,19 +17,23 @@ EA_DLL_VERSION = 1
 CombatResult(iAttackingPlayer, iAttackingUnit, attackerDamage, attackerFinalDamage, attackerMaxHP,iDefendingPlayer, iDefendingUnit, defenderDamage, defenderFinalDamage, defenderMaxHP, iInterceptingPlayer, iInterceptingUnit, interceptorDamage, plotX, plotY)
 CombatEnded(iAttackingPlayer, iAttackingUnit, attackerDamage, attackerFinalDamage, attackerMaxHP,iDefendingPlayer, iDefendingUnit, defenderDamage, defenderFinalDamage, defenderMaxHP, iInterceptingPlayer, iInterceptingUnit, interceptorDamage, plotX, plotY)
 UnitSetXYPlotEffect(iPlayer, iUnit, x, y, plotEffectID, plotEffectStrength, plotEffectPlayer, plotEffectCaster)
-
+UnitCaptured(iPlayer, iUnit)
 
 --CallTestAll
 CanAutoSave(bInitial, bPostTurn)
 MustAbortAttack(iAttackingPlayer, iAttackingUnit, attackerDamage, attackerFinalDamage, attackerMaxHP,iDefendingPlayer, iDefendingUnit, defenderDamage, defenderFinalDamage, defenderMaxHP, iInterceptingPlayer, iInterceptingUnit, interceptorDamage, plotX, plotY)
 CanMeetTeam(iTeam1, iTeam2)
 CanContactMajorTeam(iTeam1, iTeam2)
-CityCanAcquirePlot(iPlayer, iCity, x, y)	--not yet implemented
+CityCanAcquirePlot(iPlayer, iCity, x, y)
+UnitTakingPromotion(iPlayer, iUnit, promotionID)
+CanCaptureCivilian(iPlayer, iUnit)				--not used because it won't allow recapture & civilian returns (used UnitCaptured instead)
+
 
 --CallAccumulator
 PlayerTechCostMod(iPlayer, techID)
+PlayerMinorFriendshipAnchor(eMajor, eMinor)
 
---Added but not currently compiled:
+--Added but currently disabled:
 //CityCanRangeStrikeAt(iAttacker, iCity, x, y)	CallTestAll
 
 --------------------------------------------------------------
@@ -84,16 +88,16 @@ int					GetGPAttackState()
 void				SetGPAttackState(int iIndex)
 int					TurnsToReachTarget(Plot targetPlot, bool bReusePaths, bool bIgnoreUnits, bool bIgnoreStacking)		--0 means can reach with movement left; returns 2147483647 if no path
 
-
+--------------------------------------------------------------
 Notes:
-PersonIndex has no effect on dll side; only used by Lua.
-Morale is used on dll side to modify combat strength.
-GPAttackState is set on Lua side but used by dll to control combat rules:
- -1  GP Default: can only attack other GPs; weak defender for defender unit selection
-  0  Warrior Default: strong defender if attack is from GP
-  1  Warrior Charge (temp): must be a normal combat unit to attack
-  2  Warrior Challenge (temp): must be a Warrior GP to attack
-Get/SetBaseCombatStrength are useful now because combat value is persisted and Get returns actual unit value rather than table value. 
+1. PersonIndex has no effect on dll side; only used by Lua.
+2. Morale is used on dll side to modify combat strength.
+3. GPAttackState is set on Lua side but used by dll to control combat rules:
+	 -1  GP Default: can only attack other GPs; weak defender for defender unit selection
+	  0  Warrior Default: strong defender if attack is from GP; otherwise weak defender
+	  1  Warrior Charge (temp): must be a normal combat unit to attack
+	  2  Warrior Challenge (temp): must be a Warrior GP to attack
+4. Get/SetBaseCombatStrength are useful now because combat value is persisted and Get returns actual unit value rather than table value. 
 
 
 

@@ -25,8 +25,6 @@ local POLICY_THEISM_FINISHER =		GameInfoTypes.POLICY_THEISM_FINISHER
 local POLICY_ANTI_THEISM_FINISHER =	GameInfoTypes.POLICY_ANTI_THEISM_FINISHER
 local TECH_THAUMATURGY =			GameInfoTypes.TECH_THAUMATURGY
 
-local UNIT_EIDOLON =				GameInfoTypes.UNIT_EIDOLON
-
 local PROMOTION_SORCERER =			GameInfoTypes.PROMOTION_SORCERER
 
 local FALLEN_ID_SHIFT = POLICY_ANTI_THEISM - POLICY_THEISM
@@ -330,8 +328,18 @@ function FoundReligion(iPlayer, iCity, religionID)	--call should make sure that 
 	local belief2ID = religion.EaInitialBelief2 and GameInfoTypes[religion.EaInitialBelief2] or -1
 	local belief3ID = religion.EaInitialBelief3 and GameInfoTypes[religion.EaInitialBelief3] or -1
 
-	
 	Game.FoundReligion(iPlayer, religionID, nil, beliefID, belief2ID, belief3ID, -1, city)
+
+	while city:GetReligiousMajority() ~= religionID do	--make it so
+		local convertID, followers
+		repeat
+			convertID = Rand(HIGHEST_RELIGION_ID + 2, "hello") - 1
+			followers = (convertID == -1 or gReligions[convertID]) and city:GetNumFollowers(convertID)
+		until followers
+		print("Converting random religions until founded is majority; converting religionID = ", convertID)
+		local convertPercent = Floor(1 + 100 / followers)
+		city:ConvertPercentFollowers(religionID, convertID, convertPercent)
+	end
 
 	if religionID == RELIGION_ANRA and not eaPlayer.bIsFallen then
 		BecomeFallen(iPlayer)
@@ -475,18 +483,21 @@ function BecomeFallen(iPlayer)		--this could happen before, during or after the 
 				if eaPerson.subclass == "Priest" then	--still uses priest unitType, but gains thaumaturge class
 					eaPerson.subclass = "FallenPriest"
 					eaPerson.class2 = "Thaumaturge"
+					eaPerson.unitTypeID = GameInfoTypes.UNIT_FALLENPRIEST
+					local newUnit = player:InitUnit(GameInfoTypes.UNIT_FALLENPRIEST, unit:GetX(), unit:GetY())
+					MapModData.bBypassOnCanSaveUnit = true
+					newUnit:Convert(unit, false)
+					newUnit:SetPersonIndex(iPerson)
+					eaPerson.iUnit = newUnit:GetID()
 				elseif eaPerson.subclass == "Paladin" then
 					eaPerson.subclass = "Eidolon"
-					eaPerson.unitTypeID = UNIT_EIDOLON
-					if unit then			
-						local newUnit = player:InitUnit(GameInfoTypes.UNIT_EIDOLON, unit:GetX(), unit:GetY())
-						newUnit:Convert(unit)
-						iNewUnit = newUnit:GetID()
-						eaPerson.iUnit = iNewUnit
-					end
-			
+					eaPerson.unitTypeID = GameInfoTypes.UNIT_EIDOLON
+					local newUnit = player:InitUnit(GameInfoTypes.UNIT_EIDOLON, unit:GetX(), unit:GetY())
+					MapModData.bBypassOnCanSaveUnit = true
+					newUnit:Convert(unit, false)
+					newUnit:SetPersonIndex(iPerson)
+					eaPerson.iUnit = newUnit:GetID()
 				end
-
 			end
 		end
 	end

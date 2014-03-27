@@ -150,6 +150,22 @@ for row in GameInfo.EaCiv_Races() do
 	end
 end
 
+
+gg_bNormalCombatUnit = {}
+gg_bNormalLivingCombatUnit = {}
+gg_gpTempType = {}
+for unitInfo in GameInfo.Units() do
+	if unitInfo.EaGPTempRole then
+		gg_gpTempType[unitInfo.ID] = unitInfo.EaGPTempRole
+	elseif not unitInfo.Special and unitInfo.CombatLimit == 100 then
+		gg_bNormalCombatUnit[unitInfo.ID] = true
+		if unitInfo.EaLiving then
+			gg_bNormalLivingCombatUnit[unitInfo.ID] = true
+		end
+	end
+end
+
+
 gg_naturalWonders = {}	--index by featureID; filled in EaPlots Init
 ----------------------------------------------------------------------------------------------------------------------------
 -- State Shared tables
@@ -223,22 +239,19 @@ gg_cityCampResDistMatrix = {}
 gg_fishingRange = {}
 gg_whalingRange = {}
 gg_campRange = {}
+gg_slaveryPlayer = {[BARB_PLAYER_INDEX] = true}
 
 --other tables using iPlayer
 gg_eaNamePlayerTable = {}
 
---others
+--other tables
 gg_aiOptionValues = {}
 gg_peopleEverLivedByRowID = {}
---gg_gpAttackUnits = {pos = 0}
---gg_gpAttackUnitsRemovedUnit = {}
 gg_lakes = {}				--each is table with .x, .y
 gg_fishingBoatResources = {}
 gg_whales = {}
 gg_campResources = {}
-
 gg_tradeAvailableTable = {}
-
 gg_bHasPatronage = {}
 gg_teamCanMeetGods = {}
 gg_teamCanMeetFay = {}

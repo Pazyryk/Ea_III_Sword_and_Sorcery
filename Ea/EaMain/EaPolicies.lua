@@ -34,24 +34,26 @@ local TECH_SLAVERY =				GameInfoTypes.TECH_SLAVERY
 local TECH_SLAVE_RAIDERS =			GameInfoTypes.TECH_SLAVE_RAIDERS
 local TECH_SLAVE_ARMIES =			GameInfoTypes.TECH_SLAVE_ARMIES
 
-local EACIV_SKOGR =				GameInfoTypes.EACIV_SKOGR
-local EACIV_ERIU =				GameInfoTypes.EACIV_ERIU
+local EACIV_SKOGR =					GameInfoTypes.EACIV_SKOGR
+local EACIV_ERIU =					GameInfoTypes.EACIV_ERIU
 local EACIV_NEMEDIA =				GameInfoTypes.EACIV_NEMEDIA
 local EACIV_MOR =					GameInfoTypes.EACIV_MOR
-local EACIV_MORD = 				GameInfoTypes.EACIV_MORD
-local EACIV_PARTHOLON =			GameInfoTypes.EACIV_PARTHOLON
-local EACIV_FODLA =				GameInfoTypes.EACIV_FODLA
+local EACIV_MORD = 					GameInfoTypes.EACIV_MORD
+local EACIV_PARTHOLON =				GameInfoTypes.EACIV_PARTHOLON
+local EACIV_FODLA =					GameInfoTypes.EACIV_FODLA
 local EACIV_THEANON =				GameInfoTypes.EACIV_THEANON
-local EACIV_AES_DANA =			GameInfoTypes.EACIV_AES_DANA
+local EACIV_AES_DANA =				GameInfoTypes.EACIV_AES_DANA
 
 --localized game and global tables
-local Players =			Players
-local Teams =			Teams
-local gPlayers =		gPlayers
-local gEpics =			gEpics
-local bFullCivAI =		MapModData.bFullCivAI
-local fullCivs =		MapModData.fullCivs
-local gg_animalSpawnInhibitTeams = gg_animalSpawnInhibitTeams
+local Players =						Players
+local Teams =						Teams
+local gPlayers =					gPlayers
+local gEpics =						gEpics
+local bFullCivAI =					MapModData.bFullCivAI
+local fullCivs =					MapModData.fullCivs
+local cityStates =					MapModData.cityStates
+local gg_animalSpawnInhibitTeams =	gg_animalSpawnInhibitTeams
+local gg_slaveryPlayer =			gg_slaveryPlayer
 
 --localized game and library functions
 local Floor = math.floor
@@ -61,13 +63,10 @@ local HandleError21 =	HandleError21
 
 --file functions
 local PolicyBranchReq = {}
-OnPolicyBranchOpened = {}
 local OnPolicyAdopted = {}
 
 --file shared
---local g_policyBranchOpened = -1
---local g_iPlayer = -1
---local g_turn = -1
+
 
 --------------------------------------------------------------
 -- Cached Tables
@@ -111,6 +110,15 @@ function EaPoliciesInit(bNewGame)
 			if not player:HasPolicy(GameInfoTypes.POLICY_FERAL_BOND) then
 				NRArrayAdd(gg_animalSpawnInhibitTeams, player:GetTeam())
 			end
+			if player:HasPolicy(GameInfoTypes.POLICY_SLAVERY) then
+				gg_slaveryPlayer[iPlayer] = true
+			end
+		end
+	end
+	for iPlayer, eaPlayer in pairs(cityStates) do
+		local player = Players[iPlayer]
+		if player:GetMinorCivTrait() == GameInfoTypes.MINOR_TRAIT_SLAVERS then
+			gg_slaveryPlayer[iPlayer] = true
 		end
 	end
 end
@@ -251,8 +259,8 @@ function OnPlayerAdoptPolicyBranch(iPlayer, policyBranchTypeID)					--called by 
 	elseif policyBranchTypeID == POLICY_BRANCH_SLAVERY then
 		local player = Players[iPlayer]
 		local eaPlayer = gPlayers[iPlayer]
-		--local team = Teams[Players[iPlayer]:GetTeam()]
-		--team:SetHasTech(TECH_SLAVERY, true)		--don't need anymore
+		
+		gg_slaveryPlayer[iPlayer] = true
 
 		--need to know if opener is already adopted when this event fires:
 		print("Opened Slavery branch; has Slavery?:", iPlayer, player:HasPolicy(GameInfoTypes.POLICY_SLAVERY))
@@ -354,7 +362,6 @@ function OnPlayerAdoptPolicyDelayedEffect()		--called by closing policy window a
 end
 LuaEvents.EaPoliciesOnPlayerAdoptPolicyDelayedEffect.Add(OnPlayerAdoptPolicyDelayedEffect)
 
-
 local function OnPlayerCanAdoptPolicyBranch(iPlayer, policyBranchTypeID)
 	Dprint("OnPlayerCanAdoptPolicyBranch ", iPlayer, policyBranchTypeID)
 	if policyBranchTypeID == POLICY_BRANCH_THEISM then
@@ -367,6 +374,12 @@ local function OnPlayerCanAdoptPolicyBranch(iPlayer, policyBranchTypeID)
 	return true
 end
 GameEvents.PlayerCanAdoptPolicyBranch.Add(function(iPlayer, policyBranchTypeID) return HandleError21(OnPlayerCanAdoptPolicyBranch, iPlayer, policyBranchTypeID) end)
+
+--Disabled below because it doesn't allow for capture returns
+--local function OnCanCaptureCivilian(iPlayer, iUnit)
+--	return gg_slaveryPlayer[iPlayer]
+--end
+--GameEvents.CanCaptureCivilian.Add(function(iPlayer, iUnit) return HandleError21(OnCanCaptureCivilian, iPlayer, iUnit) end)
 
 --------------------------------------------------------------
 -- Policy-specific

@@ -24,10 +24,7 @@ CREATE TABLE EaActions ('ID' INTEGER PRIMARY KEY AUTOINCREMENT,
 						--AI
 						'AICombatRole' TEXT DEFAULT NULL,	-- =NULL,  "CityCapture", "CrowdControl", "Any"
 						'AIDontCombatOverride' BOOLEAN DEFAULT NULL,	-- =NULL or 1 (eg, Citadel) Otherwise, GP with combat role will drop what they are doing (if <1/2 done) and go to a combat zone
-						'AITarget'  TEXT DEFAULT NULL,		--"AllCities", "OwnCities", "OwnClosestCity" (Epics), "OwnClosestLibraryCity" (Tomes), "OwnCapital",
-															--"ForeignCities", "ForeignCapitals", "WorkPlot", "NonWorkPlot", "Protection" (Fort, Citadel)
-															-- AI needs this heuristic so it knows what potential targets to test/evaluate.
-															-- Don’t set if AICombatRole has a value. Leave NULL for special actions handled individually in AI code (e.g., leader & city resident).
+						'AITarget'  TEXT DEFAULT NULL,		-- Search heuristic. See AITarget methods in EaAIActions.lua
 						'AISimpleYield' INTEGER DEFAULT 0,	-- Sets the "per turn payoff" value (p); not needed if AI values set in specific SetAIValues function in EaAction.lua
 						'AIAdHocValue' INTEGER DEFAULT 0,	-- Sets an "instant payoff" value (i); not needed if AI values set in specific SetAIValues function in EaAction.lua
 						--Spells (if set, all "caster reqs" below are treated as "learn prereq"; they don't apply to casting)
@@ -168,26 +165,32 @@ UPDATE EaActions SET TurnsToComplete = 1000 WHERE Type = 'EA_ACTION_TAKE_RESIDEN
 UPDATE EaActions SET TurnsToComplete = 1, StayInvisible = 1 WHERE Type = 'EA_ACTION_HEAL';
 
 --GP yield actions
-INSERT INTO EaActions (Type,			Description,						Help,										GPOnly,	NoGPNumLimit,	UIType,		AITarget,			GPClass,		City,		GPModType1,				TurnsToComplete,	ProgressHolder,	IconIndex,	IconAtlas) VALUES
-('EA_ACTION_BUILD',						'TXT_KEY_EA_ACTION_BUILD',			'TXT_KEY_EA_ACTION_BUILD_HELP',				1,		1,				'Action',	'OwnClosestCity',	'Engineer',		'Own',		'EAMOD_CONSTRUCTION',	1000,				'Person',		5,			'TECH_ATLAS_1'			),
-('EA_ACTION_TRADE',						'TXT_KEY_EA_ACTION_TRADE',			'TXT_KEY_EA_ACTION_TRADE_HELP',				1,		1,				'Action',	'OwnClosestCity',	'Merchant',		'Own',		'EAMOD_TRADE',			1000,				'Person',		17,			'TECH_ATLAS_1'			),
-('EA_ACTION_RESEARCH',					'TXT_KEY_EA_ACTION_RESEARCH',		'TXT_KEY_EA_ACTION_RESEARCH_HELP',			1,		1,				'Action',	'OwnClosestCity',	'Sage',			'Own',		'EAMOD_SCHOLARSHIP',	1000,				'Person',		11,			'BW_ATLAS_1'			),
-('EA_ACTION_PERFORM',					'TXT_KEY_EA_ACTION_PERFORM',		'TXT_KEY_EA_ACTION_PERFORM_HELP',			1,		1,				'Action',	'OwnClosestCity',	'Artist',		'Own',		'EAMOD_BARDING',		1000,				'Person',		44,			'BW_ATLAS_1'			),
-('EA_ACTION_WORSHIP',					'TXT_KEY_EA_ACTION_WORSHIP',		'TXT_KEY_EA_ACTION_WORSHIP_HELP',			1,		1,				'Action',	'OwnClosestCity',	'Devout',		'Own',		'EAMOD_DEVOTION',		1000,				'Person',		17,			'BW_ATLAS_2'			),
-('EA_ACTION_CHANNEL',					'TXT_KEY_EA_ACTION_CHANNEL',		'TXT_KEY_EA_ACTION_CHANNEL_HELP',			1,		1,				'Action',	'OwnClosestCity',	'Thaumaturge',	'Not',		'EAMOD_EVOCATION',		1000,				'Person',		17,			'BW_ATLAS_2'			);
+INSERT INTO EaActions (Type,			Description,							Help,										GPOnly,	NoGPNumLimit,	UIType,		AITarget,			GPClass,		City,		GPModType1,				TurnsToComplete,	ProgressHolder,	IconIndex,	IconAtlas) VALUES
+('EA_ACTION_BUILD',						'TXT_KEY_EA_ACTION_BUILD',				'TXT_KEY_EA_ACTION_BUILD_HELP',				1,		1,				'Action',	'OwnClosestCity',	'Engineer',		'Own',		'EAMOD_CONSTRUCTION',	1000,				'Person',		5,			'TECH_ATLAS_1'			),
+('EA_ACTION_TRADE',						'TXT_KEY_EA_ACTION_TRADE',				'TXT_KEY_EA_ACTION_TRADE_HELP',				1,		1,				'Action',	'OwnClosestCity',	'Merchant',		'Own',		'EAMOD_TRADE',			1000,				'Person',		17,			'TECH_ATLAS_1'			),
+('EA_ACTION_RESEARCH',					'TXT_KEY_EA_ACTION_RESEARCH',			'TXT_KEY_EA_ACTION_RESEARCH_HELP',			1,		1,				'Action',	'OwnClosestCity',	'Sage',			'Own',		'EAMOD_SCHOLARSHIP',	1000,				'Person',		11,			'BW_ATLAS_1'			),
+('EA_ACTION_PERFORM',					'TXT_KEY_EA_ACTION_PERFORM',			'TXT_KEY_EA_ACTION_PERFORM_HELP',			1,		1,				'Action',	'OwnClosestCity',	'Artist',		'Own',		'EAMOD_BARDING',		1000,				'Person',		44,			'BW_ATLAS_1'			),
+('EA_ACTION_WORSHIP',					'TXT_KEY_EA_ACTION_WORSHIP',			'TXT_KEY_EA_ACTION_WORSHIP_HELP',			1,		1,				'Action',	'OwnClosestCity',	'Devout',		'Own',		'EAMOD_DEVOTION',		1000,				'Person',		17,			'BW_ATLAS_2'			),
+('EA_ACTION_CHANNEL',					'TXT_KEY_EA_ACTION_CHANNEL',			'TXT_KEY_EA_ACTION_CHANNEL_HELP',			1,		1,				'Action',	'OwnTower',			'Thaumaturge',	'Not',		'EAMOD_EVOCATION',		1000,				'Person',		17,			'BW_ATLAS_2'			);
 
 UPDATE EaActions SET GPModType2 = 'EAMOD_RITUALISM' WHERE Type = 'EA_ACTION_WORSHIP';
 UPDATE EaActions SET NotGPClass = 'Devout', TowerTempleOnly = 1 WHERE Type = 'EA_ACTION_CHANNEL';
 
 
 --Warrior actions
-INSERT INTO EaActions (Type,			Description,							Help,										GPOnly,	UIType,		GPClass,	AITarget,		AICombatRole,	GPModType1,				TurnsToComplete,	HumanVisibleFX,	IconIndex,	IconAtlas) VALUES
-('EA_ACTION_LEAD_CHARGE',				'TXT_KEY_EA_ACTION_LEAD_CHARGE',		'TXT_KEY_EA_ACTION_LEAD_CHARGE_HELP',		1,		'Action',	'Warrior',	NULL,			'Any',			'EAMOD_COMBAT',			1,					1,				6,			'BW_ATLAS_1'	),
-('EA_ACTION_RALLY_TROOPS',				'TXT_KEY_EA_ACTION_RALLY_TROOPS',		'TXT_KEY_EA_ACTION_RALLY_TROOPS_HELP',		1,		'Action',	'Warrior',	NULL,			'Any',			'EAMOD_LEADERSHIP',		1,					1,				33,			'TECH_ATLAS_1'	),
---('EA_ACTION_FORTIFY_TROOPS',			'TXT_KEY_EA_ACTION_FORTIFY_TROOPS',		'TXT_KEY_EA_ACTION_FORTIFY_TROOPS_HELP',	1,		'Action',	'Warrior',	NULL,			'Any',			'EAMOD_LEADERSHIP',		1,					1,				6,			'BW_ATLAS_1'	),
-('EA_ACTION_TRAIN_UNIT',				'TXT_KEY_EA_ACTION_TRAIN_UNIT',			'TXT_KEY_EA_ACTION_TRAIN_UNIT_HELP',		1,		'Action',	'Warrior',	'OwnLandUnits',	NULL,			'EAMOD_LEADERSHIP',		1000,				1,				5,			'BW_ATLAS_1'	);
+INSERT INTO EaActions (Type,			Description,							Help,										GPOnly,	UIType,		GPClass,		AITarget,		AICombatRole,	GPModType1,				TurnsToComplete,	HumanVisibleFX,	IconIndex,	IconAtlas) VALUES
+('EA_ACTION_LEAD_CHARGE',				'TXT_KEY_EA_ACTION_LEAD_CHARGE',		'TXT_KEY_EA_ACTION_LEAD_CHARGE_HELP',		1,		'Action',	'Warrior',		NULL,			'Any',			'EAMOD_COMBAT',			1,					1,				6,			'BW_ATLAS_1'	),
+('EA_ACTION_RALLY_TROOPS',				'TXT_KEY_EA_ACTION_RALLY_TROOPS',		'TXT_KEY_EA_ACTION_RALLY_TROOPS_HELP',		1,		'Action',	'Warrior',		NULL,			'Any',			'EAMOD_LEADERSHIP',		1,					1,				33,			'TECH_ATLAS_1'	),
+--('EA_ACTION_FORTIFY_TROOPS',			'TXT_KEY_EA_ACTION_FORTIFY_TROOPS',		'TXT_KEY_EA_ACTION_FORTIFY_TROOPS_HELP',	1,		'Action',	'Warrior',		NULL,			'Any',			'EAMOD_LEADERSHIP',		1,					1,				6,			'BW_ATLAS_1'	),
+('EA_ACTION_TRAIN_UNIT',				'TXT_KEY_EA_ACTION_TRAIN_UNIT',			'TXT_KEY_EA_ACTION_TRAIN_UNIT_HELP',		1,		'Action',	'Warrior',		'OwnLandUnits',	NULL,			'EAMOD_LEADERSHIP',		1000,				1,				5,			'BW_ATLAS_1'	);
 
-UPDATE EaActions SET FinishMoves = NULL, GPModType2 = 'EAMOD_LEADERSHIP' WHERE Type = 'EA_ACTION_LEAD_CHARGE';
+UPDATE EaActions SET FinishMoves = NULL WHERE Type = 'EA_ACTION_LEAD_CHARGE';
+
+--Misc actions
+INSERT INTO EaActions (Type,			Description,							Help,										GPOnly,	UIType,		GPClass,		AITarget,		AICombatRole,	GPModType1,				TurnsToComplete,	ProgressHolder,	HumanVisibleFX,	IconIndex,	IconAtlas		) VALUES
+('EA_ACTION_OCCUPY_TOWER',				'TXT_KEY_EA_ACTION_OCCUPY_TOWER',		'TXT_KEY_EA_ACTION_OCCUPY_TOWER_HELP',		1,		'Action',	'Thaumaturge',	'VacantTower',	NULL,			NULL,					3,					'Person',		1,				6,			'BW_ATLAS_1'	);
+
+UPDATE EaActions SET NotGPClass = 'Devout' WHERE Type = 'EA_ACTION_OCCUPY_TOWER';
 
 --Prophecies
 INSERT INTO EaActions (Type,			Description,								Help,											GPOnly,	UIType,		DoXP,	AITarget,		AIAdHocValue,	GPClass,	City,		UniqueType,	PlayAnywhereSound,					IconIndex,	IconAtlas) VALUES
@@ -216,7 +219,7 @@ INSERT INTO EaActions (Type,			Description,								GPOnly,	TechReq,				UIType,		
 ('EA_ACTION_DA_BAOEN_SI',				'TXT_KEY_EA_ACTION_DA_BAOEN_SI',			1,		'TECH_ARCHITECTURE',	'Build',	100,		'OwnCities',		'Engineer',		'Own',	NULL,			'EAMOD_CONSTRUCTION',	25,					'City',			NULL,					NULL,						'World',	'EA_WONDER_DA_BAOEN_SI',		'BUILDING_DA_BAOEN_SI',		'BUILDING_DA_BAOEN_SI',		'BUILDING_DA_BAOEN_SI_MOD',		16,			'BW_ATLAS_2'			),
 --('EA_ACTION_GREAT_LIBRARY',			'TXT_KEY_EA_ACTION_GREAT_LIBRARY',			1,		'TECH_WRITING',			'Build',	100,		'OwnCities',		'Sage',			'Own',	NULL,			'EAMOD_SCHOLARSHIP',	25,					'City',			NULL,					NULL,						'World',	'EA_WONDER_GREAT_LIBRARY',		'BUILDING_GREAT_LIBRARY',	'BUILDING_GREAT_LIBRARY',	NULL,							1,			'BW_ATLAS_2'			),	--Ughhh. This CTDs when completed. Did not CTD when substituting BUILDING_UUC_YABNAL. 'EA_WONDER_GREAT_LIBRARY',		'BUILDING_GREAT_LIBRARY',	'BUILDING_GREAT_LIBRARY',	'BUILDING_GREAT_LIBRARY_MOD'
 ('EA_ACTION_NATIONAL_TREASURY',			'TXT_KEY_EA_ACTION_NATIONAL_TREASURY',		1,		'TECH_COINAGE',			'Build',	100,		'OwnCities',		'Merchant',		'Own',	NULL,			'EAMOD_TRADE',			25,					'City',			NULL,					NULL,						'National',	NULL,							NULL,						NULL,						'BUILDING_NATIONAL_TREASURY',	1,			'NEW_BLDG_ATLAS_DLC'	),
-('EA_ACTION_ARCANE_TOWER',				'TXT_KEY_EA_ACTION_ARCANE_TOWER',			1,		'TECH_THAUMATURGY',		'Build',	100,		'WonderNoWorkPlot',	'Thaumaturge',	'Not',	1,				NULL,					4,					'Plot',			'BUILD_ARCANE_TOWER',	'IMPROVEMENT_ARCANE_TOWER',	NULL,		NULL,							NULL,						NULL,						NULL,							3,			'UNIT_ACTION_ATLAS_EXP2'	);
+('EA_ACTION_ARCANE_TOWER',				'TXT_KEY_EA_ACTION_ARCANE_TOWER',			1,		NULL,					'Build',	100,		'WonderNoWorkPlot',	'Thaumaturge',	'Not',	1,				NULL,					4,					'Plot',			'BUILD_ARCANE_TOWER',	'IMPROVEMENT_ARCANE_TOWER',	NULL,		NULL,							NULL,						NULL,						NULL,							3,			'UNIT_ACTION_ATLAS_EXP2'	);
 
 UPDATE EaActions SET PolicyReq = 'POLICY_PANTHEISM', GPSubclass = 'Druid' WHERE Type = 'EA_ACTION_STANHENCG';
 UPDATE EaActions SET AndTechReq = 'TECH_MASONRY' WHERE Type = 'EA_ACTION_MEGALOS_FAROS';

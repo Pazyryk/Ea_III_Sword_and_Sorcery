@@ -765,14 +765,14 @@ function InputHandler( uiMsg, wParam, lParam )
 			unit = UI.GetHeadSelectedUnit()
 			if not unit or unit:GetID() ~= MapModData.forcedUnitSelection then
 				print("!!!! Warning: There was a forced interface mode but no unit or wrong unit selected; canceling...")
-				LuaEvents.EaUnitsResetForcedSelectionUnit()
+				LuaEvents.EaUnitCombatResetForcedSelectionUnit()
 				bForcedInterfaceMode = false
 			end
 		end
 		local bResult = currentInterfaceModeHandler[uiMsg]( wParam, lParam )
 		if bForcedInterfaceMode and UI.GetInterfaceMode() ~= MapModData.forcedInterfaceMode then
 			print("Forced interface mode has been interupted; canceling...")
-			LuaEvents.EaUnitsResetForcedSelectionUnit()
+			LuaEvents.EaUnitCombatResetForcedSelectionUnit()
 			bForcedInterfaceMode = false
 		end
 		return bResult

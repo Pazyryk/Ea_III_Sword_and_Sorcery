@@ -63,6 +63,7 @@ include("EaReligions.lua")
 include("EaTechs.lua")
 include("EaCivNaming.lua")
 
+include("EaUnitCombat.lua")
 include("EaUnits.lua")
 include("EaYields.lua")
 include("EaDiplomacy.lua")			--depends on EaPolicies
@@ -141,6 +142,7 @@ local function DebugHidden(iPlayer)
 	local player = Players[iPlayer]
 	for unit in player:Units() do
 		print("!!!! ERROR: Hidden civ got a unit; gifted by AI? iPlayer/iUnit = ", iPlayer, unit:GetID())
+		MapModData.bBypassOnCanSaveUnit = true
 		unit:Kill(true, -1)
 	end
 end
@@ -237,7 +239,6 @@ local function OnPlayerDoTurn(iPlayer)	-- Runs at begining of turn for all livin
 		AnimalsPerTurn()
 		ReligionPerGameTurn()
 		CityStateFollowerCityCounting()
-		PeoplePerGameTurn()
 
 	elseif iPlayer == 1 then
 		timerHuman = Clock() - startHuman

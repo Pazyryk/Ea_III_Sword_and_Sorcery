@@ -201,15 +201,6 @@ end
 -- Interface
 --------------------------------------------------------------
 
-function PeoplePerGameTurn()
-	for iPerson, eaPerson in pairs(gPeople) do
-		if iPerson ~= 0 and not fullCivs[eaPerson.iPlayer] then
-			print("!!!! WARNING: Found GP not owned by full civ; attempting to reconect")
-			AttemptToReconectGP(iPerson, nil)
-		end
-	end
-end
-
 local skipPeople = {}
 
 function PeoplePerCivTurn(iPlayer)
@@ -246,23 +237,16 @@ function PeoplePerCivTurn(iPlayer)
 
 			print("Cycle GP", iPerson, eaPerson.iUnit, eaPerson.name, (eaPerson.subclass or eaPerson.class1), eaPerson.eaActionID ~= -1 and GameInfo.EaActions[eaPerson.eaActionID].Type or -1)
 
-			local unit = eaPerson.iUnit ~= -1 and player:GetUnitByID(eaPerson.iUnit)
-			local bKill = not unit
-
-			--Death by old age
-			local bDieOfOldAge = false
-			if eaPerson.predestinedAgeOfDeath and eaPerson.predestinedAgeOfDeath < age then	--predestined thwarts game reload
-				bKill = true
-				bDieOfOldAge = true
+			local unit = player:GetUnitByID(eaPerson.iUnit)
+			if not unit then
+				error("No unit for GP")
 			end
 
-			if bKill then
-				if bDieOfOldAge then
-					KillPerson(iPlayer, iPerson, "OldAge")
-				else
-					AttemptToReconectGP(iPerson, nil)
-				end
-				
+			--Death by old age
+			local bDieOfOldAge = eaPerson.predestinedAgeOfDeath and eaPerson.predestinedAgeOfDeath < age	--predestined thwarts game reload
+
+			if bDieOfOldAge then
+				KillPerson(iPlayer, iPerson, unit, nil, "OldAge")
 			else
 				local bIsLeader = iPerson == eaPlayer.leaderEaPersonIndex
 
@@ -277,7 +261,7 @@ function PeoplePerCivTurn(iPlayer)
 				chance = chance < 20 and 20 or chance
 				if Rand(100, "hello") < chance then
 					local xp = bIsLeader and 4 or 2
-					GiveGreatPersonXP(iPlayer, iPerson, xp)
+					unit:ChangeExperience(xp)
 				end
 
 				if not bHumanPlayer and unit:IsPromotionReady() then
@@ -371,10 +355,6 @@ function PeopleAfterTurn(iPlayer, bActionInfoPanelCall)
 	local bHumanPlayer = not bFullCivAI[iPlayer]
 	local bAllowHumanPlayerEndTurn = true	
 	local gameTurn = Game.GetGameTurn()
-	--if 0 < gg_gpAttackUnits.pos then
-	--	print("!!!! Warning: Player had GP Attack unit(s) at end of turn")
-	--	RemoveGPAttackUnits(iPlayer)
-	--end
 	local player = Players[iPlayer]
 	local eaPlayer = gPlayers[iPlayer]				
 	local deadCount = 0
@@ -383,11 +363,8 @@ function PeopleAfterTurn(iPlayer, bActionInfoPanelCall)
 		if eaPerson.iPlayer == iPlayer then
 
 			local unit = eaPerson.iUnit ~= -1 and player:GetUnitByID(eaPerson.iUnit)
-			if eaPerson.iUnit ~= -1 and not unit then
-				AttemptToReconectGP(iPerson, nil)
-				--KillPerson(iPlayer, iPerson)
-			elseif eaPerson.iUnit == -1 then
-				--not used for now
+			if not unit then
+				error("No unit for GP")
 			else
 				if bHumanPlayer and not bLastCallWasHumanPlayer then	--Human actions run automatically at turn end so that player can interupt
 					if unit:GetMoves() > 0 then
@@ -615,10 +592,10 @@ function ResetAgeOfDeath(iPerson)
 	return
 end
 
-function GetInfoFromSubclassClass(subclass, class)	--2nd arg is optional if 1st has value
+function GetInfoFromSubclassClass(subclass, class)	--class is ignored if subclass has a valid value
 	--return unitTypeID, class1, class2
 	if subclass == "Alchemist" then
-		return GameInfoTypes.UNIT_SAGE, "Sage", nil
+		return GameInfoTypes.UNIT_ALCHEMIST, "Sage", nil
 	elseif subclass == "Paladin" then
 		return GameInfoTypes.UNIT_PALADIN, "Warrior", "Devout"
 	elseif subclass == "Eidolon" then
@@ -630,7 +607,7 @@ function GetInfoFromSubclassClass(subclass, class)	--2nd arg is optional if 1st 
 	elseif subclass == "Priest" then
 		return GameInfoTypes.UNIT_PRIEST, "Devout", nil
 	elseif subclass == "FallenPriest" then
-		return GameInfoTypes.UNIT_PRIEST, "Devout", "Thaumaturge"
+		return GameInfoTypes.UNIT_FALLENPRIEST, "Devout", "Thaumaturge"
 	elseif subclass == "Witch" then
 		return GameInfoTypes.UNIT_WITCH, "Thaumaturge", nil
 	elseif subclass == "Sorcerer" then
@@ -759,33 +736,19 @@ end
 -- GP Utilities
 --------------------------------------------------------------
 
-function GetGPXY(eaPerson)
-	local iPlayer = eaPerson.iPlayer
-	local iUnit = eaPerson.iUnit
-	if iUnit == -1 then
-		return eaPerson.x, eaPerson.y
-	else
-		local player = Players[eaPerson.iPlayer]
-		local unit = player:GetUnitByID(iUnit)
-		if unit then
-			return unit:GetX(), unit:GetY()
-		else
-			KillGP(eaPerson)
-		end
-	end
-end
-
 function UseManaOrDivineFavor(iPlayer, iPerson, pts)
 	--reduces player faith, adds GP xp and depletes Ea's mana if appropriate
 	--returns false if player lacks sufficient mana or divine favor
 	--if iPerson is nil then no experience is given
 	local player = Players[iPlayer]
-	if player:GetFaith() < pts then return false end
+	local eaPlayer = gPlayers[iPlayer]
+	--if player:GetFaith() < pts then return false end		TO DO: mod to allow deficit
 	player:ChangeFaith(-pts)
 	if iPerson then
-		GiveGreatPersonXP(iPlayer, iPerson, pts)
+		local eaPerson = gPeople[iPerson]
+		local unit = player:GetUnitByID(eaPerson.iUnit)
+		unit:ChangeExperience(pts)
 	end
-	local eaPlayer = gPlayers[iPlayer]
 	if eaPlayer.bIsFallen then
 		gWorld.sumOfAllMana = gWorld.sumOfAllMana - pts
 		eaPlayer.manaConsumed = (eaPlayer.manaConsumed or 0) + pts
@@ -1018,25 +981,6 @@ function RemoveResidentEffects(city)	--if replaced or walks away
 	eaCity.residentSeaXP = nil
 end
 
---------------------------------------------------------------
--- XP and Promotions
---------------------------------------------------------------
-
-function GiveGreatPersonXP(iPlayer, iPerson, xp)	--use if not on map or maybe not on map
-	local eaPerson = gPeople[iPerson]
-	local iUnit = eaPerson.iUnit
-	if iUnit == -1 then
-		eaPerson.xp = eaPerson.xp + xp
-	else
-		local unit = Players[iPlayer]:GetUnitByID(iUnit)
-		if unit then
-			unit:ChangeExperience(xp)
-		else
-			AttemptToReconectGP(iPerson, nil)
-		end
-	end
-end
-
 
 --------------------------------------------------------------
 -- GP Modifier Functions
@@ -1181,8 +1125,7 @@ function AIInturruptGPsForLeadershipOpportunity(iPlayer)	--TO DO: Make this bett
 					iClosestGP = iPerson
 				end
 			else
-				AttemptToReconectGP(iPerson, nil)
-				--KillPerson(iPlayer, iPerson)
+				error("No unit for GP")
 			end
 		end
 	end
@@ -1191,37 +1134,44 @@ function AIInturruptGPsForLeadershipOpportunity(iPlayer)	--TO DO: Make this bett
 	end
 end
 
-function KillPerson(iPlayer, iPerson, deathType)
+function KillPerson(iPlayer, iPerson, unit, iKillerPlayer, deathType)
+	--Important! Supply unit if unit needs to be killed! iKillerPlayer is optional but only matters only if unit supplied
+	print("KillPerson(iPlayer, iPerson, unit, iKillerPlayer, deathType) ", iPlayer, iPerson, unit, iKillerPlayer, deathType)
 	local player = Players[iPlayer]
 	local eaPlayer = gPlayers[iPlayer]
 	local eaPerson = gPeople[iPerson]
 
-	print("KillPerson, removing from game ", iPlayer, iPerson, eaPerson.name)
-
-	--debug
-	if deathType ~= "OldAge" then
-		print("!!!! WARNING: GP death not from old age; iPlayer, iPerson, deathType = " .. iPlayer .. ", " .. iPerson .. ", " .. (deathType or "nil"))
+	--debug info
+	if unit then
+		print("Type = ", GameInfo.Units[unit:GetUnitType()].Type)
+		print("Original owner = ", unit:GetOriginalOwner())
+		print("Name = ", unit:GetName())
 	end
-
+	print("eaPerson.iPlayer = ", eaPerson.iPlayer)
+	print("eaPerson.iUnit = ", eaPerson.iUnit)
+	print("eaPerson.unitTypeID = ", eaPerson.unitTypeID, GameInfo.Units[eaPerson.unitTypeID].Type)
+	print("subclass = ", eaPerson.subclass)
+	print("class1 = ", eaPerson.class1)
+	print("class2 = ", eaPerson.class2)
+	print("race = ", eaPerson.race)
+	print("name = ", eaPerson.name)
+	
+	--notification
 	if iPlayer == g_iActivePlayer then
-		--Events.SerialEventGameMessagePopup( { Type = ButtonPopupTypes.BUTTONPOPUP_MODDER_1, Data1 = 2, Data2 = iPerson} )
 		LuaEvents.EaImagePopup({type = "PersonDeath", id = iPerson, sound = "AS2D_EVENT_NOTIFICATION_BAD"})	--TO DO! find unit killed sound
 	end
 
+	--housekeeping
 	skipPeople[iPerson] = nil
-	
 	if eaPerson.gotoEaActionID ~= -1 then
 		eaPlayer.aiUniqueTargeted[eaPerson.gotoEaActionID] = nil
-		--if eaPlayer.aiGPDoingOrOnWay[eaPerson.gotoEaActionID] then
-		--	eaPlayer.aiGPDoingOrOnWay[eaPerson.gotoEaActionID][eaPerson.gotoPlotIndex] = nil
-		--end
 	end
-	
 	ClearActionPlotTargetedForPerson(eaPlayer, iPerson)	--just to be safe
 	if eaPerson.eaActionID ~= -1 then
 		InterruptEaAction(iPlayer, iPerson)
 	end
 
+	--leader
 	if eaPlayer.leaderEaPersonIndex == iPerson then
 		print("Person was leader; changing player leader to No Leader")
 		eaPlayer.leaderEaPersonIndex = -1
@@ -1241,25 +1191,18 @@ function KillPerson(iPlayer, iPerson, deathType)
 		end
 	end
 
-	local unit = player:GetUnitByID(eaPerson.iUnit)
+	--remove unit if supplied
 	if unit then
-		unit:Kill(true, -1)
-	else
-		--Debug: find out if there is a GP around (or any unit) that isn't dying and has this person index
-		for iLoopPlayer = 0, BARB_PLAYER_INDEX do
-			local loopPlayer = Players[iLoopPlayer]
-			if loopPlayer:IsAlive() then
-				for unit in loopPlayer:Units() do
-					if unit:GetPersonIndex() == iPerson and not unit:IsDelayedDeath() then
-						unitType = GameInfo.Units[unit:GetUnitType()].Type
-						print(unit:IsDead())
-						error("Tried to kill GP but a living unit has this GP's person index; iOwner, unitType = ".. unit:GetOwner() .. ", " .. unitType)
-					end
-				end
-			end
-		end
+		MapModData.bBypassOnCanSaveUnit = true
+		unit:Kill(true, iKillerPlayer)
 	end
+
+	--debug: test all units to make sure no one else has this person index
+
+
+
 	
+	--move person info over to gDeadPeople
 	eaPerson.deathTurn = Game.GetGameTurn()
 	--keep: eaPersonRowID, subclass, class1, class1, name, level
 

@@ -103,21 +103,30 @@ function MakeAIActionsPlotsDirty(iPlayer)
 end
 
 local function CitySpiralSearchForWonderPlot(city, bAvoidFarmable, bAvoidHill, bAvoidLivingTerrain, bAvoidImprovement, bAvoidResource)
+	print("CitySpiralSearchForWonderPlot ", city, bAvoidFarmable, bAvoidHill, bAvoidLivingTerrain, bAvoidImprovement, bAvoidResource)
 	local sector = Rand(6, "hello") + 1
 	for plot in PlotAreaSpiralIterator(city:Plot(), 3, sector, false, false, false) do
 		if not plot:IsWater() and not plot:IsImpassable() and not plot:IsCity() then
+			--print("a")
 			local iOwner = plot:GetOwner()
 			if iOwner == -1 or iOwner == g_iPlayer then
+				--print("b")
 				local plotTypeID = plot:GetPlotType()
-				if not plotTypeID == PLOT_MOUNTAIN then
+				if plotTypeID ~= PLOT_MOUNTAIN then
+					--print("c")
 					if not bAvoidHill or plotTypeID ~= PLOT_HILLS then
+						--print("d")
 						local terrainID = plot:GetTerrainType()
 						if not bAvoidFarmable or not ((terrainID == TERRAIN_GRASS and (plotTypeID == PLOT_LAND or plot:IsFreshWater())) or (terrainID == TERRAIN_PLAINS and plot:IsFreshWater())) then
+							--print("e")
 							local featureID = plot:GetFeatureType()
 							if not bAvoidLivingTerrain or (featureID ~= FEATURE_FOREST and featureID ~= FEATURE_JUNGLE and featureID ~= FEATURE_MARSH) then
+								--print("f")
 								if not bAvoidResource or plot:GetResourceType(-1) == -1 then
+									--print("g")
 									local improvementID = plot:GetImprovementType()
 									if improvementID == -1 or (not bAvoidImprovement and not GameInfo.Improvements[improvementID].Permanent) then
+										print(" * Returning ", plot:GetPlotIndex())
 										return plot:GetPlotIndex()
 									end
 								end
@@ -131,6 +140,7 @@ local function CitySpiralSearchForWonderPlot(city, bAvoidFarmable, bAvoidHill, b
 end
 
 local function CalculateAIActionsPlots(iPlayer)	--cache turn so we don't do this more than needed
+	print("CalculateAIActionsPlots ", iPlayer, g_gameTurn)
 	if not g_wonderPlotsCacheTurn[iPlayer] then
 		g_wonderWorkPlots[iPlayer] = {}
 		g_wonderNoWorkPlots[iPlayer] = {}
@@ -171,12 +181,14 @@ local function CalculateAIActionsPlots(iPlayer)	--cache turn so we don't do this
 			end
 		end
 
+		--print("wonderWorkPlots.pos, wonderNoWorkPlots.pos, bPantheistic,bAvoidFarmable,bAvoidHill,bAvoidLivingTerrain,bAvoidImprovement,bAvoidResource = ", wonderWorkPlots.pos, wonderNoWorkPlots.pos, bPantheistic,bAvoidFarmable,bAvoidHill,bAvoidLivingTerrain,bAvoidImprovement,bAvoidResource)
+
 		bHaveWorkPlots = 0 < wonderWorkPlots.pos
 		bHaveNoWorkPlots = 0 < wonderNoWorkPlots.pos
 
 		if bHaveWorkPlots and bHaveNoWorkPlots then
 			break
-		else		--relax contsraints until something works
+		else		--relax contsraints and try again
 			if bAvoidHill then
 				bAvoidHill = false
 			elseif bAvoidFarmable then
@@ -184,6 +196,7 @@ local function CalculateAIActionsPlots(iPlayer)	--cache turn so we don't do this
 			elseif bAvoidImprovement then
 				bAvoidImprovement = false
 			else
+				print("!!!! WARNING: Could not find wonderWorkPlots and/or wonderNoWorkPlots for AI")
 				break
 			end
 		end
@@ -373,6 +386,23 @@ AITarget.NearbyLivTerrain = function()
 	end
 end
 
+AITarget.OwnTower = function()
+	local tower = gWonders[EA_WONDER_ARCANE_TOWER][g_iPerson]
+	if tower then
+		local x, y = GetXYFromPlotIndex(tower.iPlot)
+		TestAddOption("Plot", x, y, 0, nil)
+	end
+end
+
+AITarget.VacantTower = function()
+	for iPerson, tower in pairs(gWonders[EA_WONDER_ARCANE_TOWER]) do
+		if not gPeople[iPerson] then	--tower's last occupant is dead
+			local x, y = GetXYFromPlotIndex(tower.iPlot)
+			TestAddOption("Plot", x, y, 0, nil)
+		end
+	end
+end
+
 AITarget.NIMBY = function()					-- Not In My BackYard (e.g., Blight spell) - test in caster's tower and outside of own city 3-plot radius
 	local tower = gWonders[EA_WONDER_ARCANE_TOWER][g_iPerson]
 	if tower then
@@ -540,7 +570,7 @@ AITarget.SeaTradeCities = function()
 	end
 end
 
-AITarget.WonderNoWorkPlot = function()
+AITarget.WonderNoWorkPlot = function()			--Ideally, 1 plot per city that is good to develop assuming it won't be worked
 	if g_wonderPlotsCacheTurn[g_iPlayer] ~= g_gameTurn then
 		CalculateAIActionsPlots(g_iPlayer)
 	end
@@ -551,7 +581,7 @@ AITarget.WonderNoWorkPlot = function()
 	end
 end
 
-AITarget.WonderWorkPlot = function()
+AITarget.WonderWorkPlot = function()			--Ideally, 1 plot per city that is good to develop assuming it will be worked and not supply food (so city must support it)
 	if g_wonderPlotsCacheTurn[g_iPlayer] ~= g_gameTurn then
 		CalculateAIActionsPlots(g_iPlayer)
 	end

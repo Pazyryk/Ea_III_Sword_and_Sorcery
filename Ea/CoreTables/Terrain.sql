@@ -422,10 +422,12 @@ DROP TABLE IDRemapper;
 -----------------------------------------------------------------------------------------
 --There is some nasty hard-coding on IDs and/or type strings here in the graphics engine, at least for farm.
 
+ALTER TABLE Improvements ADD COLUMN 'EaBlightSafe' BOOLEAN DEFAULT NULL;
+
 -- "_2" versions below can be built on non-resource plots only; base improvements changed so they can only be built on resource plots
 DELETE FROM Improvements WHERE Type NOT IN ('IMPROVEMENT_CITY_RUINS','IMPROVEMENT_BARBARIAN_CAMP','IMPROVEMENT_GOODY_HUT', 'IMPROVEMENT_FORT', 'IMPROVEMENT_CAMP',
 'IMPROVEMENT_FARM', 'IMPROVEMENT_MINE', 'IMPROVEMENT_QUARRY', 'IMPROVEMENT_LUMBERMILL', 'IMPROVEMENT_PASTURE', 'IMPROVEMENT_WELL', 'IMPROVEMENT_FISHING_BOATS');
-INSERT INTO Improvements (Type,	Description,								Civilopedia,											ArtDefineTag,								Water, PillageGold, Permanent,	DestroyedWhenPillaged,	PortraitIndex,	IconAtlas) VALUES
+INSERT INTO Improvements (Type,	Description,								Civilopedia,											ArtDefineTag,								Water, PillageGold, Permanent,	DestroyedWhenPillaged,	PortraitIndex,	IconAtlas		) VALUES
 --resource only improvements
 ('IMPROVEMENT_E_PLANTATION',	'TXT_KEY_EA_IMPROVEMENT_E_PLANTATION',		'TXT_KEY_EA_IMPROVEMENT_E_PLANTATION_PEDIA',			'ART_DEF_IMPROVEMENT_PLANTATION',			0,		10,			0,			0,						30,				'TERRAIN_ATLAS'	),
 ('IMPROVEMENT_VINEYARD',		'TXT_KEY_EA_IMPROVEMENT_VINEYARD',			'TXT_KEY_EA_IMPROVEMENT_VINEYARD_PEDIA',				'ART_DEF_IMPROVEMENT_PLANTATION',			0,		10,			0,			0,						30,				'TERRAIN_ATLAS' ),
@@ -442,10 +444,11 @@ INSERT INTO Improvements (Type,	Description,								Civilopedia,											ArtDe
 ('IMPROVEMENT_MINE_2',			'TXT_KEY_IMPROVEMENT_MINE',					'TXT_KEY_EA_IMPROVEMENT_MINE_PEDIA',					'ART_DEF_IMPROVEMENT_MINE',					0,		10,			0,			0,						26,				'TERRAIN_ATLAS'	),
 ('IMPROVEMENT_LUMBERMILL_2',	'TXT_KEY_EA_IMPROVEMENT_LUMBERMILL',		'TXT_KEY_EA_IMPROVEMENT_LUMBERMILL_PEDIA',				'ART_DEF_IMPROVEMENT_LUMBERMILL',			0,		10,			0,			0,						25,				'TERRAIN_ATLAS'	),
 
-('IMPROVEMENT_BLIGHT',			'TXT_KEY_EA_BLIGHT',						'TXT_KEY_EA_BLIGHT_PEDIA',								'ART_DEF_IMPROVEMENT_BLIGHT',				0,		0,			1,			0,						25,				'TERRAIN_ATLAS'	),
+('IMPROVEMENT_BLIGHT',			'TXT_KEY_EA_BLIGHT',						'TXT_KEY_EA_BLIGHT_PEDIA',								'ART_DEF_IMPROVEMENT_BLIGHT',				0,		0,			1,			0,						25,				'TERRAIN_ATLAS'	);
 
 --wonders
-('IMPROVEMENT_ARCANE_TOWER',	'TXT_KEY_EA_ARCANE_TOWER',					'TXT_KEY_EA_ARCANE_TOWER_PEDIA',						'ART_DEF_IMPROVEMENT_CHATEAU',				0,		10,			1,			0,						2,				'TERRAIN_IMPROVEMENT_ICON_ATLAS_EXP2'	);
+INSERT INTO Improvements (Type,	Description,								Civilopedia,											ArtDefineTag,								Water, PillageGold, Permanent,	DestroyedWhenPillaged,	EaBlightSafe,	PortraitIndex,	IconAtlas								) VALUES
+('IMPROVEMENT_ARCANE_TOWER',	'TXT_KEY_EA_ARCANE_TOWER',					'TXT_KEY_EA_ARCANE_TOWER_PEDIA',						'ART_DEF_IMPROVEMENT_CHATEAU',				0,		10,			1,			0,						1,				2,				'TERRAIN_IMPROVEMENT_ICON_ATLAS_EXP2'	);
 
 
 UPDATE Improvements SET PillageGold = 0, Permanent = 1 WHERE Type IN ('IMPROVEMENT_CAMP','IMPROVEMENT_FISHING_BOATS');

@@ -26,7 +26,7 @@ INSERT INTO Ea_ExpectedTableFiles (FileName) VALUES
 	('Religions.sql'),
 	('Technologies.sql'),
 	('Terrain.sql'),
-	('UnitControl.sql'),
+	('UnitBuilds.sql'),
 	('UnitPromotions.sql'),
 	('Units.sql'),
 	('EaText.sql'),

@@ -97,7 +97,7 @@ function EaTechsInit(bNewGame)
 		for iPlayer, eaPlayer in pairs(realCivs) do
 			local player = Players[iPlayer]
 			local team = Teams[player:GetTeam()]
-			team:SetHasTech(GameInfoTypes.TECH_SLASH_BURN_FOREST, true)	--, iPlayer, false, false)
+			--team:SetHasTech(GameInfoTypes.TECH_SLASH_BURN_FOREST, true)	--, iPlayer, false, false)
 			gg_fishingRange[iPlayer] = 3
 			gg_whalingRange[iPlayer] = 3
 			gg_campRange[iPlayer] = 3
@@ -302,6 +302,7 @@ OnTeamTechLearned[GameInfoTypes.TECH_MALEFICIUM] = function(iTeam)
 end
 
 --Pan/Non-Pan checks must be done on policy side too (for pan-swap after tech)
+--[[
 OnMajorPlayerTechLearned[GameInfoTypes.TECH_BRONZE_WORKING] = function(iPlayer)
 	local player = Players[iPlayer]
 	local team = Teams[player:GetTeam()]
@@ -447,6 +448,7 @@ OnMajorPlayerTechLearned[GameInfoTypes.TECH_FORESTRY] = function(iPlayer)
 		team:SetHasTech(GameInfoTypes.TECH_FORESTRY_NO_PAN, true)
 	end
 end
+]]
 
 OnMajorPlayerTechLearned[GameInfoTypes.TECH_MALEFICIUM] = function(iPlayer)
 	if gWorldUniqueAction[EA_ACTION_PROPHECY_VA] == -1 then

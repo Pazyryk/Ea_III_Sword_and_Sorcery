@@ -530,7 +530,7 @@ local function OnCanSaveUnit(iPlayer, iUnit, bDelay)	--fires for combat and non-
 
 	print("Trying to save GP")
 	local currentPlot = unit:GetPlot()
-	local sector = Rand(6, "hello") + 1
+	local sector = Map.Rand(6, "hello") + 1
 	for testPlot in PlotAreaSpiralIterator(currentPlot, 15, sector, false, false, false) do
 		if player:GetPlotDanger(testPlot) == 0 then								--is this plot out of danger?
 			if unit:TurnsToReachTarget(testPlot, 1, 1, 1) < 100 then		--is this plot accessible?

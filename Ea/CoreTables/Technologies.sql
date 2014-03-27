@@ -128,7 +128,7 @@ INSERT INTO Technologies (Type,		Utility) VALUES
 ('TECH_NO_PAN',						1	),
 ('TECH_GAIN_WITH_NAMING',			1	),	--allows open borders
 ('TECH_ALLOW_TIMBER_TRADE',			1	),	--allows Timber trade and Timberyard
-('TECH_ALLOW_HORSE_TRADE',			1	),	--allows Timber trade and Timberyard
+('TECH_ALLOW_HORSE_TRADE',			1	),	--all can trade except Heldeofol
 ('TECH_MOLY_VISIBLE',				1	),	--Moly visible, tradeable and improveable
 ('TECH_SLAVE_RAIDERS',				1	),
 ('TECH_SLAVE_ARMIES',				1	),

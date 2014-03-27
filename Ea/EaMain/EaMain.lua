@@ -337,44 +337,6 @@ end
 GameEvents.CanAutoSave.Add(OnCanAutoSave)
 
 
---Hijack necessary because it is impossible to save data to SaveGameDB right before normal autosave
---[[
-function AutoSaveHijack()
-	local baseAutoSaveFreq = OptionsManager.GetTurnsBetweenAutosave_Cached()
-	print("Hijacking autosave by setting to 999; value saved for restoration = ", baseAutoSaveFreq)
-	local EaSetupDB = Modding.OpenUserData("EaSetupData", 1)
-	local eaAutoSaveFreq = EaSetupDB.GetValue("EA_AUTO_SAVE_FREQ")
-	if baseAutoSaveFreq ~= 999 or not eaAutoSaveFreq then
-		eaAutoSaveFreq = baseAutoSaveFreq
-		EaSetupDB.SetValue("EA_AUTO_SAVE_FREQ", eaAutoSaveFreq)
-	end
-	g_autoSaveFreq = eaAutoSaveFreq
-	OptionsManager.SetTurnsBetweenAutosave_Cached(999)		--disable base game autosaves (replace with our own); we will try to restore on game exit
-	OptionsManager.CommitGameOptions()
-end
-LuaEvents.EaMainAutoSaveHijack.Add(AutoSaveHijack)
-
-function EaAutoSave(gameTurn)
-	TableSave(gT, "Ea")
-	local saveStr = "auto/AutoSave_Ea Year " .. gameTurn
-	print("Running EaAutoSave; saveStr = ", saveStr)
-	UI.SaveGame(saveStr)
-end
-
-function UndoAutoSaveHijack()
-	local EaSetupDB = Modding.OpenUserData("EaSetupData", 1)
-	local eaAutoSaveFreq = EaSetupDB.GetValue("EA_AUTO_SAVE_FREQ")
-	if eaAutoSaveFreq then
-		if eaAutoSaveFreq == 999 then		--game crashed and we lost original value; set to 1 (better if mod players are confused than angry)
-			eaAutoSaveFreq = 1
-		end
-		print("Restoring base autosave frequency ", eaAutoSaveFreq)
-		OptionsManager.SetTurnsBetweenAutosave_Cached(eaAutoSaveFreq)	--restore to what it was
-		OptionsManager.CommitGameOptions()
-	end
-end	
-Events.ExitToMainMenu.Add(UndoAutoSaveHijack)
-]]
 --TO DO: The initial game engine autosaves are corrupt for mod data (and name wrong anyway); get rid of them.
 --AutoSave_0000 BC-4000.Civ5Save
 --AutoSave_Initial_0000 BC-4000.Civ5Save
@@ -395,9 +357,15 @@ function Autoplay(turns)
 
 	print("Active player ID = ", Game.GetActivePlayer())
 	print("Player slots in Autoplay; iPlayer/GetSlotStatus/GetSlotClaim/GetCivilization = ")
-	for i = 0, GameDefines.MAX_PLAYERS - 1 do
-		print(i, PreGame.GetSlotStatus(i), PreGame.GetSlotClaim(i), PreGame.GetCivilization(i))
-	end
+	
+	--Debug: give observer all the resource reveal techs so we can see them
+	--Note that this affects CS techs, so it's not game-effect neutral
+	local observerTeam = Teams[OBSERVER_TEAM]
+	observerTeam:SetHasTech(GameInfoTypes.TECH_MINING, true)
+	observerTeam:SetHasTech(GameInfoTypes.TECH_EARTH_DIVINATION, true)
+	observerTeam:SetHasTech(GameInfoTypes.TECH_MATHEMATICS, true)
+	observerTeam:SetHasTech(GameInfoTypes.TECH_MOLY_VISIBLE, true)
+
 end
 LuaEvents.EaAutoplay.Add(Autoplay)
 

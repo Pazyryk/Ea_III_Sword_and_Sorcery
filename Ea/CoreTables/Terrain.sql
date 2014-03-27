@@ -57,9 +57,15 @@ DELETE FROM Terrain_HillsYieldChanges;
 ALTER TABLE Features ADD COLUMN 'EaGod' TEXT DEFAULT NULL;
 ALTER TABLE Features ADD COLUMN 'NaturalWonderHappiness' INTEGER DEFAULT 1;
 
-INSERT INTO Features (Type, Description, Civilopedia, Help, ArtDefineTag, PortraitIndex, IconAtlas) VALUES
-('FEATURE_BLIGHT',	'TXT_KEY_EA_FEATURE_BLIGHT',	'TXT_KEY_EA_FEATURE_BLIGHT_PEDIA',	'TXT_KEY_EA_FEATURE_BLIGHT_HELP',	'dummy',	17,	'TERRAIN_ATLAS');
+--Yuck! There's some ID hard-coding we have to work around here
+--Note that I've hard-coded FEATURE_BLIGHT in Ea dll too; it's easier and all features before it are hard-coded anyway
 
+UPDATE Features SET ID = ID + 100 WHERE ID > 6;
+
+INSERT INTO Features (ID, Type, Description, Civilopedia, Help, ArtDefineTag, PortraitIndex, IconAtlas) VALUES
+(7, 'FEATURE_BLIGHT',	'TXT_KEY_EA_FEATURE_BLIGHT',	'TXT_KEY_EA_FEATURE_BLIGHT_PEDIA',	'TXT_KEY_EA_FEATURE_BLIGHT_HELP',	'dummy',	17,	'TERRAIN_ATLAS');
+
+UPDATE Features SET ID = ID - 99 WHERE ID > 7;
 
 UPDATE Features SET YieldNotAdditive = 0;
 
@@ -86,9 +92,6 @@ UPDATE Features SET Description = 'TXT_KEY_EA_FEATURE_VAULT_AHRIMAN', NaturalWon
 
 
 UPDATE Features SET Civilopedia = Description || '_PEDIA' WHERE NaturalWonder = 1;
-
-
---Use Events.NaturalWonderRevealed
 
 
 DELETE FROM Feature_RiverYieldChanges;
@@ -133,17 +136,17 @@ INSERT INTO Resources (Type, Happiness, Description,							Civilopedia,									
 --blight - The "resource" is graphic only; use it where we can't use IMPROVEMENT_BLIGHT because there is a specific improvement (eg, Arcane Tower) that we don't want to displace.
 ('RESOURCE_BLIGHT',			0,			'TXT_KEY_EA_RESOURCE_BLIGHT',			'TXT_KEY_EA_CIV5_RESOURCE_BLIGHT_PEDIA',			'TXT_KEY_EA_RESOURCE_BLIGHT_HELP',			NULL,					NULL,						'RESOURCECLASS_BONUS',	'ART_DEF_RESOURCE_BLIGHT',		NULL,								NULL,								NULL,									0,					0,				50,					3,				90,				0,			0,			0,		1,		1,			0,				'[ICON_RES_URANIUM]',	26,				'RESOURCE_ATLAS'			);
 
-UPDATE Resources SET TechCityTrade = 'TECH_AGRICULTURE' WHERE Type = 'RESOURCE_WHEAT';
 UPDATE Resources SET TechReveal = NULL, TechCityTrade = 'TECH_ALLOW_HORSE_TRADE' WHERE Type = 'RESOURCE_HORSE';
 UPDATE Resources SET TechReveal = 'TECH_MINING', TechCityTrade = 'TECH_IRON_WORKING' WHERE Type = 'RESOURCE_IRON';
-UPDATE Resources SET TechCityTrade = 'TECH_DOMESTICATION' WHERE Type IN ('RESOURCE_HORSE','RESOURCE_COW');
-UPDATE Resources SET TechCityTrade = 'TECH_HUNTING' WHERE Type IN ('RESOURCE_DEER','RESOURCE_FUR');
-UPDATE Resources SET TechCityTrade = 'TECH_FISHING' WHERE Type IN ('RESOURCE_FISH','RESOURCE_PEARLS','RESOURCE_CRAB');
+UPDATE Resources SET TechCityTrade = 'TECH_AGRICULTURE' WHERE Type = 'RESOURCE_WHEAT';
+UPDATE Resources SET TechCityTrade = 'TECH_DOMESTICATION' WHERE Type IN ('RESOURCE_COW', 'RESOURCE_WOOL');
+UPDATE Resources SET TechCityTrade = 'TECH_HUNTING' WHERE Type IN ('RESOURCE_DEER', 'RESOURCE_FUR');
+UPDATE Resources SET TechCityTrade = 'TECH_FISHING' WHERE Type IN ('RESOURCE_FISH', 'RESOURCE_PEARLS', 'RESOURCE_CRAB');
 UPDATE Resources SET TechCityTrade = 'TECH_HARPOONS' WHERE Type = 'RESOURCE_WHALE';
 UPDATE Resources SET TechCityTrade = 'TECH_ZYMURGY' WHERE Type = 'RESOURCE_WINE';
 UPDATE Resources SET TechCityTrade = 'TECH_WEAVING' WHERE Type IN ('RESOURCE_DYE','RESOURCE_SILK','RESOURCE_COTTON');
-UPDATE Resources SET TechCityTrade = 'TECH_IRRIGATION' WHERE Type IN ('RESOURCE_BANANA','RESOURCE_SUGAR','RESOURCE_CITRUS');
-UPDATE Resources SET TechCityTrade = 'TECH_CALENDAR' WHERE Type IN ('RESOURCE_INCENSE','RESOURCE_SPICES');		--here to be safe
+UPDATE Resources SET TechCityTrade = 'TECH_IRRIGATION' WHERE Type IN ('RESOURCE_BANANA', 'RESOURCE_SUGAR', 'RESOURCE_CITRUS', 'RESOURCE_BERRIES');
+UPDATE Resources SET TechCityTrade = 'TECH_CALENDAR' WHERE Type IN ('RESOURCE_INCENSE', 'RESOURCE_SPICES', 'RESOURCE_TOBACCO', 'RESOURCE_TEA', 'RESOURCE_OPIUM');		--here to be safe
 
 UPDATE Resources SET Happiness = 0, ResourceClassType = 'RESOURCECLASS_BONUS' WHERE Type IN ('RESOURCE_WHALE', 'RESOURCE_CRAB');	--changed to bonus
 

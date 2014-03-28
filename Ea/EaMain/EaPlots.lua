@@ -28,6 +28,7 @@ local FEATURE_FOREST = 						GameInfoTypes.FEATURE_FOREST
 local FEATURE_JUNGLE = 						GameInfoTypes.FEATURE_JUNGLE
 local FEATURE_MARSH =	 					GameInfoTypes.FEATURE_MARSH
 local FEATURE_BLIGHT =	 					GameInfoTypes.FEATURE_BLIGHT
+local FEATURE_FALLOUT =	 					GameInfoTypes.FEATURE_FALLOUT
 
 local RESOURCE_TIMBER =						GameInfoTypes.RESOURCE_TIMBER
 local RESOURCE_IVORY =						GameInfoTypes.RESOURCE_IVORY
@@ -478,10 +479,10 @@ end
 local function OnCityCanAcquirePlot(iPlayer, iCity, x, y)
 	--print("OnCityCanAcquirePlot ", iPlayer, iCity, x, y)
 	local plot = GetPlotFromXY(x,y)
+	local featureID = plot:GetFeatureType()
+	if featureID ~= -1 and featureID ~= FEATURE_ICE and featureID ~= FEATURE_BLIGHT and featureID ~= FEATURE_FALLOUT then return true end	--atoll or any natural wonder is OK for border spread
 	if plot:IsWater() then
-		local featureID = plot:GetFeatureType()
-		if featureID ~= -1 and featureID ~= FEATURE_ICE then return true end	--Atoll or any natural wonder feature is OK (blight/fallout are never on water)
-		if plot:GetResourceType(-1) ~= -1 then return true end					--Any resource is ownable (all are visible for now; otherwise we'll need iTeam)
+		if plot:GetResourceType(-1) ~= -1 then return true end	--any resource is ownable (all are visible for now; otherwise we'll need iTeam)
 		return false
 	end
 	if plot:IsMountain() then return false end

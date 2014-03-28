@@ -8,7 +8,7 @@
 
 ALTER TABLE MinorCivTraits ADD COLUMN 'EaHelp' TEXT DEFAULT NULL;
 
-INSERT INTO MinorCivTraits (Type, Description,						EaHelp,										TraitIcon,						TraitTitleIcon,				BackgroundImage) VALUES
+INSERT INTO MinorCivTraits (Type, Description,					EaHelp,										TraitIcon,						TraitTitleIcon,				BackgroundImage) VALUES
 ('MINOR_TRAIT_MERCENARY',	'TXT_KEY_EA_MINOR_TRAIT_MERCENARY',	'TXT_KEY_EA_MINOR_TRAIT_MERCENARY_HELP',	'CityStateMilitaristic.dds',	'CityStatePopupTop100.dds',	'citystatebackgroundmilitary.dds'	),
 ('MINOR_TRAIT_SLAVERS',		'TXT_KEY_EA_MINOR_TRAIT_SLAVERS',	'TXT_KEY_EA_MINOR_TRAIT_SLAVERS_HELP',		'CityStateMilitaristic.dds',	'CityStatePopupTop100.dds',	'citystatebackgroundmilitary.dds'	),
 ('MINOR_TRAIT_ARCANE',		'TXT_KEY_EA_MINOR_TRAIT_ARCANE',	'TXT_KEY_EA_MINOR_TRAIT_ARCANE_HELP',		'CityStateReligious.dds',		'CityStatePopupTop400.dds',	'citystatebackgroundreligious.dds'	),

@@ -55,7 +55,7 @@ include("EaArtifacts.lua")
 include("EaBarbarians.lua")
 include("EaCities.lua")			--depends on EaTrade
 include("EaCivs.lua")
-
+include("EaMagic.lua")
 include("EaPeople.lua")			--depends on EaAIActions
 include("EaPlots.lua")
 include("EaPolicies.lua")

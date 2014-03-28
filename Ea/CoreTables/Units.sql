@@ -3,8 +3,8 @@
 -- Notes: Racial versions are given their own unitclasses. This is so that units maintain race regardless of owner.
 -- The UnitClasses table is constructed entirely from the Units table
 
-DELETE FROM Units WHERE Type NOT IN ('UNIT_MISSIONARY'); 
-UPDATE Units SET FaithCost = 999999 WHERE Type = 'UNIT_MISSIONARY';  --this unit needed to prevent CTD after religion enhancement
+DELETE FROM Units WHERE Type NOT IN ('UNIT_MISSIONARY');					--This unit needed to prevent CTD after religion enhancement
+UPDATE Units SET FaithCost = 999999 WHERE Type = 'UNIT_MISSIONARY';			--we also use it to detect errors in unit initing, since you get the id=0 unit if unitTypeID is nil
 
 ALTER TABLE Units ADD COLUMN 'IsWorker' BOOLEAN DEFAULT NULL;
 ALTER TABLE Units ADD COLUMN 'EaRace' TEXT DEFAULT NULL;
@@ -166,12 +166,15 @@ INSERT INTO Units (Type,		PrereqTech,					Cost,	Combat,	RangedCombat,	Range,	Mov
 ('UNIT_HOBGOBLINS',				NULL,						240,	12,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			1,					1,					NULL,				0,			'ART_DEF_UNIT_OGRE',					'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1			);
 
 --Animals
-
 INSERT INTO Units (Type,		PrereqTech,					Cost,	Combat,	RangedCombat,	Range,	Moves,	CombatClass,				Domain,			DefaultUnitAI,			Pillage,	MilitarySupport,	MilitaryProduction,	ObsoleteTech,		Mechanized,	UnitArtInfo,							IconAtlas,					PortraitIndex,	UnitFlagAtlas,					UnitFlagIconOffset,	MoveRate,		EaNoTrain,	EaAnimal	) VALUES
 ('UNIT_WOLVES',					NULL,						180,	6,		0,				0,		4,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		0,			0,					1,					NULL,				0,			'ART_DEF_UNIT_WOLVES',					'UNIT_ATLAS_1',				4,				'UNIT_FLAG_ATLAS',				4,					'BIPED',		1,			1			),
 ('UNIT_LIONS',					NULL,						180,	9,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		0,			0,					1,					NULL,				0,			'ART_DEF_UNIT_LIONS',					'UNIT_ATLAS_1',				4,				'UNIT_FLAG_ATLAS',				4,					'BIPED',		1,			1			),
 ('UNIT_GIANT_SPIDER',			NULL,						180,	9,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		0,			0,					1,					NULL,				0,			'ART_DEF_UNIT_GIANT_SPIDER',			'UNIT_ATLAS_1',				4,				'UNIT_FLAG_ATLAS',				4,					'BIPED',		1,			1			);
 
+--Utility (don't show anywhere)
+INSERT INTO Units (Type,		PrereqTech,					Cost,	Combat,	RangedCombat,	Range,	Moves,	Immobile,	NoMaintenance,	Special,				CombatClass,	Domain,			DefaultUnitAI,			Suicide,	MilitarySupport,	Mechanized,	AirUnitCap,	CombatLimit,	RangedCombatLimit,	UnitArtInfo,					IconAtlas,			PortraitIndex,	UnitFlagAtlas,		UnitFlagIconOffset,	MoveRate,		EaNoTrain	) VALUES
+--All dummy air strike units should have Suicide = 1 and RangedCombat = 10 if it will be modified by mod
+('UNIT_DUMMY_PLOT_EXPLODER',	'TECH_NEVER',				-1,		0,		10,				10,		2,		1,			1,				'SPECIALUNIT_MISSILE',	NULL,			'DOMAIN_AIR',	'UNITAI_MISSILE_AIR',	1,			0,					1,			1,			0,				100,				'ART_DEF_UNIT_GUIDED_MISSILE',	'UNIT_ATLAS_2',		30,				'UNIT_FLAG_ATLAS',	77,					'AIR_REBASE',	1			);
 
 
 UPDATE Units SET IsWorker = 1 WHERE Type GLOB 'UNIT_WORKERS_*' OR Type GLOB 'UNIT_SLAVES_*';

@@ -6,6 +6,7 @@
 DELETE FROM Units WHERE Type NOT IN ('UNIT_MISSIONARY'); 
 UPDATE Units SET FaithCost = 999999 WHERE Type = 'UNIT_MISSIONARY';  --this unit needed to prevent CTD after religion enhancement
 
+ALTER TABLE Units ADD COLUMN 'IsWorker' BOOLEAN DEFAULT NULL;
 ALTER TABLE Units ADD COLUMN 'EaRace' TEXT DEFAULT NULL;
 ALTER TABLE Units ADD COLUMN 'EaCityTrainRace' TEXT DEFAULT NULL;
 ALTER TABLE Units ADD COLUMN 'EaSpecialWorker' TEXT DEFAULT NULL;
@@ -172,6 +173,8 @@ INSERT INTO Units (Type,		PrereqTech,					Cost,	Combat,	RangedCombat,	Range,	Mov
 ('UNIT_GIANT_SPIDER',			NULL,						180,	9,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		0,			0,					1,					NULL,				0,			'ART_DEF_UNIT_GIANT_SPIDER',			'UNIT_ATLAS_1',				4,				'UNIT_FLAG_ATLAS',				4,					'BIPED',		1,			1			);
 
 
+
+UPDATE Units SET IsWorker = 1 WHERE Type GLOB 'UNIT_WORKERS_*' OR Type GLOB 'UNIT_SLAVES_*';
 UPDATE Units SET EaRace = 'EARACE_MAN', EaCityTrainRace = 'EARACE_MAN' WHERE Type GLOB '*_MAN' OR Type GLOB '*_BARB';
 UPDATE Units SET EaRace = 'EARACE_SIDHE', EaCityTrainRace = 'EARACE_SIDHE' WHERE Type GLOB '*_SIDHE';
 UPDATE Units SET EaRace = 'EARACE_ORC', EaCityTrainRace = 'EARACE_HELDEOFOL' WHERE Type GLOB '*_ORC';

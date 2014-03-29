@@ -26,7 +26,7 @@ include("EaErrorHandler.lua")		--Always 1st
 include("EaPlotUtils.lua")	
 include("WhowardPlotIterators.lua")	
 
-
+include("FLuaVector")
 include("EaMathUtils.lua")
 include("EaTableUtils.lua")
 include("EaMiscUtils.lua")
@@ -73,7 +73,6 @@ include("EaAIUnits.lua")
 include("EaDebugUtils.lua")
 
 include("EaTextUtils.lua")
-include("FLuaVector")
 
 local print = ENABLE_PRINT and print or function() end	--set in EaDefines.lua
 local Dprint = DEBUG_PRINT and print or function() end	

@@ -9,6 +9,7 @@ include ("EaPlotUtils.lua")
 local MapModData = MapModData
 MapModData.gT = MapModData.gT or {}
 local gT = MapModData.gT
+local OBSERVER_TEAM = GameDefines.MAX_MAJOR_CIVS - 1
 
 --we do some tree customization by player
 local g_iActivePlayer = Game.GetActivePlayer()
@@ -49,7 +50,7 @@ function GatherInfoAboutUniqueStuff( civType )
 	--Paz add
 	local civRaceType = ""
 	if gT.gPlayers then
-		local eaPlayer = gT.gPlayers[Game.GetActivePlayer()]
+		local eaPlayer = gT.gPlayers[g_iActivePlayer]
 		if not eaPlayer then return end
 		local civRace = eaPlayer.race
 		civRaceType = GameInfo.EaRaces[civRace].Type

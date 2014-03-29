@@ -182,6 +182,7 @@ function InitPlayerVariables()
 			eaPlayer.aiMerchantTooSmallToConsider = 0
 			eaPlayer.mercenaries = {}
 			eaPlayer.revealedNWs = {}
+			eaPlayer.revealedPlotEffects = {}	--indexed by iPlot
 			local civID = player:GetCivilizationType()	 
 			local civRace = GameInfo.Civilizations[civID].EaRace
 			if civRace == "EARACE_SIDHE" then

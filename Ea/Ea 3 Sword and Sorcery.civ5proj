@@ -91,7 +91,7 @@
       <Action>
         <Set>OnModActivated</Set>
         <Type>UpdateDatabase</Type>
-        <FileName>CoreTables/UnitControl.sql</FileName>
+        <FileName>CoreTables/UnitBuilds.sql</FileName>
       </Action>
       <Action>
         <Set>OnModActivated</Set>
@@ -480,10 +480,6 @@
       <SubType>Lua</SubType>
       <ImportIntoVFS>True</ImportIntoVFS>
     </Content>
-    <Content Include="CoreUI_font_mod_only\MiniMapPanel.xml">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
     <Content Include="CoreUI_font_mod_only\NaturalWonderPopup.xml">
       <SubType>Lua</SubType>
       <ImportIntoVFS>True</ImportIntoVFS>
@@ -593,6 +589,10 @@
       <ImportIntoVFS>True</ImportIntoVFS>
     </Content>
     <Content Include="CoreUI_InGame\InGame.xml">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="CoreUI_InGame\MiniMapPanel.xml">
       <SubType>Lua</SubType>
       <ImportIntoVFS>True</ImportIntoVFS>
     </Content>
@@ -777,6 +777,10 @@
       <ImportIntoVFS>True</ImportIntoVFS>
     </Content>
     <Content Include="EaMain\EaInit.lua">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="EaMain\EaMagic.lua">
       <SubType>Lua</SubType>
       <ImportIntoVFS>True</ImportIntoVFS>
     </Content>
@@ -1032,7 +1036,7 @@
       <SubType>Lua</SubType>
       <ImportIntoVFS>False</ImportIntoVFS>
     </Content>
-    <Content Include="CoreTables\UnitControl.sql">
+    <Content Include="CoreTables\UnitBuilds.sql">
       <SubType>Lua</SubType>
       <ImportIntoVFS>False</ImportIntoVFS>
     </Content>

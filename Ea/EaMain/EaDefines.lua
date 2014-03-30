@@ -76,6 +76,7 @@ local EaSetupDB = Modding.OpenUserData("EaSetupData", 1)
 FAY_PLAYER_INDEX = EaSetupDB.GetValue("FAY_PLAYER_INDEX")
 --ANIMALS_PLAYER_INDEX = EaSetupDB.GetValue("ANIMALS_PLAYER_INDEX")
 ANIMALS_PLAYER_INDEX = GameDefines.ANIMAL_PLAYER
+OBSERVER_TEAM = GameDefines.MAX_MAJOR_CIVS - 1
 
 HIGHEST_RELIGION_ID = 0
 for religion in GameInfo.Religions() do

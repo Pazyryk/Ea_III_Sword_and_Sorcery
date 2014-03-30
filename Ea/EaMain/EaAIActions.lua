@@ -318,6 +318,8 @@ local function AddCombatOptions(rallyX, rallyY)
 	print("Finished with AddCombatOptions")
 end
 
+-------------------------------------------------------------------------------
+
 local AITarget = {}
 
 AITarget.Self = function()
@@ -592,6 +594,14 @@ AITarget.WonderWorkPlot = function()			--Ideally, 1 plot per city that is good t
 	end
 end
 
+AITarget.InvasionRoute = function()
+	
+	--TO DO: AI logic for placing Explosive Runes
+
+end
+
+-------------------------------------------------------------------------------
+
 local function AddNonCombatOptions()
 	g_nonCombatCallCount = g_nonCombatCallCount + 1
 	
@@ -614,6 +624,8 @@ local function AddNonCombatOptions()
 		eaAction = GameInfo.EaActions[g_eaActionID]
 	end
 end
+
+-------------------------------------------------------------------------------
 
 local vP = {index = 0, value = 0}
 local vPP2 = {index = 0, value = 0}

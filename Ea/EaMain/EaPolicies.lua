@@ -200,6 +200,7 @@ function OnPlayerAdoptPolicyBranch(iPlayer, policyBranchTypeID)					--called by 
 		end
 		--Techs
 		team:SetHasTech(GameInfoTypes.TECH_PANTHEISM, true)
+		--[[
 		team:SetHasTech(GameInfoTypes.TECH_SLASH_BURN_FOREST, false)
 		team:SetHasTech(GameInfoTypes.TECH_SLASH_BURN_JUNGLE, false)
 		team:SetHasTech(GameInfoTypes.TECH_CHOP_FOREST, false)
@@ -245,6 +246,7 @@ function OnPlayerAdoptPolicyBranch(iPlayer, policyBranchTypeID)					--called by 
 		if team:IsHasTech(GameInfoTypes.TECH_FORESTRY) then
 			team:SetHasTech(GameInfoTypes.TECH_FORESTRY_NO_PAN, false)
 		end
+		]]
 		--Meet gods represented by Natural Wonders already discovered
 		gg_teamCanMeetGods[iTeam] = true
 		for featureID in pairs(eaPlayer.revealedNWs) do

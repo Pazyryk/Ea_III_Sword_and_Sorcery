@@ -739,21 +739,23 @@ end
 function UseManaOrDivineFavor(iPlayer, iPerson, pts)
 	--reduces player faith, adds GP xp and depletes Ea's mana if appropriate
 	--returns false if player lacks sufficient mana or divine favor
-	--if iPerson is nil then no experience is given
+	--if iPerson is nil (or dead) then no experience is given
 	local player = Players[iPlayer]
-	local eaPlayer = gPlayers[iPlayer]
-	--if player:GetFaith() < pts then return false end		TO DO: mod to allow deficit
-	player:ChangeFaith(-pts)
+	local currentFaith = player:GetFaith()
+	player:SetFaith(currentFaith - pts)
 	if iPerson then
 		local eaPerson = gPeople[iPerson]
-		local unit = player:GetUnitByID(eaPerson.iUnit)
-		unit:ChangeExperience(pts)
+		if eaPerson then
+			local unit = player:GetUnitByID(eaPerson.iUnit)
+			unit:ChangeExperience(pts)
+		end
 	end
+	local eaPlayer = gPlayers[iPlayer]
 	if eaPlayer.bIsFallen then
 		gWorld.sumOfAllMana = gWorld.sumOfAllMana - pts
 		eaPlayer.manaConsumed = (eaPlayer.manaConsumed or 0) + pts
 	end
-	return true
+	return 0 <= currentFaith - pts	--deficit?
 end
 
 --------------------------------------------------------------

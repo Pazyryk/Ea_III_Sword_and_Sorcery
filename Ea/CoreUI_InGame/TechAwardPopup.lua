@@ -43,7 +43,7 @@ function OnPopup( popupInfo )
 
 	--Paz add:
 	print("TechAwardPopup pTechInfo.Utility value ", pTechInfo.Utility)
-	if pTechInfo.Utility then
+	if pTechInfo.Utility or not player:IsAlive() then		--2nd part prevents popup while in autoplay (for resource visibility techs)
 		Events.SerialEventGameMessagePopupProcessed(popupInfo.Type, 0)
 		return
 	end

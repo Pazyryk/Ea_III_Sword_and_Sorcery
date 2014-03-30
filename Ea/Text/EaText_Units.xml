@@ -314,7 +314,7 @@
 
 		
 		
-		<!-- UnitControl  -->
+		<!-- UnitBuilds  -->
 		
 		<Row Tag="TXT_KEY_EA_BUILD_FARM">
 			<Text>Build Farm</Text>

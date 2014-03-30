@@ -76,8 +76,13 @@ for promoInfo in GameInfo.UnitPromotions() do
 end
 
 local unitCost = {}
+local dummyUnit = {}
 for unitInfo in GameInfo.Units() do
-	unitCost[unitInfo.ID] = unitInfo.Cost
+	local unitID = unitInfo.ID
+	unitCost[unitID] = unitInfo.Cost
+	if string.find(unitInfo.Type, "UNIT_DUMMY_") == 1 then
+		dummyUnit[unitID] = true
+	end
 end
 
 --------------------------------------------------------------
@@ -340,17 +345,22 @@ local function WarriorLeadCharge(iPlayer, attackingUnit, targetX, targetY)
 	attackingUnit:SetGPAttackState(0)
 end
 
-local function UpdateWarriorPoints(iPlayer, bCombat)
+local function UpdateWarriorPoints(iPlayer, bCombat, bBlockWarriorPts)
+	print("UpdateWarriorPoints ", iPlayer, bCombat, bBlockWarriorPts)
 	local player = Players[iPlayer]
 	local eaPlayer = gPlayers[iPlayer]
 	local oldPoints = eaPlayer.classPoints[5]
 	local newPoints = player:GetLifetimeCombatExperience() - gg_combatPointDiff[iPlayer]
 	print("GetLifetimeCombatExperience= ", player:GetLifetimeCombatExperience())
-	if bCombat and oldPoints == newPoints then		--must have been barb so add 1 point
+	if bBlockWarriorPts then
+		gg_combatPointDiff[iPlayer] = oldPoints - newPoints
+		newPoints = oldPoints
+	elseif bCombat and oldPoints == newPoints then		--must have been barb so add 1 point
 		print("Must be barb combat; adding 1 pt")
 		gg_combatPointDiff[iPlayer] = gg_combatPointDiff[iPlayer] - 1
 		newPoints = newPoints + 1
 	end
+
 	eaPlayer.classPoints[5] = newPoints
 end
 
@@ -438,7 +448,8 @@ local function OnCombatEnded(iAttackingPlayer, iAttackingUnit, attackerDamage, a
 				local pts = CalculateAttackPts(g_defendingUnitTypeId, defenderDamage, bDefenderKilled)
 				UseManaOrDivineFavor(iAttackingPlayer, iPerson, pts)
 				--restoredUnit:SetInvisibleType(INVISIBLE_SUBMARINE)
-
+			elseif dummyUnit[attackingUnitTypeID] then
+				UpdateWarriorPoints(iAttackingPlayer, false, true)	
 			else
 				UpdateWarriorPoints(iAttackingPlayer, true)		--attacker Warrior points
 				if defenderMaxHP < defenderFinalDamage and defenderMaxHP == 100 then					--must have been a unit kill
@@ -470,7 +481,11 @@ local function OnCombatEnded(iAttackingPlayer, iAttackingUnit, attackerDamage, a
 	end
 
 	if fullCivs[iDefendingPlayer] and defendingUnit then	--defender Warrior points
-		UpdateWarriorPoints(iDefendingPlayer, true)
+		if dummyUnit[attackingUnitTypeID] then
+			UpdateWarriorPoints(iDefendingPlayer, false, true)
+		else
+			UpdateWarriorPoints(iDefendingPlayer, true)
+		end
 	end
 
 end
@@ -530,7 +545,7 @@ local function OnCanSaveUnit(iPlayer, iUnit, bDelay)	--fires for combat and non-
 
 	print("Trying to save GP")
 	local currentPlot = unit:GetPlot()
-	local sector = Rand(6, "hello") + 1
+	local sector = Map.Rand(6, "hello") + 1
 	for testPlot in PlotAreaSpiralIterator(currentPlot, 15, sector, false, false, false) do
 		if player:GetPlotDanger(testPlot) == 0 then								--is this plot out of danger?
 			if unit:TurnsToReachTarget(testPlot, 1, 1, 1) < 100 then		--is this plot accessible?

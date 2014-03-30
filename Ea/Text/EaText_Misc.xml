@@ -33,7 +33,6 @@
 
 		<!-- UI -->
 
-
 		<!-- Game Setup -->		
 		<Row Tag="TXT_KEY_EA_MODDING_SETUP_TITLE">
 			<Text>Éa Game Setup</Text>
@@ -51,8 +50,17 @@
 			<Text>Choose Race</Text>
 		</Row>
 
-
-
+		<!-- Mini Map Buttons -->
+		<Row Tag="TXT_KEY_EA_TT_PLOT_EFFECTS_HIDE">
+			<Text>Hiding Glyphs, Runes & Wards (click to show revealed effects belonging to other players)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TT_PLOT_EFFECTS_SHOW_OTHERS">
+			<Text>Showing revealed Glyphs, Runes & Wards belonging to other players (click to show ours)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TT_PLOT_EFFECTS_SHOW_OURS">
+			<Text>Showing Glyphs, Runes & Wards belonging to us (click to hide)</Text>
+		</Row>
+		
 		<!-- Top Panel -->
 		<Row Tag="TXT_KEY_EA_TP_GOLD_FROM_LEADER">
 			<Text>{1_Num} from Leader bonus to non-city income.</Text>
@@ -521,8 +529,24 @@
 		<Row Tag="TXT_KEY_EA_WEA_HEADER_DESCRIPTION">
 			<Text>Description</Text>
 		</Row>
-		
+
+		<!-- Plot Effects -->
+
+		<Row Tag="TXT_KEY_EA_PLOTEFFECT_PROTECTIVE_WARD">
+			<Text>Protective Ward</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PLOTEFFECT_GLYPH_OF_SEEING">
+			<Text>Glyph of Seeing</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PLOTEFFECT_EXPLOSIVE_RUNES">
+			<Text>Explosive Runes</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PLOTEFFECT_DEATH_RUNES">
+			<Text>Death Runes</Text>
+		</Row>
+
 		<!-- Wonders, Epics & Artifacts -->
+		
 		<Row Tag="TXT_KEY_EA_WONDER_STANHENCG">
 			<Text>Stânhencg</Text>
 		</Row>

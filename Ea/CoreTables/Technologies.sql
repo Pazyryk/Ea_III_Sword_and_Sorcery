@@ -125,47 +125,19 @@ UPDATE Technologies SET Civilopedia = Description || '_PEDIA', Help = Descriptio
 -- Utility techs (all automatically given prereq TECH_NEVER)
 INSERT INTO Technologies (Type,		Utility) VALUES
 ('TECH_NEVER',						1	),
+('TECH_NO_PAN',						1	),
 ('TECH_GAIN_WITH_NAMING',			1	),	--allows open borders
 ('TECH_ALLOW_TIMBER_TRADE',			1	),	--allows Timber trade and Timberyard
-('TECH_ALLOW_HORSE_TRADE',			1	),	--allows Timber trade and Timberyard
-('TECH_SLASH_BURN_FOREST',			1	),	--allows slash and burn (replace by chop)
-('TECH_SLASH_BURN_JUNGLE',			1	),	--allows slash and burn (replace by chop)
-('TECH_CHOP_FOREST',				1	),	
-('TECH_CHOP_JUNGLE',				1	),
-
+('TECH_ALLOW_HORSE_TRADE',			1	),	--all can trade except Heldeofol
 ('TECH_MOLY_VISIBLE',				1	),	--Moly visible, tradeable and improveable
 ('TECH_SLAVE_RAIDERS',				1	),
 ('TECH_SLAVE_ARMIES',				1	),
 ('TECH_PANTHEISM',					1	),
 ('TECH_ALLOW_MANA_YIELDS',			1	),
-('TECH_ALLOW_DIVINE_FAVOR_YIELDS',	1	),
-
-
-('TECH_AGRICULTURE_PAN',			1	),	--_PAN and _NO_PAN techs control worker/slave builds
-('TECH_DOMESTICATION_PAN',			1	),
-('TECH_MINING_PAN',					1	),
-('TECH_WEAVING_PAN',				1	),
-('TECH_ZYMURGY_PAN',				1	),
-('TECH_IRRIGATION_PAN',				1	),
-('TECH_CALENDAR_PAN',				1	),
-('TECH_MASONRY_PAN',				1	),
-
-('TECH_AGRICULTURE_NO_PAN',			1	),
-('TECH_DOMESTICATION_NO_PAN',		1	),
-('TECH_MINING_NO_PAN',				1	),
-('TECH_WEAVING_NO_PAN',				1	),
-('TECH_ZYMURGY_NO_PAN',				1	),
-('TECH_IRRIGATION_NO_PAN',			1	),
-('TECH_CALENDAR_NO_PAN',			1	),
-('TECH_MASONRY_NO_PAN',				1	),
-
-('TECH_MILLING_NO_PAN',				1	),
-('TECH_CROP_ROTATION_NO_PAN',		1	),
-('TECH_FORESTRY_NO_PAN',			1	);
+('TECH_ALLOW_DIVINE_FAVOR_YIELDS',	1	);
 
 
 UPDATE Technologies SET GridX = 9, GridY = 36, Cost = -1, Description = 'TXT_KEY_EA_NOTSHOWN', Civilopedia = 'TXT_KEY_EA_NOTSHOWN', Help = 'TXT_KEY_EA_NOTSHOWN', PortraitIndex = 13, IconAtlas = 'TECH_ATLAS_1' WHERE Utility = 1;
-
 
 UPDATE Technologies SET Trade='TRUE', GoodyTech='FALSE', Era='ERA_ANCIENT', Quote = 'TXT_KEY_EA_NOTSHOWN';		--Is NULL for quote OK?
 
@@ -209,8 +181,8 @@ SELECT 'TECH_WHALING',			'TXT_KEY_EA_TECH_WHALING_SPECIAL'			UNION ALL
 SELECT 'TECH_NAVIGATION',		'TXT_KEY_EA_TECH_NAVIGATION_SPECIAL'		UNION ALL
 SELECT 'TECH_ANIMAL_MASTERY',	'TXT_KEY_EA_TECH_ANIMAL_MASTERY_SPECIAL'	;
 
-INSERT INTO Technology_EaTechButtonIncludeSpecials (TechType, SpecialText, IconAtlas, IconIndex)
-SELECT 'TECH_BRONZE_WORKING',	'TXT_KEY_EA_TECH_BRONZE_WORKING_SPECIAL', 'UNIT_ACTION_ATLAS', 38	;
+--INSERT INTO Technology_EaTechButtonIncludeSpecials (TechType, SpecialText, IconAtlas, IconIndex)
+--SELECT 'TECH_BRONZE_WORKING',	'TXT_KEY_EA_TECH_BRONZE_WORKING_SPECIAL', 'UNIT_ACTION_ATLAS', 38	;
 
 
 

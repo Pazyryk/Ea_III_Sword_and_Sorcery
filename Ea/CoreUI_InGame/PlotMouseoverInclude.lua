@@ -2,15 +2,25 @@
 --Paz notes: Updated for BNW (not carefully)
 
 --Paz add
---include("EaPlotUtils.lua")
---include("Ea___API_Include.lua")
 include("EaTextUtils")
-
 
 MapModData.gT =  MapModData.gT or {}
 local gT = MapModData.gT
---end Paz add
+local OBSERVER_TEAM = GameDefines.MAX_MAJOR_CIVS - 1
 
+--we do some customization by player
+local g_iActivePlayer = Game.GetActivePlayer()
+local g_activePlayer = Players[g_iActivePlayer]
+local g_iActiveTeam = g_activePlayer:GetTeam()
+local g_activeTeam = Teams[g_iActiveTeam]
+local function OnActivePlayerChanged(iActivePlayer, iPrevActivePlayer)
+	g_iActivePlayer = iActivePlayer
+	g_activePlayer = Players[g_iActivePlayer]
+	g_iActiveTeam = g_activePlayer:GetTeam()
+	g_activeTeam = Teams[g_iActiveTeam]
+end
+Events.GameplaySetActivePlayer.Add(OnActivePlayerChanged)
+--end Paz add
 
 -------------------------------------------------
 -- Memoize a few localization string lookups 
@@ -48,17 +58,19 @@ local GetTerrainText = Memoize_TableDescriptionByType("Terrains");
 local GetImprovementText = Memoize_TableDescriptionByType("Improvements");
 local GetRouteText = Memoize_TableDescriptionByType("Routes");
 
-
-
-
-
 -------------------------------------------------
 -------------------------------------------------
 function GetCivStateQuestString(plot, bShortVersion)
 	local resultStr = "";
+	--[[Paz: modified below
 	local iActivePlayer = Game.GetActivePlayer();
 	local iActiveTeam = Game.GetActiveTeam();
 	local pTeam = Teams[iActiveTeam];
+	]]
+	local iActivePlayer = g_iActivePlayer
+	local iActiveTeam = g_iActiveTeam
+	local pTeam = g_activeTeam
+	--end Paz modified
 	
 	for iPlayerLoop = GameDefines.MAX_MAJOR_CIVS, GameDefines.MAX_CIV_PLAYERS-1, 1 do	
 		pOtherPlayer = Players[iPlayerLoop];
@@ -85,6 +97,29 @@ function GetCivStateQuestString(plot, bShortVersion)
 			
 		end
 	end		
+
+	--Paz add: tack on plot effects (Glyphs, Runes and Wards)
+	local effectID, effectStength, iEffectPlayer, iCaster = plot:GetPlotEffectData()
+	local bOwnEffect = iActivePlayer == iEffectPlayer
+	local bObserver = iActiveTeam == OBSERVER_TEAM
+	local revealedPlotEffects = (not bObserver) and gT.gPlayers[g_iActivePlayer].revealedPlotEffects
+	if effectID ~= -1 and (bOwnEffect or bObserver or revealedPlotEffects[plot:GetPlotIndex()]) then	--show it
+		--"Explosive Runes (Yours)"
+		local effectInfo = GameInfo.EaPlotEffects[effectID]
+		local effectStr = Locale.Lookup(effectInfo.Description)
+		local txtColorTag = effectInfo.TextColor
+		local ownerStr
+		if bOwnEffect then
+			ownerStr = "Yours"
+		else
+			ownerStr = Locale.Lookup(PreGame.GetCivilizationShortDescription(iEffectPlayer))
+		end
+		if (resultStr ~= "") then
+			resultStr = resultStr .. "[NEWLINE]"
+		end
+		resultStr = resultStr .. txtColorTag .. effectStr .. " (" .. ownerStr .. ")[ENDCOLOR]"
+	end
+	--end Paz add
 	
 	return resultStr;
 end
@@ -595,3 +630,4 @@ function GetInternationalTradeRouteString(plot)
 	
 	return strTradeRouteStr;
 end
+

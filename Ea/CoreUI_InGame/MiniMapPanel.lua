@@ -2,13 +2,16 @@
 ----------------------------------------------------------------        
 include( "InstanceManager" );
 
+--Paz add
+include("EaErrorHandler.lua")
+MapModData.gT =  MapModData.gT or {}
+local gT = MapModData.gT
+--end Paz add
+
 local g_LegendIM = InstanceManager:new( "LegendKey", "Item", Controls.LegendStack );
 local g_Overlays = GetStrategicViewOverlays();
 local g_IconModes = GetStrategicViewIconSettings();
 
---Paz add: GPbutton (here so that it shows when UnitPanel is hidded)
---Controls.GPbutton:RegisterCallback( Mouse.eLClick, function() LuaEvents.UnitPanelGPCycle(0) end )
---end Paz add
 
 ----------------------------------------------------------------        
 ----------------------------------------------------------------        
@@ -433,6 +436,47 @@ function UpdateStrategicViewToggleTT()
 	end
 end
 
+--Paz add: plot effect highlight UI
+
+local g_plotEffectsShowState = 0		--0, hide; 1, other player's; 2, ours
+
+function ShowPlotEffectHighlight()
+	if g_plotEffectsShowState == 0 then
+		print("Hiding Glyphs, Runes & Wards highlighting")
+		Controls.PlotEffectsButton:LocalizeAndSetToolTip("TXT_KEY_EA_TT_PLOT_EFFECTS_HIDE")
+		Controls.PlotEffectsButton:SetTexture("assets/UI/Art/Icons/MainOpen.dds")
+		Controls.PlotEffectsImage:SetTexture("assets/UI/Art/Icons/MainOpen.dds")
+		Controls.PlotEffectsAlphaAnim:SetTexture("assets/UI/Art/Icons/MainOpenHL.dds")
+		LuaEvents.EaMagicUpdatePlotEffectHighlight(nil, 0)
+	elseif g_plotEffectsShowState == 1 then
+		print("Showing OUR Glyphs, Runes & Wards highlighting")
+		Controls.PlotEffectsButton:LocalizeAndSetToolTip("TXT_KEY_EA_TT_PLOT_EFFECTS_SHOW_OTHERS")
+		Controls.PlotEffectsButton:SetTexture("assets/UI/Art/Icons/MainClose.dds")
+		Controls.PlotEffectsImage:SetTexture("assets/UI/Art/Icons/MainClose.dds")
+		Controls.PlotEffectsAlphaAnim:SetTexture("assets/UI/Art/Icons/MainCloseHL.dds")
+		LuaEvents.EaMagicUpdatePlotEffectHighlight(nil, 1)
+	else
+		print("Showing OUR Glyphs, Runes & Wards highlighting")
+		Controls.PlotEffectsButton:LocalizeAndSetToolTip("TXT_KEY_EA_TT_PLOT_EFFECTS_SHOW_OURS")
+		Controls.PlotEffectsButton:SetTexture("assets/UI/Art/Icons/MainStrategicButton.dds")
+		Controls.PlotEffectsImage:SetTexture("assets/UI/Art/Icons/MainStrategicButton.dds")
+		Controls.PlotEffectsAlphaAnim:SetTexture("assets/UI/Art/Icons/MainStrategicButtonHL.dds")
+		LuaEvents.EaMagicUpdatePlotEffectHighlight(nil, 2)
+	end
+end
+
+function ToggleShowPlotEffects()
+	g_plotEffectsShowState = g_plotEffectsShowState + 1
+	if g_plotEffectsShowState == 3 then
+		g_plotEffectsShowState = 0
+	end
+	ShowPlotEffectHighlight()
+end
+Controls.PlotEffectsButton:RegisterCallback( Mouse.eLClick, function() return HandleError10(ToggleShowPlotEffects) end )
+
+--end Paz add
+
+
 ----------------------------------------------------------------
 -- 'Active' (local human) player has changed
 ----------------------------------------------------------------
@@ -445,6 +489,14 @@ function OnActivePlayerChanged(iActivePlayer, iPrevActivePlayer)
 	if (not Controls.OptionsPanel:IsHidden()) then
 		OnMapOptions();
 	end
+
+	--Paz add
+	g_plotEffectsShowState = 0
+	Controls.PlotEffectsButton:LocalizeAndSetToolTip("TXT_KEY_EA_TT_PLOT_EFFECTS_HIDE")
+	Controls.PlotEffectsButton:SetTexture("assets/UI/Art/Icons/MainOpen.dds")
+	Controls.PlotEffectsImage:SetTexture("assets/UI/Art/Icons/MainOpen.dds")
+	Controls.PlotEffectsAlphaAnim:SetTexture("assets/UI/Art/Icons/MainOpenHL.dds")
+	--end Paz add
 end
 Events.GameplaySetActivePlayer.Add(OnActivePlayerChanged);
 

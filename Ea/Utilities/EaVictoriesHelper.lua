@@ -39,7 +39,7 @@ function GetDestroyerVictoryData(iPlayer)
 	--Generate score
 	local score = Floor(manaConsumed ^ 0.5)
 
-	--Test victory conditions
+	--Test victory conditions (< 1% mana remaining)
 	local bVictory = score > 0 and sumOfAllMana / MapModData.STARTING_SUM_OF_ALL_MANA < 0.01
 
 	return score, bVictory, manaConsumed, manaStored, sumOfAllMana

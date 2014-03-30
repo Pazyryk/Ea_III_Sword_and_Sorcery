@@ -93,6 +93,21 @@ function EaUnitCombatInit(bNewGame)
 end
 
 --------------------------------------------------------------
+-- Interface
+--------------------------------------------------------------
+
+function CalculateXPManaForAttack(unitTypeId, damage, bKill)
+	local targetValue = unitCost[unitTypeId] or 240			--city treated as unit with cost 240
+	if targetValue < 10 then
+		print("!!!! ERROR: defending unit had Cost < 10; fix this because it affects xp and other things!")
+		targetValue = 240
+	end
+	return Floor((damage + (bKill and 33 or 0)) * targetValue / 240)		-- 1 pt per 2 hp for a Warriors unit; kill is worth an additional 33 hp
+end
+
+
+
+--------------------------------------------------------------
 -- Events DEPRECIATE!
 --------------------------------------------------------------
 
@@ -364,15 +379,6 @@ local function UpdateWarriorPoints(iPlayer, bCombat, bBlockWarriorPts)
 	eaPlayer.classPoints[5] = newPoints
 end
 
-local function CalculateAttackPts(unitTypeId, damage, bKill)
-	local targetValue = unitCost[unitTypeId] or 240			--city treated as unit with cost 240
-	if targetValue < 10 then
-		print("!!!! ERROR: defending unit had Cost < 10; fix this because it affects xp and other things!")
-		targetValue = 240
-	end
-	return Floor((damage + (bKill and 33 or 0)) * targetValue / 240)		-- 1 pt per 2 hp for a Warriors unit; kill is worth an additional 33 hp
-end
-
 local function OnCombatResult(iAttackingPlayer, iAttackingUnit, attackerDamage, attackerFinalDamage, attackerMaxHP, iDefendingPlayer, iDefendingUnit, defenderDamage, defenderFinalDamage, defenderMaxHP, iInterceptingPlayer, iInterceptingUnit, interceptorDamage, targetX, targetY)
 	--As currently coded in dll, iAttackingPlayer = -1 for a city ranged attack
 	print("OnCombatResult ", iAttackingPlayer, iAttackingUnit, attackerDamage, attackerFinalDamage, attackerMaxHP, iDefendingPlayer, iDefendingUnit, defenderDamage, defenderFinalDamage, defenderMaxHP, iInterceptingPlayer, iInterceptingUnit, interceptorDamage, targetX, targetY)
@@ -445,7 +451,7 @@ local function OnCombatEnded(iAttackingPlayer, iAttackingUnit, attackerDamage, a
 				eaPerson.iUnit = iRestoredUnit
 				restoredUnit:SetMorale(0)
 				local bDefenderKilled = (g_defendingUnitTypeId ~= -1) and (not defendingUnit or defendingUnit:IsDelayedDeath())
-				local pts = CalculateAttackPts(g_defendingUnitTypeId, defenderDamage, bDefenderKilled)
+				local pts = CalculateXPManaForAttack(g_defendingUnitTypeId, defenderDamage, bDefenderKilled)
 				UseManaOrDivineFavor(iAttackingPlayer, iPerson, pts)
 				--restoredUnit:SetInvisibleType(INVISIBLE_SUBMARINE)
 			elseif dummyUnit[attackingUnitTypeID] then

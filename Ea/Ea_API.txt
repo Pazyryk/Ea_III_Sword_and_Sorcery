@@ -86,6 +86,7 @@ int InvisibleTypes	SetInvisibleType()
 int InvisibleTypes	SetSeeInvisibleType()
 int					GetGPAttackState()
 void				SetGPAttackState(int iIndex)
+void				TestPromotionReady()
 int					TurnsToReachTarget(Plot targetPlot, bool bReusePaths, bool bIgnoreUnits, bool bIgnoreStacking)		--0 means can reach with movement left; returns 2147483647 if no path
 
 --------------------------------------------------------------

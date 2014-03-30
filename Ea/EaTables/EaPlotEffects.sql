@@ -13,13 +13,13 @@ CREATE TABLE EaPlotEffects ('ID' INTEGER PRIMARY KEY AUTOINCREMENT,
 
 INSERT INTO EaPlotEffects (Type,		TextColor,				HighlightColor	) VALUES
 ('EA_PLOTEFFECT_PROTECTIVE_WARD',		'[COLOR_BLUE]',			'BLUE'			),
-('EA_PLOTEFFECT_GLYPH_OF_SEEING',		'[COLOR_YELLOW]',		'YELLOW'		),
-('EA_PLOTEFFECT_EXPLOSIVE_RUNES',		'[COLOR_RED]',			'RED'			),
-('EA_PLOTEFFECT_DEATH_RUNES',			'[COLOR_LIGHT_GREY]',	'BLACK'			);
+('EA_PLOTEFFECT_SEEING_EYE_GLYPH',		'[COLOR_YELLOW]',		'YELLOW'		),
+('EA_PLOTEFFECT_EXPLOSIVE_RUNE',		'[COLOR_RED]',			'RED'			),
+('EA_PLOTEFFECT_DEATH_RUNE',			'[COLOR_LIGHT_GREY]',	'BLACK'			);
 
-UPDATE EaPlotEffects SET CanOverwrite = 1 WHERE Type = 'EA_PLOTEFFECT_GLYPH_OF_SEEING';
+UPDATE EaPlotEffects SET CanOverwrite = 1 WHERE Type = 'EA_PLOTEFFECT_SEEING_EYE_GLYPH';
 
--- Avoid GREEN since this is used to show a player's own plot effects
+
 
 
 --Build out the table for dependent strings

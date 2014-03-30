@@ -594,10 +594,14 @@ AITarget.WonderWorkPlot = function()			--Ideally, 1 plot per city that is good t
 	end
 end
 
-AITarget.InvasionRoute = function()
-	
-	--TO DO: AI logic for placing Explosive Runes
+AITarget.BoobyTrap = function()
+	--TO DO: AI logic for placing Explosive Rune
 
+	--quick test for now:
+	local capital = g_player:GetCapitalCity()
+	for x, y in PlotToRadiusIterator(capital:GetX(), capital:GetY(), 1, nil, nil, false) do
+		TestAddOption("Plot", x, y, 0, nil)
+	end
 end
 
 -------------------------------------------------------------------------------

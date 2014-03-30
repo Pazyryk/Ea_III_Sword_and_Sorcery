@@ -1,10 +1,11 @@
 -------------------------------------------------
 -- World View 
 -------------------------------------------------
+--Paz: modified from G&K with some spotty updates for BNW
+
 include( "FLuaVector" );
 
 --Paz add
---include("Ea___API_Include.lua")
 include("EaPlotUtils.lua")
 local MapModData = MapModData
 MapModData.gT = MapModData.gT or {}
@@ -22,6 +23,7 @@ local rButtonDown = false;
 
 local pathBorderStyle = "MovementRangeBorder";
 local attackPathBorderStyle = "AMRBorder"; -- attack move
+local genericUnitHexBorder = "GUHB";	--Paz added: this is used in BNW but not defined, so was clearing HexHighlightStyle ""
          
 function UpdatePathFromSelectedUnitToMouse()
 	local interfaceMode = UI.GetInterfaceMode();
@@ -593,6 +595,16 @@ function( wParam, lParam )
 	UpdatePathFromSelectedUnitToMouse();
 end
 
+function ClearAllHighlights()
+	--Events.ClearHexHighlights(); other systems might be using these!
+	--Paz disabled: Events.ClearHexHighlightStyle("");
+	Events.ClearHexHighlightStyle(pathBorderStyle);
+	Events.ClearHexHighlightStyle(attackPathBorderStyle);
+	Events.ClearHexHighlightStyle(genericUnitHexBorder);  
+	Events.ClearHexHighlightStyle("FireRangeBorder");
+	Events.ClearHexHighlightStyle("GroupBorder");
+	Events.ClearHexHighlightStyle("ValidFireTargetBorder");
+end
 
 function MovementRButtonUp( wParam, lParam )
 	local bShift = UIManager:GetShift();
@@ -611,31 +623,12 @@ function MovementRButtonUp( wParam, lParam )
 	if pHeadSelectedUnit then
 		if (UI.IsCameraMoving() and not Game.GetAllowRClickMovementWhileScrolling()) then
 			print("Blocked by moving camera");
-			Events.ClearHexHighlights();
+			--Events.ClearHexHighlights();
+			ClearAllHighlights();
 			return;
 		end
 	
 		Game.SetEverRightClickMoved(true);
-
-		--Paz add: go to city, even if forbidden tile
-		--[[	allowed in dll now
-		local bGreatPerson = pHeadSelectedUnit:IsGreatPerson()
-		if bGreatPerson then
-			if plot:IsCity() or Map.PlotDistance(pHeadSelectedUnit:GetX(), pHeadSelectedUnit:GetY(), plotX, plotY) > 2 then
-				local iPlayer = pHeadSelectedUnit:GetOwner()
-				local iUnit = pHeadSelectedUnit:GetID()
-				local iPerson = pHeadSelectedUnit:GetPersonIndex()	
-
-				LuaEvents.EaActionsDoEaActionFromOtherState(0, iPlayer, pHeadSelectedUnit, iPerson, plotX, plotY)	--0 is move to plot EaAction (target eaPerson.gotoPlotIndex)
-				print("Attempted to move GP from WorldView", MapModData.bSuccess)
-				if MapModData.bSuccess then	--was above successful?
-					Events.ClearHexHighlights()
-					return true
-				end
-			end
-		end
-		]]
-		--Paz end add
 	
 		local bBombardEnemy = false;
 
@@ -673,7 +666,8 @@ function MovementRButtonUp( wParam, lParam )
 				
 				Game.SelectionListGameNetMessage(GameMessageTypes.GAMEMESSAGE_PUSH_MISSION, iMission, plotX, plotY, 0, false, bShift);
 				UI.SetInterfaceMode(InterfaceModeTypes.INTERFACEMODE_SELECTION);
-				Events.ClearHexHighlights();
+				--Events.ClearHexHighlights();
+				ClearAllHighlights();
 				return true;
 			end
 		end
@@ -698,7 +692,8 @@ function MovementRButtonUp( wParam, lParam )
 				Game.SelectionListMove(plot,  bAlt, bShift, bCtrl);
 				--UI.SetGotoPlot(nil);
 			end
-			Events.ClearHexHighlights();
+			--Events.ClearHexHighlights();
+			ClearAllHighlights();
 			return true;
 		end
 	end

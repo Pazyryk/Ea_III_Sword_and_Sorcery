@@ -13,7 +13,6 @@ local Dprint = DEBUG_PRINT and print or function() end
 
 local MANA_CONSUMED_BY_ANRA_FOUNDING =		1000
 local MANA_CONSUMED_BY_CIV_FALL =			200
-local MANA_CONSUMED_PER_FOLLOWER_PER_TURN =	1
 
 --------------------------------------------------------------
 -- File Locals
@@ -206,15 +205,6 @@ function UpdateCivReligion(iPlayer, bPerTurnCall)		--per turn and when update ne
 			end
 		end
 
-		--Mana consumption per Anra follower per turn
-		if bPerTurnCall and 0 < integers[RELIGION_ANRA] then
-			local consumedMana = integers[RELIGION_ANRA] * MANA_CONSUMED_PER_FOLLOWER_PER_TURN
-			gWorld.sumOfAllMana = gWorld.sumOfAllMana - consumedMana
-			if eaPlayer.bIsFallen then
-				eaPlayer.manaConsumed = (eaPlayer.manaConsumed or 0) + consumedMana
-			end
-		end
-
 		--The Weave gets credit for all cult followers
 		for i = RELIGION_THE_WEAVE_OF_EA + 1, HIGHEST_RELIGION_ID do
 			integers[RELIGION_THE_WEAVE_OF_EA] = integers[RELIGION_THE_WEAVE_OF_EA] + integers[i]
@@ -273,10 +263,6 @@ function UpdateCivReligion(iPlayer, bPerTurnCall)		--per turn and when update ne
 			eaPlayer.religionID = capital:GetReligiousMajority()
 		else
 			eaPlayer.religionID = -1
-		end
-		if bPerTurnCall and gReligions[RELIGION_ANRA] then
-			local consumedMana = city:GetNumFollowers(RELIGION_ANRA) * MANA_CONSUMED_PER_FOLLOWER_PER_TURN
-			gWorld.sumOfAllMana = gWorld.sumOfAllMana - consumedMana
 		end
 	end
 end

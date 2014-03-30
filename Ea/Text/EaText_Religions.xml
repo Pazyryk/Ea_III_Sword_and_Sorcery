@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Created by ModBuddy on 3/30/2014 11:30:46 AM -->
+<GameData>
+	<Language_en_US>
+
+		<!-- Religions -->
+
+		<Row Tag="TXT_KEY_EA_RELIGION_AZZANDARAYASNA">
+			<Text>Azzandarayasna</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RELIGION_ANRA">
+			<Text>Aŋra</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RELIGION_THE_WEAVE_OF_EA">
+			<Text>The Weave of Éa</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RELIGION_CULT_OF_LEAVES">
+			<Text>Cult of Leaves</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RELIGION_CULT_OF_EPONA">
+			<Text>Cult of Epona</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RELIGION_CULT_OF_PURE_WATERS">
+			<Text>Cult of Pure Waters</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RELIGION_CULT_OF_AEGIR">
+			<Text>Cult of Ægir</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RELIGION_CULT_OF_BAKKHEIA">
+			<Text>Cult of Bakkheia</Text>
+		</Row>
+
+		<!-- Beliefs (Note: these are not shown in Ea. Remove?) -->
+
+		<Row Tag="TXT_KEY_EA_BELIEF_AZZANDARAYASNA_INITIAL">
+			<Text>Azzandarayasna</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BELIEF_MONASTIC_TRADITION">
+			<Text>Monastic Tradition</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BELIEF_WAY_OF_THE_WISE">
+			<Text>Way of the Wise</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BELIEF_HEAVENS_MANDATE">
+			<Text>Heaven's Mandate</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BELIEF_PRIESTHOOD">
+			<Text>Priesthood</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BELIEF_THEOCRACY">
+			<Text>Theocracy</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BELIEF_ANRA_FOLLOWER">
+			<Text>Aŋra Follower</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BELIEF_ANTI_MONASTIC_TRADITION">
+			<Text>Monastic Tradition</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BELIEF_ANTI_WAY_OF_THE_WISE">
+			<Text>Way of the Wicked</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BELIEF_ANTI_HEAVENS_MANDATE">
+			<Text>Hell's Mandate</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BELIEF_ANTI_PRIESTHOOD">
+			<Text>Priesthood</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BELIEF_ANTI_THEOCRACY">
+			<Text>Theocracy</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BELIEF_CULT_OF_LEAVES_FOUNDER">
+			<Text>Cult of Leaves</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BELIEF_CULT_OF_EPONA_FOUNDER">
+			<Text>Cult of Epona</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BELIEF_CULT_OF_PURE_WATERS_FOUNDER">
+			<Text>Cult of Pure Waters</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BELIEF_CULT_OF_AEGIR_FOUNDER">
+			<Text>Cult of Ægir</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BELIEF_CULT_OF_BAKKHEIA_FOUNDER">
+			<Text>Cult of Bakkheia</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BELIEF_THE_WEAVE_OF_EA_FOLLOWER">
+			<Text>The Weave of Éa</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BELIEF_CULT_OF_EPONA_FOLLOWER">
+			<Text>Cult of Epona</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BELIEF_CULT_OF_PURE_WATERS_FOLLOWER">
+			<Text>Cult of Pure Waters</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BELIEF_CULT_OF_AEGIR_FOLLOWER">
+			<Text>Cult of Ægir</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BELIEF_CULT_OF_BAKKHEIA_FOLLOWER">
+			<Text>Cult of Bakkheia</Text>
+		</Row>
+
+	</Language_en_US>
+
+	<EaDebugTableCheck>
+		<Row FileName="EaText_Religions.xml"/>
+	</EaDebugTableCheck>
+  
+</GameData>

@@ -3,14 +3,6 @@
 <GameData>
 	<Language_en_US>
 		
-		<!--
-		<Row Tag="">
-			<Text></Text>
-		</Row>
-		<Row Tag="">
-			<Text></Text>
-		</Row>				
-		-->
 		
 		<!-- EaActions -->
 
@@ -442,6 +434,6 @@
 	</Language_en_US>
 	
 	<EaDebugTableCheck>
-		<Row FileName="EaText_Actions.xml"/>
+		<Row FileName="EaText_EaActions.xml"/>
 	</EaDebugTableCheck>
 </GameData>

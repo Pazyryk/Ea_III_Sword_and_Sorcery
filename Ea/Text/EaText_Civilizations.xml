@@ -1,0 +1,806 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Created by ModBuddy on 3/30/2014 10:58:04 AM -->
+<GameData>
+
+	<Language_en_US>
+
+		<!-- Civilizations (find EaCiv names in EaText_EaCivilizations.xml) -->
+		<Row Tag="TXT_KEY_EA_CIV_THE_FAY">
+			<Text>The Fay</Text>
+		</Row>
+
+		<!-- Leaders (find EaPeople names in EaText_EaPeople.xml) -->
+		<Row Tag="TXT_KEY_EA_NO_LEADER">
+			<Text>No Leader</Text>
+		</Row>
+
+		<!-- Traits (most unnamed; only these are needed for setup menu) -->
+		<Row Tag="TXT_KEY_EA_TRAIT_MAN">
+			<Text>Man is adaptable but mortal.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TRAIT_SIDHE">
+			<Text>Sídhe is wise, beautiful and ageless.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TRAIT_HELDEOFOL">
+			<Text>Heldeofol is fecund, mishappen and short-lived.</Text>
+		</Row>
+
+		<!-- Cities (find EaCiv Capitals in EaText_EaCivilizations.xml) -->
+		
+		<!-- Unattached (help find errors in naming system) -->
+		<Row Tag="TXT_KEY_EA_CITY_REPORT_AS_BUG_1">
+			<Text>REPORT AS BUG</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CITY_REPORT_AS_BUG_2">
+			<Text>REPORT AS BUG</Text>
+		</Row>
+		
+		<!-- First cities (repeated so game engine will allow duplicate city names -->
+		<Row Tag="TXT_KEY_EA_FIRST_CITY_MAN_1">
+			<Text>Village of Man</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FIRST_CITY_MAN_2">
+			<Text>Village of Man</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FIRST_CITY_MAN_3">
+			<Text>Village of Man</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FIRST_CITY_MAN_4">
+			<Text>Village of Man</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FIRST_CITY_MAN_5">
+			<Text>Village of Man</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FIRST_CITY_MAN_6">
+			<Text>Village of Man</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FIRST_CITY_MAN_7">
+			<Text>Village of Man</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FIRST_CITY_MAN_8">
+			<Text>Village of Man</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FIRST_CITY_MAN_9">
+			<Text>Village of Man</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FIRST_CITY_MAN_10">
+			<Text>Village of Man</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FIRST_CITY_MAN_11">
+			<Text>Village of Man</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FIRST_CITY_MAN_12">
+			<Text>Village of Man</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FIRST_CITY_MAN_13">
+			<Text>Village of Man</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FIRST_CITY_MAN_14">
+			<Text>Village of Man</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FIRST_CITY_MAN_15">
+			<Text>Village of Man</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FIRST_CITY_MAN_16">
+			<Text>Village of Man</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FIRST_CITY_MAN_17">
+			<Text>Village of Man</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FIRST_CITY_MAN_18">
+			<Text>Village of Man</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FIRST_CITY_MAN_19">
+			<Text>Village of Man</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FIRST_CITY_SIDHE_1">
+			<Text>Village of Sídhe</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FIRST_CITY_SIDHE_2">
+			<Text>Village of Sídhe</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FIRST_CITY_SIDHE_3">
+			<Text>Village of Sídhe</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FIRST_CITY_SIDHE_4">
+			<Text>Village of Sídhe</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FIRST_CITY_SIDHE_5">
+			<Text>Village of Sídhe</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FIRST_CITY_SIDHE_6">
+			<Text>Village of Sídhe</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FIRST_CITY_SIDHE_7">
+			<Text>Village of Sídhe</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FIRST_CITY_SIDHE_8">
+			<Text>Village of Sídhe</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FIRST_CITY_SIDHE_9">
+			<Text>Village of Sídhe</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FIRST_CITY_SIDHE_10">
+			<Text>Village of Sídhe</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FIRST_CITY_SIDHE_11">
+			<Text>Village of Sídhe</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FIRST_CITY_SIDHE_12">
+			<Text>Village of Sídhe</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FIRST_CITY_SIDHE_13">
+			<Text>Village of Sídhe</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FIRST_CITY_SIDHE_14">
+			<Text>Village of Sídhe</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FIRST_CITY_SIDHE_15">
+			<Text>Village of Sídhe</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FIRST_CITY_SIDHE_16">
+			<Text>Village of Sídhe</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FIRST_CITY_SIDHE_17">
+			<Text>Village of Sídhe</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FIRST_CITY_SIDHE_18">
+			<Text>Village of Sídhe</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FIRST_CITY_SIDHE_19">
+			<Text>Village of Sídhe</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FIRST_CITY_HELDEOFOL_1">
+			<Text>Village of Heldeofol</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FIRST_CITY_HELDEOFOL_2">
+			<Text>Village of Heldeofol</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FIRST_CITY_HELDEOFOL_3">
+			<Text>Village of Heldeofol</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FIRST_CITY_HELDEOFOL_4">
+			<Text>Village of Heldeofol</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FIRST_CITY_HELDEOFOL_5">
+			<Text>Village of Heldeofol</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FIRST_CITY_HELDEOFOL_6">
+			<Text>Village of Heldeofol</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FIRST_CITY_HELDEOFOL_7">
+			<Text>Village of Heldeofol</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FIRST_CITY_HELDEOFOL_8">
+			<Text>Village of Heldeofol</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FIRST_CITY_HELDEOFOL_9">
+			<Text>Village of Heldeofol</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FIRST_CITY_HELDEOFOL_10">
+			<Text>Village of Heldeofol</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FIRST_CITY_HELDEOFOL_11">
+			<Text>Village of Heldeofol</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FIRST_CITY_HELDEOFOL_12">
+			<Text>Village of Heldeofol</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FIRST_CITY_HELDEOFOL_13">
+			<Text>Village of Heldeofol</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FIRST_CITY_HELDEOFOL_14">
+			<Text>Village of Heldeofol</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FIRST_CITY_HELDEOFOL_15">
+			<Text>Village of Heldeofol</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FIRST_CITY_HELDEOFOL_16">
+			<Text>Village of Heldeofol</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FIRST_CITY_HELDEOFOL_17">
+			<Text>Village of Heldeofol</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FIRST_CITY_HELDEOFOL_18">
+			<Text>Village of Heldeofol</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FIRST_CITY_HELDEOFOL_19">
+			<Text>Village of Heldeofol</Text>
+		</Row>
+		<!-- Cities of Man -->
+
+		<Row Tag="TXT_KEY_EACITY_AEKIN">
+			<Text>Ækin</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_ALGRON">
+			<Text>Algrön</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_BILSCIRNI">
+			<Text>Bilscírni</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_BOL">
+			<Text>Böl</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_BRALUNDI">
+			<Text>Brálundi</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_BRANDEYIO">
+			<Text>Brandeyio</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_BRAVELLI">
+			<Text>Brávelli</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_BRUNAVAGOM">
+			<Text>Brunavágom</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_DUNEYRR">
+			<Text>Duneyrr</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_DURATHROR">
+			<Text>Durathrór</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_EICTHYRNIR">
+			<Text>Eicthyrnir</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_FENSOLOM">
+			<Text>Fensölom</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_FIMBULTHUL">
+			<Text>Fimbulthul</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_FIONI">
+			<Text>Fióni</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_FIORM">
+			<Text>Fiorm</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_GEIRVIMUL">
+			<Text>Geirvimul</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_GIMLE">
+			<Text>Gimlé</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_GIPUL">
+			<Text>Gipul</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_GJOLL">
+			<Text>Gjöll</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_GLASIR">
+			<Text>Glasir</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_GLITNIR">
+			<Text>Glitnir</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_GOMUL">
+			<Text>Gömul</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_GOPUL">
+			<Text>Göpul</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_GUNNAR">
+			<Text>Gunnar</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_GRATH">
+			<Text>Gráth</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_GROTTI">
+			<Text>Grotti</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_GUNNTHORIN">
+			<Text>Gunnthorin</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_GUNNTHRO">
+			<Text>Gunnthró</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_HETHINSEYIO">
+			<Text>Hethinseyio</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_HLESEY">
+			<Text>Hlésey</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_HLYMDOLOM">
+			<Text>Hlymdölom</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_HOLL">
+			<Text>Höll</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_HOTUN">
+			<Text>Hótún</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_HRITH">
+			<Text>Hríth</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_HRONN">
+			<Text>Hrönn</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_HVERGELMI">
+			<Text>Hvergelmi</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_IFING">
+			<Text>Ifing</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_KERLAUGAR">
+			<Text>Kerlaugar</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_KORMT">
+			<Text>Körmt</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_LEIPT">
+			<Text>Leipt</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_LYR">
+			<Text>Lÿr</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_MANI">
+			<Text>Máni</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_NOATUN">
+			<Text>Nóatún</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_NOT">
+			<Text>Nót</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_NYT">
+			<Text>Nyt</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_OKOLNIR">
+			<Text>Ókölnir</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_ORMT">
+			<Text>Örmt</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_ORVASUND">
+			<Text>Örvasund</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_OSKOPNIR">
+			<Text>Óskópnir</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_RATHSEY">
+			<Text>Ráthsey</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_RIN">
+			<Text>Rín</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_RINNANDI">
+			<Text>Rinnandi</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_ROTHULSVOLLOM">
+			<Text>Röthulsvöllom</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_RUTH">
+			<Text>Ruth</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_SAEKIN">
+			<Text>Sækin</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_SAEMORN">
+			<Text>Sæmorn</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_SAEVARSTATH">
+			<Text>Sævarstath</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_SAMSEY">
+			<Text>Sámsey</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_SESSRYMNIR">
+			<Text>Sessrymnir</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_SIGARSHOLM">
+			<Text>Sigarsholm</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_SITH">
+			<Text>Sith</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_SKORUSTROND">
+			<Text>Skorustrond</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_SLITH">
+			<Text>Slíth</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_SOGN">
+			<Text>Sogn</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_SOGUNES">
+			<Text>Sógunes</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_SOLHEIMAR">
+			<Text>Sólheimar</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_STAFNSNESI">
+			<Text>Stafnsnesi</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_STROND">
+			<Text>Strond</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_SVARANGS">
+			<Text>Svárangs</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_SVOL">
+			<Text>Svol</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_SYLG">
+			<Text>Sylg</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_THJOTHNUMA">
+			<Text>Thjóthnuma</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_THOL">
+			<Text>Thol</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_THOLLEY">
+			<Text>Tholley</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_THORSNESI">
+			<Text>Thórsnesi</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_THRYMGJOL">
+			<Text>Thrymgjol</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_THYN">
+			<Text>Thyn</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_TRONEUEYR">
+			<Text>Tronueyr</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_ULFDALIR">
+			<Text>Ulfdalir</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_ULFSIAR">
+			<Text>Úlfsiár</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_UNAVAGOM">
+			<Text>Unavágom</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_VALGRIND">
+			<Text>Valgrind</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_VAM">
+			<Text>Vam</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_VATHGELMIR">
+			<Text>Vathgelmir</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_VEGSVIN">
+			<Text>Vegsvin</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_VESTRSALIR">
+			<Text>Vestrsalir</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_VIGRITH">
+			<Text>Vigríth</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_VIN">
+			<Text>Vin</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_VINO">
+			<Text>Vinó</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_VITHI">
+			<Text>Vithi</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_VON">
+			<Text>Vón</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_VOND">
+			<Text>Vond</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_YDALIR">
+			<Text>Ydalir</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_YLG">
+			<Text>Ylg</Text>
+		</Row>
+
+		<!-- Cities of Sidhe -->
+
+
+		<Row Tag="TXT_KEY_EACITY_ARD_LEMNACHT">
+			<Text>Ard Lemnacht</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_ARD_NA_RIAG">
+			<Text>Ard na Riag</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_ATH_CLIATH">
+			<Text>Áth Clíath</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_ATH_CLIATH_MEDRAIGE">
+			<Text>Ath Cliath Medraige</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_ATH_FADAT">
+			<Text>Ath Fadat</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_ATH_LUAIN">
+			<Text>Ath Luain</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_BELACH_CONGLAIS">
+			<Text>Belach Conglais</Text>
+		</Row>
+
+		<Row Tag="TXT_KEY_EACITY_BAIREND_CHERMAIN">
+			<Text>Bairend Chermain</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_BEND_ETAIR">
+			<Text>Bend Etair</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_BELACH_DURGEIN">
+			<Text>Belach Durgein</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_BELACH_GABRAN">
+			<Text>Belach Gabran</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_BOAND">
+			<Text>Boand</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_CARMUN">
+			<Text>Carmun</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_CARN_AMALGAID">
+			<Text>Carn Amalgaid</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_CARN_CONAILL">
+			<Text>Carn Conaill</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_CARN_FERADAIG">
+			<Text>Carn Feradaig</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_CARN_FRAICH">
+			<Text>Carn Fráich</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_CARN_HUI_NEIT">
+			<Text>Carn Hui Neit</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_CEILBE">
+			<Text>Ceilbe</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_CEIS_CHORAIND">
+			<Text>Ceis Choraind</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_CEND_FEBRAT">
+			<Text>Cend Febrat</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_CNOGBA">
+			<Text>Cnogba</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_CROTTA_CLIACH">
+			<Text>Crotta Cliach</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_CURRECH_LIFE">
+			<Text>Currech Life</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_DUIBLIND">
+			<Text>Duiblind</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_DUMA_SELGA">
+			<Text>Duma Selga</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_DUN_CRIMTHAIND">
+			<Text>Dun Crimthaind</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_DUN_GABAIL">
+			<Text>Dun Gabail</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_EO_MUGNA">
+			<Text>Eo Mugna</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_EO_ROSSA">
+			<Text>Eo Rossa</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_FIND_LOCH_CERA">
+			<Text>Find-Loch Cera</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_FINDGLAIS">
+			<Text>Findglais</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_FORNOCHT">
+			<Text>Fornocht</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_INBER_BUADA">
+			<Text>Inber Buada</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_LAIRGE">
+			<Text>Lairge</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_LIAMUIN">
+			<Text>Liamuin</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_LOCH_CE">
+			<Text>Loch Cé</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_LOCH_CON">
+			<Text>Loch Con</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_LOCH_DACHAECH">
+			<Text>Loch Dachaech</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_LOCH_DECHET">
+			<Text>Loch Dechet</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_LOCH_DERGDERC">
+			<Text>Loch Dergderc</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_LOCH_ERNE">
+			<Text>Loch Erne</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_LOCH_GARMAN">
+			<Text>Loch Garman</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_LOCH_LEIN">
+			<Text>Loch Lein</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_LOCH_NEILL">
+			<Text>Loch Neill</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_LOCH_RI">
+			<Text>Loch Ri</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_LOCH_RIACH">
+			<Text>Loch Riach</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_LUIMNECH">
+			<Text>Luimnech</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_MAG_MUGNA">
+			<Text>Mag Mugna</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_MAG_RAIGNE">
+			<Text>Mag Raigne</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_MAG_FEMIN">
+			<Text>Mag Femin</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_MAG_FEA">
+			<Text>Mag Fea</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_MAG_FERA">
+			<Text>Mag Fera</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_MAG_LUIRG">
+			<Text>Mag Luirg</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_MAG_MUCRIME">
+			<Text>Mag Mucrime</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_MAG_MUIRISCE">
+			<Text>Mag Muireisce</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_MAG_N_AI">
+			<Text>Mag n'Ai</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_MAG_N_AIDNI">
+			<Text>Mag n'Aidni</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_MAG_TIBRA">
+			<Text>Mag Tibra</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_MAISTIU">
+			<Text>Maistiu</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_MEDRAIGN">
+			<Text>Medraige</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_MOENMAG">
+			<Text>Moenmag</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_NAS">
+			<Text>Nás</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_RATH_CNAMROSSA">
+			<Text>Rath Cnámrossa</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_RATH_CRUACHAN">
+			<Text>Rath Cruachan</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_ROIRIU">
+			<Text>Roiriu</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_SINANN">
+			<Text>Sinann</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_SLIAB_GAM">
+			<Text>Sliab Gam</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_SLIAB_MAIRGE">
+			<Text>Sliab Mairge</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_SLIAB_N_ECHTGA">
+			<Text>Sliab n'Echtga</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_SLIAB_MISS">
+			<Text>Sliab Miss</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_SLIGE_DALA">
+			<Text>Slige Dala</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_SRUB_BRAIN">
+			<Text>Srúb Brain</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_TEMAIR_LUACHRA">
+			<Text>Temair Luachra</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_TIPRA_SEN_GARMNA">
+			<Text>Tipra Sen-Garmna</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_TOND_CLIDNA">
+			<Text>Tond Clidna</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_TURLOCH_SILINDE">
+			<Text>Turloch Silinde</Text>
+		</Row>
+
+		<!-- Civ-specific city lists -->
+
+		<Row Tag="TXT_KEY_EACITY_HIPPUS_1">
+			<Text>Conrond Mor</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_HIPPUS_2">
+			<Text>Radonnor</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_HIPPUS_3">
+			<Text>Feiss Mabdon</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_HIPPUS_4">
+			<Text>Murousbane</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_HIPPUS_5">
+			<Text>Clar Marrachir</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_HIPPUS_6">
+			<Text>Urgortheth</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_HIPPUS_7">
+			<Text>Gaene</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_HIPPUS_8">
+			<Text>Ihara</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_HIPPUS_9">
+			<Text>Kaselorne</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_HIPPUS_10">
+			<Text>Ukanevar</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_HIPPUS_11">
+			<Text>Glorairmor</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_HIPPUS_12">
+			<Text>Drathastine</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_HIPPUS_13">
+			<Text>Manar Gandar</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_HIPPUS_14">
+			<Text>Enekandril</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_HIPPUS_15">
+			<Text>Caranaad</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_HIPPUS_16">
+			<Text>Nimharuan</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_HIPPUS_17">
+			<Text>Iosichaard</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_HIPPUS_18">
+			<Text>Mengostlox</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_HIPPUS_19">
+			<Text>Lamistuis</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_HIPPUS_20">
+			<Text>Ard'ien</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_HIPPUS_21">
+			<Text>Clar Nasacar</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EACITY_HIPPUS_22">
+			<Text>Khanec</Text>
+		</Row>		
+		
+	</Language_en_US>
+	
+	<EaDebugTableCheck>
+		<Row FileName="EaText_Civilizations.xml"/>
+	</EaDebugTableCheck>
+  
+</GameData>

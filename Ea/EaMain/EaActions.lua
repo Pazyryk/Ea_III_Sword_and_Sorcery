@@ -1426,42 +1426,6 @@ function DoGotoPlot(iPlayer, unit, iPerson, gotoX, gotoY)
 		return true
 	end
 
-	--[[
-	--if close and destination is forbidden, just teleport
-	local distance = Map.PlotDistance(unitX, unitY, gotoX, gotoY)
-	if distance < 3 then
-		unit:ChangeMoves(-30 * distance)
-		unit:SetXY(gotoX, gotoY)
-		print("DoGotoPlot teleported GP to destination tile; distance was", distance)
-		eaPerson.eaActionID = -1		--we are done
-		return true		
-	end
-
-	--try to approach adjacent plot
-	for x, y in PlotToRadiusIterator(gotoX, gotoY, 1) do
-		unit:PopMission()
-		unit:PushMission(MissionTypes.MISSION_MOVE_TO, x, y, 0, 0, 1, MissionTypes.MISSION_MOVE_TO, plot, unit)
-		local movesAfter = unit:MovesLeft()
-		if movesAfter < movesBefore then
-			print("DoGotoPlot moved GP toward target ADJACENT plot")
-			eaPerson.eaActionID = 0
-			return true
-		end
-	end
-
-	--try to approach 2-tile distance plot
-	for x, y in PlotToRadiusIterator(gotoX, gotoY, 2) do
-		unit:PopMission()
-		unit:PushMission(MissionTypes.MISSION_MOVE_TO, x, y, 0, 0, 1, MissionTypes.MISSION_MOVE_TO, plot, unit)
-		local movesAfter = unit:MovesLeft()
-		if movesAfter < movesBefore then
-			print("DoGotoPlot moved GP toward target 2-TILE DISTANCE plot")
-			eaPerson.eaActionID = 0
-			return true
-		end
-	end
-	]]
-
 	print("!!!! WARNING: DoGotoPlot could not move GP even though AStar thought there was a path")
 	eaPerson.gotoPlotIndex = -1
 	eaPerson.gotoEaActionID = -1
@@ -1479,6 +1443,8 @@ end
 ------------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------------
+
+--TO DO: All SetUI statements need TXT_KEYs
 
 ------------------------------------------------------------------------------------------------------------------------------
 -- Non-GP (SetAIValues doesn't work for these yet)

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Created by ModBuddy on 3/30/2014 11:11:02 AM -->
+<GameData>
+	<Language_en_US>
+		
+		<!-- EaPlotEffects -->
+
+		<Row Tag="TXT_KEY_EA_PLOTEFFECT_PROTECTIVE_WARD">
+			<Text>Protective Ward</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PLOTEFFECT_SEEING_EYE_GLYPH">
+			<Text>Seeing Eye Glyph</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PLOTEFFECT_EXPLOSIVE_RUNE">
+			<Text>Explosive Rune</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PLOTEFFECT_DEATH_RUNE">
+			<Text>Death Rune</Text>
+		</Row>
+		
+		
+	</Language_en_US>
+
+	<EaDebugTableCheck>
+		<Row FileName="EaText_EaPlotEffects.xml"/>
+	</EaDebugTableCheck>
+  
+</GameData>

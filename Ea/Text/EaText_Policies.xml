@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Created by ModBuddy on 3/30/2014 11:28:41 AM -->
+<GameData>
+	<Language_en_US>
+
+
+		<!-- Policies -->
+
+		<Row Tag="TXT_KEY_EA_POLICY_BRANCH_DOMINIONISM_CAP">
+			<Text>DOMINIONISM</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_DOMINIONISM">
+			<Text>Dominionism</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_DOMINIONISM_TEXT">
+			<Text>placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_GUILDS">
+			<Text>Guilds</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_GUILDS_TEXT">
+			<Text>placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_TRADE_UNIONS">
+			<Text>Trade Unions</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_TRADE_UNIONS_TEXT">
+			<Text>placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_TAXATION">
+			<Text>Taxation</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_TAXATION_TEXT">
+			<Text>placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_CIVIL_SERVICE">
+			<Text>Civil Service</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_CIVIL_SERVICE_TEXT">
+			<Text>placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_INDUSTRIALIZATION">
+			<Text>Industrialization</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_INDUSTRIALIZATION_TEXT">
+			<Text>placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_BRANCH_PANTHEISM_CAP">
+			<Text>PANTHEISM</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_PANTHEISM">
+			<Text>Pantheism</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ANIMAL_LORE">
+			<Text>Animal Lore</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_FERAL_BOND">
+			<Text>Feral Bond</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_COMMUNE_WITH_NATURE">
+			<Text>Commune with Nature</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_WOODS_LORE">
+			<Text>Woods Lore</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_FELLOWSHIP_OF_LEAVES">
+			<Text>Fellowship of Leaves</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_FOREST_DOMINION">
+			<Text>Forest Dominion</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_EARTH_LORE">
+			<Text>Earth Lore</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MANA_VORTEXES">
+			<Text>Mana Vortexes</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_THROUGH_THE_VEIL">
+			<Text>Through the Veil</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_BRANCH_THEISM_CAP">
+			<Text>THEISM</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_THEISM">
+			<Text>Theism</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MYSTICISM">
+			<Text>Mysticism</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MONASTIC_TRADITION">
+			<Text>Monastic Tradition</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_WAY_OF_THE_WISE">
+			<Text>Way of the Wise</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_HEAVENS_MANDATE">
+			<Text>Heaven's Mandate</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_PRIESTHOOD">
+			<Text>Priesthood</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_HOLY_ORDER">
+			<Text>Holy Order</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_THEOCRACY">
+			<Text>Theocracy</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ANTI_THEISM">
+			<Text>Theism</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ANTI_MYSTICISM">
+			<Text>Mysticism</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ANTI_MONASTIC_TRADITION">
+			<Text>Monastic Tradition</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ANTI_WAY_OF_THE_WISE">
+			<Text>Way of the Wicked</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ANTI_HEAVENS_MANDATE">
+			<Text>Hell's Mandate</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ANTI_PRIESTHOOD">
+			<Text>Priesthood</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ANTI_HOLY_ORDER">
+			<Text>Unholy Order</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ANTI_THEOCRACY">
+			<Text>Theocracy</Text>
+		</Row>
+
+
+		<Row Tag="TXT_KEY_EA_POLICY_BRANCH_MILITARISM_CAP">
+			<Text>MILITARISM</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MILITARISM">
+			<Text>Militarism</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MILITARISM_TEXT">
+			<Text>placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_DISCIPLINE">
+			<Text>Discipline</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_DISCIPLINE_TEXT">
+			<Text>placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MILITARY_TRADITION">
+			<Text>Military Traditio</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MILITARY_TRADITION_TEXT">
+			<Text>placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_WARRIOR_CODE">
+			<Text>Warrior Code</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_WARRIOR_CODE_TEXT">
+			<Text>placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_PROFESSIONAL_ARMY">
+			<Text>Professional Army</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_PROFESSIONAL_ARMY_TEXT">
+			<Text>placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_WAR_SPIRIT">
+			<Text>Warspirit</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_WAR_SPIRIT_TEXT">
+			<Text>placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_BERSERKER_RAGE">
+			<Text>Berserker Rage</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_BERSERKER_RAGE_TEXT">
+			<Text>placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_BRANCH_TRADITION_CAP">
+			<Text>TRADITION</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_TRADITION">
+			<Text>Tradition</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_TRADITION_TEXT">
+			<Text>placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_SCHOLASTICISM">
+			<Text>Scholasticism</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_SCHOLASTICISM_TEXT">
+			<Text>placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ACADEMIC_TRADITION">
+			<Text>Academic Tradition</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ACADEMIC_TRADITION_TEXT">
+			<Text>placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_RATIONALISM">
+			<Text>Rationalism</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_RATIONALISM_TEXT">
+			<Text>placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_THE_ARTS">
+			<Text>The Arts</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_THE_ARTS_TEXT">
+			<Text>placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_BRANCH_COMMERCE_CAP">
+			<Text>COMMERCE</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_COMMERCE">
+			<Text>Commerce</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_COMMERCE_TEXT">
+			<Text>placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MERCANTILISM">
+			<Text>Mercantilism</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MERCANTILISM_TEXT">
+			<Text>placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_FREE_MARKETS">
+			<Text>Free Markets</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_FREE_MARKETS_TEXT">
+			<Text>placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MERCENARISM">
+			<Text>Mercenarism</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MERCENARISM_TEXT">
+			<Text>placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MERCHANT_NAVY">
+			<Text>Merchant Navy</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MERCHANT_NAVY_TEXT">
+			<Text>placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_CULTURAL_DIPLOMACY">
+			<Text>Cultural Diplomacy</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_CULTURAL_DIPLOMACY_TEXT">
+			<Text>placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_PATRONAGE">
+			<Text>Patronage</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_PATRONAGE_TEXT">
+			<Text>placeholder</Text>
+		</Row>
+
+
+		<Row Tag="TXT_KEY_EA_POLICY_BRANCH_ARCANA_CAP">
+			<Text>ARCANA</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ARCANA">
+			<Text>Arcana</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_WITCHCRAFT">
+			<Text>Witchcraft</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ARCANE_TRADITION">
+			<Text>Arcane Tradition</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ARCANE_LORE">
+			<Text>Arcane Lore</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ARCANE_RESEARCH">
+			<Text>Arcane Research</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_SOCIO_ARCANA">
+			<Text>Socio Arcana</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ARCANE_ELITE">
+			<Text>Arcane Elite</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ARCANE_PRIMUS">
+			<Text>Arcane Primus</Text>
+		</Row>
+
+		<Row Tag="TXT_KEY_EA_POLICY_BRANCH_SLAVERY_CAP">
+			<Text>SLAVERY</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_SLAVERY">
+			<Text>Slavery</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_SLAVERY_TEXT">
+			<Text>placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_SERFDOM">
+			<Text>Serfdom</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_SERFDOM_TEXT">
+			<Text>placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_DEBT_BONDAGE">
+			<Text>Debt Bondage</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_DEBT_BONDAGE_TEXT">
+			<Text>placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_SLAVE_CASTES">
+			<Text>Slave Castes</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_SLAVE_CASTES_TEXT">
+			<Text>placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_SLAVE_TRADE">
+			<Text>Slave Trade</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_SLAVE_TRADE_TEXT">
+			<Text>placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_SLAVE_BREEDING">
+			<Text>Slave Breeding</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_IN_UTERO_SERVITUTUM">
+			<Text>In Utero Servitutum</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_IN_UTERO_SERVITUTUM_TEXT">
+			<Text>placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_SLAVE_RAIDERS">
+			<Text>Slave Raiders</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_SLAVE_RAIDERS_TEXT">
+			<Text>placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_SLAVE_ARMIES">
+			<Text>Slave Armies</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_SLAVE_ARMIES_TEXT">
+			<Text>placeholder</Text>
+		</Row>
+
+		<Row Tag="TXT_KEY_EA_POLICY_BRANCH_CIV_ENABLED_CAP">
+			<Text>CIV-ENABLED</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MYSTICS">
+			<Text>Mystics</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_DIVINATORS">
+			<Text>Divinators</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_CONJURORS">
+			<Text>Conjurors</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ENCHANTERS">
+			<Text>Enchanters</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_HERBALISTS">
+			<Text>Herbalists</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ALCHEMISTS">
+			<Text>Alchemists</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_POTION_MAKERS">
+			<Text>Potion Makers</Text>
+		</Row>
+
+
+	</Language_en_US>
+
+	<EaDebugTableCheck>
+		<Row FileName="EaText_Policies.xml"/>
+	</EaDebugTableCheck>
+  
+</GameData>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Created by ModBuddy on 3/30/2014 10:51:28 AM -->
+<GameData>
+	<Language_en_US>
+		<!-- EaRaces & related texts -->
+
+		<Row Tag="TXT_KEY_EA_MAN">
+			<Text>Man</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SIDHE">
+			<Text>Sídhe</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_HELDEOFOL">
+			<Text>Heldeofol</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FAY">
+			<Text>Fay</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EARACE_ORC">
+			<Text>Orc</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EARACE_GOBLIN">
+			<Text>Goblin</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ORC_SUB">
+			<Text>Heldeofol (Orc)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOBLIN_SUB">
+			<Text>Heldeofol (Goblin)</Text>
+		</Row>
+
+
+		<Row Tag="TXT_KEY_EA_ALL_RACES">
+			<Text>All Races</Text>
+		</Row>
+
+		<Row Tag="TXT_KEY_EA_MAN_TRIBE">
+			<Text>Tribe of Man</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SIDHE_TRIBE">
+			<Text>Tribe of Sídhe</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_HELDEOFOL_TRIBE">
+			<Text>A Tribe of Heldeofol</Text>
+		</Row>
+
+		<Row Tag="TXT_KEY_EA_CIV_MAN_ADJECTIVE">
+			<Text>Man</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_SIDHE_ADJECTIVE">
+			<Text>Sídhe</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_HELDEOFOL_ADJECTIVE">
+			<Text>Heldeofol</Text>
+		</Row>		
+		
+		
+		
+	</Language_en_US>
+	
+	<EaDebugTableCheck>
+		<Row FileName="EaText_EaRaces.xml"/>
+	</EaDebugTableCheck>
+  
+</GameData>

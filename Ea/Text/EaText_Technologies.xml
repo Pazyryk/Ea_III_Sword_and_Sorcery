@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Created by ModBuddy on 3/30/2014 11:33:56 AM -->
+<GameData>
+	<Language_en_US>
+
+
+		<!-- Technologies -->
+
+		<Row Tag="TXT_KEY_EA_TECH_DOMESTICATION">
+			<Text>Domestication</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_HUNTING">
+			<Text>Hunting</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_FISHING">
+			<Text>Fishing</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_AGRICULTURE">
+			<Text>Agriculture</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_WRITING">
+			<Text>Writing</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_CURRENCY">
+			<Text>Currency</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_MINING">
+			<Text>Mining</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_HORSEBACK_RIDING">
+			<Text>Horseback Riding</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_ANIMAL_HUSBANDRY">
+			<Text>Animal Husbandry</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_ELEPHANT_TRAINING">
+			<Text>Elephant Training</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_TRACKING_TRAPPING">
+			<Text>Tracking & Trapping</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_ARCHERY">
+			<Text>Archery</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_HARPOONS">
+			<Text>Harpoons</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_SAILING">
+			<Text>Sailing</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_MILLING">
+			<Text>Milling</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_WEAVING">
+			<Text>Weaving</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_ZYMURGY">
+			<Text>Zymurgy</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_IRRIGATION">
+			<Text>Irrigation</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_CALENDAR">
+			<Text>Calendar</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_DIVINE_LITURGY">
+			<Text>Divine Liturgy</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_MALEFICIUM">
+			<Text>Maleficium</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_THAUMATURGY">
+			<Text>Thaumaturgy</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_PHILOSOPHY">
+			<Text>Philosophy</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_DRAMA">
+			<Text>Drama</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_MATHEMATICS">
+			<Text>Mathematics</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_COINAGE">
+			<Text>Coinage</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_MASONRY">
+			<Text>Masonry</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_BRONZE_WORKING">
+			<Text>Bronze Working</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_DEEP_MINING">
+			<Text>Deep Mining</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_STIRRUPS">
+			<Text>Stirrups</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_ANIMAL_INDUSTRY">
+			<Text>Animal Industry</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_ELEPHANT_LABOR">
+			<Text>Elephant Labor</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_GAMEKEEPING">
+			<Text>Gamekeeping</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_BOWYERS">
+			<Text>Bowyers</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_SHIP_BUILDING">
+			<Text>Ship Building</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_FORESTRY">
+			<Text>Forestry</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_FINE_TEXTILES">
+			<Text>Fine Textiles</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_OENOLOGY">
+			<Text>Œnology</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_CROP_ROTATION">
+			<Text>Crop Rotation</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_DIVINE_VITALISM">
+			<Text>Divine Vitalism</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_LYCANTHROPY">
+			<Text>Lycanthropy</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_REANIMATION">
+			<Text>Reanimation</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_SORCERY">
+			<Text>Sorcery</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_CONJURATION">
+			<Text>Conjuration</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_TRANSMUTATION">
+			<Text>Transmutation</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_LOGIC">
+			<Text>Logic</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_LITERATURE">
+			<Text>Literature</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_MUSIC">
+			<Text>Music</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_ALCHEMY">
+			<Text>Alchemy</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_MECHANICS">
+			<Text>Mechanics</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_BANKING">
+			<Text>Banking</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_CONSTRUCTION">
+			<Text>Construction</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_IRON_WORKING">
+			<Text>Iron Working</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_EARTH_DIVINATION">
+			<Text>Earth Divination</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_UNDERDARK_PATHS">
+			<Text>Underdark Paths</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_ANIMAL_BREEDING">
+			<Text>Animal Breeding</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_ANIMAL_MASTERY">
+			<Text>Animal Mastery</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_MARKSMANSHIP">
+			<Text>Marksmanship</Text>
+		</Row>
+
+		<Row Tag="TXT_KEY_EA_TECH_ASTRONOMY">
+			<Text>Astronomy</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_DIVINE_ESSENCE">
+			<Text>Divine Essence</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_DIVINE_INTERVENTION">
+			<Text>Divine Intervention</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_VAMPIRISM">
+			<Text>Vampirism</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_NECROMANCY">
+			<Text>Necromancy</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_SUMMONING">
+			<Text>Summoning</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_EVOCATION">
+			<Text>Evocation</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_METAPHYSICS">
+			<Text>Metaphysics</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_SEMIOTICS">
+			<Text>Semiotics</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_ENCHANTMENT">
+			<Text>Enchantment</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_CHEMISTRY">
+			<Text>Chemistry</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_SANITATION">
+			<Text>Sanitation</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_PHYSICS">
+			<Text>Physics</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_ENGINEERING">
+			<Text>Engineering</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_METAL_CASTING">
+			<Text>Metal Casting</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_WAR_HORSES">
+			<Text>War Horses</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_WAR_ELEPHANTS">
+			<Text>War Elephants</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_WHALING">
+			<Text>Whaling</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_NAVIGATION">
+			<Text>Navigation</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_CELESTIAL_KNOWLEDGE">
+			<Text>Celestial Knowledge</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_SOUL_BINDING">
+			<Text>Soul Binding</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_ILLUSION">
+			<Text>Illusion</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_ABJURATION">
+			<Text>Abjuration</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_TRANSCENDENTAL_THOUGHT">
+			<Text>Transcendental Thought</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_GREATER_ILLUSION">
+			<Text>Greater Illusion</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_GREATER_ENCHANTMENT">
+			<Text>Greater Enchantment</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_AESTHETICS">
+			<Text>Æsthetics</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_MEDICINE">
+			<Text>Medicine</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_ARCHITECTURE">
+			<Text>Architecture</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_MACHINERY">
+			<Text>Machinery</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_STEEL_WORKING">
+			<Text>Steel Working</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_ELEMENTAL_FORGING">
+			<Text>Elemental Forging</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_DEEP_ROADS">
+			<Text>Deep Roads</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_BEAST_MASTERY">
+			<Text>Beast Mastery</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_MUMAKIL_RIDING">
+			<Text>Mûmakil Riding</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_SONG_OF_LEVIATHAN">
+			<Text>Song of Leviathan</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_ADV_NAVAL_ENGINEERING">
+			<Text>Adv. Naval Engineering</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_NAVAL_ENGINEERING">
+			<Text>Naval Engineering</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_HEAVENLY_CYCLES">
+			<Text>Heavenly Cycles</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_BREACH">
+			<Text>Breach</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_GREATER_ARCANA">
+			<Text>Greater Arcana</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_PHANTASMAGORIA">
+			<Text>Phantasmagoria</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_INVOCATION">
+			<Text>Invocation</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_ETHEREAL_ARCHITECTURE">
+			<Text>Ethereal Architecture</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_STEAM_POWER">
+			<Text>Steam Power</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_MITHRIL_WORKING">
+			<Text>Mithril Working</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_KNOWLEDGE_OF_HEAVEN">
+			<Text>Knowledge of Heaven</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_ARMAGEDDON_RITUALS">
+			<Text>Armageddon Rituals</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_ESOTERIC_ARCANA">
+			<Text>Esoteric Arcana</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_COSMOGONY">
+			<Text>Cosmogony</Text>
+		</Row>
+
+		<Row Tag="TXT_KEY_EA_TECH_UNDERDARK_LORE">
+			<Text>Underdark Lore</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_BEAST_BREEDING">
+			<Text>Beast Breeding</Text>
+		</Row>
+
+		<!-- Technologies Special Texts -->
+
+		<Row Tag="TXT_KEY_EA_TECH_WRITING_SPECIAL">
+			<Text>Reduces Knowledge Maintenence by 1% per tech known</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_MOUNTED_ELEPHANTS_SPECIAL">
+			<Text>Can trade Elephants</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_TRACKING_SPECIAL">
+			<Text>Hunters can establish Camps up to 5 plots from cities</Text>
+		</Row>
+
+		<Row Tag="TXT_KEY_EA_TECH_SAILING_SPECIAL">
+			<Text>Can improve sea resources up to 5 plots from coastal cities</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_IRRIGATION_SPECIAL">
+			<Text>Can build Farms in Marsh</Text>
+		</Row>
+
+		<Row Tag="TXT_KEY_EA_TECH_MALEFICIUM_SPECIAL">
+			<Text>Civilization will Fall when anyone makes the Prophecy of Vâ</Text>
+		</Row>
+
+		<Row Tag="TXT_KEY_EA_TECH_PHILOSOPHY_SPECIAL">
+			<Text>Reduces Knowledge Maintenence by 1% per tech known</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_BRONZE_WORKING_SPECIAL">
+			<Text>Slash-Burn Jungle</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_BOWYERS_SPECIAL">
+			<Text>Level 6 Bowmen and Bowed Cavalry can upgrade to Marksmen and Sagitarii, respectively</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_SHIP_BUILDING_SPECIAL">
+			<Text>Can improve sea resources up to 7 plots from coastal cities</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_FORESTRY_SPECIAL1">
+			<Text>Can build Sawmills in Jungle</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_FORESTRY_SPECIAL2">
+			<Text>Doubles Timber obtained from Sawmills and Chopping</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_ASTRONOMY_SPECIAL">
+			<Text>Can improve sea resources across oceans - !! OCEAN BLOCK FOR RESOURCES HAS NOT BEEN IMPLEMENTED YET !!</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_LOGIC_SPECIAL">
+			<Text>Reduces Knowledge Maintenence by 1% per tech known</Text>
+		</Row>
+
+		<Row Tag="TXT_KEY_EA_TECH_CHEMISTRY_SPECIAL">
+			<Text>Required for all gunpowder units: Arquebussmen, Great Bombarde, Cannons, Carracks, Galleons & Ironclads</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_BEAST_BREEDING_SPECIAL">
+			<Text>Mûmakil spawn near existing Elephant - !! NOT YET IMPLEMENTED; MUMAKIL CURRENTLY USE ELEPHANT RESOURCE !!</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_WHALING_SPECIAL">
+			<Text>Can establish Whaling Boats up to 11 plots from coastal cities</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_NAVIGATION_SPECIAL">
+			<Text>Can improve sea resources up to 9 plots from coastal cities</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_ANIMAL_MASTERY_SPECIAL">
+			<Text>Hunters can establish Camps up to 7 plots from cities</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_METAPHYSICS_SPECIAL">
+			<Text>Reduces Knowledge Maintenence by 1% per tech known</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_TRANSCENDENTAL_THOUGHT_SPECIAL">
+			<Text>Reduces Knowledge Maintenence by 1% per tech known</Text>
+		</Row>
+
+	</Language_en_US>
+
+	<EaDebugTableCheck>
+		<Row FileName="EaText_Technologies.xml"/>
+	</EaDebugTableCheck>
+  
+</GameData>

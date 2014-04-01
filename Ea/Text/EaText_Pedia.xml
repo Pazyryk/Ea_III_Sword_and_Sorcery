@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Created by ModBuddy on 8/23/2012 9:36:31 PM -->
+
+
+
+
+
+<!--	DEPRECIATE THIS FILE !!!! All help texts should go in the correct EaText_ file for the table (with the item itself) -->
+
+
+
+
+
+
 <GameData>
 	<Language_en_US>
 		<Row Tag="TXT_KEY_EA_CIV_MAN_PEDIA">

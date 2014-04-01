@@ -263,7 +263,7 @@ local function OnPlayerDoTurn(iPlayer)	-- Runs at begining of turn for all livin
 		UnitPerCivTurn(iPlayer)						--must be before PeoplePerCivTurn(iPlayer)
 		UpdateAllArtifacts()
 		CityPerCivTurn(iPlayer)						--must be before FullCivPerCivTurn (religion counting) and PeoplePerCivTurn (gp point counting)
-		UpdateCivReligion(iPlayer)
+		UpdateCivReligion(iPlayer, true)
 		PolicyPerCivTurn(iPlayer)
 		TechPerCivTurn(iPlayer)
 		FullCivPerCivTurn(iPlayer)
@@ -292,7 +292,7 @@ local function OnPlayerDoTurn(iPlayer)	-- Runs at begining of turn for all livin
 	elseif playerType[iPlayer] == "CityState" then
 		--City states
 		UnitPerCivTurn(iPlayer)
-		UpdateCivReligion(iPlayer)
+		UpdateCivReligion(iPlayer, true)
 		CityStatePerCivTurn(iPlayer)
 		AIMercenaryPerCivTurn(iPlayer)
 		UpdateGlobalYields(iPlayer, "Gold", true)

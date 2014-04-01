@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Created by ModBuddy on 3/30/2014 12:00:01 PM -->
+<GameData>
+	<Language_en_US>
+
+		<!-- UnitBuilds  -->
+
+		<Row Tag="TXT_KEY_EA_BUILD_FARM">
+			<Text>Build Farm</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILD_MINE">
+			<Text>Build Mine</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILD_PASTURE">
+			<Text>Build Pasture</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILD_CAMP">
+			<Text>Build Camp</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILD_QUARRY">
+			<Text>Build Quarry</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILD_T_PLANTATION">
+			<Text>Build Textiles Plantation</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILD_E_PLANTATION">
+			<Text>Build Exotics Plantation</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILD_ORCHARD">
+			<Text>Build Orchard</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILD_VINEYARD">
+			<Text>Build Vineyard</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILD_LUMBERMILL">
+			<Text>Build Sawmill</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILD_BOWYERS_CAMP">
+			<Text>Build Bowyer's Camp</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILD_GATHERERS_HUT">
+			<Text>Build Gatherers' Hut</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILD_FISHING_BOATS">
+			<Text>Build Fishing Boats</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILD_WHALING_BOATS">
+			<Text>Build Whaling Boats</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILD_SLASH_BURN_FOREST">
+			<Text>Slash-and-Burn Forest</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILD_SLASH_BURN_JUNGLE">
+			<Text>Slash-and-Burn Jungle</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILD_CHOP_FOREST">
+			<Text>Chop Down Forest</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILD_CHOP_JUNGLE">
+			<Text>Chop Down Jungle</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILD_REMOVE_MARSH">
+			<Text>Drain Marsh</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_REPAIR_IMPROVEMENT">
+			<Text>Repair Improvement</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_REMOVE_ROUTE">
+			<Text>Destroy Road</Text>
+		</Row>
+
+	</Language_en_US>
+
+	<EaDebugTableCheck>
+		<Row FileName="EaText_UnitBuilds.xml"/>
+	</EaDebugTableCheck>
+  
+</GameData>

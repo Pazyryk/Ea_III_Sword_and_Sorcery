@@ -29,7 +29,7 @@ local HIGHLIGHT_COLOR = {
 --localized functions
 local GetPlotByIndex =		Map.GetPlotByIndex
 local GetPlotByXY =			Map.GetPlot
-local GetPlotByIndex =		Map.GetPlotByIndex
+local GetPlotIndexFromXY =	GetPlotIndexFromXY
 local Rand =				Map.Rand
 local Vector2 =				Vector2
 local ToHexFromGrid =		ToHexFromGrid
@@ -47,6 +47,54 @@ local g_activeTeam = Teams[g_iActiveTeam]
 --------------------------------------------------------------
 -- Interface
 --------------------------------------------------------------
+
+function DrainExperience(unit, xp)
+	print("DrainExperience ", unit, xp)
+	local oldLevel = unit:GetLevel()
+	local oldXP = unit:GetExperience()
+	local xpDrained = xp < oldXP and xp or oldXP
+	unit:SetExperience(oldXP - xpDrained)
+	local newLevel = 1
+	unit:SetLevel(1)
+	while unit:ExperienceNeeded() < 1 do
+		newLevel = newLevel + 1
+		unit:SetLevel(newLevel)
+	end
+	local levelsLost = oldLevel - newLevel
+	if 0 < levelsLost then
+		print("Lost levels = ", levelsLost)
+		local promoRemoveList = {}
+		for i = 1, levelsLost do		--remove a random earnable promotion (that is not required for any other promotion)
+			print("Generating list of earnable, non-prereq promotions that might be removed")
+			local numPromos = 0
+			for promoInfo in GameInfo.UnitPromotions("CannotBeChosen = 0") do
+				if unit:IsHasPromotion(promoInfo.ID) then
+					local promoType = promoInfo.Type
+					local bAllow = true
+					for promoLoopInfo in GameInfo.UnitPromotions("CannotBeChosen = 0 AND PromotionPrereq = '" .. promoType .. "'") do
+						if unit:IsHasPromotion(promoLoopInfo.ID) then
+							bAllow = false
+							break
+						end
+					end
+					if bAllow then
+						print(" *", promoInfo.ID, promoInfo.Type)
+						numPromos = numPromos + 1
+						promoRemoveList[numPromos] = promoInfo.ID
+					end
+				end
+			end
+			if numPromos == 0 then
+				print("!!!! ERROR: Could not find any valid promotions to remove after level drain")
+			else
+				local dice = Rand(numPromos, "hello") + 1
+				print("Removing this one from list above: ", promoRemoveList[dice])
+				unit:SetHasPromotion(promoRemoveList[dice], false)
+			end
+		end
+	end
+	return xpDrained, levelsDrained
+end
 
 --magic plot attack
 function DoDummyUnitRangedAttack(iPlayer, x, y, mod, dummyUnitID)
@@ -138,33 +186,91 @@ local function OnUnitSetXYPlotEffect(iPlayer, iUnit, x, y, plotEffectID, plotEff
 end
 GameEvents.UnitSetXYPlotEffect.Add(function(iPlayer, iUnit, x, y, plotEffectID, plotEffectStrength, iPlotEffectPlayer, iPlotEffectCaster) return HandleError(OnUnitSetXYPlotEffect, iPlayer, iUnit, x, y, plotEffectID, plotEffectStrength, iPlotEffectPlayer, iPlotEffectCaster) end)
 
-OnPlotEffect[GameInfoTypes.EA_PLOTEFFECT_EXPLOSIVE_RUNES] = function(iPlayer, iUnit, x, y, plotEffectStrength, iPlotEffectPlayer, iPlotEffectCaster)
+OnPlotEffect[GameInfoTypes.EA_PLOTEFFECT_EXPLOSIVE_RUNE] = function(iPlayer, iUnit, x, y, plotEffectStrength, iPlotEffectPlayer, iPlotEffectCaster)
 	local plotEffectPlayer = Players[iPlotEffectPlayer]
 	if plotEffectPlayer:IsAlive() then
 		local player = Players[iPlayer]
 		if Teams[player:GetTeam()]:IsAtWar(plotEffectPlayer:GetTeam()) then
-			print("Unit stepped on an Explosive Runes and teams are at war...")
+			print("Unit stepped on an Explosive Rune and teams are at war...")
 			local plot = GetPlotByXY(x, y)
 			plot:SetPlotEffectData(-1, -1, -1, -1)
 			local unit = player:GetUnitByID(iUnit)
+			local unitTypeID = unit:GetUnitType()
+			local maxHP = unit:GetMaxHitPoints()
 			local beforeDamage = unit:GetDamage()
 			DoDummyUnitRangedAttack(iPlotEffectPlayer, x, y, plotEffectStrength)
-			local afterDamage = unit and unit:GetDamage() or 100
-			print("Damage to unit = ", afterDamage - beforeDamage)
-			UseManaOrDivineFavor(iPlotEffectPlayer, iPlotEffectCaster, afterDamage - beforeDamage)	--safe to use if iPlotEffectCaster is dead
-			LuaEvents.UpdatePlotEffectHighlight()
+			local afterDamage = unit and unit:GetDamage() or maxHP
+			local damage = afterDamage - beforeDamage
+			print("Damage to unit = ", damage)
+			local xpMana = CalculateXPManaForAttack(unitTypeId, damage, damage == maxHP)
+			UseManaOrDivineFavor(iPlotEffectPlayer, iPlotEffectCaster, xpMana)	--safe to use if iPlotEffectCaster is dead
+			local iPlot = GetPlotIndexFromXY(x, y) 
+			UpdatePlotEffectHighlight(iPlot)
 		else
-			print("Unit stepped on an Explosive Runes, but teams are not at war...")
+			print("Unit stepped on an Explosive Rune, but teams are not at war...")
 		end
 	else
-		print("Unit stepped on an Explosive Runes, but effect setter is dead; removing plot effect...")
+		print("Unit stepped on an Explosive Rune, but effect player is dead; removing plot effect...")
 		local plot = GetPlotByXY(x, y)
 		plot:SetPlotEffectData(-1, -1, -1, -1)
-		LuaEvents.UpdatePlotEffectHighlight()
+		local iPlot = GetPlotIndexFromXY(x, y)
+		UpdatePlotEffectHighlight(iPlot)
 	end
 end
 
--- active player change
+OnPlotEffect[GameInfoTypes.EA_PLOTEFFECT_DEATH_RUNE] = function(iPlayer, iUnit, x, y, plotEffectStrength, iPlotEffectPlayer, iPlotEffectCaster)
+	local plotEffectPlayer = Players[iPlotEffectPlayer]
+	if plotEffectPlayer:IsAlive() then
+		local player = Players[iPlayer]
+		if Teams[player:GetTeam()]:IsAtWar(plotEffectPlayer:GetTeam()) then
+			print("Unit stepped on a Death Rune and teams are at war...")
+			local plot = GetPlotByXY(x, y)
+			plot:SetPlotEffectData(-1, -1, -1, -1)
+			--special effects for active player
+			if iPlayer == g_iActivePlayer or iPlotEffectPlayer == g_iActivePlayer or plot:IsVisible(g_iActiveTeam) then
+				UI.LookAt(plot, 0)
+				local hex = ToHexFromGrid(Vector2(plot:GetXY()))
+				Events.GameplayFX(hex.x, hex.y, -1)
+			end
+			local unit = player:GetUnitByID(iUnit)
+			local beforeDamage = unit:GetDamage()
+			local experience = unit:GetExperience()
+			local combat = unit:GetBaseCombatStrength()
+			local ranged = unit:GetBaseRangedCombatStrength()
+			local threshold = experience < combat and combat or experience
+			threshold = threshold < ranged and ranged or threshold	--greatest of 3
+			if threshold < plotEffectStrength then		--instant death
+				--xp/mana should be the greater of threashold or the standard attack pts
+				local hp = unit:GetMaxHitPoints() - beforeDamage
+				local unitTypeID = unit:GetUnitType()
+				unit:Kill(true, iPlotEffectPlayer)
+				local stdPts = CalculateXPManaForAttack(unitTypeId, hp, true)
+				local xpMana = threshold < stdPts and stdPts or threshold
+				print("Death Rune killed the unit; xp/mana = ", xpMana)
+				UseManaOrDivineFavor(iPlotEffectPlayer, iPlotEffectCaster, xpMana)	--safe to use if iPlotEffectCaster is dead
+			else
+				local xpDrained, levelsDrained = DrainExperience(unit, plotEffectStrength)
+				local xpMana = xpDrained + 5 * levelsDrained
+				UseManaOrDivineFavor(iPlotEffectPlayer, iPlotEffectCaster, xpMana)
+			end
+			local iPlot = GetPlotIndexFromXY(x, y)
+			UpdatePlotEffectHighlight(iPlot)
+		else
+			print("Unit stepped on an Death Rune, but teams are not at war...")
+		end
+	else
+		print("Unit stepped on an Death Rune, but effect player is dead; removing plot effect...")
+		local plot = GetPlotByXY(x, y)
+		plot:SetPlotEffectData(-1, -1, -1, -1)
+		local iPlot = GetPlotIndexFromXY(x, y)
+		UpdatePlotEffectHighlight(iPlot)
+	end
+end
+
+--------------------------------------------------------------
+-- Active player change
+--------------------------------------------------------------
+
 local function OnActivePlayerChanged(iActivePlayer, iPrevActivePlayer)
 	g_iActivePlayer = iActivePlayer
 	g_activePlayer = Players[g_iActivePlayer]
@@ -184,5 +290,6 @@ function DebugSetPlotEffectAll(effectID, effectStength, iPlayer, iCaster)
 			plot:SetPlotEffectData(effectID, effectStength, iPlayer, iCaster)
 		end
 	end
+	UpdatePlotEffectHighlight(nil)
 end
 

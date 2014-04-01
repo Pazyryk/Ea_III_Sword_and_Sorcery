@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Created by ModBuddy on 3/30/2014 11:35:49 AM -->
+<GameData>
+	<Language_en_US>
+
+		<!-- Features -->
+
+		<Row Tag="TXT_KEY_EA_FEATURE_MOUNT_ABNOAB">
+			<Text>Mount Abnoab</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FEATURE_SPRING_AVETA">
+			<Text>Spring of Aveta</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FEATURE_BORVOS_GEYSER">
+			<Text>Borvo's Geyser</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FEATURE_LAKE_BELISAMA">
+			<Text>Lake Belisama</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FEATURE_ELDIRS_VOLCANO">
+			<Text>Eldir's Volcano</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FEATURE_RITONAS_ROCK">
+			<Text>Ritona's Rock</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FEATURE_LI_BANS_REEF">
+			<Text>Lí Ban's Reef</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FEATURE_MOUNT_ERECURA">
+			<Text>Mount Erecura</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FEATURE_MOUNT_VOSEGUS">
+			<Text>Mount Vosegus</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FEATURE_MOUNT_NANTOSUELTA">
+			<Text>Mount Nantosuelta</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FEATURE_DIS_PATERS_VAULT">
+			<Text>Dis Pater's Vault</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FEATURE_MOUNT_NERGAL">
+			<Text>Mount Nergal</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FEATURE_WADDS_ROCK">
+			<Text>Wadd's Rock</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FEATURE_ABGALS_OUTCROP">
+			<Text>Abgal's Outcrop</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FEATURE_NESRS_BOWL">
+			<Text>Nesr's Bowl</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FEATURE_PYRAMID_AZZANDARA">
+			<Text>Pyramid of Creation</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FEATURE_VAULT_AHRIMAN">
+			<Text>Ahriman's Vault</Text>
+		</Row>
+
+		<!-- Resources -->
+
+		<Row Tag="TXT_KEY_EA_RESOURCE_BOARS">
+			<Text>Boars</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RESOURCE_COPPER">
+			<Text>Copper</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RESOURCE_JADE">
+			<Text>Jade</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RESOURCE_LEATHER">
+			<Text>Leather</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RESOURCE_ALE">
+			<Text>Ale</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RESOURCE_SPIRITS">
+			<Text>Spirits</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RESOURCE_MITHRIL">
+			<Text>Mithril</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RESOURCE_ELEPHANT">
+			<Text>Elephant</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RESOURCE_TIMBER">
+			<Text>Timber</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RESOURCE_MOLY">
+			<Text>Moly</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RESOURCE_QUICKSILVER">
+			<Text>Quicksilver</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RESOURCE_YEW">
+			<Text>Yew</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RESOURCE_NAPHTHA">
+			<Text>Naphtha</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RESOURCE_WOOL">
+			<Text>Wool</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RESOURCE_TOBACCO">
+			<Text>Tobacco</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RESOURCE_TEA">
+			<Text>Tea</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RESOURCE_OPIUM">
+			<Text>Opium</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RESOURCE_BERRIES">
+			<Text>Berries</Text>
+		</Row>
+
+		<!-- Resource map-only names -->
+		
+		<Row Tag="TXT_KEY_EA_RESOURCE_OYSTERS">
+			<Text>Oysters</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RESOURCE_SMALL_GAME">
+			<Text>Small Game</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RESOURCE_SILKWORMS">
+			<Text>Silkworms</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RESOURCE_COTTON_TREES">
+			<Text>Cotton Trees</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RESOURCE_SUGARCANE">
+			<Text>Sugarcane</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RESOURCE_GRAPES">
+			<Text>Grapes</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RESOURCE_CITRUS_TREES">
+			<Text>Citrus Trees</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RESOURCE_CINNABAR">
+			<Text>Cinnabar</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RESOURCE_POPPIES">
+			<Text>Poppies</Text>
+		</Row>
+
+		<!-- Improvements -->
+		
+		<Row Tag="TXT_KEY_EA_IMPROVEMENT_LUMBERMILL">
+			<Text>Sawmill</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_IMPROVEMENT_BOWYERS_CAMP">
+			<Text>Bowyer's Camp</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_IMPROVEMENT_GATHERERS_HUT">
+			<Text>Gatherer's Hut</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_IMPROVEMENT_E_PLANTATION">
+			<Text>Exotics Plantation</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_IMPROVEMENT_T_PLANTATION">
+			<Text>Textiles Plantation</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_IMPROVEMENT_ORCHARD">
+			<Text>Orchard</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_IMPROVEMENT_VINEYARD">
+			<Text>Vinyard</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_IMPROVEMENT_WHALING_BOATS">
+			<Text>Whaling Boats</Text>
+		</Row>
+
+
+	</Language_en_US>
+
+	<EaDebugTableCheck>
+		<Row FileName="EaText_Terrain.xml"/>
+	</EaDebugTableCheck>
+  
+</GameData>

@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Created by ModBuddy on 3/30/2014 11:25:55 AM -->
+<GameData>
+	<Language_en_US>
+
+		<!-- Buildings -->
+
+		<Row Tag="TXT_KEY_EA_BUILDING_STANHENCG">
+			<Text>Stânhencg</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_KOLOSSOS">
+			<Text>Kolossós</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_MEGALOS_FAROS">
+			<Text>Megálos Fáros</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_HANGING_GARDENS">
+			<Text>Hanging Gardens</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_UUC_YABNAL">
+			<Text>Uuc-yabnal</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_THE_LONG_WALL">
+			<Text>The Long Wall</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_CLOG_MOR">
+			<Text>Clog Mór</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_DA_BAOEN_SI">
+			<Text>Da Bao'en Si</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_GREAT_LIBRARY">
+			<Text>Great Library</Text>
+		</Row>
+
+		<Row Tag="TXT_KEY_EA_BUILDING_SEWERS">
+			<Text>Sewers</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_PUBLIC_BATHS">
+			<Text>Public Baths</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_APOTHECARY">
+			<Text>Apothecary</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_COTTON_GIN">
+			<Text>Cotton Gin</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_TIMBERYARD">
+			<Text>Timberyard</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_BREEDING_PEN">
+			<Text>Breeding Pen</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_WINERY">
+			<Text>Winery</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_SALTWORKS">
+			<Text>Saltworks</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_HUNTING_LODGE">
+			<Text>Hunting Lodge</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_PALACE">
+			<Text>Capital</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_MONUMENT">
+			<Text>Monument</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_WARRENS">
+			<Text>Warrens</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_MARKETPLACE">
+			<Text>Marketplace</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_LIBRARY">
+			<Text>Library</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_FAIR">
+			<Text>Fair</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_FORGE">
+			<Text>Forge</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_SMOKEHOUSE">
+			<Text>Smokehouse</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_TANNERY">
+			<Text>Tannery</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_IVORYWORKS">
+			<Text>Ivoryworks</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_GRANARY">
+			<Text>Granary</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_STABLE">
+			<Text>Stable</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_ELEPHANT_STOCKADE">
+			<Text>Elephant Stockade</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_HARBOR">
+			<Text>Harbor</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_BREWERY">
+			<Text>Brewery</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_MINT">
+			<Text>Mint</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_STONE_WORKS">
+			<Text>Stone Works</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_MONASTERY">
+			<Text>Monastery</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_LIGHTHOUSE">
+			<Text>Lighthouse</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_THEATRE">
+			<Text>Theatre</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_WINDMILL">
+			<Text>Windmill</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_WATERMILL">
+			<Text>Watermill</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_TEMPLE">
+			<Text>Temple</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_WALLS">
+			<Text>Walls</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_SLAVE_STOCKADE">
+			<Text>Slave Stockade</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_BARRACKS">
+			<Text>Barracks</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_BANK">
+			<Text>Bank</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_UNIVERSITY">
+			<Text>University</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_FACTORY">
+			<Text>Factory</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_LABORATORY">
+			<Text>Laboratory</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_OPERA_HOUSE">
+			<Text>Opera House</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_WORKSHOP">
+			<Text>Workshop</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_PORT">
+			<Text>Port</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_BOWYER">
+			<Text>Bowyer</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_ROASTING_FURNACE">
+			<Text>Roasting Furnace</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_CHRYSOPOEIA_REACTOR">
+			<Text>Chrysopoeia Reactor</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_ARGENTOPOEIA_REACTOR">
+			<Text>Argentopoeia Reactor</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_WHALERY">
+			<Text>Whalery</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_TEXTILE_MILL">
+			<Text>Textile Mill</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_DISTILLERY">
+			<Text>Distillery</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_COLOSSEUM">
+			<Text>Colosseum</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_CASTLE">
+			<Text>Castle</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_STRONGHOLD">
+			<Text>Stronghold</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_AQUEDUCT">
+			<Text>Aqueduct</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_ARMORY">
+			<Text>Armory</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_OBSERVATORY">
+			<Text>Observatory</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_SHIPYARD">
+			<Text>Shipyard</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_HOSPITAL">
+			<Text>Hospital</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_CATHEDRAL">
+			<Text>Cathedral</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_DEEP_FARMS">
+			<Text>Deep Farms</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_SLAVE_FACTORY">
+			<Text>Slave Factory</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_TRADE_HOUSE">
+			<Text>Trade House</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_ACADEMY">
+			<Text>Academy</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_NATIONAL_TREASURY">
+			<Text>National Treasury</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_AMPHITHEATER">
+			<Text>Amphitheater</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_SHRINE">
+			<Text>Shrine</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_MAGE_SCHOOL">
+			<Text>Mage School</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_PHARMAKEIA">
+			<Text>Pharmakeia</Text>
+		</Row>
+
+
+		<Row Tag="TXT_KEY_EA_BUILDING_ABATTOIR">
+			<Text>Abattoir</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_KNACKERY">
+			<Text>Knackery</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_MOUNDS">
+			<Text>Mounds</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_GALLOWS">
+			<Text>Gallows</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_DEBTORS_COURT">
+			<Text>Debtor's Court</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_GOVERNORS_COMPOUND">
+			<Text>Governor's Compound</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_FLOATING_GARDENS">
+			<Text>Floating Gardens</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_COURTHOUSE">
+			<Text>Courthouse</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_SMITHS_GUILD">
+			<Text>Smiths' Guild</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_TRADERS_GUILD">
+			<Text>Traders' Guild</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_SCRIBES_GUILD">
+			<Text>Scribes' Guild</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_ARTISANS_GUILD">
+			<Text>Artisans' Guild</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_DISCIPLES_GUILD">
+			<Text>Disciples' Guild</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_ADEPTS_GUILD">
+			<Text>Adepts' Guild</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_MONASTIC_SCHOOL">
+			<Text>Monastic School</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_ARSENAL">
+			<Text>Arsenal</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_SLAVE_MARKET">
+			<Text>Slave Market</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_SLAVE_KNACKERY">
+			<Text>Slave Knackery</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_SLAVE_BREEDING_PEN">
+			<Text>Breeding Pen</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_INTERNMENT_CAMP">
+			<Text>Internment Camp</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_PAPERMILL">
+			<Text>Papermill</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_JEWELLER">
+			<Text>Jeweller</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_KILN">
+			<Text>Kiln</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_PRINTING_PRESS">
+			<Text>Printing Press</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_MUSEUM">
+			<Text>Museum</Text>
+		</Row>
+
+		<!-- Hidden Buildings (only seen in debug mode) -->
+		
+		<Row Tag="TXT_KEY_EA_BUILDING_MAN">
+			<Text>MAN (HIDDEN)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_SIDHE">
+			<Text>SIDHE (HIDDEN)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_HELDEOFOL">
+			<Text>HELDEOFOL (HIDDEN)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TRADE_PLUS_1_GOLD">
+			<Text>TRADE GOLD (HIDDEN)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PLUS_1_PERCENT_PRODUCTION">
+			<Text>PERCENT PROD (HIDDEN)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PLUS_1_PERCENT_GOLD">
+			<Text>PERCENT GOLD (HIDDEN)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PLUS_1_PERCENT_SCIENCE">
+			<Text>PERCENT SCIENCE (HIDDEN)</Text>
+		</Row>
+
+
+	</Language_en_US>
+
+	<EaDebugTableCheck>
+		<Row FileName="EaText_Buildings.xml"/>
+	</EaDebugTableCheck>
+  
+</GameData>

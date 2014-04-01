@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Created by ModBuddy on 3/30/2014 11:47:46 AM -->
+<GameData>
+	<Language_en_US>
+
+		<!-- MinorCivTraits -->
+		
+		<Row Tag="TXT_KEY_EA_MINOR_TRAIT_MERCENARY">
+			<Text>Mercenary</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_MINOR_TRAIT_SLAVERS">
+			<Text>Slavers</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_MINOR_TRAIT_ARCANE">
+			<Text>Arcane</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_MINOR_TRAIT_HOLY">
+			<Text>Holy</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_MINOR_TRAIT_UNHOLY">
+			<Text>Unholy</Text>
+		</Row>
+
+		<!-- MinorCivilizations (city states) -->
+		
+		<Row Tag="TXT_KEY_EA_CITYSTATE_DINAS_AFFARAON">
+			<Text>Dinas Affaraon</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CITYSTATE_NYSA">
+			<Text>Nysa</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CITYSTATE_EEA">
+			<Text>Eëa</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CITYSTATE_AORNUM">
+			<Text>Aornum</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CITYSTATE_BARALKU">
+			<Text>Baralku</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CITYSTATE_QUIVIRA">
+			<Text>Quivira</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CITYSTATE_CIBOLA">
+			<Text>Cíbola</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CITYSTATE_BEIMENI">
+			<Text>Beimeni</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CITYSTATE_NIBIRU">
+			<Text>Nibiru</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CITYSTATE_THEMISCYRA">
+			<Text>Themiscyra</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CITYSTATE_THULE">
+			<Text>Thule</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CITYSTATE_ARGYRE">
+			<Text>Argyre</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CITYSTATE_ZERZURA">
+			<Text>Zerzura</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CITYSTATE_AXUMA">
+			<Text>Axuma</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CITYSTATE_DARANTASIA">
+			<Text>Darantasia</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CITYSTATE_BERGINTRUM">
+			<Text>Bergintrum</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CITYSTATE_CLUSORA">
+			<Text>Clusora</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CITYSTATE_MANTALA">
+			<Text>Mantala</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CITYSTATE_OBLIMUM">
+			<Text>Oblimum</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CITYSTATE_ALESIA">
+			<Text>Alesia</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CITYSTATE_BIBRACTE">
+			<Text>Bibracte</Text>
+		</Row>
+		
+		<!-- MinorCivilizations (gods) -->
+		
+		<Row Tag="TXT_KEY_EA_GOD_FAGUS">
+			<Text>Fagus</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_ABELLIO">
+			<Text>Abellio</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_BUXENUS">
+			<Text>Buxenus</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_ROBOR">
+			<Text>Robor</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_ABNOAB">
+			<Text>Abnoab</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_EPONA">
+			<Text>Epona</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_ATEPOMARUS">
+			<Text>Atepomarus</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_SABAZIOS">
+			<Text>Sabazios</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_AVETA">
+			<Text>Aveta</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_CONDATIS">
+			<Text>Condatis</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_ABANDINUS">
+			<Text>Abandinus</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_ADSULLATA">
+			<Text>Adsullata</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_ICAUNUS">
+			<Text>Icaunus</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_BELISAMA">
+			<Text>Belisama</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_CLOTA">
+			<Text>Clota</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_SABRINA">
+			<Text>Sabrina</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_SEQUANA">
+			<Text>Sequana</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_VERBEIA">
+			<Text>Verbeia</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_BORVO">
+			<Text>Borvo</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_AEGIR">
+			<Text>Ægir</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_BARINTHUS">
+			<Text>Barinthus</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_LIBAN">
+			<Text>Lí Ban</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_FIMAFENG">
+			<Text>Fimafeng</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_ELDIR">
+			<Text>Eldir</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_RITONA">
+			<Text>Ritona</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_BAKKHOS">
+			<Text>Bakkhos</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_PAN">
+			<Text>Pan</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_SILENUS">
+			<Text>Silenus</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_ERECURA">
+			<Text>Erecura</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_VOSEGUS">
+			<Text>Vosegus</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_NANTOSUELTA">
+			<Text>Nantosuelta</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_DIS_PATER">
+			<Text>Dis Pater</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_NERGAL">
+			<Text>Nergal</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_WADD">
+			<Text>Wadd</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_ABGAL">
+			<Text>Abgal</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_NESR">
+			<Text>Nesr</Text>
+		</Row>
+
+		<!-- MinorCivilization_GodSpheres -->
+
+		<Row Tag="TXT_KEY_EA_SPHERE_FORESTS">
+			<Text>Forests</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPHERE_BEECH_TREES">
+			<Text>Beech Trees</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPHERE_APPLE_TREES">
+			<Text>Apple Trees</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPHERE_BOX_TREES">
+			<Text>Box Trees</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPHERE_WAR">
+			<Text>War</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPHERE_OAK_TREES">
+			<Text>Oak Trees</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPHERE_RIVERS">
+			<Text>Rivers</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPHERE_THE_HUNT">
+			<Text>The Hunt</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPHERE_HORSES">
+			<Text>Horses</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPHERE_DONKEYS_MULES">
+			<Text>Donkeys, Mules</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPHERE_PASTURES">
+			<Text>Pastures</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPHERE_FERTILITY">
+			<Text>Fertility</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPHERE_HEALING">
+			<Text>Healing</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPHERE_SKY">
+			<Text>Sky</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPHERE_POWER">
+			<Text>Power</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPHERE_SPRINGS">
+			<Text>Springs</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPHERE_JUBILATION">
+			<Text>Jubilation</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPHERE_SUN">
+			<Text>Sun</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPHERE_LAKES">
+			<Text>Lakes</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPHERE_OCEAN">
+			<Text>Ocean</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPHERE_WEATHER">
+			<Text>Weather</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPHERE_MAGIC">
+			<Text>Magic</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPHERE_BEAUTY">
+			<Text>Beauty</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPHERE_SERVICE">
+			<Text>Service</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPHERE_FIRE">
+			<Text>Fire</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPHERE_COASTS">
+			<Text>Coasts</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPHERE_FJORDS">
+			<Text>Fjords</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPHERE_WINE">
+			<Text>Wine</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPHERE_MUSIC">
+			<Text>Music</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPHERE_MADNESS">
+			<Text>Madness</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPHERE_FAERIES">
+			<Text>Faeries</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPHERE_ALE">
+			<Text>Ale</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPHERE_FOLKLORE">
+			<Text>Folklore</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPHERE_WEALTH">
+			<Text>Wealth</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPHERE_UNDERWORLD">
+			<Text>The Underworld</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPHERE_MINERALS">
+			<Text>Minerals</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPHERE_FRIENDSHIP">
+			<Text>Friendship</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPHERE_MOON">
+			<Text>Moon</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPHERE_SNAKES">
+			<Text>Snakes</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPHERE_DESERT">
+			<Text>Deep Desert</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPHERE_TRADE">
+			<Text>Trade</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPHERE_VULTURES">
+			<Text>Vultures</Text>
+		</Row>
+
+
+	</Language_en_US>
+
+	<EaDebugTableCheck>
+		<Row FileName="EaText_MinorCivs.xml"/>
+	</EaDebugTableCheck>
+  
+</GameData>

@@ -292,7 +292,7 @@ UPDATE EaActions SET OrGPSubclass = 'Eidolon' WHERE Type = 'EA_ACTION_ANTIPROSEL
 --Arcane
 INSERT INTO EaActions (Type,			SpellClass,	GPModType1,				TechReq,						City,	AITarget,			AICombatRole,	TurnsToComplete,	FixedFaith,	HumanVisibleFX,	IconIndex,	IconAtlas				) VALUES
 ('EA_SPELL_SCRYING',					'Arcane',	'EAMOD_DIVINATION',		'TECH_THAUMATURGY',				NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
-('EA_SPELL_GLYPH_OF_SEEING',			'Arcane',	'EAMOD_DIVINATION',		'TECH_THAUMATURGY',				NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
+('EA_SPELL_SEEING_EYE_GLYPH',			'Arcane',	'EAMOD_DIVINATION',		'TECH_THAUMATURGY',				NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
 ('EA_SPELL_DETECT_GLYPHS_RUNES_WARDS',	'Arcane',	'EAMOD_DIVINATION',		'TECH_THAUMATURGY',				NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
 ('EA_SPELL_KNOW_WORLD',					'Arcane',	'EAMOD_DIVINATION',		'TECH_COSMOGONY',				NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
 ('EA_SPELL_DISPEL_HEXES',				'Arcane',	'EAMOD_ABJURATION',		'TECH_ABJURATION',				NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
@@ -303,7 +303,7 @@ INSERT INTO EaActions (Type,			SpellClass,	GPModType1,				TechReq,						City,	AI
 ('EA_SPELL_DISPEL_MAGIC',				'Arcane',	'EAMOD_ABJURATION',		'TECH_INVOCATION',				NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
 ('EA_SPELL_TIME_STOP',					'Arcane',	'EAMOD_ABJURATION',		'TECH_GREATER_ARCANA',			NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
 ('EA_SPELL_MAGIC_MISSILE',				'Arcane',	'EAMOD_EVOCATION',		'TECH_THAUMATURGY',				NULL,	NULL,				'Any',			1,					0,			NULL,			7,			'TECH_ATLAS_2'			),
-('EA_SPELL_EXPLOSIVE_RUNES',			'Arcane',	'EAMOD_EVOCATION',		'TECH_EVOCATION',				'Not',	'InvasionRoute',	NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
+('EA_SPELL_EXPLOSIVE_RUNE',				'Arcane',	'EAMOD_EVOCATION',		'TECH_EVOCATION',				'Not',	'BoobyTrap',		NULL,			3,					0,			1,				7,			'TECH_ATLAS_2'			),
 ('EA_SPELL_MAGE_SWORD',					'Arcane',	'EAMOD_EVOCATION',		'TECH_EVOCATION',				NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
 ('EA_SPELL_BREACH',						'Arcane',	'EAMOD_EVOCATION',		'TECH_BREACH',					NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
 ('EA_SPELL_WISH',						'Arcane',	'EAMOD_EVOCATION',		'TECH_ESOTERIC_ARCANA',			NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
@@ -319,6 +319,7 @@ INSERT INTO EaActions (Type,			SpellClass,	GPModType1,				TechReq,						City,	AI
 ('EA_SPELL_PHASE_DOOR',					'Arcane',	'EAMOD_CONJURATION',	'TECH_INVOCATION',				NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
 ('EA_SPELL_REANIMATE_DEAD',				'Arcane',	'EAMOD_NECROMANCY',		'TECH_REANIMATION',				NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
 ('EA_SPELL_RAISE_DEAD',					'Arcane',	'EAMOD_NECROMANCY',		'TECH_NECROMANCY',				NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
+('EA_SPELL_DEATH_RUNE',					'Arcane',	'EAMOD_NECROMANCY',		'TECH_NECROMANCY',				'Not',	'BoobyTrap',		NULL,			3,					0,			1,				7,			'TECH_ATLAS_2'			),
 ('EA_SPELL_VAMPIRIC_TOUCH',				'Arcane',	'EAMOD_NECROMANCY',		'TECH_NECROMANCY',				NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
 ('EA_SPELL_DEATH_STAY',					'Arcane',	'EAMOD_NECROMANCY',		'TECH_NECROMANCY',				NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
 ('EA_SPELL_BECOME_LICH',				'Arcane',	'EAMOD_NECROMANCY',		'TECH_SOUL_BINDING',			NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),

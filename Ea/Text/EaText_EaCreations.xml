@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Created by ModBuddy on 3/30/2014 11:14:57 AM -->
+<GameData>
+	<Language_en_US>
+		
+		<!-- EaWonders -->
+
+		<Row Tag="TXT_KEY_EA_WONDER_STANHENCG">
+			<Text>Stânhencg</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_KOLOSSOS">
+			<Text>Kolossós</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_MEGALOS_FAROS">
+			<Text>Megálos Fáros</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_HANGING_GARDENS">
+			<Text>Hanging Gardens</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_UUC_YABNAL">
+			<Text>Uuc-yabnal</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_THE_LONG_WALL">
+			<Text>The Long Wall</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_CLOG_MOR">
+			<Text>Clog Mór</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_DA_BAOEN_SI">
+			<Text>Da Bao'en Si</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_GREAT_LIBRARY">
+			<Text>Great Library</Text>
+		</Row>
+
+		<!-- EaEpics -->
+		
+		<Row Tag="TXT_KEY_EA_EPIC_VOLUSPA">
+			<Text>Völuspá</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_EPIC_HAVAMAL">
+			<Text>Hávamál</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_EPIC_VAFTHRUTHNISMAL">
+			<Text>Vafthrúthnismál</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_EPIC_GRIMNISMAL">
+			<Text>Grímnismál</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_EPIC_HYMISKVITHA">
+			<Text>Hymiskvitha</Text>
+		</Row>
+
+		<!-- EaArtifacts -->
+		
+		<Row Tag="TXT_KEY_EA_ARTIFACT_TOME_OF_EQUUS">
+			<Text>Tome of Equus</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ARTIFACT_TOME_OF_BEASTS">
+			<Text>Tome of Beasts</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ARTIFACT_TOME_OF_THE_LEVIATHAN">
+			<Text>Tome of the Leviathan</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ARTIFACT_TOME_OF_HARVESTS">
+			<Text>Tome of Harvests</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ARTIFACT_TOME_OF_TOMES">
+			<Text>Tome of Tomes</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ARTIFACT_TOME_OF_AESTHETICS">
+			<Text>Tome of Æsthetics</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ARTIFACT_TOME_OF_AXIOMS">
+			<Text>Tome of Axioms</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ARTIFACT_TOME_OF_FORM">
+			<Text>Tome of Form</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ARTIFACT_TOME_OF_METALLURGY">
+			<Text>Tome of Metallurgy</Text>
+		</Row>
+
+
+	</Language_en_US>
+
+	<EaDebugTableCheck>
+		<Row FileName="EaText_EaCreations.xml"/>
+	</EaDebugTableCheck>
+  
+</GameData>

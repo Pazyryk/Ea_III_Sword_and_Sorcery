@@ -1426,42 +1426,6 @@ function DoGotoPlot(iPlayer, unit, iPerson, gotoX, gotoY)
 		return true
 	end
 
-	--[[
-	--if close and destination is forbidden, just teleport
-	local distance = Map.PlotDistance(unitX, unitY, gotoX, gotoY)
-	if distance < 3 then
-		unit:ChangeMoves(-30 * distance)
-		unit:SetXY(gotoX, gotoY)
-		print("DoGotoPlot teleported GP to destination tile; distance was", distance)
-		eaPerson.eaActionID = -1		--we are done
-		return true		
-	end
-
-	--try to approach adjacent plot
-	for x, y in PlotToRadiusIterator(gotoX, gotoY, 1) do
-		unit:PopMission()
-		unit:PushMission(MissionTypes.MISSION_MOVE_TO, x, y, 0, 0, 1, MissionTypes.MISSION_MOVE_TO, plot, unit)
-		local movesAfter = unit:MovesLeft()
-		if movesAfter < movesBefore then
-			print("DoGotoPlot moved GP toward target ADJACENT plot")
-			eaPerson.eaActionID = 0
-			return true
-		end
-	end
-
-	--try to approach 2-tile distance plot
-	for x, y in PlotToRadiusIterator(gotoX, gotoY, 2) do
-		unit:PopMission()
-		unit:PushMission(MissionTypes.MISSION_MOVE_TO, x, y, 0, 0, 1, MissionTypes.MISSION_MOVE_TO, plot, unit)
-		local movesAfter = unit:MovesLeft()
-		if movesAfter < movesBefore then
-			print("DoGotoPlot moved GP toward target 2-TILE DISTANCE plot")
-			eaPerson.eaActionID = 0
-			return true
-		end
-	end
-	]]
-
 	print("!!!! WARNING: DoGotoPlot could not move GP even though AStar thought there was a path")
 	eaPerson.gotoPlotIndex = -1
 	eaPerson.gotoEaActionID = -1
@@ -1479,6 +1443,8 @@ end
 ------------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------------
+
+--TO DO: All SetUI statements need TXT_KEYs
 
 ------------------------------------------------------------------------------------------------------------------------------
 -- Non-GP (SetAIValues doesn't work for these yet)
@@ -3828,7 +3794,7 @@ end
 
 
 --EA_SPELL_SCRYING
---EA_SPELL_GLYPH_OF_SEEING
+--EA_SPELL_SEEING_EYE_GLYPH
 --EA_SPELL_DETECT_GLYPHS_RUNES_WARDS
 --EA_SPELL_KNOW_WORLD
 --EA_SPELL_DISPEL_HEXES
@@ -3923,13 +3889,12 @@ Do[GameInfoTypes.EA_SPELL_MAGIC_MISSILE] = function()
 		UI.SelectUnit(newUnit)
 		UI.LookAtSelectionPlot(0)
 	end
-	--EaUnitCombat.lua detects attack and does xp, mana and unit reversion
 
 	return true
 end
 
---EA_SPELL_EXPLOSIVE_RUNES
-TestTarget[GameInfoTypes.EA_SPELL_EXPLOSIVE_RUNES] = function()
+--EA_SPELL_EXPLOSIVE_RUNE
+TestTarget[GameInfoTypes.EA_SPELL_EXPLOSIVE_RUNE] = function()
 	if g_faith < g_modSpell then
 		g_testTargetSwitch = 1
 		return false
@@ -3947,7 +3912,7 @@ TestTarget[GameInfoTypes.EA_SPELL_EXPLOSIVE_RUNES] = function()
 	return true
 end
 
-SetUI[GameInfoTypes.EA_SPELL_EXPLOSIVE_RUNES] = function()
+SetUI[GameInfoTypes.EA_SPELL_EXPLOSIVE_RUNE] = function()
 	if g_bNonTargetTestsPassed then		--has spell so show it
 		MapModData.bShow = true
 		if g_bAllTestsPassed then
@@ -3962,13 +3927,15 @@ SetUI[GameInfoTypes.EA_SPELL_EXPLOSIVE_RUNES] = function()
 	end
 end
 
-SetAIValues[GameInfoTypes.EA_SPELL_EXPLOSIVE_RUNES] = function()	--already restricted by AI heuristic; just value good defence plot
+SetAIValues[GameInfoTypes.EA_SPELL_EXPLOSIVE_RUNE] = function()	--already restricted by AI heuristic; just value good defence plot
 	gg_aiOptionValues.i = 10		--placeholder
 end
 
-Finish[GameInfoTypes.EA_SPELL_EXPLOSIVE_RUNES] = function()
-	g_plot:SetPlotEffectData(GameInfoTypes.EA_PLOTEFFECT_EXPLOSIVE_RUNES, g_modSpell, g_iPlayer, g_iPerson)	--effectID, effectStength, iPlayer, iCaster
-	UseManaOrDivineFavor(g_iPlayer, g_iPerson, g_modSpell)
+Finish[GameInfoTypes.EA_SPELL_EXPLOSIVE_RUNE] = function()
+	g_plot:SetPlotEffectData(GameInfoTypes.EA_PLOTEFFECT_EXPLOSIVE_RUNE, g_modSpell, g_iPlayer, g_iPerson)	--effectID, effectStength, iPlayer, iCaster
+	UpdatePlotEffectHighlight(g_iPlot)
+	UseManaOrDivineFavor(g_iPlayer, g_iPerson, 1)
+	return true
 end
 
 --EA_SPELL_MAGE_SWORD
@@ -4154,6 +4121,55 @@ end
 --EA_SPELL_PHASE_DOOR
 --EA_SPELL_REANIMATE_DEAD
 --EA_SPELL_RAISE_DEAD
+
+
+--EA_SPELL_DEATH_RUNE			(almost a copy of EA_SPELL_EXPLOSIVE_RUNE)
+TestTarget[GameInfoTypes.EA_SPELL_DEATH_RUNE] = function()
+	if g_faith < g_modSpell then
+		g_testTargetSwitch = 1
+		return false
+	end
+	g_int1, g_int2, g_int3, g_int4 = g_plot:GetPlotEffectData()	--effectID, effectStength, iEffectPlayer, iCaster
+	if g_int1 ~= -1 then
+		if g_int3 == g_iPlayer then
+			g_testTargetSwitch = 2
+			return false			
+		end
+		--need more logic here for overwriteable effects
+		g_testTargetSwitch = 3
+		return false
+	end
+	return true
+end
+
+SetUI[GameInfoTypes.EA_SPELL_DEATH_RUNE] = function()
+	if g_bNonTargetTestsPassed then		--has spell so show it
+		MapModData.bShow = true
+		if g_bAllTestsPassed then
+			MapModData.text = "Place Explosive Runes on this plot"
+		elseif g_testTargetSwitch == 1 then
+			MapModData.text = "[COLOR_WARNING_TEXT]You do not have sufficent mana (requres " .. g_modSpell .. ")[ENDCOLOR]"
+		elseif g_testTargetSwitch == 2 then
+			MapModData.text = "[COLOR_WARNING_TEXT]Your civilization has already placed a Glyph, Rune or Ward on this plot[ENDCOLOR]"
+		elseif g_testTargetSwitch == 3 then
+			MapModData.text = "[COLOR_WARNING_TEXT]Another civilization has placed a Glyph, Rune or Ward on this plot[ENDCOLOR]"
+		end
+	end
+end
+
+SetAIValues[GameInfoTypes.EA_SPELL_DEATH_RUNE] = function()	--already restricted by AI heuristic; just value good defence plot
+	gg_aiOptionValues.i = 10		--placeholder
+end
+
+Finish[GameInfoTypes.EA_SPELL_DEATH_RUNE] = function()
+	g_plot:SetPlotEffectData(GameInfoTypes.EA_PLOTEFFECT_DEATH_RUNE, g_modSpell, g_iPlayer, g_iPerson)	--effectID, effectStength, iPlayer, iCaster
+	UpdatePlotEffectHighlight(g_iPlot)
+	UseManaOrDivineFavor(g_iPlayer, g_iPerson, 1)
+	return true
+end
+
+
+
 --EA_SPELL_VAMPIRIC_TOUCH
 --EA_SPELL_DEATH_STAY
 --EA_SPELL_BECOME_LICH

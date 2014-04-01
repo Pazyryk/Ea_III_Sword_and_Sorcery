@@ -515,6 +515,6 @@
 	</Language_en_US>
 
 	<EaDebugTableCheck>
-		<Row FileName="EaText_People.xml"/>
+		<Row FileName="EaText_EaPeople.xml"/>
 	</EaDebugTableCheck>
 </GameData>

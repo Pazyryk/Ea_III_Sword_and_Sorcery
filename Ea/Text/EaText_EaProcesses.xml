@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Created by ModBuddy on 3/30/2014 11:22:16 AM -->
+<GameData>
+	<Language_en_US>
+
+		<!-- Processes -->
+		<Row Tag="TXT_KEY_EA_PROCESS_INDUSTRIAL_AGRICULTURE">
+			<Text>Industrial Agriculture</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROCESS_WORLD_WEAVE">
+			<Text>World Weave</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROCESS_EA_BLESSINGS">
+			<Text>Éa Blessings</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROCESS_MAJOR_SPIRITS_TRIBUTE">
+			<Text>Major Spirits' Tribute</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROCESS_FAERIES_TRIBUTE">
+			<Text>Faeries' Tribute</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROCESS_AZZANDARAS_TRIBUTE">
+			<Text>Azzandara's Tribute</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROCESS_WORLD_SALVATION">
+			<Text>World Salvation</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROCESS_AHRIMANS_TRIBUTE">
+			<Text>Ahriman's Tribute</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROCESS_WORLD_CORRUPTION">
+			<Text>World Corruption</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROCESS_OPPRESSION">
+			<Text>Oppression</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROCESS_TRAINING_EXERCISES">
+			<Text>Training Exercises</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROCESS_RESEARCH">
+			<Text>Research</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROCESS_THE_ARTS">
+			<Text>The Arts</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROCESS_TRADE_SURPLUS">
+			<Text>Trade Surplus</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROCESS_PATRONAGE">
+			<Text>Patronage</Text>
+		</Row>
+
+
+	</Language_en_US>
+
+	<EaDebugTableCheck>
+		<Row FileName="EaText_Processes.xml"/>
+	</EaDebugTableCheck>
+  
+</GameData>

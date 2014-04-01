@@ -1,0 +1,574 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Created by ModBuddy on 3/30/2014 10:19:42 AM -->
+<GameData>
+	<Language_en_US>
+
+		<!-- Temp or utility -->
+		<Row Tag="TXT_KEY_EA_PLACEHOLDER">
+			<Text>PLACEHOLDERTEXT</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_NOTSHOWN">
+			<Text>SHOULD NOT BE VISIBLE</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BLANK_SPACE">
+			<Text> </Text>
+		</Row>
+
+		<!-- Game Setup -->
+		<Row Tag="TXT_KEY_EA_MODDING_SETUP_TITLE">
+			<Text>Éa Game Setup</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RACE_SETTING">
+			<Text>Race: {1_gameRace}</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RANDOM_RACE">
+			<Text>Random Race</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RANDOM_RACE_HELP">
+			<Text>The game will randomly pick one of two races for you to play.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CHOOSE_RACE">
+			<Text>Choose Race</Text>
+		</Row>
+
+		<!-- World Map -->
+		<Row Tag="TXT_KEY_EA_CONSUMED_MANA">
+			<Text>[COLOR_LIGHT_GREY]Consumed {1_Num} mana[ENDCOLOR]</Text>
+		</Row>
+
+
+
+		<!-- Notifications -->
+		<Row Tag="TXT_KEY_EA_RELIGIOUS_CONVERSION">
+			<Text>Your civilization has gained [COLOR_POSITIVE_TEXT]{1_religion}[ENDCOLOR] as its dominant religion.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_LOST_DOMINANT_RELIGION">
+			<Text>Your civilization no longer has a dominant religion.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CULT_CHANGE">
+			<Text>Your civilization's dominant Cult within The Weave has changed.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_LOST_MANA">
+			<Text>Your civilization can no longer use [ICON_STAR] Mana. Previous accumulation of [COLOR_NEGATIVE_TEXT]{1_num}[ENDCOLOR] will be restored if conditions change.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_LOST_DIVINE_FAVOR">
+			<Text>Your civilization can no longer use [ICON_PEACE] Divine Favor. Previous accumulation of [COLOR_NEGATIVE_TEXT]{1_num}[ENDCOLOR] will be restored if conditions change.</Text>
+		</Row>
+		
+		
+
+		
+		<!-- Mini Map Buttons -->
+		<Row Tag="TXT_KEY_EA_TT_PLOT_EFFECTS_HIDE">
+			<Text>Hiding Glyphs, Runes & Wards (click to show revealed effects belonging to other players)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TT_PLOT_EFFECTS_SHOW_OTHERS">
+			<Text>Showing revealed Glyphs, Runes & Wards belonging to other players (click to show ours)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TT_PLOT_EFFECTS_SHOW_OURS">
+			<Text>Showing Glyphs, Runes & Wards belonging to us (click to hide)</Text>
+		</Row>
+
+		<!-- Top Panel -->
+		<Row Tag="TXT_KEY_EA_TP_GOLD_FROM_LEADER">
+			<Text>{1_Num} from Leader bonus to non-city income.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TP_GOLD_FROM_MERCENARIES">
+			<Text>{1_Num} from Mercenaries hired by other civilizations.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TP_GOLD_FOR_MERCENARIES">
+			<Text>{1_Num} spent on Mercenaries hired from other civilizations.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TP_GOLD_GP_BUILD_COST">
+			<Text>{1_Num} spent on current Great Person actions.</Text>
+		</Row>
+
+		<Row Tag="TXT_KEY_EA_TP_CULTURE_LEVEL">
+			<Text>Your current Cultural Level is [COLOR_POSITIVE_TEXT]{1_cultureLevel}[ENDCOLOR].</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TP_CULTURE_LEVEL_SUMMARY">
+			<Text>Culture Level is a function of total [ICON_CULTURE] Culture generated per [ICON_CITIZEN] Citizen and time. You will gain a new social policy when your Cultural Level exceeds [COLOR_POSITIVE_TEXT]{1_Num}[ENDCOLOR] (one greater than the current number of policies you have). Current estimated change in Culture Level per turn is [COLOR_POSITIVE_TEXT]{2_cultureLevelChange}[ENDCOLOR]. Based on current culture generation and population, your Culture Level will slowly approach [COLOR_POSITIVE_TEXT]{3_approachingCultureLevel}[ENDCOLOR] over time. In addition to allowying new social policies, high Culture Level can improve your relationships with other full civilizations, particularly with those that are themselves of high Cultural Level.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TP_CULTURE_GENERATION">
+			<Text>You are currently generating [COLOR_POSITIVE_TEXT]{1_Num}[ENDCOLOR] total [ICON_CULTURE] Culture from the following sources:</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TP_CULTURE_FROM_WILDLANDS">
+			<Text>[ICON_BULLET][COLOR_POSITIVE_TEXT]+{1_Num}[ENDCOLOR] from Wildlands.</Text>
+		</Row>
+
+		<Row Tag="TXT_KEY_EA_TP_UNHAPPINESS_FROM_NATURAL_WONDERS">
+			<Text>{1_Num} from Natural Wonders.</Text>
+		</Row>
+
+		<Row Tag="TXT_KEY_EA_TP_DIVINE_FAVOR">
+			<Text>You have accumulated [COLOR_POSITIVE_TEXT]{1_Num}[ENDCOLOR] [ICON_PEACE] Divine Favor. Only those pursuing the worship of Azzandara accumulate [ICON_PEACE] Divine Favor.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TP_MANA">
+			<Text>You have accumulated [COLOR_POSITIVE_TEXT]{1_Num}[ENDCOLOR] [ICON_STAR] Mana.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TP_MANA_CONSUMED">
+			<Text>Because your civilization is Fallen, all [ICON_STAR] Mana used is irreversibly consumed. Your civilization has consumed a total of [COLOR_NEGATIVE_TEXT]{1_Num}[ENDCOLOR] so far, or [COLOR_NEGATIVE_TEXT]{2_percentStr}%[ENDCOLOR] of the Sum of all Mana.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TP_DIVINE_FAVOR_SOURCES">
+			<Text>You are currently generating [COLOR_POSITIVE_TEXT]{1_Num}[ENDCOLOR] total [ICON_PEACE] Divine Favor from the following sources:</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TP_MANA_SOURCES">
+			<Text>You are currently generating [COLOR_POSITIVE_TEXT]{1_Num}[ENDCOLOR] total [ICON_STAR] Mana from the following sources:</Text>
+		</Row>
+
+
+		<Row Tag="TXT_KEY_EA_TP_FAITH_FROM_GODS">
+			<Text>[ICON_BULLET][COLOR_POSITIVE_TEXT]+{1_Num}[ENDCOLOR] from the Gods.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TP_FAITH_FROM_LEADER">
+			<Text>[ICON_BULLET][COLOR_POSITIVE_TEXT]+{1_Num}[ENDCOLOR] from Leader bonus to non-city sources.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TP_SCIENCE_FROM_LEADER">
+			<Text>[ICON_BULLET][COLOR_POSITIVE_TEXT]+{1_Num}[ENDCOLOR] from Leader bonus to non-city sources.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TP_CULTURE_FROM_LEADER">
+			<Text>[ICON_BULLET][COLOR_POSITIVE_TEXT]+{1_Num}[ENDCOLOR] from Leader bonus to non-city sources.</Text>
+		</Row>
+
+
+		<Row Tag="TXT_KEY_EA_TP_FAITH_FROM_CULT_OF_LEAVES_FOUNDER">
+			<Text>[ICON_BULLET][COLOR_POSITIVE_TEXT]+{1_Num}[ENDCOLOR] from Forest & Jungle world-wide (Cult of Leaves Founder).</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TP_FAITH_FROM_CULT_OF_EPONA_FOUNDER">
+			<Text>[ICON_BULLET][COLOR_POSITIVE_TEXT]+{1_Num}[ENDCOLOR] from Stallions of Epona (Cult of Epona Founder).</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TP_FAITH_FROM_CULT_OF_PURE_WATERS_FOUNDER">
+			<Text>[ICON_BULLET][COLOR_POSITIVE_TEXT]+{1_Num}[ENDCOLOR] from  (Cult of Pure Waters Founder).</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TP_FAITH_FROM_CULT_OF_AEGIR_FOUNDER">
+			<Text>[ICON_BULLET][COLOR_POSITIVE_TEXT]+{1_Num}[ENDCOLOR] from  (Cult of Ægir Founder).</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TP_FAITH_FROM_CULT_OF_BAKKHEIA_FOUNDER">
+			<Text>[ICON_BULLET][COLOR_POSITIVE_TEXT]+{1_Num}[ENDCOLOR] from  (Cult of Bakkheia Founder).</Text>
+		</Row>
+
+
+
+		<Row Tag="TXT_KEY_EA_TP_FAITH_FROM_WILDLANDS">
+			<Text>[ICON_BULLET][COLOR_POSITIVE_TEXT]+{1_Num}[ENDCOLOR] from Wildlands.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TP_FAITH_FROM_AZZ_TRIBUTE">
+			<Text>[ICON_BULLET][COLOR_POSITIVE_TEXT]+{1_Num}[ENDCOLOR] from Azzandara's Tribute.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TP_FAITH_FROM_AHRIMAN_TRIBUTE">
+			<Text>[ICON_BULLET][COLOR_POSITIVE_TEXT]+{1_Num}[ENDCOLOR] from Ahriman's Tribute.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TP_FAITH_FROM_GPS">
+			<Text>[ICON_BULLET][COLOR_POSITIVE_TEXT]+{1_Num}[ENDCOLOR] from Great People.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TP_FAITH_FROM_POLICY_BRANCHES">
+			<Text>[ICON_BULLET][COLOR_POSITIVE_TEXT]+{1_Num}[ENDCOLOR] from finished {2_branchName} Branch.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TP_FAITH_TO_AHRIMAN_TRIBUTE">
+			<Text>[ICON_BULLET][COLOR_NEGATIVE_TEXT]-{1_Num}[ENDCOLOR] consumed by Ahriman's Tribute.</Text>
+		</Row>
+
+
+		<Row Tag="TXT_KEY_EA_TP_GREAT_PEOPLE">
+			<Text>Your civilization has a [COLOR_POSITIVE_TEXT]{1_Num}%[ENDCOLOR] chance of generating a [ICON_GREAT_PEOPLE] Great Person per turn based on [COLOR_POSITIVE_TEXT]{2_Num}[ENDCOLOR] currently existing and [COLOR_POSITIVE_TEXT]{3_Num}[ENDCOLOR] total points.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TP_GREAT_PEOPLE_NO_NAME">
+			<Text>Your civilization cannot generate any [ICON_GREAT_PEOPLE] Great People until it has earned a name.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TP_GREAT_PEOPLE_POINTS">
+			<Text>The liklihood for a specific Great Person class is proportional to the number of points accumulated below (specific subclasses may be generated depending on civilization factors):</Text>
+		</Row>
+
+		<!-- City View -->
+		<Row Tag="TXT_KEY_CITYVIEW_CONSCRIPT_BUTTON_TEXT">
+			<Text>Conscript/Indenture</Text>
+		</Row>
+		<Row Tag="TXT_KEY_CITYVIEW_CONSCRIPT_BUTTON_TT">
+			<Text>Conscript or indenture city population</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CITYVIEW_MANA_TEXT">
+			<Text>Mana</Text>
+		</Row>
+
+		<!-- Info Tooltip -->
+		<Row Tag="TXT_KEY_EA_FAVOR_HELP_INFO">
+			<Text>[ICON_PEACE] Divine Favor is used in the casting of spells by Azzandara followers.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_MANA_HELP_INFO">
+			<Text>[ICON_STAR] Mana is used in the casting of spells.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_EXTRA_TECHS_REQUIRED">
+			<Text>[ICON_BULLET] Required Tech:</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_REQUIRED">
+			<Text>[ICON_BULLET] Required Policy:</Text>
+		</Row>
+		<Row Tag="TXT_KEY_UPANEL_EA_MOVEMENT">
+			<Text>Moves</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UPANEL_STRENGTH_TT">
+			<Text>This indicates the unit's melee strength [ICON_STRENGTH], ranged strength [ICON_RANGE_STRENGTH] and morale ([ICON_HAPPINESS_1] or [ICON_HAPPINESS_4] if positive or negative). Morale modifies a unit's melee and ranged strength.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FAITH_FROM_GPS">
+			<Text>{1_Num} [ICON_PEACE] from Great People</Text>
+		</Row>
+
+		<!-- Info Tooltip and Dll hard-coded -->
+		<Row Tag="TXT_KEY_EA_PRODMOD_YIELD_LEADER">
+			<Text>[NEWLINE][ICON_BULLET]Leader Modifier: {1_Num}%</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PRODMOD_YIELD_CITY_RESIDENT">
+			<Text>[NEWLINE][ICON_BULLET]City Resident Modifier: {1_Num}%</Text>
+		</Row>
+		
+
+
+		<!-- POPUPS -->
+
+		<!-- City State (and Gods) Popup -->
+		<Row Tag="TXT_KEY_EA_GODS_CAPITALS">
+			<Text>GODS</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_MEETING">
+			<Text>You have met a Major Spirit of Éa, {1_CivName:textkey}.[NEWLINE][NEWLINE]{2_GiftString}[NEWLINE][NEWLINE]{3_SpeakAgainString}</Text>
+		</Row>
+
+		<Row Tag="TXT_KEY_EA_GOD_GIFT_FIRST">
+			<Text>You are the first great empire to meet this god and have been awarded a gift of [COLOR_POSITIVE_TEXT]{1_NumGold} [ICON_GOLD] Gold[ENDCOLOR] and [COLOR_POSITIVE_TEXT]{2_NumFaith} [ICON_STAR] Mana[ENDCOLOR].</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_GIFT_OTHER">
+			<Text>You have been awarded a gift of [COLOR_POSITIVE_TEXT]{1_NumGold} [ICON_GOLD] Gold[ENDCOLOR] and [COLOR_POSITIVE_TEXT]{2_NumFaith} [ICON_STAR] Mana[ENDCOLOR].</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_SPEAK_AGAIN">
+			<Text>(If you wish to speak with {1_CivName:textkey} again, click on the god's name in the Diplomacy menu.)</Text>
+		</Row>
+
+		<!-- ReturnCivilianPopup -->
+		<Row Tag="TXT_KEY_EA_POP_RETURN_CIVILIAN_CONFIRMATION_TAKE_SLAVES">
+			<Text>Take them as slaves</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POP_RETURN_CIVILIAN_CONFIRMATION_TAKE_KILL">
+			<Text>Kill them</Text>
+		</Row>
+
+		<!-- EaCiv Naming Popup -->
+		<Row Tag="TXT_KEY_EA_POPUP_CIV_NAMING">
+			<Text>You have achieved civilization naming conditions for [COLOR_POSITIVE_TEXT]{1_Name}[ENDCOLOR]. What would you like to do?</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POPUP_CIV_NAMING_ACCEPT">
+			<Text>Accept Name and Effects</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POPUP_CIV_NAMING_RENAME">
+			<Text>Change Name</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POPUP_CIV_NAMING_THINK_ABOUT_IT">
+			<Text>Let Me Think About It</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POPUP_CIV_NAMING_THINK_ABOUT_IT_TT">
+			<Text>You will be asked again when you end this turn</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POPUP_CIV_NAMING_DECLINE">
+			<Text>Decline Name and Effects</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POPUP_CIV_NAMING_DECLINE_TT">
+			<Text>Wait for another civilization-defining event to occur. This option is allowed only once!</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POPUP_CIV_NAMING_SPECIAL_CHARACTERS">
+			<Text>(Click CTRL to cycle a, á, à, ä, â, å, æ, etc.[NEWLINE]Try after: AaEeIiOoUuYyTtNnCcRr.)</Text>
+		</Row>
+
+		<!-- Natural Wonder Popups -->
+		<Row Tag="TXT_KEY_EA_GOD_SPHERES">
+			<Text>Spheres:</Text>
+		</Row>
+
+		<!-- Minor Civ Popups -->
+		<Row Tag="TXT_KEY_EA_POP_NATURAL_WONDER_FOUND_DEFAULT">
+			<Text>Congratulations! The discovery of {@1_NWName} has increased [ICON_HAPPINESS_1] Happiness in the empire.[NEWLINE][NEWLINE]Output if worked: </Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POP_NATURAL_WONDER_FOUND_NEUTRAL">
+			<Text>The discovery of {@1_NWName} provides no [ICON_HAPPINESS_1] Happiness or [ICON_HAPPINESS_4] Unhappiness in the empire.[NEWLINE][NEWLINE]Output if worked: </Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POP_NATURAL_WONDER_FOUND_BAD">
+			<Text>The discovery of {@1_NWName} has caused {2_number} [ICON_HAPPINESS_4] Unhappiness in the empire.[NEWLINE][NEWLINE]Output if worked: </Text>
+		</Row>
+
+		<!-- Social Policy popup -->
+		<Row Tag="TXT_KEY_EA_CULTURE_LEVEL">
+			<Text>Culture Level:</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CULTURE_LEVEL_APPROACHING">
+			<Text>Approaching C.L.:</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CULTURE_LEVEL_CHANGE">
+			<Text>Estimated change next turn:</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_NEXT_CULTURE_LEVEL">
+			<Text>Next Policy at Culture Level:</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_BRANCH_RACE_BLOCKED">
+			<Text>[COLOR_WARNING_TEXT]Your race cannot open this policy branch.[ENDCOLOR]</Text>
+		</Row>
+		<!-- Religions popup -->
+
+		<Row Tag="TXT_KEY_EA_RELIGION_POPUP">
+			<Text>Religions</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RELIGION_TAB_YOUR_RELIGIONS">
+			<Text>Your Religions</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RELIGION_TAB_PANTHEISTIC">
+			<Text>Pantheism</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RELIGION_TAB_THEISTIC">
+			<Text>Theism</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_NO_RELIGIOUS_FOLLOWERS">
+			<Text>Your Civilization has no religious followers</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_DOMINANT_RELIGION">
+			<Text>Your Civilization's dominant religion is {1_religionName} ({2_followers} followers of {3_pop} total population).</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_NO_DOMINANT_RELIGION">
+			<Text>Your Civilization has no dominant religion.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RELIGION_WORLD_FOLLOWERS">
+			<Text>World Population: {1_pop}%</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BY_POPULATION">
+			<Text>[NEWLINE]Your Civilization Religions:</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RELIGION_BY_POPULATION_ENTRY">
+			<Text>{1_religion} : {2_num} followers</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BY_CITY">
+			<Text>[NEWLINE]Cities with Majority Religion:</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RELIGION_BY_CITY_ENTRY">
+			<Text>{1_followers} of {2_pop} citizens : {3_city}</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RELIGION_FOUNDER">
+			<Text>Founder: {1_civName}</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RELIGION_HOLY_CITY">
+			<Text>Holy City: {1_cityName}</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RELIGION_DESTROYED">
+			<Text>DESTROYED!</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RELIGION_HOLY_CITY_OWNED_BY">
+			<Text>owned by {1_civName}</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RELIGION_NOT_FOUNDED">
+			<Text>NOT YET FOUNDED!</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RELIGION_FOUNDER_EFFECTS">
+			<Text>Founder Effects:</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RELIGION_FOLLOWER_EFFECTS">
+			<Text>Follower Effects:</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RELIGION_ENHANCER_EFFECTS">
+			<Text>Enhancer Effects:</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RELIGION_ADDED_WITH_POLICY">
+			<Text>(Added when any {1_fallenState} civilization adopts {2_policyName}.)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RELIGION_FALLEN">
+			<Text>Fallen</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RELIGION_NON_FALLEN">
+			<Text>non-Fallen</Text>
+		</Row>
+
+		<!-- Mercenary popup -->
+		<Row Tag="TXT_KEY_EA_HIRE_MERCENARY">
+			<Text>Hire Mercenary</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_HIRE_MERCENARY_DISABLED_TOOLTIP">
+			<Text>You must be friends with this city state or have the Mercenaries policy to hire mercenaries</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_HIRE_MERCENARY_TOOLTIP">
+			<Text>Hire Mercenary from this City State (right-click to view on map)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_MERCENARIES_POPUP">
+			<Text>Mercenaries</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_MERCENARIES_TAB_AVAILABLE">
+			<Text>Available</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_MERCENARIES_TAB_EMPLOYED">
+			<Text>Employed</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_MERCENARIES_TAB_YOURS_FOR_HIRE">
+			<Text>Yours For Hire</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_MERCENARIES_NONE_1">
+			<Text>You must be friends with a Mercenary City State or a civilization with Mercenaries Policy to hire Mercenaries.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_MERCENARIES_NONE_2">
+			<Text>Your friends have no Mercenaries for hire at this time.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_MERCENARIES_NONE_3">
+			<Text>There are no Mercenaries for hire at this time.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_MERCENARIES_NONE_4">
+			<Text>You must have the Mercenaries policy to hire out mercenaries.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_MERCENARIES_NONE_5">
+			<Text>You have not made any of your units available for others to hire. Select a combat unit and click the Hire Out action buttion.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_MERCENARIES_NONE_6">
+			<Text>There are no mercenaries in your employ at this time.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_MERCENARIES_HEADER_UNIT">
+			<Text>Unit</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_MERCENARIES_HEADER_STATS">
+			<Text>Stats</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_MERCENARIES_HEADER_LEVEL">
+			<Text>Level</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_MERCENARIES_HEADER_PROMOTIONS">
+			<Text>Promotions</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_MERCENARIES_HEADER_RACE">
+			<Text>Race</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_MERCENARIES_HEADER_ORIGIN">
+			<Text>Origin</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_MERCENARIES_HEADER_PRICE">
+			<Text>Price</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_MERCENARIES_HEADER_SUPPORT">
+			<Text>Support</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_MERCENARIES_SHOW_ALL">
+			<Text>Show ALL</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_MERCENARIES_FOOTNOTE">
+			<Text>*   Includes 10% Discount[NEWLINE]** Includes 20% Discount</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_MERCENARIES_SHOW_ON_MAP">
+			<Text>Show on Map</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_MERCENARIES_WHAT_WOULD_YOU_LIKE_TO_DO">
+			<Text>What would you like to do?</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_MERCENARIES_HIRE">
+			<Text>Hire</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_MERCENARIES_DISMISS">
+			<Text>Dismiss</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_MERCENARIES_VIEW_ALL_AVAILABLE">
+			<Text>View ALL Available</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_MERCENARIES_VIEW_AVAILABLE">
+			<Text>View Available</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_MERCENARIES_VIEW_EMPLOYED">
+			<Text>View Employed</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_MERCENARIES_VIEW_YOURS">
+			<Text>View Yours For Hire</Text>
+		</Row>
+
+		<!-- Civilizations popup -->
+		<Row Tag="TXT_KEY_EA_CIVILIZATIONS_POPUP">
+			<Text>Civilizations of Éa</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIVS_TAB_AVAILABLE">
+			<Text>Available for your Race</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIVS_TAB_TAKEN">
+			<Text>In Play</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIVILIZATIONS_NO_CIVS">
+			<Text>No one has taken a civilization name yet.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIVS_HEADER_NAME">
+			<Text>Name</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIVS_HEADER_TRIGGER">
+			<Text>Naming Conditions</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIVS_HEADER_DESCRIPTION">
+			<Text>Effects</Text>
+		</Row>
+
+		<!-- Spells popup -->
+		<Row Tag="TXT_KEY_EA_SPELLS_POPUP">
+			<Text>Spells</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_LEARN_SPELL_POPUP">
+			<Text>Learn Spell</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_LEARN_SPELL_TAB_ARCANE">
+			<Text>Arcane Spells</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_LEARN_SPELL_TAB_DIVINE">
+			<Text>Divine Spells</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_LEARN_SPELL_NO_ARCANE">
+			<Text>There are no arcane spells that you can learn at this time</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_LEARN_SPELL_NO_DIVINE">
+			<Text>There are no divine spells that you can learn at this time</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_LEARN_SPELL_HEADER_SPELL">
+			<Text>Spell</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_LEARN_SPELL_HEADER_DESCRIPTION">
+			<Text>Description</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SELECT_SPELL">
+			<Text>Select Spell</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDERS_EPICS_ARTIFACTS_POPUP">
+			<Text>Wonders, Epics & Artifacts</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WEA_TAB_WONDERS">
+			<Text>Wonders</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WEA_TAB_EPICS">
+			<Text>Epics</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WEA_TAB_ARTIFACTS">
+			<Text>Artifacts</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WEA_NO_WONDERS">
+			<Text>No wonders exist in the world</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WEA_NO_EPICS">
+			<Text>No epics exist in the world</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WEA_NO_ARTIFACTS">
+			<Text>No artifacts exist in the world</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WEA_HEADER_WONDER">
+			<Text>Wonder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WEA_HEADER_EPIC">
+			<Text>Epic</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WEA_HEADER_ARTIFACT">
+			<Text>Artifact</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WEA_HEADER_OWNER">
+			<Text>Owner</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WEA_HEADER_LOCATION">
+			<Text>Location</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WEA_HEADER_DESCRIPTION">
+			<Text>Description</Text>
+		</Row>
+	</Language_en_US>
+
+	<EaDebugTableCheck>
+		<Row FileName="EaText__UI.xml"/>
+	</EaDebugTableCheck>
+</GameData>

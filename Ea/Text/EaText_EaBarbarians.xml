@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Created by ModBuddy on 3/30/2014 11:41:49 AM -->
+<GameData>
+	<Language_en_US>
+		
+		<!-- EaEncampments -->
+		
+		<Row Tag="TXT_KEY_EA_ENCAMPMENT_ORCS">
+			<Text>Orc Encampment</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ENCAMPMENT_OGRES">
+			<Text>Ogre Encampment</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ENCAMPMENT_WILDMEN">
+			<Text>Wildmen Encampment</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ENCAMPMENT_HORSETRIBE">
+			<Text>Horse Tribe</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ENCAMPMENT_ELEPHANTTRIBE">
+			<Text>Elephant Tribe</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ENCAMPMENT_PIRATES">
+			<Text>Pirate Cove</Text>
+		</Row>
+
+		<Row Tag="TXT_KEY_EA_ENCAMPMENT_WILDMEN_ADJ">
+			<Text>Wildmen</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ENCAMPMENT_TRIBE_ADJ">
+			<Text>Tribe</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ENCAMPMENT_PIRATES_ADJ">
+			<Text>Pirate</Text>
+		</Row>
+
+
+	</Language_en_US>
+
+	<EaDebugTableCheck>
+		<Row FileName="EaText_EaBarbarians.xml"/>
+	</EaDebugTableCheck>
+  
+</GameData>

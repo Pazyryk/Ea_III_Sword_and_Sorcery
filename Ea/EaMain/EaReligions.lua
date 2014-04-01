@@ -8,7 +8,14 @@ local print = ENABLE_PRINT and print or function() end
 local Dprint = DEBUG_PRINT and print or function() end
 
 --------------------------------------------------------------
--- local defs
+-- Settings
+-------------------------------------------------------------
+
+local MANA_CONSUMED_BY_ANRA_FOUNDING =		1000
+local MANA_CONSUMED_BY_CIV_FALL =			200
+
+--------------------------------------------------------------
+-- File Locals
 --------------------------------------------------------------
 
 --constants
@@ -77,19 +84,7 @@ end
 --------------------------------------------------------------
 -- Init
 --------------------------------------------------------------
---[[
-function FoundTheWeaveOfEa()
-	print("FoundTheWeaveOfEa")
-	local religionID = RELIGION_THE_WEAVE_OF_EA
-	local religionInfo = GameInfo.Religions[religionID]
-	gReligions[religionID] = {founder = -1}		--use table existance to know religion is founded (no game function for this)
-	local beliefID = religionInfo.EaInitialBelief and GameInfoTypes[religionInfo.EaInitialBelief] or -1
-	local belief2ID = religionInfo.EaInitialBelief2 and GameInfoTypes[religionInfo.EaInitialBelief2] or -1
-	local belief3ID = religionInfo.EaInitialBelief3 and GameInfoTypes[religionInfo.EaInitialBelief3] or -1
 
-	Game.FoundReligionNoFounder(religionID, beliefID, belief2ID, belief3ID, -1)
-end
-]]
 --------------------------------------------------------------
 -- Religion functions
 --------------------------------------------------------------
@@ -193,15 +188,10 @@ function ReligionPerGameTurn()
 	end
 end
 
-function UpdateCivReligion(iPlayer)		--per turn and when update needed
+function UpdateCivReligion(iPlayer, bPerTurnCall)		--per turn and when update needed
 	print("UpdateCivReligion ", iPlayer)
 	local player = Players[iPlayer]
 	local eaPlayer = gPlayers[iPlayer]
-
-	--debug
-	--local capital = player:GetCapitalCity()
-	--capital:AdoptReligionFully(-1)
-	--do return end
 
 	if playerType[iPlayer] == "FullCiv" then
 		--count total religious followers
@@ -214,6 +204,7 @@ function UpdateCivReligion(iPlayer)		--per turn and when update needed
 				end
 			end
 		end
+
 		--The Weave gets credit for all cult followers
 		for i = RELIGION_THE_WEAVE_OF_EA + 1, HIGHEST_RELIGION_ID do
 			integers[RELIGION_THE_WEAVE_OF_EA] = integers[RELIGION_THE_WEAVE_OF_EA] + integers[i]
@@ -266,12 +257,6 @@ function UpdateCivReligion(iPlayer)		--per turn and when update needed
 			BecomeFallen(iPlayer)
 		end
 
-		--if iPlayer == g_iActivePlayer then	--for Religious Overview
-		--	MapModData.religiousFollowers = integers
-
-		--end
-
-
 	elseif playerType[iPlayer] == "CityState" then
 		local capital = player:GetCapitalCity()
 		if capital then
@@ -279,8 +264,6 @@ function UpdateCivReligion(iPlayer)		--per turn and when update needed
 		else
 			eaPlayer.religionID = -1
 		end
-	--elseif bHidden[iPlayer] then		--the Fay or a god
-		-- no cities
 	end
 end
 
@@ -348,6 +331,12 @@ function FoundReligion(iPlayer, iCity, religionID)	--call should make sure that 
 		if religionID == RELIGION_AZZANDARAYASNA or religionID == RELIGION_ANRA then
 			RefreshBeliefs()
 		end
+	end
+
+	if religionID == RELIGION_ANRA then
+		--Burn a good chunk of mana
+		gWorld.sumOfAllMana = gWorld.sumOfAllMana - MANA_CONSUMED_BY_ANRA_FOUNDING
+		eaPlayer.manaConsumed = (eaPlayer.manaConsumed or 0) + MANA_CONSUMED_BY_ANRA_FOUNDING
 	end
 end
 
@@ -511,6 +500,10 @@ function BecomeFallen(iPlayer)		--this could happen before, during or after the 
 
 	UpdateCivReligion(iPlayer)
 	RefreshBeliefs()	--may or may not be redundant with FoundReligion call, but that's OK
+
+	--Burn a little mana at no cost to civ
+	gWorld.sumOfAllMana = gWorld.sumOfAllMana - MANA_CONSUMED_BY_CIV_FALL
+	eaPlayer.manaConsumed = (eaPlayer.manaConsumed or 0) + MANA_CONSUMED_BY_CIV_FALL
 end
 
 local religionConversionTable = {[-1] = 0}

@@ -11,6 +11,7 @@ local Dprint = DEBUG_PRINT and print or function() end
 -- Settings
 --------------------------------------------------------------
 
+local MANA_CONSUMED_PER_ANRA_FOLLOWER_PER_TURN =	1
 local GUESSED_GROWTH_EXPIRE_TURN = 50	--AI makes a guess at growth potential, but uses real size instead this many turns after city founding
 
 --------------------------------------------------------------
@@ -89,6 +90,7 @@ local UNIT_SLAVES_ORC =						GameInfoTypes.UNIT_SLAVES_ORC
 local UNIT_CARAVAN =						GameInfoTypes.UNIT_CARAVAN
 local UNIT_CARGO_SHIP =						GameInfoTypes.UNIT_CARGO_SHIP
 
+local RELIGION_ANRA =						GameInfoTypes.RELIGION_ANRA
 local RELIGION_THE_WEAVE_OF_EA =			GameInfoTypes.RELIGION_THE_WEAVE_OF_EA
 local RELIGION_CULT_OF_PURE_WATERS =		GameInfoTypes.RELIGION_CULT_OF_PURE_WATERS
 local RELIGION_CULT_OF_AEGIR =				GameInfoTypes.RELIGION_CULT_OF_AEGIR
@@ -521,13 +523,8 @@ function CityPerCivTurn(iPlayer)		--Full civ only
 	local classPoints = eaPlayer.classPoints
 	local bIsPantheistic = player:HasPolicy(POLICY_PANTHEISM)
 	local bAI = bFullCivAI[iPlayer]
-	--resets
+	local bAnraFounded = gReligions[RELIGION_ANRA] ~= nil
 
-	--local buildingsByID = eaPlayer.BuildingsByID
-	--for i = 1, #buildingsToCount do
-	--	local buildingID = buildingsToCount[i]
-	--	buildingsByID[buildingID] = 0
-	--end
 	local cityCount = 0
 
 	--cycle through gCities
@@ -595,6 +592,15 @@ function CityPerCivTurn(iPlayer)		--Full civ only
 				eaCity.size = size	--is this used?
 
 				--Religion/Cult effects
+				if bAnraFounded then
+					local consumedMana = city:GetNumFollowers(RELIGION_ANRA) * MANA_CONSUMED_PER_ANRA_FOLLOWER_PER_TURN
+					if 0 < consumedMana then
+						gWorld.sumOfAllMana = gWorld.sumOfAllMana - consumedMana
+						eaPlayer.manaConsumed = (eaPlayer.manaConsumed or 0) + consumedMana
+						city:Plot():AddFloatUpMessage(Locale.Lookup("TXT_KEY_EA_CONSUMED_MANA", consumedMana))	
+					end
+				end
+
 				for religionID, buildingID in pairs(religionFollowerBuildings) do
 					if followerReligion == religionID then
 						city:SetNumRealBuilding(buildingID, 1)
@@ -756,9 +762,18 @@ end
 
 function CityStateFollowerCityCounting()			--once per turn after plots (takes care of counting done for full civs above)
 	print("Running CityStateFollowerCityCounting")
+	local bAnraFounded = gReligions[RELIGION_ANRA] ~= nil
 	for iPlayer, eaPlayer in pairs(cityStates) do
 		local player = Players[iPlayer]
 		for city in player:Cities() do
+			if bAnraFounded then
+				local consumedMana = city:GetNumFollowers(RELIGION_ANRA) * MANA_CONSUMED_PER_ANRA_FOLLOWER_PER_TURN
+				if 0 < consumedMana then
+					gWorld.sumOfAllMana = gWorld.sumOfAllMana - consumedMana
+					city:Plot():AddFloatUpMessage(Locale.Lookup("TXT_KEY_EA_CONSUMED_MANA", consumedMana))	
+				end
+			end
+
 			local followerReligion = city:GetReligiousMajority()
 			if followerReligion == RELIGION_CULT_OF_PURE_WATERS then
 				if city:Plot():IsRiverSide() then

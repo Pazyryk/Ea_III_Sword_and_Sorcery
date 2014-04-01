@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Created by ModBuddy on 3/30/2014 11:08:15 AM -->
+<GameData>
+	<Language_en_US>
+
+
+		<!-- Specialists -->
+
+		<Row Tag="TXT_KEY_EA_SPECIALIST_ARTISAN">
+			<Text>Artisan</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPECIALIST_ARTISAN_SLOTS">
+			<Text>Artisan Slots</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPECIALIST_ARTISAN_STRATEGY">
+			<Text>Employ Artisans to increase a city's cultural output and to generate Artists</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPECIALIST_TRADER">
+			<Text>Trader</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPECIALIST_TRADER_SLOTS">
+			<Text>Trader Slots</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPECIALIST_TRADER_STRATEGY">
+			<Text>Employ Traders to increase a city's cultural output and to generate Merchants</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPECIALIST_SCRIBE">
+			<Text>Scribe</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPECIALIST_SCRIBE_SLOTS">
+			<Text>Scribe Slots</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPECIALIST_SCRIBE_STRATEGY">
+			<Text>Employ Scribes to increase a city's cultural output and to generate Sages</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPECIALIST_SMITH">
+			<Text>Smith</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPECIALIST_SMITH_SLOTS">
+			<Text>Smith Slots</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPECIALIST_SMITH_STRATEGY">
+			<Text>Employ Smiths to increase a city's cultural output and to generate Engineers</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPECIALIST_DISCIPLE">
+			<Text>Disciple</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPECIALIST_DISCIPLE_SLOTS">
+			<Text>Disciple Slots</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPECIALIST_DISCIPLE_STRATEGY">
+			<Text>Employ Disciples to increase a city's mana or divine favor and to generate Devouts</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPECIALIST_ADEPT">
+			<Text>Adept</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPECIALIST_ADEPT_SLOTS">
+			<Text>Adept Slots</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPECIALIST_ADEPT_STRATEGY">
+			<Text>Employ Adepts to increase a city's mana and to generate Thaumaturges</Text>
+		</Row>
+		
+		<!-- Victories -->
+		
+		<Row Tag="TXT_KEY_EA_VICTORY_DESTROYER">
+			<Text>Armageddon</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_VICTORY_PROTECTOR">
+			<Text>Protector of Éa</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_VICTORY_SUBDUER">
+			<Text>Domination</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_VICTORY_RESTORER">
+			<Text>One with Nature</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_VICTORY_CONQUEROR">
+			<Text>World Conquest</Text>
+		</Row>	
+		
+	</Language_en_US>
+
+	<EaDebugTableCheck>
+		<Row FileName="EaText_GameInfo.xml"/>
+	</EaDebugTableCheck>
+	
+</GameData>

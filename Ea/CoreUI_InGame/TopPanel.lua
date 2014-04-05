@@ -1264,13 +1264,25 @@ function FaithTipHandler( control )
 		end	
 
 		if faithFromFinishedPolicyBranches ~= 0 then
-			local branchName
+			local branchName, branchName2
 			if pPlayer:HasPolicy(GameInfoTypes.POLICY_PANTHEISM_FINISHER) then
 				branchName = Locale.ConvertTextKey("TXT_KEY_EA_POLICY_PANTHEISM")
-			else
+			elseif pPlayer:HasPolicy(GameInfoTypes.POLICY_THEISM_FINISHER) or pPlayer:HasPolicy(GameInfoTypes.POLICY_ANTI_THEISM_FINISHER) then
 				branchName = Locale.ConvertTextKey("TXT_KEY_EA_POLICY_THEISM")
 			end
-			strText = strText .. "[NEWLINE]" .. Locale.ConvertTextKey("TXT_KEY_EA_TP_FAITH_FROM_POLICY_BRANCHES", faithFromFinishedPolicyBranches, branchName)
+			if pPlayer:HasPolicy(GameInfoTypes.POLICY_ARCANA_FINISHER) then
+				if branchName then
+					branchName2 = Locale.ConvertTextKey("TXT_KEY_EA_POLICY_ARCANA")
+				else
+					branchName = Locale.ConvertTextKey("TXT_KEY_EA_POLICY_ARCANA")
+				end
+			end
+			if branchName2 then
+				strText = strText .. "[NEWLINE]" .. Locale.ConvertTextKey("TXT_KEY_EA_TP_FAITH_FROM_POLICY_BRANCHES", faithFromFinishedPolicyBranches / 2, branchName)
+				strText = strText .. "[NEWLINE]" .. Locale.ConvertTextKey("TXT_KEY_EA_TP_FAITH_FROM_POLICY_BRANCHES", faithFromFinishedPolicyBranches / 2, branchName2)
+			else
+				strText = strText .. "[NEWLINE]" .. Locale.ConvertTextKey("TXT_KEY_EA_TP_FAITH_FROM_POLICY_BRANCHES", faithFromFinishedPolicyBranches, branchName)
+			end
 		end
 
 		if faithFromToAhrimanTribute ~= 0 then

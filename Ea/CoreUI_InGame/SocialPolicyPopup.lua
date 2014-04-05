@@ -750,7 +750,7 @@ function Init()
 	for key in pairs(g_civEnabledPolicies) do
 		g_civEnabledPolicies[key] = nil				--in case we do more complex player changes later
 	end
-	if eaCivType then
+	if eaCivType and not MapModData.bDisableEnabledPolicies then
 		for row in GameInfo.EaCiv_EnabledPolicies() do
 			if eaCivType == row.EaCivType then
 				g_civEnabledPolicies[GameInfoTypes[row.PolicyType] ] = {x = row.GridX, y = row.GridY}

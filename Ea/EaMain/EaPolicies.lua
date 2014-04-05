@@ -21,10 +21,13 @@ local EARACE_HELDEOFOL =			GameInfoTypes.EARACE_HELDEOFOL
 local POLICY_BRANCH_PANTHEISM =		GameInfoTypes.POLICY_BRANCH_PANTHEISM
 local POLICY_BRANCH_THEISM =		GameInfoTypes.POLICY_BRANCH_THEISM
 local POLICY_BRANCH_ANTI_THEISM =	GameInfoTypes.POLICY_BRANCH_ANTI_THEISM
+local POLICY_BRANCH_ARCANA =		GameInfoTypes.POLICY_BRANCH_ARCANA
 local POLICY_BRANCH_SLAVERY =		GameInfoTypes.POLICY_BRANCH_SLAVERY
 local POLICY_BRANCH_MILITARISM =	GameInfoTypes.POLICY_BRANCH_MILITARISM
 local POLICY_BRANCH_COMMERCE =		GameInfoTypes.POLICY_BRANCH_COMMERCE
 local POLICY_BRANCH_TRADITION =		GameInfoTypes.POLICY_BRANCH_TRADITION
+
+local POLICY_ARCANE_ELITE =			GameInfoTypes.POLICY_ARCANE_ELITE
 local POLICY_SLAVE_RAIDERS =		GameInfoTypes.POLICY_SLAVE_RAIDERS
 local POLICY_SLAVE_ARMIES =			GameInfoTypes.POLICY_SLAVE_ARMIES
 
@@ -149,7 +152,11 @@ function PolicyPerCivTurn(iPlayer)
 	print("PolicyPerCivTurn ", iPlayer)
 	local player = Players[iPlayer]
 	local eaPlayer = gPlayers[iPlayer]
-	
+
+	if player:HasPolicy(POLICY_ARCANE_ELITE) then
+		eaPlayer.classPoints[7] = eaPlayer.classPoints[7] + 5	--Thaumaturge
+	end
+
 	UpdateCulturalLevel(iPlayer, eaPlayer)
 
 	print("Level / policies / change / pop turns: ", eaPlayer.culturalLevel, eaPlayer.policyCount, eaPlayer.culturalLevelChange, eaPlayer.cumPopTurns)
@@ -200,53 +207,7 @@ function OnPlayerAdoptPolicyBranch(iPlayer, policyBranchTypeID)					--called by 
 		end
 		--Techs
 		team:SetHasTech(GameInfoTypes.TECH_PANTHEISM, true)
-		--[[
-		team:SetHasTech(GameInfoTypes.TECH_SLASH_BURN_FOREST, false)
-		team:SetHasTech(GameInfoTypes.TECH_SLASH_BURN_JUNGLE, false)
-		team:SetHasTech(GameInfoTypes.TECH_CHOP_FOREST, false)
-		team:SetHasTech(GameInfoTypes.TECH_CHOP_JUNGLE, false)
-		if team:IsHasTech(GameInfoTypes.TECH_AGRICULTURE) then
-			team:SetHasTech(GameInfoTypes.TECH_AGRICULTURE_PAN, true)
-			team:SetHasTech(GameInfoTypes.TECH_AGRICULTURE_NO_PAN, false)
-		end
-		if team:IsHasTech(GameInfoTypes.TECH_DOMESTICATION) then
-			team:SetHasTech(GameInfoTypes.TECH_DOMESTICATION_PAN, true)
-			team:SetHasTech(GameInfoTypes.TECH_DOMESTICATION_NO_PAN, false)
-		end
-		if team:IsHasTech(GameInfoTypes.TECH_MINING) then
-			team:SetHasTech(GameInfoTypes.TECH_MINING_PAN, true)
-			team:SetHasTech(GameInfoTypes.TECH_MINING_NO_PAN, false)
-		end
-		if team:IsHasTech(GameInfoTypes.TECH_MILLING) then
-			team:SetHasTech(GameInfoTypes.TECH_MILLING_NO_PAN, false)
-		end
-		if team:IsHasTech(GameInfoTypes.TECH_WEAVING) then
-			team:SetHasTech(GameInfoTypes.TECH_WEAVING_PAN, true)
-			team:SetHasTech(GameInfoTypes.TECH_WEAVING_NO_PAN, false)
-		end
-		if team:IsHasTech(GameInfoTypes.TECH_ZYMURGY) then
-			team:SetHasTech(GameInfoTypes.TECH_ZYMURGY_PAN, true)
-			team:SetHasTech(GameInfoTypes.TECH_ZYMURGY_NO_PAN, false)
-		end
-		if team:IsHasTech(GameInfoTypes.TECH_IRRIGATION) then
-			team:SetHasTech(GameInfoTypes.TECH_IRRIGATION_PAN, true)
-			team:SetHasTech(GameInfoTypes.TECH_IRRIGATION_NO_PAN, false)
-		end
-		if team:IsHasTech(GameInfoTypes.TECH_CALENDAR) then
-			team:SetHasTech(GameInfoTypes.TECH_CALENDAR_PAN, true)
-			team:SetHasTech(GameInfoTypes.TECH_CALENDAR_NO_PAN, false)
-		end
-		if team:IsHasTech(GameInfoTypes.TECH_MASONRY) then
-			team:SetHasTech(GameInfoTypes.TECH_MASONRY_PAN, true)
-			team:SetHasTech(GameInfoTypes.TECH_MASONRY_NO_PAN, false)
-		end
-		if team:IsHasTech(GameInfoTypes.TECH_CROP_ROTATION) then
-			team:SetHasTech(GameInfoTypes.TECH_CROP_ROTATION_NO_PAN, false)
-		end
-		if team:IsHasTech(GameInfoTypes.TECH_FORESTRY) then
-			team:SetHasTech(GameInfoTypes.TECH_FORESTRY_NO_PAN, false)
-		end
-		]]
+
 		--Meet gods represented by Natural Wonders already discovered
 		gg_teamCanMeetGods[iTeam] = true
 		for featureID in pairs(eaPlayer.revealedNWs) do
@@ -257,6 +218,10 @@ function OnPlayerAdoptPolicyBranch(iPlayer, policyBranchTypeID)					--called by 
 			end
 		end
 
+	elseif policyBranchTypeID == POLICY_BRANCH_ARCANA then
+
+		local team = Teams[Players[iPlayer]:GetTeam()]
+		team:SetHasTech(GameInfoTypes.TECH_MOLY_VISIBLE, true)
 	
 	elseif policyBranchTypeID == POLICY_BRANCH_SLAVERY then
 		local player = Players[iPlayer]
@@ -404,6 +369,14 @@ OnPolicyAdopted[GameInfoTypes.POLICY_THROUGH_THE_VEIL] = function(iPlayer)
 	local team = Teams[iTeam]
 	gg_teamCanMeetFay[iTeam] = true
 	team:Meet(Players[FAY_PLAYER_INDEX]:GetTeam(), true)
+end
+
+OnPolicyAdopted[GameInfoTypes.POLICY_ARCANE_LORE] = function(iPlayer)
+	gg_playerArcaneMod[iPlayer] = gg_playerArcaneMod[iPlayer] - 10
+end
+
+OnPolicyAdopted[GameInfoTypes.POLICY_ARCANE_RESEARCH] = function(iPlayer)
+	gg_playerArcaneMod[iPlayer] = gg_playerArcaneMod[iPlayer] - 20
 end
 
 OnPolicyAdopted[GameInfoTypes.POLICY_SLAVE_RAIDERS] = function(iPlayer)

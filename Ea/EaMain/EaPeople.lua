@@ -743,17 +743,26 @@ function UseManaOrDivineFavor(iPlayer, iPerson, pts)
 	local player = Players[iPlayer]
 	local currentFaith = player:GetFaith()
 	player:SetFaith(currentFaith - pts)
+	local eaPlayer = gPlayers[iPlayer]
+	local bManaEaterFloatup = false
 	if iPerson then
 		local eaPerson = gPeople[iPerson]
 		if eaPerson then
 			local unit = player:GetUnitByID(eaPerson.iUnit)
 			unit:ChangeExperience(pts)
+			if eaPlayer.bIsFallen then
+				bManaEaterFloatup = true
+				unit:GetPlot():AddFloatUpMessage(Locale.Lookup("TXT_KEY_EA_CONSUMED_MANA", pts), 1)
+			end
 		end
 	end
-	local eaPlayer = gPlayers[iPlayer]
+
 	if eaPlayer.bIsFallen then
 		gWorld.sumOfAllMana = gWorld.sumOfAllMana - pts
 		eaPlayer.manaConsumed = (eaPlayer.manaConsumed or 0) + pts
+		if not bManaEaterFloatup then
+			player:GetCapitalCity():Plot():AddFloatUpMessage(Locale.Lookup("TXT_KEY_EA_CONSUMED_MANA", pts), 1)
+		end
 	end
 	return 0 <= currentFaith - pts	--deficit?
 end

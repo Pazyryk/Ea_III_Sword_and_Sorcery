@@ -48,6 +48,7 @@ local realCivs =	MapModData.realCivs
 local gg_fishingRange = gg_fishingRange
 local gg_whalingRange = gg_whalingRange
 local gg_campRange = gg_campRange
+local gg_playerArcaneMod = gg_playerArcaneMod
 
 
 --localized functions
@@ -64,14 +65,22 @@ local TechReq = {}
 local bInitialized = false
 
 --file tables
-local playerKM = {}					--index by iPlayer
-local playerTomeMods = {}			--index by iPlayer, techID
-local playerFavoredTechMods = {}		--index by iPlayer, techID
+local g_playerKM = {}					--index by iPlayer
+
+local g_playerTomeMods = {}				--index by iPlayer, techID
+local g_playerFavoredTechMods = {}		--index by iPlayer, techID
 
 
 --------------------------------------------------------------
 -- Cached Tables
 --------------------------------------------------------------
+local arcaneTechs = {}
+for techInfo in GameInfo.Technologies() do
+	if techInfo.EaArcane then
+		arcaneTechs[techInfo.ID] = true
+	end
+end
+
 local tomeTechs = {}
 for row in GameInfo.EaArtifacts_TomeTechs() do
 	local artifactID = GameInfoTypes[row.ArtifactType]
@@ -80,8 +89,6 @@ for row in GameInfo.EaArtifacts_TomeTechs() do
 	tomeTechs[artifactID][techID] = row.Change
 end
 
-
-
 --------------------------------------------------------------
 -- Init
 --------------------------------------------------------------
@@ -89,9 +96,10 @@ end
 function EaTechsInit(bNewGame)
 	print("Running EaTechsInit...")
 	for iPlayer, eaPlayer in pairs(fullCivs) do
-		playerKM[iPlayer] = 0
-		playerTomeMods[iPlayer] = {}
-		playerFavoredTechMods[iPlayer] = {}
+		g_playerKM[iPlayer] = 0
+		gg_playerArcaneMod[iPlayer] = 0
+		g_playerTomeMods[iPlayer] = {}
+		g_playerFavoredTechMods[iPlayer] = {}
 	end
 	if bNewGame then
 		for iPlayer, eaPlayer in pairs(realCivs) do
@@ -110,6 +118,16 @@ function EaTechsInit(bNewGame)
 			end
 		end
 	else
+		for iPlayer, eaPlayer in pairs(fullCivs) do
+			local player = Players[iPlayer]
+			if player:HasPolicy(GameInfoTypes.POLICY_ARCANE_LORE) then
+				gg_playerArcaneMod[iPlayer] = gg_playerArcaneMod[iPlayer] - 10
+			end
+			if player:HasPolicy(GameInfoTypes.POLICY_ARCANE_RESEARCH) then
+				gg_playerArcaneMod[iPlayer] = gg_playerArcaneMod[iPlayer] - 20
+			end
+		end
+
 		for iPlayer, eaPlayer in pairs(realCivs) do
 			local player = Players[iPlayer]
 			local team = Teams[player:GetTeam()]
@@ -161,10 +179,10 @@ local function ResetTechCostMods(iPlayer)
 		techCount = 0.667 * techCount
 	end
 	local pop = player:GetTotalPopulation()
-	playerKM[iPlayer] = Floor(KM_PER_TECH_PER_CITIZEN * techCount * pop + 0.5)
+	g_playerKM[iPlayer] = Floor(KM_PER_TECH_PER_CITIZEN * techCount * pop + 0.5)
 
 	--Tomes
-	local tomeMods = playerTomeMods[iPlayer]
+	local tomeMods = g_playerTomeMods[iPlayer]
 	for techID in pairs(tomeMods) do
 		tomeMods[techID] = 0
 	end
@@ -188,7 +206,7 @@ function ResetPlayerFavoredTechs(iPlayer)	--only need at game load and once at n
 	local eaCivID = eaPlayer.eaCivNameID
 	if eaCivID then
 		local eaCivType = GameInfo.EaCivs[eaCivID].Type
-		local favoredTechMods = playerFavoredTechMods[iPlayer]
+		local favoredTechMods = g_playerFavoredTechMods[iPlayer]
 		for techID in pairs(favoredTechMods) do
 			favoredTechMods[techID] = nil
 		end
@@ -198,16 +216,20 @@ function ResetPlayerFavoredTechs(iPlayer)	--only need at game load and once at n
 	end
 end
 
-local function OnPlayerTechCostMod(iPlayer, techID)
+local function OnPlayerTechCostMod(iPlayer, techID)		--Ea API
 	--print("OnPlayerTechCostMod ", iPlayer, techID)
 	if not fullCivs[iPlayer] then return 0 end
-	local mod = playerKM[iPlayer]
-	if playerFavoredTechMods[iPlayer][techID] then
-		mod = mod + playerFavoredTechMods[iPlayer][techID]
+	local mod = g_playerKM[iPlayer]
+	if g_playerFavoredTechMods[iPlayer][techID] then
+		mod = mod + g_playerFavoredTechMods[iPlayer][techID]
 	end
-	if playerTomeMods[iPlayer][techID] then
-		mod = mod + playerTomeMods[iPlayer][techID]
+	if g_playerTomeMods[iPlayer][techID] then
+		mod = mod + g_playerTomeMods[iPlayer][techID]
 	end
+	if arcaneTechs[techID] then
+		mod = mod + gg_playerArcaneMod[iPlayer]
+	end
+
 	return mod
 end
 GameEvents.PlayerTechCostMod.Add(OnPlayerTechCostMod)
@@ -300,155 +322,6 @@ OnTeamTechLearned[GameInfoTypes.TECH_ARCHERY] = OnTeamTechLearned[GameInfoTypes.
 OnTeamTechLearned[GameInfoTypes.TECH_MALEFICIUM] = function(iTeam)
 	gWorld.maleficium = "Learned"
 end
-
---Pan/Non-Pan checks must be done on policy side too (for pan-swap after tech)
---[[
-OnMajorPlayerTechLearned[GameInfoTypes.TECH_BRONZE_WORKING] = function(iPlayer)
-	local player = Players[iPlayer]
-	local team = Teams[player:GetTeam()]
-	team:SetHasTech(GameInfoTypes.TECH_SLASH_BURN_FOREST, false)
-	if not player:HasPolicy(POLICY_PANTHEISM) then
-		team:SetHasTech(GameInfoTypes.TECH_CHOP_FOREST, true)
-		team:SetHasTech(GameInfoTypes.TECH_SLASH_BURN_JUNGLE, true)
-	end
-end
-
-OnMajorPlayerTechLearned[GameInfoTypes.TECH_IRON_WORKING] = function(iPlayer)
-	local player = Players[iPlayer]
-	local team = Teams[player:GetTeam()]
-	team:SetHasTech(GameInfoTypes.TECH_SLASH_BURN_FOREST, false)
-	team:SetHasTech(GameInfoTypes.TECH_SLASH_BURN_JUNGLE, false)
-	if not player:HasPolicy(POLICY_PANTHEISM) then
-		team:SetHasTech(GameInfoTypes.TECH_CHOP_JUNGLE, true)
-	end
-end
-
-OnMajorPlayerTechLearned[GameInfoTypes.TECH_AGRICULTURE] = function(iPlayer)
-	local player = Players[iPlayer]
-	local team = Teams[player:GetTeam()]
-	if player:HasPolicy(POLICY_PANTHEISM) then
-		team:SetHasTech(GameInfoTypes.TECH_AGRICULTURE_PAN, true)
-		team:SetHasTech(GameInfoTypes.TECH_AGRICULTURE_NO_PAN, false)
-	else
-		team:SetHasTech(GameInfoTypes.TECH_AGRICULTURE_PAN, false)
-		team:SetHasTech(GameInfoTypes.TECH_AGRICULTURE_NO_PAN, true)
-	end
-end
-
-OnMajorPlayerTechLearned[GameInfoTypes.TECH_DOMESTICATION] = function(iPlayer)
-	local player = Players[iPlayer]
-	local team = Teams[player:GetTeam()]
-	if player:HasPolicy(POLICY_PANTHEISM) then
-		team:SetHasTech(GameInfoTypes.TECH_DOMESTICATION_PAN, true)
-		team:SetHasTech(GameInfoTypes.TECH_DOMESTICATION_NO_PAN, false)
-	else
-		team:SetHasTech(GameInfoTypes.TECH_DOMESTICATION_PAN, false)
-		team:SetHasTech(GameInfoTypes.TECH_DOMESTICATION_NO_PAN, true)
-	end
-end
-
-OnMajorPlayerTechLearned[GameInfoTypes.TECH_MINING] = function(iPlayer)
-	local player = Players[iPlayer]
-	local team = Teams[player:GetTeam()]
-	if player:HasPolicy(POLICY_PANTHEISM) then
-		team:SetHasTech(GameInfoTypes.TECH_MINING_PAN, true)
-		team:SetHasTech(GameInfoTypes.TECH_MINING_NO_PAN, false)
-	else
-		team:SetHasTech(GameInfoTypes.TECH_MINING_PAN, false)
-		team:SetHasTech(GameInfoTypes.TECH_MINING_NO_PAN, true)
-	end
-end
-
-OnMajorPlayerTechLearned[GameInfoTypes.TECH_MILLING] = function(iPlayer)
-	local player = Players[iPlayer]
-	local team = Teams[player:GetTeam()]
-	if player:HasPolicy(POLICY_PANTHEISM) then
-		team:SetHasTech(GameInfoTypes.TECH_MILLING_NO_PAN, false)
-	else
-		team:SetHasTech(GameInfoTypes.TECH_MILLING_NO_PAN, true)
-	end
-end
-
-OnMajorPlayerTechLearned[GameInfoTypes.TECH_WEAVING] = function(iPlayer)
-	local player = Players[iPlayer]
-	local team = Teams[player:GetTeam()]
-	if player:HasPolicy(POLICY_PANTHEISM) then
-		team:SetHasTech(GameInfoTypes.TECH_WEAVING_PAN, true)
-		team:SetHasTech(GameInfoTypes.TECH_WEAVING_NO_PAN, false)
-	else
-		team:SetHasTech(GameInfoTypes.TECH_WEAVING_PAN, false)
-		team:SetHasTech(GameInfoTypes.TECH_WEAVING_NO_PAN, true)
-	end
-end
-
-OnMajorPlayerTechLearned[GameInfoTypes.TECH_ZYMURGY] = function(iPlayer)
-	local player = Players[iPlayer]
-	local team = Teams[player:GetTeam()]
-	if player:HasPolicy(POLICY_PANTHEISM) then
-		team:SetHasTech(GameInfoTypes.TECH_ZYMURGY_PAN, true)
-		team:SetHasTech(GameInfoTypes.TECH_ZYMURGY_NO_PAN, false)
-	else
-		team:SetHasTech(GameInfoTypes.TECH_ZYMURGY_PAN, false)
-		team:SetHasTech(GameInfoTypes.TECH_ZYMURGY_NO_PAN, true)
-	end
-end
-
-OnMajorPlayerTechLearned[GameInfoTypes.TECH_IRRIGATION] = function(iPlayer)
-	local player = Players[iPlayer]
-	local team = Teams[player:GetTeam()]
-	if player:HasPolicy(POLICY_PANTHEISM) then
-		team:SetHasTech(GameInfoTypes.TECH_IRRIGATION_PAN, true)
-		team:SetHasTech(GameInfoTypes.TECH_IRRIGATION_NO_PAN, false)
-	else
-		team:SetHasTech(GameInfoTypes.TECH_IRRIGATION_PAN, false)
-		team:SetHasTech(GameInfoTypes.TECH_IRRIGATION_NO_PAN, true)
-	end
-end
-
-OnMajorPlayerTechLearned[GameInfoTypes.TECH_CALENDAR] = function(iPlayer)
-	local player = Players[iPlayer]
-	local team = Teams[player:GetTeam()]
-	if player:HasPolicy(POLICY_PANTHEISM) then
-		team:SetHasTech(GameInfoTypes.TECH_CALENDAR_PAN, true)
-		team:SetHasTech(GameInfoTypes.TECH_CALENDAR_NO_PAN, false)
-	else
-		team:SetHasTech(GameInfoTypes.TECH_CALENDAR_PAN, false)
-		team:SetHasTech(GameInfoTypes.TECH_CALENDAR_NO_PAN, true)
-	end
-end
-
-OnMajorPlayerTechLearned[GameInfoTypes.TECH_MASONRY] = function(iPlayer)
-	local player = Players[iPlayer]
-	local team = Teams[player:GetTeam()]
-	if player:HasPolicy(POLICY_PANTHEISM) then
-		team:SetHasTech(GameInfoTypes.TECH_MASONRY_PAN, true)
-		team:SetHasTech(GameInfoTypes.TECH_MASONRY_NO_PAN, false)
-	else
-		team:SetHasTech(GameInfoTypes.TECH_MASONRY_PAN, false)
-		team:SetHasTech(GameInfoTypes.TECH_MASONRY_NO_PAN, true)
-	end
-end
-
-OnMajorPlayerTechLearned[GameInfoTypes.TECH_CROP_ROTATION] = function(iPlayer)
-	local player = Players[iPlayer]
-	local team = Teams[player:GetTeam()]
-	if player:HasPolicy(POLICY_PANTHEISM) then
-		team:SetHasTech(GameInfoTypes.TECH_CROP_ROTATION_NO_PAN, false)
-	else
-		team:SetHasTech(GameInfoTypes.TECH_CROP_ROTATION_NO_PAN, true)
-	end
-end
-
-OnMajorPlayerTechLearned[GameInfoTypes.TECH_FORESTRY] = function(iPlayer)
-	local player = Players[iPlayer]
-	local team = Teams[player:GetTeam()]
-	if player:HasPolicy(POLICY_PANTHEISM) then
-		team:SetHasTech(GameInfoTypes.TECH_FORESTRY_NO_PAN, false)
-	else
-		team:SetHasTech(GameInfoTypes.TECH_FORESTRY_NO_PAN, true)
-	end
-end
-]]
 
 OnMajorPlayerTechLearned[GameInfoTypes.TECH_MALEFICIUM] = function(iPlayer)
 	if gWorldUniqueAction[EA_ACTION_PROPHECY_VA] == -1 then

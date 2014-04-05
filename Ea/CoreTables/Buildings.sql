@@ -14,21 +14,22 @@ ALTER TABLE Buildings ADD COLUMN 'EaGreatPersonBuild' TEXT DEFAULT NULL;
 ALTER TABLE Buildings ADD COLUMN 'EaHealth' INTEGER DEFAULT 0;
 ALTER TABLE Buildings ADD COLUMN 'EaHidden' TEXT DEFAULT NULL;		--not used yet (text will allow some to be revealed under specific circumstances)
 ALTER TABLE Buildings ADD COLUMN 'EaProhibitSell' BOOLEAN DEFAULT NULL;
+ALTER TABLE Buildings ADD COLUMN 'EaSpecial' TEXT DEFAULT NULL;		--Arcane, Religious
 
 -- 1st available
 INSERT INTO Buildings (Type,			Cost,	FoodKept,	NeverCapture,	ArtDefineTag,				IconAtlas,				PortraitIndex) VALUES
 ('BUILDING_MONUMENT',					80,		0,			1,				'MONUMENT',					'BW_ATLAS_1',			21		),
 ('BUILDING_WARRENS',					200,	10,			1,				'ART_DEF_BUILDING_FORGE',	'NEW_BLDG_ATLAS2_DLC',	1		);
 -- early specialist
-INSERT INTO Buildings (Type,			Cost,	GoldMaintenance,	PrereqTech,					EaPrereqPolicy,		Happiness,	SpecialistType,			SpecialistCount,	NeverCapture,	ArtDefineTag,				IconAtlas,				PortraitIndex) VALUES
-('BUILDING_MARKETPLACE',				200,	0,					'TECH_CURRENCY',			NULL,				0,			'SPECIALIST_TRADER',	1,					0,				'ART_DEF_BUILDING_MARKET',	'BW_ATLAS_1',			16	),
-('BUILDING_LIBRARY',					200,	1,					'TECH_WRITING',				NULL,				0,			'SPECIALIST_SCRIBE',	1,					0,				'ART_DEF_BUILDING_LIBRARY',	'BW_ATLAS_1',			11	),
-('BUILDING_AMPHITHEATER',				200,	1,					'TECH_DRAMA',				NULL,				1,			'SPECIALIST_ARTISAN',	1,					0,				'COLESSEUM',				'EXPANSION_BW_ATLAS_1',	0	),
-('BUILDING_WORKSHOP',					200,	1,					'TECH_MATHEMATICS',			NULL,				0,			'SPECIALIST_SMITH',		1,					0,				'ART_DEF_BUILDING_FORGE',	'BW_ATLAS_1',			28	),
-('BUILDING_FORGE',						200,	1,					'TECH_BRONZE_WORKING',		NULL,				0,			'SPECIALIST_SMITH',		1,					0,				'ART_DEF_BUILDING_FORGE',	'BW_ATLAS_1',			2	),
-('BUILDING_SHRINE',						200,	1,					NULL,						'POLICY_PANTHEISM',	0,			'SPECIALIST_DISCIPLE',	1,					1,				'TEMPLE',					'EXPANSION_BW_ATLAS_1',	9	),
-('BUILDING_MAGE_SCHOOL',				200,	1,					'TECH_THAUMATURGY',			NULL,				0,			'SPECIALIST_ADEPT',		1,					1,				'TEMPLE',					'EXPANSION_BW_ATLAS_1',	9	),
-('BUILDING_PHARMAKEIA',					200,	1,					'TECH_MALEFICIUM',			NULL,				0,			'SPECIALIST_ADEPT',		1,					1,				'TEMPLE',					'EXPANSION_BW_ATLAS_1',	9	);
+INSERT INTO Buildings (Type,			Cost,	GoldMaintenance,	PrereqTech,					EaPrereqPolicy,		EaSpecial,		Happiness,	SpecialistType,			SpecialistCount,	NeverCapture,	ArtDefineTag,				IconAtlas,				PortraitIndex) VALUES
+('BUILDING_MARKETPLACE',				200,	0,					'TECH_CURRENCY',			NULL,				NULL,			0,			'SPECIALIST_TRADER',	1,					0,				'ART_DEF_BUILDING_MARKET',	'BW_ATLAS_1',			16	),
+('BUILDING_LIBRARY',					200,	1,					'TECH_WRITING',				NULL,				NULL,			0,			'SPECIALIST_SCRIBE',	1,					0,				'ART_DEF_BUILDING_LIBRARY',	'BW_ATLAS_1',			11	),
+('BUILDING_AMPHITHEATER',				200,	1,					'TECH_DRAMA',				NULL,				NULL,			1,			'SPECIALIST_ARTISAN',	1,					0,				'COLESSEUM',				'EXPANSION_BW_ATLAS_1',	0	),
+('BUILDING_WORKSHOP',					200,	1,					'TECH_MATHEMATICS',			NULL,				NULL,			0,			'SPECIALIST_SMITH',		1,					0,				'ART_DEF_BUILDING_FORGE',	'BW_ATLAS_1',			28	),
+('BUILDING_FORGE',						200,	1,					'TECH_BRONZE_WORKING',		NULL,				NULL,			0,			'SPECIALIST_SMITH',		1,					0,				'ART_DEF_BUILDING_FORGE',	'BW_ATLAS_1',			2	),
+('BUILDING_SHRINE',						200,	1,					NULL,						'POLICY_PANTHEISM',	'Religious',	0,			'SPECIALIST_DISCIPLE',	1,					1,				'TEMPLE',					'EXPANSION_BW_ATLAS_1',	9	),
+('BUILDING_MAGE_SCHOOL',				200,	1,					'TECH_THAUMATURGY',			NULL,				'Arcane',		0,			'SPECIALIST_ADEPT',		1,					1,				'TEMPLE',					'EXPANSION_BW_ATLAS_1',	9	),
+('BUILDING_PHARMAKEIA',					200,	1,					'TECH_MALEFICIUM',			NULL,				'Arcane',		0,			'SPECIALIST_ADEPT',		1,					1,				'TEMPLE',					'EXPANSION_BW_ATLAS_1',	9	);
 
 
 -- early resource
@@ -53,14 +54,14 @@ INSERT INTO Buildings (Type,			Cost,	GoldMaintenance,	PrereqTech,					Happiness,
 ('BUILDING_STONE_WORKS',				200,	1,					'TECH_MASONRY',				0,			0,				'ART_DEF_BUILDING_FORGE',	'NEW_BLDG_ATLAS2_DLC',			1,				0	);
 
 -- early policy dependent
-INSERT INTO Buildings (Type,			Cost,	GoldMaintenance,	PrereqTech,					EaPrereqPolicy,				Happiness,	EaOccupationUnhapReduction,	NeverCapture,	ArtDefineTag,				IconAtlas,				PortraitIndex,	DisplayPosition) VALUES
-('BUILDING_MOUNDS',						200,	0,					NULL,						'POLICY_PANTHEISM',			0,			0,							1,				'ART_DEF_BUILDING_GARDEN',	'BW_ATLAS_1',			24,				0	),
-('BUILDING_GALLOWS',					200,	1,					NULL,						'POLICY_SLAVERY',			0,			10,							1,				'ART_DEF_BUILDING_GARDEN',	'BW_ATLAS_1',			24,				0	),
-('BUILDING_DEBTORS_COURT',				200,	0,					'TECH_CURRENCY',			'POLICY_DEBT_BONDAGE',		0,			0,							1,				'ART_DEF_BUILDING_GARDEN',	'BW_ATLAS_1',			24,				0	),
-('BUILDING_GOVERNORS_COMPOUND',			200,	0,					'TECH_PHILOSOPHY',			'POLICY_MILITARISM',		0,			40,							1,				'ART_DEF_BUILDING_GARDEN',	'BW_ATLAS_1',			24,				0	),
-('BUILDING_TRIBAL_COUNCIL',				200,	1,					NULL,						'POLICY_TRADITION',			0,			0,							1,				'ART_DEF_BUILDING_GARDEN',	'BW_ATLAS_1',			24,				0	),
-('BUILDING_FOREFATHERS_STATUE',			200,	1,					NULL,						'POLICY_TRADITION',			0,			0,							1,				'ART_DEF_BUILDING_GARDEN',	'BW_ATLAS_1',			24,				0	),
-('BUILDING_JEWELLER',					350,	1,					'TECH_CURRENCY',			'POLICY_TRADITION',			1,			0,							1,				'ART_DEF_BUILDING_BARRACKS','BW_ATLAS_1',			61,				0	);
+INSERT INTO Buildings (Type,			Cost,	GoldMaintenance,	PrereqTech,					EaPrereqPolicy,				EaSpecial,		Happiness,	EaOccupationUnhapReduction,	NeverCapture,	ArtDefineTag,				IconAtlas,				PortraitIndex,	DisplayPosition) VALUES
+('BUILDING_MOUNDS',						200,	0,					NULL,						'POLICY_PANTHEISM',			'Religious',	0,			0,							1,				'ART_DEF_BUILDING_GARDEN',	'BW_ATLAS_1',			24,				0	),
+('BUILDING_GALLOWS',					200,	1,					NULL,						'POLICY_SLAVERY',			NULL,			0,			10,							1,				'ART_DEF_BUILDING_GARDEN',	'BW_ATLAS_1',			24,				0	),
+('BUILDING_DEBTORS_COURT',				200,	0,					'TECH_CURRENCY',			'POLICY_DEBT_BONDAGE',		NULL,			0,			0,							1,				'ART_DEF_BUILDING_GARDEN',	'BW_ATLAS_1',			24,				0	),
+('BUILDING_GOVERNORS_COMPOUND',			200,	0,					'TECH_PHILOSOPHY',			'POLICY_MILITARISM',		NULL,			0,			40,							1,				'ART_DEF_BUILDING_GARDEN',	'BW_ATLAS_1',			24,				0	),
+('BUILDING_TRIBAL_COUNCIL',				200,	1,					NULL,						'POLICY_TRADITION',			NULL,			0,			0,							1,				'ART_DEF_BUILDING_GARDEN',	'BW_ATLAS_1',			24,				0	),
+('BUILDING_FOREFATHERS_STATUE',			200,	1,					NULL,						'POLICY_TRADITION',			NULL,			0,			0,							1,				'ART_DEF_BUILDING_GARDEN',	'BW_ATLAS_1',			24,				0	),
+('BUILDING_JEWELLER',					350,	1,					'TECH_CURRENCY',			'POLICY_TRADITION',			NULL,			1,			0,							1,				'ART_DEF_BUILDING_BARRACKS','BW_ATLAS_1',			61,				0	);
 
 -- other early
 INSERT INTO Buildings (Type,			Cost,	GoldMaintenance,	PrereqTech,					NeverCapture,	ArtDefineTag,				IconAtlas,				PortraitIndex,	DisplayPosition) VALUES
@@ -71,37 +72,37 @@ INSERT INTO Buildings (Type,			Cost,	GoldMaintenance,	PrereqTech,					NeverCaptu
 ('BUILDING_WALLS',						200,	1,					'TECH_MASONRY',				0,				'ART_DEF_BUILDING_WALLS',	'BW_ATLAS_1',			32,				0	);
 
 -- advanced specialist
-INSERT INTO Buildings (Type,			Cost,	GoldMaintenance,	PrereqTech,					EaPrereqPolicy,				Happiness,	SpecialistType,			SpecialistCount,	NeverCapture,	ArtDefineTag,					IconAtlas,				PortraitIndex,	DisplayPosition) VALUES
-('BUILDING_SMITHS_GUILD',				200,	1,					NULL,						'POLICY_GUILDS',			0,			'SPECIALIST_SMITH',		1,					1,				'COURTHOUSE',					'BW_ATLAS_1',			63,				0		),
-('BUILDING_TRADERS_GUILD',				200,	1,					NULL,						'POLICY_GUILDS',			0,			'SPECIALIST_TRADER',	1,					1,				'COURTHOUSE',					'BW_ATLAS_1',			63,				0		),
-('BUILDING_SCRIBES_GUILD',				200,	1,					NULL,						'POLICY_GUILDS',			0,			'SPECIALIST_SCRIBE',	1,					1,				'COURTHOUSE',					'BW_ATLAS_1',			63,				0		),
-('BUILDING_ARTISANS_GUILD',				200,	1,					NULL,						'POLICY_GUILDS',			0,			'SPECIALIST_ARTISAN',	1,					1,				'COURTHOUSE',					'BW_ATLAS_1',			63,				0		),
-('BUILDING_DISCIPLES_GUILD',			200,	1,					NULL,						'POLICY_GUILDS',			0,			'SPECIALIST_DISCIPLE',	1,					1,				'COURTHOUSE',					'BW_ATLAS_1',			63,				0		),
-('BUILDING_ADEPTS_GUILD',				200,	1,					'TECH_THAUMATURGY',			'POLICY_GUILDS',			0,			'SPECIALIST_ADEPT',		1,					1,				'COURTHOUSE',					'BW_ATLAS_1',			63,				0		),
-('BUILDING_APOTHECARY',					200,	1,					NULL,						'POLICY_ARCANE_TRADITION',	0,			'SPECIALIST_ADEPT',		1,					0,				'ART_DEF_BUILDING_GARDEN',		'BW_ATLAS_1',			24,				0		),
-('BUILDING_FACTORY',					400,	1,					'TECH_MACHINERY',			NULL,						0,			'SPECIALIST_SMITH',		1,					0,				'ART_DEF_BUILDING_FACTORY',		'BW_ATLAS_1',			3,				0		),
-('BUILDING_MONASTIC_SCHOOL',			200,	1,					'TECH_DIVINE_VITALISM',		NULL,						0,			'SPECIALIST_SCRIBE',	1,					1,				'ART_DEF_BUILDING_BARRACKS',	'BW_ATLAS_1',			61,				0		),
-('BUILDING_UNIVERSITY',					300,	1,					'TECH_LOGIC',				NULL,						0,			'SPECIALIST_SCRIBE',	1,					0,				'ART_DEF_BUILDING_UNIVERSITY',	'BW_ATLAS_1',			13,				0		),
-('BUILDING_BANK',						300,	1,					'TECH_BANKING',				NULL,						0,			'SPECIALIST_TRADER',	1,					1,				'ART_DEF_BUILDING_BANK',		'BW_ATLAS_1',			18,				0		),
-('BUILDING_LABORATORY',					400,	1,					'TECH_ALCHEMY',				NULL,						0,			'SPECIALIST_SCRIBE',	1,					0,				'ART_DEF_BUILDING_LABORATORY',	'BW_ATLAS_1',			15,				0		),
-('BUILDING_THEATRE',					300,	1,					'TECH_LITERATURE',			NULL,						1,			'SPECIALIST_ARTISAN',	1,					0,				'THEATRE',						'BW_ATLAS_1',			20,				0		),
-('BUILDING_OPERA_HOUSE',				300,	1,					'TECH_MUSIC',				NULL,						1,			'SPECIALIST_ARTISAN',	1,					0,				'OPERA_HOUSE',					'BW_ATLAS_1',			49,				0		),
-('BUILDING_MONASTERY',					400,	1,					'TECH_DIVINE_LITURGY',		NULL,						0,			'SPECIALIST_DISCIPLE',	0,					0,				'MONASTERY',					'BW_ATLAS_1',			38,				0		),
-('BUILDING_PORT',						400,	1,					'TECH_NAVIGATION',			NULL,						0,			'SPECIALIST_TRADER',	1,					0,				'ART_DEF_BUILDING_SEAPORT',		'BW_ATLAS_1',			48,				0		),
-('BUILDING_MUSEUM',						400,	1,					'TECH_AESTHETICS',			NULL,						1,			'SPECIALIST_ARTISAN',	1,					0,				'MUSEUM',						'BW_ATLAS_1',			22,				0		);
+INSERT INTO Buildings (Type,			Cost,	GoldMaintenance,	PrereqTech,					EaPrereqPolicy,				EaSpecial,		Happiness,	SpecialistType,			SpecialistCount,	NeverCapture,	ArtDefineTag,					IconAtlas,				PortraitIndex,	DisplayPosition) VALUES
+('BUILDING_SMITHS_GUILD',				200,	1,					NULL,						'POLICY_GUILDS',			NULL,			0,			'SPECIALIST_SMITH',		1,					1,				'COURTHOUSE',					'BW_ATLAS_1',			63,				0		),
+('BUILDING_TRADERS_GUILD',				200,	1,					NULL,						'POLICY_GUILDS',			NULL,			0,			'SPECIALIST_TRADER',	1,					1,				'COURTHOUSE',					'BW_ATLAS_1',			63,				0		),
+('BUILDING_SCRIBES_GUILD',				200,	1,					NULL,						'POLICY_GUILDS',			NULL,			0,			'SPECIALIST_SCRIBE',	1,					1,				'COURTHOUSE',					'BW_ATLAS_1',			63,				0		),
+('BUILDING_ARTISANS_GUILD',				200,	1,					NULL,						'POLICY_GUILDS',			NULL,			0,			'SPECIALIST_ARTISAN',	1,					1,				'COURTHOUSE',					'BW_ATLAS_1',			63,				0		),
+('BUILDING_DISCIPLES_GUILD',			200,	1,					NULL,						'POLICY_GUILDS',			'Religious',	0,			'SPECIALIST_DISCIPLE',	1,					1,				'COURTHOUSE',					'BW_ATLAS_1',			63,				0		),
+('BUILDING_ADEPTS_GUILD',				200,	1,					'TECH_THAUMATURGY',			'POLICY_GUILDS',			'Arcane',		0,			'SPECIALIST_ADEPT',		1,					1,				'COURTHOUSE',					'BW_ATLAS_1',			63,				0		),
+('BUILDING_APOTHECARY',					200,	1,					NULL,						'POLICY_ARCANE_TRADITION',	'Arcane',		0,			'SPECIALIST_ADEPT',		1,					0,				'ART_DEF_BUILDING_GARDEN',		'BW_ATLAS_1',			24,				0		),
+('BUILDING_FACTORY',					400,	1,					'TECH_MACHINERY',			NULL,						NULL,			0,			'SPECIALIST_SMITH',		1,					0,				'ART_DEF_BUILDING_FACTORY',		'BW_ATLAS_1',			3,				0		),
+('BUILDING_MONASTIC_SCHOOL',			200,	1,					'TECH_DIVINE_VITALISM',		NULL,						'Religious',	0,			'SPECIALIST_SCRIBE',	1,					1,				'ART_DEF_BUILDING_BARRACKS',	'BW_ATLAS_1',			61,				0		),
+('BUILDING_UNIVERSITY',					300,	1,					'TECH_LOGIC',				NULL,						NULL,			0,			'SPECIALIST_SCRIBE',	1,					0,				'ART_DEF_BUILDING_UNIVERSITY',	'BW_ATLAS_1',			13,				0		),
+('BUILDING_BANK',						300,	1,					'TECH_BANKING',				NULL,						NULL,			0,			'SPECIALIST_TRADER',	1,					1,				'ART_DEF_BUILDING_BANK',		'BW_ATLAS_1',			18,				0		),
+('BUILDING_LABORATORY',					400,	1,					'TECH_ALCHEMY',				NULL,						NULL,			0,			'SPECIALIST_SCRIBE',	1,					0,				'ART_DEF_BUILDING_LABORATORY',	'BW_ATLAS_1',			15,				0		),
+('BUILDING_THEATRE',					300,	1,					'TECH_LITERATURE',			NULL,						NULL,			1,			'SPECIALIST_ARTISAN',	1,					0,				'THEATRE',						'BW_ATLAS_1',			20,				0		),
+('BUILDING_OPERA_HOUSE',				300,	1,					'TECH_MUSIC',				NULL,						NULL,			1,			'SPECIALIST_ARTISAN',	1,					0,				'OPERA_HOUSE',					'BW_ATLAS_1',			49,				0		),
+('BUILDING_MONASTERY',					400,	1,					'TECH_DIVINE_LITURGY',		NULL,						'Religious',	0,			'SPECIALIST_DISCIPLE',	0,					0,				'MONASTERY',					'BW_ATLAS_1',			38,				0		),
+('BUILDING_PORT',						400,	1,					'TECH_NAVIGATION',			NULL,						NULL,			0,			'SPECIALIST_TRADER',	1,					0,				'ART_DEF_BUILDING_SEAPORT',		'BW_ATLAS_1',			48,				0		),
+('BUILDING_MUSEUM',						400,	1,					'TECH_AESTHETICS',			NULL,						NULL,			1,			'SPECIALIST_ARTISAN',	1,					0,				'MUSEUM',						'BW_ATLAS_1',			22,				0		);
 
 -- advanced resource
-INSERT INTO Buildings (Type,			Cost,	GoldMaintenance,	PrereqTech,					NeverCapture,	ArtDefineTag,					IconAtlas,				PortraitIndex,	DisplayPosition) VALUES
-('BUILDING_BREEDING_PEN',				300,	1,					'TECH_ANIMAL_BREEDING',		0,				'ART_DEF_BUILDING_BARRACKS',	'BW_ATLAS_1',			5,				0		),
-('BUILDING_BOWYER',						300,	1,					'TECH_BOWYERS',				0,				'ART_DEF_BUILDING_BARRACKS',	'BW_ATLAS_1',			5,				0		),
-('BUILDING_ROASTING_FURNACE',			300,	1,					'TECH_ALCHEMY',				0,				'ART_DEF_BUILDING_LABORATORY',	'BW_ATLAS_1',			15,				0		),
-('BUILDING_CHRYSOPOEIA_REACTOR',		300,	1,					'TECH_TRANSMUTATION',		0,				'ART_DEF_BUILDING_LABORATORY',	'BW_ATLAS_1',			15,				0		),
-('BUILDING_ARGENTOPOEIA_REACTOR',		300,	1,					'TECH_TRANSMUTATION',		0,				'ART_DEF_BUILDING_LABORATORY',	'BW_ATLAS_1',			15,				0		),
-('BUILDING_DISTILLERY',					300,	1,					'TECH_ALCHEMY',				0,				'ART_DEF_BUILDING_LABORATORY',	'BW_ATLAS_1',			15,				0		),
-('BUILDING_WHALERY',					400,	1,					'TECH_WHALING',				0,				'ART_DEF_BUILDING_SEAPORT',		'BW_ATLAS_1',			48,				0		),
-('BUILDING_ARMORY',						300,	1,					'TECH_IRON_WORKING',		0,				'ART_DEF_BUILDING_BARRACKS',	'BW_ATLAS_1',			6,				0		),
-('BUILDING_ARSENAL',					400,	1,					'TECH_STEEL_WORKING',		0,				'ART_DEF_BUILDING_BARRACKS',	'BW_ATLAS_1',			6,				0		),
-('BUILDING_TEXTILE_MILL',				400,	1,					'TECH_FINE_TEXTILES',		0,				'ART_DEF_BUILDING_FACTORY',		'BW_ATLAS_1',			3,				0		);
+INSERT INTO Buildings (Type,			Cost,	GoldMaintenance,	PrereqTech,					EaSpecial,		NeverCapture,	ArtDefineTag,					IconAtlas,				PortraitIndex,	DisplayPosition) VALUES
+('BUILDING_BREEDING_PEN',				300,	1,					'TECH_ANIMAL_BREEDING',		NULL,			0,				'ART_DEF_BUILDING_BARRACKS',	'BW_ATLAS_1',			5,				0		),
+('BUILDING_BOWYER',						300,	1,					'TECH_BOWYERS',				NULL,			0,				'ART_DEF_BUILDING_BARRACKS',	'BW_ATLAS_1',			5,				0		),
+('BUILDING_ROASTING_FURNACE',			300,	1,					'TECH_ALCHEMY',				NULL,			0,				'ART_DEF_BUILDING_LABORATORY',	'BW_ATLAS_1',			15,				0		),
+('BUILDING_CHRYSOPOEIA_REACTOR',		300,	1,					'TECH_TRANSMUTATION',		'Arcane',		0,				'ART_DEF_BUILDING_LABORATORY',	'BW_ATLAS_1',			15,				0		),
+('BUILDING_ARGENTOPOEIA_REACTOR',		300,	1,					'TECH_TRANSMUTATION',		'Arcane',		0,				'ART_DEF_BUILDING_LABORATORY',	'BW_ATLAS_1',			15,				0		),
+('BUILDING_DISTILLERY',					300,	1,					'TECH_ALCHEMY',				NULL,			0,				'ART_DEF_BUILDING_LABORATORY',	'BW_ATLAS_1',			15,				0		),
+('BUILDING_WHALERY',					400,	1,					'TECH_WHALING',				NULL,			0,				'ART_DEF_BUILDING_SEAPORT',		'BW_ATLAS_1',			48,				0		),
+('BUILDING_ARMORY',						300,	1,					'TECH_IRON_WORKING',		NULL,			0,				'ART_DEF_BUILDING_BARRACKS',	'BW_ATLAS_1',			6,				0		),
+('BUILDING_ARSENAL',					400,	1,					'TECH_STEEL_WORKING',		NULL,			0,				'ART_DEF_BUILDING_BARRACKS',	'BW_ATLAS_1',			6,				0		),
+('BUILDING_TEXTILE_MILL',				400,	1,					'TECH_FINE_TEXTILES',		NULL,			0,				'ART_DEF_BUILDING_FACTORY',		'BW_ATLAS_1',			3,				0		);
 
 -- advanced policy dependent
 INSERT INTO Buildings (Type,			Cost,	GoldMaintenance,	PrereqTech,					EaPrereqPolicy,					NeverCapture,	ArtDefineTag,					IconAtlas,				PortraitIndex,	DisplayPosition) VALUES

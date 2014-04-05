@@ -9,14 +9,35 @@
 		<Row Tag="TXT_KEY_EA_POLICY_BRANCH_DOMINIONISM_CAP">
 			<Text>DOMINIONISM</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_BRANCH_DOMINIONISM_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Dominionism[ENDCOLOR] allows your cities to grow very large, improving the land of Éa for productive use while subduing its wildlands.[NEWLINE][NEWLINE]Adopting Dominionism will provide +1 [ICON_FOOD] Food from every Farm and Pasture.[NEWLINE][NEWLINE]Adopting all policies in the Dominionism tree will result in 1/3 of culture being converted to Food divided among all of your cities.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_DOMINIONISM">
 			<Text>Dominionism</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_DOMINIONISM_HELP">
+			<Text>{TXT_KEY_EA_POLICY_BRANCH_DOMINIONISM_HELP}</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_DOMINIONISM_TEXT">
 			<Text>placeholder</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ARISTOCRACY">
+			<Text>Aristocracy</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ARISTOCRACY_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Aristocracy[ENDCOLOR][NEWLINE][ICON_BULLET]+1[ICON_GOLD] Gold per [ICON_CITIZEN] Population in capital</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_FEUDALISM">
+			<Text>Feudalism</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_FEUDALISM_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Feudalism[ENDCOLOR][NEWLINE][ICON_BULLET]-33% [ICON_HAPPINESS_4] Unhappiness from [ICON_CITIZEN] Population</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_GUILDS">
 			<Text>Guilds</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_GUILDS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Guilds[ENDCOLOR][NEWLINE][ICON_BULLET]+1[ICON_PRODUCTION] Production from specialists[NEWLINE][ICON_BULLET]Half [ICON_HAPPINESS_4] Unhappiness from specialists[NEWLINE][ICON_BULLET]Enables various Guild buildings</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_GUILDS_TEXT">
 			<Text>placeholder</Text>
@@ -24,11 +45,17 @@
 		<Row Tag="TXT_KEY_EA_POLICY_TRADE_UNIONS">
 			<Text>Trade Unions</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_TRADE_UNIONS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Trade Unions[ENDCOLOR][NEWLINE][ICON_BULLET]+1[ICON_GOLD] Gold from specialists[NEWLINE][ICON_BULLET]Half [ICON_FOOD] Food support for specialists</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_TRADE_UNIONS_TEXT">
 			<Text>placeholder</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_TAXATION">
 			<Text>Taxation</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_TAXATION_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Taxation[ENDCOLOR][NEWLINE][ICON_BULLET]+1[ICON_GOLD] Gold per worked improvement</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_TAXATION_TEXT">
 			<Text>placeholder</Text>
@@ -36,11 +63,17 @@
 		<Row Tag="TXT_KEY_EA_POLICY_CIVIL_SERVICE">
 			<Text>Civil Service</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_CIVIL_SERVICE_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Civil Service[ENDCOLOR][NEWLINE][ICON_BULLET]+0.5 [ICON_PRODUCTION] Production per [ICON_CITIZEN] Population in capital[NEWLINE][ICON_BULLET]Can draft militia units from [ICON_CITIZEN] Population (Not yet implemented!)</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_CIVIL_SERVICE_TEXT">
 			<Text>placeholder</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_INDUSTRIALIZATION">
 			<Text>Industrialization</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_INDUSTRIALIZATION_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Industrialization[ENDCOLOR][NEWLINE][ICON_BULLET]+1 [ICON_PRODUCTION] Production per worked improvement[NEWLINE][ICON_BULLET]Allows the [COLOR_POSITIVE_TEXT]Industrial Agriculture[ENDCOLOR] Process, which converts 25% of City [ICON_PRODUCTION] Production into food distributed in all cities</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_INDUSTRIALIZATION_TEXT">
 			<Text>placeholder</Text>
@@ -48,94 +81,187 @@
 		<Row Tag="TXT_KEY_EA_POLICY_BRANCH_PANTHEISM_CAP">
 			<Text>PANTHEISM</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_BRANCH_PANTHEISM_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Pantheism[ENDCOLOR] allows your civilization to interact with the Major Spirits of Éa and the land itself in ways not otherwise possible.[NEWLINE][NEWLINE]Adopting Pantheism will result in the spontaneous appearance of The Weave of Éa Religion in your cities, +1 [ICON_STAR] Mana in your capital, and enabling of the Shrine building. Pantheistic civilizations can build improvements on resource plots only. [NEWLINE][NEWLINE]A free Druid [ICON_GREAT_PEOPLE] will appear when the next policy is adopted within this branch. Each policy adopted in this branch will allow communication with one additional Major Spirit of Éa. Adopting all policies in the Pantheism tree will result in 1/3 of culture being converted to [ICON_STAR] Mana.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_PANTHEISM">
 			<Text>Pantheism</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_PANTHEISM_HELP">
+			<Text>{TXT_KEY_EA_POLICY_BRANCH_PANTHEISM_HELP}</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_ANIMAL_LORE">
 			<Text>Animal Lore</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ANIMAL_LORE_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Animal Lore[ENDCOLOR][NEWLINE][ICON_BULLET]+1 [ICON_FOOD] Food and +1 [ICON_PRODUCTION] Production from Camps, Pastures, Fishing Boats and Whaling Boats</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_FERAL_BOND">
 			<Text>Feral Bond</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_FERAL_BOND_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Feral Bond[ENDCOLOR][NEWLINE][ICON_BULLET]+1 [ICON_CULTURE] Culture and +1 [ICON_STAR] Mana from Camps, Pastures, Fishing Boats and Whaling Boats</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_COMMUNE_WITH_NATURE">
 			<Text>Commune with Nature</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_COMMUNE_WITH_NATURE_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Commune with Nature[ENDCOLOR][NEWLINE][ICON_BULLET]+1 [ICON_CULTURE] Culture and +1 [ICON_STAR] Mana gained civilization-wide for every four unimproved plots owned[NEWLINE][ICON_BULLET]Improved non-resource forest, jungle and marsh plots are slowly regenerated to unimproved (NOT YET IMPLEMENTED!)[NEWLINE][ICON_BULLET]Allows the [COLOR_POSITIVE_TEXT]World Weave[ENDCOLOR] Process, which uses City [ICON_PRODUCTION] Production to convert citizens worldwide into followers of The Weave of Éa (randomly converted from cities that already have at least one follower, with pantheistic cult followers considered followers of The Weave; 100 [ICON_PRODUCTION] Production needed to convert one non-religious citizen, 500 to convert a theistic citizen)</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_WOODS_LORE">
 			<Text>Woods Lore</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_WOODS_LORE_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Woods Lore[ENDCOLOR][NEWLINE][ICON_BULLET]+1 [ICON_FOOD] Food and +1 [ICON_PRODUCTION] Production from Farms, Vineyards and Plantations</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_FELLOWSHIP_OF_LEAVES">
 			<Text>Fellowship of Leaves</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_FELLOWSHIP_OF_LEAVES_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Fellowship of Leaves[ENDCOLOR][NEWLINE][ICON_BULLET]Druids can build Temples[NEWLINE][ICON_BULLET]+1 [ICON_CULTURE] Culture and +1 [ICON_STAR] Mana from Farms, Vineyards and Plantations</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_FOREST_DOMINION">
 			<Text>Forest Dominion</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_FOREST_DOMINION_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Forest Dominion[ENDCOLOR][NEWLINE][ICON_BULLET]Cultural borders expand spontaneously through adjacent unimproved forest and jungle into unowned or foreign-owned territory[NEWLINE][ICON_BULLET]All forests, jungles and marshes in the world gain +1 strength[NEWLINE][ICON_BULLET]Allows the [COLOR_POSITIVE_TEXT]Éa Blessings[ENDCOLOR] Process, which converts 10% of City [ICON_PRODUCTION] Production into Living Terrain strength (randomly applied to non-improved forest, jungle or marsh plots worldwide)</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_EARTH_LORE">
 			<Text>Earth Lore</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_EARTH_LORE_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Earth Lore[ENDCOLOR][NEWLINE][ICON_BULLET]+1 [ICON_PRODUCTION] Production and +1 [ICON_GOLD] Gold from Mines and Quarries</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_MANA_VORTEXES">
 			<Text>Mana Vortexes</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MANA_VORTEXES_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Mana Vortexes[ENDCOLOR][NEWLINE][ICON_BULLET]+1 [ICON_RESEARCH] Research and +2 [ICON_STAR] Mana from Mines and Quarries[NEWLINE][ICON_BULLET]Allows the [COLOR_POSITIVE_TEXT]Major Spirits' Tribute[ENDCOLOR] Process, which converts 25% of City [ICON_PRODUCTION] Production into [ICON_INFLUENCE] Influence divided among all Major Spirits of Éa that are friends or allies, or all contacted if none are currently friends or allies</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_THROUGH_THE_VEIL">
 			<Text>Through the Veil</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_THROUGH_THE_VEIL_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Through the Veil[ENDCOLOR][NEWLINE][ICON_BULLET]Allows your civilization to communicate with the Fey, a hidden civilization comprised of the Minor Spirits of trees, rocks, streams, and so on; the Queen of the Fay has various resources to trade[NEWLINE][ICON_BULLET]Allows the [COLOR_POSITIVE_TEXT]Faeries' Tribute[ENDCOLOR] Process, which converts City [ICON_PRODUCTION] Production into boosted relationship with The Fay (boost equals moving average of production contributed over the last 100 turns divided by 10)</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_BRANCH_THEISM_CAP">
 			<Text>THEISM</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_BRANCH_THEISM_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Theism[ENDCOLOR] involves the worship of Azzandara, the Creator, and allows your civilization (and others') to benefit in various ways from the Azzandarayasna Religion.[NEWLINE][NEWLINE]Adopting Theism will grant +1 [ICON_PEACE] Divine Favor in your capital, and enables the Shrine building.[NEWLINE][NEWLINE]A free Priest [ICON_GREAT_PEOPLE] will appear when the next policy is adopted within this branch. Adopting all policies in the Pantheism tree will result in 1/3 of culture being converted to [ICON_PEACE] Divine Favor.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_THEISM">
 			<Text>Theism</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_THEISM_HELP">
+			<Text>{TXT_KEY_EA_POLICY_BRANCH_THEISM_HELP}</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_MYSTICISM">
 			<Text>Mysticism</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MYSTICISM_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Mysticism[ENDCOLOR][NEWLINE][ICON_BULLET]+3 [ICON_PEACE] Divine Favor in capital</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_MONASTIC_TRADITION">
 			<Text>Monastic Tradition</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MONASTIC_TRADITION_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Monastic Tradition[ENDCOLOR][NEWLINE][ICON_BULLET]+2 [ICON_CULTURE] Culture from Monasteries</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_WAY_OF_THE_WISE">
 			<Text>Way of the Wise</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_WAY_OF_THE_WISE_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Way of the Wise[ENDCOLOR][NEWLINE][ICON_BULLET]Azzandarayasna gains Follower effect: +30% healing in friendly territory</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_HEAVENS_MANDATE">
 			<Text>Heaven's Mandate</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_HEAVENS_MANDATE_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Heaven's Mandate[ENDCOLOR][NEWLINE][ICON_BULLET]+3 [ICON_PEACE] Divine Favor in capital[NEWLINE][ICON_BULLET]Azzandarayasna gains Founder effect: +2 [ICON_PEACE] Divine Favor for every foreign follower city[NEWLINE][ICON_BULLET]Allows the [COLOR_POSITIVE_TEXT]Azzandara's Tribute[ENDCOLOR] Process, which converts 25% of City [ICON_PRODUCTION] Production into [ICON_PEACE] Divine Favor (Not yet implemented!)</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_PRIESTHOOD">
 			<Text>Priesthood</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_PRIESTHOOD_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Priesthood[ENDCOLOR][NEWLINE][ICON_BULLET]Priests can build Temples[NEWLINE][ICON_BULLET]Azzandarayasna gains Enhancer effect: religion spreads 34% faster</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_HOLY_ORDER">
 			<Text>Holy Order</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_HOLY_ORDER_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Holy Order[ENDCOLOR][NEWLINE][ICON_BULLET]Azzandarayasna gains Enhancer effect: +30% [ICON_WAR] Combat Strength near friendly follower cities[NEWLINE][ICON_BULLET]Paladins are generated in place of Warrior [ICON_GREAT_PEOPLE] great people</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_THEOCRACY">
 			<Text>Theocracy</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_THEOCRACY_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Theocracy[ENDCOLOR][NEWLINE][ICON_BULLET]+20% [ICON_GOLD] Gold in capital[NEWLINE][ICON_BULLET]Azzandarayasna gains Founder effect: +2 [ICON_GOLD] Gold for every follower city[NEWLINE][ICON_BULLET]Allows the [COLOR_POSITIVE_TEXT]World Salvation[ENDCOLOR] Process, which uses City [ICON_PRODUCTION] Production to convert citizens worldwide into followers of Azzandarayasna (randomly converted from cities that already have at least one follower; 100 [ICON_PRODUCTION] Production needed to convert one non-religious citizen, 500 to convert a citizen of another religion)</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_ANTI_THEISM">
 			<Text>Theism</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_BRANCH_ANTI_THEISM_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Theism[ENDCOLOR] (in its purest form) involves the worship of Ahriman, the Anti-Creator, and allows your civilization to benifit in various ways from the Aŋra Religion.[NEWLINE][NEWLINE]Adopting Theism will grant +1 [ICON_STAR] Mana in your capital, and enables the Shrine building.[NEWLINE][NEWLINE]A free Priest [ICON_GREAT_PEOPLE] will appear when the next policy is adopted within this branch. Adopting all policies in the Theism tree will result in 1/3 of culture being converted to [ICON_STAR] Mana.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ANTI_THEISM_HELP">
+			<Text>{TXT_KEY_EA_POLICY_BRANCH_THEISM_HELP}</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_ANTI_MYSTICISM">
 			<Text>Mysticism</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ANTI_MYSTICISM_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Mysticism[ENDCOLOR][NEWLINE][ICON_BULLET]+3 [ICON_STAR] Mana in capital</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_ANTI_MONASTIC_TRADITION">
 			<Text>Monastic Tradition</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ANTI_MONASTIC_TRADITION_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Monastic Tradition[ENDCOLOR][NEWLINE][ICON_BULLET]+2 [ICON_RESEARCH] Research from Monasteries</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_ANTI_WAY_OF_THE_WISE">
 			<Text>Way of the Wicked</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ANTI_WAY_OF_THE_WISE_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Way of the Wicked[ENDCOLOR][NEWLINE][ICON_BULLET]Aŋra gains Enhancer effect: Mana from kills</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_ANTI_HEAVENS_MANDATE">
 			<Text>Hell's Mandate</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ANTI_HEAVENS_MANDATE_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Hell's Mandate[ENDCOLOR][NEWLINE][ICON_BULLET]+5 [ICON_STAR] Mana in capital[NEWLINE][ICON_BULLET]Aŋra gains Founder effect: +1 [ICON_STAR] Mana for every follower[NEWLINE][ICON_BULLET]Allows the [COLOR_POSITIVE_TEXT]Ahriman's Tribute[ENDCOLOR] Process, which converts 25% of City [ICON_PRODUCTION] Production into consumed [ICON_STAR] Mana (the Mana is directly consumed and never made available to the civilization) (Not yet implemented!)</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_ANTI_PRIESTHOOD">
 			<Text>Priesthood</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ANTI_PRIESTHOOD_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Priesthood[ENDCOLOR][NEWLINE][ICON_BULLET]Priests can build Temples[NEWLINE][ICON_BULLET]Aŋra gains Enhancer effect: religion spreads 50% farther</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_ANTI_HOLY_ORDER">
 			<Text>Unholy Order</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ANTI_HOLY_ORDER_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Unholy Order[ENDCOLOR][NEWLINE][ICON_BULLET]Aŋra gains Enhancer effect: +40% [ICON_WAR] Combat Strength near enemy follower cities[NEWLINE][ICON_BULLET]Eidolons are generated in place of Warrior [ICON_GREAT_PEOPLE] great people</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_ANTI_THEOCRACY">
 			<Text>Theocracy</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ANTI_THEOCRACY_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Theocracy[ENDCOLOR][NEWLINE][ICON_BULLET]+20% [ICON_RESEARCH] Research in capital[NEWLINE][ICON_BULLET]Aŋra gains Founder effect: +1 [ICON_RESEARCH] Research for every follower[NEWLINE][ICON_BULLET]Allows the [COLOR_POSITIVE_TEXT]World Corruption[ENDCOLOR] Process, which uses City [ICON_PRODUCTION] Production to convert citizens worldwide into followers of Aŋra (randomly converted from cities that already have at least one follower; 100 [ICON_PRODUCTION] Production needed to convert one non-religious citizen, 500 to convert a citizen of another religion)</Text>
 		</Row>
 
 
 		<Row Tag="TXT_KEY_EA_POLICY_BRANCH_MILITARISM_CAP">
 			<Text>MILITARISM</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_BRANCH_MILITARISM_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Militarism[ENDCOLOR] allows your civilization to excel in military conquest.[NEWLINE][NEWLINE]Adopting Militarism will increase base free military units by 4.[NEWLINE][NEWLINE]A free Warrior will appear when the next policy is adopted within this branch. Each policy adopted within this branch will reduce unit maintanence by 10% (up to -70%). Adopting all policies in the Militarism tree will result in 1/3 of culture being converted to Experience divided among all military units.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_MILITARISM">
 			<Text>Militarism</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MILITARISM_HELP">
+			<Text>{TXT_KEY_EA_POLICY_BRANCH_MILITARISM_HELP}</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_MILITARISM_TEXT">
 			<Text>placeholder</Text>
@@ -143,11 +269,17 @@
 		<Row Tag="TXT_KEY_EA_POLICY_DISCIPLINE">
 			<Text>Discipline</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_DISCIPLINE_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Discipline[ENDCOLOR][NEWLINE][ICON_BULLET]+20% [ICON_WAR] Combat Strength bonus for units in a tile next to other friendly military units</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_DISCIPLINE_TEXT">
 			<Text>placeholder</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_MILITARY_TRADITION">
 			<Text>Military Traditio</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MILITARY_TRADITION_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Military Tradition[ENDCOLOR][NEWLINE][ICON_BULLET]Garrisoned units have no [ICON_GOLD] Gold support and provide +1 [ICON_HAPPINESS_1] Happiness</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_MILITARY_TRADITION_TEXT">
 			<Text>placeholder</Text>
@@ -155,17 +287,32 @@
 		<Row Tag="TXT_KEY_EA_POLICY_WARRIOR_CODE">
 			<Text>Warrior Code</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_WARRIOR_CODE_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Warrior Code[ENDCOLOR][NEWLINE]Gain [ICON_CULTURE] Culture for each unit killed</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_WARRIOR_CODE_TEXT">
 			<Text>placeholder</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_PROFESSIONAL_ARMY">
 			<Text>Professional Army</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_PROFESSIONAL_ARMY_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Professional Army[ENDCOLOR][NEWLINE][ICON_BULLET]Upgrading units requires 50% less [ICON_GOLD] Gold[NEWLINE][ICON_BULLET]Allows the [COLOR_POSITIVE_TEXT]Training Exercises[ENDCOLOR] Process, which converts 25% of City [ICON_PRODUCTION] Production into experience divided among all military units</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_PROFESSIONAL_ARMY_TEXT">
 			<Text>placeholder</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_WARCRAFT">
+			<Text>Warcraft</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_WARCRAFT_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Warcraft[ENDCOLOR][NEWLINE][ICON_BULLET]Military units gain double experience from combat</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_WAR_SPIRIT">
 			<Text>Warspirit</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_WAR_SPIRIT_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Warspirit[ENDCOLOR][NEWLINE][ICON_BULLET]+10% baseline unit [ICON_HAPPINESS_1] Morale (does not affect Slaves, Mercenaries or non-living units)</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_WAR_SPIRIT_TEXT">
 			<Text>placeholder</Text>
@@ -173,14 +320,23 @@
 		<Row Tag="TXT_KEY_EA_POLICY_BERSERKER_RAGE">
 			<Text>Berserker Rage</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_BERSERKER_RAGE_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Berserker Rage[ENDCOLOR][NEWLINE][ICON_BULLET]Baseline unit [ICON_HAPPINESS_1] Morale is boosted 1% for each hit point of damage sustained (does not affect Slaves or Mercenaries or non-living units)</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_BERSERKER_RAGE_TEXT">
 			<Text>placeholder</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_BRANCH_TRADITION_CAP">
 			<Text>TRADITION</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_BRANCH_TRADITION_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Tradition[ENDCOLOR] allows your civilization to excel in the persuit of scholarship and the arts.[NEWLINE][NEWLINE]Adopting Tradition will provide +1 [ICON_RESEARCH] Research and +1 [ICON_CULTURE] Culture from your capital.[NEWLINE][NEWLINE]A free Artist or Sage will appear when the next policy is adopted within this branch (the latter for Scholasticism only). Adopting all policies in the Tradition tree will result in 1/3 of culture being converted to Research divided among all cities.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_TRADITION">
 			<Text>Tradition</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_TRADITION_HELP">
+			<Text>{TXT_KEY_EA_POLICY_BRANCH_TRADITION_HELP}</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_TRADITION_TEXT">
 			<Text>placeholder</Text>
@@ -188,11 +344,17 @@
 		<Row Tag="TXT_KEY_EA_POLICY_SCHOLASTICISM">
 			<Text>Scholasticism</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_SCHOLASTICISM_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Scholasticism[ENDCOLOR][NEWLINE][ICON_BULLET]+5% [ICON_RESEARCH] Research in all cities</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_SCHOLASTICISM_TEXT">
 			<Text>placeholder</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_ACADEMIC_TRADITION">
 			<Text>Academic Tradition</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ACADEMIC_TRADITION_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Academic Tradition[ENDCOLOR][NEWLINE][ICON_BULLET]+5% [ICON_RESEARCH] Research in all cities[NEWLINE][ICON_BULLET]+15% [ICON_RESEARCH] Research from Universities</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_ACADEMIC_TRADITION_TEXT">
 			<Text>placeholder</Text>
@@ -200,11 +362,41 @@
 		<Row Tag="TXT_KEY_EA_POLICY_RATIONALISM">
 			<Text>Rationalism</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_RATIONALISM_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Rationalism[ENDCOLOR][NEWLINE][ICON_BULLET]+5% [ICON_RESEARCH] Research in all cities[NEWLINE][ICON_BULLET]+15% [ICON_RESEARCH] Research from Laboratories[NEWLINE][ICON_BULLET]Allows the [COLOR_POSITIVE_TEXT]Research[ENDCOLOR] Process, which converts 25% of City [ICON_PRODUCTION] Production into [ICON_RESEARCH] Research</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_RATIONALISM_TEXT">
 			<Text>placeholder</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_FOLKLORE_">
+			<Text>Folklore</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_FOLKLORE_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Folklore[ENDCOLOR][NEWLINE][ICON_BULLET]Allows Artists to specialize becoming subclass Bard (in Lieu of taking promotion)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_BARDING">
+			<Text>Barding</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_BARDING_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Barding[ENDCOLOR][NEWLINE][ICON_BULLET]Allows Bards to craft several Epics, including Völuspá, Hávamál and others</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_FOLKART">
+			<Text>Folkart</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_FOLKART_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Folkart[ENDCOLOR][NEWLINE][ICON_BULLET]+1 [ICON_CULTURE] Culture per Fair, Ivoryworks, Jeweler</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_CRAFTING">
+			<Text>Crafting</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_CRAFTING_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Crafting[ENDCOLOR][NEWLINE][ICON_BULLET]+1 [ICON_CULTURE] culture per Vineyard, Quarry[NEWLINE][ICON_BULLET]+1 [ICON_CULTURE] Culture per Winery, Brewery, Stoneworks, Textile Mill</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_THE_ARTS">
 			<Text>The Arts</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_THE_ARTS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]The Arts[ENDCOLOR][NEWLINE][ICON_BULLET]+2 [ICON_CULTURE] Culture per Theater and Opera House[NEWLINE][ICON_BULLET]+20% [ICON_CULTURE] Culture from Wonders (NOT YET IMPLEMENTED!)[NEWLINE][ICON_BULLET]Allows [COLOR_POSITIVE_TEXT]The Arts[ENDCOLOR] Process, which converts 25% of City [ICON_PRODUCTION] Production into [ICON_CULTURE] Culture</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_THE_ARTS_TEXT">
 			<Text>placeholder</Text>
@@ -212,8 +404,14 @@
 		<Row Tag="TXT_KEY_EA_POLICY_BRANCH_COMMERCE_CAP">
 			<Text>COMMERCE</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_BRANCH_COMMERCE_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Commerce[ENDCOLOR] allows your civilization to excel in trade.[NEWLINE][NEWLINE]Adopting Commerce will provide +3 [ICON_GOLD] Gold from your capital and allow Merchants to establish Trade Routes with foreign cities.[NEWLINE][NEWLINE]A free Merchant will appear when the next policy is adopted within this branch. Adopting all policies in the Commerce tree will result in 1/3 of culture being converted to [ICON_GOLD] Gold divided among all cities.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_COMMERCE">
 			<Text>Commerce</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_COMMERCE_HELP">
+			<Text>{TXT_KEY_EA_POLICY_BRANCH_COMMERCE_HELP}</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_COMMERCE_TEXT">
 			<Text>placeholder</Text>
@@ -221,35 +419,59 @@
 		<Row Tag="TXT_KEY_EA_POLICY_MERCANTILISM">
 			<Text>Mercantilism</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MERCANTILISM_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Mercantilism[ENDCOLOR][NEWLINE][ICON_BULLET]-25% [ICON_GOLD] Gold required to rush buy buildings[NEWLINE][ICON_BULLET]+15% [ICON_GOLD] Gold from Banks[NEWLINE][ICON_BULLET]Allows the [COLOR_POSITIVE_TEXT]Trade Surplus[ENDCOLOR] Process, which converts 25% of City [ICON_PRODUCTION] Production into [ICON_GOLD] Gold</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_MERCANTILISM_TEXT">
 			<Text>placeholder</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_FREE_MARKETS">
 			<Text>Free Markets</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_FREE_MARKETS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Free Markets[ENDCOLOR][NEWLINE][ICON_BULLET]+20% [ICON_GOLD] Gold from domestic trade routes[NEWLINE][ICON_BULLET][ICON_GREAT_PEOPLE] Merchants can establish Trade Houses in your cities that have foreign trade routes</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_FREE_MARKETS_TEXT">
 			<Text>placeholder</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_POLICY_MERCENARISM">
-			<Text>Mercenarism</Text>
+		<Row Tag="TXT_KEY_EA_POLICY_MERCENARIES">
+			<Text>Mercenaries</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_POLICY_MERCENARISM_TEXT">
+		<Row Tag="TXT_KEY_EA_POLICY_MERCENARIES_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Mercenaries[ENDCOLOR][NEWLINE][ICON_BULLET]Allows your civilization to hire Mercenaries from non-friend City States or other civilizations that have Mercenaries for hire[NEWLINE][ICON_BULLET]Recieve a [ICON_GOLD] Gold discount when hireing Mercenaries from civilizations or City States with which you are friends or allies[NEWLINE][ICON_BULLET]Allows your civilization to put up military units for hire as Mercenaries (living, non-slave units only)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MERCENARIES_TEXT">
 			<Text>placeholder</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_MERCHANT_NAVY">
 			<Text>Merchant Navy</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MERCHANT_NAVY_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Merchant Navy[ENDCOLOR][NEWLINE][ICON_BULLET]+1 [ICON_MOVES] Movement at sea[NEWLINE][ICON_BULLET]+15% [ICON_GOLD] Gold from Ports[NEWLINE][ICON_BULLET]+1 [ICON_GOLD] Gold from all coastal buildings (Harbor, Port, Shipyard, etc.)</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_MERCHANT_NAVY_TEXT">
 			<Text>placeholder</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_FREE_TRADE">
+			<Text>Free Trade</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_FREE_TRADE_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Free Trade[ENDCOLOR][NEWLINE][ICON_BULLET]+20% [ICON_GOLD] gold from foreign trade routes[NEWLINE][ICON_BULLET][ICON_GREAT_PEOPLE] Merchants can establish Trade Missions in foreign cities that have trade routes with your cities</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_CULTURAL_DIPLOMACY">
 			<Text>Cultural Diplomacy</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_CULTURAL_DIPLOMACY_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Cultural Diplomacy[ENDCOLOR][NEWLINE][ICON_BULLET][ICON_GOLD] Gold gifts to [ICON_CITY_STATE] City States provide 25% more [ICON_INFLUENCE] influence</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_CULTURAL_DIPLOMACY_TEXT">
 			<Text>placeholder</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_PATRONAGE">
 			<Text>Patronage</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_PATRONAGE_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Patronage[ENDCOLOR][NEWLINE][ICON_BULLET][ICON_INFLUENCE] Influence with [ICON_CITY_STATE] City States decays at half the normal rate[NEWLINE][ICON_BULLET]Allows the [COLOR_POSITIVE_TEXT]Patronage[ENDCOLOR] Process, which converts 25% of City [ICON_PRODUCTION] Production into [ICON_INFLUENCE] Influence divided among all City State friends and allies, or all contacted if none are currently friends or allies</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_PATRONAGE_TEXT">
 			<Text>placeholder</Text>
@@ -259,36 +481,69 @@
 		<Row Tag="TXT_KEY_EA_POLICY_BRANCH_ARCANA_CAP">
 			<Text>ARCANA</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_BRANCH_ARCANA_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Arcana[ENDCOLOR] allows your civilization to excel in the use of arcane magic.[NEWLINE][NEWLINE]Adopting Arcana will grant +1 [ICON_STAR] Mana in your capital, and reveals Moly resource on the map.[NEWLINE][NEWLINE]A free Thaumaturge [ICON_GREAT_PEOPLE] will appear when the next policy is adopted within this branch. Adopting all policies in the Arcana tree will result in 1/3 of culture being converted to [ICON_STAR] Mana.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_ARCANA">
 			<Text>Arcana</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ARCANA_HELP">
+			<Text>{TXT_KEY_EA_POLICY_BRANCH_ARCANA_HELP}</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_WITCHCRAFT">
 			<Text>Witchcraft</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_WITCHCRAFT_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Witchcraft[ENDCOLOR][NEWLINE][ICON_BULLET]Thaumaturges can learn Witchcraft spells without meeting the spell's tech prereq</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_ARCANE_TRADITION">
 			<Text>Arcane Tradition</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ARCANE_TRADITION_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Arcane Tradition[ENDCOLOR][NEWLINE][ICON_BULLET]+33% construction rate for all arcane buildings</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_ARCANE_LORE">
 			<Text>Arcane Lore</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ARCANE_LORE_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Arcane Lore[ENDCOLOR][NEWLINE][ICON_BULLET]10% reduced research cost for all arcane techs</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_ARCANE_RESEARCH">
 			<Text>Arcane Research</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ARCANE_RESEARCH_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Arcane Research[ENDCOLOR][NEWLINE][ICON_BULLET]20% reduced research cost for all arcane techs (cummulative with Arcane Lore)</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_SOCIO_ARCANA">
 			<Text>Socio Arcana</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_SOCIO_ARCANA_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Socio Arcana[ENDCOLOR][NEWLINE][ICON_BULLET]+1 [ICON_STAR] Mana from Gatherer's Hut[NEWLINE][ICON_BULLET]+1 [ICON_STAR] Mana from each arcane building</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_ARCANE_ELITE">
 			<Text>Arcane Elite</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ARCANE_ELITE_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Arcane Elite[ENDCOLOR][NEWLINE][ICON_BULLET]+5 Great People [ICON_GREAT_PEOPLE] points per turn toward the Thaumaturge class</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_ARCANE_PRIMUS">
 			<Text>Arcane Primus</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ARCANE_PRIMUS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Arcane Primus[ENDCOLOR][NEWLINE][ICON_BULLET]+1 [ICON_STAR] Mana per citizen [ICON_CITIZEN]</Text>
 		</Row>
 
 		<Row Tag="TXT_KEY_EA_POLICY_BRANCH_SLAVERY_CAP">
 			<Text>SLAVERY</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_BRANCH_SLAVERY_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Slavery[ENDCOLOR] allows your civilization to benifit from forced labor.[NEWLINE][NEWLINE]Adopting Slavery will grant you one free Slaves unit and allow you to capture Slaves from other civilization's Slaves, Workers or Settlers. Enables the Gallows building.[NEWLINE][NEWLINE]Adopting all policies in the Slavery tree will result in 1/3 of [ICON_CULTURE] Culture being converted to [ICON_PRODUCTION] Production divided among all cities.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_SLAVERY">
 			<Text>Slavery</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_SLAVERY_HELP">
+			<Text>{TXT_KEY_EA_POLICY_BRANCH_SLAVERY_HELP}</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_SLAVERY_TEXT">
 			<Text>placeholder</Text>
@@ -302,11 +557,17 @@
 		<Row Tag="TXT_KEY_EA_POLICY_DEBT_BONDAGE">
 			<Text>Debt Bondage</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_DEBT_BONDAGE_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Debt Bondage[ENDCOLOR][NEWLINE][ICON_BULLET]Enables the Debtor's Court building which allows conversion of [ICON_CITIZEN] Population to Slaves</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_DEBT_BONDAGE_TEXT">
 			<Text>placeholder</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_SLAVE_CASTES">
 			<Text>Slave Castes</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_SLAVE_CASTES_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Slave Castes[ENDCOLOR][NEWLINE][ICON_BULLET]Enables the Slave Knackery building which allows rendering of slaves into [ICON_PRODUCTION] Production[NEWLINE][ICON_BULLET]Civilization [ICON_HAPPINESS_4] Unhappiness is converted to [ICON_PRODUCTION] Production divided among all cities</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_SLAVE_CASTES_TEXT">
 			<Text>placeholder</Text>
@@ -314,20 +575,32 @@
 		<Row Tag="TXT_KEY_EA_POLICY_SLAVE_TRADE">
 			<Text>Slave Trade</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_SLAVE_TRADE_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Slave Trade[ENDCOLOR][NEWLINE][ICON_BULLET]Enables the Slave Market building which allows selling of slaves for [ICON_GOLD] Gold</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_SLAVE_TRADE_TEXT">
 			<Text>placeholder</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_SLAVE_BREEDING">
 			<Text>Slave Breeding</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_POLICY_IN_UTERO_SERVITUTUM">
-			<Text>In Utero Servitutum</Text>
+		<Row Tag="TXT_KEY_EA_POLICY_SLAVE_BREEDING_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Slave Breeding[ENDCOLOR][NEWLINE][ICON_BULLET]Enables the Slave Breeding Pen building which provides +2f, counteracts growth penalty for unhappiness by 50%, and allows production of settlers irrespective of civilization [ICON_HAPPINESS_4] Unhappiness</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_POLICY_IN_UTERO_SERVITUTUM_TEXT">
+		<Row Tag="TXT_KEY_EA_POLICY_SERVI_AETERNAM">
+			<Text>Servi Aeternam</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_SERVI_AETERNAM_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Servi Aeternam[ENDCOLOR][NEWLINE][ICON_BULLET]Enables the Internment Camp building which provides +2p and eliminates or enslaves all nearby revolting units[NEWLINE][ICON_BULLET]Allows the [COLOR_POSITIVE_TEXT]Oppression[ENDCOLOR] Process, which converts 25% of City [ICON_PRODUCTION] Production into civilization [ICON_HAPPINESS_4] Unhappiness (Not yet implemented!)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_SERVI_AETERNAM_TEXT">
 			<Text>placeholder</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_SLAVE_RAIDERS">
 			<Text>Slave Raiders</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_SLAVE_RAIDERS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Slave Raiders[ENDCOLOR][NEWLINE][ICON_BULLET]Enables the Slave Stockade building which provides +2p and occasionally spawns a Slaves unit (percent chance per turn equals city population) [NEWLINE][ICON_BULLET]Military units gain the Slave Raider promotion allowing killed military units and sacked city population to be converted to Slaves (the civilian Worker-type unit)</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_SLAVE_RAIDERS_TEXT">
 			<Text>placeholder</Text>
@@ -335,12 +608,19 @@
 		<Row Tag="TXT_KEY_EA_POLICY_SLAVE_ARMIES">
 			<Text>Slave Armies</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_SLAVE_ARMIES_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Slave Armies[ENDCOLOR][NEWLINE][ICON_BULLET]Military units (including enslaved units) gain the Slave Maker promotion allowing capture of other defeated military units (these maintain unit type, experience and promotions, but gain the Slave promotion)</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_SLAVE_ARMIES_TEXT">
 			<Text>placeholder</Text>
 		</Row>
 
 		<Row Tag="TXT_KEY_EA_POLICY_BRANCH_CIV_ENABLED_CAP">
 			<Text>CIV-ENABLED</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_BRANCH_CIV_ENABLED_HELP">
+			<Text>(Not yet implemented!)</Text>
+			<!--<Text>This policy branch opens when you acquire a civilization name. It contains policies enabled specifically for your civilization.</Text>-->
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_MYSTICS">
 			<Text>Mystics</Text>
@@ -370,5 +650,5 @@
 	<EaDebugTableCheck>
 		<Row FileName="EaText_Policies.xml"/>
 	</EaDebugTableCheck>
-  
+
 </GameData>

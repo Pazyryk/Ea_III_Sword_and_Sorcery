@@ -10,8 +10,9 @@ local Dprint = DEBUG_PRINT and print or function() end
 -- File Locals
 --------------------------------------------------------------
 --constants
-local OBSERVER_TEAM = GameDefines.MAX_MAJOR_CIVS - 1
-local UNIT_DUMMY_PLOT_EXPLODER =	GameInfoTypes.UNIT_DUMMY_PLOT_EXPLODER
+local OBSERVER_TEAM =				GameDefines.MAX_MAJOR_CIVS - 1
+local BARB_PLAYER_INDEX =			BARB_PLAYER_INDEX
+local UNIT_DUMMY_EXPLODER =			GameInfoTypes.UNIT_DUMMY_EXPLODER
 local MISSION_RANGE_ATTACK =		GameInfoTypes.MISSION_RANGE_ATTACK
 
 local HIGHLIGHT_COLOR = {
@@ -30,7 +31,9 @@ local HIGHLIGHT_COLOR = {
 local GetPlotByIndex =		Map.GetPlotByIndex
 local GetPlotByXY =			Map.GetPlot
 local GetPlotIndexFromXY =	GetPlotIndexFromXY
+local PlotDistance =		Map.PlotDistance
 local Rand =				Map.Rand
+local Floor =				math.floor
 local Vector2 =				Vector2
 local ToHexFromGrid =		ToHexFromGrid
 local HandleError21 =		HandleError21
@@ -98,21 +101,35 @@ end
 
 --magic plot attack
 function DoDummyUnitRangedAttack(iPlayer, x, y, mod, dummyUnitID)
-	--Assumes that there is an enemy of iPlayer at coordinates
-	dummyUnitID = dummyUnitID or UNIT_DUMMY_PLOT_EXPLODER
-	mod = mod or 5	--roughly speaking, this integer represents adjusted range strength for UNIT_DUMMY_PLOT_EXPLODER
+	--Inits a suidide air unit that attacks x, y coordinates; assumes that there is an enemy of iPlayer there
+	--roughly speaking, mod integer represents adjusted range strength for UNIT_DUMMY_EXPLODER
+	--iPlayer for Animals or Barbarians doesn't work for some reason (barbs can't air attack?) 
+	dummyUnitID = dummyUnitID or UNIT_DUMMY_EXPLODER
 	local player = Players[iPlayer]
 	local targetPlot = GetPlotByXY(x, y)
 	local sector = Rand(6, "hello") + 1
 	for spawnPlot in PlotAreaSpiralIterator(targetPlot, 10, sector, false, false, false) do
-		if spawnPlot:GetNumUnits() == 0 then
+		if spawnPlot:GetNumUnits() == 0 and not spawnPlot:IsCity() then
 			local spawnX, spawnY = spawnPlot:GetXY()
 			local dummyUnit = player:InitUnit(dummyUnitID, spawnX, spawnY)
-			dummyUnit:SetMorale(mod * 10 - 100)
+			if mod then
+				dummyUnit:SetMorale(mod * 10 - 100)
+			end
 			dummyUnit:PushMission(MISSION_RANGE_ATTACK, x, y, 0, 0, 1)
 			return true
 		end
 	end
+
+
+	-- DEBUGGING:
+	--
+	-- UNIT_DUMMY_EXPLODER works great for iPlayer = 0, but not 1 (PushMission doesn't do anything)
+	-- UNIT_DUMMY_NUKE caused CTD when I tried GameInfoTypes.MISSION_NUKE
+
+
+
+
+
 	print("!!!! WARNING: Did not find plot for dummy unit spawn")	--should not ever happen with 10 radius spiral search
 	return false
 end
@@ -171,6 +188,89 @@ function UpdatePlotEffectHighlight(iPlot, newShowState)	--all plots if iPlot == 
 	end
 end
 LuaEvents.EaMagicUpdatePlotEffectHighlight.Add(function(iPlot, newShowState) return HandleError21(UpdatePlotEffectHighlight, iPlot, newShowState) end)
+
+
+--EOTW effects (Emo Open To Wristcutting)
+
+local g_radius = -1
+local g_minRadius = 0
+local g_destroyerCapitalPlot
+
+function EOTW(iDestroyerPlayer)
+	local destroyerPlayer = Players[iDestroyerPlayer]
+	local destroyerCapital = destroyerPlayer:GetCapitalCity()
+	g_destroyerCapitalPlot = destroyerCapital:Plot()
+	local bDestroyerIsActivePlayer = iDestroyerPerson == g_iActivePlayer
+
+	local cameraCenterPlot = bDestroyerIsActivePlayer and destroyerCapitalPlot or g_activePlayer:GetCapitalCity():Plot()
+	local cameraX, cameraY = cameraCenterPlot:GetXY()
+	local viewRadius = 10	--TO DO: calculate this
+	local maxRadius = bDestroyerIsActivePlayer and viewRadius or PlotDistance(destroyerCapital:GetX(), destroyerCapital:GetY(), cameraX, cameraY) + Floor(viewRadius / 2)
+	g_minRadius = bDestroyerIsActivePlayer and 0 or maxRadius - viewRadius
+
+	ContextPtr:SetHide(false)					--lockout the active player so they can't move the camera
+	UI.LookAt(cameraCenterPlot, 2)				--look at capital, zoom out
+
+	for radius = maxRadius, 1, -1 do
+		local bExit = false
+		for plot in PlotRingIterator(g_destroyerCapitalPlot, radius, 1, false) do
+			local x, y = plot:GetXY()
+			if PlotDistance(cameraX, cameraY, x, y) < viewRadius then
+				if plot:IsVisible(g_iActiveTeam) then
+					g_radius = radius
+					bExit = true
+					break
+				end
+			end
+		end
+		if bExit then break end
+	end
+	DelayedEOTW()
+end
+
+local EOTW_RING_DELAY = 500
+local g_tickStop = 0
+local g_bEOTWInitClock = true
+
+function DelayedEOTW()
+	if g_radius == 0 then
+		local x, y = g_destroyerCapitalPlot:GetXY()
+		DoDummyUnitRangedAttack(BARB_PLAYER_INDEX, x, y, nil, GameInfoTypes.UNIT_DUMMY_NUKE)
+		ContextPtr:SetHide(false)	--we're done
+	else
+		for plot in PlotRingIterator(g_destroyerCapitalPlot, g_radius, 1, false) do
+			if plot:IsCity() then
+				local x, y = plot:GetXY()
+				DoDummyUnitRangedAttack(BARB_PLAYER_INDEX, x, y, nil, GameInfoTypes.UNIT_DUMMY_NUKE)
+			else
+				BreachPlot(plot)
+			end
+		end
+		g_radius = g_radius - 1
+		if g_radius == 0 then
+			EOTW_RING_DELAY = EOTW_RING_DELAY * 5
+		end
+		if g_radius >= g_minRadius then
+			g_bEOTWInitClock = true
+			Events.LocalMachineAppUpdate.Add(EOTWRingDelay)	
+		else
+			ContextPtr:SetHide(false)		--we're done
+		end
+	end
+end
+
+function EOTWRingDelay(tickCount, timeIncrement)		--DON'T LOCALIZE! Causes CTD with RemoveAll
+	if g_bEOTWInitClock then
+		g_tickStop = tickCount + EOTW_RING_DELAY
+		g_bEOTWInitClock = false
+		print("Start EOTWRingDelay ", tickCount, g_tickStop)
+	elseif g_tickStop < tickCount then
+		print("Stop EOTWRingDelay ", tickCount, g_tickStop)
+		Events.LocalMachineAppUpdate.RemoveAll()	--also removes tutorial checks (good riddence!)
+		DelayedEOTW()
+	end
+end
+
 
 
 --------------------------------------------------------------

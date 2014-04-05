@@ -309,19 +309,19 @@ local function DoDelayedAttacks(iPlayer)	--called by OnPlayerPreAIUnitUpdate for
 end
 
 local MELEE_ATTACK_AFTER_THOUSANDTHS_SECONDS = 500
-local bStart = false
+local g_bStart = false
 local g_tickStart = 0
 function TimeDelayForHumanMeleeCharge(tickCount, timeIncrement)		--DON'T LOCALIZE! Causes CTD with RemoveAll
-	if bStart then
-		if MELEE_ATTACK_AFTER_THOUSANDTHS_SECONDS < tickCount - tickStart then
+	if g_bStart then
+		if MELEE_ATTACK_AFTER_THOUSANDTHS_SECONDS < tickCount - g_tickStart then
 			Events.LocalMachineAppUpdate.RemoveAll()	--also removes tutorial checks (good riddence!)
 			print("TimeDelayForHumanMeleeCharge; delay in sec/1000 = ", tickCount - tickStart)
 			print("os.clock() / tickCount : ", os.clock(), tickCount)
 			DoDelayedAttacks(Game.GetActivePlayer())
 		end
 	else
-		tickStart = tickCount
-		bStart = true
+		g_tickStart = tickCount
+		g_bStart = true
 	end
 end
 
@@ -347,7 +347,7 @@ local function WarriorLeadCharge(iPlayer, attackingUnit, targetX, targetY)
 				local moraleBoost = 2 * GetGPMod(iPerson, "EAMOD_COMBAT", nil)
 				unit:ChangeMorale(moraleBoost)
 				local floatUp = "+" .. moraleBoost .. " [ICON_HAPPINESS_1] Morale"
-				plot:AddFloatUpMessage(floatUp)
+				plot:AddFloatUpMessage(floatUp, 1)
 				g_delayedAttacks.pos = g_delayedAttacks.pos + 1
 				g_delayedAttacks[g_delayedAttacks.pos] = {iUnit = unit:GetID(), x = targetX, y = targetY, iPerson = iPerson}
 				if player:IsHuman() then
@@ -557,7 +557,7 @@ local function OnCanSaveUnit(iPlayer, iUnit, bDelay)	--fires for combat and non-
 			if unit:TurnsToReachTarget(testPlot, 1, 1, 1) < 100 then		--is this plot accessible?
 				unit:SetXY(testPlot:GetX(), testPlot:GetY())
 				unit:SetEmbarked(testPlot:IsWater())
-				testPlot:AddFloatUpMessage("Great Person has escaped!")		--TO DO: txt key
+				testPlot:AddFloatUpMessage("Great Person has escaped!", 1)		--TO DO: txt key
 				print("Great Person has escaped!")
 				return true
 			end

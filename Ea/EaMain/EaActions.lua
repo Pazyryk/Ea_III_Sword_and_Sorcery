@@ -913,7 +913,7 @@ function DoEaAction(eaActionID, iPlayer, unit, iPerson, targetX, targetY)
 
 		--Plot Float Up Text
 		if not g_eaAction.NoFloatUpText or MapModData.bAutoplay then
-			g_plot:AddFloatUpMessage(Locale.Lookup(g_eaAction.Description))
+			g_plot:AddFloatUpMessage(Locale.Lookup(g_eaAction.Description), 1)
 		end
 
 		if 0 < g_eaAction.FixedFaith then
@@ -1083,7 +1083,7 @@ function FinishEaAction(eaActionID)		--only called from DoEaAction so file local
 
 	--Plot Float Up Text
 	if not g_eaAction.NoFloatUpText or MapModData.bAutoplay then
-		g_plot:AddFloatUpMessage(Locale.Lookup(g_eaAction.Description))
+		g_plot:AddFloatUpMessage(Locale.Lookup(g_eaAction.Description), 1)
 	end
 
 	ClearActionPlotTargetedForPerson(g_eaPlayer, g_iPerson)
@@ -2199,7 +2199,7 @@ Do[GameInfoTypes.EA_ACTION_RALLY_TROOPS] = function()
 	for i = 1, g_int1 do
 		local unit = g_table[i]
 		local floatUp = "+" .. g_mod .. " [ICON_HAPPINESS_1] Morale"
-		unit:GetPlot():AddFloatUpMessage(floatUp)
+		unit:GetPlot():AddFloatUpMessage(floatUp, 1)
 		unit:ChangeMorale(g_mod)
 	end
 	local xp = Floor(g_mod * g_value / 1000)

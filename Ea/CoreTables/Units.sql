@@ -172,10 +172,11 @@ INSERT INTO Units (Type,		PrereqTech,					Cost,	Combat,	RangedCombat,	Range,	Mov
 ('UNIT_GIANT_SPIDER',			NULL,						180,	9,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		0,			0,					1,					NULL,				0,			'ART_DEF_UNIT_GIANT_SPIDER',			'UNIT_ATLAS_1',				4,				'UNIT_FLAG_ATLAS',				4,					'BIPED',		1,			1			);
 
 --Utility (don't show anywhere)
-INSERT INTO Units (Type,		PrereqTech,					Cost,	Combat,	RangedCombat,	Range,	Moves,	Immobile,	NoMaintenance,	Special,				CombatClass,	Domain,			DefaultUnitAI,			Suicide,	MilitarySupport,	Mechanized,	AirUnitCap,	CombatLimit,	RangedCombatLimit,	UnitArtInfo,					IconAtlas,			PortraitIndex,	UnitFlagAtlas,		UnitFlagIconOffset,	MoveRate,		EaNoTrain	) VALUES
---All dummy air strike units should have Suicide = 1 and RangedCombat = 10 if it will be modified by mod
-('UNIT_DUMMY_PLOT_EXPLODER',	'TECH_NEVER',				-1,		0,		10,				10,		2,		1,			1,				'SPECIALUNIT_MISSILE',	NULL,			'DOMAIN_AIR',	'UNITAI_MISSILE_AIR',	1,			0,					1,			1,			0,				100,				'ART_DEF_UNIT_GUIDED_MISSILE',	'UNIT_ATLAS_2',		30,				'UNIT_FLAG_ATLAS',	77,					'AIR_REBASE',	1			);
-
+INSERT INTO Units (Type,		PrereqTech,					Cost,	Combat,	RangedCombat,	NukeDamageLevel,	Range,	Moves,	Immobile,	NoMaintenance,	Special,				CombatClass,	Domain,			DefaultUnitAI,			Suicide,	MilitarySupport,	Mechanized,	AirUnitCap,	CombatLimit,	RangedCombatLimit,	UnitArtInfo,					IconAtlas,			PortraitIndex,	UnitFlagAtlas,		UnitFlagIconOffset,	MoveRate,		EaNoTrain	) VALUES
+--All dummy air strike units should have Suicide = 1; use RangedCombat = 10 if it will be modified by mod (and not a nuke)
+('UNIT_DUMMY_EXPLODER',			'TECH_NEVER',				-1,		0,		10,				-1,					10,		2,		1,			1,				'SPECIALUNIT_MISSILE',	NULL,			'DOMAIN_AIR',	'UNITAI_MISSILE_AIR',	1,			0,					1,			1,			0,				100,				'ART_DEF_UNIT_GUIDED_MISSILE',	'UNIT_ATLAS_2',		30,				'UNIT_FLAG_ATLAS',	77,					'AIR_REBASE',	1			),
+('UNIT_DUMMY_NUKE',				'TECH_NEVER',				-1,		0,		0,				2,					10,		2,		1,			1,				'SPECIALUNIT_MISSILE',	NULL,			'DOMAIN_AIR',	'UNITAI_ICBM',			1,			0,					1,			1,			0,				100,				'ART_DEF_UNIT_NUCLEAR_MISSILE',	'UNIT_ATLAS_2',		30,				'UNIT_FLAG_ATLAS',	77,					'AIR_REBASE',	1			);
+--IMPORTANT! Make sure these get PROMOTION_DUMMY_AIR_STRIKE in Unit_FreePromotions below
 
 UPDATE Units SET IsWorker = 1 WHERE Type GLOB 'UNIT_WORKERS_*' OR Type GLOB 'UNIT_SLAVES_*';
 UPDATE Units SET EaRace = 'EARACE_MAN', EaCityTrainRace = 'EARACE_MAN' WHERE Type GLOB '*_MAN' OR Type GLOB '*_BARB';
@@ -1119,12 +1120,13 @@ SELECT 'UNIT_LICH', 'PROMOTION_THAUMATURGE' UNION ALL
 SELECT 'UNIT_LICH', 'PROMOTION_LICH' UNION ALL
 SELECT 'UNIT_LICH', 'PROMOTION_RIVAL_TERRITORY' UNION ALL
 
-
--- other promos
 SELECT 'UNIT_DRUID_MAGIC_MISSLE', 'PROMOTION_INDIRECT_FIRE' UNION ALL
 SELECT 'UNIT_DRUID_MAGIC_MISSLE', 'PROMOTION_ONLY_DEFENSIVE' UNION ALL
 SELECT 'UNIT_PRIEST_MAGIC_MISSLE', 'PROMOTION_INDIRECT_FIRE' UNION ALL
 SELECT 'UNIT_PRIEST_MAGIC_MISSLE', 'PROMOTION_ONLY_DEFENSIVE' ;
+
+--SELECT 'UNIT_DUMMY_EXPLODER', 'PROMOTION_DUMMY_AIR_STRIKE' UNION ALL
+--SELECT 'UNIT_DUMMY_NUKE', 'PROMOTION_DUMMY_AIR_STRIKE' ;
 
 
 DELETE FROM Unit_Flavors;

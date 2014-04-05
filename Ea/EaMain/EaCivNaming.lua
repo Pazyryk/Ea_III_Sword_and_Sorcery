@@ -127,6 +127,7 @@ end
 function TestAllCivNamingConditions(iPlayer)	--per civ turn and rerun after any change thay might qualify a name (e.g., AI picks a policy or human closes policy window)
 	if not bInited then return end
 	local eaPlayer = gPlayers[iPlayer]
+	if not eaPlayer then return end						--autoplay
 	if eaPlayer.eaCivNameID then return end				--already has name
 	print("TestAllCivNamingConditions")
 	local raceID = eaPlayer.race

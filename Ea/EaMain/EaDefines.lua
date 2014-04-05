@@ -14,6 +14,8 @@ DEBUG_PRINT = false
 MapModData.DEBUG_PRINT = DEBUG_PRINT
 MapModData.bDebugShowHiddenBuildings = true
 
+MapModData.bDisableEnabledPolicies = true
+
 --------------------------------------------------------------
 -- Settings
 --------------------------------------------------------------
@@ -241,6 +243,7 @@ gg_fishingRange = {}
 gg_whalingRange = {}
 gg_campRange = {}
 gg_slaveryPlayer = {[BARB_PLAYER_INDEX] = true}
+gg_playerArcaneMod = {}
 
 --other tables using iPlayer
 gg_eaNamePlayerTable = {}

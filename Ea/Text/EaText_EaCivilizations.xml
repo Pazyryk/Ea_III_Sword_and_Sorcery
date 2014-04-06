@@ -8,57 +8,132 @@
 		<Row Tag="TXT_KEY_EA_CIV_HIPPUS">
 			<Text>Hippus</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_HIPPUS_HELP">
+			<Text>[ICON_BULLET]Gain the Mercenaries policy for free[NEWLINE][ICON_BULLET]Horse-mounted units have the Strong Mercenaries promotion, making them 20% stronger when hired as mercenaries (thus favored by civilizations and city states that hire mercenaries)</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_IKKOS">
 			<Text>Ikkos</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_IKKOS_HELP">
+			<Text>[ICON_BULLET]+3 [ICON_CULTURE] Culture per improved [ICON_RES_HORSE] Horses[NEWLINE][ICON_BULLET]20% chance per turn that all horse-mounted units gain 1 xp</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_AB">
 			<Text>Âb</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_AB_HELP">
+			<Text>[ICON_BULLET]+1 [ICON_PRODUCTION] Production and +2 [ICON_CULTURE] Culture per improved [ICON_RES_IVORY] Elephants[NEWLINE][ICON_BULLET]20% extra reduced costs for Favored Techs</Text>
+		</Row>	
 		<Row Tag="TXT_KEY_EA_CIV_FIR_BOLG">
 			<Text>Fir Bolg</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_FIR_BOLG_HELP">
+			<Text>[ICON_BULLET]+1 [ICON_PRODUCTION] Production and 1 [ICON_GOLD] Gold from Pastures</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_CRUITHNI">
 			<Text>Cruithni</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_CRUITHNI_HELP">
+			<Text>[ICON_BULLET]Hunters can establish Camps at +1 range[NEWLINE][ICON_BULLET] +1 [ICON_FOOD] Food and +1 [ICON_PRODUCTION] Production from Camps within 3 plots of a city</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_CRECY">
 			<Text>Crécy</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_CRECY_HELP">
+			<Text>[ICON_BULLET]Gain nearby Yew[NEWLINE][ICON_BULLET]Free Strong Archer (+30% str/rng) promotion for all units in the archer and horse-mounted archer lines.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_DAGGOO">
 			<Text>Dagoo</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_DAGGOO_HELP">
+			<Text>[ICON_BULLET]Can establish Whaling Boats at +2 range[NEWLINE][ICON_BULLET]+1 [ICON_FOOD] Food, +1 [ICON_PRODUCTION] Production and +1 [ICON_CULTURE] Culture from Whaling Boats within 3 plots of city.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_FOMHOIRE">
 			<Text>Fomhóire</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_FOMHOIRE_HELP">
+			<Text>[ICON_BULLET]All units can enter ocean tiles immediately</Text>
+		</Row>
+
 		<Row Tag="TXT_KEY_EA_CIV_PARAKHORA">
 			<Text>Parakhora</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_PARAKHORA_HELP">
+			<Text>[ICON_BULLET]+1 [ICON_FOOD] Food and +1 [ICON_PRODUCTION] Production from every Watermill and Windmill</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_NEITH">
 			<Text>Neith</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_NEITH_HELP">
+			<Text>[ICON_BULLET] +1 [ICON_GOLD] Gold and +1 [ICON_CULTURE] Culture from every Sheep [ICON_RES_SHEEP], Cotton Trees [ICON_RES_COTTON], Silkworms [ICON_RES_SILK] and Dye [ICON_RES_DYE] resources</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_ELEUTHERIOS">
 			<Text>Eleutherios</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_ELEUTHERIOS_HELP">
+			<Text>[ICON_BULLET]Gain Œnology tech[NEWLINE][ICON_BULLET]+2 [ICON_GOLD] Gold and +2 [ICON_CULTURE] Culture from every Vineyards improvement</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_NINKASI">
 			<Text>Ninkasi</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_NINKASI_HELP">
+			<Text>[ICON_BULLET]Free Brewery in every city</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_GIRNAR">
 			<Text>Girnar</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_GIRNAR_HELP">
+			<Text>[ICON_BULLET]Can build the Polder improvement on Marsh</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_ALDEBAR">
 			<Text>Aldebar</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_ALDEBAR_HELP">
+			<Text>[ICON_BULLET]+2 [ICON_CULTURE] Culture from Exotics Plantations</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_ANAPHORA">
 			<Text>Anaphora</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_ANAPHORA_HELP">
+			<Text>[ICON_BULLET]Free Monastery in every city</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_ISALLIN">
 			<Text>Isällin</Text>
 		</Row>
+		<Row Tag="_HELP">
+			<Text>[ICON_BULLET]+1 [ICON_CULTURE] Culture and +1 [ICON_HAPPINESS_1] Happiness from every religious building</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_STYGIA">
 			<Text>Stygia</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_STYGIA_HELP">
+			<Text>[ICON_BULLET]Gain Mana from kills</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_MORIQUENDI">
 			<Text>Moriquendi</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_MORIQUENDI_HELP">
+			<Text>[ICON_BULLET]Gain Mana from kills</Text>
+		</Row>
+		<!--
+		<Row Tag="_HELP">
+			<Text>[ICON_BULLET]</Text>
+		</Row>
+		<Row Tag="_HELP">
+			<Text>[ICON_BULLET]</Text>
+		</Row>
+		<Row Tag="_HELP">
+			<Text>[ICON_BULLET]</Text>
+		</Row>
+		<Row Tag="_HELP">
+			<Text>[ICON_BULLET]</Text>
+		</Row>
+		<Row Tag="_HELP">
+			<Text>[ICON_BULLET]</Text>
+		</Row>
+		<Row Tag="_HELP">
+			<Text>[ICON_BULLET]</Text>
+		</Row>
+		-->	
 		<Row Tag="TXT_KEY_EA_CIV_LEMURIA">
 			<Text>Lemuria</Text>
 		</Row>
@@ -89,6 +164,9 @@
 		<Row Tag="TXT_KEY_EA_CIV_UR">
 			<Text>Úr</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_UR_QUOTE">
+			<Text>We forsake the sun, the meadow and the gentle breeze. We go into the depths of Éa, to our underdark home that we call Úr.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_ORKAHAUGR">
 			<Text>Orkahaugr</Text>
 		</Row>
@@ -100,6 +178,9 @@
 		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_KAZA">
 			<Text>Kaza</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_KAZA_QUOTE">
+			<Text>We are folk of the farm, domesticators of plant and animal. Our land and our people are fertile. We will transform this land into farms, pastures and mills as far as the eye can see.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_EOGANACHTA">
 			<Text>Eóganachta</Text>
@@ -128,6 +209,10 @@
 		<Row Tag="TXT_KEY_EA_CIV_O">
 			<Text>O</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_O_QUOTE">
+			<Text>We are masters of the arcane, wise and dangerous. Call us O (if you must address us). It is simple enough for you to remember.</Text>
+		</Row>
+
 		<Row Tag="TXT_KEY_EA_CIV_MU">
 			<Text>Mu</Text>
 		</Row>
@@ -136,7 +221,7 @@
 		</Row>
 
 		<Row Tag="TXT_KEY_EA_CIV_GRAEAE_QUOTE">
-			<Text>Double, double toil and trouble;[NEWLINE]Fire burn, and caldron bubble.[NEWLINE]Fillet of a fenny snake,[NEWLINE]In the caldron boil and bake;[NEWLINE]Eye of newt, and toe of frog,[NEWLINE]Wool of bat, and tongue of dog,[NEWLINE]Adder's fork, and blind-worm's sting,[NEWLINE]Lizard's leg, and owlet's wing,--[NEWLINE]For a charm of powerful trouble,[NEWLINE]Like a hell-broth boil and bubble.[NEWLINE]Scale of dragon; tooth of wolf;[NEWLINE]Witches' mummy; maw and gulf[NEWLINE]Of the ravin'd salt-sea shark;[NEWLINE]Root of hemlock digg'd i the dark;[NEWLINE]Finger of birth-strangled babe[NEWLINE]Ditch-deliver'd by a drab,--[NEWLINE]Make the gruel thick and slab:[NEWLINE]Add thereto a tiger's chaudron,[NEWLINE]For the ingrediants of our caldron.[NEWLINE]Cool it with a baboon's blood,[NEWLINE]Then the charm is firm and good.</Text>
+			<Text>Double, double toil and trouble;[NEWLINE]Fire burn, and caldron bubble.[NEWLINE]Fillet of a fenny snake,[NEWLINE]In the caldron boil and bake;[NEWLINE]Eye of newt, and toe of frog,[NEWLINE]Wool of bat, and tongue of dog,[NEWLINE]For a charm of powerful trouble,[NEWLINE]Like a hell-broth boil and bubble.[NEWLINE]Scale of dragon; tooth of wolf;[NEWLINE]Witches' mummy; maw and gulf[NEWLINE]Of the ravin'd salt-sea shark;[NEWLINE]Root of hemlock digg'd i the dark;[NEWLINE]Cool it with a baboon's blood,[NEWLINE]Then the charm is firm and good.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_GRAEAE_HELP">
 			<Text>[ICON_BULLET]Free Reagents from first 6 cities[NEWLINE][ICON_BULLET]+1 Mana [ICON_STAR] from all worked resources[NEWLINE][ICON_BULLET]Thaumaturges are always of subclass Witch</Text>
@@ -208,7 +293,7 @@
 			<Text>Ljósálfar</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_SEGOYIM">
-			<Text>Segoyim</Text>
+			<Text>Segoÿim</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_HY_BREASIL">
 			<Text>Hy-Breasil</Text>
@@ -235,11 +320,17 @@
 		<Row Tag="TXT_KEY_EA_CIV_SISUKAS">
 			<Text>Sisukas</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_SISUKAS_HELP">
+			<Text>[ICON_BULLET]All infantry units have Strong Infantry promotion (+30% str)[NEWLINE][ICON_BULLET]Gain one free infantry unit of appropriate type on discovery of Iron Working, Metal Casting and Mithril Working</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_EBOR">
 			<Text>Ebor</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_PHRYGES">
 			<Text>Phryges</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_PHRYGES_HELP">
+			<Text>[ICON_BULLET]All horse-mounted units have Strong Cavalry promotion (+30% str/rng)[NEWLINE][ICON_BULLET]-33% maintenance cost for horse-mounted units</Text>
 		</Row>
 
 		

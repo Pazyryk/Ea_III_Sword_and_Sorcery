@@ -13,10 +13,7 @@ local Dprint = DEBUG_PRINT and print or function() end
 
 --constants
 
-local EACIV_AB =								GameInfoTypes.EACIV_AB
 local EACIV_MAMONAS =							GameInfoTypes.EACIV_MAMONAS
-local EACIV_GOBANN =							GameInfoTypes.EACIV_GOBANN
-local EACIV_VINCA =							GameInfoTypes.EACIV_VINCA
 
 local ORDER_MAINTAIN =							OrderTypes.ORDER_MAINTAIN
 local CITY_UPDATE_TYPE_PRODUCTION =				CityUpdateTypes.CITY_UPDATE_TYPE_PRODUCTION

@@ -74,31 +74,31 @@
 			<Text>+2 [ICON_FOOD] Food from Cows, Horse and Sheep resources worked by this city.[NEWLINE][NEWLINE]City must have an improved source of at least one of these resources nearby.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_KNACKERY_HELP">
-			<Text>+2 [ICON_PRODUCTION] PRODUCTION from Cows, Horse and Sheep resources worked by this city.[NEWLINE][NEWLINE]City must have an improved source of at least one of these resources nearby.</Text>
+			<Text>+2 [ICON_PRODUCTION] PRODUCTION from Cows, Horse and Sheep worked by this city.[NEWLINE][NEWLINE]City must have an improved source of at least one of these resources nearby.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_HARBOR_HELP">
 			<Text>Allows the city to form [ICON_CONNECTED] Trade Routes across water.[NEWLINE]+1 [ICON_FOOD] Food from [ICON_RES_FISH] Fish, [ICON_RES_CRAB] Crabs, [ICON_RES_PEARLS] Oysters and [ICON_RES_WHALE] Whales worked by this city.[NEWLINE][NEWLINE]Each sea resource owned by this city that is remote (>3 plots from city) provides +1 Food [ICON_FOOD] through this building.[NEWLINE][NEWLINE]City must be coastal.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_TIMBERYARD_HELP">
-			<Text>+1 Timber resource from Sawmills near this City.[NEWLINE]+1 Timber resource for every 4 unimproved Forest and Jungle tiles for Pantheistic Civilizations.</Text>
+			<Text>+1 Timber resource from Sawmills near this City.[NEWLINE]+1 Timber for every 4 unimproved Forest and Jungle tiles for Pantheistic Civilizations.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_COTTON_GIN_HELP">
-			<Text>+1 [ICON_PRODUCTION] Production and +1 [ICON_GOLD] Gold from Cotton resources worked by this city.[NEWLINE][NEWLINE]City must have an improved source of Cotton nearby.</Text>
+			<Text>+1 [ICON_PRODUCTION] Production and +1 [ICON_GOLD] Gold from Cotton worked by this city.[NEWLINE][NEWLINE]City must have an improved source of Cotton nearby.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_WINERY_HELP">
-			<Text>+1 [ICON_FOOD] Food and +1 [ICON_CULTURE] Culture from Wine resources worked by this city.[NEWLINE][NEWLINE]City must have an improved source of Wine nearby.</Text>
+			<Text>+1 [ICON_FOOD] Food and +1 [ICON_CULTURE] Culture from Wine worked by this city.[NEWLINE][NEWLINE]City must have an improved source of Wine nearby.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_BREWERY_HELP">
-			<Text>+1 [ICON_CULTURE] Culture and +1 Ale resource from Wheat resources worked by this city.[NEWLINE][NEWLINE]City must have an improved source of Wheat nearby.</Text>
+			<Text>Provides 1 Ale resource; +1 [ICON_CULTURE] Culture from Wheat worked by this city.[NEWLINE][NEWLINE]City must have an improved source of Wheat nearby.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_APOTHECARY_HELP">
 			<Text>+2 [ICON_RESEARCH] Research from Reagents resources worked by this city.[NEWLINE]+2 Health in this city.[NEWLINE][NEWLINE]City must have an improved source of Reagents nearby.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_MINT_HELP">
-			<Text>+2 [ICON_GOLD] Gold from Gold, Silver and Mithril resources and +1 [ICON_GOLD] from Copper and Iron resources worked by this city.[NEWLINE][NEWLINE]City must have an improved source of at least one of these resources nearby.</Text>
+			<Text>+2 [ICON_GOLD] Gold from Gold, Silver and Mithril and +1 [ICON_GOLD] from Copper and Iron resources worked by this city.[NEWLINE][NEWLINE]City must have an improved source of at least one of these resources nearby.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_STONE_WORKS_HELP">
-			<Text>+1 [ICON_PRODUCTION] Production and +2 [ICON_CULTURE] from Stone and Marble resources worked by this city.[NEWLINE][NEWLINE]City must have an improved source of at least one of these resources nearby.</Text>
+			<Text>+1 [ICON_PRODUCTION] Production and +2 [ICON_CULTURE] from Stone and Marble worked by this city.[NEWLINE][NEWLINE]City must have an improved source of at least one of these resources nearby.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_MOUNDS_HELP">
 			<Text>May only be built if you have taken the Pantheism Social Policy.[NEWLINE][NEWLINE]May only be built by the Sídhe.</Text>

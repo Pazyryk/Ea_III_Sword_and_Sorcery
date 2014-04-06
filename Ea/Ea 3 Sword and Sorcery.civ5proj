@@ -156,6 +156,11 @@
       <Action>
         <Set>OnModActivated</Set>
         <Type>UpdateDatabase</Type>
+        <FileName>CoreTables/Traits.sql</FileName>
+      </Action>
+      <Action>
+        <Set>OnModActivated</Set>
+        <Type>UpdateDatabase</Type>
         <FileName>Text/EaText.sql</FileName>
       </Action>
       <Action>
@@ -452,6 +457,10 @@
       <ImportIntoVFS>False</ImportIntoVFS>
     </Content>
     <Content Include="CoreTables\Processes.sql">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>False</ImportIntoVFS>
+    </Content>
+    <Content Include="CoreTables\Traits.sql">
       <SubType>Lua</SubType>
       <ImportIntoVFS>False</ImportIntoVFS>
     </Content>

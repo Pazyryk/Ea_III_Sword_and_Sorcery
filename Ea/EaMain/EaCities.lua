@@ -100,6 +100,8 @@ local RELIGION_CULT_OF_BAKKHEIA =			GameInfoTypes.RELIGION_CULT_OF_BAKKHEIA
 local POLICY_PANTHEISM =					GameInfoTypes.POLICY_PANTHEISM
 local POLICY_SLAVE_RAIDERS =				GameInfoTypes.POLICY_SLAVE_RAIDERS
 
+local TECH_MILLING =						GameInfoTypes.TECH_MILLING
+
 local YIELD_PRODUCTION =					GameInfoTypes.YIELD_PRODUCTION
 
 local PLOT_HILLS =							PlotTypes.PLOT_HILLS
@@ -520,10 +522,13 @@ function CityPerCivTurn(iPlayer)		--Full civ only
 	local gameTurn = Game.GetGameTurn()
 	local eaPlayer = gPlayers[iPlayer]
 	local player = Players[iPlayer]
+	local team = Teams[player:GetTeam()]
 	local classPoints = eaPlayer.classPoints
 	local bIsPantheistic = player:HasPolicy(POLICY_PANTHEISM)
 	local bAI = bFullCivAI[iPlayer]
 	local bAnraFounded = gReligions[RELIGION_ANRA] ~= nil
+	local bCheckWindy = team:IsHasTech(TECH_MILLING)
+	--
 
 	local cityCount = 0
 
@@ -674,16 +679,21 @@ function CityPerCivTurn(iPlayer)		--Full civ only
 				end
 				]]
 
-				--Windy? (note: this is too much overhead for one building!)
-				if city:GetNumBuilding(BUILDING_WINDMILL) ~= 1 then
+				--Windy?
+				if bCheckWindy and city:GetNumBuilding(BUILDING_WINDMILL) ~= 1 then
 					local countWindBreak = 0
 					for x, y in PlotToRadiusIterator(city:GetX(), city:GetY(), 1, nil, nil, true) do
 						local plot = Map.GetPlot(x, y)
 						local plotTypeID = plot:GetPlotType()
-						local featureID = plot:GetFeatureType()
-						if plotTypeID == PLOT_HILLS or plotTypeID == PLOT_MOUNTAIN or featureID == FEATURE_JUNGLE or featureID == FEATURE_JUNGLE then
+						if plotTypeID == PLOT_HILLS or plotTypeID == PLOT_MOUNTAIN then
 							countWindBreak = countWindBreak + 1
-							if 1 < countWindBreak then break end	
+							if 1 < countWindBreak then break end
+						else
+							local featureID = plot:GetFeatureType()
+							if featureID == FEATURE_JUNGLE or featureID == FEATURE_JUNGLE then
+								countWindBreak = countWindBreak + 1
+								if 1 < countWindBreak then break end	
+							end
 						end
 					end
 					if countWindBreak < 2 then
@@ -931,7 +941,7 @@ local function OnCityCaptureComplete(iPlayer, bCapital, x, y, iNewOwner)		-- THI
 
 	if oldOwner:IsAlive() then
 		if bCapital then
-			CheckCapitalBuildings(iPlayer, nil)
+			CheckCapitalBuildings(iPlayer)
 		end
 	else
 		print("!!!! Dead player detected from OnCityCaptureComplete !!!!")
@@ -1349,7 +1359,7 @@ JustSettled = function(iPlayer, city)
 	if bFullCivAI[iPlayer] then
 		AICivRun(iPlayer)
 	end
-	CheckCapitalBuildings(iPlayer, nil)
+	CheckCapitalBuildings(iPlayer)
 end
 
 --[[

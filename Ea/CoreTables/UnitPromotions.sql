@@ -599,12 +599,8 @@ INSERT INTO UnitPromotions_UnitCombatMods (PromotionType, UnitCombatType, Modifi
 --UNITCOMBAT_GUN
 DELETE FROM UnitPromotions_UnitCombats WHERE PromotionType NOT IN (SELECT Type FROM TempPromoKeepList);
 INSERT INTO UnitPromotions_UnitCombats (PromotionType, UnitCombatType) VALUES
---given by policy (or civ trait via policy) but restricted to unitcombat here
-('PROMOTION_STRONG_INFANTRY', 'UNITCOMBAT_MELEE' ),
-('PROMOTION_STRONG_ARCHER', 'UNITCOMBAT_ARCHER' ),
-('PROMOTION_STRONG_ARCHER', 'UNITCOMBAT_GUN' ),
-('PROMOTION_STRONG_CAVALRY', 'UNITCOMBAT_MOUNTED' ),
-('PROMOTION_STRONG_CAVALRY', 'UNITCOMBAT_GUN' ),
+
+
 
 ('PROMOTION_SLAVERAIDER', 'UNITCOMBAT_RECON' ),
 ('PROMOTION_SLAVERAIDER', 'UNITCOMBAT_MOUNTED' ),

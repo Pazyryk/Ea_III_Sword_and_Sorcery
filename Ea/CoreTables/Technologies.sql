@@ -126,6 +126,7 @@ UPDATE Technologies SET Civilopedia = Description || '_PEDIA', Help = Descriptio
 -- Utility techs (all automatically given prereq TECH_NEVER)
 INSERT INTO Technologies (Type,		Utility) VALUES
 ('TECH_NEVER',						1	),
+('TECH_ALLOW_POLDER',				1	),
 ('TECH_NO_PAN',						1	),
 ('TECH_GAIN_WITH_NAMING',			1	),	--allows open borders
 ('TECH_ALLOW_TIMBER_TRADE',			1	),	--allows Timber trade and Timberyard
@@ -135,7 +136,10 @@ INSERT INTO Technologies (Type,		Utility) VALUES
 ('TECH_SLAVE_ARMIES',				1	),
 ('TECH_PANTHEISM',					1	),
 ('TECH_ALLOW_MANA_YIELDS',			1	),
-('TECH_ALLOW_DIVINE_FAVOR_YIELDS',	1	);
+('TECH_ALLOW_DIVINE_FAVOR_YIELDS',	1	),
+('TECH_ALLOW_ALL_WATER_PASSAGE',	1	);
+
+
 
 
 UPDATE Technologies SET GridX = 9, GridY = 36, Cost = -1, Description = 'TXT_KEY_EA_NOTSHOWN', Civilopedia = 'TXT_KEY_EA_NOTSHOWN', Help = 'TXT_KEY_EA_NOTSHOWN', PortraitIndex = 13, IconAtlas = 'TECH_ATLAS_1' WHERE Utility = 1;
@@ -147,7 +151,7 @@ UPDATE Technologies SET BridgeBuilding=1 WHERE Type='TECH_ENGINEERING';
 UPDATE Technologies SET OpenBordersTradingAllowed=1 WHERE Type='TECH_GAIN_WITH_NAMING';
 UPDATE Technologies SET WaterWork = 1 WHERE Type = 'TECH_FISHING';
 UPDATE Technologies SET AllowsEmbarking = 1 WHERE Type = 'TECH_SAILING';
-UPDATE Technologies SET EmbarkedAllWaterPassage = 1 WHERE Type = 'TECH_ASTRONOMY';
+UPDATE Technologies SET EmbarkedAllWaterPassage = 1 WHERE Type IN ('TECH_ASTRONOMY', 'TECH_ALLOW_ALL_WATER_PASSAGE');
 
 --UPDATE Technologies SET MapCentering = 1 WHERE Type = 'TECH_GAIN_WITH_NAMING';
 

@@ -17,6 +17,7 @@ INSERT INTO Ea_ExpectedTableFiles (FileName) VALUES
 	('AI.sql'),
 	('Buildings.sql'),
 	('Civilizations.sql'),
+	('Traits.sql'),
 	('GameInfo.sql'),
 	('GlobalDefines.sql'),
 	('Icons.sql'),

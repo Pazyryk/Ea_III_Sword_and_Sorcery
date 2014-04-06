@@ -91,9 +91,11 @@ function GetEaCivDiscriptionText(eaCivID, bIncludeCivName, bIncludeQuote, bUseCa
 	end
 
 	local enabledPolicies
-	for row in GameInfo.EaCiv_EnabledPolicies(sqlSearch) do
-		enabledPolicies = enabledPolicies and enabledPolicies .. ", " or ""
-		enabledPolicies = enabledPolicies .. Locale.Lookup(GameInfo.Policies[row.PolicyType].Description)
+	if not MapModData.bDisableEnabledPolicies then
+		for row in GameInfo.EaCiv_EnabledPolicies(sqlSearch) do
+			enabledPolicies = enabledPolicies and enabledPolicies .. ", " or ""
+			enabledPolicies = enabledPolicies .. Locale.Lookup(GameInfo.Policies[row.PolicyType].Description)
+		end
 	end
 
 	local favoredGPClass = eaCivInfo.FavoredGPClass
@@ -110,14 +112,14 @@ function GetEaCivDiscriptionText(eaCivID, bIncludeCivName, bIncludeQuote, bUseCa
 	if foundingGP then
 		strToolTip = strToolTip .. "[NEWLINE][ICON_BULLET][COLOR_POSITIVE_TEXT]Founding Great Person: [ENDCOLOR]" .. foundingGP
 	end
+	if favoredGPClass then
+		strToolTip = strToolTip .. "[NEWLINE][ICON_BULLET][COLOR_POSITIVE_TEXT]Favored Class: [ENDCOLOR]" .. favoredGPClass
+	end
 	if favoredTechs then
 		strToolTip = strToolTip .. "[NEWLINE][ICON_BULLET][COLOR_POSITIVE_TEXT]Favored Techs: [ENDCOLOR]" .. favoredTechs
 	end
 	if enabledPolicies then
 		strToolTip = strToolTip .. "[NEWLINE][ICON_BULLET][COLOR_POSITIVE_TEXT]Enabled Policies: [ENDCOLOR]" .. enabledPolicies
-	end
-	if favoredGPClass then
-		strToolTip = strToolTip .. "[NEWLINE][ICON_BULLET][COLOR_POSITIVE_TEXT]Favored Class: [ENDCOLOR]" .. favoredGPClass
 	end
 
 	return strToolTip

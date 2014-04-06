@@ -31,8 +31,8 @@ local EARACE_MAN =						GameInfoTypes.EARACE_MAN
 local EARACE_SIDHE =					GameInfoTypes.EARACE_SIDHE
 local EARACE_HELDEOFOL =				GameInfoTypes.EARACE_HELDEOFOL
 local EACIV_YS =						GameInfoTypes.EACIV_YS
+local EACIV_SISUKAS =					GameInfoTypes.EACIV_SISUKAS
 local POLICY_PANTHEISM =				GameInfoTypes.POLICY_PANTHEISM
-
 local POLICY_SCHOLASTICISM = 			GameInfoTypes.POLICY_SCHOLASTICISM
 local POLICY_ACADEMIC_TRADITION = 		GameInfoTypes.POLICY_ACADEMIC_TRADITION
 local POLICY_RATIONALISM = 				GameInfoTypes.POLICY_RATIONALISM
@@ -135,24 +135,31 @@ function EaTechsInit(bNewGame)
 			gg_fishingRange[iPlayer] = 3
 			gg_whalingRange[iPlayer] = 3
 			gg_campRange[iPlayer] = 3
+			if team:IsHasTech(GameInfoTypes.TECH_SHIP_BUILDING) then
+				gg_fishingRange[iPlayer] = gg_fishingRange[iPlayer] + 2
+				gg_whalingRange[iPlayer] = gg_whalingRange[iPlayer] + 2
+			end
 			if team:IsHasTech(GameInfoTypes.TECH_NAVIGATION) then
-				gg_fishingRange[iPlayer] = 9
-				gg_whalingRange[iPlayer] = 9
-			elseif team:IsHasTech(GameInfoTypes.TECH_SHIP_BUILDING) then
-				gg_fishingRange[iPlayer] = 7
-				gg_whalingRange[iPlayer] = 7
-			elseif team:IsHasTech(GameInfoTypes.TECH_SAILING) then
-				gg_fishingRange[iPlayer] = 5
-				gg_whalingRange[iPlayer] = 5
+				gg_fishingRange[iPlayer] = gg_fishingRange[iPlayer] + 2
+				gg_whalingRange[iPlayer] = gg_whalingRange[iPlayer] + 2
 			end
 			if team:IsHasTech(GameInfoTypes.TECH_WHALING) then
-				gg_whalingRange[iPlayer] = 11
+				gg_whalingRange[iPlayer] = gg_whalingRange[iPlayer] + 2
+			end
+			if team:IsHasTech(GameInfoTypes.TECH_TRACKING_TRAPPING) then
+				gg_campRange[iPlayer] = gg_campRange[iPlayer] + 1
 			end
 			if team:IsHasTech(GameInfoTypes.TECH_ANIMAL_MASTERY) then
-				gg_campRange[iPlayer] = 7
-			elseif team:IsHasTech(GameInfoTypes.TECH_TRACKING_TRAPPING) then
-				gg_campRange[iPlayer] = 5
+				gg_campRange[iPlayer] = gg_campRange[iPlayer] + 2
 			end
+
+			local nameID = eaPlayer.eaCivNameID
+			if nameID == GameInfoTypes.EACIV_CRUITHNI then
+				gg_campRange[iPlayer] = gg_campRange[iPlayer] + 1
+			elseif nameID == GameInfoTypes.EACIV_DAGGOO then
+				gg_whalingRange[iPlayer] = gg_whalingRange[iPlayer] + 2
+			end
+
 		end
 	end
 
@@ -205,13 +212,15 @@ function ResetPlayerFavoredTechs(iPlayer)	--only need at game load and once at n
 	local eaPlayer = gPlayers[iPlayer]
 	local eaCivID = eaPlayer.eaCivNameID
 	if eaCivID then
-		local eaCivType = GameInfo.EaCivs[eaCivID].Type
+		local eaCivInfo = GameInfo.EaCivs[eaCivID]
+		local eaCivType = eaCivInfo.Type
+		local extraReduction = eaCivInfo.FavoredTechExtraReduction
 		local favoredTechMods = g_playerFavoredTechMods[iPlayer]
 		for techID in pairs(favoredTechMods) do
 			favoredTechMods[techID] = nil
 		end
 		for row in GameInfo.EaCiv_FavoredTechs("EaCivType='" .. eaCivType .. "'") do
-			favoredTechMods[GameInfoTypes[row.TechType] ] = FAVORED_TECH_COST_REDUCTION
+			favoredTechMods[GameInfoTypes[row.TechType] ] = FAVORED_TECH_COST_REDUCTION + extraReduction
 		end
 	end
 end
@@ -323,15 +332,69 @@ OnTeamTechLearned[GameInfoTypes.TECH_MALEFICIUM] = function(iTeam)
 	gWorld.maleficium = "Learned"
 end
 
+
+
 OnMajorPlayerTechLearned[GameInfoTypes.TECH_MALEFICIUM] = function(iPlayer)
 	if gWorldUniqueAction[EA_ACTION_PROPHECY_VA] == -1 then
 		BecomeFallen(iPlayer)
 	end
 end
 
+OnMajorPlayerTechLearned[GameInfoTypes.TECH_IRON_WORKING] = function(iPlayer)
+	if gPlayers[iPlayer].eaCivNameID == EACIV_SISUKAS then
+		local race = eaPlayer.race
+		local unitTypeID
+		if race == EARACE_MAN then
+			unitTypeID = GameInfoTypes.UNIT_MEDIUM_INFANTRY_MAN
+		elseif race == EARACE_SIDHE then
+			unitTypeID = GameInfoTypes.UNIT_MEDIUM_INFANTRY_SIDHE
+		elseif race == EARACE_HELDEOFOL then
+			unitTypeID = GameInfoTypes.UNIT_MEDIUM_INFANTRY_ORC
+		end
+		local player = Players[iPlayer]
+		local capital = player:GetCapitalCity()
+		player:InitUnit(unitTypeID, capital:GetX(), capital:GetY())
+	end
+end
+
+OnMajorPlayerTechLearned[GameInfoTypes.TECH_METAL_CASTING] = function(iPlayer)
+	if gPlayers[iPlayer].eaCivNameID == EACIV_SISUKAS then
+		local race = eaPlayer.race
+		local unitTypeID
+		if race == EARACE_MAN then
+			unitTypeID = GameInfoTypes.UNIT_HEAVY_INFANTRY_MAN
+		elseif race == EARACE_SIDHE then
+			unitTypeID = GameInfoTypes.UNIT_HEAVY_INFANTRY_SIDHE
+		elseif race == EARACE_HELDEOFOL then
+			unitTypeID = GameInfoTypes.UNIT_HEAVY_INFANTRY_ORC
+		end
+		local player = Players[iPlayer]
+		local capital = player:GetCapitalCity()
+		player:InitUnit(unitTypeID, capital:GetX(), capital:GetY())
+	end
+end
+
+OnMajorPlayerTechLearned[GameInfoTypes.TECH_MITHRIL_WORKING] = function(iPlayer)
+	if gPlayers[iPlayer].eaCivNameID == EACIV_SISUKAS then
+		local race = eaPlayer.race
+		local unitTypeID
+		if race == EARACE_MAN then
+			unitTypeID = GameInfoTypes.UNIT_IMMORTALS_MAN
+		elseif race == EARACE_SIDHE then
+			unitTypeID = GameInfoTypes.UNIT_IMMORTALS_SIDHE
+		elseif race == EARACE_HELDEOFOL then
+			unitTypeID = GameInfoTypes.UUNIT_IMMORTALS_ORC
+		end
+		local player = Players[iPlayer]
+		local capital = player:GetCapitalCity()
+		player:InitUnit(unitTypeID, capital:GetX(), capital:GetY())
+	end
+end
+
+
+
 OnMajorPlayerTechLearned[GameInfoTypes.TECH_SAILING] = function(iPlayer)
-	gg_fishingRange[iPlayer] = gg_fishingRange[iPlayer] < 5 and 5 or gg_fishingRange[iPlayer]
-	gg_whalingRange[iPlayer] = gg_whalingRange[iPlayer] < 5 and 5 or gg_whalingRange[iPlayer]
+
 	--city adjacent Natural Harbor gives plot ownership and harbor building
 	local player = Players[iPlayer]
 	for city in player:Cities() do
@@ -364,26 +427,28 @@ OnMajorPlayerTechLearned[GameInfoTypes.TECH_SAILING] = function(iPlayer)
 end
 
 OnMajorPlayerTechLearned[GameInfoTypes.TECH_SHIP_BUILDING] = function(iPlayer)
-	gg_fishingRange[iPlayer] = gg_fishingRange[iPlayer] < 7 and 7 or gg_fishingRange[iPlayer]
-	gg_whalingRange[iPlayer] = gg_whalingRange[iPlayer] < 7 and 7 or gg_whalingRange[iPlayer]
+	gg_fishingRange[iPlayer] = gg_fishingRange[iPlayer] + 2
+	gg_whalingRange[iPlayer] = gg_whalingRange[iPlayer] + 2
 end
 
 OnMajorPlayerTechLearned[GameInfoTypes.TECH_NAVIGATION] = function(iPlayer)
-	gg_fishingRange[iPlayer] = gg_fishingRange[iPlayer] < 9 and 9 or gg_fishingRange[iPlayer]
-	gg_whalingRange[iPlayer] = gg_whalingRange[iPlayer] < 9 and 9 or gg_whalingRange[iPlayer]
+	gg_fishingRange[iPlayer] = gg_fishingRange[iPlayer] + 2
+	gg_whalingRange[iPlayer] = gg_whalingRange[iPlayer] + 2
 end
 
 OnMajorPlayerTechLearned[GameInfoTypes.TECH_WHALING] = function(iPlayer)
-	gg_whalingRange[iPlayer] = 11
+	gg_whalingRange[iPlayer] = gg_whalingRange[iPlayer] + 2
 end
 
 OnMajorPlayerTechLearned[GameInfoTypes.TECH_TRACKING_TRAPPING] = function(iPlayer)
-	gg_campRange[iPlayer] = gg_campRange[iPlayer] < 5 and 5 or gg_campRange[iPlayer]
+	gg_campRange[iPlayer] = gg_campRange[iPlayer] + 1
 end
 
 OnMajorPlayerTechLearned[GameInfoTypes.TECH_ANIMAL_MASTERY] = function(iPlayer)
-	gg_campRange[iPlayer] = gg_campRange[iPlayer] < 7 and 7 or gg_campRange[iPlayer]
+	gg_campRange[iPlayer] = gg_campRange[iPlayer] + 2
 end
+
+
 
 
 TechReq[GameInfoTypes.TECH_DIVINE_LITURGY] = function(iPlayer)

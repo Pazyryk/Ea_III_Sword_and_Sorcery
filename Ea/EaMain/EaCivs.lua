@@ -497,19 +497,19 @@ local function OnPlayerMinorFriendshipRecoveryMod(iMajorPlayer, iMinorPlayer)
 end
 GameEvents.PlayerMinorFriendshipRecoveryMod.Add(OnPlayerMinorFriendshipRecoveryMod)
 
-
-function CheckCapitalBuildings(iPlayer, checkType)
-	local player = Players[iPlayer]
-	local capital = player:GetCapitalCity()
-	if capital then
-		local eaPlayer = gPlayers[iPlayer]
-		if not checkType or checkType == "Civ" then
-			local nameID = eaPlayer.eaCivNameID
-			if nameID then
-				local nameInfo = GameInfo.EaCivs[nameID]
-				if nameInfo.GainCapitalBuilding then
-					local buildingID = GameInfoTypes[nameInfo.GainCapitalBuilding]
-					capital:SetNumRealBuilding(buildingID, 1)
+function CheckCapitalBuildings(iPlayer)
+	local eaPlayer = gPlayers[iPlayer]
+	local nameID = eaPlayer.eaCivNameID
+	if nameID then
+		local nameInfo = GameInfo.EaCivs[nameID]
+		if nameInfo.GainCapitalBuilding then
+			local player = Players[iPlayer]	
+			local buildingID = GameInfoTypes[nameInfo.GainCapitalBuilding]
+			for city in player:Cities() do
+				if city:IsCapital() then
+					city:SetNumRealBuilding(buildingID, 1)
+				else
+					city:SetNumRealBuilding(buildingID, 0)
 				end
 			end
 		end

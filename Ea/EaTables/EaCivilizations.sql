@@ -44,8 +44,10 @@ CREATE TABLE EaCivs (	'ID' INTEGER PRIMARY KEY AUTOINCREMENT,
 						'FoundingGPType' TEXT DEFAULT NULL,			--class or subclass must be defined
 						'FavoredGPClass' TEXT DEFAULT NULL,	
 						'GainPolicy' TEXT DEFAULT NULL,				--either normal policy or "hidden policies" that drive many effects (this is the most common effect)
+						'GainTech' TEXT DEFAULT NULL,			
 						'GainCapitalBuilding' TEXT DEFAULT NULL,
 						'PopResourceNearCapital' TEXT DEFAULT NULL,
+						'FavoredTechExtraReduction' INTEGER DEFAULT 0,
 						--AI
 						'AIMercHire' INTEGER DEFAULT 0);			-- -100 for supplier; +value is gold treasury needed before civ considers hiring
 
@@ -66,22 +68,22 @@ INSERT INTO EaCivs (Type,	PopupImage,									DefaultPlayerColor,		KnownTech,			
 ('EACIV_HIPPUS',			'testbackground_1.17_856x700.dds',			'PLAYERCOLOR_CHINA',	'TECH_HORSEBACK_RIDING',	'Merchant',		'POLICY_MERCENARIES',			NULL							),
 ('EACIV_IKKOS',				'testbackground_1.17_856x700.dds',			'PLAYERCOLOR_EGYPT',	'TECH_HORSEBACK_RIDING',	'Warrior',		NULL,							'BUILDING_IKKOS'				),
 ('EACIV_AB',				'testbackground_1.17_856x700.dds',			'PLAYERCOLOR_ENGLAND',	'TECH_ELEPHANT_TRAINING',	NULL,			NULL,							'BUILDING_AB'					),
-('EACIV_FIR_BOLG',			'testbackground_1.17_856x700.dds',			'PLAYERCOLOR_FRANCE',	'TECH_ANIMAL_HUSBANDRY',	NULL,			'POLICY_EACIV_FIR_BOLG',		NULL							),
-('EACIV_CRUITHNI',			'testbackground_1.17_856x700.dds',			'PLAYERCOLOR_GERMANY',	'TECH_TRACKING_TRAPPING',	NULL,			'POLICY_EACIV_CRUITHNI',		NULL							),
-('EACIV_CRECY',				'testbackground_1.17_856x700.dds',			'PLAYERCOLOR_GREECE',	'TECH_ARCHERY',				'Warrior',		'POLICY_EACIV_CRECY',			NULL							),
-('EACIV_DAGGOO',			'testbackground_1.17_856x700.dds',			'PLAYERCOLOR_INDIA',	'TECH_HARPOONS',			NULL,			NULL,							'BUILDING_DAGGOO'				),
+('EACIV_FIR_BOLG',			'testbackground_1.17_856x700.dds',			'PLAYERCOLOR_FRANCE',	'TECH_ANIMAL_HUSBANDRY',	NULL,			NULL,							NULL							),
+('EACIV_CRUITHNI',			'testbackground_1.17_856x700.dds',			'PLAYERCOLOR_GERMANY',	'TECH_TRACKING_TRAPPING',	NULL,			NULL,							NULL							),
+('EACIV_CRECY',				'testbackground_1.17_856x700.dds',			'PLAYERCOLOR_GREECE',	'TECH_ARCHERY',				'Warrior',		NULL,							NULL							),
+('EACIV_DAGGOO',			'testbackground_1.17_856x700.dds',			'PLAYERCOLOR_INDIA',	'TECH_HARPOONS',			NULL,			NULL,							NULL							),
 ('EACIV_FOMHOIRE',			'testbackground_1.17_856x700.dds',			'PLAYERCOLOR_JAPAN',	'TECH_SAILING',				NULL,			NULL,							'BUILDING_FOMHOIRE'				),
-('EACIV_PARAKHORA',			'testbackground_1.17_856x700.dds',			'PLAYERCOLOR_OTTOMAN',	'TECH_MILLING',				NULL,			NULL,							'BUILDING_CAPITAL_PARAKHORA'	),
-('EACIV_NEITH',				'testbackground_1.17_856x700.dds',			'PLAYERCOLOR_OTTOMAN',	'TECH_WEAVING',				'Merchant',		NULL,							NULL							),	--*
-('EACIV_ELEUTHERIOS',		'testbackground_1.17_856x700.dds',			'PLAYERCOLOR_ARABIA',	'TECH_ZYMURGY',				'Merchant',		'POLICY_EACIV_ELEUTHERIOS',		NULL							),
+('EACIV_PARAKHORA',			'testbackground_1.17_856x700.dds',			'PLAYERCOLOR_OTTOMAN',	'TECH_MILLING',				NULL,			'POLICY_EACIV_PARAKHORA',		NULL							),
+('EACIV_NEITH',				'testbackground_1.17_856x700.dds',			'PLAYERCOLOR_OTTOMAN',	'TECH_WEAVING',				'Merchant',		NULL,							NULL							),	
+('EACIV_ELEUTHERIOS',		'testbackground_1.17_856x700.dds',			'PLAYERCOLOR_ARABIA',	'TECH_ZYMURGY',				'Merchant',		NULL,							NULL							),
 ('EACIV_NINKASI',			'testbackground_1.17_856x700.dds',			'PLAYERCOLOR_PERSIA',	'TECH_ZYMURGY',				'Artist',		NULL,							NULL							),
 ('EACIV_GIRNAR',			'testbackground_1.17_856x700.dds',			'PLAYERCOLOR_ROME',		'TECH_IRRIGATION',			NULL,			NULL,							NULL							),	--do something with G&K dutch improv
-('EACIV_ALDEBAR',			'testbackground_1.17_856x700.dds',			'PLAYERCOLOR_RUSSIA',	'TECH_CALENDAR',			NULL,			'POLICY_EACIV_ALDEBAR',			NULL							),
+('EACIV_ALDEBAR',			'testbackground_1.17_856x700.dds',			'PLAYERCOLOR_RUSSIA',	'TECH_CALENDAR',			NULL,			NULL,							NULL							),
 ('EACIV_ANAPHORA',			'testbackground_1.17_856x700.dds',			'PLAYERCOLOR_AZTEC',	'TECH_DIVINE_LITURGY',		'Devout',		NULL,							NULL							),
-('EACIV_ISALLIN',			'testbackground_1.17_856x700.dds',			'PLAYERCOLOR_SIAM',		'TECH_DIVINE_LITURGY',		NULL,			'POLICY_EACIV_ISALLIN',			NULL							),
+('EACIV_ISALLIN',			'testbackground_1.17_856x700.dds',			'PLAYERCOLOR_SIAM',		'TECH_DIVINE_LITURGY',		'Devout',		'POLICY_EACIV_ISALLIN',			NULL							),
 ('EACIV_STYGIA',			'testbackground_1.17_856x700.dds',			'PLAYERCOLOR_BYZANTIUM','TECH_MALEFICIUM',			'Thaumaturge',	NULL,							NULL							),
-('EACIV_MORIQUENDI',		'testbackground_1.17_856x700.dds',			'PLAYERCOLOR_AMERICA',	'TECH_MALEFICIUM',			'Thaumaturge',	NULL,							NULL							),	--*
-('EACIV_LEMURIA',			'testbackground_1.17_856x700.dds',			'PLAYERCOLOR_AMERICA',	'TECH_THAUMATURGY',			'Thaumaturge',	NULL,							NULL							),	--*
+('EACIV_MORIQUENDI',		'testbackground_1.17_856x700.dds',			'PLAYERCOLOR_AMERICA',	'TECH_MALEFICIUM',			'Thaumaturge',	NULL,							NULL							),	
+('EACIV_LEMURIA',			'testbackground_1.17_856x700.dds',			'PLAYERCOLOR_AMERICA',	'TECH_THAUMATURGY',			'Thaumaturge',	NULL,							NULL							),	
 ('EACIV_AXAGORIA',			'testbackground_1.17_856x700.dds',			'PLAYERCOLOR_CARTHAGE',	'TECH_PHILOSOPHY',			'Sage',			'POLICY_EACIV_AXAGORIA',		NULL							),
 ('EACIV_IACCHIA',			'testbackground_1.17_856x700.dds',			'PLAYERCOLOR_ETHIOPIA',	'TECH_DRAMA',				'Artist',		'POLICY_EACIV_IACCHIA',			NULL							),
 ('EACIV_LAGAD',				'testbackground_1.17_856x700.dds',			'PLAYERCOLOR_MAYA',		'TECH_MATHEMATICS',			'Sage',			NULL,							NULL							),
@@ -90,58 +92,68 @@ INSERT INTO EaCivs (Type,	PopupImage,									DefaultPlayerColor,		KnownTech,			
 ('EACIV_LUCHTAIN',			'testbackground_1.17_856x700.dds',			'PLAYERCOLOR_SPAIN',	'TECH_MASONRY',				'Engineer',		'POLICY_EACIV_LUCHTAIN',		NULL							),
 ('EACIV_VINCA',				'testbackground_1.17_856x700.dds',			'PLAYERCOLOR_ASSYRIA',	'TECH_BRONZE_WORKING',		'Warrior',		NULL,							NULL							),
 ('EACIV_GOBANN',			'testbackground_1.17_856x700.dds',			'PLAYERCOLOR_BRAZIL',	'TECH_BRONZE_WORKING',		'Warrior',		NULL,							NULL							);
+
 --('EACIV_UR',				'testbackground_1.17_856x700.dds',			'PLAYERCOLOR_INDONESIA','TECH_DEEP_MINING',			NULL,			NULL,							NULL							),
---('EACIV_ORKAHAUGR',			'testbackground_1.17_856x700.dds',			'PLAYERCOLOR_MOROCCO',	'TECH_DEEP_ROADS',			NULL,			'POLICY_EACIV_ORKAHAUGR',		NULL							);
+--('EACIV_ORKAHAUGR',		'testbackground_1.17_856x700.dds',			'PLAYERCOLOR_MOROCCO',	'TECH_DEEP_ROADS',			NULL,			NULL,							NULL							);
 
 UPDATE EaCivs SET AdoptedPolicy = 'POLICY_COMMERCE', AIMercHire = -100 WHERE Type = 'EACIV_HIPPUS';
-UPDATE EaCivs SET CapitalNearbyResourceType = 'RESOURCE_WINE', CapitalNearbyResourceNumber = 2 WHERE Type = 'EACIV_ELEUTHERIOS';
+UPDATE EaCivs SET GainTech = 'TECH_ALLOW_ALL_WATER_PASSAGE' WHERE Type = 'EACIV_FOMHOIRE';
+UPDATE EaCivs SET CapitalNearbyResourceType = 'RESOURCE_WINE', CapitalNearbyResourceNumber = 2, GainTech = 'TECH_OENOLOGY' WHERE Type = 'EACIV_ELEUTHERIOS';
+UPDATE EaCivs SET GainTech = 'TECH_ALLOW_POLDER' WHERE Type = 'EACIV_GIRNAR';
+
 UPDATE EaCivs SET CapitalNearbyResourceType = 'RESOURCE_INCENSE', CapitalNearbyResourceNumber = 2 WHERE Type = 'EACIV_ANAPHORA';
+
+
+
 UPDATE EaCivs SET PopResourceNearCapital = 'RESOURCE_YEW' WHERE Type = 'EACIV_CRECY';	
 UPDATE EaCivs SET PopResourceNearCapital = 'RESOURCE_STONE' WHERE Type IN ('EACIV_SOPHRONIA', 'EACIV_LUCHTAIN');
 UPDATE EaCivs SET PopResourceNearCapital = 'RESOURCE_STONE', FoundingGPClass = 'Engineer', FoundingGPType = 'EAPERSON_SOPHRONISCUS' WHERE Type = 'EACIV_SOPHRONIA';	
 UPDATE EaCivs SET PopResourceNearCapital = 'RESOURCE_STONE', FoundingGPClass = 'Engineer', FoundingGPType = 'EAPERSON_LUCHTA' WHERE Type = 'EACIV_LUCHTAIN';	
 UPDATE EaCivs SET FoundingGPClass = 'Engineer', FoundingGPType = 'EAPERSON_GOIBNIU' WHERE Type = 'EACIV_GOBANN';	
+UPDATE EaCivs SET FavoredTechExtraReduction = -20 WHERE Type IN ('EACIV_AB', 'EACIV_LAGAD', 'EACIV_VINCA', 'EACIV_GOBANN');
+
+
 
 
 -- policy triggers
-INSERT INTO EaCivs (Type,	PopupImage,								DefaultPlayerColor,		AdoptedPolicy,				FoundingGPClass,	FoundingGPSubclass,	FoundingGPType,		FavoredGPClass,	GainPolicy,					GainCapitalBuilding) VALUES
-('EACIV_REYNES',			'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_ARABIA',	'POLICY_ARISTOCRACY',		NULL,				NULL,				NULL,				NULL,			NULL,						NULL						),	--*
-('EACIV_BJARMALAND',		'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_AZTEC',	'POLICY_GUILDS',			NULL,				NULL,				NULL,				NULL,			NULL,						NULL						),	--*
-('EACIV_KAZA',				'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_CHINA',	'POLICY_CIVIL_SERVICE',		NULL,				NULL,				NULL,				NULL,			'POLICY_EACIV_KAZA',		NULL						),
-('EACIV_EOGANACHTA',		'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_EGYPT',	'POLICY_ARISTOCRACY',		NULL,				NULL,				NULL,				NULL,			NULL,						NULL						),	--*
-('EACIV_SKOGR',				'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_ENGLAND',	'POLICY_ANIMAL_LORE',		NULL,				'Druid',			'EAPERSON_NAL',		'Devout',		NULL,						NULL						),
-('EACIV_BANBA',				'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_FRANCE',	'POLICY_ANIMAL_LORE',		NULL,				'Druid',			NULL,				'Devout',		NULL,						NULL						),	--*
-('EACIV_ERIU',				'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_GERMANY',	'POLICY_WOODS_LORE',		NULL,				'Druid',			'EAPERSON_ERIU',	'Devout',		NULL,						NULL						),
-('EACIV_FODLA',				'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_GREECE',	'POLICY_EARTH_LORE',		NULL,				'Druid',			'EAPERSON_FODLA',	'Devout',		NULL,						NULL						),	--*
-('EACIV_YESOD',				'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_PORTUGAL',	'POLICY_WAY_OF_THE_WISE',	NULL,				'Priest',			NULL,				'Devout',		NULL,						'BUILDING_CAPITAL_YESOD'	),
-('EACIV_NETZACH',			'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_SHOSHONE',	'POLICY_MYSTICISM',			NULL,				'Priest',			NULL,				'Devout',		NULL,						'BUILDING_CAPITAL_NETZACH'	),
-('EACIV_HOD',				'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_POLAND',	'POLICY_PRIESTHOOD',		NULL,				'Priest',			NULL,				'Devout',		'POLICY_EACIV_HOD',			NULL						),
-('EACIV_O',					'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_INDIA',	'POLICY_ARCANE_TRADITION',	NULL,				'Wizard',			NULL,				'Thaumaturge',	NULL,						NULL						),	--*
-('EACIV_MU',				'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_MOROCCO',	'POLICY_ARCANE_TRADITION',	NULL,				'Wizard',			NULL,				'Thaumaturge',	NULL,						NULL						),	--*
-('EACIV_GRAEAE',			'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_JAPAN',	'POLICY_WITCHCRAFT',		NULL,				'Witch',			NULL,				'Thaumaturge',	NULL,						NULL						),
-('EACIV_NEZELIBA',			'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_OTTOMAN',	'POLICY_SLAVE_TRADE',		NULL,				NULL,				NULL,				NULL,			NULL,						NULL						),
-('EACIV_GAZIYA',			'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_PERSIA',	'POLICY_SLAVE_RAIDERS',		NULL,				NULL,				NULL,				NULL,			NULL,						NULL						),	--*
-('EACIV_NEMEDIA',			'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_ROME',		'POLICY_DISCIPLINE',		'Warrior',			NULL,				'EAPERSON_NEMED',	'Warrior',		'POLICY_EACIV_NEMEDIA',		NULL						),
-('EACIV_MILESIA',			'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_RUSSIA',	'POLICY_WARCRAFT',			'Warrior',			NULL,				NULL,				'Warrior',		'POLICY_EACIV_NEMEDIA',		NULL						),	--*
-('EACIV_ULFHETHNAR',		'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_SIAM',		'POLICY_WARSPIRIT',			NULL,				'Berserker',		NULL,				'Warrior',		'POLICY_EACIV_NEMEDIA',		NULL						),	--*
-('EACIV_MORRIGNA',			'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_SONGHAI',	'POLICY_DISCIPLINE',		'Warrior',			NULL,				'EAPERSON_MORRIGAN','Warrior',		'POLICY_EACIV_NEMEDIA',		NULL						),	--*
-('EACIV_MACHAE',			'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_AUSTRIA',	'POLICY_WARCRAFT',			'Warrior',			NULL,				NULL,				'Warrior',		'POLICY_EACIV_NEMEDIA',		NULL						),	--*
-('EACIV_BODWA',				'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_BYZANTIUM','POLICY_WARSPIRIT',			NULL,				'Berserker',		'EAPERSON_BADB',	'Warrior',		'POLICY_EACIV_NEMEDIA',		NULL						),	--*
---('EACIV_MORD',			'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_AMERICA',	'POLICY_MILITARISM',		'Warrior',			NULL,				NULL,				'Warrior',		'POLICY_EACIV_LOTHIN',		NULL						),
-('EACIV_THEANON',			'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_CARTHAGE',	'POLICY_SCHOLASTICISM',		'Sage',				NULL,				'EAPERSON_THEANO',	'Sage',			NULL,						NULL						),
-('EACIV_SAGUENAY',			'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_CELTS',	'POLICY_FOLKART',			'Artist',			NULL,				NULL,				'Artist',		NULL,						NULL						),	--*
-('EACIV_ALBION',			'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_ETHIOPIA',	'POLICY_FOLKLORE',			'Artist',			NULL,				NULL,				'Artist',		NULL,						NULL						),	--*
-('EACIV_TIR_ECNE',			'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_MAYA',		'POLICY_SCHOLASTICISM',		'Sage',				NULL,				'EAPERSON_ECNE',	'Sage',			NULL,						NULL						),	--*
-('EACIV_NOUDONT',			'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_NETHERLANDS','POLICY_FOLKART',			'Artist',			NULL,				NULL,				'Artist',		NULL,						NULL						),	--*
-('EACIV_AES_DANA',			'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_SWEDEN',	'POLICY_FOLKLORE',			'Artist',			NULL,				'EAPERSON_DANU',	'Artist',		NULL,						NULL						),
-('EACIV_SUDDENE',			'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_SPAIN',	'POLICY_MERCANTILISM',		'Merchant',			NULL,				NULL,				'Merchant',		NULL,						NULL						),	--*
-('EACIV_PARTHOLON',			'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_BRAZIL',	'POLICY_CULTURAL_DIPLOMACY','Merchant',			NULL,				'EAPERSON_PARTHOLON','Merchant',	NULL,						NULL						),
-('EACIV_DAL_FIATACH',		'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_INDONESIA','POLICY_MERCANTILISM',		'Merchant',			NULL,				'EAPERSON_AINE',	'Merchant',		NULL,						NULL						),	--*
-('EACIV_DAIRINE',			'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_MOROCCO',	'POLICY_CULTURAL_DIPLOMACY','Merchant',			NULL,				'EAPERSON_ETAIN',	'Merchant',		NULL,						NULL						),	--*
-('EACIV_MOR',				'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_POLAND',	'POLICY_MERCENARIES',		'Merchant',			NULL,				NULL,				'Merchant',		'POLICY_EACIV_MOR',			NULL						),	--*
-('EACIV_DOKKALFAR',			'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_PORTUGAL',	'POLICY_DOMINIONISM',		NULL,				NULL,				NULL,				NULL,			NULL,						NULL						),	--*
-('EACIV_LJOSALFAR',			'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_VENICE',	'POLICY_PANTHEISM',			NULL,				NULL,				NULL,				NULL,			NULL,						NULL						),	--*
-('EACIV_SEGOYIM',			'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_ZULU',		'POLICY_PANTHEISM',			NULL,				NULL,				NULL,				NULL,			NULL,						NULL						);	--*
+INSERT INTO EaCivs (Type,	Quote,								PopupImage,								DefaultPlayerColor,		AdoptedPolicy,				FoundingGPClass,	FoundingGPSubclass,	FoundingGPType,		FavoredGPClass,	GainPolicy					) VALUES
+('EACIV_REYNES',			NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_ARABIA',	'POLICY_ARISTOCRACY',		NULL,				NULL,				NULL,				NULL,			NULL						),	
+('EACIV_BJARMALAND',		NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_AZTEC',	'POLICY_GUILDS',			NULL,				NULL,				NULL,				NULL,			NULL						),	
+('EACIV_KAZA',				NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_CHINA',	'POLICY_CIVIL_SERVICE',		NULL,				NULL,				NULL,				NULL,			'POLICY_EACIV_KAZA'			),
+('EACIV_EOGANACHTA',		NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_EGYPT',	'POLICY_ARISTOCRACY',		NULL,				NULL,				NULL,				NULL,			NULL						),
+('EACIV_SKOGR',				NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_ENGLAND',	'POLICY_ANIMAL_LORE',		NULL,				'Druid',			'EAPERSON_NAL',		'Devout',		NULL						),
+('EACIV_BANBA',				NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_FRANCE',	'POLICY_ANIMAL_LORE',		NULL,				'Druid',			NULL,				'Devout',		NULL						),
+('EACIV_ERIU',				NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_GERMANY',	'POLICY_WOODS_LORE',		NULL,				'Druid',			'EAPERSON_ERIU',	'Devout',		NULL						),
+('EACIV_FODLA',				NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_GREECE',	'POLICY_EARTH_LORE',		NULL,				'Druid',			'EAPERSON_FODLA',	'Devout',		NULL						),	
+('EACIV_YESOD',				NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_PORTUGAL',	'POLICY_WAY_OF_THE_WISE',	NULL,				'Priest',			NULL,				'Devout',		NULL						),
+('EACIV_NETZACH',			NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_SHOSHONE',	'POLICY_MYSTICISM',			NULL,				'Priest',			NULL,				'Devout',		NULL						),
+('EACIV_HOD',				NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_POLAND',	'POLICY_PRIESTHOOD',		NULL,				'Priest',			NULL,				'Devout',		'POLICY_EACIV_HOD'			),
+('EACIV_O',					NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_INDIA',	'POLICY_ARCANE_TRADITION',	NULL,				'Wizard',			NULL,				'Thaumaturge',	NULL						),
+('EACIV_MU',				NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_MOROCCO',	'POLICY_ARCANE_TRADITION',	NULL,				'Wizard',			NULL,				'Thaumaturge',	NULL						),	
+('EACIV_GRAEAE',			'TXT_KEY_EA_CIV_GRAEAE_QUOTE',		'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_JAPAN',	'POLICY_WITCHCRAFT',		NULL,				'Witch',			NULL,				'Thaumaturge',	NULL						),
+('EACIV_NEZELIBA',			NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_OTTOMAN',	'POLICY_SLAVE_TRADE',		NULL,				NULL,				NULL,				NULL,			NULL						),
+('EACIV_GAZIYA',			NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_PERSIA',	'POLICY_SLAVE_RAIDERS',		NULL,				NULL,				NULL,				NULL,			NULL						),	
+('EACIV_NEMEDIA',			NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_ROME',		'POLICY_DISCIPLINE',		'Warrior',			NULL,				'EAPERSON_NEMED',	'Warrior',		'POLICY_EACIV_NEMEDIA'		),
+('EACIV_MILESIA',			NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_RUSSIA',	'POLICY_WARCRAFT',			'Warrior',			NULL,				NULL,				'Warrior',		'POLICY_EACIV_NEMEDIA'		),	
+('EACIV_ULFHETHNAR',		NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_SIAM',		'POLICY_WARSPIRIT',			NULL,				'Berserker',		NULL,				'Warrior',		'POLICY_EACIV_NEMEDIA'		),	
+('EACIV_MORRIGNA',			NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_SONGHAI',	'POLICY_DISCIPLINE',		'Warrior',			NULL,				'EAPERSON_MORRIGAN','Warrior',		'POLICY_EACIV_NEMEDIA'		),	
+('EACIV_MACHAE',			NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_AUSTRIA',	'POLICY_WARCRAFT',			'Warrior',			NULL,				NULL,				'Warrior',		'POLICY_EACIV_NEMEDIA'		),	
+('EACIV_BODWA',				NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_BYZANTIUM','POLICY_WARSPIRIT',			NULL,				'Berserker',		'EAPERSON_BADB',	'Warrior',		'POLICY_EACIV_NEMEDIA'		),	
+--('EACIV_MORD',			NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_AMERICA',	'POLICY_MILITARISM',		'Warrior',			NULL,				NULL,				'Warrior',		'POLICY_EACIV_LOTHIN'		),
+('EACIV_THEANON',			NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_CARTHAGE',	'POLICY_SCHOLASTICISM',		'Sage',				NULL,				'EAPERSON_THEANO',	'Sage',			NULL						),
+('EACIV_SAGUENAY',			NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_CELTS',	'POLICY_FOLKART',			'Artist',			NULL,				NULL,				'Artist',		NULL						),	
+('EACIV_ALBION',			NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_ETHIOPIA',	'POLICY_FOLKLORE',			'Artist',			NULL,				NULL,				'Artist',		NULL						),	
+('EACIV_TIR_ECNE',			NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_MAYA',		'POLICY_SCHOLASTICISM',		'Sage',				NULL,				'EAPERSON_ECNE',	'Sage',			NULL						),	
+('EACIV_NOUDONT',			NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_NETHERLANDS','POLICY_FOLKART',			'Artist',			NULL,				NULL,				'Artist',		NULL						),
+('EACIV_AES_DANA',			NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_SWEDEN',	'POLICY_FOLKLORE',			'Artist',			NULL,				'EAPERSON_DANU',	'Artist',		NULL						),
+('EACIV_SUDDENE',			NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_SPAIN',	'POLICY_MERCANTILISM',		'Merchant',			NULL,				NULL,				'Merchant',		NULL						),
+('EACIV_PARTHOLON',			NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_BRAZIL',	'POLICY_CULTURAL_DIPLOMACY','Merchant',			NULL,				'EAPERSON_PARTHOLON','Merchant',	NULL						),
+('EACIV_DAL_FIATACH',		NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_INDONESIA','POLICY_MERCANTILISM',		'Merchant',			NULL,				'EAPERSON_AINE',	'Merchant',		NULL						),	
+('EACIV_DAIRINE',			NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_MOROCCO',	'POLICY_CULTURAL_DIPLOMACY','Merchant',			NULL,				'EAPERSON_ETAIN',	'Merchant',		NULL						),	
+('EACIV_MOR',				NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_POLAND',	'POLICY_MERCENARIES',		'Merchant',			NULL,				NULL,				'Merchant',		'POLICY_EACIV_MOR'			),	
+('EACIV_DOKKALFAR',			NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_PORTUGAL',	'POLICY_DOMINIONISM',		NULL,				NULL,				NULL,				NULL,			NULL						),	
+('EACIV_LJOSALFAR',			NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_VENICE',	'POLICY_PANTHEISM',			NULL,				NULL,				NULL,				NULL,			NULL						),	
+('EACIV_SEGOYIM',			NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_ZULU',		'POLICY_PANTHEISM',			NULL,				NULL,				NULL,				NULL,			NULL						);
 
 UPDATE EaCivs SET OrAdoptedPolicy1 = 'POLICY_GUILDS', OrAdoptedPolicy2 = 'POLICY_CIVIL_SERVICE'  WHERE Type = 'EACIV_EOGANACHTA';
 UPDATE EaCivs SET OrAdoptedPolicy1 = 'POLICY_WOODS_LORE', OrAdoptedPolicy2 = 'POLICY_EARTH_LORE'  WHERE Type = 'EACIV_SKOGR';
@@ -158,25 +170,25 @@ INSERT INTO EaCivs (Type,	PopupImage,								DefaultPlayerColor,		ImprovementTyp
 ('EACIV_AGARTHA',			'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_GREECE',	'IMPROVEMENT_MINE',				NULL,				2,					'Engineer',		NULL			);
 
 -- building triggers
-INSERT INTO EaCivs (Type,	PopupImage,								DefaultPlayerColor,		BuildingType,			FavoredGPClass,	GainPolicy,					GainCapitalBuilding) VALUES
-('EACIV_YS',				'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_VENICE',	'BUILDING_LIBRARY',		'Sage',			'POLICY_EACIV_YS',			NULL						),
-('EACIV_TYRE',				'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_ZULU',		'BUILDING_MARKETPLACE',	'Merchant',		NULL,						'BUILDING_CAPITAL_TYRE'		),
-('EACIV_GERZAH',			'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_ARABIA',	'BUILDING_FORGE',		'Engineer',		NULL,						'BUILDING_CAPITAL_GERZAH'	),
-('EACIV_PALARE',			'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_AZTEC',	'BUILDING_FAIR',		'Artist',		'POLICY_EACIV_PALARE',		'BUILDING_CAPITAL_PALARE'	);
+INSERT INTO EaCivs (Type,	PopupImage,								DefaultPlayerColor,		BuildingType,			FavoredGPClass,	GainPolicy				) VALUES
+('EACIV_YS',				'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_VENICE',	'BUILDING_LIBRARY',		'Sage',			'POLICY_EACIV_YS'		),
+('EACIV_TYRE',				'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_ZULU',		'BUILDING_MARKETPLACE',	'Merchant',		NULL					),
+('EACIV_GERZAH',			'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_ARABIA',	'BUILDING_FORGE',		'Engineer',		NULL					),
+('EACIV_PALARE',			'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_AZTEC',	'BUILDING_FAIR',		'Artist',		'POLICY_EACIV_PALARE'	);
 
 -- unit triggers
-INSERT INTO EaCivs (Type,	PopupImage,								DefaultPlayerColor,		UnitClass,						OrUnitClass,						OrUnitClass2,					FavoredGPClass,	GainPolicy,					GainCapitalBuilding) VALUES
-('EACIV_MAYD',				'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_CHINA',	'UNITCLASS_BIREMES',			NULL,								NULL,							'Merchant',		NULL,						'BUILDING_CAPITAL_HY_BREASIL'	),
-('EACIV_SISUKAS',			'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_EGYPT',	'UNITCLASS_LIGHT_INFANTRY_MAN',	'UNITCLASS_LIGHT_INFANTRY_SIDHE',	'UNITCLASS_LIGHT_INFANTRY_ORC',	'Warrior',		'POLICY_EACIV_SISUKAS',	NULL								),
-('EACIV_EBOR',				'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_ENGLAND',	'UNITCLASS_MOUNTED_ELEPHANTS',	NULL,								NULL,							'Warrior',		NULL,						NULL							),
-('EACIV_PHRYGES',			'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_FRANCE',	'UNITCLASS_HORSEMEN_MAN',		'UNITCLASS_HORSEMEN_SIDHE',			'UNITCLASS_HORSEMEN_ORC',		'Warrior',		'POLICY_EACIV_PHRYGES',	NULL								);
+INSERT INTO EaCivs (Type,	PopupImage,								DefaultPlayerColor,		UnitClass,						OrUnitClass,						OrUnitClass2,					FavoredGPClass	) VALUES
+('EACIV_MAYD',				'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_CHINA',	'UNITCLASS_BIREMES',			NULL,								NULL,							'Merchant'		),
+('EACIV_SISUKAS',			'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_EGYPT',	'UNITCLASS_LIGHT_INFANTRY_MAN',	'UNITCLASS_LIGHT_INFANTRY_SIDHE',	'UNITCLASS_LIGHT_INFANTRY_ORC',	'Warrior'		),
+('EACIV_EBOR',				'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_ENGLAND',	'UNITCLASS_MOUNTED_ELEPHANTS',	NULL,								NULL,							'Warrior'		),
+('EACIV_PHRYGES',			'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_FRANCE',	'UNITCLASS_HORSEMEN_MAN',		'UNITCLASS_HORSEMEN_SIDHE',			'UNITCLASS_HORSEMEN_ORC',		'Warrior'		);
 
 
 
 --Build out table from EaCivString
 UPDATE EaCivs SET EaCivString = REPLACE(Type, 'EACIV_', '');
 UPDATE EaCivs SET Description = 'TXT_KEY_EA_CIV_' || EaCivString, CapitalName = 'TXT_KEY_EA_CAPITAL_' || EaCivString;
-UPDATE EaCivs SET Help = Description || '_HELP', Quote = Description || '_QUOTE';
+UPDATE EaCivs SET Help = Description || '_HELP';
 UPDATE EaCivs SET ShortDescription = Description, Adjective = Description, CivilopediaTag = Description || '_PEDIA';			--TO DO: Add these as separate txt keys
 
 

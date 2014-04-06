@@ -34,8 +34,8 @@ local HandleError21 = HandleError21
 
 
 --file functions
-local LuaReq = {}	
-local LuaSet = {}
+local CivReq = {}	
+local CivSet = {}
 
 --file control
 local bInited = false
@@ -115,7 +115,7 @@ local function TestNameConditions(iPlayer, eaCivInfo)
 		end
 		if unitNumber < 1 then return false end
 	end
-	if LuaReq[eaCivInfo.ID] and not LuaReq[eaCivInfo.ID](iPlayer) then return false end
+	if CivReq[eaCivInfo.ID] and not CivReq[eaCivInfo.ID](iPlayer) then return false end
 	return true
 end
 
@@ -227,10 +227,14 @@ function SetNewCivName(iPlayer, eaCivID)
 	--Do civ-specific effects
 	ResetPlayerFavoredTechs(iPlayer)
 
-	CheckCapitalBuildings(iPlayer, nil)		--will add Civ-specific capital buildings, if any
+	CheckCapitalBuildings(iPlayer)		--will add Civ-specific capital buildings, if any
 
 	if eaCivInfo.GainPolicy then
 		player:SetHasPolicy(GameInfoTypes[eaCivInfo.GainPolicy], true)
+	end
+
+	if eaCivInfo.GainTech then
+		team:SetHasTech(GameInfoTypes[eaCivInfo.GainTech], true)
 	end
 
 	if eaCivInfo.PopResourceNearCapital then
@@ -239,7 +243,7 @@ function SetNewCivName(iPlayer, eaCivID)
 	end
 
 
-	if LuaSet[eaCivID] then LuaSet[eaCivID](iPlayer) end
+	if CivSet[eaCivID] then CivSet[eaCivID](iPlayer) end
 
 	--Safe to unlock researved GPs?
 	local bAllCivsHaveNames = true
@@ -260,11 +264,15 @@ LuaEvents.EaCivNamingSetNewCivName.Add(function(iPlayer, eaCivID) return HandleE
 
 
 --------------------------------------------------------------
--- Civ-specific Lua Req and Set functions
+-- Civ-specific Req and Set functions
 --------------------------------------------------------------
 
-LuaSet[GameInfoTypes.EACIV_LAGAD] = function(iPlayer)	
-	--
+CivSet[GameInfoTypes.EACIV_CRUITHNI] = function(iPlayer)	
+	gg_campRange[iPlayer] = gg_campRange[iPlayer] + 1
+end
+
+CivSet[GameInfoTypes.EACIV_DAGGOO] = function(iPlayer)	
+	gg_whalingRange[iPlayer] = gg_whalingRange[iPlayer] + 2
 end
 
 

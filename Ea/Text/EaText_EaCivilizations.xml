@@ -268,7 +268,58 @@
 			<Text>Double, double toil and trouble;[NEWLINE]Fire burn, and caldron bubble.[NEWLINE]Fillet of a fenny snake,[NEWLINE]In the caldron boil and bake;[NEWLINE]Eye of newt, and toe of frog,[NEWLINE]Wool of bat, and tongue of dog,[NEWLINE]For a charm of powerful trouble,[NEWLINE]Like a hell-broth boil and bubble.[NEWLINE]Scale of dragon; tooth of wolf;[NEWLINE]Witches' mummy; maw and gulf[NEWLINE]Of the ravin'd salt-sea shark;[NEWLINE]Root of hemlock digg'd i the dark;[NEWLINE]Cool it with a baboon's blood,[NEWLINE]Then the charm is firm and good.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_GRAEAE_HELP">
-			<Text>[ICON_BULLET]Free Reagents from first 6 cities[NEWLINE][ICON_BULLET]+1 Mana [ICON_STAR] from all worked resources[NEWLINE][ICON_BULLET]Thaumaturges are always of subclass Witch</Text>
+			<Text>[ICON_BULLET]Free Reagents from first 6 cities[NEWLINE][ICON_BULLET]+1 Mana [ICON_STAR] from all improved resources[NEWLINE][ICON_BULLET]Thaumaturges are always of subclass Witch</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_NEZELIBA">
+			<Text>Nežēlība</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_NEZELIBA_HELP">
+			<Text>[ICON_BULLET]+20 work rate for Slaves[NEWLINE][ICON_BULLET]+20% [ICON_GOLD] Gold and [ICON_PRODUCTION] Production from selling and rendering Slaves, respectively</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_GAZIYA">
+			<Text>Gaziya</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_GAZIYA_HELP">
+			<Text>[ICON_BULLET]33% more Slaves generated from unit defeat, city conquest and city raizing</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_NEMEDIA">
+			<Text>Nemedia</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_NEMEDIA_HELP">
+			<Text>[ICON_BULLET]Extra Gold [ICON_GOLD] from plundering[NEWLINE][ICON_BULLET]Lowest baseline Morale for any unit is -15</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_MILESIA">
+			<Text>Milesia</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_MILESIA_HELP">
+			<Text>[ICON_BULLET]Gold [ICON_GOLD] from kills. +33% combat during Golden Age</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_ULFHETHNAR">
+			<Text>Úlfhéthnar</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_ULFHETHNAR_HELP">
+			<Text>[ICON_BULLET]Units fight at full strength when wounded</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_MORRIGNA">
+			<Text>The Morrígna</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_MORRIGNA_HELP">
+			<Text>[ICON_BULLET]Extra Gold [ICON_GOLD] from plundering[NEWLINE][ICON_BULLET]Lowest baseline Morale for any unit is -15</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_MACHAE">
+			<Text>The Machae</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_MACHAE_HELP">
+			<Text>[ICON_BULLET]Gold [ICON_GOLD] from kills[NEWLINE][ICON_BULLET]+33% combat during Golden Age</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_BODWA">
+			<Text>The Bodwa</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_BODWA_HELP">
+			<Text>[ICON_BULLET]Units fight at full strength when wounded</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_MORD">
+			<Text>Mord</Text>
 		</Row>
 		<!--
 		<Row Tag="_HELP">
@@ -280,34 +331,13 @@
 		<Row Tag="_HELP">
 			<Text>[ICON_BULLET]</Text>
 		</Row>
+		<Row Tag="_HELP">
+			<Text>[ICON_BULLET]</Text>
+		</Row>
+		<Row Tag="_HELP">
+			<Text>[ICON_BULLET]</Text>
+		</Row>
 		-->	
-		<Row Tag="TXT_KEY_EA_CIV_NEZELIBA">
-			<Text>Nezêlîba</Text>
-		</Row>			
-		<Row Tag="TXT_KEY_EA_CIV_GAZIYA">
-			<Text>Gaziya</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_CIV_NEMEDIA">
-			<Text>Nemedia</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_CIV_MILESIA">
-			<Text>Milesia</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_CIV_ULFHETHNAR">
-			<Text>Úlfhéthnar</Text>
-		</Row>	
-		<Row Tag="TXT_KEY_EA_CIV_MORRIGNA">
-			<Text>The Morrígna</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_CIV_MACHAE">
-			<Text>The Machae</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_CIV_BODWA">
-			<Text>The Bodwa</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_CIV_MORD">
-			<Text>Mord</Text>
-		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_THEANON">
 			<Text>Theanon</Text>
 		</Row>
@@ -554,7 +584,7 @@
 			<Text>Áth Médée</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_CAPITAL_ALBION">
-			<Text>Albbu</Text>
+			<Text>Cærleon</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_CAPITAL_TIR_ECNE">
 			<Text>Ildathach</Text>

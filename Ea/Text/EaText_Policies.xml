@@ -318,10 +318,10 @@
 			<Text>placeholder</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_BERSERKER_RAGE">
-			<Text>Berserker Rage</Text>
+			<Text>Berserkergang</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_BERSERKER_RAGE_HELP">
-			<Text>[COLOR_POSITIVE_TEXT]Berserker Rage[ENDCOLOR][NEWLINE][ICON_BULLET]Baseline unit [ICON_HAPPINESS_1] Morale is boosted 1% for each hit point of damage sustained (does not affect Slaves or Mercenaries or non-living units)</Text>
+			<Text>[COLOR_POSITIVE_TEXT]Berserker Rage[ENDCOLOR][NEWLINE][ICON_BULLET]Baseline unit [ICON_HAPPINESS_1] Morale is boosted 1% for every 2 hit points of damage sustained (does not affect Slaves, Mercenaries or non-living units)</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_BERSERKER_RAGE_TEXT">
 			<Text>placeholder</Text>

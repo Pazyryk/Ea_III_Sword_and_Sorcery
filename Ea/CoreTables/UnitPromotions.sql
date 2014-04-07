@@ -599,9 +599,6 @@ INSERT INTO UnitPromotions_UnitCombatMods (PromotionType, UnitCombatType, Modifi
 --UNITCOMBAT_GUN
 DELETE FROM UnitPromotions_UnitCombats WHERE PromotionType NOT IN (SELECT Type FROM TempPromoKeepList);
 INSERT INTO UnitPromotions_UnitCombats (PromotionType, UnitCombatType) VALUES
-
-
-
 ('PROMOTION_SLAVERAIDER', 'UNITCOMBAT_RECON' ),
 ('PROMOTION_SLAVERAIDER', 'UNITCOMBAT_MOUNTED' ),
 ('PROMOTION_SLAVERAIDER', 'UNITCOMBAT_MELEE' ),

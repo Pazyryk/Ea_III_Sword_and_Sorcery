@@ -242,14 +242,13 @@ INSERT INTO Policies (Type,	Utility) VALUES
 ('POLICY_EACIV_HOD',			1	),
 
 ('POLICY_CAPITAL_5_FAITH',		1	),
+('POLICY_GRANERY_15PERC_FOOD',	1	),		--works???
+('POLICY_GOLD_FROM_KILLS',		1	),
 
 
 
-
-('POLICY_GRANERY_15PERC_FOOD',			1	),		--can't do +10% from granary here
 ('POLICY_EACIV_NEMEDIA',		1	),
 ('POLICY_EACIV_MOR',			1	),
-('POLICY_EACIV_LOTHIN',			1	),
 ('POLICY_EACIV_YS',				1	),
 ('POLICY_EACIV_PALARE',			1	);
 
@@ -258,9 +257,11 @@ INSERT INTO Policies (Type,	Utility) VALUES
 UPDATE Policies SET BuildingProductionModifier = 20 WHERE Type IN ('POLICY_EACIV_SOPHRONIA', 'POLICY_EACIV_LUCHTAIN');
 UPDATE Policies SET HappinessToScience = 50 WHERE Type = 'POLICY_EACIV_AXAGORIA';		--works?
 UPDATE Policies SET HappinessToCulture = 50 WHERE Type = 'POLICY_EACIV_IACCHIA';
+UPDATE Policies SET GoldFromKills = 100 WHERE Type = 'POLICY_GOLD_FROM_KILLS';
+
+
 UPDATE Policies SET CultureFromKills = 100 WHERE Type = 'POLICY_EACIV_NEMEDIA';
-UPDATE Policies SET CultureFromKills = 100 WHERE Type = 'POLICY_EACIV_MOR';	--change to mana?
-UPDATE Policies SET GoldFromKills = 100 WHERE Type = 'POLICY_EACIV_LOTHIN';
+
 
 -- Misc Utility Effects
 

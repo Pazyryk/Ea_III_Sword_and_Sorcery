@@ -15,9 +15,9 @@ local Dprint = DEBUG_PRINT and print or function() end
 local BARB_PLAYER_INDEX =							BARB_PLAYER_INDEX
 local ANIMALS_PLAYER_INDEX =						ANIMALS_PLAYER_INDEX
 
-local DOMAIN_LAND =									DomainTypes.DOMAIN_LAND
-
 local BUILDING_INTERNMENT_CAMP =					GameInfoTypes.BUILDING_INTERNMENT_CAMP
+local DOMAIN_LAND =									DomainTypes.DOMAIN_LAND
+local EACIV_GAZIYA =								GameInfoTypes.EACIV_GAZIYA
 local EARACE_MAN =									GameInfoTypes.EARACE_MAN
 local EARACE_SIDHE =								GameInfoTypes.EARACE_SIDHE
 local EARACE_HELDEOFOL =							GameInfoTypes.EARACE_HELDEOFOL
@@ -51,6 +51,7 @@ local HandleError10 =				HandleError10
 local HandleError21 =				HandleError21
 local HandleError31 =				HandleError31
 local Floor =						math.floor
+local Rand =						Map.Rand
 
 
 --file control
@@ -459,18 +460,24 @@ local function OnCombatEnded(iAttackingPlayer, iAttackingUnit, attackerDamage, a
 			else
 				UpdateWarriorPoints(iAttackingPlayer, true)		--attacker Warrior points
 				if defenderMaxHP < defenderFinalDamage and defenderMaxHP == 100 then					--must have been a unit kill
-					if attackingUnit:IsHasPromotion(PROMOTION_SLAVERAIDER) and not attackingUnit:IsHasPromotion(PROMOTION_SLAVEMAKER) then
-					
-						local slaveID = UNIT_SLAVES_MAN
-
-						if g_defendingUnitRace == EARACE_SIDHE then
-							slaveID = UNIT_SLAVES_SIDHE
-						elseif g_defendingUnitRace == EARACE_HELDEOFOL then
-							slaveID = UNIT_SLAVES_ORC
+					if attackingUnit:IsHasPromotion(PROMOTION_SLAVERAIDER) then
+						--50% base chance to generate slave
+						local chance = 50
+						local eaPlayer = gPlayers[iAttackingPlayer]
+						if eaPlayer.eaCivNameID == EACIV_GAZIYA then
+							chance = 67
 						end
-						local newUnit = attackingPlayer:InitUnit(slaveID, attackingUnit:GetX(), attackingUnit:GetY() )
-						newUnit:JumpToNearestValidPlot()
-						newUnit:SetHasPromotion(PROMOTION_SLAVE, true)
+						if Rand(100, "hello") < chance then
+							local slaveID = UNIT_SLAVES_MAN
+							if g_defendingUnitRace == EARACE_SIDHE then
+								slaveID = UNIT_SLAVES_SIDHE
+							elseif g_defendingUnitRace == EARACE_HELDEOFOL then
+								slaveID = UNIT_SLAVES_ORC
+							end
+							local newUnit = attackingPlayer:InitUnit(slaveID, attackingUnit:GetX(), attackingUnit:GetY() )
+							newUnit:JumpToNearestValidPlot()
+							newUnit:SetHasPromotion(PROMOTION_SLAVE, true)
+						end
 					end
 				end
 			end

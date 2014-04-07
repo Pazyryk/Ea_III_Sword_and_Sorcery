@@ -27,6 +27,8 @@ local DOMAIN_SEA =							DomainTypes.DOMAIN_SEA
 local ORDER_MAINTAIN =						OrderTypes.ORDER_MAINTAIN
 local ORDER_TRAIN =							OrderTypes.ORDER_TRAIN
 
+local EACIV_GAZIYA =						GameInfoTypes.EACIV_GAZIYA
+
 local EARACE_MAN =							GameInfoTypes.EARACE_MAN
 local EARACE_SIDHE =						GameInfoTypes.EARACE_SIDHE
 local EARACE_HELDEOFOL =					GameInfoTypes.EARACE_HELDEOFOL
@@ -138,6 +140,7 @@ local gg_campRange =				gg_campRange
 --localized game and library functions
 local StrSubstitute =		string.gsub
 local Rand =				Map.Rand
+local Floor =				math.floor
 
 --localized global functions
 local HandleError =			HandleError
@@ -904,6 +907,13 @@ local function OnSetPopulation(x, y, oldPopulation, newPopulation)
 				local newUnit = owner:InitUnit(unitID, x, y )
 				newUnit:JumpToNearestValidPlot()
 				newUnit:SetHasPromotion(PROMOTION_SLAVE, true)
+				local eaPlayer = gPlayers[iOwner]
+				if eaPlayer.eaCivNameID == EACIV_GAZIYA and Rand(3, "hello") == 0 then	--extra 33%
+					local newUnit = owner:InitUnit(unitID, x, y )
+					newUnit:JumpToNearestValidPlot()
+					newUnit:SetHasPromotion(PROMOTION_SLAVE, true)				
+				end
+
 			end
 		end
 	elseif oldPopulation ~= 0 then	--not a new city
@@ -987,7 +997,11 @@ local function OnCityCaptureComplete(iPlayer, bCapital, x, y, iNewOwner)		-- THI
 				unitID = UNIT_SLAVES_SIDHE
 			else 
 				unitID = UNIT_SLAVES_ORC
-			end			
+			end
+			if eaNewOwner.eaCivNameID == EACIV_GAZIYA then
+				popKilled = Floor(popKilled / 3 + 0.5)
+			end
+
 			for j = 1, popKilled do
 				local newUnit = newOwner:InitUnit(unitID, city:GetX(), city:GetY() )
 				newUnit:JumpToNearestValidPlot()

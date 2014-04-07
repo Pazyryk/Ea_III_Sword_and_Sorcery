@@ -65,8 +65,11 @@ function GetEaCivTriggerText(eaCivID)
 end
 
 
-function GetEaCivDiscriptionText(eaCivID, bIncludeCivName, bIncludeQuote, bUseCachedTrigger)		-- supply triggerText if already known
-	local triggerText = bUseCachedTrigger and g_triggerText or GetEaCivTriggerText(eaCivID)
+function GetEaCivDiscriptionText(eaCivID, bIncludeCivName, bIncludeQuote, bIncludeTrigger, bUseCachedTrigger)		-- supply triggerText if already known
+	local triggerText
+	if bIncludeTrigger then
+		triggerText = bUseCachedTrigger and g_triggerText or GetEaCivTriggerText(eaCivID)
+	end
 	local eaCivInfo = GameInfo.EaCivs[eaCivID]
 	local eaCivType = eaCivInfo.Type
 	local sqlSearch = "EaCivType = '" .. eaCivType .. "'"
@@ -105,9 +108,11 @@ function GetEaCivDiscriptionText(eaCivID, bIncludeCivName, bIncludeQuote, bUseCa
 		strToolTip = strToolTip .. "[COLOR_POSITIVE_TEXT]" .. civName .. "[ENDCOLOR][NEWLINE][NEWLINE]"
 	end
 	if civQuote then
-		strToolTip = strToolTip .. civQuote .. "[NEWLINE][NEWLINE]"
+		strToolTip = strToolTip .. civQuote .. "[NEWLINE]"
 	end
-	strToolTip = strToolTip .. "[ICON_BULLET][COLOR_POSITIVE_TEXT]Naming Conditions: [ENDCOLOR]" .. triggerText
+	if triggerText then
+		strToolTip = strToolTip .. "[NEWLINE][ICON_BULLET][COLOR_POSITIVE_TEXT]Naming Conditions: [ENDCOLOR]" .. triggerText
+	end
 	strToolTip = strToolTip .. "[NEWLINE]" .. civHelp
 	if foundingGP then
 		strToolTip = strToolTip .. "[NEWLINE][ICON_BULLET][COLOR_POSITIVE_TEXT]Founding Great Person: [ENDCOLOR]" .. foundingGP

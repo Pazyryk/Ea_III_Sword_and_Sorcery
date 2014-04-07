@@ -12,57 +12,57 @@ local Dprint = DEBUG_PRINT and print or function() end
 ---------------------------------------------------------------
 
 --constants
-local PLOT_OCEAN =							PlotTypes.PLOT_OCEAN
-local PLOT_LAND =							PlotTypes.PLOT_LAND
-local PLOT_MOUNTAIN =						PlotTypes.PLOT_MOUNTAIN
-local TERRAIN_GRASS =						GameInfoTypes.TERRAIN_GRASS
-local TERRAIN_PLAINS =						GameInfoTypes.TERRAIN_PLAINS
-local TERRAIN_TUNDRA =						GameInfoTypes.TERRAIN_TUNDRA
-local FEATURE_FOREST = 						GameInfoTypes.FEATURE_FOREST
-local FEATURE_JUNGLE = 						GameInfoTypes.FEATURE_JUNGLE
-local FEATURE_MARSH =	 					GameInfoTypes.FEATURE_MARSH
-local FEATURE_BLIGHT =	 					GameInfoTypes.FEATURE_BLIGHT
-local FEATURE_FALLOUT =	 					GameInfoTypes.FEATURE_FALLOUT
-local IMPROVEMENT_BLIGHT =					GameInfoTypes.IMPROVEMENT_BLIGHT
-local IMPROVEMENT_ARCANE_TOWER =			GameInfoTypes.IMPROVEMENT_ARCANE_TOWER
-local INVISIBLE_SUBMARINE =					GameInfoTypes.INVISIBLE_SUBMARINE
-local RESOURCE_BLIGHT =						GameInfoTypes.RESOURCE_BLIGHT
-
-local LEADER_FAND =							GameInfoTypes.LEADER_FAND
-local RESOURCE_HORSE =						GameInfoTypes.RESOURCE_HORSE
-local RESOURCE_WINE =						GameInfoTypes.RESOURCE_WINE
-local RELIGION_AZZANDARAYASNA =				GameInfoTypes.RELIGION_AZZANDARAYASNA
-local RELIGION_ANRA =						GameInfoTypes.RELIGION_ANRA
-local RELIGION_THE_WEAVE_OF_EA =			GameInfoTypes.RELIGION_THE_WEAVE_OF_EA
-local RELIGION_CULT_OF_LEAVES =				GameInfoTypes.RELIGION_CULT_OF_LEAVES
-local RELIGION_CULT_OF_EPONA =				GameInfoTypes.RELIGION_CULT_OF_EPONA
-local RELIGION_CULT_OF_PURE_WATERS =		GameInfoTypes.RELIGION_CULT_OF_PURE_WATERS
-local RELIGION_CULT_OF_AEGIR =				GameInfoTypes.RELIGION_CULT_OF_AEGIR
-local RELIGION_CULT_OF_BAKKHEIA =			GameInfoTypes.RELIGION_CULT_OF_BAKKHEIA
-local POLICY_PANTHEISM =					GameInfoTypes.POLICY_PANTHEISM
-local TECH_MALEFICIUM =						GameInfoTypes.TECH_MALEFICIUM
-local BUILDING_LIBRARY =					GameInfoTypes.BUILDING_LIBRARY
-local BUILDING_WINERY =						GameInfoTypes.BUILDING_WINERY
 local BUILDING_BREWERY =					GameInfoTypes.BUILDING_BREWERY
 local BUILDING_DISTILLERY =					GameInfoTypes.BUILDING_DISTILLERY
+local BUILDING_LIBRARY =					GameInfoTypes.BUILDING_LIBRARY
 local BUILDING_TRADE_HOUSE =				GameInfoTypes.BUILDING_TRADE_HOUSE
-local UNITCOMBAT_MOUNTED =					GameInfoTypes.UNITCOMBAT_MOUNTED
-local PROMOTION_HEX =						GameInfoTypes.PROMOTION_HEX
-local PROMOTION_BLESSED =					GameInfoTypes.PROMOTION_BLESSED
-local PROMOTION_PROTECTION_FROM_EVIL =				GameInfoTypes.PROMOTION_PROTECTION_FROM_EVIL
-local PROMOTION_CURSED =					GameInfoTypes.PROMOTION_CURSED
-local PROMOTION_EVIL_EYE =					GameInfoTypes.PROMOTION_EVIL_EYE
-local PROMOTION_RIDE_LIKE_THE_WINDS =		GameInfoTypes.PROMOTION_RIDE_LIKE_THE_WINDS
-local PROMOTION_FAIR_WINDS =				GameInfoTypes.PROMOTION_FAIR_WINDS
-local YIELD_PRODUCTION =					GameInfoTypes.YIELD_PRODUCTION
-local YIELD_GOLD = 							GameInfoTypes.YIELD_GOLD
-local YIELD_SCIENCE = 						GameInfoTypes.YIELD_SCIENCE
-local YIELD_CULTURE = 						GameInfoTypes.YIELD_CULTURE
-local YIELD_FAITH = 						GameInfoTypes.YIELD_FAITH
+local BUILDING_WINERY =						GameInfoTypes.BUILDING_WINERY
 local DOMAIN_LAND =							DomainTypes.DOMAIN_LAND
 local DOMAIN_SEA =							DomainTypes.DOMAIN_SEA
 local EA_ACTION_GO_TO_PLOT =				GameInfoTypes.EA_ACTION_GO_TO_PLOT
 local EA_WONDER_ARCANE_TOWER =				GameInfoTypes.EA_WONDER_ARCANE_TOWER
+local EACIV_NEZELIBA =						GameInfoTypes.EACIV_NEZELIBA
+local FEATURE_BLIGHT =	 					GameInfoTypes.FEATURE_BLIGHT
+local FEATURE_FALLOUT =	 					GameInfoTypes.FEATURE_FALLOUT
+local FEATURE_FOREST = 						GameInfoTypes.FEATURE_FOREST
+local FEATURE_JUNGLE = 						GameInfoTypes.FEATURE_JUNGLE
+local FEATURE_MARSH =	 					GameInfoTypes.FEATURE_MARSH
+local IMPROVEMENT_ARCANE_TOWER =			GameInfoTypes.IMPROVEMENT_ARCANE_TOWER
+local IMPROVEMENT_BLIGHT =					GameInfoTypes.IMPROVEMENT_BLIGHT
+local INVISIBLE_SUBMARINE =					GameInfoTypes.INVISIBLE_SUBMARINE
+local LEADER_FAND =							GameInfoTypes.LEADER_FAND
+local PLOT_LAND =							PlotTypes.PLOT_LAND
+local PLOT_MOUNTAIN =						PlotTypes.PLOT_MOUNTAIN
+local PLOT_OCEAN =							PlotTypes.PLOT_OCEAN
+local POLICY_PANTHEISM =					GameInfoTypes.POLICY_PANTHEISM
+local PROMOTION_BLESSED =					GameInfoTypes.PROMOTION_BLESSED
+local PROMOTION_CURSED =					GameInfoTypes.PROMOTION_CURSED
+local PROMOTION_EVIL_EYE =					GameInfoTypes.PROMOTION_EVIL_EYE
+local PROMOTION_FAIR_WINDS =				GameInfoTypes.PROMOTION_FAIR_WINDS
+local PROMOTION_HEX =						GameInfoTypes.PROMOTION_HEX
+local PROMOTION_PROTECTION_FROM_EVIL =		GameInfoTypes.PROMOTION_PROTECTION_FROM_EVIL
+local PROMOTION_RIDE_LIKE_THE_WINDS =		GameInfoTypes.PROMOTION_RIDE_LIKE_THE_WINDS
+local RELIGION_ANRA =						GameInfoTypes.RELIGION_ANRA
+local RELIGION_AZZANDARAYASNA =				GameInfoTypes.RELIGION_AZZANDARAYASNA
+local RELIGION_CULT_OF_AEGIR =				GameInfoTypes.RELIGION_CULT_OF_AEGIR
+local RELIGION_CULT_OF_BAKKHEIA =			GameInfoTypes.RELIGION_CULT_OF_BAKKHEIA
+local RELIGION_CULT_OF_EPONA =				GameInfoTypes.RELIGION_CULT_OF_EPONA
+local RELIGION_CULT_OF_LEAVES =				GameInfoTypes.RELIGION_CULT_OF_LEAVES
+local RELIGION_CULT_OF_PURE_WATERS =		GameInfoTypes.RELIGION_CULT_OF_PURE_WATERS
+local RELIGION_THE_WEAVE_OF_EA =			GameInfoTypes.RELIGION_THE_WEAVE_OF_EA
+local RESOURCE_BLIGHT =						GameInfoTypes.RESOURCE_BLIGHT
+local RESOURCE_HORSE =						GameInfoTypes.RESOURCE_HORSE
+local RESOURCE_WINE =						GameInfoTypes.RESOURCE_WINE
+local TECH_MALEFICIUM =						GameInfoTypes.TECH_MALEFICIUM
+local TERRAIN_GRASS =						GameInfoTypes.TERRAIN_GRASS
+local TERRAIN_PLAINS =						GameInfoTypes.TERRAIN_PLAINS
+local TERRAIN_TUNDRA =						GameInfoTypes.TERRAIN_TUNDRA
+local UNITCOMBAT_MOUNTED =					GameInfoTypes.UNITCOMBAT_MOUNTED
+local YIELD_CULTURE = 						GameInfoTypes.YIELD_CULTURE
+local YIELD_FAITH = 						GameInfoTypes.YIELD_FAITH
+local YIELD_GOLD = 							GameInfoTypes.YIELD_GOLD
+local YIELD_PRODUCTION =					GameInfoTypes.YIELD_PRODUCTION
+local YIELD_SCIENCE = 						GameInfoTypes.YIELD_SCIENCE
 
 local MAX_MAJOR_CIVS =						GameDefines.MAX_MAJOR_CIVS
 local UNHAPPINESS_PER_CITY =				GameDefines.UNHAPPINESS_PER_CITY
@@ -1451,7 +1451,11 @@ end
 ------------------------------------------------------------------------------------------------------------------------------
 --EA_ACTION_SELL_SLAVES
 Do[GameInfoTypes.EA_ACTION_SELL_SLAVES] = function()
-	g_player:ChangeGold(30)
+	local sellGold = 30
+	if g_eaPlayer.eaCivNameID == EACIV_NEZELIBA then
+		sellGold = 36
+	end
+	g_player:ChangeGold(sellGold)
 	MapModData.bBypassOnCanSaveUnit = true
 	g_unit:Kill(true, -1)
 	g_unit = nil
@@ -1473,10 +1477,14 @@ TestTarget[GameInfoTypes.EA_ACTION_RENDER_SLAVES] = function()
 end
 
 Do[GameInfoTypes.EA_ACTION_RENDER_SLAVES] = function()
+	local renderProd = 20
+	if g_eaPlayer.eaCivNameID == EACIV_NEZELIBA then
+		renderProd = 24
+	end
 	if g_bool1 then
-		g_city:ChangeUnitProduction(g_int1, 20)
+		g_city:ChangeUnitProduction(g_int1, renderProd)
 	else
-		g_city:ChangeBuildingProduction(g_int1, 20)
+		g_city:ChangeBuildingProduction(g_int1, renderProd)
 	end
 	MapModData.bBypassOnCanSaveUnit = true
 	g_unit:Kill(true, -1)

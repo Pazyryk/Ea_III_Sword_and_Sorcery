@@ -23,8 +23,10 @@ UPDATE Traits SET FreeBuilding = 'BUILDING_FOMHOIRE' WHERE Type = 'TRAIT_FOMHOIR
 UPDATE Traits SET FreeBuilding = 'BUILDING_NEITH' WHERE Type = 'TRAIT_NEITH';
 UPDATE Traits SET FreeBuilding = 'BUILDING_BREWERY' WHERE Type = 'TRAIT_NINKASI';
 UPDATE Traits SET FreeBuilding = 'BUILDING_MONASTERY' WHERE Type = 'TRAIT_ANAPHORA';
-
 UPDATE Traits SET FreeBuilding = 'BUILDING_MAMONAS' WHERE Type = 'TRAIT_MAMONAS';
+
+
+
 UPDATE Traits SET FreeBuilding = 'BUILDING_MAYD' WHERE Type = 'TRAIT_MAYD';
 
 UPDATE Traits SET FreeBuilding = 'BUILDING_MARKETPLACE' WHERE Type = 'TRAIT_TYRE';
@@ -37,12 +39,6 @@ UPDATE Traits SET FaithFromKills = 100 WHERE Type IN ('TRAIT_STYGIA', 'TRAIT_MOR
 
 --
 
-
-
-
-
-
---
 
 
 --subtables

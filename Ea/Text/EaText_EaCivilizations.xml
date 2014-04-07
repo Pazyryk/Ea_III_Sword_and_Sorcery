@@ -99,7 +99,7 @@
 		<Row Tag="TXT_KEY_EA_CIV_ISALLIN">
 			<Text>Isällin</Text>
 		</Row>
-		<Row Tag="_HELP">
+		<Row Tag="TXT_KEY_EA_CIV_ISALLIN_HELP">
 			<Text>[ICON_BULLET]+1 [ICON_CULTURE] Culture and +1 [ICON_HAPPINESS_1] Happiness from every religious building</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_STYGIA">
@@ -114,6 +114,69 @@
 		<Row Tag="TXT_KEY_EA_CIV_MORIQUENDI_HELP">
 			<Text>[ICON_BULLET]Gain Mana from kills</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_LEMURIA">
+			<Text>Lemuria</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_LEMURIA_HELP">
+			<Text>[ICON_BULLET]+3 [ICON_RESEARCH] Research and +3 [ICON_STAR] Mana from capital[NEWLINE][ICON_BULLET]20% reduced cost for all arcane techs</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_AXAGORIA">
+			<Text>Axagoria</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_AXAGORIA_HELP">
+			<Text>[ICON_BULLET]50% of extra Happiness [ICON_HAPPINESS_1] added as [ICON_RESEARCH] Research</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_IACCHIA">
+			<Text>Iacchia</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_IACCHIA_HELP">
+			<Text>[ICON_BULLET]50% of extra Happiness [ICON_HAPPINESS_1] added as [ICON_CULTURE] Culture</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_LAGAD">
+			<Text>Lagad</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_LAGAD_HELP">
+			<Text>[ICON_BULLET]20% extra reduced costs for Favored Techs</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_MAMONAS">
+			<Text>Mamonas</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_MAMONAS_HELP">
+			<Text>[ICON_BULLET]+1 [ICON_GOLD] Gold from [ICON_RES_GOLD] Gold and [ICON_RES_SILVER] Silver[NEWLINE][ICON_BULLET]Gain 0.5% interest on treasury per turn distributed among all cities</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_SOPHRONIA">
+			<Text>Sophronia</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_SOPHRONIA_HELP">
+			<Text>[ICON_BULLET]Gain 1 nearby [ICON_RES_STONE] Stone[NEWLINE][ICON_BULLET]20% reduced city construction cost for all buildings</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_LUCHTAIN">
+			<Text>Luchtain</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_LUCHTAIN_HELP">
+			<Text>[ICON_BULLET]Gain 1 nearby [ICON_RES_STONE] Stone[NEWLINE][ICON_BULLET]20% reduced city construction cost for all buildings</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_VINCA">
+			<Text>Vinča</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_VINCA_HELP">
+			<Text>[ICON_BULLET]Gain 1 nearby [ICON_RES_COPPER] Copper[NEWLINE][ICON_BULLET]20% extra reduced costs for Favored Techs.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_GOBANN">
+			<Text>Gobann</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_GOBANN_HELP">
+			<Text>[ICON_BULLET]20% extra reduced costs for Favored Techs.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_UR">
+			<Text>Úr</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_UR_QUOTE">
+			<Text>We forsake the sun, the meadow and the gentle breeze. We go into the depths of Éa, to our underdark home that we call Úr.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_ORKAHAUGR">
+			<Text>Orkahaugr</Text>
+		</Row>
 		<!--
 		<Row Tag="_HELP">
 			<Text>[ICON_BULLET]</Text>
@@ -127,49 +190,7 @@
 		<Row Tag="_HELP">
 			<Text>[ICON_BULLET]</Text>
 		</Row>
-		<Row Tag="_HELP">
-			<Text>[ICON_BULLET]</Text>
-		</Row>
-		<Row Tag="_HELP">
-			<Text>[ICON_BULLET]</Text>
-		</Row>
 		-->	
-		<Row Tag="TXT_KEY_EA_CIV_LEMURIA">
-			<Text>Lemuria</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_CIV_AXAGORIA">
-			<Text>Axagoria</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_CIV_IACCHIA">
-			<Text>Iacchia</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_CIV_LAGAD">
-			<Text>Lagad</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_CIV_MAMONAS">
-			<Text>Mamonas</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_CIV_SOPHRONIA">
-			<Text>Sophronia</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_CIV_LUCHTAIN">
-			<Text>Luchtain</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_CIV_VINCA">
-			<Text>Vinca</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_CIV_GOBANN">
-			<Text>Gobann</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_CIV_UR">
-			<Text>Úr</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_CIV_UR_QUOTE">
-			<Text>We forsake the sun, the meadow and the gentle breeze. We go into the depths of Éa, to our underdark home that we call Úr.</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_CIV_ORKAHAUGR">
-			<Text>Orkahaugr</Text>
-		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_REYNES">
 			<Text>Reynes</Text>
 		</Row>
@@ -212,14 +233,18 @@
 		<Row Tag="TXT_KEY_EA_CIV_O_QUOTE">
 			<Text>We are masters of the arcane, wise and dangerous. Call us O (if you must address us). It is simple enough for you to remember.</Text>
 		</Row>
-
+		<Row Tag="TXT_KEY_EA_CIV_O_HELP">
+			<Text>[ICON_BULLET]+5 [ICON_STAR] Mana from capital[NEWLINE][ICON_BULLET]All spellcasters gain +50% experience from [ICON_STAR] Mana use</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_MU">
 			<Text>Mu</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_MU_HELP">
+			<Text>[ICON_BULLET]+5 [ICON_STAR] Mana from capital[NEWLINE][ICON_BULLET]All spellcasters gain +50% experience from [ICON_STAR] Mana use</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_GRAEAE">
 			<Text>The Graeae</Text>
 		</Row>
-
 		<Row Tag="TXT_KEY_EA_CIV_GRAEAE_QUOTE">
 			<Text>Double, double toil and trouble;[NEWLINE]Fire burn, and caldron bubble.[NEWLINE]Fillet of a fenny snake,[NEWLINE]In the caldron boil and bake;[NEWLINE]Eye of newt, and toe of frog,[NEWLINE]Wool of bat, and tongue of dog,[NEWLINE]For a charm of powerful trouble,[NEWLINE]Like a hell-broth boil and bubble.[NEWLINE]Scale of dragon; tooth of wolf;[NEWLINE]Witches' mummy; maw and gulf[NEWLINE]Of the ravin'd salt-sea shark;[NEWLINE]Root of hemlock digg'd i the dark;[NEWLINE]Cool it with a baboon's blood,[NEWLINE]Then the charm is firm and good.</Text>
 		</Row>

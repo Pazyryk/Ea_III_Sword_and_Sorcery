@@ -308,13 +308,13 @@
 		<Row Tag="TXT_KEY_EA_POLICY_WARCRAFT_HELP">
 			<Text>[COLOR_POSITIVE_TEXT]Warcraft[ENDCOLOR][NEWLINE][ICON_BULLET]Military units gain double experience from combat</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_POLICY_WAR_SPIRIT">
+		<Row Tag="TXT_KEY_EA_POLICY_WARSPIRIT">
 			<Text>Warspirit</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_POLICY_WAR_SPIRIT_HELP">
+		<Row Tag="TXT_KEY_EA_POLICY_WARSPIRIT_HELP">
 			<Text>[COLOR_POSITIVE_TEXT]Warspirit[ENDCOLOR][NEWLINE][ICON_BULLET]+10% baseline unit [ICON_HAPPINESS_1] Morale (does not affect Slaves, Mercenaries or non-living units)</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_POLICY_WAR_SPIRIT_TEXT">
+		<Row Tag="TXT_KEY_EA_POLICY_WARSPIRIT_TEXT">
 			<Text>placeholder</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_BERSERKER_RAGE">
@@ -368,7 +368,7 @@
 		<Row Tag="TXT_KEY_EA_POLICY_RATIONALISM_TEXT">
 			<Text>placeholder</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_POLICY_FOLKLORE_">
+		<Row Tag="TXT_KEY_EA_POLICY_FOLKLORE">
 			<Text>Folklore</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_FOLKLORE_HELP">

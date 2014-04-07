@@ -275,4 +275,11 @@ CivSet[GameInfoTypes.EACIV_DAGGOO] = function(iPlayer)
 	gg_whalingRange[iPlayer] = gg_whalingRange[iPlayer] + 2
 end
 
+CivSet[GameInfoTypes.EACIV_LEMURIA] = function(iPlayer)	
+	gg_playerArcaneMod[iPlayer] = gg_playerArcaneMod[iPlayer] - 20
+end
 
+
+
+
+--

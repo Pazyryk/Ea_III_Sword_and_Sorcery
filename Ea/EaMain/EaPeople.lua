@@ -84,11 +84,15 @@ modsForUI.firstMagicMod = numModTypes - 7
 modsForUI[numModTypes + 1] = {text = "All Magic Schools", value = 0}
 modsForUI[numModTypes + 2] = {text = "Other Magic Schools", value = 0}
 
---Reserved GPs
+
 local reservedGPs = {}		--nil all entries after all civs gain names
-for EaCivInfo in GameInfo.EaCivs() do
-	if EaCivInfo.FoundingGPType then
-		reservedGPs[GameInfoTypes[EaCivInfo.FoundingGPType] ] = true
+local xpBoostFromManaUse = {}
+for eaCivInfo in GameInfo.EaCivs() do
+	if eaCivInfo.FoundingGPType then
+		reservedGPs[GameInfoTypes[eaCivInfo.FoundingGPType] ] = true
+	end
+	if eaCivInfo.XPBoostFromManaUse ~= 0 then
+		xpBoostFromManaUse[eaCivInfo.ID] = eaCivInfo.XPBoostFromManaUse
 	end
 end
 
@@ -749,7 +753,11 @@ function UseManaOrDivineFavor(iPlayer, iPerson, pts)
 		local eaPerson = gPeople[iPerson]
 		if eaPerson then
 			local unit = player:GetUnitByID(eaPerson.iUnit)
-			unit:ChangeExperience(pts)
+			local xp = pts
+			if xpBoostFromManaUse[eaPlayer.eaCivNameID] then
+				xp = xp + Floor(pts * xpBoostFromManaUse[eaPlayer.eaCivNameID] / 100)
+			end
+			unit:ChangeExperience(xp)
 			if eaPlayer.bIsFallen then
 				bManaEaterFloatup = true
 				unit:GetPlot():AddFloatUpMessage(Locale.Lookup("TXT_KEY_EA_CONSUMED_MANA", pts), 1)

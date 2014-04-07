@@ -234,10 +234,19 @@ UPDATE Policies SET MinorFriendshipDecayMod = -50 WHERE Type = 'POLICY_PATRONAGE
 INSERT INTO Policies (Type,	Utility) VALUES
 ('POLICY_EACIV_PARAKHORA',		1	),
 ('POLICY_EACIV_ISALLIN',		1	),
+('POLICY_EACIV_LEMURIA',		1	),
 ('POLICY_EACIV_AXAGORIA',		1	),
 ('POLICY_EACIV_IACCHIA',		1	),
 ('POLICY_EACIV_SOPHRONIA',		1	),
 ('POLICY_EACIV_LUCHTAIN',		1	),
+
+
+
+('POLICY_CAPITAL_5_FAITH',		1	),
+
+
+
+
 ('POLICY_EACIV_KAZA',			1	),		--can't do +10% from granary here
 ('POLICY_EACIV_HOD',			1	),
 ('POLICY_EACIV_NEMEDIA',		1	),
@@ -311,7 +320,13 @@ INSERT INTO Policy_CapitalYieldChanges(PolicyType, YieldType, Yield) VALUES
 ('POLICY_ARCANA',					'YIELD_FAITH',		2	),
 ('POLICY_TRADITION',				'YIELD_SCIENCE',	1	),
 ('POLICY_TRADITION',				'YIELD_CULTURE',	1	),
-('POLICY_COMMERCE',					'YIELD_GOLD',		3	);
+('POLICY_COMMERCE',					'YIELD_GOLD',		3	),
+('POLICY_EACIV_LEMURIA',			'YIELD_SCIENCE',	3	),
+('POLICY_EACIV_LEMURIA',			'YIELD_FAITH',		3	),
+('POLICY_CAPITAL_5_FAITH',		'YIELD_FAITH',		5	);
+
+
+
 
 DELETE FROM Policy_CapitalYieldModifiers;
 INSERT INTO Policy_CapitalYieldModifiers(PolicyType, YieldType, Yield) VALUES

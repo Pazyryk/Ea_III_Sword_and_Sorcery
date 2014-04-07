@@ -126,6 +126,9 @@ function EaTechsInit(bNewGame)
 			if player:HasPolicy(GameInfoTypes.POLICY_ARCANE_RESEARCH) then
 				gg_playerArcaneMod[iPlayer] = gg_playerArcaneMod[iPlayer] - 20
 			end
+			if eaPlayer.eaCivNameID == GameInfoTypes.EACIV_LEMURIA then
+				gg_playerArcaneMod[iPlayer] = gg_playerArcaneMod[iPlayer] - 20
+			end
 		end
 
 		for iPlayer, eaPlayer in pairs(realCivs) do

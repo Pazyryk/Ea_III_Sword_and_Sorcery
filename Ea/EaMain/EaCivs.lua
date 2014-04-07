@@ -13,6 +13,7 @@ local Dprint = DEBUG_PRINT and print or function() end
 
 --constants
 
+local EACIV_SKOGR =								GameInfoTypes.EACIV_SKOGR
 local POLICY_PANTHEISM =						GameInfoTypes.POLICY_PANTHEISM
 local POLICY_PATRONAGE =						GameInfoTypes.POLICY_PATRONAGE
 local MINOR_TRAIT_ARCANE =						GameInfoTypes.MINOR_TRAIT_ARCANE
@@ -463,7 +464,12 @@ local function OnPlayerMinorFriendshipAnchor(iMajorPlayer, iMinorPlayer)
 		if playerType[iMajorPlayer] == "Fay" then
 			return 40
 		else
-			return 0
+			local eaMajorPlayer = gPlayers[iMajorPlayer]
+			if eaMajorPlayer.eaCivNameID == EACIV_SKOGR then
+				return 15
+			else
+				return 0		
+			end
 		end
 	end
 end

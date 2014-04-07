@@ -100,13 +100,13 @@
 			<Text>Isällin</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_ISALLIN_HELP">
-			<Text>[ICON_BULLET]+1 [ICON_CULTURE] Culture and +1 [ICON_HAPPINESS_1] Happiness from every religious building</Text>
+			<Text>[ICON_BULLET]Gain [ICON_PEACE] Divine Favor from kills</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_STYGIA">
 			<Text>Stygia</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_STYGIA_HELP">
-			<Text>[ICON_BULLET]Gain Mana from kills</Text>
+			<Text>[ICON_BULLET]Gain [ICON_STAR] Mana from kills</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_MORIQUENDI">
 			<Text>Moriquendi</Text>
@@ -177,25 +177,17 @@
 		<Row Tag="TXT_KEY_EA_CIV_ORKAHAUGR">
 			<Text>Orkahaugr</Text>
 		</Row>
-		<!--
-		<Row Tag="_HELP">
-			<Text>[ICON_BULLET]</Text>
-		</Row>
-		<Row Tag="_HELP">
-			<Text>[ICON_BULLET]</Text>
-		</Row>
-		<Row Tag="_HELP">
-			<Text>[ICON_BULLET]</Text>
-		</Row>
-		<Row Tag="_HELP">
-			<Text>[ICON_BULLET]</Text>
-		</Row>
-		-->	
 		<Row Tag="TXT_KEY_EA_CIV_REYNES">
 			<Text>Reynes</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_REYNES_HELP">
+			<Text>[ICON_BULLET]Culture [ICON_CULTURE] and Buy [ICON_GOLD] costs for border expansion reduced by 33%</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_BJARMALAND">
 			<Text>Bjarmaland</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_BJARMALAND_HELP">
+			<Text>[ICON_BULLET]All specialists provide +1 in their respective yield type</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_KAZA">
 			<Text>Kaza</Text>
@@ -203,29 +195,56 @@
 		<Row Tag="TXT_KEY_EA_CIV_KAZA_QUOTE">
 			<Text>We are folk of the farm, domesticators of plant and animal. Our land and our people are fertile. We will transform this land into farms, pastures and mills as far as the eye can see.</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_KAZA_HELP">
+			<Text>[ICON_BULLET]+15% extra [ICON_FOOD] Food from Granaries</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_EOGANACHTA">
 			<Text>Eóganachta</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_EOGANACHTA_HELP">
+			<Text>[ICON_BULLET]+15% extra [ICON_FOOD] Food from Granaries</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_SKOGR">
 			<Text>Skógr</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_SKOGR_HELP">
+			<Text>[ICON_BULLET]+15 base relationship with all Gods[NEWLINE][ICON_BULLET]No race penalty for relationship with The Fay</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_BANBA">
 			<Text>Banba</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_BANBA_HELP">
+			<Text>[ICON_BULLET]+1 [ICON_CULTURE] Culture from from all "animal" resources</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_ERIU">
 			<Text>Ériu</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_ERIU_HELP">
+			<Text>[ICON_BULLET]+1 [ICON_CULTURE] Culture from from all "plant" resources</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_FODLA">
 			<Text>Fódla</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_FODLA_HELP">
+			<Text>[ICON_BULLET]+1 [ICON_CULTURE] Culture from from all "earth" resources</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_HOD">
 			<Text>The Hod</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_HOD_HELP">
+			<Text>[ICON_BULLET]+1 [ICON_RESEARCH] Research and +1 Culture [ICON_CULTURE] from every religious building</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_YESOD">
 			<Text>Yesod</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_YESOD_HELP">
+			<Text>[ICON_BULLET]Spellcasters gain 50% extra experience from use of [ICON_PEACE] Divine Favor</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_NETZACH">
 			<Text>Netzach</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_NETZACH_HELP">
+			<Text>[ICON_BULLET]+2 Divine Favor [ICON_PEACE] from every religious building</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_O">
 			<Text>O</Text>
@@ -234,13 +253,13 @@
 			<Text>We are masters of the arcane, wise and dangerous. Call us O (if you must address us). It is simple enough for you to remember.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_O_HELP">
-			<Text>[ICON_BULLET]+5 [ICON_STAR] Mana from capital[NEWLINE][ICON_BULLET]All spellcasters gain +50% experience from [ICON_STAR] Mana use</Text>
+			<Text>[ICON_BULLET]+5 [ICON_STAR] Mana from capital[NEWLINE][ICON_BULLET]All spellcasters gain +50% experience from use of [ICON_STAR] Mana</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_MU">
 			<Text>Mu</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_MU_HELP">
-			<Text>[ICON_BULLET]+5 [ICON_STAR] Mana from capital[NEWLINE][ICON_BULLET]All spellcasters gain +50% experience from [ICON_STAR] Mana use</Text>
+			<Text>[ICON_BULLET]+5 [ICON_STAR] Mana from capital[NEWLINE][ICON_BULLET]All spellcasters gain +50% experience from use of [ICON_STAR] Mana</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_GRAEAE">
 			<Text>The Graeae</Text>
@@ -251,6 +270,17 @@
 		<Row Tag="TXT_KEY_EA_CIV_GRAEAE_HELP">
 			<Text>[ICON_BULLET]Free Reagents from first 6 cities[NEWLINE][ICON_BULLET]+1 Mana [ICON_STAR] from all worked resources[NEWLINE][ICON_BULLET]Thaumaturges are always of subclass Witch</Text>
 		</Row>
+		<!--
+		<Row Tag="_HELP">
+			<Text>[ICON_BULLET]</Text>
+		</Row>
+		<Row Tag="_HELP">
+			<Text>[ICON_BULLET]</Text>
+		</Row>
+		<Row Tag="_HELP">
+			<Text>[ICON_BULLET]</Text>
+		</Row>
+		-->	
 		<Row Tag="TXT_KEY_EA_CIV_NEZELIBA">
 			<Text>Nezêlîba</Text>
 		</Row>			

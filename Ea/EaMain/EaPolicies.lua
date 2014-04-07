@@ -37,15 +37,6 @@ local TECH_SLAVERY =				GameInfoTypes.TECH_SLAVERY
 local TECH_SLAVE_RAIDERS =			GameInfoTypes.TECH_SLAVE_RAIDERS
 local TECH_SLAVE_ARMIES =			GameInfoTypes.TECH_SLAVE_ARMIES
 
-local EACIV_SKOGR =					GameInfoTypes.EACIV_SKOGR
-local EACIV_ERIU =					GameInfoTypes.EACIV_ERIU
-local EACIV_NEMEDIA =				GameInfoTypes.EACIV_NEMEDIA
-local EACIV_MOR =					GameInfoTypes.EACIV_MOR
-local EACIV_MORD = 					GameInfoTypes.EACIV_MORD
-local EACIV_PARTHOLON =				GameInfoTypes.EACIV_PARTHOLON
-local EACIV_FODLA =					GameInfoTypes.EACIV_FODLA
-local EACIV_THEANON =				GameInfoTypes.EACIV_THEANON
-local EACIV_AES_DANA =				GameInfoTypes.EACIV_AES_DANA
 
 --localized game and global tables
 local Players =						Players

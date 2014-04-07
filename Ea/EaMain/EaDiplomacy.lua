@@ -14,7 +14,8 @@ local Dprint = DEBUG_PRINT and print or function() end
 --------------------------------------------------------------
 
 --constants
-local FAY_PLAYER_INDEX =					FAY_PLAYER_INDEX
+local FAY_PLAYER_INDEX =				FAY_PLAYER_INDEX
+local EACIV_SKOGR =						GameInfoTypes.EACIV_SKOGR
 local POLICY_BRANCH_DOMINIONISM =		GameInfoTypes.POLICY_BRANCH_DOMINIONISM
 local POLICY_BRANCH_PANTHEISM =			GameInfoTypes.POLICY_BRANCH_PANTHEISM
 local POLICY_BRANCH_THEISM =			GameInfoTypes.POLICY_BRANCH_THEISM
@@ -132,8 +133,11 @@ local function OnGetScenarioDiploModifier1(iPlayer1, iPlayer2)	--player2 is the 
 		evilPenalty = evilPenalty + slaveryPenalty
 	end
 
-	--racial hatred
+	--racial adjustments
 	g_yourKindPenalty = Floor(g_yourKindPenalty + raceDiploPenalties[eaPlayer1.race][eaPlayer2.race])
+	if iPlayer1 == FAY_PLAYER_INDEX and eaPlayer2.eaCivNameID == EACIV_SKOGR then
+		g_yourKindPenalty = g_yourKindPenalty - 2		--negates normal penalty for Man from The Fay
+	end
 
 	--high culture admiration for high culture
 	g_admirationBonus = Floor(g_admirationBonus + eaPlayer2.culturalLevel * Ln(eaPlayer1.culturalLevel) / 10)

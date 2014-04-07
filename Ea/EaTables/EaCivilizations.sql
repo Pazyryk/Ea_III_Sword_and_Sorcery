@@ -81,7 +81,7 @@ INSERT INTO EaCivs (Type,	PopupImage,									DefaultPlayerColor,			KnownTech,		
 ('EACIV_GIRNAR',			'testbackground_1.17_856x700.dds',			'PLAYERCOLOR_ROME',			'TECH_IRRIGATION',			NULL,			NULL,							NULL							),	--do something with G&K dutch improv
 ('EACIV_ALDEBAR',			'testbackground_1.17_856x700.dds',			'PLAYERCOLOR_RUSSIA',		'TECH_CALENDAR',			NULL,			NULL,							NULL							),
 ('EACIV_ANAPHORA',			'testbackground_1.17_856x700.dds',			'PLAYERCOLOR_AZTEC',		'TECH_DIVINE_LITURGY',		'Devout',		NULL,							NULL							),
-('EACIV_ISALLIN',			'testbackground_1.17_856x700.dds',			'PLAYERCOLOR_SIAM',			'TECH_DIVINE_LITURGY',		'Devout',		'POLICY_EACIV_ISALLIN',			NULL							),
+('EACIV_ISALLIN',			'testbackground_1.17_856x700.dds',			'PLAYERCOLOR_SIAM',			'TECH_DIVINE_LITURGY',		'Devout',		NULL,							NULL							),
 ('EACIV_STYGIA',			'testbackground_1.17_856x700.dds',			'PLAYERCOLOR_BYZANTIUM',	'TECH_MALEFICIUM',			'Thaumaturge',	NULL,							NULL							),
 ('EACIV_MORIQUENDI',		'testbackground_1.17_856x700.dds',			'PLAYERCOLOR_AMERICA',		'TECH_MALEFICIUM',			'Thaumaturge',	NULL,							NULL							),	
 ('EACIV_LEMURIA',			'testbackground_1.17_856x700.dds',			'PLAYERCOLOR_AMERICA',		'TECH_THAUMATURGY',			'Thaumaturge',	'POLICY_EACIV_LEMURIA',			NULL							),	
@@ -120,14 +120,14 @@ UPDATE EaCivs SET FavoredTechExtraReduction = -20 WHERE Type IN ('EACIV_AB', 'EA
 INSERT INTO EaCivs (Type,	Quote,								PopupImage,								DefaultPlayerColor,		AdoptedPolicy,				FoundingGPClass,	FoundingGPSubclass,	FoundingGPType,		FavoredGPClass,	GainPolicy					) VALUES
 ('EACIV_REYNES',			NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_ARABIA',	'POLICY_ARISTOCRACY',		NULL,				NULL,				NULL,				NULL,			NULL						),	
 ('EACIV_BJARMALAND',		NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_AZTEC',	'POLICY_GUILDS',			NULL,				NULL,				NULL,				NULL,			NULL						),	
-('EACIV_KAZA',				NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_CHINA',	'POLICY_CIVIL_SERVICE',		NULL,				NULL,				NULL,				NULL,			'POLICY_EACIV_KAZA'			),
-('EACIV_EOGANACHTA',		NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_EGYPT',	'POLICY_ARISTOCRACY',		NULL,				NULL,				NULL,				NULL,			NULL						),
+('EACIV_KAZA',				NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_CHINA',	'POLICY_CIVIL_SERVICE',		NULL,				NULL,				NULL,				NULL,			'POLICY_GRANERY_15PERC_FOOD'),
+('EACIV_EOGANACHTA',		NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_EGYPT',	'POLICY_ARISTOCRACY',		NULL,				NULL,				NULL,				NULL,			'POLICY_GRANERY_15PERC_FOOD'),
 ('EACIV_SKOGR',				NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_ENGLAND',	'POLICY_ANIMAL_LORE',		NULL,				'Druid',			'EAPERSON_NAL',		'Devout',		NULL						),
 ('EACIV_BANBA',				NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_FRANCE',	'POLICY_ANIMAL_LORE',		NULL,				'Druid',			NULL,				'Devout',		NULL						),
 ('EACIV_ERIU',				NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_GERMANY',	'POLICY_WOODS_LORE',		NULL,				'Druid',			'EAPERSON_ERIU',	'Devout',		NULL						),
 ('EACIV_FODLA',				NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_GREECE',	'POLICY_EARTH_LORE',		NULL,				'Druid',			'EAPERSON_FODLA',	'Devout',		NULL						),	
 ('EACIV_YESOD',				NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_PORTUGAL',	'POLICY_WAY_OF_THE_WISE',	NULL,				'Priest',			NULL,				'Devout',		NULL						),
-('EACIV_NETZACH',			NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_SHOSHONE',	'POLICY_MYSTICISM',			NULL,				'Priest',			NULL,				'Devout',		NULL						),
+('EACIV_NETZACH',			NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_SHOSHONE',	'POLICY_MYSTICISM',			NULL,				'Priest',			NULL,				'Devout',		'POLICY_EACIV_NETZACH'		),
 ('EACIV_HOD',				NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_POLAND',	'POLICY_PRIESTHOOD',		NULL,				'Priest',			NULL,				'Devout',		'POLICY_EACIV_HOD'			),
 ('EACIV_O',					NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_INDIA',	'POLICY_ARCANE_TRADITION',	NULL,				'Wizard',			NULL,				'Thaumaturge',	'POLICY_CAPITAL_5_FAITH'	),
 ('EACIV_MU',				NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_MOROCCO',	'POLICY_ARCANE_TRADITION',	NULL,				'Wizard',			NULL,				'Thaumaturge',	'POLICY_CAPITAL_5_FAITH'	),	
@@ -165,7 +165,7 @@ UPDATE EaCivs SET AndAdoptedPolicy = 'POLICY_SLAVERY' WHERE Type = 'EACIV_DOKKAL
 UPDATE EaCivs SET AndAdoptedPolicy = 'POLICY_TRADITION' WHERE Type = 'EACIV_LJOSALFAR';
 UPDATE EaCivs SET AndAdoptedPolicy = 'POLICY_ARCANA' WHERE Type = 'EACIV_SEGOYIM';
 
-UPDATE EaCivs SET XPBoostFromManaUse = 50 WHERE Type IN ('EACIV_O', 'EACIV_MU', 'EACIV_SEGOYIM');
+UPDATE EaCivs SET XPBoostFromManaUse = 50 WHERE Type IN ('EACIV_O', 'EACIV_MU', 'EACIV_SEGOYIM', 'EACIV_YESOD');
 
 
 

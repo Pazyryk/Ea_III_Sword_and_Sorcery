@@ -233,22 +233,20 @@ UPDATE Policies SET MinorFriendshipDecayMod = -50 WHERE Type = 'POLICY_PATRONAGE
 -- EaCivs
 INSERT INTO Policies (Type,	Utility) VALUES
 ('POLICY_EACIV_PARAKHORA',		1	),
-('POLICY_EACIV_ISALLIN',		1	),
 ('POLICY_EACIV_LEMURIA',		1	),
 ('POLICY_EACIV_AXAGORIA',		1	),
 ('POLICY_EACIV_IACCHIA',		1	),
 ('POLICY_EACIV_SOPHRONIA',		1	),
 ('POLICY_EACIV_LUCHTAIN',		1	),
-
-
+('POLICY_EACIV_NETZACH',		1	),
+('POLICY_EACIV_HOD',			1	),
 
 ('POLICY_CAPITAL_5_FAITH',		1	),
 
 
 
 
-('POLICY_EACIV_KAZA',			1	),		--can't do +10% from granary here
-('POLICY_EACIV_HOD',			1	),
+('POLICY_GRANERY_15PERC_FOOD',			1	),		--can't do +10% from granary here
 ('POLICY_EACIV_NEMEDIA',		1	),
 ('POLICY_EACIV_MOR',			1	),
 ('POLICY_EACIV_LOTHIN',			1	),
@@ -323,7 +321,7 @@ INSERT INTO Policy_CapitalYieldChanges(PolicyType, YieldType, Yield) VALUES
 ('POLICY_COMMERCE',					'YIELD_GOLD',		3	),
 ('POLICY_EACIV_LEMURIA',			'YIELD_SCIENCE',	3	),
 ('POLICY_EACIV_LEMURIA',			'YIELD_FAITH',		3	),
-('POLICY_CAPITAL_5_FAITH',		'YIELD_FAITH',		5	);
+('POLICY_CAPITAL_5_FAITH',			'YIELD_FAITH',		5	);
 
 
 
@@ -432,7 +430,7 @@ INSERT INTO Policy_BuildingClassYieldModifiers(PolicyType, BuildingClassType, Yi
 ('POLICY_THE_ARTS',				'BUILDINGCLASS_MUSEUM',				'YIELD_SCIENCE',	3	),
 ('POLICY_MERCANTILISM',			'BUILDINGCLASS_BANK',				'YIELD_GOLD',		15	),
 ('POLICY_MERCHANT_NAVY',		'BUILDINGCLASS_PORT',				'YIELD_GOLD',		15	),
-('POLICY_EACIV_KAZA',			'BUILDINGCLASS_GRANARY',			'YIELD_FOOD',		15	);
+('POLICY_GRANERY_15PERC_FOOD',	'BUILDINGCLASS_GRANARY',			'YIELD_FOOD',		15	);
 
 
 
@@ -441,24 +439,25 @@ SELECT 'POLICY_SOCIO_ARCANA', BuildingClass, 'YIELD_FAITH', 1 FROM Buildings WHE
 
 DELETE FROM Policy_BuildingClassYieldChanges;
 INSERT INTO Policy_BuildingClassYieldChanges (PolicyType, BuildingClassType, YieldType, YieldChange) VALUES
-('POLICY_MONASTIC_TRADITION',		'BUILDINGCLASS_MONASTERY',			'YIELD_CULTURE',	2 ),
 ('POLICY_ANTI_MONASTIC_TRADITION',	'BUILDINGCLASS_MONASTERY',			'YIELD_SCIENCE',	2 ),
 ('POLICY_MERCHANT_NAVY',			'BUILDINGCLASS_HARBOR',				'YIELD_GOLD',		1 ),
 ('POLICY_MERCHANT_NAVY',			'BUILDINGCLASS_LIGHTHOUSE',			'YIELD_GOLD',		1 ),
 ('POLICY_MERCHANT_NAVY',			'BUILDINGCLASS_PORT',				'YIELD_GOLD',		1 ),
 ('POLICY_MERCHANT_NAVY',			'BUILDINGCLASS_SHIPYARD',			'YIELD_GOLD',		1 ),
-('POLICY_EACIV_HOD',				'BUILDINGCLASS_SHRINE',				'YIELD_FAITH',		2 ),
-('POLICY_EACIV_HOD',				'BUILDINGCLASS_MONASTIC_SCHOOL',	'YIELD_FAITH',		2 ),
-('POLICY_EACIV_HOD',				'BUILDINGCLASS_MONASTERY',			'YIELD_FAITH',		2 ),
-('POLICY_EACIV_HOD',				'BUILDINGCLASS_TEMPLE',				'YIELD_FAITH',		2 ),
-('POLICY_EACIV_HOD',				'BUILDINGCLASS_CATHEDRAL',			'YIELD_FAITH',		2 ),
 ('POLICY_EACIV_PARAKHORA',			'BUILDINGCLASS_WATERMILL',			'YIELD_FOOD',		1	),
 ('POLICY_EACIV_PARAKHORA',			'BUILDINGCLASS_WATERMILL',			'YIELD_PRODUCTION',	1	),
 ('POLICY_EACIV_PARAKHORA',			'BUILDINGCLASS_WINDMILL',			'YIELD_FOOD',		1	),
 ('POLICY_EACIV_PARAKHORA',			'BUILDINGCLASS_WINDMILL',			'YIELD_PRODUCTION',	1	);
 
+INSERT INTO Policy_BuildingClassYieldChanges (PolicyType, BuildingClassType, YieldType, YieldChange)
+SELECT 'POLICY_EACIV_HOD', BuildingClass, 'YIELD_SCIENCE', 1 FROM Buildings WHERE EaSpecial = 'Religious' UNION ALL
+SELECT 'POLICY_EACIV_NETZACH', BuildingClass, 'YIELD_FAITH', 2 FROM Buildings WHERE EaSpecial = 'Religious';
+
+
 DELETE FROM Policy_BuildingClassCultureChanges;
 INSERT INTO Policy_BuildingClassCultureChanges (PolicyType, BuildingClassType, CultureChange) VALUES
+
+('POLICY_MONASTIC_TRADITION',	'BUILDINGCLASS_MONASTERY',		2 ),
 ('POLICY_FOLKART',				'BUILDINGCLASS_FAIR',			1	),
 ('POLICY_FOLKART',				'BUILDINGCLASS_IVORYWORKS',		1	),
 ('POLICY_FOLKART',				'BUILDINGCLASS_JEWELLER',		1	),
@@ -470,7 +469,7 @@ INSERT INTO Policy_BuildingClassCultureChanges (PolicyType, BuildingClassType, C
 ('POLICY_THE_ARTS',				'BUILDINGCLASS_OPERA_HOUSE',	2	);
 
 INSERT INTO Policy_BuildingClassCultureChanges (PolicyType, BuildingClassType, CultureChange)
-SELECT 'POLICY_EACIV_ISALLIN', BuildingClass, 1 FROM Buildings WHERE EaSpecial = 'Religious';
+SELECT 'POLICY_EACIV_HOD', BuildingClass, 1 FROM Buildings WHERE EaSpecial = 'Religious';
 
 
 DELETE FROM Policy_BuildingClassHappiness;												--Can add unhappiness
@@ -478,8 +477,8 @@ INSERT INTO Policy_BuildingClassHappiness (PolicyType, BuildingClassType, Happin
 ('POLICY_ALL_FULL_CIVS',		'BUILDINGCLASS_PLUS_1_UNHAPPINESS',	-1	),
 ('POLICY_EACIV_PALARE',			'BUILDINGCLASS_FAIR',				2	);
 
-INSERT INTO Policy_BuildingClassHappiness (PolicyType, BuildingClassType, Happiness)
-SELECT 'POLICY_EACIV_ISALLIN', BuildingClass, 1 FROM Buildings WHERE EaSpecial = 'Religious';
+--INSERT INTO Policy_BuildingClassHappiness (PolicyType, BuildingClassType, Happiness)
+--SELECT 'POLICY_EACIV_NETZACH', BuildingClass, 1 FROM Buildings WHERE EaSpecial = 'Religious';
 
 
 

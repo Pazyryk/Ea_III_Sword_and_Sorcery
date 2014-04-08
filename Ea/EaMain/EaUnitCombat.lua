@@ -140,7 +140,7 @@ local function OnSerialEventUnitCreated(iPlayer, iUnit, hexVec, unitType, cultur
 				if city then break end
 			end
 		end
-		if city and city:GetNumRealBuilding(BUILDING_INTERNMENT_CAMP) == 1 then
+		if city and city:GetNumBuilding(BUILDING_INTERNMENT_CAMP) == 1 then
 			MapModData.bBypassOnCanSaveUnit = true
 			unit:Kill(true, -1)
 			local raceID = GetCityRace(city)		--TO DO: make these unit race, not city race

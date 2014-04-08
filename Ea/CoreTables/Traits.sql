@@ -24,19 +24,18 @@ UPDATE Traits SET FreeBuilding = 'BUILDING_NEITH' WHERE Type = 'TRAIT_NEITH';
 UPDATE Traits SET FreeBuilding = 'BUILDING_BREWERY' WHERE Type = 'TRAIT_NINKASI';
 UPDATE Traits SET FreeBuilding = 'BUILDING_MONASTERY' WHERE Type = 'TRAIT_ANAPHORA';
 UPDATE Traits SET FreeBuilding = 'BUILDING_MAMONAS' WHERE Type = 'TRAIT_MAMONAS';
+UPDATE Traits SET FreeBuilding = 'BUILDING_LIBRARY' WHERE Type IN ('TRAIT_THEANON', 'TRAIT_TIR_ECNE');
+UPDATE Traits SET FreeBuilding = 'BUILDING_HARBOR' WHERE Type = 'TRAIT_HY_BREASIL';
+UPDATE Traits SET FreeBuilding = 'BUILDING_MARKETPLACE' WHERE Type = 'TRAIT_TYRE';
+UPDATE Traits SET FreeBuilding = 'BUILDING_FORGE' WHERE Type = 'TRAIT_GERZAH';
+UPDATE Traits SET FreeBuilding = 'BUILDING_SHIPYARD' WHERE Type = 'TRAIT_MAYD';
 
 UPDATE Traits SET FreeBuilding = 'BUILDING_1C_ANIMAL_RESOURCES' WHERE Type = 'TRAIT_BANBA';
 UPDATE Traits SET FreeBuilding = 'BUILDING_1C_PLANT_RESOURCES' WHERE Type = 'TRAIT_ERIU';
 UPDATE Traits SET FreeBuilding = 'BUILDING_1C_EARTH_RESOURCES' WHERE Type = 'TRAIT_FODLA';
+UPDATE Traits SET FreeBuilding = 'BUILDING_1C_VARIOUS_RESOURCES' WHERE Type IN ('TRAIT_SAGUENAY', 'TRAIT_NOUDONT');
 
 
-
-
-UPDATE Traits SET FreeBuilding = 'BUILDING_MAYD' WHERE Type = 'TRAIT_MAYD';
-
-UPDATE Traits SET FreeBuilding = 'BUILDING_MARKETPLACE' WHERE Type = 'TRAIT_TYRE';
-UPDATE Traits SET FreeBuilding = 'BUILDING_FORGE' WHERE Type = 'TRAIT_GERZAH';
-UPDATE Traits SET FreeBuilding = 'BUILDING_HARBOR' WHERE Type = 'TRAIT_HY_BREASIL';
 
 UPDATE Traits SET FaithFromKills = 100 WHERE Type IN ('TRAIT_STYGIA', 'TRAIT_MORIQUENDI', 'TRAIT_ISALLIN');
 UPDATE Traits SET PlotBuyCostModifier = -33, PlotCultureCostModifier = -33 WHERE Type = 'TRAIT_REYNES';
@@ -44,16 +43,17 @@ UPDATE Traits SET WorkerSpeedModifier = 20 WHERE Type = 'TRAIT_NEZELIBA';
 UPDATE Traits SET PlunderModifier = 200 WHERE Type IN ('TRAIT_NEMEDIA', 'TRAIT_MORRIGNA');
 UPDATE Traits SET GoldenAgeCombatModifier = 33 WHERE Type IN ('TRAIT_MACHAE', 'TRAIT_MILESIA');
 UPDATE Traits SET FightWellDamaged = 1 WHERE Type IN ('TRAIT_ULFHETHNAR', 'TRAIT_BODWA');
+UPDATE Traits SET CityConnectionTradeRouteChange = 20, LandTradeRouteRangeBonus = 5 WHERE Type IN ('TRAIT_SUDDENE', 'TRAIT_DAL_FIATACH');
+UPDATE Traits SET AngerFreeIntrusionOfCityStates = 1 WHERE Type IN ('TRAIT_PARTHOLON', 'TRAIT_DAIRINE');
+UPDATE Traits SET WorkerSpeedModifier = 20, CapitalBuildingModifier = 20 WHERE Type = 'TRAIT_DOKKALFAR';
+UPDATE Traits SET CultureBuildingYieldChange = 1 WHERE Type = 'TRAIT_PALARE';
 
-
---
---
---TRAIT_
 
 --subtables
 DELETE FROM Trait_FreeResourceFirstXCities;
 INSERT INTO Trait_FreeResourceFirstXCities (TraitType, ResourceType,	ResourceQuantity,	NumCities) VALUES
-('TRAIT_GRAEAE',		'RESOURCE_MOLY',			1,		6	);
+('TRAIT_GRAEAE',		'RESOURCE_MOLY',			1,		6	),
+('TRAIT_EBOR',			'RESOURCE_ELEPHANT',		1,		5	);
 
 
 
@@ -93,11 +93,17 @@ INSERT INTO Trait_ImprovementYieldChanges (TraitType, ImprovementType, YieldType
 ('TRAIT_GRAEAE',		'IMPROVEMENT_BOWYERS_CAMP',		'YIELD_FAITH',		1	),
 ('TRAIT_GRAEAE',		'IMPROVEMENT_FARM_2',			'YIELD_FAITH',		1	),
 ('TRAIT_GRAEAE',		'IMPROVEMENT_MINE_2',			'YIELD_FAITH',		1	),
-('TRAIT_GRAEAE',		'IMPROVEMENT_LUMBERMILL_2',		'YIELD_FAITH',		1	);
+('TRAIT_GRAEAE',		'IMPROVEMENT_LUMBERMILL_2',		'YIELD_FAITH',		1	),
+
+('TRAIT_AGARTHA',		'IMPROVEMENT_MINE',				'YIELD_PRODUCTION',	1	),
+('TRAIT_AGARTHA',		'IMPROVEMENT_MINE',				'YIELD_CULTURE',	1	),
+('TRAIT_AGARTHA',		'IMPROVEMENT_MINE_2',			'YIELD_PRODUCTION',	1	),
+('TRAIT_AGARTHA',		'IMPROVEMENT_MINE_2',			'YIELD_CULTURE',	1	);
 
 
 DELETE FROM Trait_MaintenanceModifierUnitCombats;
 INSERT INTO Trait_MaintenanceModifierUnitCombats (TraitType,	UnitCombatType, MaintenanceModifier) VALUES
+('TRAIT_EBOR',			'UNITCOMBAT_ARMOR',			-33	),
 ('TRAIT_PHRYGES',		'UNITCOMBAT_MOUNTED',		-33	),
 ('TRAIT_PHRYGES',		'UNITCOMBAT_GUN',			-33	);
 
@@ -119,6 +125,12 @@ INSERT INTO Trait_SpecialistYieldChanges (TraitType, SpecialistType, YieldType, 
 ('TRAIT_BJARMALAND',	'SPECIALIST_ADEPT',		'YIELD_FAITH',		1);
 
 
+DELETE FROM Trait_YieldChangesPerTradePartner;
+INSERT INTO Trait_YieldChangesPerTradePartner (TraitType, YieldType, Yield) VALUES
+('TRAIT_SUDDENE',		'YIELD_GOLD',		2),
+('TRAIT_DAL_FIATACH',	'YIELD_GOLD',		2);
+
+
 
 --unused:
 DELETE FROM Trait_ExtraYieldThresholds;
@@ -134,7 +146,6 @@ DELETE FROM Trait_UnimprovedFeatureYieldChanges;
 DELETE FROM Trait_YieldChanges;
 DELETE FROM Trait_YieldChangesIncomingTradeRoute;
 DELETE FROM Trait_YieldChangesNaturalWonder;
-DELETE FROM Trait_YieldChangesPerTradePartner;
 DELETE FROM Trait_YieldChangesStrategicResources;
 DELETE FROM Trait_YieldModifiers;
 

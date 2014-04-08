@@ -103,6 +103,7 @@ local POLICY_PANTHEISM =					GameInfoTypes.POLICY_PANTHEISM
 local POLICY_SLAVE_RAIDERS =				GameInfoTypes.POLICY_SLAVE_RAIDERS
 
 local TECH_MILLING =						GameInfoTypes.TECH_MILLING
+local TECH_SAILING =						GameInfoTypes.TECH_SAILING
 
 local YIELD_PRODUCTION =					GameInfoTypes.YIELD_PRODUCTION
 
@@ -517,6 +518,33 @@ function ConvertUnitProductionByMatch(iPlayer, fromStr, toStr)
 	end
 end
 
+function TestNaturalHarborForFreeHarbor(city)	--assumes proper tech
+	if not city:IsCoastal(10) then return false end
+	print("Testing city for natural harbor")
+	local bHasNaturalHarbor = false
+	for x, y in PlotToRadiusIterator(city:GetX(), city:GetY(), 1, nil, nil, true) do
+		local plot = GetPlotFromXY(x, y)
+		if plot:IsWater() and not plot:IsLake() then
+			local adjLandPlots = 0
+			for adjX, adjY in PlotToRadiusIterator(x, y, 1, nil, nil, true) do
+				local adjPlot = GetPlotFromXY(adjX, adjY)
+				if not adjPlot:IsWater() then
+					adjLandPlots = adjLandPlots + 1
+				end
+			end
+			print(" -number surrounding land = ", adjLandPlots)
+			if 2 < adjLandPlots then
+				bHasNaturalHarbor = true
+				plot:SetOwner(city:GetOwner(), city:GetID())
+			end
+		end
+	end
+	if bHasNaturalHarbor then
+		city:SetNumFreeBuilding(BUILDING_HARBOR, 1)
+	end
+end
+
+
 function CityPerCivTurn(iPlayer)		--Full civ only
 	local Floor = math.floor
 	print("CityPerCivTurn; City info (Name/Size/BuildQueue):")
@@ -625,7 +653,7 @@ function CityPerCivTurn(iPlayer)		--Full civ only
 						gWorld.coastalCultOfAegirFollowerCities = gWorld.coastalCultOfAegirFollowerCities + 1
 					end
 				elseif followerReligion == RELIGION_CULT_OF_BAKKHEIA then
-					gWorld.bakkheiaMana = gWorld.bakkheiaMana + city:GetNumRealBuilding(BUILDING_WINERY) + city:GetNumRealBuilding(BUILDING_BREWERY) + city:GetNumRealBuilding(BUILDING_DISTILLERY)
+					gWorld.bakkheiaMana = gWorld.bakkheiaMana + city:GetNumBuilding(BUILDING_WINERY) + city:GetNumBuilding(BUILDING_BREWERY) + city:GetNumBuilding(BUILDING_DISTILLERY)
 				end
 
 
@@ -797,7 +825,7 @@ function CityStateFollowerCityCounting()			--once per turn after plots (takes ca
 					gWorld.coastalCultOfAegirFollowerCities = gWorld.coastalCultOfAegirFollowerCities + 1
 				end
 			elseif followerReligion == RELIGION_CULT_OF_BAKKHEIA then
-				gWorld.bakkheiaMana = gWorld.bakkheiaMana + city:GetNumRealBuilding(BUILDING_WINERY) + city:GetNumRealBuilding(BUILDING_BREWERY) + city:GetNumRealBuilding(BUILDING_DISTILLERY)
+				gWorld.bakkheiaMana = gWorld.bakkheiaMana + city:GetNumBuilding(BUILDING_WINERY) + city:GetNumBuilding(BUILDING_BREWERY) + city:GetNumBuilding(BUILDING_DISTILLERY)
 			end
 		end
 	end
@@ -869,6 +897,12 @@ local function OnPlayerCityFounded(iPlayer, x, y)
 			end
 		end
 	end
+
+	local team = Teams[player:GetTeam()]
+	if team:IsHasTech(TECH_SAILING) then
+		TestNaturalHarborForFreeHarbor(city)
+	end
+
 	print("New city", iPlayer, iPlot, x, y, iCity, city:GetName())
 end
 GameEvents.PlayerCityFounded.Add(function(iPlayer, x, y) return HandleError31(OnPlayerCityFounded, iPlayer, x, y) end)
@@ -1013,6 +1047,11 @@ local function OnCityCaptureComplete(iPlayer, bCapital, x, y, iNewOwner)		-- THI
 
 	AddCityToResDistanceMatrixes(iNewOwner, city)
 	CleanCityResDistanceMatrixes()
+
+	local team = Teams[newOwner:GetTeam()]
+	if team:IsHasTech(TECH_SAILING) then
+		TestNaturalHarborForFreeHarbor(city)
+	end
 
 end
 GameEvents.CityCaptureComplete.Add(function(iPlayer, bCapital, x, y, iNewOwner) return HandleError(OnCityCaptureComplete, iPlayer, bCapital, x, y, iNewOwner) end)
@@ -1239,7 +1278,7 @@ TestCityCanTrain[GameInfoTypes.UNIT_SETTLERS_MAN] = function(iPlayer, iCity)
 	local player = Players[iPlayer]
 	if player:GetHappiness() <= VERY_UNHAPPY_THRESHOLD then		--TO DO: IS THIS RIGHT?????!!!!! (should do player test first to save time)
 		local city = player:GetCityByID(iCity)
-		if city:GetNumRealBuilding(BUILDING_SLAVE_BREEDING_PEN) < 1 then return false end
+		if city:GetNumBuilding(BUILDING_SLAVE_BREEDING_PEN) < 1 then return false end
 	end
 	return true
 end

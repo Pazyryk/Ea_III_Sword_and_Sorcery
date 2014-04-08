@@ -14,6 +14,7 @@ local Dprint = DEBUG_PRINT and print or function() end
 --constants
 
 local EACIV_MAMONAS =							GameInfoTypes.EACIV_MAMONAS
+local EACIV_MOR =								GameInfoTypes.EACIV_MOR
 
 local ORDER_MAINTAIN =							OrderTypes.ORDER_MAINTAIN
 local CITY_UPDATE_TYPE_PRODUCTION =				CityUpdateTypes.CITY_UPDATE_TYPE_PRODUCTION
@@ -161,12 +162,12 @@ function UpdateGlobalYields(iPlayer, effectType, bPerTurnCall)	--City States onl
 	local bHuman = not bFullCivAI[iPlayer]
 
 	if effectType == nil or effectType == "Gold" then
-		local mercenaryNet = 0
+		local mercenaryCost = 0
 		for iOriginalOwner, myMercs in pairs(eaPlayer.mercenaries) do	--mercenaries we have hired
 			for iMerc, gpt in pairs(myMercs) do
 				local merc = player:GetUnitByID(iMerc)
 				if merc then
-					mercenaryNet = mercenaryNet - gpt
+					mercenaryCost = mercenaryCost + gpt
 				else
 					myMercs[iMerc] = nil		--clear out killed mercs
 				end
@@ -175,6 +176,8 @@ function UpdateGlobalYields(iPlayer, effectType, bPerTurnCall)	--City States onl
 				eaPlayer.mercenaries[iOriginalOwner] = nil
 			end
 		end
+
+		local mercenaryIncome = 0
 		if bFullCiv then
 			if player:HasPolicy(POLICY_MERCENARIES) then			--mercenaries we have hired out to other civs
 				for iLoopPlayer, eaLoopPlayer in pairs(realCivs) do
@@ -184,7 +187,7 @@ function UpdateGlobalYields(iPlayer, effectType, bPerTurnCall)	--City States onl
 						for iMerc, gpt in pairs(myHiredMercs) do
 							local merc = loopPlayer:GetUnitByID(iMerc)
 							if merc then
-								mercenaryNet = mercenaryNet + gpt
+								mercenaryIncome = mercenaryIncome + gpt
 							else							
 								myHiredMercs[iMerc] = nil	--clear out killed mercs
 							end
@@ -195,6 +198,10 @@ function UpdateGlobalYields(iPlayer, effectType, bPerTurnCall)	--City States onl
 					end
 				end
 			end
+			if eaCivID == EACIV_MOR then
+				mercenaryCost = Floor(0.67 * mercenaryCost + 0.5)
+				mercenaryIncome = Floor(1.33 * mercenaryIncome + 0.5)
+			end
 
 		elseif player:GetMinorCivTrait() == MINOR_TRAIT_MERCENARY then
 			for iLoopPlayer, eaLoopPlayer in pairs(realCivs) do		--same loop as for full civ above
@@ -204,7 +211,7 @@ function UpdateGlobalYields(iPlayer, effectType, bPerTurnCall)	--City States onl
 					for iMerc, gpt in pairs(myHiredMercs) do
 						local merc = loopPlayer:GetUnitByID(iMerc)
 						if merc then
-							mercenaryNet = mercenaryNet + gpt
+							mercenaryIncome = mercenaryIncome + gpt
 						else
 							myHiredMercs[iMerc] = nil
 						end
@@ -216,7 +223,7 @@ function UpdateGlobalYields(iPlayer, effectType, bPerTurnCall)	--City States onl
 			end
 		end
 		if bHuman then			--used to adjust top panel display only
-			MapModData.mercenaryNet = mercenaryNet
+			MapModData.mercenaryNet = mercenaryIncome - mercenaryCost
 		end
 		if bPerTurnCall then	--do deduction from teasury and/or set shortfall
 			player:ChangeGold(mercenaryNet)
@@ -323,21 +330,21 @@ function UpdateCityYields(iPlayer, iSpecificCity, effectType, bPerTurnCall)
 					end
 				end
 				local food, production, gold = 0, 0, 0
-				if 0 < city:GetNumRealBuilding(BUILDING_SMOKEHOUSE) then
+				if 0 < city:GetNumBuilding(BUILDING_SMOKEHOUSE) then
 					food = food + numCampRes
 				end
-				if 0 < city:GetNumRealBuilding(BUILDING_HUNTING_LODGE) then
+				if 0 < city:GetNumBuilding(BUILDING_HUNTING_LODGE) then
 					food = food + numCampRes
 					gold = gold + numCampRes
 				end
-				if 0 < city:GetNumRealBuilding(BUILDING_HARBOR) then
+				if 0 < city:GetNumBuilding(BUILDING_HARBOR) then
 					food = food + numFishingRes + numWhales
 				end
-				if 0 < city:GetNumRealBuilding(BUILDING_PORT) then
+				if 0 < city:GetNumBuilding(BUILDING_PORT) then
 					food = food + numFishingRes + numWhales
 					gold = gold + numFishingRes + numWhales
 				end
-				if 0 < city:GetNumRealBuilding(BUILDING_WHALERY) then
+				if 0 < city:GetNumBuilding(BUILDING_WHALERY) then
 					food = food + numWhales
 					production = production + numWhales		
 				end
@@ -375,7 +382,7 @@ function UpdateCityYields(iPlayer, iSpecificCity, effectType, bPerTurnCall)
 
 			if effectType == nil or effectType == "Food" then
 				local newFood = foodDistribution
-				if city:GetNumRealBuilding(BUILDING_SLAVE_BREEDING_PEN) == 1 then		--offsets unhappiness penalty
+				if city:GetNumBuilding(BUILDING_SLAVE_BREEDING_PEN) == 1 then		--offsets unhappiness penalty
 					local foodLost = 0
 					local playerHappiness = player:GetHappiness()
 					if playerHappiness <= VERY_UNHAPPY_THRESHOLD then
@@ -430,8 +437,8 @@ function UpdateCityYields(iPlayer, iSpecificCity, effectType, bPerTurnCall)
 						newGold = newGold + gold
 					end
 				end
-				if 0 < city:GetNumRealBuilding(BUILDING_NATIONAL_TREASURY) then
-					newGold = newGold + Floor(player:GetGold() * city:GetNumRealBuilding(BUILDING_NATIONAL_TREASURY) / 2000 + 0.5)
+				if 0 < city:GetNumBuilding(BUILDING_NATIONAL_TREASURY) then
+					newGold = newGold + Floor(player:GetGold() * city:GetNumBuilding(BUILDING_NATIONAL_TREASURY) / 2000 + 0.5)
 				end
 				if nameTrait == EACIV_MAMONAS and city == capital then
 					newGold = newGold + Floor(player:GetGold() * 0.005 + 0.5)

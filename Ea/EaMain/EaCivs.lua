@@ -12,7 +12,8 @@ local Dprint = DEBUG_PRINT and print or function() end
 --------------------------------------------------------------
 
 --constants
-
+local EACIV_DAIRINE =							GameInfoTypes.EACIV_DAIRINE
+local EACIV_PARTHOLON =							GameInfoTypes.EACIV_PARTHOLON
 local EACIV_SKOGR =								GameInfoTypes.EACIV_SKOGR
 local POLICY_PANTHEISM =						GameInfoTypes.POLICY_PANTHEISM
 local POLICY_PATRONAGE =						GameInfoTypes.POLICY_PATRONAGE
@@ -458,6 +459,9 @@ local function OnPlayerMinorFriendshipAnchor(iMajorPlayer, iMinorPlayer)
 			local eaMajorPlayer = gPlayers[iMajorPlayer]
 			local eaMinorPlayer = gPlayers[iMinorPlayer]
 			local anchor = csBaselineRelationshipByRace[eaMajorPlayer.race][eaMinorPlayer.race]
+			if eaMajorPlayer.eaCivNameID == EACIV_PARTHOLON or eaMajorPlayer.eaCivNameID == EACIV_DAIRINE then
+				anchor = anchor + 15
+			end
 			return anchor
 		end
 	else	-- God

@@ -13,6 +13,7 @@ local Dprint = DEBUG_PRINT and print or function() end
 local HIGHEST_PROMOTION_ID =			HIGHEST_PROMOTION_ID
 local MOD_MEMORY_HALFLIFE =				MOD_MEMORY_HALFLIFE
 
+local EACIV_LJOSALFAR =					GameInfoTypes.EACIV_LJOSALFAR
 local EAMOD_LEADERSHIP =				GameInfoTypes.EAMOD_LEADERSHIP
 
 local EA_WONDER_ARCANE_TOWER =			GameInfoTypes.EA_WONDER_ARCANE_TOWER
@@ -215,6 +216,7 @@ function PeoplePerCivTurn(iPlayer)
 	local bHumanPlayer = not bFullCivAI[iPlayer]
 	local classPoints = eaPlayer.classPoints
 	local gameTurn = Game.GetGameTurn()
+	local bExtraPassiveXP = eaPlayer.eaCivNameID == EACIV_LJOSALFAR
 
 	--GP Probability Generation
 	local chance = CalculateGPSpawnChance(iPlayer)
@@ -265,6 +267,9 @@ function PeoplePerCivTurn(iPlayer)
 				chance = chance < 20 and 20 or chance
 				if Rand(100, "hello") < chance then
 					local xp = bIsLeader and 4 or 2
+					if bExtraPassiveXP then
+						xp = xp * 3
+					end
 					unit:ChangeExperience(xp)
 				end
 

@@ -49,6 +49,7 @@ CREATE TABLE EaCivs (	'ID' INTEGER PRIMARY KEY AUTOINCREMENT,
 						'PopResourceNearCapital' TEXT DEFAULT NULL,
 						'FavoredTechExtraReduction' INTEGER DEFAULT 0,
 						'XPBoostFromManaUse' INTEGER DEFAULT 0,
+						'KnowlMaintModifier' INTEGER DEFAULT 0,
 						--AI
 						'AIMercHire' INTEGER DEFAULT 0);			-- -100 for supplier; +value is gold treasury needed before civ considers hiring
 
@@ -143,18 +144,18 @@ INSERT INTO EaCivs (Type,	Quote,								PopupImage,								DefaultPlayerColor,		
 --('EACIV_MORD',			NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_AMERICA',	'POLICY_MILITARISM',		'Warrior',			NULL,				NULL,				'Warrior',		NULL						),
 ('EACIV_THEANON',			NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_CARTHAGE',	'POLICY_SCHOLASTICISM',		'Sage',				NULL,				'EAPERSON_THEANO',	'Sage',			NULL						),
 ('EACIV_SAGUENAY',			NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_CELTS',	'POLICY_FOLKART',			'Artist',			NULL,				NULL,				'Artist',		NULL						),	
-('EACIV_ALBION',			NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_ETHIOPIA',	'POLICY_FOLKLORE',			'Artist',			NULL,				NULL,				'Artist',		NULL						),	
+('EACIV_ALBION',			NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_ETHIOPIA',	'POLICY_FOLKLORE',			'Artist',			NULL,				NULL,				'Artist',		'POLICY_1C_VARIOUS_BUILDINGS'),	
 ('EACIV_TIR_ECNE',			NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_MAYA',		'POLICY_SCHOLASTICISM',		'Sage',				NULL,				'EAPERSON_ECNE',	'Sage',			NULL						),	
 ('EACIV_NOUDONT',			NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_NETHERLANDS','POLICY_FOLKART',			'Artist',			NULL,				NULL,				'Artist',		NULL						),
-('EACIV_AES_DANA',			NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_SWEDEN',	'POLICY_FOLKLORE',			'Artist',			NULL,				'EAPERSON_DANU',	'Artist',		NULL						),
+('EACIV_AES_DANA',			NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_SWEDEN',	'POLICY_FOLKLORE',			'Artist',			NULL,				'EAPERSON_DANU',	'Artist',		'POLICY_1C_VARIOUS_BUILDINGS'),
 ('EACIV_SUDDENE',			NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_SPAIN',	'POLICY_MERCANTILISM',		'Merchant',			NULL,				NULL,				'Merchant',		NULL						),
 ('EACIV_PARTHOLON',			NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_BRAZIL',	'POLICY_CULTURAL_DIPLOMACY','Merchant',			NULL,				'EAPERSON_PARTHOLON','Merchant',	NULL						),
 ('EACIV_DAL_FIATACH',		NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_INDONESIA','POLICY_MERCANTILISM',		'Merchant',			NULL,				'EAPERSON_AINE',	'Merchant',		NULL						),	
 ('EACIV_DAIRINE',			NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_MOROCCO',	'POLICY_CULTURAL_DIPLOMACY','Merchant',			NULL,				'EAPERSON_ETAIN',	'Merchant',		NULL						),	
-('EACIV_MOR',				NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_POLAND',	'POLICY_MERCENARIES',		'Merchant',			NULL,				NULL,				'Merchant',		'POLICY_EACIV_MOR'			),	
+('EACIV_MOR',				NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_POLAND',	'POLICY_MERCENARIES',		'Merchant',			NULL,				NULL,				'Merchant',		NULL						),	
 ('EACIV_DOKKALFAR',			NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_PORTUGAL',	'POLICY_DOMINIONISM',		NULL,				NULL,				NULL,				NULL,			NULL						),	
 ('EACIV_LJOSALFAR',			NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_VENICE',	'POLICY_PANTHEISM',			NULL,				NULL,				NULL,				NULL,			NULL						),	
-('EACIV_SEGOYIM',			NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_ZULU',		'POLICY_PANTHEISM',			NULL,				NULL,				NULL,				NULL,			NULL						);
+('EACIV_SEGOYIM',			NULL,								'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_ZULU',		'POLICY_PANTHEISM',			NULL,				'Wizard',			NULL,				'Thaumaturge',	'POLICY_EACIV_SEGOYIM'		);
 
 UPDATE EaCivs SET OrAdoptedPolicy1 = 'POLICY_GUILDS', OrAdoptedPolicy2 = 'POLICY_CIVIL_SERVICE'  WHERE Type = 'EACIV_EOGANACHTA';
 UPDATE EaCivs SET OrAdoptedPolicy1 = 'POLICY_WOODS_LORE', OrAdoptedPolicy2 = 'POLICY_EARTH_LORE'  WHERE Type = 'EACIV_SKOGR';
@@ -166,8 +167,7 @@ UPDATE EaCivs SET AndAdoptedPolicy = 'POLICY_TRADITION' WHERE Type = 'EACIV_LJOS
 UPDATE EaCivs SET AndAdoptedPolicy = 'POLICY_ARCANA' WHERE Type = 'EACIV_SEGOYIM';
 
 UPDATE EaCivs SET XPBoostFromManaUse = 50 WHERE Type IN ('EACIV_O', 'EACIV_MU', 'EACIV_SEGOYIM', 'EACIV_YESOD');
-
-
+UPDATE EaCivs SET KnowlMaintModifier = -20 WHERE Type IN ('EACIV_THEANON', 'EACIV_TIR_ECNE');
 
 --improvement triggers
 INSERT INTO EaCivs (Type,	PopupImage,								DefaultPlayerColor,		ImprovementType,				OrImprovementType,	ImprovementNumber,	FavoredGPClass,	GainPolicy) VALUES
@@ -175,11 +175,11 @@ INSERT INTO EaCivs (Type,	PopupImage,								DefaultPlayerColor,		ImprovementTyp
 ('EACIV_AGARTHA',			'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_GREECE',	'IMPROVEMENT_MINE',				NULL,				2,					'Engineer',		NULL			);
 
 -- building triggers
-INSERT INTO EaCivs (Type,	PopupImage,								DefaultPlayerColor,		BuildingType,			FavoredGPClass,	GainPolicy				) VALUES
-('EACIV_YS',				'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_VENICE',	'BUILDING_LIBRARY',		'Sage',			'POLICY_EACIV_YS'		),
-('EACIV_TYRE',				'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_ZULU',		'BUILDING_MARKETPLACE',	'Merchant',		NULL					),
-('EACIV_GERZAH',			'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_ARABIA',	'BUILDING_FORGE',		'Engineer',		NULL					),
-('EACIV_PALARE',			'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_AZTEC',	'BUILDING_FAIR',		'Artist',		'POLICY_EACIV_PALARE'	);
+INSERT INTO EaCivs (Type,	PopupImage,								DefaultPlayerColor,		BuildingType,			FavoredGPClass,	GainPolicy			) VALUES
+('EACIV_YS',				'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_VENICE',	'BUILDING_LIBRARY',		'Sage',			'POLICY_EACIV_YS'	),
+('EACIV_TYRE',				'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_ZULU',		'BUILDING_MARKETPLACE',	'Merchant',		NULL				),
+('EACIV_GERZAH',			'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_ARABIA',	'BUILDING_FORGE',		'Engineer',		NULL				),
+('EACIV_PALARE',			'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_AZTEC',	'BUILDING_FAIR',		'Artist',		NULL				);
 
 -- unit triggers
 INSERT INTO EaCivs (Type,	PopupImage,								DefaultPlayerColor,		UnitClass,						OrUnitClass,						OrUnitClass2,					FavoredGPClass	) VALUES
@@ -188,7 +188,10 @@ INSERT INTO EaCivs (Type,	PopupImage,								DefaultPlayerColor,		UnitClass,				
 ('EACIV_EBOR',				'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_ENGLAND',	'UNITCLASS_MOUNTED_ELEPHANTS',	NULL,								NULL,							'Warrior'		),
 ('EACIV_PHRYGES',			'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_FRANCE',	'UNITCLASS_HORSEMEN_MAN',		'UNITCLASS_HORSEMEN_SIDHE',			'UNITCLASS_HORSEMEN_ORC',		'Warrior'		);
 
+UPDATE EaCivs SET KnowlMaintModifier = -33 WHERE Type = 'EACIV_YS';
 
+
+--
 
 --Build out table from EaCivString
 UPDATE EaCivs SET EaCivString = REPLACE(Type, 'EACIV_', '');

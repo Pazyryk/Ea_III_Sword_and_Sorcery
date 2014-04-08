@@ -321,86 +321,131 @@
 		<Row Tag="TXT_KEY_EA_CIV_MORD">
 			<Text>Mord</Text>
 		</Row>
-		<!--
-		<Row Tag="_HELP">
-			<Text>[ICON_BULLET]</Text>
-		</Row>
-		<Row Tag="_HELP">
-			<Text>[ICON_BULLET]</Text>
-		</Row>
-		<Row Tag="_HELP">
-			<Text>[ICON_BULLET]</Text>
-		</Row>
-		<Row Tag="_HELP">
-			<Text>[ICON_BULLET]</Text>
-		</Row>
-		<Row Tag="_HELP">
-			<Text>[ICON_BULLET]</Text>
-		</Row>
-		-->	
 		<Row Tag="TXT_KEY_EA_CIV_THEANON">
 			<Text>Theanon</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_THEANON_HELP">
+			<Text>[ICON_BULLET]Free Library in every city[NEWLINE][ICON_BULLET]-20% Research Maintenance from known techs</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_SAGUENAY">
 			<Text>Saguenay</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_SAGUENAY_HELP">
+			<Text>[ICON_BULLET]+1 [ICON_CULTURE] Culture from [ICON_DYE] Dye, [ICON_MARBLE] Marble, [ICON_PEARLS] Pearls, [ICON_GEMS] Gems, [ICON_URANIUM] Jade, [ICON_COPPER] Copper, [ICON_GOLD] Gold, [ICON_SILVER] Silver</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_ALBION">
 			<Text>Albion</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_ALBION_HELP">
+			<Text>[ICON_BULLET]+1 [ICON_CULTURE] Culture from Capital, Amphitheaters, Fairs, Walls and Castles</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_TIR_ECNE">
 			<Text>Tír Ecne</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_TIR_ECNE_HELP">
+			<Text>[ICON_BULLET]Free Library in every city[NEWLINE][ICON_BULLET]-20% Research Maintenance from known techs</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_NOUDONT">
 			<Text>Noudont</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_NOUDONT_HELP">
+			<Text>[ICON_BULLET]+1 [ICON_CULTURE] Culture from [ICON_DYE] Dye, [ICON_MARBLE] Marble, [ICON_PEARLS] Pearls, [ICON_GEMS] Gems, [ICON_URANIUM] Jade, [ICON_COPPER] Copper, [ICON_GOLD] Gold, [ICON_SILVER] Silver</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_AES_DANA">
 			<Text>Áes dána</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_AES_DANA_HELP">
+			<Text>[ICON_BULLET]+1 [ICON_CULTURE] Culture from Capital, Amphitheaters, Fairs, Walls and Castles</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_SUDDENE">
 			<Text>Suddene</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_SUDDENE_HELP">
+			<Text>[ICON_BULLET]+20% [ICON_GOLD] Gold from city connections[NEWLINE][ICON_BULLET]+2 [ICON_GOLD] Gold from each international trade route[NEWLINE][ICON_BULLET]+5 land trade route range.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_PARTHOLON">
 			<Text>Partholón</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_PARTHOLON_HELP">
+			<Text>[ICON_BULLET]+15 base relationship with all City States[NEWLINE][ICON_BULLET]Pass through City State territory without anger</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_DAL_FIATACH">
 			<Text>Dál Fiatach</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_DAL_FIATACH_HELP">
+			<Text>[ICON_BULLET]+20% [ICON_GOLD] Gold from city connections[NEWLINE][ICON_BULLET]+2 [ICON_GOLD] Gold from each international trade route[NEWLINE][ICON_BULLET]+5 land trade route range.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_DAIRINE">
 			<Text>Dáirine</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_DAIRINE_HELP">
+			<Text>[ICON_BULLET]+15 base relationship with all City States[NEWLINE][ICON_BULLET]Pass through City State territory without anger</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_MOR">
 			<Text>Mór</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_MOR_HELP">
+			<Text>[ICON_BULLET] -33% reduced [ICON_GOLD] Gold cost for hiring mercenaries[NEWLINE][ICON_BULLET]+33% extra [ICON_GOLD] Gold earned from hiring out mercenaries</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_DOKKALFAR">
 			<Text>Dökkálfar</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_DOKKALFAR_HELP">
+			<Text>[ICON_BULLET]+20 work rate for Slaves[NEWLINE][ICON_BULLET]+20% [ICON_PRODUCTION] Production toward buildings already present in capital</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_LJOSALFAR">
 			<Text>Ljósálfar</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_LJOSALFAR_HELP">
+			<Text>[ICON_BULLET]All Great People gain passive experience at three times the normal rate</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_SEGOYIM">
 			<Text>Segoÿim</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_SEGOYIM_HELP">
+			<Text>[ICON_BULLET]+2 [ICON_RESEARCH] Research, +2 [ICON_CULTURE] Culture and +2 [ICON_STAR] Mana from capital[NEWLINE][ICON_BULLET]Spellcasters gain +50% experience from use of [ICON_STAR] Mana</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_HY_BREASIL">
 			<Text>Hy-Breasil</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_HY_BREASIL_HELP">
+			<Text>[ICON_BULLET]Free Harbor in every coastal city</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_AGARTHA">
 			<Text>Agartha </Text>
 		</Row>
-		
+		<Row Tag="TXT_KEY_EA_CIV_AGARTHA_HELP">
+			<Text>[ICON_BULLET]+1 [ICON_PRODUCTION] Production and +1 [ICON_CULTURE] Culture from Mines and Deep Mines</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_YS">
 			<Text>Ys</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_YS_HELP">
+			<Text>[ICON_BULLET]+1.5 [ICON_RESEARCH] Research per [ICON_CITIZEN] Citizen in capital[NEWLINE][ICON_BULLET]-33% Knowledge Maintenance from known techs</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_TYRE">
 			<Text>Týre</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_TYRE_HELP">
+			<Text>[ICON_BULLET]Free Marketplace in every city</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_GERZAH">
 			<Text>Gerzah</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_GERZAH_HELP">
+			<Text>[ICON_BULLET]Free Forge in every city</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_PALARE">
 			<Text>Palare</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_PALARE_HELP">
+			<Text>[ICON_BULLET]+1 [ICON_CULTURE] Culture from every building that already provides culture</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_MAYD">
 			<Text>Mayd</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_MAYD_HELP">
+			<Text>[ICON_BULLET]Free Shipyard in every coastal city</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_SISUKAS">
 			<Text>Sisukas</Text>
@@ -410,6 +455,9 @@
 		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_EBOR">
 			<Text>Ebor</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_EBOR_HELP">
+			<Text>[ICON_BULLET]Gain one free [ICON_IVORY] ElephantS from each of your first 5 cities[NEWLINE][ICON_BULLET]-33% maintenance cost for all elephant units</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_PHRYGES">
 			<Text>Phryges</Text>

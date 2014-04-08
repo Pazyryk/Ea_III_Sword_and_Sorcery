@@ -105,10 +105,10 @@ function GetEaCivDiscriptionText(eaCivID, bIncludeCivName, bIncludeQuote, bInclu
 
 	local strToolTip = ""
 	if bIncludeCivName then
-		strToolTip = strToolTip .. "[COLOR_POSITIVE_TEXT]" .. civName .. "[ENDCOLOR][NEWLINE][NEWLINE]"
+		strToolTip = strToolTip .. "[COLOR_POSITIVE_TEXT]" .. civName .. "[ENDCOLOR][NEWLINE]"
 	end
 	if civQuote then
-		strToolTip = strToolTip .. civQuote .. "[NEWLINE]"
+		strToolTip = strToolTip .. "[NEWLINE]" .. civQuote .. "[NEWLINE]"
 	end
 	if triggerText then
 		strToolTip = strToolTip .. "[NEWLINE][ICON_BULLET][COLOR_POSITIVE_TEXT]Naming Conditions: [ENDCOLOR]" .. triggerText

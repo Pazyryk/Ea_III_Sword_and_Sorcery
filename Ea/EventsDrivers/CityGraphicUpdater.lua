@@ -24,9 +24,9 @@ local function ListenerSerialEventCityCreated(vHexPos, iPlayer, iCity, artStyleT
 	local city = player:GetCityByID(iCity)
 	if city then
 		local newArtStyleType = ARTSTYLE_EUROPEAN
-		if city:GetNumRealBuilding(BUILDING_HELDEOFOL) == 1 then
+		if city:GetNumBuilding(BUILDING_HELDEOFOL) == 1 then
 			newArtStyleType = ARTSTYLE_SOUTH_AMERICA
-		elseif city:GetNumRealBuilding(BUILDING_SIDHE) == 1 then
+		elseif city:GetNumBuilding(BUILDING_SIDHE) == 1 then
 			newArtStyleType = ARTSTYLE_ASIAN
 		end
 		if artStyleType ~= newArtStyleType then

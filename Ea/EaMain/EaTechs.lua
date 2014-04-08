@@ -30,7 +30,6 @@ local AI_FREE_TECHS =					GameInfo.HandicapInfos[Game:GetHandicapType()].EaAIFre
 local EARACE_MAN =						GameInfoTypes.EARACE_MAN
 local EARACE_SIDHE =					GameInfoTypes.EARACE_SIDHE
 local EARACE_HELDEOFOL =				GameInfoTypes.EARACE_HELDEOFOL
-local EACIV_YS =						GameInfoTypes.EACIV_YS
 local EACIV_SISUKAS =					GameInfoTypes.EACIV_SISUKAS
 local POLICY_PANTHEISM =				GameInfoTypes.POLICY_PANTHEISM
 local POLICY_SCHOLASTICISM = 			GameInfoTypes.POLICY_SCHOLASTICISM
@@ -87,6 +86,13 @@ for row in GameInfo.EaArtifacts_TomeTechs() do
 	local techID = GameInfoTypes[row.TechType]
 	tomeTechs[artifactID] = tomeTechs[artifactID] or {}
 	tomeTechs[artifactID][techID] = row.Change
+end
+
+local kmModifiers = {}
+for eaCivInfo in GameInfo.EaCivs() do
+	if eaCivInfo.KnowlMaintModifier ~= 0 then
+		kmModifiers[eaCivInfo.ID] = eaCivInfo.KnowlMaintModifier
+	end
 end
 
 --------------------------------------------------------------
@@ -185,8 +191,8 @@ local function ResetTechCostMods(iPlayer)
 	--KM
 	local techCount = eaPlayer.techCount
 	local eaCivID = eaPlayer.eaCivNameID
-	if eaCivID == EACIV_YS then
-		techCount = 0.667 * techCount
+	if kmModifiers[eaCivID] then
+		techCount = techCount * (100 + kmModifiers[eaCivID]) / 100
 	end
 	local pop = player:GetTotalPopulation()
 	g_playerKM[iPlayer] = Floor(KM_PER_TECH_PER_CITIZEN * techCount * pop + 0.5)
@@ -395,37 +401,10 @@ OnMajorPlayerTechLearned[GameInfoTypes.TECH_MITHRIL_WORKING] = function(iPlayer)
 end
 
 
-
 OnMajorPlayerTechLearned[GameInfoTypes.TECH_SAILING] = function(iPlayer)
-
-	--city adjacent Natural Harbor gives plot ownership and harbor building
 	local player = Players[iPlayer]
 	for city in player:Cities() do
-		if city:IsCoastal(5) then
-			print("Testing city for natural harbor")
-			local bHasNaturalHarbor = false
-			for x, y in PlotToRadiusIterator(city:GetX(), city:GetY(), 1, nil, nil, true) do
-				local plot = Map.GetPlot(x, y)
-				print("plot x y = ", x, y)
-				if plot:IsWater() and not plot:IsLake() then
-					local adjLandPlots = 0
-					for adjX, adjY in PlotToRadiusIterator(x, y, 1, nil, nil, true) do
-						local adjPlot = Map.GetPlot(adjX, adjY)
-						if not adjPlot:IsWater() then
-							adjLandPlots = adjLandPlots + 1
-						end
-					end
-					print(" -number surrounding land = ", adjLandPlots)
-					if 3 < adjLandPlots then
-						bHasNaturalHarbor = true
-						plot:SetOwner(iPlayer, city:GetID())
-					end
-				end
-			end
-			if bHasNaturalHarbor then
-				city:SetNumRealBuilding(BUILDING_HARBOR, 1)
-			end
-		end
+		TestNaturalHarborForFreeHarbor(city)	--city adjacent Natural Harbor gives plot ownership and harbor building
 	end
 end
 

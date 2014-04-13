@@ -1435,7 +1435,7 @@ function OnCityViewUpdate()
 		-- Conscript or Indenture Button
 		-------------------------------------------
 		local bEnableConscript = false
-		local bEnableIndenture = pCity:GetNumRealBuilding(GameInfoTypes.BUILDING_DEBTORS_COURT) == 1
+		local bEnableIndenture = pCity:GetNumBuilding(GameInfoTypes.BUILDING_DEBTORS_COURT) == 1
 		if (bEnableConscript or bEnableIndenture) and not pCity:IsRazing() then
 			g_bConscriptOrIndentureDisabled = false
 			Controls.ConscriptOrIndentureButton:SetHide(false)

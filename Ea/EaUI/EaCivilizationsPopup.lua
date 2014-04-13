@@ -88,7 +88,7 @@ function RefreshCivs(tab)
 		if bInclude then
 			numCivs = numCivs + 1
 			local triggerText = GetEaCivTriggerText(eaCivID)
-			local strToolTip = GetEaCivDiscriptionText(eaCivID, true, true, true)
+			local strToolTip = GetEaCivDiscriptionText(eaCivID, true, true, false, true)
 			local civName = Locale.Lookup(eaCivInfo.Description)
 			if eaCivID == g_activePlayerEaCivID then
 				civName = civName .. " (You)"

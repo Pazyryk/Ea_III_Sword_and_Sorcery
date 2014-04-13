@@ -27,6 +27,8 @@ local DOMAIN_SEA =							DomainTypes.DOMAIN_SEA
 local ORDER_MAINTAIN =						OrderTypes.ORDER_MAINTAIN
 local ORDER_TRAIN =							OrderTypes.ORDER_TRAIN
 
+local EACIV_GAZIYA =						GameInfoTypes.EACIV_GAZIYA
+
 local EARACE_MAN =							GameInfoTypes.EARACE_MAN
 local EARACE_SIDHE =						GameInfoTypes.EARACE_SIDHE
 local EARACE_HELDEOFOL =					GameInfoTypes.EARACE_HELDEOFOL
@@ -100,6 +102,9 @@ local RELIGION_CULT_OF_BAKKHEIA =			GameInfoTypes.RELIGION_CULT_OF_BAKKHEIA
 local POLICY_PANTHEISM =					GameInfoTypes.POLICY_PANTHEISM
 local POLICY_SLAVE_RAIDERS =				GameInfoTypes.POLICY_SLAVE_RAIDERS
 
+local TECH_MILLING =						GameInfoTypes.TECH_MILLING
+local TECH_SAILING =						GameInfoTypes.TECH_SAILING
+
 local YIELD_PRODUCTION =					GameInfoTypes.YIELD_PRODUCTION
 
 local PLOT_HILLS =							PlotTypes.PLOT_HILLS
@@ -136,6 +141,7 @@ local gg_campRange =				gg_campRange
 --localized game and library functions
 local StrSubstitute =		string.gsub
 local Rand =				Map.Rand
+local Floor =				math.floor
 
 --localized global functions
 local HandleError =			HandleError
@@ -512,6 +518,33 @@ function ConvertUnitProductionByMatch(iPlayer, fromStr, toStr)
 	end
 end
 
+function TestNaturalHarborForFreeHarbor(city)	--assumes proper tech
+	if not city:IsCoastal(10) then return false end
+	print("Testing city for natural harbor")
+	local bHasNaturalHarbor = false
+	for x, y in PlotToRadiusIterator(city:GetX(), city:GetY(), 1, nil, nil, true) do
+		local plot = GetPlotFromXY(x, y)
+		if plot:IsWater() and not plot:IsLake() then
+			local adjLandPlots = 0
+			for adjX, adjY in PlotToRadiusIterator(x, y, 1, nil, nil, true) do
+				local adjPlot = GetPlotFromXY(adjX, adjY)
+				if not adjPlot:IsWater() then
+					adjLandPlots = adjLandPlots + 1
+				end
+			end
+			print(" -number surrounding land = ", adjLandPlots)
+			if 2 < adjLandPlots then
+				bHasNaturalHarbor = true
+				plot:SetOwner(city:GetOwner(), city:GetID())
+			end
+		end
+	end
+	if bHasNaturalHarbor then
+		city:SetNumFreeBuilding(BUILDING_HARBOR, 1)
+	end
+end
+
+
 function CityPerCivTurn(iPlayer)		--Full civ only
 	local Floor = math.floor
 	print("CityPerCivTurn; City info (Name/Size/BuildQueue):")
@@ -520,10 +553,13 @@ function CityPerCivTurn(iPlayer)		--Full civ only
 	local gameTurn = Game.GetGameTurn()
 	local eaPlayer = gPlayers[iPlayer]
 	local player = Players[iPlayer]
+	local team = Teams[player:GetTeam()]
 	local classPoints = eaPlayer.classPoints
 	local bIsPantheistic = player:HasPolicy(POLICY_PANTHEISM)
 	local bAI = bFullCivAI[iPlayer]
 	local bAnraFounded = gReligions[RELIGION_ANRA] ~= nil
+	local bCheckWindy = team:IsHasTech(TECH_MILLING)
+	--
 
 	local cityCount = 0
 
@@ -617,7 +653,7 @@ function CityPerCivTurn(iPlayer)		--Full civ only
 						gWorld.coastalCultOfAegirFollowerCities = gWorld.coastalCultOfAegirFollowerCities + 1
 					end
 				elseif followerReligion == RELIGION_CULT_OF_BAKKHEIA then
-					gWorld.bakkheiaMana = gWorld.bakkheiaMana + city:GetNumRealBuilding(BUILDING_WINERY) + city:GetNumRealBuilding(BUILDING_BREWERY) + city:GetNumRealBuilding(BUILDING_DISTILLERY)
+					gWorld.bakkheiaMana = gWorld.bakkheiaMana + city:GetNumBuilding(BUILDING_WINERY) + city:GetNumBuilding(BUILDING_BREWERY) + city:GetNumBuilding(BUILDING_DISTILLERY)
 				end
 
 
@@ -674,16 +710,21 @@ function CityPerCivTurn(iPlayer)		--Full civ only
 				end
 				]]
 
-				--Windy? (note: this is too much overhead for one building!)
-				if city:GetNumBuilding(BUILDING_WINDMILL) ~= 1 then
+				--Windy?
+				if bCheckWindy and city:GetNumBuilding(BUILDING_WINDMILL) ~= 1 then
 					local countWindBreak = 0
 					for x, y in PlotToRadiusIterator(city:GetX(), city:GetY(), 1, nil, nil, true) do
 						local plot = Map.GetPlot(x, y)
 						local plotTypeID = plot:GetPlotType()
-						local featureID = plot:GetFeatureType()
-						if plotTypeID == PLOT_HILLS or plotTypeID == PLOT_MOUNTAIN or featureID == FEATURE_JUNGLE or featureID == FEATURE_JUNGLE then
+						if plotTypeID == PLOT_HILLS or plotTypeID == PLOT_MOUNTAIN then
 							countWindBreak = countWindBreak + 1
-							if 1 < countWindBreak then break end	
+							if 1 < countWindBreak then break end
+						else
+							local featureID = plot:GetFeatureType()
+							if featureID == FEATURE_JUNGLE or featureID == FEATURE_JUNGLE then
+								countWindBreak = countWindBreak + 1
+								if 1 < countWindBreak then break end	
+							end
 						end
 					end
 					if countWindBreak < 2 then
@@ -784,7 +825,7 @@ function CityStateFollowerCityCounting()			--once per turn after plots (takes ca
 					gWorld.coastalCultOfAegirFollowerCities = gWorld.coastalCultOfAegirFollowerCities + 1
 				end
 			elseif followerReligion == RELIGION_CULT_OF_BAKKHEIA then
-				gWorld.bakkheiaMana = gWorld.bakkheiaMana + city:GetNumRealBuilding(BUILDING_WINERY) + city:GetNumRealBuilding(BUILDING_BREWERY) + city:GetNumRealBuilding(BUILDING_DISTILLERY)
+				gWorld.bakkheiaMana = gWorld.bakkheiaMana + city:GetNumBuilding(BUILDING_WINERY) + city:GetNumBuilding(BUILDING_BREWERY) + city:GetNumBuilding(BUILDING_DISTILLERY)
 			end
 		end
 	end
@@ -856,6 +897,12 @@ local function OnPlayerCityFounded(iPlayer, x, y)
 			end
 		end
 	end
+
+	local team = Teams[player:GetTeam()]
+	if team:IsHasTech(TECH_SAILING) then
+		TestNaturalHarborForFreeHarbor(city)
+	end
+
 	print("New city", iPlayer, iPlot, x, y, iCity, city:GetName())
 end
 GameEvents.PlayerCityFounded.Add(function(iPlayer, x, y) return HandleError31(OnPlayerCityFounded, iPlayer, x, y) end)
@@ -894,6 +941,13 @@ local function OnSetPopulation(x, y, oldPopulation, newPopulation)
 				local newUnit = owner:InitUnit(unitID, x, y )
 				newUnit:JumpToNearestValidPlot()
 				newUnit:SetHasPromotion(PROMOTION_SLAVE, true)
+				local eaPlayer = gPlayers[iOwner]
+				if eaPlayer.eaCivNameID == EACIV_GAZIYA and Rand(3, "hello") == 0 then	--extra 33%
+					local newUnit = owner:InitUnit(unitID, x, y )
+					newUnit:JumpToNearestValidPlot()
+					newUnit:SetHasPromotion(PROMOTION_SLAVE, true)				
+				end
+
 			end
 		end
 	elseif oldPopulation ~= 0 then	--not a new city
@@ -931,7 +985,7 @@ local function OnCityCaptureComplete(iPlayer, bCapital, x, y, iNewOwner)		-- THI
 
 	if oldOwner:IsAlive() then
 		if bCapital then
-			CheckCapitalBuildings(iPlayer, nil)
+			CheckCapitalBuildings(iPlayer)
 		end
 	else
 		print("!!!! Dead player detected from OnCityCaptureComplete !!!!")
@@ -977,7 +1031,11 @@ local function OnCityCaptureComplete(iPlayer, bCapital, x, y, iNewOwner)		-- THI
 				unitID = UNIT_SLAVES_SIDHE
 			else 
 				unitID = UNIT_SLAVES_ORC
-			end			
+			end
+			if eaNewOwner.eaCivNameID == EACIV_GAZIYA then
+				popKilled = Floor(popKilled / 3 + 0.5)
+			end
+
 			for j = 1, popKilled do
 				local newUnit = newOwner:InitUnit(unitID, city:GetX(), city:GetY() )
 				newUnit:JumpToNearestValidPlot()
@@ -989,6 +1047,11 @@ local function OnCityCaptureComplete(iPlayer, bCapital, x, y, iNewOwner)		-- THI
 
 	AddCityToResDistanceMatrixes(iNewOwner, city)
 	CleanCityResDistanceMatrixes()
+
+	local team = Teams[newOwner:GetTeam()]
+	if team:IsHasTech(TECH_SAILING) then
+		TestNaturalHarborForFreeHarbor(city)
+	end
 
 end
 GameEvents.CityCaptureComplete.Add(function(iPlayer, bCapital, x, y, iNewOwner) return HandleError(OnCityCaptureComplete, iPlayer, bCapital, x, y, iNewOwner) end)
@@ -1215,7 +1278,7 @@ TestCityCanTrain[GameInfoTypes.UNIT_SETTLERS_MAN] = function(iPlayer, iCity)
 	local player = Players[iPlayer]
 	if player:GetHappiness() <= VERY_UNHAPPY_THRESHOLD then		--TO DO: IS THIS RIGHT?????!!!!! (should do player test first to save time)
 		local city = player:GetCityByID(iCity)
-		if city:GetNumRealBuilding(BUILDING_SLAVE_BREEDING_PEN) < 1 then return false end
+		if city:GetNumBuilding(BUILDING_SLAVE_BREEDING_PEN) < 1 then return false end
 	end
 	return true
 end
@@ -1349,7 +1412,7 @@ JustSettled = function(iPlayer, city)
 	if bFullCivAI[iPlayer] then
 		AICivRun(iPlayer)
 	end
-	CheckCapitalBuildings(iPlayer, nil)
+	CheckCapitalBuildings(iPlayer)
 end
 
 --[[

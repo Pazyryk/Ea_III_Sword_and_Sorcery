@@ -21,6 +21,8 @@ local MAX_CITY_HIT_POINTS =							GameDefines.MAX_CITY_HIT_POINTS
 local DOMAIN_LAND =									DomainTypes.DOMAIN_LAND
 local DOMAIN_SEA =									DomainTypes.DOMAIN_SEA
 
+local EACIV_MORRIGNA =								GameInfoTypes.EACIV_MORRIGNA
+local EACIV_NEMEDIA =								GameInfoTypes.EACIV_NEMEDIA
 local EAMOD_DEVOTION =								GameInfoTypes.EAMOD_DEVOTION
 local EAMOD_CONJURATION =							GameInfoTypes.EAMOD_CONJURATION
 local EAMOD_EVOCATION =								GameInfoTypes.EAMOD_EVOCATION
@@ -61,10 +63,7 @@ local UNIT_WHALING_BOATS =							GameInfoTypes.UNIT_WHALING_BOATS
 local UNIT_HUNTERS =								GameInfoTypes.UNIT_HUNTERS
 local UNIT_GREAT_BOMBARDE =							GameInfoTypes.UNIT_GREAT_BOMBARDE
 
-
-
 --state shared
---local unitMorale = MapModData.unitMorale
 
 --localized game and global tables
 local gWorld =						gWorld
@@ -298,7 +297,6 @@ function HireMercenary(iPlayer, unit, upFront, gpt)
 		end
 		newUnit:JumpToNearestValidPlot()
 		newUnit:FinishMoves()
-		--ChangeUnitMorale(iPlayer, iNewUnit, 0, true)
 		newUnit:SetMorale(0)
 		if iPlayer == g_iActivePlayer then
 			UI.SelectUnit(newUnit)
@@ -383,7 +381,7 @@ function UnitPerCivTurn(iPlayer)	--runs for full civs and city states
 	local bNoCitrus = bFullCiv and player:GetNumResourceAvailable(RESOURCE_CITRUS, true) < 1
 	local bHasWarspirit = bFullCiv and player:HasPolicy(POLICY_WARSPIRIT)
 	local bHasBerserkerRage = bHasWarspirit and player:HasPolicy(POLICY_BERSERKER_RAGE) or false
-
+	local bMoraleFloor = (nameTraitID == EACIV_NEMEDIA or nameTraitID == EACIV_MORRIGNA)
 
 
 	local countCombatUnits = 0
@@ -415,13 +413,8 @@ function UnitPerCivTurn(iPlayer)	--runs for full civs and city states
 
 			if gg_bNormalCombatUnit[unitTypeID] then
 				countCombatUnits = countCombatUnits + 1
-				--Temp Attack Morale
-				--if eaPlayer.tempAttackMorale[iUnit] then
-				--	RemoveTempAttackMorale(iPlayer, iUnit)
-				--end
 
 				--Morale decays toward baseline (= civ happiness; -30 for slaves; 0 for mercenary; -20 for merc at war with original owner)
-				--local prevMorale = unitMorale[iPlayer][iUnit] or 0
 				local baselineMoral = playerHappiness
 				if bSlave then
 					baselineMoral = -30
@@ -435,22 +428,17 @@ function UnitPerCivTurn(iPlayer)	--runs for full civs and city states
 					elseif bHasWarspirit then
 						baselineMoral = baselineMoral + 10
 						if bHasBerserkerRage then
-							baselineMoral = baselineMoral + unit:GetDamage()
+							baselineMoral = baselineMoral + Floor(unit:GetDamage() / 2)
 						end
 					end
 					if unit:IsHasPromotion(PROMOTION_DRUNKARD) then
 						baselineMoral = baselineMoral + 10
 					end
 				end
-
-				--[[
-				local diff = baselineMoral - prevMorale
-				diff = 0 < diff and diff + 1 or diff
-				local changeMorale = Floor(diff / 2)
-				if changeMorale ~= 0 then
-					ChangeUnitMorale(iPlayer, iUnit, changeMorale)
+				if bMoraleFloor and baselineMoral < -15 then
+					baselineMoral = -15
 				end
-				]]
+				
 				unit:DecayMorale(baselineMoral)
 
 				--combat unit level promotions

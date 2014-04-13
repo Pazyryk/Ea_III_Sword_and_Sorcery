@@ -1,4 +1,4 @@
---Contains Civilizations, Leaders, Traits
+--Contains Civilizations, Leaders, and subtables
 --This file must load after EaCivilizations.sql, Units.sql and EaPeople.sql!!!!
 --Data from these files are used to build Civilizations, Leaders and Traits
 --Only Traits effects are modified below
@@ -547,54 +547,7 @@ SELECT LeaderType, 'FLAVOR_AIRLIFT', FALift FROM EaPeople ;
 DELETE FROM Leader_Traits;		--All Traits now attached to Civilizations, but this table will still work if we want a trait for a leader...
 
 
------------------------------------------------------------------------------------------
--- Traits
------------------------------------------------------------------------------------------
-DELETE FROM Traits WHERE Type != 'TRAIT_LONG_COUNT';	--need this in the table or Dll gives effect to all
-UPDATE Traits SET PrereqTech = NULL;
 
-INSERT INTO Traits (Type, Description, ShortDescription)
-SELECT DISTINCT TraitType, 'TXT_KEY_EA_NOTSHOWN', 'TXT_KEY_EA_NOTSHOWN' FROM Civilization_Traits UNION ALL
-SELECT DISTINCT TraitType, 'TXT_KEY_EA_NOTSHOWN', 'TXT_KEY_EA_NOTSHOWN' FROM Leader_Traits;
-
---fixinator
-CREATE TABLE IDRemapper ( id INTEGER PRIMARY KEY AUTOINCREMENT, Type TEXT );
-INSERT INTO IDRemapper (Type) SELECT Type FROM Traits ORDER BY ID;
-UPDATE Traits SET ID =	( SELECT IDRemapper.id-1 FROM IDRemapper WHERE Traits.Type = IDRemapper.Type);
-DROP TABLE IDRemapper;
-
---We now have a trait for each Race and one for each EaCiv, plus Generic; modify these as needed here
-UPDATE Traits SET StaysAliveZeroCities = 1 WHERE Type IN ('TRAIT_THE_FAY', 'TRAIT_ANIMALS');
-
---subtables
-
-DELETE FROM Trait_NoTrain;
-INSERT INTO Trait_NoTrain (TraitType, UnitClassType) VALUES
-('TRAIT_GENERIC',		'UNITCLASS_SETTLERS_MAN'),
-('TRAIT_GENERIC',		'UNITCLASS_SETTLERS_SIDHE'),
-('TRAIT_GENERIC',		'UNITCLASS_SETTLERS_ORC');
-
-
-
---unused:
-DELETE FROM Trait_ExtraYieldThresholds;
-DELETE FROM Trait_FreePromotionUnitCombats;
-DELETE FROM Trait_FreePromotions;
-DELETE FROM Trait_FreeResourceFirstXCities;
-DELETE FROM Trait_ImprovementYieldChanges;
-DELETE FROM Trait_MaintenanceModifierUnitCombats;
-DELETE FROM Trait_MovesChangeUnitCombats;
-
-DELETE FROM Trait_ResourceQuantityModifiers;
-DELETE FROM Trait_SpecialistYieldChanges;
-DELETE FROM Trait_Terrains;
-DELETE FROM Trait_UnimprovedFeatureYieldChanges;
-DELETE FROM Trait_YieldChanges;
-DELETE FROM Trait_YieldChangesIncomingTradeRoute;
-DELETE FROM Trait_YieldChangesNaturalWonder;
-DELETE FROM Trait_YieldChangesPerTradePartner;
-DELETE FROM Trait_YieldChangesStrategicResources;
-DELETE FROM Trait_YieldModifiers;
 
 
 

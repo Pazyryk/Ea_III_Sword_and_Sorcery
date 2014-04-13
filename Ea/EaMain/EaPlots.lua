@@ -442,16 +442,18 @@ function BlightPlot(plot, iPlayer, iPerson, iMaxMana)		--last 3 are optional
 	local manaConsumed = plot:GetLivingTerrainStrength() + 10
 	if iMaxMana and iMaxMana < manaConsumed then return false end
 
-	plot:SetFeatureType(FEATURE_BLIGHT)
 	local improvementID = plot:GetImprovementType()
-	if improvementID == -1 or not blightSafeImprovement[improvementID] then
-		plot:SetImprovementType(IMPROVEMENT_BLIGHT)
-	else
-		local resourceID = plot:GetResourceType(-1)
-		if resourceID ~= -1 then
-			ChangeResource(plot, -1)
+	local resourceID = plot:GetResourceType(-1)
+
+	if improvementID ~= IMPROVEMENT_BLIGHT and resourceID ~= RESOURCE_BLIGHT then
+		if improvementID == -1 or not blightSafeImprovement[improvementID] then
+			plot:SetImprovementType(IMPROVEMENT_BLIGHT)
+		else
+			if resourceID ~= -1 then
+				ChangeResource(plot, -1)
+			end
+			ChangeResource(plot, RESOURCE_BLIGHT, 1)
 		end
-		ChangeResource(plot, RESOURCE_BLIGHT, 1)
 	end
 
 	local player = iPlayer and Players[iPlayer]
@@ -461,6 +463,39 @@ function BlightPlot(plot, iPlayer, iPerson, iMaxMana)		--last 3 are optional
 	else
 		gWorld.sumOfAllMana = gWorld.sumOfAllMana - manaConsumed
 	end
+
+	plot:SetFeatureType(FEATURE_BLIGHT)
+	return true
+end
+
+function BreachPlot(plot, iPlayer, iPerson, iMaxMana)		--last 3 are optional
+
+	local manaConsumed = plot:GetLivingTerrainStrength() + 100
+	if iMaxMana and iMaxMana < manaConsumed then return false end
+
+	local improvementID = plot:GetImprovementType()
+	local resourceID = plot:GetResourceType(-1)
+
+	if improvementID ~= IMPROVEMENT_BLIGHT and resourceID ~= RESOURCE_BLIGHT then
+		if improvementID == -1 or not blightSafeImprovement[improvementID] then
+			plot:SetImprovementType(IMPROVEMENT_BLIGHT)
+		else
+			if resourceID ~= -1 then
+				ChangeResource(plot, -1)
+			end
+			ChangeResource(plot, RESOURCE_BLIGHT, 1)
+		end
+	end
+
+	local player = iPlayer and Players[iPlayer]
+	if player and player:IsAlive() then
+		player:ChangeFaith(manaConsumed)						--generates mana as it consumes it
+		UseManaOrDivineFavor(iPlayer, iPerson, manaConsumed)
+	else
+		gWorld.sumOfAllMana = gWorld.sumOfAllMana - manaConsumed
+	end
+
+	plot:SetFeatureType(FEATURE_FALLOUT)
 	return true
 end
 
@@ -960,7 +995,7 @@ local function OnBuildFinished(iPlayer, x, y, improvementID)		--Is improvementID
 		end
 		if plot:GetResourceType(-1) == RESOURCE_BLIGHT then
 			print("Worker must have removed FEATURE_BLIGHT; now removing RESOURCE_BLIGHT")
-			plot:SetResourceType(-1)
+			ChangeResource(plot, -1)
 		end
 	end
 end

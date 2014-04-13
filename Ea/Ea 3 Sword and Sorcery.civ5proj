@@ -156,6 +156,11 @@
       <Action>
         <Set>OnModActivated</Set>
         <Type>UpdateDatabase</Type>
+        <FileName>CoreTables/Traits.sql</FileName>
+      </Action>
+      <Action>
+        <Set>OnModActivated</Set>
+        <Type>UpdateDatabase</Type>
         <FileName>Text/EaText.sql</FileName>
       </Action>
       <Action>
@@ -455,6 +460,10 @@
       <SubType>Lua</SubType>
       <ImportIntoVFS>False</ImportIntoVFS>
     </Content>
+    <Content Include="CoreTables\Traits.sql">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>False</ImportIntoVFS>
+    </Content>
     <Content Include="CoreUI_font_mod_only\ActionInfoPanel.xml">
       <SubType>Lua</SubType>
       <ImportIntoVFS>True</ImportIntoVFS>
@@ -572,6 +581,10 @@
       <ImportIntoVFS>True</ImportIntoVFS>
     </Content>
     <Content Include="CoreUI_font_mod_only\SimpleDiploTrade.xml">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="CoreUI_font_mod_only\TechAwardPopup.xml">
       <SubType>Lua</SubType>
       <ImportIntoVFS>True</ImportIntoVFS>
     </Content>
@@ -860,6 +873,10 @@
       <ImportIntoVFS>True</ImportIntoVFS>
     </Content>
     <Content Include="EaMain\EaMagic.lua">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="EaMain\EaMain.xml">
       <SubType>Lua</SubType>
       <ImportIntoVFS>True</ImportIntoVFS>
     </Content>

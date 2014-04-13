@@ -15,9 +15,9 @@ local Dprint = DEBUG_PRINT and print or function() end
 local BARB_PLAYER_INDEX =							BARB_PLAYER_INDEX
 local ANIMALS_PLAYER_INDEX =						ANIMALS_PLAYER_INDEX
 
-local DOMAIN_LAND =									DomainTypes.DOMAIN_LAND
-
 local BUILDING_INTERNMENT_CAMP =					GameInfoTypes.BUILDING_INTERNMENT_CAMP
+local DOMAIN_LAND =									DomainTypes.DOMAIN_LAND
+local EACIV_GAZIYA =								GameInfoTypes.EACIV_GAZIYA
 local EARACE_MAN =									GameInfoTypes.EARACE_MAN
 local EARACE_SIDHE =								GameInfoTypes.EARACE_SIDHE
 local EARACE_HELDEOFOL =							GameInfoTypes.EARACE_HELDEOFOL
@@ -51,6 +51,7 @@ local HandleError10 =				HandleError10
 local HandleError21 =				HandleError21
 local HandleError31 =				HandleError31
 local Floor =						math.floor
+local Rand =						Map.Rand
 
 
 --file control
@@ -139,7 +140,7 @@ local function OnSerialEventUnitCreated(iPlayer, iUnit, hexVec, unitType, cultur
 				if city then break end
 			end
 		end
-		if city and city:GetNumRealBuilding(BUILDING_INTERNMENT_CAMP) == 1 then
+		if city and city:GetNumBuilding(BUILDING_INTERNMENT_CAMP) == 1 then
 			MapModData.bBypassOnCanSaveUnit = true
 			unit:Kill(true, -1)
 			local raceID = GetCityRace(city)		--TO DO: make these unit race, not city race
@@ -309,19 +310,19 @@ local function DoDelayedAttacks(iPlayer)	--called by OnPlayerPreAIUnitUpdate for
 end
 
 local MELEE_ATTACK_AFTER_THOUSANDTHS_SECONDS = 500
-local bStart = false
+local g_bStart = false
 local g_tickStart = 0
 function TimeDelayForHumanMeleeCharge(tickCount, timeIncrement)		--DON'T LOCALIZE! Causes CTD with RemoveAll
-	if bStart then
-		if MELEE_ATTACK_AFTER_THOUSANDTHS_SECONDS < tickCount - tickStart then
+	if g_bStart then
+		if MELEE_ATTACK_AFTER_THOUSANDTHS_SECONDS < tickCount - g_tickStart then
 			Events.LocalMachineAppUpdate.RemoveAll()	--also removes tutorial checks (good riddence!)
 			print("TimeDelayForHumanMeleeCharge; delay in sec/1000 = ", tickCount - tickStart)
 			print("os.clock() / tickCount : ", os.clock(), tickCount)
 			DoDelayedAttacks(Game.GetActivePlayer())
 		end
 	else
-		tickStart = tickCount
-		bStart = true
+		g_tickStart = tickCount
+		g_bStart = true
 	end
 end
 
@@ -347,7 +348,7 @@ local function WarriorLeadCharge(iPlayer, attackingUnit, targetX, targetY)
 				local moraleBoost = 2 * GetGPMod(iPerson, "EAMOD_COMBAT", nil)
 				unit:ChangeMorale(moraleBoost)
 				local floatUp = "+" .. moraleBoost .. " [ICON_HAPPINESS_1] Morale"
-				plot:AddFloatUpMessage(floatUp)
+				plot:AddFloatUpMessage(floatUp, 1)
 				g_delayedAttacks.pos = g_delayedAttacks.pos + 1
 				g_delayedAttacks[g_delayedAttacks.pos] = {iUnit = unit:GetID(), x = targetX, y = targetY, iPerson = iPerson}
 				if player:IsHuman() then
@@ -459,18 +460,24 @@ local function OnCombatEnded(iAttackingPlayer, iAttackingUnit, attackerDamage, a
 			else
 				UpdateWarriorPoints(iAttackingPlayer, true)		--attacker Warrior points
 				if defenderMaxHP < defenderFinalDamage and defenderMaxHP == 100 then					--must have been a unit kill
-					if attackingUnit:IsHasPromotion(PROMOTION_SLAVERAIDER) and not attackingUnit:IsHasPromotion(PROMOTION_SLAVEMAKER) then
-					
-						local slaveID = UNIT_SLAVES_MAN
-
-						if g_defendingUnitRace == EARACE_SIDHE then
-							slaveID = UNIT_SLAVES_SIDHE
-						elseif g_defendingUnitRace == EARACE_HELDEOFOL then
-							slaveID = UNIT_SLAVES_ORC
+					if attackingUnit:IsHasPromotion(PROMOTION_SLAVERAIDER) then
+						--50% base chance to generate slave
+						local chance = 50
+						local eaPlayer = gPlayers[iAttackingPlayer]
+						if eaPlayer.eaCivNameID == EACIV_GAZIYA then
+							chance = 67
 						end
-						local newUnit = attackingPlayer:InitUnit(slaveID, attackingUnit:GetX(), attackingUnit:GetY() )
-						newUnit:JumpToNearestValidPlot()
-						newUnit:SetHasPromotion(PROMOTION_SLAVE, true)
+						if Rand(100, "hello") < chance then
+							local slaveID = UNIT_SLAVES_MAN
+							if g_defendingUnitRace == EARACE_SIDHE then
+								slaveID = UNIT_SLAVES_SIDHE
+							elseif g_defendingUnitRace == EARACE_HELDEOFOL then
+								slaveID = UNIT_SLAVES_ORC
+							end
+							local newUnit = attackingPlayer:InitUnit(slaveID, attackingUnit:GetX(), attackingUnit:GetY() )
+							newUnit:JumpToNearestValidPlot()
+							newUnit:SetHasPromotion(PROMOTION_SLAVE, true)
+						end
 					end
 				end
 			end
@@ -557,7 +564,7 @@ local function OnCanSaveUnit(iPlayer, iUnit, bDelay)	--fires for combat and non-
 			if unit:TurnsToReachTarget(testPlot, 1, 1, 1) < 100 then		--is this plot accessible?
 				unit:SetXY(testPlot:GetX(), testPlot:GetY())
 				unit:SetEmbarked(testPlot:IsWater())
-				testPlot:AddFloatUpMessage("Great Person has escaped!")		--TO DO: txt key
+				testPlot:AddFloatUpMessage("Great Person has escaped!", 1)		--TO DO: txt key
 				print("Great Person has escaped!")
 				return true
 			end

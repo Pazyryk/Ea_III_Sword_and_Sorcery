@@ -13,6 +13,7 @@ local Dprint = DEBUG_PRINT and print or function() end
 local HIGHEST_PROMOTION_ID =			HIGHEST_PROMOTION_ID
 local MOD_MEMORY_HALFLIFE =				MOD_MEMORY_HALFLIFE
 
+local EACIV_LJOSALFAR =					GameInfoTypes.EACIV_LJOSALFAR
 local EAMOD_LEADERSHIP =				GameInfoTypes.EAMOD_LEADERSHIP
 
 local EA_WONDER_ARCANE_TOWER =			GameInfoTypes.EA_WONDER_ARCANE_TOWER
@@ -84,11 +85,15 @@ modsForUI.firstMagicMod = numModTypes - 7
 modsForUI[numModTypes + 1] = {text = "All Magic Schools", value = 0}
 modsForUI[numModTypes + 2] = {text = "Other Magic Schools", value = 0}
 
---Reserved GPs
+
 local reservedGPs = {}		--nil all entries after all civs gain names
-for EaCivInfo in GameInfo.EaCivs() do
-	if EaCivInfo.FoundingGPType then
-		reservedGPs[GameInfoTypes[EaCivInfo.FoundingGPType] ] = true
+local xpBoostFromManaUse = {}
+for eaCivInfo in GameInfo.EaCivs() do
+	if eaCivInfo.FoundingGPType then
+		reservedGPs[GameInfoTypes[eaCivInfo.FoundingGPType] ] = true
+	end
+	if eaCivInfo.XPBoostFromManaUse ~= 0 then
+		xpBoostFromManaUse[eaCivInfo.ID] = eaCivInfo.XPBoostFromManaUse
 	end
 end
 
@@ -211,6 +216,7 @@ function PeoplePerCivTurn(iPlayer)
 	local bHumanPlayer = not bFullCivAI[iPlayer]
 	local classPoints = eaPlayer.classPoints
 	local gameTurn = Game.GetGameTurn()
+	local bExtraPassiveXP = eaPlayer.eaCivNameID == EACIV_LJOSALFAR
 
 	--GP Probability Generation
 	local chance = CalculateGPSpawnChance(iPlayer)
@@ -261,6 +267,9 @@ function PeoplePerCivTurn(iPlayer)
 				chance = chance < 20 and 20 or chance
 				if Rand(100, "hello") < chance then
 					local xp = bIsLeader and 4 or 2
+					if bExtraPassiveXP then
+						xp = xp * 3
+					end
 					unit:ChangeExperience(xp)
 				end
 
@@ -743,17 +752,30 @@ function UseManaOrDivineFavor(iPlayer, iPerson, pts)
 	local player = Players[iPlayer]
 	local currentFaith = player:GetFaith()
 	player:SetFaith(currentFaith - pts)
+	local eaPlayer = gPlayers[iPlayer]
+	local bManaEaterFloatup = false
 	if iPerson then
 		local eaPerson = gPeople[iPerson]
 		if eaPerson then
 			local unit = player:GetUnitByID(eaPerson.iUnit)
-			unit:ChangeExperience(pts)
+			local xp = pts
+			if xpBoostFromManaUse[eaPlayer.eaCivNameID] then
+				xp = xp + Floor(pts * xpBoostFromManaUse[eaPlayer.eaCivNameID] / 100)
+			end
+			unit:ChangeExperience(xp)
+			if eaPlayer.bIsFallen then
+				bManaEaterFloatup = true
+				unit:GetPlot():AddFloatUpMessage(Locale.Lookup("TXT_KEY_EA_CONSUMED_MANA", pts), 1)
+			end
 		end
 	end
-	local eaPlayer = gPlayers[iPlayer]
+
 	if eaPlayer.bIsFallen then
 		gWorld.sumOfAllMana = gWorld.sumOfAllMana - pts
 		eaPlayer.manaConsumed = (eaPlayer.manaConsumed or 0) + pts
+		if not bManaEaterFloatup then
+			player:GetCapitalCity():Plot():AddFloatUpMessage(Locale.Lookup("TXT_KEY_EA_CONSUMED_MANA", pts), 1)
+		end
 	end
 	return 0 <= currentFaith - pts	--deficit?
 end

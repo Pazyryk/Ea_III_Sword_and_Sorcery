@@ -65,8 +65,11 @@ function GetEaCivTriggerText(eaCivID)
 end
 
 
-function GetEaCivDiscriptionText(eaCivID, bIncludeCivName, bIncludeQuote, bUseCachedTrigger)		-- supply triggerText if already known
-	local triggerText = bUseCachedTrigger and g_triggerText or GetEaCivTriggerText(eaCivID)
+function GetEaCivDiscriptionText(eaCivID, bIncludeCivName, bIncludeQuote, bIncludeTrigger, bUseCachedTrigger)		-- supply triggerText if already known
+	local triggerText
+	if bIncludeTrigger then
+		triggerText = bUseCachedTrigger and g_triggerText or GetEaCivTriggerText(eaCivID)
+	end
 	local eaCivInfo = GameInfo.EaCivs[eaCivID]
 	local eaCivType = eaCivInfo.Type
 	local sqlSearch = "EaCivType = '" .. eaCivType .. "'"
@@ -91,33 +94,37 @@ function GetEaCivDiscriptionText(eaCivID, bIncludeCivName, bIncludeQuote, bUseCa
 	end
 
 	local enabledPolicies
-	for row in GameInfo.EaCiv_EnabledPolicies(sqlSearch) do
-		enabledPolicies = enabledPolicies and enabledPolicies .. ", " or ""
-		enabledPolicies = enabledPolicies .. Locale.Lookup(GameInfo.Policies[row.PolicyType].Description)
+	if not MapModData.bDisableEnabledPolicies then
+		for row in GameInfo.EaCiv_EnabledPolicies(sqlSearch) do
+			enabledPolicies = enabledPolicies and enabledPolicies .. ", " or ""
+			enabledPolicies = enabledPolicies .. Locale.Lookup(GameInfo.Policies[row.PolicyType].Description)
+		end
 	end
 
 	local favoredGPClass = eaCivInfo.FavoredGPClass
 
 	local strToolTip = ""
 	if bIncludeCivName then
-		strToolTip = strToolTip .. "[COLOR_POSITIVE_TEXT]" .. civName .. "[ENDCOLOR][NEWLINE][NEWLINE]"
+		strToolTip = strToolTip .. "[COLOR_POSITIVE_TEXT]" .. civName .. "[ENDCOLOR][NEWLINE]"
 	end
 	if civQuote then
-		strToolTip = strToolTip .. civQuote .. "[NEWLINE][NEWLINE]"
+		strToolTip = strToolTip .. "[NEWLINE]" .. civQuote .. "[NEWLINE]"
 	end
-	strToolTip = strToolTip .. "[ICON_BULLET][COLOR_POSITIVE_TEXT]Naming Conditions: [ENDCOLOR]" .. triggerText
+	if triggerText then
+		strToolTip = strToolTip .. "[NEWLINE][ICON_BULLET][COLOR_POSITIVE_TEXT]Naming Conditions: [ENDCOLOR]" .. triggerText
+	end
 	strToolTip = strToolTip .. "[NEWLINE]" .. civHelp
 	if foundingGP then
 		strToolTip = strToolTip .. "[NEWLINE][ICON_BULLET][COLOR_POSITIVE_TEXT]Founding Great Person: [ENDCOLOR]" .. foundingGP
+	end
+	if favoredGPClass then
+		strToolTip = strToolTip .. "[NEWLINE][ICON_BULLET][COLOR_POSITIVE_TEXT]Favored Class: [ENDCOLOR]" .. favoredGPClass
 	end
 	if favoredTechs then
 		strToolTip = strToolTip .. "[NEWLINE][ICON_BULLET][COLOR_POSITIVE_TEXT]Favored Techs: [ENDCOLOR]" .. favoredTechs
 	end
 	if enabledPolicies then
 		strToolTip = strToolTip .. "[NEWLINE][ICON_BULLET][COLOR_POSITIVE_TEXT]Enabled Policies: [ENDCOLOR]" .. enabledPolicies
-	end
-	if favoredGPClass then
-		strToolTip = strToolTip .. "[NEWLINE][ICON_BULLET][COLOR_POSITIVE_TEXT]Favored Class: [ENDCOLOR]" .. favoredGPClass
 	end
 
 	return strToolTip

@@ -12,6 +12,7 @@ local gT = MapModData.gT
 local POLICY_PANTHEISM_FINISHER =				GameInfoTypes.POLICY_PANTHEISM_FINISHER
 local POLICY_THEISM_FINISHER =					GameInfoTypes.POLICY_THEISM_FINISHER
 local POLICY_ANTI_THEISM_FINISHER =				GameInfoTypes.POLICY_ANTI_THEISM_FINISHER
+local POLICY_ARCANA_FINISHER =					GameInfoTypes.POLICY_ARCANA_FINISHER
 
 
 --localized tables and functions
@@ -26,14 +27,14 @@ MapModData.faithFromAzzTribute = 0
 
 function GetTotalFaithPerTurnForUI(iPlayer)
 	--print("PazDebug GetTotalFaithPerTurnForUI")
-	local pPlayer = Players[iPlayer]
+	local player = Players[iPlayer]
 	local eaPlayer = gT.gPlayers[iPlayer]
 	if not eaPlayer then return end
 
 	--copy from TopPanel.lua FaithTipHandler()
-	local faithFromCities = pPlayer:GetFaithPerTurnFromCities()
-	local faithFromGods = pPlayer:GetFaithPerTurnFromMinorCivs()	--game engine only sees this from Gods
-	local faithFromReligion = pPlayer:GetFaithPerTurnFromReligion()				--for Azz and Anra only since these use base follower counting mechanism
+	local faithFromCities = player:GetFaithPerTurnFromCities()
+	local faithFromGods = player:GetFaithPerTurnFromMinorCivs()	--game engine only sees this from Gods
+	local faithFromReligion = player:GetFaithPerTurnFromReligion()				--for Azz and Anra only since these use base follower counting mechanism
 	local manaForCultOfLeavesFounder = eaPlayer.manaForCultOfLeavesFounder or 0
 	local manaForCultOfEponaFounder = eaPlayer.manaForCultOfEponaFounder or 0
 	local manaForCultOfPureWatersFounder = eaPlayer.manaForCultOfPureWatersFounder or 0
@@ -44,7 +45,7 @@ function GetTotalFaithPerTurnForUI(iPlayer)
 	local faithFromAzzTribute = MapModData.faithFromAzzTribute
 	local faithFromToAhrimanTribute = MapModData.faithFromToAhrimanTribute
 	local faithFromGPs = MapModData.faithFromGPs
-	local faithFromFinishedPolicyBranches = GetFaithFromPolicyFinisher(pPlayer)
+	local faithFromFinishedPolicyBranches = GetFaithFromPolicyFinisher(player)
 
 	local faithRate = faithFromCities + faithFromGods + faithFromReligion + manaForCultOfLeavesFounder + manaForCultOfEponaFounder + manaForCultOfPureWatersFounder + manaForCultOfAegirFounder + manaForCultOfBakkheiaFounder + manaFromWildlands + faithFromCityStates + faithFromAzzTribute + faithFromGPs + faithFromFinishedPolicyBranches
 
@@ -54,10 +55,18 @@ function GetTotalFaithPerTurnForUI(iPlayer)
 end
 
 function GetFaithFromPolicyFinisher(player)
+	local faithFinishers = 0
 	if player:HasPolicy(POLICY_PANTHEISM_FINISHER) or player:HasPolicy(POLICY_THEISM_FINISHER) or player:HasPolicy(POLICY_ANTI_THEISM_FINISHER) then
-		return Floor(player:GetTotalJONSCulturePerTurn() / 3)		
+		faithFinishers = 1		
 	end
-	return 0
+	if player:HasPolicy(POLICY_ARCANA_FINISHER) then
+		faithFinishers = faithFinishers + 1		
+	end
+	if 0 < faithFinishers then
+		return Floor(faithFinishers * player:GetTotalJONSCulturePerTurn() / 3)
+	else
+		return 0
+	end
 end
 
 

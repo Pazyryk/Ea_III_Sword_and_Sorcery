@@ -12,7 +12,9 @@ local Dprint = DEBUG_PRINT and print or function() end
 --------------------------------------------------------------
 
 --constants
-
+local EACIV_DAIRINE =							GameInfoTypes.EACIV_DAIRINE
+local EACIV_PARTHOLON =							GameInfoTypes.EACIV_PARTHOLON
+local EACIV_SKOGR =								GameInfoTypes.EACIV_SKOGR
 local POLICY_PANTHEISM =						GameInfoTypes.POLICY_PANTHEISM
 local POLICY_PATRONAGE =						GameInfoTypes.POLICY_PATRONAGE
 local MINOR_TRAIT_ARCANE =						GameInfoTypes.MINOR_TRAIT_ARCANE
@@ -457,13 +459,21 @@ local function OnPlayerMinorFriendshipAnchor(iMajorPlayer, iMinorPlayer)
 			local eaMajorPlayer = gPlayers[iMajorPlayer]
 			local eaMinorPlayer = gPlayers[iMinorPlayer]
 			local anchor = csBaselineRelationshipByRace[eaMajorPlayer.race][eaMinorPlayer.race]
+			if eaMajorPlayer.eaCivNameID == EACIV_PARTHOLON or eaMajorPlayer.eaCivNameID == EACIV_DAIRINE then
+				anchor = anchor + 15
+			end
 			return anchor
 		end
 	else	-- God
 		if playerType[iMajorPlayer] == "Fay" then
 			return 40
 		else
-			return 0
+			local eaMajorPlayer = gPlayers[iMajorPlayer]
+			if eaMajorPlayer.eaCivNameID == EACIV_SKOGR then
+				return 15
+			else
+				return 0		
+			end
 		end
 	end
 end
@@ -497,19 +507,19 @@ local function OnPlayerMinorFriendshipRecoveryMod(iMajorPlayer, iMinorPlayer)
 end
 GameEvents.PlayerMinorFriendshipRecoveryMod.Add(OnPlayerMinorFriendshipRecoveryMod)
 
-
-function CheckCapitalBuildings(iPlayer, checkType)
-	local player = Players[iPlayer]
-	local capital = player:GetCapitalCity()
-	if capital then
-		local eaPlayer = gPlayers[iPlayer]
-		if not checkType or checkType == "Civ" then
-			local nameID = eaPlayer.eaCivNameID
-			if nameID then
-				local nameInfo = GameInfo.EaCivs[nameID]
-				if nameInfo.GainCapitalBuilding then
-					local buildingID = GameInfoTypes[nameInfo.GainCapitalBuilding]
-					capital:SetNumRealBuilding(buildingID, 1)
+function CheckCapitalBuildings(iPlayer)
+	local eaPlayer = gPlayers[iPlayer]
+	local nameID = eaPlayer.eaCivNameID
+	if nameID then
+		local nameInfo = GameInfo.EaCivs[nameID]
+		if nameInfo.GainCapitalBuilding then
+			local player = Players[iPlayer]	
+			local buildingID = GameInfoTypes[nameInfo.GainCapitalBuilding]
+			for city in player:Cities() do
+				if city:IsCapital() then
+					city:SetNumRealBuilding(buildingID, 1)
+				else
+					city:SetNumRealBuilding(buildingID, 0)
 				end
 			end
 		end

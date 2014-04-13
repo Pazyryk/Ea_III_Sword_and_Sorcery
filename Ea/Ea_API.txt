@@ -42,7 +42,7 @@ PlayerMinorFriendshipAnchor(eMajor, eMinor)
 
 int		GetCityResidentYieldBoost(int yieldTypeID)
 void	SetCityResidentYieldBoost(int yieldTypeID, iNewValue)
-
+void	SetNumFreeBuilding(BuildingTypes iIndex, int iNewValue)
 
 --------------------------------------------------------------
 -- Player

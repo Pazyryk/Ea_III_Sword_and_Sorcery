@@ -462,7 +462,7 @@ AITarget.OwnClosestLibraryCity = function()
 		local closestCity
 		local closestTravelTurns = 50
 		for city in g_player:Cities() do
-			if city:GetNumRealBuilding(BUILDING_LIBRARY) == 1 then
+			if city:GetNumBuilding(BUILDING_LIBRARY) == 1 then
 				--local travelTurns = EaPersonAStarTurns(g_iPlayer, g_iPerson, g_gpX, g_gpY, city:GetX(), city:GetY())
 				local travelTurns = g_unit:TurnsToReachTarget(city:Plot(), 1, 0, 0)
 				if travelTurns < closestTravelTurns then

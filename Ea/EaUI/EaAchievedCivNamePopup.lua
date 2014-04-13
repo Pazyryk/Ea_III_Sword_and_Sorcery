@@ -22,7 +22,7 @@ function Show(iPlayer, eaCivID)
 	MapModData.editCivAdjective = Locale.ConvertTextKey(eaCivInfo.Adjective)
 
 	local popupText = Locale.ConvertTextKey("TXT_KEY_EA_POPUP_CIV_NAMING", MapModData.editCivName)
-	popupText = popupText .. "[NEWLINE][NEWLINE]" .. GetEaCivDiscriptionText(eaCivID, false, false, false)
+	popupText = popupText .. "[NEWLINE][NEWLINE]" .. GetEaCivDiscriptionText(eaCivID, false, false, true, false)
 	Controls.PopupText:SetText(popupText)
 
 	ContextPtr:SetHide(false)
@@ -108,7 +108,7 @@ function OnRenameAcceptButton()
 	MapModData.editCivAdjective = Controls.EditCivAdjective:GetText()
 
 	local popupText = Locale.ConvertTextKey("TXT_KEY_EA_POPUP_CIV_NAMING", MapModData.editCivName)
-	popupText = popupText .. "[NEWLINE][NEWLINE]" .. GetEaCivDiscriptionText(g_eaCivID, false, false, false)
+	popupText = popupText .. "[NEWLINE][NEWLINE]" .. GetEaCivDiscriptionText(g_eaCivID, false, false, true, false)
 	Controls.PopupText:SetText(popupText)
 
 	ShowButtons()

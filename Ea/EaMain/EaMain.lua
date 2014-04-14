@@ -50,7 +50,7 @@ include("EaAIStrategy.lua")
 include("EaAIMercenaries.lua")
 include("EaTrade.lua")
 include("EaAnimals.lua")
-
+include("EaArmageddon.lua")
 include("EaArtifacts.lua")
 include("EaBarbarians.lua")
 include("EaCities.lua")			--depends on EaTrade
@@ -228,6 +228,7 @@ local function OnPlayerDoTurn(iPlayer)	-- Runs at begining of turn for all livin
 		PrintGameTurn(iPlayer, gameTurn)
 		timerAllPerTurnFunctions = 0
 
+		EaArmageddonPerTurn()
 		EaTradeUpdateTurn()
 		AICivsPerGameTurn()
 		AIMercenaryPerGameTurn()

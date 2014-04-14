@@ -51,6 +51,50 @@ local g_activeTeam = Teams[g_iActiveTeam]
 -- Interface
 --------------------------------------------------------------
 
+function UseManaOrDivineFavor(iPlayer, iPerson, pts, bNoDrain)
+	--Reduces player faith, adds GP xp and depletes Ea's mana if appropriate
+	--Returns false if player lacks sufficient mana or divine favor
+	--If iPerson is nil (or dead) then no experience is given, but all other effects occur
+	local player = Players[iPlayer]
+	if not player:IsAlive() then return end
+
+	local currentFaith = player:GetFaith()
+	local eaPlayer = gPlayers[iPlayer]
+	
+	local bManaEaterFloatup = false
+	if iPerson then
+		local eaPerson = gPeople[iPerson]
+		if eaPerson then
+			local unit = player:GetUnitByID(eaPerson.iUnit)
+			local xp = pts
+			if xpBoostFromManaUse[eaPlayer.eaCivNameID] then
+				xp = xp + Floor(pts * xpBoostFromManaUse[eaPlayer.eaCivNameID] / 100)
+			end
+			unit:ChangeExperience(xp)
+			if eaPlayer.bIsFallen then
+				bManaEaterFloatup = true
+				unit:GetPlot():AddFloatUpMessage(Locale.Lookup("TXT_KEY_EA_CONSUMED_MANA", pts), 1)
+			end
+		end
+	end
+
+	if eaPlayer.bIsFallen then
+		gWorld.sumOfAllMana = gWorld.sumOfAllMana - pts
+		eaPlayer.manaConsumed = (eaPlayer.manaConsumed or 0) + pts
+		if not bManaEaterFloatup then
+			player:GetCapitalCity():Plot():AddFloatUpMessage(Locale.Lookup("TXT_KEY_EA_CONSUMED_MANA", pts), 1)
+		end
+	end
+
+	if bNoDrain then
+		return true
+	else
+		local newFaith = currentFaith - pts
+		player:SetFaith(newFaith)
+		return 0 <= newFaith	--deficit?
+	end
+end
+
 function DrainExperience(unit, xp)
 	print("DrainExperience ", unit, xp)
 	local oldLevel = unit:GetLevel()
@@ -188,90 +232,6 @@ function UpdatePlotEffectHighlight(iPlot, newShowState)	--all plots if iPlot == 
 	end
 end
 LuaEvents.EaMagicUpdatePlotEffectHighlight.Add(function(iPlot, newShowState) return HandleError21(UpdatePlotEffectHighlight, iPlot, newShowState) end)
-
-
---EOTW effects (Emo Open To Wristcutting)
-
-local g_radius = -1
-local g_minRadius = 0
-local g_destroyerCapitalPlot
-
-function EOTW(iDestroyerPlayer)
-	local destroyerPlayer = Players[iDestroyerPlayer]
-	local destroyerCapital = destroyerPlayer:GetCapitalCity()
-	g_destroyerCapitalPlot = destroyerCapital:Plot()
-	local bDestroyerIsActivePlayer = iDestroyerPerson == g_iActivePlayer
-
-	local cameraCenterPlot = bDestroyerIsActivePlayer and destroyerCapitalPlot or g_activePlayer:GetCapitalCity():Plot()
-	local cameraX, cameraY = cameraCenterPlot:GetXY()
-	local viewRadius = 10	--TO DO: calculate this
-	local maxRadius = bDestroyerIsActivePlayer and viewRadius or PlotDistance(destroyerCapital:GetX(), destroyerCapital:GetY(), cameraX, cameraY) + Floor(viewRadius / 2)
-	g_minRadius = bDestroyerIsActivePlayer and 0 or maxRadius - viewRadius
-
-	ContextPtr:SetHide(false)					--lockout the active player so they can't move the camera
-	UI.LookAt(cameraCenterPlot, 2)				--look at capital, zoom out
-
-	for radius = maxRadius, 1, -1 do
-		local bExit = false
-		for plot in PlotRingIterator(g_destroyerCapitalPlot, radius, 1, false) do
-			local x, y = plot:GetXY()
-			if PlotDistance(cameraX, cameraY, x, y) < viewRadius then
-				if plot:IsVisible(g_iActiveTeam) then
-					g_radius = radius
-					bExit = true
-					break
-				end
-			end
-		end
-		if bExit then break end
-	end
-	DelayedEOTW()
-end
-
-local EOTW_RING_DELAY = 500
-local g_tickStop = 0
-local g_bEOTWInitClock = true
-
-function DelayedEOTW()
-	if g_radius == 0 then
-		local x, y = g_destroyerCapitalPlot:GetXY()
-		DoDummyUnitRangedAttack(BARB_PLAYER_INDEX, x, y, nil, GameInfoTypes.UNIT_DUMMY_NUKE)
-		ContextPtr:SetHide(false)	--we're done
-	else
-		for plot in PlotRingIterator(g_destroyerCapitalPlot, g_radius, 1, false) do
-			if plot:IsCity() then
-				local x, y = plot:GetXY()
-				DoDummyUnitRangedAttack(BARB_PLAYER_INDEX, x, y, nil, GameInfoTypes.UNIT_DUMMY_NUKE)
-			else
-				BreachPlot(plot)
-			end
-		end
-		g_radius = g_radius - 1
-		if g_radius == 0 then
-			EOTW_RING_DELAY = EOTW_RING_DELAY * 5
-		end
-		if g_radius >= g_minRadius then
-			g_bEOTWInitClock = true
-			Events.LocalMachineAppUpdate.Add(EOTWRingDelay)	
-		else
-			ContextPtr:SetHide(false)		--we're done
-		end
-	end
-end
-
-function EOTWRingDelay(tickCount, timeIncrement)		--DON'T LOCALIZE! Causes CTD with RemoveAll
-	if g_bEOTWInitClock then
-		g_tickStop = tickCount + EOTW_RING_DELAY
-		g_bEOTWInitClock = false
-		print("Start EOTWRingDelay ", tickCount, g_tickStop)
-	elseif g_tickStop < tickCount then
-		print("Stop EOTWRingDelay ", tickCount, g_tickStop)
-		Events.LocalMachineAppUpdate.RemoveAll()	--also removes tutorial checks (good riddence!)
-		DelayedEOTW()
-	end
-end
-
-
 
 --------------------------------------------------------------
 -- GameEvents

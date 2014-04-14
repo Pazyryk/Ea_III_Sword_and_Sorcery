@@ -134,7 +134,7 @@ end
 
 local bAnimal = {}
 for unitInfo in GameInfo.Units() do
-	if unitInfo.EaAnimal then
+	if unitInfo.EaSpecial == "Animal" or unitInfo.EaSpecial == "Beast" then
 		bAnimal[unitInfo.ID] = true
 	end
 end

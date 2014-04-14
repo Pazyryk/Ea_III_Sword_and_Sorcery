@@ -51,7 +51,8 @@ INSERT INTO Builds (Type,	PrereqTech,						DisallowTech,			PrereqPolicy,		Disall
 ('BUILD_WELL_PAN',			'TECH_ALCHEMY',					NULL,					'POLICY_PANTHEISM',	NULL,				700,	'IMPROVEMENT_WELL',				'TXT_KEY_EA_BUILD_WELL',				NULL,										'TXT_KEY_EA_BUILD_WELL_REC',				'ENTITY_EVENT_BUILD',		'KB_L',	0,				0,			0,			0,				98,				33,			'UNIT_ACTION_ATLAS'	),
 
 --GP plot builds
-('BUILD_ARCANE_TOWER',		NULL,							NULL,					NULL,				NULL,				400,	'IMPROVEMENT_ARCANE_TOWER',		'TXT_KEY_EA_BUILD_ARCANE_TOWER',		NULL,										NULL,										'ENTITY_EVENT_BUILD',		'KB_P',	0,				0,			0,			0,				98,				3,			'UNIT_ACTION_ATLAS_EXP2'	);
+('BUILD_ARCANE_TOWER',		NULL,							NULL,					NULL,				NULL,				400,	'IMPROVEMENT_ARCANE_TOWER',		'TXT_KEY_EA_BUILD_ARCANE_TOWER',		NULL,										NULL,										'ENTITY_EVENT_MINE',		'KB_P',	0,				0,			0,			0,				98,				3,			'UNIT_ACTION_ATLAS_EXP2'	),
+('BUILD_PYRAMID',			NULL,							NULL,					NULL,				NULL,				400,	'IMPROVEMENT_PYRAMID',			'TXT_KEY_EA_BUILD_PYRAMID',				NULL,										NULL,										'ENTITY_EVENT_MINE',		'KB_P',	0,				0,			0,			0,				96,				0,			'BW_ATLAS_2'		);
 
 
 /*

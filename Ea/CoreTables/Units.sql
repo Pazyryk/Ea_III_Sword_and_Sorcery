@@ -11,10 +11,9 @@ ALTER TABLE Units ADD COLUMN 'EaRace' TEXT DEFAULT NULL;
 ALTER TABLE Units ADD COLUMN 'EaCityTrainRace' TEXT DEFAULT NULL;
 ALTER TABLE Units ADD COLUMN 'EaSpecialWorker' TEXT DEFAULT NULL;
 ALTER TABLE Units ADD COLUMN 'EaLiving' BOOLEAN DEFAULT NULL;
-ALTER TABLE Units ADD COLUMN 'EaUndead' BOOLEAN DEFAULT NULL;
-ALTER TABLE Units ADD COLUMN 'EaAnimal' BOOLEAN DEFAULT NULL;
 ALTER TABLE Units ADD COLUMN 'EaNoTrain' BOOLEAN DEFAULT NULL;
 ALTER TABLE Units ADD COLUMN 'EaGPTempRole' TEXT DEFAULT NULL;
+ALTER TABLE Units ADD COLUMN 'EaSpecial' TEXT DEFAULT NULL;			--Animal, Beast, Undead, Demon, Angel, Utility
 
 ----------------------------------------------------------------------------------------
 -- Normal units (UnitClasses & Units)
@@ -165,24 +164,36 @@ INSERT INTO Units (Type,		PrereqTech,					Cost,	Combat,	RangedCombat,	Range,	Mov
 ('UNIT_OGRES',					NULL,						300,	15,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			1,					1,					NULL,				0,			'ART_DEF_UNIT_STONESKIN_OGRE',			'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1			),
 ('UNIT_HOBGOBLINS',				NULL,						240,	12,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			1,					1,					NULL,				0,			'ART_DEF_UNIT_OGRE',					'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1			);
 
---Animals
-INSERT INTO Units (Type,		PrereqTech,					Cost,	Combat,	RangedCombat,	Range,	Moves,	CombatClass,				Domain,			DefaultUnitAI,			Pillage,	MilitarySupport,	MilitaryProduction,	ObsoleteTech,		Mechanized,	UnitArtInfo,							IconAtlas,					PortraitIndex,	UnitFlagAtlas,					UnitFlagIconOffset,	MoveRate,		EaNoTrain,	EaAnimal	) VALUES
-('UNIT_WOLVES',					NULL,						180,	6,		0,				0,		4,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		0,			0,					1,					NULL,				0,			'ART_DEF_UNIT_WOLVES',					'UNIT_ATLAS_1',				4,				'UNIT_FLAG_ATLAS',				4,					'BIPED',		1,			1			),
-('UNIT_LIONS',					NULL,						180,	9,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		0,			0,					1,					NULL,				0,			'ART_DEF_UNIT_LIONS',					'UNIT_ATLAS_1',				4,				'UNIT_FLAG_ATLAS',				4,					'BIPED',		1,			1			),
-('UNIT_GIANT_SPIDER',			NULL,						180,	9,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		0,			0,					1,					NULL,				0,			'ART_DEF_UNIT_GIANT_SPIDER',			'UNIT_ATLAS_1',				4,				'UNIT_FLAG_ATLAS',				4,					'BIPED',		1,			1			);
+--Animals and Beasts
+INSERT INTO Units (Type,		PrereqTech,					Cost,	Combat,	RangedCombat,	Range,	Moves,	CombatClass,				Domain,			DefaultUnitAI,			Pillage,	MilitarySupport,	MilitaryProduction,	ObsoleteTech,		Mechanized,	UnitArtInfo,							IconAtlas,					PortraitIndex,	UnitFlagAtlas,					UnitFlagIconOffset,	MoveRate,		EaNoTrain,	EaSpecial	) VALUES
+('UNIT_WOLVES',					NULL,						180,	6,		0,				0,		4,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		0,			0,					1,					NULL,				0,			'ART_DEF_UNIT_WOLVES',					'UNIT_ATLAS_1',				4,				'UNIT_FLAG_ATLAS',				4,					'BIPED',		1,			'Animal'	),
+('UNIT_LIONS',					NULL,						180,	9,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		0,			0,					1,					NULL,				0,			'ART_DEF_UNIT_LIONS',					'UNIT_ATLAS_1',				4,				'UNIT_FLAG_ATLAS',				4,					'BIPED',		1,			'Animal'	),
+('UNIT_GIANT_SPIDER',			NULL,						180,	9,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		0,			0,					1,					NULL,				0,			'ART_DEF_UNIT_GIANT_SPIDER',			'UNIT_ATLAS_1',				4,				'UNIT_FLAG_ATLAS',				4,					'BIPED',		1,			'Beast'		);
+
+--Summoned, called or raised
+INSERT INTO Units (Type,		PrereqTech,					Cost,	Combat,	RangedCombat,	Range,	Moves,	CombatClass,				Domain,			DefaultUnitAI,			Pillage,	MilitarySupport,	MilitaryProduction,	ObsoleteTech,		Mechanized,	UnitArtInfo,							IconAtlas,					PortraitIndex,	UnitFlagAtlas,					UnitFlagIconOffset,	MoveRate,		EaNoTrain,	EaSpecial	) VALUES
+('UNIT_ZOMBIE',					NULL,						180,	12,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_ZOMBIE',					'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'Undead'	),
+('UNIT_GREAT_UNCLEAN_ONE',		NULL,						180,	12,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_GREAT_UNCLEAN_ONE',		'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'Demon'		),
+('UNIT_HIVE_TYRANT',			NULL,						180,	12,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_HIVE_TYRANT',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'Demon'		),
+('UNIT_LICTOR',					NULL,						180,	12,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_LICTOR',					'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'Demon'		),
+('UNIT_HORMAGAUNT',				NULL,						180,	12,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_HORMAGAUNT',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'Demon'		),
+--('UNIT_CARNIFEX',				NULL,						180,	12,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_CARNIFEX',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'Demon'		),
+('UNIT_ANGEL_SPEARMAN',			NULL,						180,	12,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_ANGEL_SPEARMAN',			'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'Angel'		);
+
+
 
 --Utility (don't show anywhere)
-INSERT INTO Units (Type,		PrereqTech,					Cost,	Combat,	RangedCombat,	NukeDamageLevel,	Range,	Moves,	Immobile,	NoMaintenance,	Special,				CombatClass,	Domain,			DefaultUnitAI,			Suicide,	MilitarySupport,	Mechanized,	AirUnitCap,	CombatLimit,	RangedCombatLimit,	UnitArtInfo,					IconAtlas,			PortraitIndex,	UnitFlagAtlas,		UnitFlagIconOffset,	MoveRate,		EaNoTrain	) VALUES
+INSERT INTO Units (Type,		PrereqTech,					Cost,	Combat,	RangedCombat,	NukeDamageLevel,	Range,	Moves,	Immobile,	NoMaintenance,	Special,				CombatClass,	Domain,			DefaultUnitAI,			Suicide,	MilitarySupport,	Mechanized,	AirUnitCap,	CombatLimit,	RangedCombatLimit,	UnitArtInfo,					IconAtlas,			PortraitIndex,	UnitFlagAtlas,		UnitFlagIconOffset,	MoveRate,		EaNoTrain,	EaSpecial	) VALUES
 --All dummy air strike units should have Suicide = 1; use RangedCombat = 10 if it will be modified by mod (and not a nuke)
-('UNIT_DUMMY_EXPLODER',			'TECH_NEVER',				-1,		0,		10,				-1,					10,		2,		1,			1,				'SPECIALUNIT_MISSILE',	NULL,			'DOMAIN_AIR',	'UNITAI_MISSILE_AIR',	1,			0,					1,			1,			0,				100,				'ART_DEF_UNIT_GUIDED_MISSILE',	'UNIT_ATLAS_2',		30,				'UNIT_FLAG_ATLAS',	77,					'AIR_REBASE',	1			),
-('UNIT_DUMMY_NUKE',				'TECH_NEVER',				-1,		0,		0,				2,					10,		2,		1,			1,				'SPECIALUNIT_MISSILE',	NULL,			'DOMAIN_AIR',	'UNITAI_ICBM',			1,			0,					1,			1,			0,				100,				'ART_DEF_UNIT_NUCLEAR_MISSILE',	'UNIT_ATLAS_2',		30,				'UNIT_FLAG_ATLAS',	77,					'AIR_REBASE',	1			);
+('UNIT_DUMMY_EXPLODER',			'TECH_NEVER',				-1,		0,		10,				-1,					10,		2,		1,			1,				'SPECIALUNIT_MISSILE',	NULL,			'DOMAIN_AIR',	'UNITAI_MISSILE_AIR',	1,			0,					1,			1,			0,				100,				'ART_DEF_UNIT_GUIDED_MISSILE',	'UNIT_ATLAS_2',		30,				'UNIT_FLAG_ATLAS',	77,					'AIR_REBASE',	1,			'Utility'	),
+('UNIT_DUMMY_NUKE',				'TECH_NEVER',				-1,		0,		0,				2,					10,		2,		1,			1,				'SPECIALUNIT_MISSILE',	NULL,			'DOMAIN_AIR',	'UNITAI_ICBM',			1,			0,					1,			1,			0,				100,				'ART_DEF_UNIT_NUCLEAR_MISSILE',	'UNIT_ATLAS_2',		30,				'UNIT_FLAG_ATLAS',	77,					'AIR_REBASE',	1,			'Utility'	);
 --IMPORTANT! Make sure these get PROMOTION_DUMMY_AIR_STRIKE in Unit_FreePromotions below
 
 UPDATE Units SET IsWorker = 1 WHERE Type GLOB 'UNIT_WORKERS_*' OR Type GLOB 'UNIT_SLAVES_*';
 UPDATE Units SET EaRace = 'EARACE_MAN', EaCityTrainRace = 'EARACE_MAN' WHERE Type GLOB '*_MAN' OR Type GLOB '*_BARB';
 UPDATE Units SET EaRace = 'EARACE_SIDHE', EaCityTrainRace = 'EARACE_SIDHE' WHERE Type GLOB '*_SIDHE';
 UPDATE Units SET EaRace = 'EARACE_ORC', EaCityTrainRace = 'EARACE_HELDEOFOL' WHERE Type GLOB '*_ORC';
-UPDATE Units SET EaLiving = 1 WHERE Mechanized = 0 OR Type GLOB 'UNIT_CHARIOT*';
+UPDATE Units SET EaLiving = 1 WHERE (Mechanized = 0 OR Type GLOB 'UNIT_CHARIOT*') AND (EaSpecial IS NULL OR EaSpecial IN ('Animal', 'Beast'));
 UPDATE Units SET NoMaintenance = 1 WHERE Type GLOB 'UNIT_WARRIORS_*' OR Type GLOB 'UNIT_SCOUTS_*';
 UPDATE Units SET CombatLimit = 0, Food = 1, Found = 1, CivilianAttackPriority = 'CIVILIAN_ATTACK_PRIORITY_HIGH_EARLY_GAME_ONLY' WHERE Type GLOB 'UNIT_SETTLERS_*';
 UPDATE Units SET CombatLimit = 0, WorkRate = 100, CivilianAttackPriority = 'CIVILIAN_ATTACK_PRIORITY_LOW' WHERE Type GLOB 'UNIT_WORKERS_*';
@@ -610,6 +621,10 @@ SELECT Type, 'BUILDINGCLASS_HELDEOFOL' FROM Units WHERE Type GLOB '*_ORC';
 
 DELETE FROM Unit_Builds;	
 INSERT INTO Unit_Builds (UnitType, BuildType)	--see Builds in UnitBuilds.sql
+
+--debug testing
+--SELECT 'UNIT_WORKERS_MAN', 'BUILD_PYRAMID' UNION ALL
+
 SELECT 'UNIT_WORKERS_MAN', 'BUILD_ROAD' UNION ALL
 SELECT 'UNIT_WORKERS_MAN', 'BUILD_RAILROAD' UNION ALL
 SELECT 'UNIT_WORKERS_MAN', 'BUILD_LUMBERMILL' UNION ALL

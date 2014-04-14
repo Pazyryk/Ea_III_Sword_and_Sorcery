@@ -18,6 +18,7 @@ CombatResult(iAttackingPlayer, iAttackingUnit, attackerDamage, attackerFinalDama
 CombatEnded(iAttackingPlayer, iAttackingUnit, attackerDamage, attackerFinalDamage, attackerMaxHP,iDefendingPlayer, iDefendingUnit, defenderDamage, defenderFinalDamage, defenderMaxHP, iInterceptingPlayer, iInterceptingUnit, interceptorDamage, plotX, plotY)
 UnitSetXYPlotEffect(iPlayer, iUnit, x, y, plotEffectID, plotEffectStrength, plotEffectPlayer, plotEffectCaster)
 UnitCaptured(iPlayer, iUnit)
+BarbExperienceDenied(iPlayer, iUnit, iSummoner, iExperience)	--unmodded experience unit would get if not barb
 
 --CallTestAll
 CanAutoSave(bInitial, bPostTurn)
@@ -27,7 +28,7 @@ CanContactMajorTeam(iTeam1, iTeam2)
 CityCanAcquirePlot(iPlayer, iCity, x, y)
 UnitTakingPromotion(iPlayer, iUnit, promotionID)
 CanCaptureCivilian(iPlayer, iUnit)				--not used because it won't allow recapture & civilian returns (used UnitCaptured instead)
-
+CanChangeExperience(iPlayer, iUnit, iSummoner, iExperience, iMax, bFromCombat, bInBorders, bUpdateGlobal)	--false prevents xp change to summoned unit
 
 --CallAccumulator
 PlayerTechCostMod(iPlayer, techID)
@@ -78,6 +79,8 @@ int, int, int, int	GetPlotEffectData()								--args above
 
 int					GetPersonIndex()
 void				SetPersonIndex(int iIndex)
+int					GetSummonerIndex()
+void				SetSummonerIndex(int iIndex)
 int					GetMorale()
 void				SetMorale(int iMorale)
 void				ChangeMorale(int iChange)

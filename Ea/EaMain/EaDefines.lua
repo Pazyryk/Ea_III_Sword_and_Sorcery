@@ -123,6 +123,11 @@ LEADER_XP = GameInfo.EaActions.EA_ACTION_TAKE_LEADERSHIP.DoXP
 ---------------------------------------------------------------
 gg_unitPrefixUnitIDs = {}
 gg_bToCheapToHire = {}
+gg_eaSpecial = {}
+gg_bNormalCombatUnit = {}
+gg_bNormalLivingCombatUnit = {}
+gg_gpTempType = {}
+
 for unitInfo in GameInfo.Units() do
 	for i = 1, #UNIT_SUFFIXES do
 		local suffix = UNIT_SUFFIXES[i]
@@ -138,6 +143,15 @@ for unitInfo in GameInfo.Units() do
 	if string.find(unitType, "UNIT_WARRIORS") or string.find(unitType, "UNIT_SCOUTS") then
 		gg_bToCheapToHire[unitInfo.ID] = true
 	end
+	gg_eaSpecial = unitInfo.EaSpecial
+	if unitInfo.EaGPTempRole then
+		gg_gpTempType[unitInfo.ID] = unitInfo.EaGPTempRole
+	elseif not unitInfo.Special and not unitInfo.EaSpecial and unitInfo.CombatLimit == 100 then
+		gg_bNormalCombatUnit[unitInfo.ID] = true
+		if unitInfo.EaLiving then
+			gg_bNormalLivingCombatUnit[unitInfo.ID] = true
+		end
+	end
 end
 
 MapModData.civNamesByRace = MapModData.civNamesByRace or {}
@@ -152,22 +166,6 @@ for row in GameInfo.EaCiv_Races() do
 		print("!!!! WARNING: EaCiv_Races references non-existent civ name: ", row.EaCivNameType)
 	end
 end
-
-
-gg_bNormalCombatUnit = {}
-gg_bNormalLivingCombatUnit = {}
-gg_gpTempType = {}
-for unitInfo in GameInfo.Units() do
-	if unitInfo.EaGPTempRole then
-		gg_gpTempType[unitInfo.ID] = unitInfo.EaGPTempRole
-	elseif not unitInfo.Special and unitInfo.CombatLimit == 100 then
-		gg_bNormalCombatUnit[unitInfo.ID] = true
-		if unitInfo.EaLiving then
-			gg_bNormalLivingCombatUnit[unitInfo.ID] = true
-		end
-	end
-end
-
 
 gg_naturalWonders = {}	--index by featureID; filled in EaPlots Init
 ----------------------------------------------------------------------------------------------------------------------------
@@ -270,6 +268,7 @@ MapModData.gT = MapModData.gT or {} --use these 2 lines in any other state that 
 gT = MapModData.gT
 
 gWorld = {	sumOfAllMana =				MapModData.STARTING_SUM_OF_ALL_MANA,
+			armageddonStage =			0,
 			bAllCivsHaveNames =			false,
 			returnAsPlayer =			Game.GetActivePlayer(),
 			encampments =				{},

@@ -44,6 +44,7 @@ local fullCivs =					MapModData.fullCivs
 local gg_bNormalLivingCombatUnit =	gg_bNormalLivingCombatUnit
 local gg_slaveryPlayer =			gg_slaveryPlayer
 local gg_gpTempType =				gg_gpTempType
+local gg_eaSpecial =				gg_eaSpecial
 
 --localized functions
 local HandleError =					HandleError
@@ -270,8 +271,6 @@ local function DoForcedInterfaceMode()
 end
 Events.SerialEventGameDataDirty.Add(DoForcedInterfaceMode)
 Events.SerialEventUnitInfoDirty.Add(DoForcedInterfaceMode)
-
-
 
 
 --Melee attack resulting from Lead Charge has to be delayed
@@ -576,6 +575,32 @@ local function OnCanSaveUnit(iPlayer, iUnit, bDelay)	--fires for combat and non-
 
 end
 GameEvents.CanSaveUnit.Add(function(iPlayer, iUnit, bDelay) return HandleError31(OnCanSaveUnit, iPlayer, iUnit, bDelay) end)
+
+local function OnCanChangeExperience(iPlayer, iUnit, iSummoner, iExperience, iMax, bFromCombat, bInBorders, bUpdateGlobal)
+	print("OnCanChangeExperience ", iPlayer, iUnit, iSummoner, iExperience, iMax, bFromCombat, bInBorders, bUpdateGlobal)
+	if iSummoner ~= -1 then
+		--iSummoner is iPerson belonging to iPlayer
+		UseManaOrDivineFavor(iPlayer, iSummoner, iExperience, false)
+		local unit = Players[iPlayer]:GetUnitByID(iUnit)
+		local unitTypeID = unit:GetUnitType()
+		if gg_eaSpecial[unitTypeID] == "Undead" then
+			return false
+		end
+	end
+	return true
+end
+GameEvents.CanChangeExperience.Add(function (iPlayer, iUnit, iSummoner, iExperience, iMax, bFromCombat, bInBorders, bUpdateGlobal) return HandleError(OnCanChangeExperience, iPlayer, iUnit, iSummoner, iExperience, iMax, bFromCombat, bInBorders, bUpdateGlobal) end)
+
+local function OnBarbExperienceDenied(iPlayer, iUnit, iSummoner, iExperience)
+	print("OnBarbExperienceDenied ", iPlayer, iUnit, iSummoner, iExperience)
+	if iSummoner ~= -1 then
+		--iSummoner is iPlayer (used to credit mana drain)
+		UseManaOrDivineFavor(iSummoner, nil, iExperience, true)
+	end
+end
+GameEvents.BarbExperienceDenied.Add(function (iPlayer, iUnit, iSummoner, iExperience) return HandleError41(OnBarbExperienceDenied, iPlayer, iUnit, iSummoner, iExperience) end)
+
+
 
 
 --local function OnUnitKilledInCombat(iKillerPlayer, iKilledPlayer, unitTypeID)

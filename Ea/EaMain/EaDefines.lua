@@ -124,6 +124,7 @@ LEADER_XP = GameInfo.EaActions.EA_ACTION_TAKE_LEADERSHIP.DoXP
 gg_unitPrefixUnitIDs = {}
 gg_bToCheapToHire = {}
 gg_eaSpecial = {}
+gg_baseUnitPower = {}
 gg_bNormalCombatUnit = {}
 gg_bNormalLivingCombatUnit = {}
 gg_gpTempType = {}
@@ -143,7 +144,8 @@ for unitInfo in GameInfo.Units() do
 	if string.find(unitType, "UNIT_WARRIORS") or string.find(unitType, "UNIT_SCOUTS") then
 		gg_bToCheapToHire[unitInfo.ID] = true
 	end
-	gg_eaSpecial = unitInfo.EaSpecial
+	gg_eaSpecial[unitInfo.ID] = unitInfo.EaSpecial
+	gg_baseUnitPower[unitInfo.ID] = Game.GetUnitPower(unitInfo.ID)
 	if unitInfo.EaGPTempRole then
 		gg_gpTempType[unitInfo.ID] = unitInfo.EaGPTempRole
 	elseif not unitInfo.Special and not unitInfo.EaSpecial and unitInfo.CombatLimit == 100 then

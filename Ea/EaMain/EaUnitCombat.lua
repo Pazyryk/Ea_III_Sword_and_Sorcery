@@ -77,11 +77,9 @@ for promoInfo in GameInfo.UnitPromotions() do
 	end
 end
 
-local unitCost = {}
 local dummyUnit = {}
 for unitInfo in GameInfo.Units() do
 	local unitID = unitInfo.ID
-	unitCost[unitID] = unitInfo.Cost
 	if string.find(unitInfo.Type, "UNIT_DUMMY_") == 1 then
 		dummyUnit[unitID] = true
 	end
@@ -99,12 +97,8 @@ end
 --------------------------------------------------------------
 
 function CalculateXPManaForAttack(unitTypeId, damage, bKill)
-	local targetValue = unitCost[unitTypeId] or 240			--city treated as unit with cost 240
-	if targetValue < 10 then
-		print("!!!! ERROR: defending unit had Cost < 10; fix this because it affects xp and other things!")
-		targetValue = 240
-	end
-	return Floor((damage + (bKill and 33 or 0)) * targetValue / 240)		-- 1 pt per 2 hp for a Warriors unit; kill is worth an additional 33 hp
+	local basePower = gg_baseUnitPower[unitTypeId] or 18			--city treated as unit with power 18
+	return Floor((damage + (bKill and 33 or 0)) * basePower / 18)		-- 1 pt per 2 hp for a Warriors unit; kill is worth an additional 33 hp
 end
 
 
@@ -407,7 +401,7 @@ local function OnCombatResult(iAttackingPlayer, iAttackingUnit, attackerDamage, 
 		end
 	end
 
-	g_defendingUnitTypeId = -1
+	g_defendingUnitTypeID = -1
 	if defenderMaxHP == 200	then	--city; TO DO: get hp from Defines
 		
 		--TO DO: get city race
@@ -417,7 +411,7 @@ local function OnCombatResult(iAttackingPlayer, iAttackingUnit, attackerDamage, 
 		local defendingUnit = defendingPlayer:GetUnitByID(iDefendingUnit)	
 		if defendingUnit then
 			local unitTypeID = defendingUnit:GetUnitType()
-			g_defendingUnitTypeId = unitTypeID
+			g_defendingUnitTypeID = unitTypeID
 
 			--TO DO: Get race from cached table
 			g_defendingUnitRace = EARACE_MAN
@@ -450,8 +444,8 @@ local function OnCombatEnded(iAttackingPlayer, iAttackingUnit, attackerDamage, a
 				local iRestoredUnit = restoredUnit:GetID()
 				eaPerson.iUnit = iRestoredUnit
 				restoredUnit:SetMorale(0)
-				local bDefenderKilled = (g_defendingUnitTypeId ~= -1) and (not defendingUnit or defendingUnit:IsDelayedDeath())
-				local pts = CalculateXPManaForAttack(g_defendingUnitTypeId, defenderDamage, bDefenderKilled)
+				local bDefenderKilled = (g_defendingUnitTypeID ~= -1) and (not defendingUnit or defendingUnit:IsDelayedDeath())
+				local pts = CalculateXPManaForAttack(g_defendingUnitTypeID, defenderDamage, bDefenderKilled)
 				UseManaOrDivineFavor(iAttackingPlayer, iPerson, pts)
 				--restoredUnit:SetInvisibleType(INVISIBLE_SUBMARINE)
 			elseif dummyUnit[attackingUnitTypeID] then
@@ -509,16 +503,33 @@ local function OnCanSaveUnit(iPlayer, iUnit, bDelay)	--fires for combat and non-
 	--Note: Fires twice for delayed death!
 	print("OnCanSaveUnit ", iPlayer, iUnit, bDelay)
 
-	if not bDelay then return false end		-- Too late now!
+	local unit, player
+
+	--cleanup for summoned unit (ok to fire twice)
+	if fullCivs[iPlayer] then
+		player = Players[iPlayer]
+		unit = player:GetUnitByID(iUnit)
+		local iSummoner = unit:GetSummonerIndex()
+		if iSummoner ~= -1 then
+			local eaSummoner = gPeople[iSummoner]
+			local summonedUnits = eaSummoner.summonedUnits
+			if summonedUnits then
+				summonedUnits[iUnit] = nil
+			end
+		end
+	end
+
+	--for everything below, we only want first call for delayed death
+	if not bDelay then return false end		-- too late now!
 
 	if MapModData.bBypassOnCanSaveUnit then
 		MapModData.bBypassOnCanSaveUnit = false
 		g_iDefendingPlayer, g_iDefendingUnit, g_iAttackingPlayer, g_iAttackingUnit = -1, -1, -1, -1
 		return false
 	end
-	
-	local player = Players[iPlayer]
-	local unit = player:GetUnitByID(iUnit)
+
+	player = player or Players[iPlayer]	
+	unit = unit or player:GetUnitByID(iUnit)
 	local iPerson = unit:GetPersonIndex()
 
 	if iPerson == -1 then	--not a GP

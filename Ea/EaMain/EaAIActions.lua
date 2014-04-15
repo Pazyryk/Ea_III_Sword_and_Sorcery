@@ -396,6 +396,16 @@ AITarget.OwnTower = function()
 	end
 end
 
+AITarget.SelfAndTower = function()
+	TestAddOption("Plot", g_gpX, g_gpY, 0, 0)
+	local tower = gWonders[EA_WONDER_ARCANE_TOWER][g_iPerson]
+	if tower then
+		local x, y = GetXYFromPlotIndex(tower.iPlot)
+		TestAddOption("Plot", x, y, 0, nil)
+	end
+end
+
+
 AITarget.VacantTower = function()
 	for iPerson, tower in pairs(gWonders[EA_WONDER_ARCANE_TOWER]) do
 		if not gPeople[iPerson] then	--tower's last occupant is dead

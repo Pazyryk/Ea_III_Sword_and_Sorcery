@@ -85,15 +85,10 @@ modsForUI.firstMagicMod = numModTypes - 7
 modsForUI[numModTypes + 1] = {text = "All Magic Schools", value = 0}
 modsForUI[numModTypes + 2] = {text = "Other Magic Schools", value = 0}
 
-
 local reservedGPs = {}		--nil all entries after all civs gain names
-local xpBoostFromManaUse = {}
 for eaCivInfo in GameInfo.EaCivs() do
 	if eaCivInfo.FoundingGPType then
 		reservedGPs[GameInfoTypes[eaCivInfo.FoundingGPType] ] = true
-	end
-	if eaCivInfo.XPBoostFromManaUse ~= 0 then
-		xpBoostFromManaUse[eaCivInfo.ID] = eaCivInfo.XPBoostFromManaUse
 	end
 end
 
@@ -475,7 +470,6 @@ function GenerateGreatPerson(iPlayer, class, subclass, eaPersonRowID, bAsLeader,
 							eaActionData = -1,
 							gotoPlotIndex = -1,
 							gotoEaActionID = -1,
-							tempFaith = 0,
 							moves = 0,
 							modMemory = {}	}		
 		

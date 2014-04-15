@@ -91,7 +91,7 @@ CREATE TABLE EaActions ('ID' INTEGER PRIMARY KEY AUTOINCREMENT,
 						'BuildingUnderConstruction' TEXT DEFAULT NULL,		--to show under construction when started
 						'DoXP' INTEGER DEFAULT 0,
 						'DoGainPromotion' TEXT DEFAULT NULL,
-						'FixedFaith' INTEGER DEFAULT 0,		--NOT YET IMPLEMENTED
+						'FixedFaith' INTEGER DEFAULT 0,
 						--Do or Finish sound and FX
 						'HumanOnlyFX' INTEGER DEFAULT NULL,		--only one FX now, so it is just a nil test (will be specific ID later)
 						'HumanVisibleFX' INTEGER DEFAULT NULL,	--any player but must be visible plot (don't use at same time as above)
@@ -315,7 +315,7 @@ INSERT INTO EaActions (Type,			SpellClass,	GPModType1,				TechReq,						City,	AI
 ('EA_SPELL_HEX',						'Arcane',	'EAMOD_CONJURATION',	'TECH_MALEFICIUM',				NULL,	NULL,				'Any',			1,					0,			1,				9,			'TECH_ATLAS_2'			),
 ('EA_SPELL_SUMMON_MONSTER',				'Arcane',	'EAMOD_CONJURATION',	'TECH_CONJURATION',				NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
 ('EA_SPELL_TELEPORT',					'Arcane',	'EAMOD_CONJURATION',	'TECH_CONJURATION',				NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
-('EA_SPELL_SUMMON_MINOR_DEMON',			'Arcane',	'EAMOD_CONJURATION',	'TECH_SUMMONING',				NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
+('EA_SPELL_SUMMON_MINOR_DEMONS',		'Arcane',	'EAMOD_CONJURATION',	'TECH_SUMMONING',				NULL,	'SelfAndTower',		NULL,			3,					0,			1,				7,			'TECH_ATLAS_2'			),
 ('EA_SPELL_PHASE_DOOR',					'Arcane',	'EAMOD_CONJURATION',	'TECH_INVOCATION',				NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
 ('EA_SPELL_REANIMATE_DEAD',				'Arcane',	'EAMOD_NECROMANCY',		'TECH_REANIMATION',				NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
 ('EA_SPELL_RAISE_DEAD',					'Arcane',	'EAMOD_NECROMANCY',		'TECH_NECROMANCY',				NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
@@ -351,7 +351,7 @@ INSERT INTO EaActions (Type,			SpellClass,	GPModType1,				TechReq,						City,	AI
 ('EA_SPELL_COMMAND',					'Divine',	'EAMOD_ENCHANTMENT',	'TECH_DIVINE_ESSENCE',			NULL,	NULL,				NULL,			NULL,							1,					0,			1,				38,			'BW_ATLAS_1'			),
 ('EA_SPELL_BANISH_UNDEAD',				'Divine',	'EAMOD_ABJURATION',		'TECH_HEAVENLY_CYCLES',			NULL,	NULL,				NULL,			'EA_SPELL_TURN_UNDEAD',			1,					0,			1,				38,			'BW_ATLAS_1'			),
 ('EA_SPELL_CONSECRATE',					'Divine',	'EAMOD_EVOCATION',		'TECH_HEAVENLY_CYCLES',			NULL,	NULL,				NULL,			'EA_SPELL_DESECRATE',			1,					0,			1,				38,			'BW_ATLAS_1'			),
-('EA_SPELL_CALL_MINOR_ANGEL',			'Divine',	'EAMOD_CONJURATION',	'TECH_DIVINE_INTERVENTION',		NULL,	NULL,				NULL,			'EA_SPELL_SUMMON_MINOR_DEMON',	1,					0,			1,				38,			'BW_ATLAS_1'			),
+('EA_SPELL_CALL_MINOR_ANGEL',			'Divine',	'EAMOD_CONJURATION',	'TECH_DIVINE_INTERVENTION',		NULL,	NULL,				NULL,			'EA_SPELL_SUMMON_MINOR_DEMONS_D',1,					0,			1,				38,			'BW_ATLAS_1'			),
 ('EA_SPELL_RESURRECTION',				'Divine',	'EAMOD_NECROMANCY',		'TECH_DIVINE_INTERVENTION',		NULL,	NULL,				NULL,			'EA_SPELL_GREATER_REANIMATION',	1,					0,			1,				38,			'BW_ATLAS_1'			),
 
 --fallen
@@ -364,7 +364,7 @@ INSERT INTO EaActions (Type,			SpellClass,	GPModType1,				TechReq,						City,	AI
 ('EA_SPELL_CAUSE_PLAGUE',				'Divine',	'EAMOD_NECROMANCY',		'TECH_NECROMANCY',				NULL,	NULL,				NULL,			'IsFallen',						1,					0,			1,				9,			'TECH_ATLAS_2'			),
 ('EA_SPELL_TURN_UNDEAD',				'Divine',	'EAMOD_NECROMANCY',		'TECH_NECROMANCY',				NULL,	NULL,				NULL,			'IsFallen',						1,					0,			1,				9,			'TECH_ATLAS_2'			),
 ('EA_SPELL_DESECRATE',					'Divine',	'EAMOD_TRANSMUTATION',	'TECH_SUMMONING',				NULL,	NULL,				NULL,			'IsFallen',						1,					0,			1,				9,			'TECH_ATLAS_2'			),
-('EA_SPELL_SUMMON_MINOR_DEMON_D',		'Divine',	'EAMOD_CONJURATION',	'TECH_SUMMONING',				NULL,	NULL,				NULL,			'IsFallen',						1,					0,			1,				9,			'TECH_ATLAS_2'			),
+('EA_SPELL_SUMMON_MINOR_DEMONS_D',		'Divine',	'EAMOD_CONJURATION',	'TECH_SUMMONING',				NULL,	'SelfAndTower',		NULL,			'IsFallen',						3,					0,			1,				9,			'TECH_ATLAS_2'			),
 ('EA_SPELL_GREATER_REANIMATION',		'Divine',	'EAMOD_NECROMANCY',		'TECH_SOUL_BINDING',			NULL,	NULL,				NULL,			'IsFallen',						1,					0,			1,				9,			'TECH_ATLAS_2'			),
 
 --druid only learned

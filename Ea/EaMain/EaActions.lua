@@ -94,6 +94,7 @@ local gg_playerValues =						gg_playerValues
 local gg_bToCheapToHire =					gg_bToCheapToHire
 local gg_bNormalCombatUnit =				gg_bNormalCombatUnit
 local gg_bNormalLivingCombatUnit =			gg_bNormalLivingCombatUnit
+local gg_baseUnitPower =					gg_baseUnitPower
 
 
 --localized functions
@@ -506,7 +507,7 @@ function TestEaAction(eaActionID, iPlayer, unit, iPerson, testX, testY, bAINonTa
 
 	if g_SpellClass then
 		g_faith = g_player:GetFaith()
-		if g_faith < 1 or (g_faith < g_eaAction.FixedFaith and g_eaPerson.tempFaith ~= g_eaAction.FixedFaith) then
+		if g_faith < g_eaAction.FixedFaith then
 			g_bSufficientFaith = false
 		else
 			g_bSufficientFaith = true
@@ -917,7 +918,7 @@ function DoEaAction(eaActionID, iPlayer, unit, iPerson, targetX, targetY)
 		end
 
 		if 0 < g_eaAction.FixedFaith then
-			UseManaOrDivineFavor(g_iPlayer, g_iPerson, g_eaAction.FixedFaith)
+			UseManaOrDivineFavor(g_iPlayer, g_iPerson, g_eaAction.FixedFaith, false)
 		end
 
 		if g_eaAction.UniqueType then							--make NOT available permanently for any GP
@@ -980,14 +981,6 @@ function DoEaAction(eaActionID, iPlayer, unit, iPerson, targetX, targetY)
 				print("getting progressTable from CityCiv ", progressTable, g_eaAction.Type)
 			end
 			local progress = progressTable[eaActionID] or 0
-
-			if progress == 0 then	--this is first turn of multiturn action
-				if 0 < g_eaAction.FixedFaith then
-					g_eaPerson.tempFaith = g_eaAction.FixedFaith
-					g_player:ChangeFaith(-g_eaAction.FixedFaith)
-				end
-			end
-
 			progress = progress + 1
 			print("progress, turnsToComplete = ", progress, turnsToComplete)
 			if progress >= turnsToComplete then
@@ -1023,19 +1016,7 @@ function InterruptEaAction(iPlayer, iPerson)
 
 	eaPerson.eaActionID = -1
 
-	--return tempFaith
-	if eaPerson.tempFaith ~= 0 then
-		player:ChangeFaith(eaPerson.tempFaith)
-		eaPerson.tempFaith = 0
-	end
-
 	local eaAction = EaActionsInfo[eaActionID]
-
-	if eaAction.SpellClass and 0 < eaPerson.tempFaith then	--give back and remove progress
-		player:ChangeFaith(eaPerson.tempFaith)
-		eaPerson.tempFaith = 0
-		eaPerson.progress[eaActionID] = nil
-	end
 
 	if eaAction.UniqueType then							--make available for other GPs
 		if eaAction.UniqueType == "World" then
@@ -1091,16 +1072,10 @@ function FinishEaAction(eaActionID)		--only called from DoEaAction so file local
 
 	--g_unit:SetInvisibleType(INVISIBLE_SUBMARINE)
 
-	--Temp faith system (faith was "moved" to caster; use it now)
-	local faithUsed = g_eaPerson.tempFaith
-	if 0 < faithUsed then
-		g_eaPerson.tempFaith = 0 
-		g_unit:ChangeExperience(faithUsed)
-		if g_eaPlayer.bIsFallen then
-			gWorld.sumOfAllMana = gWorld.sumOfAllMana - faithUsed
-		end
+	--Mana or divine favor
+	if 0 < g_eaAction.FixedFaith then
+		UseManaOrDivineFavor(g_iPlayer, g_iPerson, g_eaAction.FixedFaith, false)
 	end
-
 
 	--XP
 	if g_eaAction.FinishXP > 0 then
@@ -2023,8 +1998,7 @@ Do[GameInfoTypes.EA_ACTION_CHANNEL] = function()
 	local city = g_player:GetCityByID(iCity)
 	local eaCity = gCities[city:Plot():GetPlotIndex()]
 
-
-	eaCity.gpFaith = g_eaCity.gpFaith or {}
+	eaCity.gpFaith = eaCity.gpFaith or {}
 	eaCity.gpFaith[g_iPerson] = pts
 	g_eaPerson.eaActionData = g_iPlot
 	g_unit:ChangeExperience(pts)
@@ -2180,7 +2154,7 @@ TestTarget[GameInfoTypes.EA_ACTION_RALLY_TROOPS] = function()
 				if gg_bNormalLivingCombatUnit[unitTypeID] and unit:IsEnemyInMovementRange(false, false) then
 					numQualifiedUnits = numQualifiedUnits + 1
 					g_table[numQualifiedUnits] = unit
-					value = value + GameInfo.Units[unitTypeID].Cost * unit:GetCurrHitPoints()
+					value = value + unit:GetPower()
 				end
 			end
 		end
@@ -2200,7 +2174,7 @@ SetUI[GameInfoTypes.EA_ACTION_RALLY_TROOPS] = function()
 end
 
 SetAIValues[GameInfoTypes.EA_ACTION_RALLY_TROOPS] = function()
-	gg_aiOptionValues.i = g_mod * g_value / 1000				
+	gg_aiOptionValues.i = g_mod * g_value / 100			
 end
 
 Do[GameInfoTypes.EA_ACTION_RALLY_TROOPS] = function()
@@ -2218,7 +2192,6 @@ end
 
 --EA_ACTION_TRAIN_UNIT
 TestTarget[GameInfoTypes.EA_ACTION_TRAIN_UNIT] = function()
-	--print("TestTarget EA_ACTION_TRAIN_UNIT")
 	--Must be combat unit at plot
 	local unitCount = g_plot:GetNumUnits()
 	for i = 0, unitCount - 1 do
@@ -2227,38 +2200,30 @@ TestTarget[GameInfoTypes.EA_ACTION_TRAIN_UNIT] = function()
 			local unitTypeID = unit:GetUnitType()
 			if gg_bNormalLivingCombatUnit[unitTypeID] then
 				g_obj1 = unit
-				g_obj2 = GameInfo.Units[unitTypeID]
-				print("return true")
+				g_int1 = unitTypeID
 				return true
 			end
 		end
 	end
-	--print("return false")	
 	return false
 end
 
 SetUI[GameInfoTypes.EA_ACTION_TRAIN_UNIT] = function()
-	--print("SetUI EA_ACTION_TRAIN_UNIT")
 	if g_bAllTestsPassed then
-		local unitText = Locale.ConvertTextKey(g_obj2.Description)
+		local unitText = Locale.ConvertTextKey(GameInfo.Units[g_int1])
 		local xp = Floor(g_mod / 2)
 		MapModData.text = "Provide " .. unitText .. " with " .. xp .. " experience per turn"
 	end
-	--print("done")
 end
 
 SetAIValues[GameInfoTypes.EA_ACTION_TRAIN_UNIT] = function()
-	--print("SetAIValues EA_ACTION_TRAIN_UNIT")
-	gg_aiOptionValues.i = g_mod * g_obj2.Cost / 8			
-	--print("done")
+	gg_aiOptionValues.i = g_mod * g_obj1:GetPower()			
 end
 
 Do[GameInfoTypes.EA_ACTION_TRAIN_UNIT] = function()
-	print("Do EA_ACTION_TRAIN_UNIT")
 	local xp = Floor(g_mod / 2)	--give to unit and GP
 	g_obj1:ChangeExperience(xp)
 	g_unit:ChangeExperience(xp)
-	print("return true")
 	return true
 end
 
@@ -2288,6 +2253,9 @@ TestTarget[GameInfoTypes.EA_ACTION_OCCUPY_TOWER] = function()
 		local tower = gWonders[EA_WONDER_ARCANE_TOWER][iPerson]
 		if tower.iPlot == g_iPlot then
 			g_int1 = iPerson
+
+			g_value = 20	--TO DO: Calculate value as sum of tower mods 
+
 			return true
 		end
 	end
@@ -2299,12 +2267,17 @@ SetUI[GameInfoTypes.EA_ACTION_OCCUPY_TOWER] = function()
 	MapModData.text = "Occupy " .. improvementStr .. " and make it your own"
 end
 
+
+SetAIValues[GameInfoTypes.EA_ACTION_OCCUPY_TOWER] = function()
+	gg_aiOptionValues.i = g_value			
+end
+
 Finish[GameInfoTypes.EA_ACTION_OCCUPY_TOWER] = function()
 	local tower = gWonders[EA_WONDER_ARCANE_TOWER][g_int1]
 	gWonders[EA_WONDER_ARCANE_TOWER][g_iPlayer] = tower
 	g_eaPerson.bHasTower = true
 	gWonders[EA_WONDER_ARCANE_TOWER][g_int1] = nil
-	g_unit:ChangeExperience(20)
+	UseManaOrDivineFavor(g_iPlayer, g_iPerson, g_value, false)
 	g_specialEffectsPlot = g_plot
 end
 
@@ -4080,10 +4053,10 @@ TestTarget[GameInfoTypes.EA_SPELL_HEX] = function()
 				if g_team:IsAtWar(Players[unit:GetOwner()]:GetTeam()) then
 					local unitTypeID = unit:GetUnitType()	
 					if gg_bNormalCombatUnit[unitTypeID] then
-						local unitTypeInfo = GameInfo.Units[unitTypeID]
-						if value < unitTypeInfo.Cost * unit:GetCurrHitPoints() then
+						local power = unit:GetPower()
+						if value < power then
 							g_obj1 = unit
-							value = unitTypeInfo.Cost
+							value = power
 						end
 					end
 				end
@@ -4109,7 +4082,7 @@ SetUI[GameInfoTypes.EA_SPELL_HEX] = function()
 end
 
 SetAIValues[GameInfoTypes.EA_SPELL_HEX] = function()
-	gg_aiOptionValues.i = g_value / 100
+	gg_aiOptionValues.i = g_value / 10
 end
 
 Do[GameInfoTypes.EA_SPELL_HEX] = function()
@@ -4125,7 +4098,115 @@ end
 
 --EA_SPELL_SUMMON_MONSTER
 --EA_SPELL_TELEPORT
---EA_SPELL_SUMMON_MINOR_DEMON
+
+--EA_SPELL_SUMMON_MINOR_DEMONS (use this as model for other summons, raises, calls, conjures, etc.)
+local minorDemons = {GameInfoTypes.UNIT_HORMAGAUNT, GameInfoTypes.UNIT_LICTOR, GameInfoTypes.UNIT_HIVE_TYRANT}	--weakest first
+TestTarget[GameInfoTypes.EA_SPELL_SUMMON_MINOR_DEMONS] = function()
+	if g_faith < g_modSpell then
+		g_testTargetSwitch = 1
+		return false
+	end
+	--make our unit list here so we can share it with UI and AI
+	g_count = 0		--number units can summon
+	g_value = 0		--cumulative power of newly summoned units
+	local remainingMod = g_modSpell
+	local summonedUnits = g_eaPerson.summonedUnits
+	local bHasSummonedUnit = false
+	if summonedUnits then
+		for iUnit, unitTypeID in pairs(summonedUnits) do
+			for i = 1, 3 do
+				if unitTypeID == minorDemons[i] then
+					bHasSummonedUnit = true		--if can't now, it's because there are already summoned units
+					remainingMod = remainingMod - gg_baseUnitPower[unitTypeID]
+				end
+			end
+		end
+	end
+	local weakestUnitPower = gg_baseUnitPower[minorDemons[1] ]
+	local i = 3
+	while weakestUnitPower < remainingMod do
+		local unitTypeID = minorDemons[i]
+		local power = gg_baseUnitPower[unitTypeID]
+		if power < remainingMod then	--add to list
+			g_count = g_count + 1
+			g_integers[g_count] = unitTypeID
+			g_value = g_value + power
+			remainingMod = remainingMod - power
+		end
+		i = i < 2 and i + 2 or i - 1
+	end
+	if g_count == 0 then
+		if bHasSummonedUnit then
+			g_testTargetSwitch = 2
+			return false
+		else
+			g_testTargetSwitch = 3
+			g_int1 = weakestUnitPower
+			return false
+		end
+	end
+	return true
+end
+
+SetUI[GameInfoTypes.EA_SPELL_SUMMON_MINOR_DEMONS] = function()
+	if g_bNonTargetTestsPassed then		--has spell so show it
+		MapModData.bShow = true
+		if g_bAllTestsPassed then
+			--count demon types for UI
+			local unitTypeCounts = {0, 0, 0}
+			for i = 1, 3 do
+				for j = 1, g_count do
+					if minorDemons[i] == g_integers[j] then
+						unitTypeCounts[i] = unitTypeCounts[i] + 1
+					end
+				end
+			end
+			local str
+			for i = 3, 1, -1 do
+				if unitTypeCounts[i] > 0 then
+					str = str and "; " or ""
+					local name = Locale.Lookup(GameInfo.Units[minorDemons[i] ].Description)	--TO DO: plural cases
+					str = str .. unitTypeCounts[i] .. " " .. name
+				end
+			end
+			MapModData.text = "Summon " .. str
+		elseif g_testTargetSwitch == 1 then
+			MapModData.text = "Not enough mana to cast this spell"
+		elseif g_testTargetSwitch == 2 then
+			MapModData.text = "Not enough mana to summon additional demons"
+		else
+			MapModData.text = "Your current spell modifier (" .. g_modSpell .. ") is insufficient to summon even the weakest minor demon (power: " .. g_int1 .. ")"
+		end
+	end
+end
+
+SetAIValues[GameInfoTypes.EA_SPELL_SUMMON_MINOR_DEMONS] = function()
+	gg_aiOptionValues.i = g_value		--AI should always want this maxed out
+end
+
+Finish[GameInfoTypes.EA_SPELL_SUMMON_MINOR_DEMONS] = function()
+	g_eaPerson.summonedUnits = g_eaPerson.summonedUnits or {}
+	local summonedUnits = g_eaPerson.summonedUnits
+	local bOverStacked = false
+	for i = 1, g_count do
+		local unitTypeID = g_integers[i]
+		local newUnit = g_player:InitUnit(unitTypeID, g_x, g_y)
+		local iUnit = newUnit:GetID()
+		summonedUnits[iUnit] = unitTypeID
+		newUnit:SetSummonerIndex(g_iPerson)
+		if bOverStacked then
+			newUnit:JumpToNearestValidPlot()
+		elseif g_plot:GetNumFriendlyUnitsOfType(newUnit) > 1 then
+			bOverStacked = true
+			newUnit:JumpToNearestValidPlot()
+		end
+	end
+	UseManaOrDivineFavor(g_iPlayer, g_iPerson, g_value, false)
+end
+
+
+
+
 --EA_SPELL_PHASE_DOOR
 --EA_SPELL_REANIMATE_DEAD
 --EA_SPELL_RAISE_DEAD
@@ -4210,7 +4291,7 @@ TestTarget[GameInfoTypes.EA_SPELL_HEAL] = function()
 
 	local pts = g_modSpell < g_faith and g_modSpell or g_faith
 	if pts == 0 then return false end
-	local unitCost = 0
+	local power = 0
 	for x, y in PlotToRadiusIterator(g_x, g_y, 1) do	--includes center
 		local plot = GetPlotFromXY(x, y)
 		local unitCount = plot:GetNumUnits()
@@ -4219,29 +4300,30 @@ TestTarget[GameInfoTypes.EA_SPELL_HEAL] = function()
 			local unitTypeID = unit:GetUnitType()
 			if gg_bNormalLivingCombatUnit[unitTypeID] then
 				local damage = unit:GetDamage()
+				local maxHP = unit:GetMaxHitPoints()
+				local maxPower = unit:GetPower() * maxHP / (maxHP - damage)
 				if 0 < damage and Players[unit:GetOwner()]:GetTeam() == g_iTeam then
-					local unitTypeInfo = GameInfo.Units[unitTypeID]
 					if damage < pts then --partial use of heal potential
 						if g_testTargetSwitch == 0 then
 							g_obj1 = unit
 							g_int1 = damage
-							unitCost = unitTypeInfo.Cost
+							power = maxPower
 							g_testTargetSwitch = 1
-						elseif g_testTargetSwitch == 1 and unitCost < unitTypeInfo.Cost then
+						elseif g_testTargetSwitch == 1 and power < maxPower then
 							g_obj1 = unit
 							g_int1 = damage
-							unitCost = unitTypeInfo.Cost
+							power = maxPower
 						end
 					else	--full use of heal potential
 						if g_testTargetSwitch < 2 then
 							g_obj1 = unit
 							g_int1 = pts
-							unitCost = unitTypeInfo.Cost
+							power = maxPower
 							g_testTargetSwitch = 2
-						elseif unitCost < unitTypeInfo.Cost then
+						elseif power < maxPower then
 							g_obj1 = unit
 							g_int1 = pts
-							unitCost = unitTypeInfo.Cost
+							power = maxPower
 						end
 					end
 				end
@@ -4250,7 +4332,7 @@ TestTarget[GameInfoTypes.EA_SPELL_HEAL] = function()
 	end
 	if g_testTargetSwitch == 0 then return false end	--no valid target
 
-	g_int2 = unitCost	--for AI
+	g_int2 = power	--for AI
 
 	return true
 end
@@ -4278,8 +4360,8 @@ SetUI[GameInfoTypes.EA_SPELL_HEAL] = function()
 end
 
 SetAIValues[GameInfoTypes.EA_SPELL_HEAL] = function()
-	--The AI value for a Heal spell is an instant payoff (i) = hp * unitCost / 100; use this as baseline for other spell values
-	gg_aiOptionValues.i = g_int1 * g_int2 / 100
+	--The AI value for a Heal spell is an instant payoff (i) = hp * power / 10; use this as baseline for other spell values
+	gg_aiOptionValues.i = g_int1 * g_int2 / 10
 	--print("AI value for Heal spell= ", gg_aiOptionValues.i)
 end
 
@@ -4306,10 +4388,10 @@ TestTarget[GameInfoTypes.EA_SPELL_BLESS] = function()
 				if not unit:IsHasPromotion(PROMOTION_BLESSED) and not unit:IsHasPromotion(PROMOTION_EVIL_EYE) then
 					local unitTypeID = unit:GetUnitType()	
 					if gg_bNormalLivingCombatUnit[unitTypeID] then
-						local unitTypeInfo = GameInfo.Units[unitTypeID]
-						if value < unitTypeInfo.Cost * unit:GetCurrHitPoints() then
+						local power = unit:GetPower()
+						if value < power then
 							g_obj1 = unit
-							value = unitTypeInfo.Cost
+							value = power
 						end
 					end
 				end
@@ -4335,7 +4417,7 @@ SetUI[GameInfoTypes.EA_SPELL_BLESS] = function()
 end
 
 SetAIValues[GameInfoTypes.EA_SPELL_BLESS] = function()
-	gg_aiOptionValues.i = g_modSpell * g_value / 1000
+	gg_aiOptionValues.i = g_modSpell * g_value / 10
 end
 
 Do[GameInfoTypes.EA_SPELL_BLESS] = function()
@@ -4364,10 +4446,10 @@ TestTarget[GameInfoTypes.EA_SPELL_PROTECTION_FROM_EVIL] = function()
 				if not unit:IsHasPromotion(PROMOTION_PROTECTION_FROM_EVIL) and not unit:IsHasPromotion(PROMOTION_EVIL_EYE) then
 					local unitTypeID = unit:GetUnitType()	
 					if gg_bNormalLivingCombatUnit[unitTypeID] then
-						local unitTypeInfo = GameInfo.Units[unitTypeID]
-						if value < unitTypeInfo.Cost * unit:GetCurrHitPoints() then
+						local power = unit:GetPower()
+						if value < power then
 							g_obj1 = unit
-							value = unitTypeInfo.Cost
+							value = power
 						end
 					end
 				end
@@ -4393,7 +4475,7 @@ SetUI[GameInfoTypes.EA_SPELL_PROTECTION_FROM_EVIL] = function()
 end
 
 SetAIValues[GameInfoTypes.EA_SPELL_PROTECTION_FROM_EVIL] = function()
-	gg_aiOptionValues.i = g_modSpell * g_value / 1000
+	gg_aiOptionValues.i = g_modSpell * g_value / 10
 end
 
 Do[GameInfoTypes.EA_SPELL_PROTECTION_FROM_EVIL] = function()
@@ -4420,7 +4502,7 @@ TestTarget[GameInfoTypes.EA_SPELL_HURT] = function()
 
 	local pts = g_modSpell < g_faith and g_modSpell or g_faith
 	if pts == 0 then return false end				--make this a generic test?
-	local unitCost = 0
+	local power = 0
 	for x, y in PlotToRadiusIterator(g_x, g_y, 1) do	--includes center
 		local plot = GetPlotFromXY(x, y)
 		local unitCount = plot:GetNumUnits()
@@ -4429,29 +4511,30 @@ TestTarget[GameInfoTypes.EA_SPELL_HURT] = function()
 			if g_team:IsAtWar(Players[unit:GetOwner()]:GetTeam()) then
 				local unitTypeID = unit:GetUnitType()	
 				if gg_bNormalLivingCombatUnit[unitTypeID] then
-					local unitTypeInfo = GameInfo.Units[unitTypeID]
 					local currentHP = unit:GetCurrHitPoints()
+					local maxHP = unit:GetMaxHitPoints()
+					local maxPower = unit:GetPower() * maxHP / currentHP
 					if pts < currentHP then --won't kill
 						if g_testTargetSwitch == 0 then
 							g_obj1 = unit
 							g_int1 = pts
-							unitCost = unitTypeInfo.Cost
+							power = maxPower
 							g_testTargetSwitch = 1
-						elseif g_testTargetSwitch == 1 and unitCost < unitTypeInfo.Cost then
+						elseif g_testTargetSwitch == 1 and power < maxPower then
 							g_obj1 = unit
 							g_int1 = pts
-							unitCost = unitTypeInfo.Cost
+							power = maxPower
 						end
 					else					--will kill
 						if g_testTargetSwitch < 2 then
 							g_obj1 = unit
 							g_int1 = currentHP
-							unitCost = unitTypeInfo.Cost
+							power = maxPower
 							g_testTargetSwitch = 2
-						elseif unitCost < unitTypeInfo.Cost then
+						elseif power < maxPower then
 							g_obj1 = unit
 							g_int1 = currentHP
-							unitCost = unitTypeInfo.Cost
+							power = maxPower
 						end
 					end
 				end
@@ -4460,7 +4543,7 @@ TestTarget[GameInfoTypes.EA_SPELL_HURT] = function()
 	end
 	if g_testTargetSwitch == 0 then return false end	--no valid target
 
-	g_int2 = unitCost	--for AI
+	g_int2 = power	--for AI
 
 	return true
 end
@@ -4489,8 +4572,8 @@ SetUI[GameInfoTypes.EA_SPELL_HURT] = function()
 end
 
 SetAIValues[GameInfoTypes.EA_SPELL_HURT] = function()
-	--The AI value for a Heal spell is an instant payoff (i) = hp * unitCost / 100; use this as baseline for other spell values
-	gg_aiOptionValues.i = g_int1 * g_int2 / 100
+	--The AI value for a Heal spell is an instant payoff (i) = hp * power / 100; use this as baseline for other spell values
+	gg_aiOptionValues.i = g_int1 * g_int2 / 10
 	--print("AI value for Heal spell= ", gg_aiOptionValues.i)
 end
 
@@ -4517,10 +4600,10 @@ TestTarget[GameInfoTypes.EA_SPELL_CURSE] = function()
 				if g_team:IsAtWar(Players[unit:GetOwner()]:GetTeam()) then
 					local unitTypeID = unit:GetUnitType()	
 					if gg_bNormalLivingCombatUnit[unitTypeID] then
-						local unitTypeInfo = GameInfo.Units[unitTypeID]
-						if value < unitTypeInfo.Cost * unit:GetCurrHitPoints() then
+						local power = unit:GetPower()
+						if value < power then
 							g_obj1 = unit
-							value = unitTypeInfo.Cost
+							value = power
 						end
 					end
 				end
@@ -4546,7 +4629,7 @@ SetUI[GameInfoTypes.EA_SPELL_CURSE] = function()
 end
 
 SetAIValues[GameInfoTypes.EA_SPELL_CURSE] = function()
-	gg_aiOptionValues.i = g_modSpell * g_value / 1000
+	gg_aiOptionValues.i = g_modSpell * g_value / 10
 end
 
 Do[GameInfoTypes.EA_SPELL_CURSE] = function()
@@ -4575,10 +4658,10 @@ TestTarget[GameInfoTypes.EA_SPELL_EVIL_EYE] = function()
 				if g_team:IsAtWar(Players[unit:GetOwner()]:GetTeam()) then
 					local unitTypeID = unit:GetUnitType()	
 					if gg_bNormalCombatUnit[unitTypeID] then
-						local unitTypeInfo = GameInfo.Units[unitTypeID]
-						if value < unitTypeInfo.Cost * unit:GetCurrHitPoints() then
+						local power = unit:GetPower()
+						if value < power then
 							g_obj1 = unit
-							value = unitTypeInfo.Cost
+							value = power
 						end
 					end
 				end
@@ -4604,7 +4687,7 @@ SetUI[GameInfoTypes.EA_SPELL_EVIL_EYE] = function()
 end
 
 SetAIValues[GameInfoTypes.EA_SPELL_EVIL_EYE] = function()
-	gg_aiOptionValues.i = g_modSpell * g_value / 1000
+	gg_aiOptionValues.i = g_modSpell * g_value / 10
 end
 
 Do[GameInfoTypes.EA_SPELL_EVIL_EYE] = function()
@@ -4783,7 +4866,7 @@ TestTarget[GameInfoTypes.EA_SPELL_RIDE_LIKE_THE_WIND] = function()
 						local unitTypeInfo = GameInfo.Units[unitTypeID]
 						numQualifiedUnits = numQualifiedUnits + 1
 						g_table[numQualifiedUnits] = unit
-						value = value + GameInfo.Units[unitTypeID].Cost * unit:GetCurrHitPoints()
+						value = value + unit:GetPower()
 					end
 				end
 			end
@@ -4807,7 +4890,7 @@ SetUI[GameInfoTypes.EA_SPELL_RIDE_LIKE_THE_WIND] = function()
 end
 
 SetAIValues[GameInfoTypes.EA_SPELL_RIDE_LIKE_THE_WIND] = function()
-	gg_aiOptionValues.i = g_modSpell * g_value / 1000
+	gg_aiOptionValues.i = g_modSpell * g_value / 10
 end
 
 Do[GameInfoTypes.EA_SPELL_RIDE_LIKE_THE_WIND] = function()
@@ -4839,7 +4922,7 @@ TestTarget[GameInfoTypes.EA_SPELL_PURIFY] = function()
 		local unitCount = plot:GetNumUnits()
 		for i = 0, unitCount - 1 do
 			local unit = plot:GetUnit(i)
-			if unit:GetOwner() == g_iPlayer then		--change to allied
+			if unit:GetOwner() == g_iPlayer then	
 				local unitTypeID = unit:GetUnitType()	
 				if gg_bNormalLivingCombatUnit[unitTypeID] then
 					local damage = unit:GetDamage()
@@ -4851,8 +4934,8 @@ TestTarget[GameInfoTypes.EA_SPELL_PURIFY] = function()
 							removeBonus = removeBonus + 20
 						end
 					end
-					local unitTypeInfo = GameInfo.Units[unitTypeID]
-					local value = unitTypeInfo.Cost * (hpHealed + removeBonus)
+					local power = unit:GetPower()
+					local value = power * (hpHealed + removeBonus)
 					if bestValue < value then
 						g_obj1 = unit
 						bestValue = value
@@ -4911,7 +4994,7 @@ SetUI[GameInfoTypes.EA_SPELL_PURIFY] = function()
 end
 
 SetAIValues[GameInfoTypes.EA_SPELL_PURIFY] = function()
-	gg_aiOptionValues.i = g_modSpell * g_value / 1000
+	gg_aiOptionValues.i = g_modSpell * g_value / 10
 end
 
 Do[GameInfoTypes.EA_SPELL_PURIFY] = function()
@@ -4951,10 +5034,10 @@ TestTarget[GameInfoTypes.EA_SPELL_FAIR_WINDS] = function()
 				if not unit:IsHasPromotion(PROMOTION_FAIR_WINDS) then
 					local unitTypeID = unit:GetUnitType()	
 					if gg_bNormalCombatUnit[unitTypeID] then
-						local unitTypeInfo = GameInfo.Units[unitTypeID]
-						if value < unitTypeInfo.Cost then
+						local power = unit:GetPower()
+						if value < power then
 							g_obj1 = unit
-							value = unitTypeInfo.Cost
+							value = power
 						end
 					end
 				end	
@@ -4980,7 +5063,7 @@ SetUI[GameInfoTypes.EA_SPELL_FAIR_WINDS] = function()
 end
 
 SetAIValues[GameInfoTypes.EA_SPELL_FAIR_WINDS] = function()
-	gg_aiOptionValues.i = g_value / 100
+	gg_aiOptionValues.i = g_value / 10
 end
 
 Do[GameInfoTypes.EA_SPELL_FAIR_WINDS] = function()

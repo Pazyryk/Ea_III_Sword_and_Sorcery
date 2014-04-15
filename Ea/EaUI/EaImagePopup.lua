@@ -202,7 +202,7 @@ function ShowCiv(info)
 	local eaTrait = GameInfo.EaCivs[info.id]
 	local dds = eaTrait.PopupImage
 	local name = Locale.Lookup(eaTrait.Description)
-	local quote = Locale.Lookup(eaTrait.Quote)
+	local quote = eaTrait.Quote and Locale.Lookup(eaTrait.Quote) or name
 	local textRows = 2
 	if string.find(quote, "TXT_KEY") then
 		quote = ""

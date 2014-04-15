@@ -108,7 +108,7 @@ function PickSubclassForSpawnedClass(iPlayer, class)
 			return "Witch"
 		elseif team:IsHasTech(TECH_NECROMANCY) then
 			return "Necromancer"
-		elseif team:IsHasTech(TECH_MALEFICIUM) then
+		elseif team:IsHasTech(TECH_SORCERY) then
 			return "Sorcerer"
 		elseif team:IsHasTech(TECH_THAUMATURGY) then
 			return "Wizard"

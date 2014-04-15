@@ -457,11 +457,11 @@ function BlightPlot(plot, iPlayer, iPerson, iMaxMana)		--last 3 are optional
 	end
 
 	local player = iPlayer and Players[iPlayer]
-	if player and player:IsAlive() then
-		player:ChangeFaith(manaConsumed)						--generates mana as it consumes it
-		UseManaOrDivineFavor(iPlayer, iPerson, manaConsumed)
+	if player and player:IsAlive() then		
+		UseManaOrDivineFavor(iPlayer, iPerson, manaConsumed, true)		--used but not drained from player stores
 	else
 		gWorld.sumOfAllMana = gWorld.sumOfAllMana - manaConsumed
+		plot:AddFloatUpMessage(Locale.Lookup("TXT_KEY_EA_CONSUMED_MANA", manaConsumed), 1)
 	end
 
 	plot:SetFeatureType(FEATURE_BLIGHT)
@@ -493,6 +493,7 @@ function BreachPlot(plot, iPlayer, iPerson, iMaxMana)		--last 3 are optional
 		UseManaOrDivineFavor(iPlayer, iPerson, manaConsumed)
 	else
 		gWorld.sumOfAllMana = gWorld.sumOfAllMana - manaConsumed
+		plot:AddFloatUpMessage(Locale.Lookup("TXT_KEY_EA_CONSUMED_MANA", manaConsumed), 1)
 	end
 
 	plot:SetFeatureType(FEATURE_FALLOUT)

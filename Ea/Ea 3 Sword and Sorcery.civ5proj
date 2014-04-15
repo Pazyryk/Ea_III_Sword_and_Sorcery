@@ -1428,70 +1428,6 @@
       <SubType>Lua</SubType>
       <ImportIntoVFS>True</ImportIntoVFS>
     </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Carnifex\carnifex.fxsxml">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>False</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Carnifex\carnifex.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>False</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Carnifex\carnifexAttackA.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>False</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Carnifex\carnifexAttackB.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>False</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Carnifex\carnifexCharge.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>False</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Carnifex\carnifexDie.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>False</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Carnifex\carnifexIdleA.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>False</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Carnifex\carnifexIdleB.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>False</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Carnifex\carnifexRun.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>False</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Carnifex\edited_carnifex_armour_common_body_dif.dds">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>False</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Carnifex\edited_carnifex_armour_common_body_spc.dds">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>False</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Carnifex\edited_carnifex_armour_common_crushing_claws_dif.dds">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>False</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Carnifex\edited_carnifex_armour_common_crushing_claws_spc.dds">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>False</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Carnifex\edited_carnifex_armour_common_head_dif.dds">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>False</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Carnifex\edited_carnifex_upper_scything_claws_dif.dds">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>False</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Carnifex\edited_carnifex_upper_scything_claws_spc.dds">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>False</ImportIntoVFS>
-    </Content>
     <Content Include="_MoveToMediaPack\3DUnits\Great_Unclean_One\great_unclean_one_dif.dds">
       <SubType>Lua</SubType>
       <ImportIntoVFS>True</ImportIntoVFS>
@@ -1747,7 +1683,6 @@
     <Folder Include="Utilities" />
     <Folder Include="_MoveToMediaPack\3DTerrain\ThePyramids\" />
     <Folder Include="_MoveToMediaPack\3DUnits\Angel_Spearman\" />
-    <Folder Include="_MoveToMediaPack\3DUnits\Carnifex\" />
     <Folder Include="_MoveToMediaPack\3DUnits\Great_Unclean_One\" />
     <Folder Include="_MoveToMediaPack\3DUnits\Hive_tyrant\" />
     <Folder Include="_MoveToMediaPack\3DUnits\Hormagaunt\" />

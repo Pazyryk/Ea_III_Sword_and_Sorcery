@@ -37,6 +37,7 @@ local Floor =				math.floor
 local Vector2 =				Vector2
 local ToHexFromGrid =		ToHexFromGrid
 local HandleError21 =		HandleError21
+local HandleError31 =		HandleError31
 
 --file functions
 local OnPlotEffect = {}
@@ -48,10 +49,23 @@ local g_iActiveTeam = g_activePlayer:GetTeam()
 local g_activeTeam = Teams[g_iActiveTeam]
 
 --------------------------------------------------------------
+-- Cached Tables
+--------------------------------------------------------------
+
+local xpBoostFromManaUse = {}
+for eaCivInfo in GameInfo.EaCivs() do
+	if eaCivInfo.XPBoostFromManaUse ~= 0 then
+		xpBoostFromManaUse[eaCivInfo.ID] = eaCivInfo.XPBoostFromManaUse
+	end
+end
+
+--------------------------------------------------------------
 -- Interface
 --------------------------------------------------------------
 
 function UseManaOrDivineFavor(iPlayer, iPerson, pts, bNoDrain)
+	--All mana or divine favor use should go through here!
+
 	--Reduces player faith, adds GP xp and depletes Ea's mana if appropriate
 	--Returns false if player lacks sufficient mana or divine favor
 	--If iPerson is nil (or dead) then no experience is given, but all other effects occur
@@ -73,7 +87,7 @@ function UseManaOrDivineFavor(iPlayer, iPerson, pts, bNoDrain)
 			unit:ChangeExperience(xp)
 			if eaPlayer.bIsFallen then
 				bManaEaterFloatup = true
-				unit:GetPlot():AddFloatUpMessage(Locale.Lookup("TXT_KEY_EA_CONSUMED_MANA", pts), 1)
+				unit:GetPlot():AddFloatUpMessage(Locale.Lookup("TXT_KEY_EA_CONSUMED_MANA", pts), 2)	--delay until after xp
 			end
 		end
 	end
@@ -94,6 +108,7 @@ function UseManaOrDivineFavor(iPlayer, iPerson, pts, bNoDrain)
 		return 0 <= newFaith	--deficit?
 	end
 end
+
 
 function DrainExperience(unit, xp)
 	print("DrainExperience ", unit, xp)
@@ -182,39 +197,27 @@ end
 --plot effect highlighting
 local g_plotEffectsShowState = 0		--0, hide; 1, other player's; 2, ours
 
-function UpdatePlotEffectHighlight(iPlot, newShowState)	--all plots if iPlot == nil
-	print("UpdatePlotEffectHighlight ", iPlot, newShowState)
-	if g_plotEffectsShowState == 0 and newShowState == nil then return end
-	if newShowState then
-		g_plotEffectsShowState = newShowState
-	end
-
-	if g_plotEffectsShowState == 0 then	--Hide plot effects
-		print("Hiding plot effect highlights")
+function UpdatePlotEffectHighlight(iPlot, newShowState, bForceFullUpdate)	--all plots if iPlot == nil
+	print("UpdatePlotEffectHighlight ", iPlot, newShowState, bForceFullUpdate)
+	if UI.IsCityScreenUp() then
+		print("Clearing plot effect highlights for city screen")
 		Events.ClearHexHighlightStyle("")
 	else
-		local bShowOurs = g_plotEffectsShowState == 2		
-		local bObserver = (not bShowOurs) and (g_iActiveTeam == OBSERVER_TEAM)
-		local revealedPlotEffects = (not bShowOurs and not bObserver) and gPlayers[g_iActivePlayer].revealedPlotEffects
+		if g_plotEffectsShowState == 0 and newShowState == nil and not bForceFullUpdate then return end
+		if newShowState then
+			g_plotEffectsShowState = newShowState
+		end
 
-		if iPlot then
-			print("Updating plot effect highlight for single plot", iPlot)
-			local plot = GetPlotByIndex(iPlot)
-			if plot:IsRevealed(g_iActiveTeam) then
-				local effectID, effectStength, iEffectPlayer, iCaster = plot:GetPlotEffectData()
-				local bOwnEffect = g_iActivePlayer == iEffectPlayer
-				if effectID ~= -1 and ((bShowOurs and bOwnEffect) or (not bShowOurs and not bOwnEffect and (bObserver or revealedPlotEffects[iPlot]))) then	--show it
-					local effectInfo = GameInfo.EaPlotEffects[effectID]
-					local color = HIGHLIGHT_COLOR[effectInfo.HighlightColor]
-					Events.SerialEventHexHighlight(ToHexFromGrid(Vector2(plot:GetX(), plot:GetY())), true, color)	
-				else
-					Events.SerialEventHexHighlight(ToHexFromGrid(Vector2(plot:GetX(), plot:GetY())), false, HIGHLIGHT_COLOR.GREEN)
-				end
-			end
-		else
-			print("Updating plot effect highlight for all revealed plots")
+		if g_plotEffectsShowState == 0 then	--Hide plot effects
+			print("Hiding plot effect highlights")
 			Events.ClearHexHighlightStyle("")
-			for iPlot = 0, Map.GetNumPlots() - 1 do
+		else
+			local bShowOurs = g_plotEffectsShowState == 2		
+			local bObserver = (not bShowOurs) and (g_iActiveTeam == OBSERVER_TEAM)
+			local revealedPlotEffects = (not bShowOurs and not bObserver) and gPlayers[g_iActivePlayer].revealedPlotEffects
+
+			if iPlot and not bForceFullUpdate then
+				print("Updating plot effect highlight for single plot", iPlot)
 				local plot = GetPlotByIndex(iPlot)
 				if plot:IsRevealed(g_iActiveTeam) then
 					local effectID, effectStength, iEffectPlayer, iCaster = plot:GetPlotEffectData()
@@ -227,11 +230,28 @@ function UpdatePlotEffectHighlight(iPlot, newShowState)	--all plots if iPlot == 
 						Events.SerialEventHexHighlight(ToHexFromGrid(Vector2(plot:GetX(), plot:GetY())), false, HIGHLIGHT_COLOR.GREEN)
 					end
 				end
+			else
+				print("Updating plot effect highlight for all revealed plots")
+				Events.ClearHexHighlightStyle("")
+				for iPlot = 0, Map.GetNumPlots() - 1 do
+					local plot = GetPlotByIndex(iPlot)
+					if plot:IsRevealed(g_iActiveTeam) then
+						local effectID, effectStength, iEffectPlayer, iCaster = plot:GetPlotEffectData()
+						local bOwnEffect = g_iActivePlayer == iEffectPlayer
+						if effectID ~= -1 and ((bShowOurs and bOwnEffect) or (not bShowOurs and not bOwnEffect and (bObserver or revealedPlotEffects[iPlot]))) then	--show it
+							local effectInfo = GameInfo.EaPlotEffects[effectID]
+							local color = HIGHLIGHT_COLOR[effectInfo.HighlightColor]
+							Events.SerialEventHexHighlight(ToHexFromGrid(Vector2(plot:GetX(), plot:GetY())), true, color)	
+						else
+							Events.SerialEventHexHighlight(ToHexFromGrid(Vector2(plot:GetX(), plot:GetY())), false, HIGHLIGHT_COLOR.GREEN)
+						end
+					end
+				end
 			end
 		end
 	end
 end
-LuaEvents.EaMagicUpdatePlotEffectHighlight.Add(function(iPlot, newShowState) return HandleError21(UpdatePlotEffectHighlight, iPlot, newShowState) end)
+LuaEvents.EaMagicUpdatePlotEffectHighlight.Add(function(iPlot, newShowState, bForceFullUpdate) return HandleError31(UpdatePlotEffectHighlight, iPlot, newShowState, bForceFullUpdate) end)
 
 --------------------------------------------------------------
 -- GameEvents

@@ -202,6 +202,25 @@
 		<Row Tag="TXT_KEY_EA_UNIT_GIANT_SPIDER">
 			<Text>Giant Spider</Text>
 		</Row>
+
+		<Row Tag="TXT_KEY_EA_UNIT_ZOMBIE">
+			<Text>Zombies</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_GREAT_UNCLEAN_ONE">
+			<Text>Aeshema</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_HIVE_TYRANT">
+			<Text>Minor Demons, Type III</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_LICTOR">
+			<Text>Minor Demons, Type II</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_HORMAGAUNT">
+			<Text>Minor Demons, Type I</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_ANGEL_SPEARMAN">
+			<Text>Minor Angels</Text>
+		</Row>
 		
 		<!-- GP Units -->
 

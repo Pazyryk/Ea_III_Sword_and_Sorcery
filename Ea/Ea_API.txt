@@ -2,7 +2,7 @@
 -- Author: Pazyryk
 -- DateCreated: 2/9/2014 10:50:11 AM
 --------------------------------------------------------------
--- New methods added by CvGameCore_Ea.dll
+-- New GameEvents and Lua methods added by CvGameCore_Ea.dll
 
 --------------------------------------------------------------
 -- GameDefines
@@ -36,6 +36,12 @@ PlayerMinorFriendshipAnchor(eMajor, eMinor)
 
 --Added but currently disabled:
 //CityCanRangeStrikeAt(iAttacker, iCity, x, y)	CallTestAll
+
+--------------------------------------------------------------
+-- Game
+--------------------------------------------------------------
+
+int		GetUnitPower(unitTypeID)	--returns CvUnitEntry::GetPower() for supplied ID 
 
 --------------------------------------------------------------
 -- City
@@ -91,6 +97,7 @@ int					GetGPAttackState()
 void				SetGPAttackState(int iIndex)
 void				TestPromotionReady()
 int					TurnsToReachTarget(Plot targetPlot, bool bReusePaths, bool bIgnoreUnits, bool bIgnoreStacking)		--0 means can reach with movement left; returns 2147483647 if no path
+int					GetPower()
 
 --------------------------------------------------------------
 Notes:

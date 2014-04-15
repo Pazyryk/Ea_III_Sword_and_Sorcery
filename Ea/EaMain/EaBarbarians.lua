@@ -149,9 +149,9 @@ end
 local numUnits, sumPower = 0, 0
 for unitTypeID in pairs(barbUnitPower) do
 	local unitInfo = GameInfo.Units[unitTypeID]
-	barbUnitPower[unitTypeID] = unitInfo.Cost
+	barbUnitPower[unitTypeID] = gg_baseUnitPower[unitTypeID]
 	numUnits = numUnits + 1
-	sumPower = sumPower + unitInfo.Cost
+	sumPower = sumPower + gg_baseUnitPower[unitTypeID]
 end
 local avePower = sumPower / numUnits
 for unitTypeID in pairs(barbUnitPower) do

@@ -96,13 +96,15 @@ INSERT INTO ArtDefine_StrategicView(StrategicViewType, TileType, Asset) VALUES
 ('ART_DEF_UNIT_ORC_SPEARMAN',		'Unit',	'SV_Spearman.dds'	),
 ('ART_DEF_UNIT_OGRE',				'Unit',	'SV_Maori.dds'		),
 ('ART_DEF_UNIT_STONESKIN_OGRE',		'Unit',	'SV_Maori.dds'		),
+('ART_DEF_UNIT_TREE_ENT',			'Unit',	'SV_Maori.dds'		),
 ('ART_DEF_UNIT_ZOMBIE',				'Unit',	'SV_Maori.dds'		),
 ('ART_DEF_UNIT_GREAT_UNCLEAN_ONE',	'Unit',	'SV_Maori.dds'		),
 ('ART_DEF_UNIT_HIVE_TYRANT',		'Unit',	'SV_Maori.dds'		),
 ('ART_DEF_UNIT_LICTOR',				'Unit',	'SV_Maori.dds'		),
 ('ART_DEF_UNIT_HORMAGAUNT',			'Unit',	'SV_Maori.dds'		),
 --('ART_DEF_UNIT_CARNIFEX',			'Unit',	'SV_Maori.dds'		),
-('ART_DEF_UNIT_ANGEL_SPEARMAN',		'Unit',	'SV_Maori.dds'		);
+('ART_DEF_UNIT_ANGEL_SPEARMAN',		'Unit',	'SV_Maori.dds'		),
+('ART_DEF_UNIT_ANGEL',				'Unit',	'SV_Maori.dds'		);
 
 
 INSERT INTO ArtDefine_UnitInfos (Type,	DamageStates,	Formation) VALUES
@@ -117,6 +119,7 @@ INSERT INTO ArtDefine_UnitInfos (Type,	DamageStates,	Formation) VALUES
 ('ART_DEF_UNIT_OGRE',					1,				'UnFormed'			),	--Hobgoblins
 ('ART_DEF_UNIT_STONESKIN_OGRE',			1,				'UnFormed'			),	--Ogres
 ('ART_DEF_UNIT_MAN_CHARIOT',			1,				'ChariotElephant'	),
+('ART_DEF_UNIT_TREE_ENT',				1,				''					),
 ('ART_DEF_UNIT_ZOMBIE',					1,				'Barbarian'			),
 ('ART_DEF_UNIT_GREAT_UNCLEAN_ONE',		1,				''					),
 ('ART_DEF_UNIT_HIVE_TYRANT',			1,				''					),
@@ -124,6 +127,7 @@ INSERT INTO ArtDefine_UnitInfos (Type,	DamageStates,	Formation) VALUES
 ('ART_DEF_UNIT_HORMAGAUNT',				1,				'Barbarian'			),
 --('ART_DEF_UNIT_CARNIFEX',				1,				''					),
 ('ART_DEF_UNIT_ANGEL_SPEARMAN',			1,				'Phalanx'			),
+('ART_DEF_UNIT_ANGEL',					1,				''					),
 ('ART_DEF_UNIT_EA_ENGINEER',			1,				''					),
 ('ART_DEF_UNIT_EA_MERCHANT',			1,				''					),
 ('ART_DEF_UNIT_EA_SAGE',				1,				''					),
@@ -150,6 +154,7 @@ INSERT INTO ArtDefine_UnitInfoMemberInfos (UnitInfoType,	UnitMemberInfoType,		Nu
 ('ART_DEF_UNIT_STONESKIN_OGRE',			'ART_DEF_UNIT_MEMBER_STONESKIN_OGRE_2',		1		),
 ('ART_DEF_UNIT_STONESKIN_OGRE',			'ART_DEF_UNIT_MEMBER_STONESKIN_OGRE',		1		),
 ('ART_DEF_UNIT_MAN_CHARIOT',			'ART_DEF_UNIT_MEMBER_MAN_CHARIOT',			2		),
+('ART_DEF_UNIT_TREE_ENT',				'ART_DEF_UNIT_MEMBER_TREE_ENT',				1		),
 ('ART_DEF_UNIT_ZOMBIE',					'ART_DEF_UNIT_MEMBER_ZOMBIE',				11		),
 ('ART_DEF_UNIT_GREAT_UNCLEAN_ONE',		'ART_DEF_UNIT_MEMBER_GREAT_UNCLEAN_ONE',	1		),
 ('ART_DEF_UNIT_HIVE_TYRANT',			'ART_DEF_UNIT_MEMBER_HIVE_TYRANT',			1		),
@@ -157,6 +162,7 @@ INSERT INTO ArtDefine_UnitInfoMemberInfos (UnitInfoType,	UnitMemberInfoType,		Nu
 ('ART_DEF_UNIT_HORMAGAUNT',				'ART_DEF_UNIT_MEMBER_HORMAGAUNT',			8		),
 --('ART_DEF_UNIT_CARNIFEX',				'ART_DEF_UNIT_MEMBER_CARNIFEX',				1		),
 ('ART_DEF_UNIT_ANGEL_SPEARMAN',			'ART_DEF_UNIT_MEMBER_ANGEL_SPEARMAN',		12		),
+('ART_DEF_UNIT_ANGEL',					'ART_DEF_UNIT_MEMBER_ANGEL',				1		),
 ('ART_DEF_UNIT_EA_ENGINEER',			'ART_DEF_UNIT_MEMBER_EA_ENGINEER',			1		),
 ('ART_DEF_UNIT_EA_MERCHANT',			'ART_DEF_UNIT_MEMBER_EA_MERCHANT',			1		),
 ('ART_DEF_UNIT_EA_SAGE',				'ART_DEF_UNIT_MEMBER_EA_SAGE',				1		),
@@ -180,14 +186,16 @@ INSERT INTO ArtDefine_UnitMemberInfos (Type,Scale,				Domain,	Model,							Mater
 ('ART_DEF_UNIT_MEMBER_STONESKIN_OGRE',		0.2,				'',		'stoneskin_ogre_tall.fxsxml',	'CLOTH',			'FLESH'			),
 ('ART_DEF_UNIT_MEMBER_STONESKIN_OGRE_2',	0.2,				'',		'stoneskin_ogre_short.fxsxml',	'CLOTH',			'FLESH'			),
 ('ART_DEF_UNIT_MEMBER_MAN_CHARIOT',			0.13,				'',		'Chariot_Viking.fxsxml',		'CLOTH',			'WOODSM'		),
+('ART_DEF_UNIT_MEMBER_TREE_ENT',			1,					'',		'tree.fxsxml',					'CLOTH',			'FLESH'			),
 ('ART_DEF_UNIT_MEMBER_ZOMBIE',				0.14,				'',		'zombie.fxsxml',				'CLOTH',			'FLESH'			),
-('ART_DEF_UNIT_MEMBER_GREAT_UNCLEAN_ONE',	3,					'',		'guo.fxsxml',					'CLOTH',			'FLESH'			),
+('ART_DEF_UNIT_MEMBER_GREAT_UNCLEAN_ONE',	6,					'',		'guo.fxsxml',					'CLOTH',			'FLESH'			),
 ('ART_DEF_UNIT_MEMBER_HIVE_TYRANT',			6,					'',		'hive_tyrant.fxsxml',			'CLOTH',			'FLESH'			),
 ('ART_DEF_UNIT_MEMBER_LICTOR',				6,					'',		'lictor.fxsxml',				'CLOTH',			'FLESH'			),
 ('ART_DEF_UNIT_MEMBER_HORMAGAUNT',			6,					'',		'hormagaunt.fxsxml',			'CLOTH',			'FLESH'			),
 --('ART_DEF_UNIT_MEMBER_CARNIFEX',			6,					'',		'carnifex.fxsxml',				'CLOTH',			'FLESH'			),
-('ART_DEF_UNIT_MEMBER_ANGEL_SPEARMAN',		0.15,				'',		'angel_spearman.fxsxml',		'CLOTH',			'FLESH'			);
-
+('ART_DEF_UNIT_MEMBER_ANGEL_SPEARMAN',		0.15,				'',		'angel_spearman.fxsxml',		'CLOTH',			'FLESH'			),
+('ART_DEF_UNIT_MEMBER_ANGEL',				0.35,				'',		'angel_spearman.fxsxml',		'CLOTH',			'FLESH'			);
+										-- use 0.7 for archangel
 
 INSERT INTO ArtDefine_UnitMemberCombats (UnitMemberType, DisableActions, EnableActions,																		ShortMoveRadius,	ShortMoveRate,		TargetHeight,	HasRefaceAfterCombat,	HasStationaryMelee,	ReformBeforeCombat,	RushAttackFormation	) VALUES
 ('ART_DEF_UNIT_MEMBER_WOLF',				'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8.0,			1,						NULL,				1,					''					),
@@ -198,13 +206,15 @@ INSERT INTO ArtDefine_UnitMemberCombats (UnitMemberType, DisableActions, EnableA
 ('ART_DEF_UNIT_MEMBER_STONESKIN_OGRE',		'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8.0,			1,						NULL,				1,					''					),
 ('ART_DEF_UNIT_MEMBER_STONESKIN_OGRE_2',	'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8.0,			1,						NULL,				1,					''					),
 ('ART_DEF_UNIT_MEMBER_MAN_CHARIOT',			'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk',				24.0,				0.349999994039536,	8.0,			1,						1,					2,					'DefaultCavalry'	),
+('ART_DEF_UNIT_MEMBER_TREE_ENT',			'',	'Idle Attack RunCharge Death Run Fortify CombatReady Walk AttackCharge',									12.0,				0.349999994039536,	8.0,			1,						NULL,				1,					''					),
 ('ART_DEF_UNIT_MEMBER_ZOMBIE',				'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8.0,			1,						NULL,				1,					''					),
 ('ART_DEF_UNIT_MEMBER_GREAT_UNCLEAN_ONE',	'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8.0,			1,						NULL,				1,					''					),
 ('ART_DEF_UNIT_MEMBER_HIVE_TYRANT',			'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8.0,			1,						NULL,				1,					''					),
 ('ART_DEF_UNIT_MEMBER_LICTOR',				'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8.0,			1,						NULL,				1,					''					),
 ('ART_DEF_UNIT_MEMBER_HORMAGAUNT',			'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8.0,			1,						NULL,				1,					''					),
 --('ART_DEF_UNIT_MEMBER_CARNIFEX',			'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8.0,			1,						NULL,				1,					''					),
-('ART_DEF_UNIT_MEMBER_ANGEL_SPEARMAN',		'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8.0,			1,						NULL,				1,					''					);
+('ART_DEF_UNIT_MEMBER_ANGEL_SPEARMAN',		'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8.0,			1,						NULL,				1,					''					),
+('ART_DEF_UNIT_MEMBER_ANGEL',				'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8.0,			1,						NULL,				1,					''					);
 
 
 INSERT INTO ArtDefine_UnitMemberCombatWeapons(UnitMemberType,	"Index",	SubIndex,	"ID",	WeaponTypeTag,		WeaponTypeSoundOverrideTag,	VisKillStrengthMin,	VisKillStrengthMax,	MissTargetSlopRadius,	HitEffect	) VALUES
@@ -224,6 +234,8 @@ INSERT INTO ArtDefine_UnitMemberCombatWeapons(UnitMemberType,	"Index",	SubIndex,
 ('ART_DEF_UNIT_MEMBER_STONESKIN_OGRE_2',						1,			0,			'',		'FLAMING_ARROW',	'',							10.0,				20.0,				10.0,					''			),
 ('ART_DEF_UNIT_MEMBER_MAN_CHARIOT',								0,			0,			'',		'METAL',			'SWORD',					NULL,				NULL,				NULL,					''			),
 ('ART_DEF_UNIT_MEMBER_MAN_CHARIOT',								1,			0,			'',		'FLAMING_ARROW',	'',							10.0,				20.0,				10.0,					''			),
+('ART_DEF_UNIT_MEMBER_TREE_ENT',								0,			0,			'',		'METAL',			'SPEAR',					NULL,				NULL,				NULL,					''			),
+('ART_DEF_UNIT_MEMBER_TREE_ENT',								1,			0,			'',		'FLAMING_ARROW',	'',							10.0,				20.0,				10.0,					''			),
 ('ART_DEF_UNIT_MEMBER_ZOMBIE',									0,			0,			'',		'METAL',			'SPEAR',					NULL,				NULL,				NULL,					''			),
 ('ART_DEF_UNIT_MEMBER_ZOMBIE',									1,			0,			'',		'FLAMING_ARROW',	'',							10.0,				20.0,				10.0,					''			),
 ('ART_DEF_UNIT_MEMBER_GREAT_UNCLEAN_ONE',						0,			0,			'',		'METAL',			'SPEAR',					NULL,				NULL,				NULL,					''			),
@@ -237,7 +249,9 @@ INSERT INTO ArtDefine_UnitMemberCombatWeapons(UnitMemberType,	"Index",	SubIndex,
 --('ART_DEF_UNIT_MEMBER_CARNIFEX',								0,			0,			'',		'METAL',			'SPEAR',					NULL,				NULL,				NULL,					''			),
 --('ART_DEF_UNIT_MEMBER_CARNIFEX',								1,			0,			'',		'FLAMING_ARROW',	'',							10.0,				20.0,				10.0,					''			),
 ('ART_DEF_UNIT_MEMBER_ANGEL_SPEARMAN',							0,			0,			'',		'METAL',			'SPEAR',					NULL,				NULL,				NULL,					''			),
-('ART_DEF_UNIT_MEMBER_ANGEL_SPEARMAN',							1,			0,			'',		'FLAMING_ARROW',	'',							10.0,				20.0,				10.0,					''			);
+('ART_DEF_UNIT_MEMBER_ANGEL_SPEARMAN',							1,			0,			'',		'FLAMING_ARROW',	'',							10.0,				20.0,				10.0,					''			),
+('ART_DEF_UNIT_MEMBER_ANGEL',									0,			0,			'',		'METAL',			'SPEAR',					NULL,				NULL,				NULL,					''			),
+('ART_DEF_UNIT_MEMBER_ANGEL',									1,			0,			'',		'FLAMING_ARROW',	'',							10.0,				20.0,				10.0,					''			);
 
 
 

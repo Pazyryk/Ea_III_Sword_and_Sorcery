@@ -487,12 +487,14 @@ function AddSmallButtonsToTechButton( thisTechButtonInstance, tech, maxSmallButt
 	local arcaneToolTip
 	local divineToolTip
 	for spellInfo in GameInfo.EaActions(spellSQL) do
-		if spellInfo.SpellClass == "Arcane" then
+		local spellClass = spellInfo.SpellClass
+		if spellClass == "Arcane" or spellClass == "Both" then
 			if not arcaneToolTip then
 				arcaneToolTip = "Can learn Arcane Spells:"
 			end
 			arcaneToolTip = arcaneToolTip .. "[NEWLINE][ICON_BULLET][COLOR_POSITIVE_TEXT]" .. Locale.Lookup(spellInfo.Description) .. "[ENDCOLOR] " .. Locale.Lookup(spellInfo.Help)
-		elseif spellInfo.SpellClass == "Divine" then
+		end
+		if spellClass == "Divine" or spellClass == "Both" then
 			if not divineToolTip then
 				divineToolTip = "Can learn Divine Spells:"
 			end

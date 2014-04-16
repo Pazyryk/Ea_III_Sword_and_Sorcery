@@ -155,30 +155,32 @@ INSERT INTO Units (Type,		PrereqTech,					Cost,	Combat,	RangedCombat,	Range,	Mov
 
 --Barb Only
 INSERT INTO Units (Type,		PrereqTech,					Cost,	Combat,	RangedCombat,	Range,	Moves,	CombatClass,				Domain,			DefaultUnitAI,			Pillage,	MilitarySupport,	MilitaryProduction,	ObsoleteTech,		Mechanized,	UnitArtInfo,							IconAtlas,					PortraitIndex,	UnitFlagAtlas,					UnitFlagIconOffset,	MoveRate,		EaNoTrain	) VALUES
-('UNIT_GALLEYS_PIRATES',		NULL,						180,	9,		0,				0,		3,		'UNITCOMBAT_NAVALMELEE',	'DOMAIN_SEA',	'UNITAI_ATTACK_SEA',	1,			1,					1,					NULL,				1,			'ART_DEF_UNIT_BARBARIAN_GALLEY',		'UNIT_ATLAS_1',				23,				'UNIT_FLAG_ATLAS',				23,					'WOODEN_BOAT',	1			),
-('UNIT_WARRIORS_BARB',			NULL,						140,	7,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			1,					1,					NULL,				0,			'ART_DEF_UNIT_BARBARIAN_EURO',			'UNIT_ATLAS_1',				25,				'UNIT_FLAG_ATLAS',				3,					'BIPED',		1			),
-('UNIT_LIGHT_INFANTRY_BARB',	NULL,						180,	9,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			1,					1,					NULL,				0,			'ART_DEF_UNIT_BARBARIAN_SPEARMAN',		'UNIT_ATLAS_1',				9,				'UNIT_FLAG_ATLAS',				9,					'BIPED',		1			),
-('UNIT_MEDIUM_INFANTRY_BARB',	NULL,						240,	12,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			1,					1,					NULL,				0,			'ART_DEF_UNIT_BARBARIAN_SWORDSMAN',		'UNIT_ATLAS_1',				14,				'UNIT_FLAG_ATLAS',				14,					'HEAVY_BIPED',	1			),
-('UNIT_ARCHERS_BARB',			NULL,						180,	8,		8,				1,		2,		'UNITCOMBAT_ARCHER',		'DOMAIN_LAND',	'UNITAI_RANGED',		1,			1,					1,					NULL,				0,			'ART_DEF_UNIT_BARBARIAN_ARCHER',		'UNIT_ATLAS_1',				6,				'UNIT_FLAG_ATLAS',				6,					'BIPED',		1			),
-('UNIT_AXMAN_BARB',				NULL,						180,	8,		8,				1,		2,		'UNITCOMBAT_ARCHER',		'DOMAIN_LAND',	'UNITAI_RANGED',		1,			1,					1,					NULL,				0,			'ART_DEF_UNIT_HAND_AXE_BARBARIAN',		'EXPANSION2_UNIT_ATLAS',	9,				'EXPANSION2_UNIT_FLAG_ATLAS',	9,					'BIPED',		1			),
-('UNIT_OGRES',					NULL,						300,	15,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			1,					1,					NULL,				0,			'ART_DEF_UNIT_STONESKIN_OGRE',			'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1			),
-('UNIT_HOBGOBLINS',				NULL,						240,	12,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			1,					1,					NULL,				0,			'ART_DEF_UNIT_OGRE',					'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1			);
+('UNIT_GALLEYS_PIRATES',		NULL,						-1,		9,		0,				0,		3,		'UNITCOMBAT_NAVALMELEE',	'DOMAIN_SEA',	'UNITAI_ATTACK_SEA',	1,			1,					1,					NULL,				1,			'ART_DEF_UNIT_BARBARIAN_GALLEY',		'UNIT_ATLAS_1',				23,				'UNIT_FLAG_ATLAS',				23,					'WOODEN_BOAT',	1			),
+('UNIT_WARRIORS_BARB',			NULL,						-1,		7,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			1,					1,					NULL,				0,			'ART_DEF_UNIT_BARBARIAN_EURO',			'UNIT_ATLAS_1',				25,				'UNIT_FLAG_ATLAS',				3,					'BIPED',		1			),
+('UNIT_LIGHT_INFANTRY_BARB',	NULL,						-1,		9,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			1,					1,					NULL,				0,			'ART_DEF_UNIT_BARBARIAN_SPEARMAN',		'UNIT_ATLAS_1',				9,				'UNIT_FLAG_ATLAS',				9,					'BIPED',		1			),
+('UNIT_MEDIUM_INFANTRY_BARB',	NULL,						-1,		12,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			1,					1,					NULL,				0,			'ART_DEF_UNIT_BARBARIAN_SWORDSMAN',		'UNIT_ATLAS_1',				14,				'UNIT_FLAG_ATLAS',				14,					'HEAVY_BIPED',	1			),
+('UNIT_ARCHERS_BARB',			NULL,						-1,		8,		8,				1,		2,		'UNITCOMBAT_ARCHER',		'DOMAIN_LAND',	'UNITAI_RANGED',		1,			1,					1,					NULL,				0,			'ART_DEF_UNIT_BARBARIAN_ARCHER',		'UNIT_ATLAS_1',				6,				'UNIT_FLAG_ATLAS',				6,					'BIPED',		1			),
+('UNIT_AXMAN_BARB',				NULL,						-1,		8,		8,				1,		2,		'UNITCOMBAT_ARCHER',		'DOMAIN_LAND',	'UNITAI_RANGED',		1,			1,					1,					NULL,				0,			'ART_DEF_UNIT_HAND_AXE_BARBARIAN',		'EXPANSION2_UNIT_ATLAS',	9,				'EXPANSION2_UNIT_FLAG_ATLAS',	9,					'BIPED',		1			),
+('UNIT_OGRES',					NULL,						-1,		15,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			1,					1,					NULL,				0,			'ART_DEF_UNIT_STONESKIN_OGRE',			'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1			),
+('UNIT_HOBGOBLINS',				NULL,						-1,		12,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			1,					1,					NULL,				0,			'ART_DEF_UNIT_OGRE',					'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1			);
 
 --Animals and Beasts
 INSERT INTO Units (Type,		PrereqTech,					Cost,	Combat,	RangedCombat,	Range,	Moves,	CombatClass,				Domain,			DefaultUnitAI,			Pillage,	MilitarySupport,	MilitaryProduction,	ObsoleteTech,		Mechanized,	UnitArtInfo,							IconAtlas,					PortraitIndex,	UnitFlagAtlas,					UnitFlagIconOffset,	MoveRate,		EaNoTrain,	EaSpecial	) VALUES
-('UNIT_WOLVES',					NULL,						180,	6,		0,				0,		4,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		0,			0,					1,					NULL,				0,			'ART_DEF_UNIT_WOLVES',					'UNIT_ATLAS_1',				4,				'UNIT_FLAG_ATLAS',				4,					'BIPED',		1,			'Animal'	),
-('UNIT_LIONS',					NULL,						180,	9,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		0,			0,					1,					NULL,				0,			'ART_DEF_UNIT_LIONS',					'UNIT_ATLAS_1',				4,				'UNIT_FLAG_ATLAS',				4,					'BIPED',		1,			'Animal'	),
-('UNIT_GIANT_SPIDER',			NULL,						180,	9,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		0,			0,					1,					NULL,				0,			'ART_DEF_UNIT_GIANT_SPIDER',			'UNIT_ATLAS_1',				4,				'UNIT_FLAG_ATLAS',				4,					'BIPED',		1,			'Beast'		);
+('UNIT_WOLVES',					NULL,						-1,		6,		0,				0,		4,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		0,			0,					1,					NULL,				0,			'ART_DEF_UNIT_WOLVES',					'UNIT_ATLAS_1',				4,				'UNIT_FLAG_ATLAS',				4,					'BIPED',		1,			'Animal'	),
+('UNIT_LIONS',					NULL,						-1,		9,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		0,			0,					1,					NULL,				0,			'ART_DEF_UNIT_LIONS',					'UNIT_ATLAS_1',				4,				'UNIT_FLAG_ATLAS',				4,					'BIPED',		1,			'Animal'	),
+('UNIT_GIANT_SPIDER',			NULL,						-1,		9,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		0,			0,					1,					NULL,				0,			'ART_DEF_UNIT_GIANT_SPIDER',			'UNIT_ATLAS_1',				4,				'UNIT_FLAG_ATLAS',				4,					'BIPED',		1,			'Beast'		);
 
 --Summoned, called or raised
 INSERT INTO Units (Type,		PrereqTech,					Cost,	Combat,	RangedCombat,	Range,	Moves,	CombatClass,				Domain,			DefaultUnitAI,			Pillage,	MilitarySupport,	MilitaryProduction,	ObsoleteTech,		Mechanized,	UnitArtInfo,							IconAtlas,					PortraitIndex,	UnitFlagAtlas,					UnitFlagIconOffset,	MoveRate,		EaNoTrain,	EaSpecial	) VALUES
-('UNIT_ZOMBIE',					NULL,						180,	9,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_ZOMBIE',					'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'Undead'	),
-('UNIT_GREAT_UNCLEAN_ONE',		NULL,						180,	21,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_GREAT_UNCLEAN_ONE',		'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'Demon'		),
-('UNIT_HIVE_TYRANT',			NULL,						180,	15,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_HIVE_TYRANT',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'Demon'		),
-('UNIT_LICTOR',					NULL,						180,	12,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_LICTOR',					'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'Demon'		),
-('UNIT_HORMAGAUNT',				NULL,						180,	8,		0,				0,		3,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_HORMAGAUNT',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'Demon'		),
---('UNIT_CARNIFEX',				NULL,						180,	12,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_CARNIFEX',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'Demon'		),
-('UNIT_ANGEL_SPEARMAN',			NULL,						180,	12,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_ANGEL_SPEARMAN',			'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'Angel'		);
+('UNIT_TREE_ENT',				NULL,						-1,		15,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_TREE_ENT',				'UNIT_ATLAS_1',				4,				'UNIT_FLAG_ATLAS',				4,					'BIPED',		1,			'Tree'		),
+('UNIT_ZOMBIES',				NULL,						-1,		9,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_ZOMBIE',					'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'Undead'	),
+('UNIT_GREAT_UNCLEAN_ONE',		NULL,						-1,		24,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_GREAT_UNCLEAN_ONE',		'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'Demon'		),
+('UNIT_HIVE_TYRANT',			NULL,						-1,		15,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_HIVE_TYRANT',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'Demon'		),
+('UNIT_LICTOR',					NULL,						-1,		12,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_LICTOR',					'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'Demon'		),
+('UNIT_HORMAGAUNT',				NULL,						-1,		8,		0,				0,		3,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_HORMAGAUNT',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'Demon'		),
+--('UNIT_CARNIFEX',				NULL,						-1,		12,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_CARNIFEX',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'Demon'		),
+('UNIT_ANGEL_SPEARMAN',			NULL,						-1,		12,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_ANGEL_SPEARMAN',			'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'Angel'		),
+('UNIT_ANGEL',					NULL,						-1,		18,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_ANGEL',					'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'Angel'		);
 
 
 
@@ -362,7 +364,6 @@ SELECT 'UNIT_GALLEYS_PIRATES', 'UNITAI_ATTACK_SEA' UNION ALL	--melee ship only
 SELECT 'UNIT_GALLEYS_PIRATES', 'UNITAI_RESERVE_SEA' UNION ALL
 SELECT 'UNIT_GALLEYS_PIRATES', 'UNITAI_ESCORT_SEA' UNION ALL
 SELECT 'UNIT_GALLEYS_PIRATES', 'UNITAI_EXPLORE_SEA' UNION ALL
-
 SELECT 'UNIT_WARRIORS_BARB', 'UNITAI_ATTACK' UNION ALL
 SELECT 'UNIT_WARRIORS_BARB', 'UNITAI_DEFENSE' UNION ALL
 SELECT 'UNIT_LIGHT_INFANTRY_BARB', 'UNITAI_ATTACK' UNION ALL
@@ -370,10 +371,26 @@ SELECT 'UNIT_LIGHT_INFANTRY_BARB', 'UNITAI_DEFENSE' UNION ALL
 SELECT 'UNIT_MEDIUM_INFANTRY_BARB', 'UNITAI_ATTACK' UNION ALL
 SELECT 'UNIT_MEDIUM_INFANTRY_BARB', 'UNITAI_DEFENSE' UNION ALL
 SELECT 'UNIT_ARCHERS_BARB', 'UNITAI_RANGED' UNION ALL
+SELECT 'UNIT_AXMAN_BARB', 'UNITAI_RANGED' UNION ALL
 SELECT 'UNIT_OGRES', 'UNITAI_ATTACK' UNION ALL
 SELECT 'UNIT_OGRES', 'UNITAI_DEFENSE' UNION ALL
 SELECT 'UNIT_HOBGOBLINS', 'UNITAI_ATTACK' UNION ALL
 SELECT 'UNIT_HOBGOBLINS', 'UNITAI_DEFENSE' UNION ALL
+
+--animals and beasts
+SELECT 'UNIT_WOLVES', 'UNITAI_ATTACK' UNION ALL
+SELECT 'UNIT_LIONS', 'UNITAI_ATTACK' UNION ALL
+SELECT 'UNIT_GIANT_SPIDER', 'UNITAI_ATTACK' UNION ALL
+
+--summoned only
+SELECT 'UNIT_TREE_ENT', 'UNITAI_ATTACK' UNION ALL
+SELECT 'UNIT_ZOMBIES', 'UNITAI_ATTACK' UNION ALL
+SELECT 'UNIT_GREAT_UNCLEAN_ONE', 'UNITAI_ATTACK' UNION ALL
+SELECT 'UNIT_HIVE_TYRANT', 'UNITAI_ATTACK' UNION ALL
+SELECT 'UNIT_LICTOR', 'UNITAI_ATTACK' UNION ALL
+SELECT 'UNIT_HORMAGAUNT', 'UNITAI_ATTACK' UNION ALL
+SELECT 'UNIT_ANGEL_SPEARMAN', 'UNITAI_ATTACK' UNION ALL
+SELECT 'UNIT_ANGEL', 'UNITAI_ATTACK' UNION ALL
 
 --civs
 SELECT 'UNIT_FISHING_BOATS', 'UNITAI_WORKER_SEA' UNION ALL	--needed?

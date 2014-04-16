@@ -97,7 +97,7 @@ end
 --------------------------------------------------------------
 
 function CalculateXPManaForAttack(unitTypeId, damage, bKill)
-	local basePower = gg_baseUnitPower[unitTypeId] or 18			--city treated as unit with power 18
+	local basePower = gg_normalizedUnitPower[unitTypeId] or 18			--city treated as unit with power 18
 	return Floor((damage + (bKill and 33 or 0)) * basePower / 18)		-- 1 pt per 2 hp for a Warriors unit; kill is worth an additional 33 hp
 end
 

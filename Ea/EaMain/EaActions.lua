@@ -94,7 +94,7 @@ local gg_playerValues =						gg_playerValues
 local gg_bToCheapToHire =					gg_bToCheapToHire
 local gg_bNormalCombatUnit =				gg_bNormalCombatUnit
 local gg_bNormalLivingCombatUnit =			gg_bNormalLivingCombatUnit
-local gg_baseUnitPower =					gg_baseUnitPower
+local gg_normalizedUnitPower =					gg_normalizedUnitPower
 
 
 --localized functions
@@ -1222,7 +1222,7 @@ function TestSpellLearnable(iPlayer, iPerson, spellID, spellClass)		--iPerson = 
 	if not SetAIValues[spellID] then return false end	--Spell hasn't really been added yet, even if in table
 	
 	local spellInfo = EaActionsInfo[spellID]
-	if spellClass and spellClass ~= spellInfo.SpellClass then return false end
+	if spellClass and spellClass ~= spellInfo.SpellClass and spellInfo.SpellClass ~= "Both" then return false end
 	--order exclusions by most common first for speed
 	if iPerson then
 		local eaPerson = gPeople[iPerson]
@@ -1230,8 +1230,6 @@ function TestSpellLearnable(iPlayer, iPerson, spellID, spellClass)		--iPerson = 
 			if eaPerson.class1 ~= "Thaumaturge" and eaPerson.class2 ~= "Thaumaturge" then return false end
 		elseif spellInfo.SpellClass == "Divine" then
 			if eaPerson.class1 ~= "Devout" and eaPerson.class2 ~= "Devout" then return false end
-		else
-			error("spellID was not Arcane or Divine ", spellID)
 		end
 		if spellInfo.PantheismCult then return false end		--TO DO: Reactivate these!
 		if eaPerson.spells[spellID] then return false end	--already known
@@ -3774,6 +3772,235 @@ end
 --Use TestTarget, SetUI, SetAIValues, Do (for 1 turn completion) and Finish (for >1 turn completion)
 
 
+-- Model "Summon" spell
+--
+
+local EA_SPELL_CONJURE_MONSTER =			GameInfoTypes.EA_SPELL_CONJURE_MONSTER
+local EA_SPELL_RAISE_DEAD =					GameInfoTypes.EA_SPELL_RAISE_DEAD
+local EA_SPELL_SUMMON_ABYSSAL_CREATURES =	GameInfoTypes.EA_SPELL_SUMMON_ABYSSAL_CREATURES
+local EA_SPELL_SUMMON_DEMON =				GameInfoTypes.EA_SPELL_SUMMON_DEMON
+local EA_SPELL_CALL_HEAVENS_GUARD =			GameInfoTypes.EA_SPELL_CALL_HEAVENS_GUARD
+local EA_SPELL_CALL_ANGEL =					GameInfoTypes.EA_SPELL_CALL_ANGEL
+local EA_SPELL_CALL_ANIMALS =				GameInfoTypes.EA_SPELL_CALL_ANIMALS
+local EA_SPELL_CALL_TREE_ENTS =				GameInfoTypes.EA_SPELL_CALL_TREE_ENTS
+
+local monsters = {GameInfoTypes.UNIT_GIANT_SPIDER}
+local undead = {GameInfoTypes.UNIT_ZOMBIES}
+local abyssalCreatures = {GameInfoTypes.UNIT_HORMAGAUNT}
+local demons = {GameInfoTypes.UNIT_LICTOR, GameInfoTypes.UNIT_HIVE_TYRANT}	--weakest first
+local heavensGuard = {GameInfoTypes.UNIT_ANGEL_SPEARMAN}
+local angels = {GameInfoTypes.UNIT_ANGEL}
+local animals = {GameInfoTypes.UNIT_WOLVES, GameInfoTypes.UNIT_LIONS}	--weakest first
+local treeEnts = {GameInfoTypes.UNIT_TREE_ENT}
+
+
+local function ModelSummon_TestTarget()
+	if g_faith < g_modSpell then
+		g_testTargetSwitch = 1
+		return false
+	end
+
+	local unitTable, numUnits
+	local bLimitOneOnly = false
+	g_int1 = g_eaAction.ID
+	if g_int1 == EA_SPELL_CONJURE_MONSTER then
+		unitTable = monsters
+		numUnits = 1
+		bLimitOneOnly = true
+	elseif g_int1 == EA_SPELL_RAISE_DEAD then
+		unitTable = undead
+		numUnits = 1
+	elseif g_int1 == EA_SPELL_SUMMON_ABYSSAL_CREATURES then
+		unitTable = abyssalCreatures
+		numUnits = 1
+	elseif g_int1 == EA_SPELL_SUMMON_DEMON then
+		unitTable = demons
+		numUnits = 2
+		bLimitOneOnly = true
+	elseif g_int1 == EA_SPELL_CALL_HEAVENS_GUARD then
+		unitTable = heavensGuard
+		numUnits = 1
+	elseif g_int1 == EA_SPELL_CALL_ANGEL then
+		unitTable = angels
+		numUnits = 1
+		bLimitOneOnly = true
+	elseif g_int1 == EA_SPELL_CALL_ANIMALS then
+		unitTable = animals
+		numUnits = 2
+	elseif g_int1 == EA_SPELL_CALL_TREE_ENTS then
+		unitTable = treeEnts
+		numUnits = 1
+	end
+
+	--make our unit list here so we can share it with UI and AI
+	g_count = 0		--number units can summon
+	g_value = 0		--cumulative power of newly summoned units
+	local remainingMod = g_modSpell
+	local summonedUnits = g_eaPerson.summonedUnits
+	local bHasSummonedUnit = false
+	if summonedUnits then
+		for iUnit, unitTypeID in pairs(summonedUnits) do
+			for i = 1, numUnits do
+				if unitTypeID == unitTable[i] then
+					if bLimitOneOnly then
+						g_testTargetSwitch = 2
+						return false
+					end
+					bHasSummonedUnit = true		--if can't now, it's because there are already summoned units
+					remainingMod = remainingMod - gg_normalizedUnitPower[unitTypeID]
+				end
+			end
+		end
+	end
+	local weakestUnitPower = gg_normalizedUnitPower[unitTable[1] ]
+	local i = numUnits		--start at strongest unit and work through backwards
+	while weakestUnitPower < remainingMod do
+		local unitTypeID = unitTable[i]
+		local power = gg_normalizedUnitPower[unitTypeID]
+		if power < remainingMod then	--add to list
+			g_count = g_count + 1
+			g_integers[g_count] = unitTypeID
+			g_value = g_value + power
+			if bLimitOneOnly then return true end	--done!
+			remainingMod = remainingMod - power
+		end
+		i = i < 2 and i + numUnits - 1 or i - 1
+	end
+	if g_count == 0 then
+		if bHasSummonedUnit then
+			g_testTargetSwitch = 3
+			return false
+		else
+			g_testTargetSwitch = 4
+			g_int2 = weakestUnitPower
+			return false
+		end
+	end
+	return true
+end
+
+local function ModelSummon_SetUI()
+	if g_bNonTargetTestsPassed then		--has spell so show it
+		MapModData.bShow = true
+		--text for different spells
+		local verb, verbCap, unitStr, unitPlurStr
+		if g_int1 == EA_SPELL_CONJURE_MONSTER then
+			verb, verbCap, unitStr, unitPlurStr = "conjure", "Conjure", "monster", "monsters"
+		elseif g_int1 == EA_SPELL_RAISE_DEAD then
+			verb, verbCap, unitStr, unitPlurStr = "raise", "Raise", "undead", "undead"
+		elseif g_int1 == EA_SPELL_SUMMON_ABYSSAL_CREATURES then
+			verb, verbCap, unitStr, unitPlurStr = "summon", "Summon", "Abyssal Creatures", "Abyssal Creatures"
+		elseif g_int1 == EA_SPELL_SUMMON_DEMON then
+			verb, verbCap, unitStr, unitPlurStr = "summon", "Summon", "Demon", "Demons"
+		elseif g_int1 == EA_SPELL_CALL_HEAVENS_GUARD then
+			verb, verbCap, unitStr, unitPlurStr = "call", "Call", "Heaven's Guard", "Heaven's Guard"
+		elseif g_int1 == EA_SPELL_CALL_ANGEL then
+			verb, verbCap, unitStr, unitPlurStr = "call", "Call", "Angel", "Angels"
+		elseif g_int1 == EA_SPELL_CALL_ANIMALS then
+			verb, verbCap, unitStr, unitPlurStr = "call", "Call", "animals", "animals"
+		elseif g_int1 == EA_SPELL_CALL_TREE_ENTS then
+			verb, verbCap, unitStr, unitPlurStr = "call", "Call", "Tree-Ent", "Tree-Ents"
+		end
+
+		if g_bAllTestsPassed then
+			--count demon types for UI
+			local unitCounts = {}	--index by unitTypeID
+			for i = 1, g_count do
+				local unitTypeID = g_integers[i]
+				unitCounts[unitTypeID] = (unitCounts[unitTypeID] or 0) + 1
+			end
+			local str
+			for unitTypeID, number in pairs(unitCounts) do
+				str = str and "; " or ""
+				local name = Locale.Lookup(GameInfo.Units[minorDemons[i] ].Description)	--TO DO: plural cases
+				str = str .. unitTypeCounts[i] .. " " .. name
+			end
+			MapModData.text = verbCap .. " " .. str
+		elseif g_testTargetSwitch == 1 then
+			MapModData.text = "Not enough mana to cast this spell"
+		elseif g_testTargetSwitch == 2 then
+			MapModData.text = "You can only " .. verb .. " one unit with this spell"
+		elseif g_testTargetSwitch == 3 then
+			MapModData.text = "Not enough mana to " .. verb .. " additional " .. unitPlurStr
+		else
+			MapModData.text = "Your current spell modifier (" .. g_modSpell .. ") is insufficient to " .. verb .. " any " .. unitStr .. " (power: " .. g_int2 .. ")"
+		end
+	end
+end
+
+local function ModelSummon_SetAIValues()
+	gg_aiOptionValues.i = g_value		--AI should always want this maxed out
+end
+
+local function ModelSummon_Finish()
+	g_eaPerson.summonedUnits = g_eaPerson.summonedUnits or {}
+	local summonedUnits = g_eaPerson.summonedUnits
+	local bOverStacked = false
+	for i = 1, g_count do
+		local unitTypeID = g_integers[i]
+		local newUnit = g_player:InitUnit(unitTypeID, g_x, g_y)
+		local iUnit = newUnit:GetID()
+		summonedUnits[iUnit] = unitTypeID
+		newUnit:SetSummonerIndex(g_iPerson)
+		if bOverStacked then
+			newUnit:JumpToNearestValidPlot()
+		elseif g_plot:GetNumFriendlyUnitsOfType(newUnit) > 1 then
+			bOverStacked = true
+			newUnit:JumpToNearestValidPlot()
+		end
+	end
+	UseManaOrDivineFavor(g_iPlayer, g_iPerson, g_value, false)
+end
+
+--EA_SPELL_CONJURE_MONSTER
+TestTarget[GameInfoTypes.EA_SPELL_CONJURE_MONSTER] = ModelSummon_TestTarget
+SetUI[GameInfoTypes.EA_SPELL_CONJURE_MONSTER] = ModelSummon_SetUI
+SetAIValues[GameInfoTypes.EA_SPELL_CONJURE_MONSTER] = ModelSummon_SetAIValues
+Finish[GameInfoTypes.EA_SPELL_CONJURE_MONSTER] = ModelSummon_Finish
+
+--EA_SPELL_RAISE_DEAD
+TestTarget[GameInfoTypes.EA_SPELL_RAISE_DEAD] = ModelSummon_TestTarget
+SetUI[GameInfoTypes.EA_SPELL_RAISE_DEAD] = ModelSummon_SetUI
+SetAIValues[GameInfoTypes.EA_SPELL_RAISE_DEAD] = ModelSummon_SetAIValues
+Finish[GameInfoTypes.EA_SPELL_RAISE_DEAD] = ModelSummon_Finish
+
+--EA_SPELL_SUMMON_ABYSSAL_CREATURES
+TestTarget[GameInfoTypes.EA_SPELL_SUMMON_ABYSSAL_CREATURES] = ModelSummon_TestTarget
+SetUI[GameInfoTypes.EA_SPELL_SUMMON_ABYSSAL_CREATURES] = ModelSummon_SetUI
+SetAIValues[GameInfoTypes.EA_SPELL_SUMMON_ABYSSAL_CREATURES] = ModelSummon_SetAIValues
+Finish[GameInfoTypes.EA_SPELL_SUMMON_ABYSSAL_CREATURES] = ModelSummon_Finish
+
+--EA_SPELL_SUMMON_DEMON
+TestTarget[GameInfoTypes.EA_SPELL_SUMMON_DEMON] = ModelSummon_TestTarget
+SetUI[GameInfoTypes.EA_SPELL_SUMMON_DEMON] = ModelSummon_SetUI
+SetAIValues[GameInfoTypes.EA_SPELL_SUMMON_DEMON] = ModelSummon_SetAIValues
+Finish[GameInfoTypes.EA_SPELL_SUMMON_DEMON] = ModelSummon_Finish
+
+--EA_SPELL_CALL_HEAVENS_GUARD
+TestTarget[GameInfoTypes.EA_SPELL_CALL_HEAVENS_GUARD] = ModelSummon_TestTarget
+SetUI[GameInfoTypes.EA_SPELL_CALL_HEAVENS_GUARD] = ModelSummon_SetUI
+SetAIValues[GameInfoTypes.EA_SPELL_CALL_HEAVENS_GUARD] = ModelSummon_SetAIValues
+Finish[GameInfoTypes.EA_SPELL_CALL_HEAVENS_GUARD] = ModelSummon_Finish
+
+--EA_SPELL_CALL_ANGEL
+TestTarget[GameInfoTypes.EA_SPELL_CALL_ANGEL] = ModelSummon_TestTarget
+SetUI[GameInfoTypes.EA_SPELL_CALL_ANGEL] = ModelSummon_SetUI
+SetAIValues[GameInfoTypes.EA_SPELL_CALL_ANGEL] = ModelSummon_SetAIValues
+Finish[GameInfoTypes.EA_SPELL_CALL_ANGEL] = ModelSummon_Finish
+
+--EA_SPELL_CALL_ANIMALS
+TestTarget[GameInfoTypes.EA_SPELL_CALL_ANIMALS] = ModelSummon_TestTarget
+SetUI[GameInfoTypes.EA_SPELL_CALL_ANIMALS] = ModelSummon_SetUI
+SetAIValues[GameInfoTypes.EA_SPELL_CALL_ANIMALS] = ModelSummon_SetAIValues
+Finish[GameInfoTypes.EA_SPELL_CALL_ANIMALS] = ModelSummon_Finish
+
+--EA_SPELL_CALL_TREE_ENTS
+TestTarget[GameInfoTypes.EA_SPELL_CALL_TREE_ENTS] = ModelSummon_TestTarget
+SetUI[GameInfoTypes.EA_SPELL_CALL_TREE_ENTS] = ModelSummon_SetUI
+SetAIValues[GameInfoTypes.EA_SPELL_CALL_TREE_ENTS] = ModelSummon_SetAIValues
+Finish[GameInfoTypes.EA_SPELL_CALL_TREE_ENTS] = ModelSummon_Finish
+
+
 --EA_SPELL_SCRYING
 --EA_SPELL_SEEING_EYE_GLYPH
 --EA_SPELL_DETECT_GLYPHS_RUNES_WARDS
@@ -4096,120 +4323,9 @@ Do[GameInfoTypes.EA_SPELL_HEX] = function()
 	return true
 end
 
---EA_SPELL_SUMMON_MONSTER
 --EA_SPELL_TELEPORT
-
---EA_SPELL_SUMMON_MINOR_DEMONS (use this as model for other summons, raises, calls, conjures, etc.)
-local minorDemons = {GameInfoTypes.UNIT_HORMAGAUNT, GameInfoTypes.UNIT_LICTOR, GameInfoTypes.UNIT_HIVE_TYRANT}	--weakest first
-TestTarget[GameInfoTypes.EA_SPELL_SUMMON_MINOR_DEMONS] = function()
-	if g_faith < g_modSpell then
-		g_testTargetSwitch = 1
-		return false
-	end
-	--make our unit list here so we can share it with UI and AI
-	g_count = 0		--number units can summon
-	g_value = 0		--cumulative power of newly summoned units
-	local remainingMod = g_modSpell
-	local summonedUnits = g_eaPerson.summonedUnits
-	local bHasSummonedUnit = false
-	if summonedUnits then
-		for iUnit, unitTypeID in pairs(summonedUnits) do
-			for i = 1, 3 do
-				if unitTypeID == minorDemons[i] then
-					bHasSummonedUnit = true		--if can't now, it's because there are already summoned units
-					remainingMod = remainingMod - gg_baseUnitPower[unitTypeID]
-				end
-			end
-		end
-	end
-	local weakestUnitPower = gg_baseUnitPower[minorDemons[1] ]
-	local i = 3
-	while weakestUnitPower < remainingMod do
-		local unitTypeID = minorDemons[i]
-		local power = gg_baseUnitPower[unitTypeID]
-		if power < remainingMod then	--add to list
-			g_count = g_count + 1
-			g_integers[g_count] = unitTypeID
-			g_value = g_value + power
-			remainingMod = remainingMod - power
-		end
-		i = i < 2 and i + 2 or i - 1
-	end
-	if g_count == 0 then
-		if bHasSummonedUnit then
-			g_testTargetSwitch = 2
-			return false
-		else
-			g_testTargetSwitch = 3
-			g_int1 = weakestUnitPower
-			return false
-		end
-	end
-	return true
-end
-
-SetUI[GameInfoTypes.EA_SPELL_SUMMON_MINOR_DEMONS] = function()
-	if g_bNonTargetTestsPassed then		--has spell so show it
-		MapModData.bShow = true
-		if g_bAllTestsPassed then
-			--count demon types for UI
-			local unitTypeCounts = {0, 0, 0}
-			for i = 1, 3 do
-				for j = 1, g_count do
-					if minorDemons[i] == g_integers[j] then
-						unitTypeCounts[i] = unitTypeCounts[i] + 1
-					end
-				end
-			end
-			local str
-			for i = 3, 1, -1 do
-				if unitTypeCounts[i] > 0 then
-					str = str and "; " or ""
-					local name = Locale.Lookup(GameInfo.Units[minorDemons[i] ].Description)	--TO DO: plural cases
-					str = str .. unitTypeCounts[i] .. " " .. name
-				end
-			end
-			MapModData.text = "Summon " .. str
-		elseif g_testTargetSwitch == 1 then
-			MapModData.text = "Not enough mana to cast this spell"
-		elseif g_testTargetSwitch == 2 then
-			MapModData.text = "Not enough mana to summon additional demons"
-		else
-			MapModData.text = "Your current spell modifier (" .. g_modSpell .. ") is insufficient to summon even the weakest minor demon (power: " .. g_int1 .. ")"
-		end
-	end
-end
-
-SetAIValues[GameInfoTypes.EA_SPELL_SUMMON_MINOR_DEMONS] = function()
-	gg_aiOptionValues.i = g_value		--AI should always want this maxed out
-end
-
-Finish[GameInfoTypes.EA_SPELL_SUMMON_MINOR_DEMONS] = function()
-	g_eaPerson.summonedUnits = g_eaPerson.summonedUnits or {}
-	local summonedUnits = g_eaPerson.summonedUnits
-	local bOverStacked = false
-	for i = 1, g_count do
-		local unitTypeID = g_integers[i]
-		local newUnit = g_player:InitUnit(unitTypeID, g_x, g_y)
-		local iUnit = newUnit:GetID()
-		summonedUnits[iUnit] = unitTypeID
-		newUnit:SetSummonerIndex(g_iPerson)
-		if bOverStacked then
-			newUnit:JumpToNearestValidPlot()
-		elseif g_plot:GetNumFriendlyUnitsOfType(newUnit) > 1 then
-			bOverStacked = true
-			newUnit:JumpToNearestValidPlot()
-		end
-	end
-	UseManaOrDivineFavor(g_iPlayer, g_iPerson, g_value, false)
-end
-
-
-
-
 --EA_SPELL_PHASE_DOOR
 --EA_SPELL_REANIMATE_DEAD
---EA_SPELL_RAISE_DEAD
 
 
 --EA_SPELL_DEATH_RUNE			(almost a copy of EA_SPELL_EXPLOSIVE_RUNE)

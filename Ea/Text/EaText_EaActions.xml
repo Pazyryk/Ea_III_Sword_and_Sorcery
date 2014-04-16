@@ -269,14 +269,18 @@
 		<Row Tag="TXT_KEY_EA_SPELL_HEX">
 			<Text>Hex</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_SPELL_SUMMON_MONSTER">
-			<Text>Summon Monster</Text>
+		<Row Tag="TXT_KEY_EA_SPELL_SUMMON_ABYSSAL_CREATURES">
+			<Text>Summon Abyssal Creatures</Text>
+		</Row>
+		
+		<Row Tag="TXT_KEY_EA_SPELL_CONJURE_MONSTER">
+			<Text>Conjure Monster</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_TELEPORT">
 			<Text>Teleport</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_SPELL_SUMMON_MINOR_DEMONS">
-			<Text>Summon Minor Demons</Text>
+		<Row Tag="TXT_KEY_EA_SPELL_SUMMON_DEMON">
+			<Text>Summon Demon</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_PHASE_DOOR">
 			<Text>Phase Door</Text>
@@ -372,8 +376,8 @@
 		<Row Tag="TXT_KEY_EA_SPELL_CONSECRATE">
 			<Text>Consecrate</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_SPELL_CALL_MINOR_ANGEL">
-			<Text>Call Minor Angel</Text>
+		<Row Tag="TXT_KEY_EA_SPELL_CALL_HEAVENS_GUARD">
+			<Text>Call Heaven's Guard</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_RESURRECTION">
 			<Text>Resurrection</Text>
@@ -405,9 +409,6 @@
 		<Row Tag="TXT_KEY_EA_SPELL_DESECRATE">
 			<Text>Desecrate</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_SPELL_SUMMON_MINOR_DEMONS_D">
-			<Text>Summon Minor Demons</Text>
-		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_GREATER_REANIMATION">
 			<Text>Greater Reanimation</Text>
 		</Row>
@@ -415,6 +416,13 @@
 		<Row Tag="TXT_KEY_EA_SPELL_EAS_BLESSING">
 			<Text>Éa's Blessing</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_CALL_ANIMALS">
+			<Text>Call Animals</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_CALL_TREE_ENTS">
+			<Text>Call Tree-Ents</Text>
+		</Row>
+		
 		<Row Tag="TXT_KEY_EA_SPELL_BLOOM">
 			<Text>Bloom</Text>
 		</Row>

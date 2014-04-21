@@ -160,7 +160,7 @@ INSERT INTO EaActions (Type,			Description,							Help,										GPOnly,	UIType,
 --('EA_ACTION_JOIN',					'TXT_KEY_EA_ACTION_JOIN',				NULL,										1,		'Action',	NULL,			NULL,	NULL,				NULL,			18,			'UNIT_ACTION_ATLAS' ),
 ('EA_ACTION_HEAL',						'TXT_KEY_EA_ACTION_HEAL',				NULL,										1,		'Action',	'Self',			NULL,	NULL,				NULL,			40,			'UNIT_ACTION_ATLAS'	);
 
-UPDATE EaActions SET CapitalOnly = 1, DoXP = 20 WHERE Type = 'EA_ACTION_TAKE_LEADERSHIP';
+UPDATE EaActions SET CapitalOnly = 1 WHERE Type = 'EA_ACTION_TAKE_LEADERSHIP';
 UPDATE EaActions SET TurnsToComplete = 1000 WHERE Type = 'EA_ACTION_TAKE_RESIDENCE';
 UPDATE EaActions SET TurnsToComplete = 1, StayInvisible = 1 WHERE Type = 'EA_ACTION_HEAL';
 

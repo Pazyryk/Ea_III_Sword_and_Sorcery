@@ -82,7 +82,7 @@ Controls.TabButtonArcane:RegisterCallback( Mouse.eLClick, function() TabSelect("
 Controls.TabButtonDivine:RegisterCallback( Mouse.eLClick, function() TabSelect("Divine") end )
 
 function RefreshSpells(spellClass)
-	LuaEvents.EaActionsGenerateLearnableSpellList(g_iPlayer, bLearnSpell and g_iPerson, spellClass)		--call to EaActions.lua to generate learnable spell list
+	LuaEvents.EaMagicGenerateLearnableSpellList(g_iPlayer, bLearnSpell and g_iPerson, spellClass)		--call to EaActions.lua to generate learnable spell list
 	g_SpellManager:ResetInstances()
 	local numSpells = #sharedIntegerList
 	for i = 1, numSpells do

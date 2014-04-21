@@ -34,7 +34,6 @@ local LEADER_FAND =							GameInfoTypes.LEADER_FAND
 local PLOT_LAND =							PlotTypes.PLOT_LAND
 local PLOT_MOUNTAIN =						PlotTypes.PLOT_MOUNTAIN
 local PLOT_OCEAN =							PlotTypes.PLOT_OCEAN
-local POLICY_PANTHEISM =					GameInfoTypes.POLICY_PANTHEISM
 local PROMOTION_BLESSED =					GameInfoTypes.PROMOTION_BLESSED
 local PROMOTION_CURSED =					GameInfoTypes.PROMOTION_CURSED
 local PROMOTION_EVIL_EYE =					GameInfoTypes.PROMOTION_EVIL_EYE
@@ -74,8 +73,7 @@ local UNIT_SUFFIXES =						UNIT_SUFFIXES
 local NUM_UNIT_SUFFIXES =					#UNIT_SUFFIXES
 local MOD_MEMORY_HALFLIFE =					MOD_MEMORY_HALFLIFE
 
-local MAP_W, MAP_H =						Map.GetGridSize()
-local MAX_RANGE =							Map.PlotDistance(0, 0, math.floor(MAP_W / 2 + 0.5), MAP_H - 1)	--other side of world (sort of)
+local MAX_RANGE =							MAX_RANGE
 local FIRST_SPELL_ID =						FIRST_SPELL_ID
 local LAST_SPELL_ID =						LAST_SPELL_ID
 
@@ -98,16 +96,13 @@ local gg_normalizedUnitPower =					gg_normalizedUnitPower
 
 
 --localized functions
-local FindOpenTradeRoute =					FindOpenTradeRoute		--in EaTrade
-local IsLivingUnit =						IsLivingUnit
 local Floor =								math.floor
 local GetPlotByIndex =						Map.GetPlotByIndex
 local GetPlotFromXY =						Map.GetPlot
 local Distance =							Map.PlotDistance
 local Rand =								Map.Rand
-local HandleError =							HandleError
+local HandleError61 =						HandleError61
 local HandleError21 =						HandleError21
-local HandleError41 =						HandleError41
 
 
 --local functions
@@ -188,8 +183,8 @@ local g_testTargetSwitch = 0
 local g_count = 0
 local g_value = 0
 local g_int1, g_int2, g_int3, g_int4, g_int5 = 0, 0, 0, 0, 0
-local g_bool1, g_bool2, g_bool3, g_bool4, g_bool5 = false, false, false, false, false
-local g_text1, g_text2, g_text3, g_text4, g_text5 = "", "", "", "", ""
+local g_bool1 = false
+local g_text1 = ""
 local g_obj1, g_obj2
 
 local g_integers = {}
@@ -383,7 +378,7 @@ function TestEaActionForHumanUI(eaActionID, iPlayer, unit, iPerson, testX, testY
 	g_bSetDelayedFailForUI = false
 end
 --LuaEvents.EaActionsTestEaActionForHumanUI.Add(TestEaActionForHumanUI)
-LuaEvents.EaActionsTestEaActionForHumanUI.Add(function(eaActionID, iPlayer, unit, iPerson, testX, testY) return HandleError(TestEaActionForHumanUI, eaActionID, iPlayer, unit, iPerson, testX, testY) end)
+LuaEvents.EaActionsTestEaActionForHumanUI.Add(function(eaActionID, iPlayer, unit, iPerson, testX, testY) return HandleError61(TestEaActionForHumanUI, eaActionID, iPlayer, unit, iPerson, testX, testY) end)
 
 function TestEaAction(eaActionID, iPlayer, unit, iPerson, testX, testY, bAINonTargetTest)
 	--This function sets all file locals related to iPlayer and iPerson 
@@ -702,7 +697,7 @@ function TestEaActionTarget(eaActionID, testX, testY, bAITargetTest)
 		if g_city:GetNumBuilding(GameInfoTypes[g_eaAction.BuildingReq]) < 1 then return false end
 	end
 
-	g_specialEffectsPlot = g_plot	--can be changed in TestTarget
+	g_specialEffectsPlot = g_plot	--can be changed in by action specific function
 
 	--Alt unit upgrades (we can set some file locals here to pass to human UI or other specific methods; these values could be changed in specific TestTarget method)
 	if g_eaAction.UnitUpgradeTypePrefix then
@@ -798,7 +793,7 @@ function DoEaActionFromOtherState(eaActionID, iPlayer, unit, iPerson, targetX, t
 	MapModData.bSuccess = bSuccess
 
 end
-LuaEvents.EaActionsDoEaActionFromOtherState.Add(function(eaActionID, iPlayer, unit, iPerson, targetX, targetY) return HandleError(DoEaActionFromOtherState, eaActionID, iPlayer, unit, iPerson, targetX, targetY) end)
+LuaEvents.EaActionsDoEaActionFromOtherState.Add(function(eaActionID, iPlayer, unit, iPerson, targetX, targetY) return HandleError61(DoEaActionFromOtherState, eaActionID, iPlayer, unit, iPerson, targetX, targetY) end)
 
 function DoEaAction(eaActionID, iPlayer, unit, iPerson, targetX, targetY)
 	print("DoEaAction before test ", eaActionID, iPlayer, unit, iPerson, targetX, targetY)
@@ -1218,9 +1213,6 @@ function SpecialEffects()
 end
 
 function TestSpellLearnable(iPlayer, iPerson, spellID, spellClass)		--iPerson = nil to generate civ list; spellClass is optional restriction (used for separate UI panels)
-	
-	if not SetAIValues[spellID] then return false end	--Spell hasn't really been added yet, even if in table
-	
 	local spellInfo = EaActionsInfo[spellID]
 	if spellClass and spellClass ~= spellInfo.SpellClass and spellInfo.SpellClass ~= "Both" then return false end
 	--order exclusions by most common first for speed
@@ -1250,7 +1242,7 @@ function TestSpellLearnable(iPlayer, iPerson, spellID, spellClass)		--iPerson = 
 			if spellInfo.AndTechReq and not team:IsHasTech(GameInfoTypes[spellInfo.AndTechReq]) then return false end
 		end
 	end
-	if spellInfo.PantheismCult and not player:HasPolicy(POLICY_PANTHEISM) then return end		--show cult spell only if Pantheistic
+	if spellInfo.PantheismCult and not player:HasPolicy(GameInfoTypes.POLICY_PANTHEISM) then return end		--show cult spell only if Pantheistic
 	if spellInfo.ReligionNotFounded and gReligions[GameInfoTypes[spellInfo.ReligionNotFounded] ] then return false end
 	if spellInfo.ReligionFounded and not gReligions[GameInfoTypes[spellInfo.ReligionFounded] ] then return false end
 	if spellInfo.MaleficiumLearnedByAnyone and gWorld.maleficium ~= "Learned" then return false end
@@ -1267,30 +1259,7 @@ function TestSpellLearnable(iPlayer, iPerson, spellID, spellClass)		--iPerson = 
 	return true
 end
 
-MapModData.sharedIntegerList = MapModData.sharedIntegerList or {}
-local sharedIntegerList = MapModData.sharedIntegerList
-
-function GenerateLearnableSpellList(iPlayer, iPerson, spellClass)	--iPerson = nil if this is civ test only; spellClass = nil for both 
-	print("GenerateLearnableSpellList ", iPlayer, iPerson, spellClass)
-	local TestSpellLearnable = TestSpellLearnable
-	--This is used for human UI (Spell Panel)
-
-	local numSpells = 0
-	for spellID = FIRST_SPELL_ID, LAST_SPELL_ID do
-		if TestSpellLearnable(iPlayer, iPerson, spellID, spellClass) then
-			numSpells = numSpells + 1
-			sharedIntegerList[numSpells] = spellID
-		end
-	end
-
-	--trim recycled table for UI
-	for i = #sharedIntegerList, numSpells + 1, -1 do
-		sharedIntegerList[i] = nil
-	end
-end
-LuaEvents.EaActionsGenerateLearnableSpellList.Add(function(iPlayer, iPerson, spellClass) return HandleError41(GenerateLearnableSpellList, iPlayer, iPerson, spellClass) end)
-
-function SetWEAHelp(eaActionID, mod)
+local function SetWEAHelp(eaActionID, mod)
 	Dprint("SetWEAHelp ", eaActionID, mod)
 	MapModData.text = "no help text"
 	g_bAllTestsPassed = true
@@ -1303,7 +1272,6 @@ function SetWEAHelp(eaActionID, mod)
 		end
 	end
 end
---LuaEvents.EaActionsSetWEAHelp.Add(SetWEAHelp)
 LuaEvents.EaActionsSetWEAHelp.Add(function(eaActionID, mod) return HandleError21(SetWEAHelp, eaActionID, mod) end)
 
 ------------------------------------------------------------------------------------------------------------------------------
@@ -2858,7 +2826,9 @@ end
 --EA_ACTION_LAND_TRADE_ROUTE
 Test[GameInfoTypes.EA_ACTION_LAND_TRADE_ROUTE] = function()
 	--There is no test here; but we need to set g_tradeAvailableTable and gg_tradeAvailableTable
+	MapModData.bBypassOnCanCreateTradeRoute = true
 	g_tradeAvailableTable = g_player:GetTradeRoutesAvailable()
+	MapModData.bBypassOnCanCreateTradeRoute = false
 	print("Refreshing g_tradeAvailableTable from Test[GameInfoTypes.EA_ACTION_LAND_TRADE_ROUTE]")
 	local numRoutes = #g_tradeAvailableTable
 
@@ -2880,9 +2850,9 @@ TestTarget[GameInfoTypes.EA_ACTION_LAND_TRADE_ROUTE] = function()
 	g_integersPos = 0
 	for i = 1, #g_tradeAvailableTable do
 		local route = g_tradeAvailableTable[i]
-		print(g_city, route.ToCity, route.Domain, route.TurnsLeft)
-		print(g_city:GetID(), route.ToCity:GetID())
-		print(g_city:GetName(), route.ToCity:GetName())
+		--print(g_city, route.ToCity, route.Domain, route.TurnsLeft)
+		--print(g_city:GetID(), route.ToCity:GetID())
+		--print(g_city:GetName(), route.ToCity:GetName())
 		if route.ToCity == g_city and route.Domain == DOMAIN_LAND then
 			if route.TurnsLeft == -1 then
 				local fromCity = route.FromCity
@@ -2958,7 +2928,8 @@ SetAIValues[GameInfoTypes.EA_ACTION_LAND_TRADE_ROUTE] = function()
 end
 
 Finish[GameInfoTypes.EA_ACTION_LAND_TRADE_ROUTE] = function()
-	--human pops UI to choose FromCity
+
+	--TO DO: human pops UI to choose FromCity
 
 	--AI logic for now
 	local bestRoute
@@ -2979,15 +2950,15 @@ Finish[GameInfoTypes.EA_ACTION_LAND_TRADE_ROUTE] = function()
 		print("!!!Warning: trade rounte missmatch ", g_x, toX, g_y, toY)
 	end
 
+	--open route in eaCity object
+	local fromCityPlot = fromCity:Plot()
+	local fromEaCity = gCities[fromCityPlot:GetPlotIndex()]
+	fromEaCity.openLandTradeRoutes[g_iPlot] = bestRoute.ToID		--open route associated with particular eaCity and iPlayer (still there if city conquered and recaptured)
+
+	--free caravan starts the route
+	g_specialEffectsPlot = fromCityPlot
 	local unit = g_player:InitUnit(GameInfoTypes.UNIT_CARAVAN, fromCity:GetX(), fromCity:GetY())
 	unit:PushMission(MissionTypes.MISSION_ESTABLISH_TRADE_ROUTE, g_iPlot, 0, 0, 0, 1)
-
-	--open route in eaCity object
-	local fromCityPlotIndex = fromCity:Plot():GetPlotIndex()
-	local fromEaCity = gCities[fromCityPlotIndex]		
-
-	fromEaCity.openLandTradeRoutes[g_iPlot] = bestRoute.ToID		--open route associated with particular eaCity and iPlayer (still there if city conquered and recaptured)
-	EaTradeDataDirty()
 	return true
 end
 
@@ -2995,7 +2966,9 @@ end
 --EA_ACTION_SEA_TRADE_ROUTE
 Test[GameInfoTypes.EA_ACTION_SEA_TRADE_ROUTE] = function()
 	--There is no test here; but we need to set g_tradeAvailableTable and gg_tradeAvailableTable
+	MapModData.bBypassOnCanCreateTradeRoute = true
 	g_tradeAvailableTable = g_player:GetTradeRoutesAvailable()
+	MapModData.bBypassOnCanCreateTradeRoute = false
 	print("Refreshing g_tradeAvailableTable from Test[GameInfoTypes.EA_ACTION_SEA_TRADE_ROUTE]")
 	local numRoutes = #g_tradeAvailableTable
 
@@ -3116,15 +3089,15 @@ Finish[GameInfoTypes.EA_ACTION_SEA_TRADE_ROUTE] = function()
 		print("!!!Warning: trade rounte missmatch ", g_x, toX, g_y, toY)
 	end
 
+	--open route in eaCity object
+	local fromCityPlot = fromCity:Plot()
+	local fromEaCity = gCities[fromCityPlot:GetPlotIndex()]
+	fromEaCity.openSeaTradeRoutes[g_iPlot] = bestRoute.ToID		--open route associated with particular eaCity and iPlayer (still there if city conquered and recaptured)
+	
+	--free cargo ship starts the route
+	g_specialEffectsPlot = fromCityPlot
 	local unit = g_player:InitUnit(GameInfoTypes.UNIT_CARGO_SHIP, fromCity:GetX(), fromCity:GetY())
 	unit:PushMission(MissionTypes.MISSION_ESTABLISH_TRADE_ROUTE, g_iPlot, 2, 0, 0, 1)				--2nd arg?
-
-	--open route in eaCity object
-	local fromCityPlotIndex = fromCity:Plot():GetPlotIndex()
-	local fromEaCity = gCities[fromCityPlotIndex]		
-
-	fromEaCity.openSeaTradeRoutes[g_iPlot] = bestRoute.ToID		--open route associated with particular eaCity and iPlayer (still there if city conquered and recaptured)
-	EaTradeDataDirty()
 	return true
 end
 

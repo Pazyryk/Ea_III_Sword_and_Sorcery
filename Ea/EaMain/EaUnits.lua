@@ -778,6 +778,7 @@ UseUnit[GameInfoTypes.UNIT_HUNTERS] = function(iPlayer, unit)
 	unit:Kill(true, -1)		--remove unit
 end
 
+--[[
 UseAIUnit[GameInfoTypes.UNIT_CARAVAN] = function(iPlayer, unit)
 	--happens when AI route expires
 	--need logic to cance
@@ -808,6 +809,7 @@ UseAIUnit[GameInfoTypes.UNIT_CARGO_SHIP] = function(iPlayer, unit)
 
 
 end
+]]
 
 RemoveOwnedFishingResourcePlot = function(iPlot, iOwnerPlayer, iOwnerCity)
 	for iPlayer in pairs(realCivs) do
@@ -889,7 +891,7 @@ end
 SustainedPromotionDo[GameInfoTypes.PROMOTION_HEX] = function(player, unit, iCaster)
 	local eaPerson = gPeople[iCaster]
 	if not eaPerson then return false end	--caster died
-	local mod = GetGPMod(iPerson, EAMOD_CONJURATION, nil)
+	local mod = GetGPMod(iCaster, EAMOD_CONJURATION, nil)
 	if Rand(mod, "hello") == 0 then return false end	--1/mod chance to wear off each turn
 	return UseManaOrDivineFavor(eaPerson.iPlayer, iCaster, 1)		--wear off if caster has no more mana or divine favor
 end
@@ -897,7 +899,7 @@ end
 SustainedPromotionDo[GameInfoTypes.PROMOTION_BLESSED] = function(player, unit, iCaster)
 	local eaPerson = gPeople[iCaster]
 	if not eaPerson then return false end	--caster died
-	local mod = GetGPMod(iPerson, EAMOD_DEVOTION, EAMOD_EVOCATION)
+	local mod = GetGPMod(iCaster, EAMOD_DEVOTION, EAMOD_EVOCATION)
 	if Rand(mod, "hello") == 0 then return false end	--1/mod chance to wear off each turn
 	return UseManaOrDivineFavor(eaPerson.iPlayer, iCaster, 1)		--wear off if caster has no more mana or divine favor
 end
@@ -905,7 +907,7 @@ end
 SustainedPromotionDo[GameInfoTypes.PROMOTION_PROTECTION_FROM_EVIL] = function(player, unit, iCaster)
 	local eaPerson = gPeople[iCaster]
 	if not eaPerson then return false end	--caster died
-	local mod = GetGPMod(iPerson, EAMOD_DEVOTION, EAMOD_ABJURATION)
+	local mod = GetGPMod(iCaster, EAMOD_DEVOTION, EAMOD_ABJURATION)
 	if Rand(mod, "hello") == 0 then return false end	--1/mod chance to wear off each turn
 	return UseManaOrDivineFavor(eaPerson.iPlayer, iCaster, 1)		--wear off if caster has no more mana or divine favor
 end
@@ -913,7 +915,7 @@ end
 SustainedPromotionDo[GameInfoTypes.PROMOTION_CURSED] = function(player, unit, iCaster)
 	local eaPerson = gPeople[iCaster]
 	if not eaPerson then return false end	--caster died
-	local mod = GetGPMod(iPerson, EAMOD_DEVOTION, EAMOD_ABJURATION)
+	local mod = GetGPMod(iCaster, EAMOD_DEVOTION, EAMOD_ABJURATION)
 	if Rand(mod, "hello") == 0 then return false end	--1/mod chance to wear off each turn
 	return UseManaOrDivineFavor(eaPerson.iPlayer, iCaster, 1)		--wear off if caster has no more mana or divine favor
 end
@@ -921,8 +923,9 @@ end
 SustainedPromotionDo[GameInfoTypes.PROMOTION_RIDE_LIKE_THE_WINDS] = function(player, unit, iCaster)
 	local eaPerson = gPeople[iCaster]
 	if not eaPerson then return false end	--caster died
+	local mod = GetGPMod(iCaster, EAMOD_DEVOTION, EAMOD_CONJURATION)
 	local caster = Players[eaPerson.iPlayer]:GetUnitByID(eaPerson.iUnit)
-	if eaPerson.modDevotion < Distance(caster:GetX(), caster:GetY(), unit:GetX(), unit:GetY()) then return false end
+	if mod < Distance(caster:GetX(), caster:GetY(), unit:GetX(), unit:GetY()) then return false end
 	return UseManaOrDivineFavor(eaPerson.iPlayer, iCaster, 1)
 end
 

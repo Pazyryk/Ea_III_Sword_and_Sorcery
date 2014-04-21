@@ -115,8 +115,8 @@ for promotionInfo in GameInfo.UnitPromotions() do
 	end
 end
 
-LEADER_XP = GameInfo.EaActions.EA_ACTION_TAKE_LEADERSHIP.DoXP
-
+MAP_W, MAP_H =		Map.GetGridSize()
+MAX_RANGE =			Map.PlotDistance(0, 0, math.floor(MAP_W / 2 + 0.5), MAP_H - 1)	--other side of world (sort of)
 
 ---------------------------------------------------------------
 -- Cached Tables

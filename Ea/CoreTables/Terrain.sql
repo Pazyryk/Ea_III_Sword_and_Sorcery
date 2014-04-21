@@ -450,10 +450,11 @@ INSERT INTO Improvements (Type,	Description,								Civilopedia,											ArtDe
 --wonders
 INSERT INTO Improvements (Type,	Description,								Civilopedia,											ArtDefineTag,								Water, PillageGold, Permanent,	DestroyedWhenPillaged,	EaBlightSafe,	PortraitIndex,	IconAtlas								) VALUES
 ('IMPROVEMENT_ARCANE_TOWER',	'TXT_KEY_EA_ARCANE_TOWER',					'TXT_KEY_EA_ARCANE_TOWER_PEDIA',						'ART_DEF_IMPROVEMENT_CHATEAU',				0,		10,			1,			0,						1,				2,				'TERRAIN_IMPROVEMENT_ICON_ATLAS_EXP2'	),
-('IMPROVEMENT_PYRAMID',			'TXT_KEY_EA_PYRAMID',						'TXT_KEY_EA_PYRAMID_PEDIA',								'ART_DEF_IMPROVEMENT_PYRAMID',				0,		10,			1,			0,						1,				0,				'BW_ATLAS_2'							);
+('IMPROVEMENT_PYRAMID',			'TXT_KEY_EA_PYRAMID',						'TXT_KEY_EA_PYRAMID_PEDIA',								'ART_DEF_IMPROVEMENT_PYRAMID',				0,		10,			1,			0,						1,				0,				'BW_ATLAS_2'							),
+('IMPROVEMENT_STONEHENGE',		'TXT_KEY_EA_STONEHENGE',					'TXT_KEY_EA_STONEHENGE_PEDIA',							'ART_DEF_IMPROVEMENT_STONEHENGE',			0,		10,			1,			0,						1,				2,				'BW_ATLAS_2'							);
 
 
---
+--ART_DEF_IMPROVEMENT_STONEHENGE
 
 UPDATE Improvements SET PillageGold = 0, Permanent = 1 WHERE Type IN ('IMPROVEMENT_CAMP','IMPROVEMENT_FISHING_BOATS');
 
@@ -499,7 +500,13 @@ INSERT INTO Improvement_ValidTerrains (ImprovementType, TerrainType) VALUES
 ('IMPROVEMENT_PYRAMID',			'TERRAIN_PLAINS'),
 ('IMPROVEMENT_PYRAMID',			'TERRAIN_DESERT'),
 ('IMPROVEMENT_PYRAMID',			'TERRAIN_TUNDRA'),
-('IMPROVEMENT_PYRAMID',			'TERRAIN_SNOW'	);
+('IMPROVEMENT_PYRAMID',			'TERRAIN_SNOW'	),
+
+('IMPROVEMENT_STONEHENGE',		'TERRAIN_GRASS' ),
+('IMPROVEMENT_STONEHENGE',		'TERRAIN_PLAINS'),
+('IMPROVEMENT_STONEHENGE',		'TERRAIN_DESERT'),
+('IMPROVEMENT_STONEHENGE',		'TERRAIN_TUNDRA'),
+('IMPROVEMENT_STONEHENGE',		'TERRAIN_SNOW'	);
 
 DELETE FROM Improvement_ValidFeatures;
 INSERT INTO Improvement_ValidFeatures (ImprovementType, FeatureType) VALUES

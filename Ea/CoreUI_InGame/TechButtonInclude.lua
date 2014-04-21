@@ -448,6 +448,17 @@ function AddSmallButtonsToTechButton( thisTechButtonInstance, tech, maxSmallButt
 			buttonNum = buttonNum + 1;
 		end
 	end
+
+	if tech.InternationalTradeRoutesChange > 0 then
+		local buttonName = "B"..tostring(buttonNum);
+		local thisButton = thisTechButtonInstance[buttonName];
+		if thisButton then
+			IconHookup( 0, textureSize, "GENERIC_FUNC_ATLAS", thisButton );
+			thisButton:SetHide( false );
+			thisButton:SetToolTipString( Locale.ConvertTextKey( "TXT_KEY_ADDITIONAL_INTERNATIONAL_TRADE_ROUTE" ) );
+			buttonNum = buttonNum + 1;
+		end	
+	end
 	
 	for row in GameInfo.Technology_FreePromotions(condition) do
 		local promotion = GameInfo.UnitPromotions[row.PromotionType];

@@ -36,7 +36,7 @@ function OnPopup( popupInfo )
 	elseif info.NaturalWonderHappiness == 0 then
 		yieldString = Locale.ConvertTextKey("TXT_KEY_EA_POP_NATURAL_WONDER_FOUND_NEUTRAL", info.Description)
 	else
-		yieldString = Locale.ConvertTextKey("TXT_KEY_EA_POP_NATURAL_WONDER_FOUND_BAD", info.Description, info.EaUnhappiness - 1)
+		yieldString = Locale.ConvertTextKey("TXT_KEY_EA_POP_NATURAL_WONDER_FOUND_BAD", info.Description, -info.NaturalWonderHappiness)
 	end
 	--end Paz add	
 	

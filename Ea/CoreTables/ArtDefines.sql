@@ -14,6 +14,7 @@ INSERT INTO ArtDefine_LandmarkTypes (Type,	LandmarkType,	FriendlyName) VALUES
 ('ART_DEF_RESOURCE_TIN',					'Resource',		'Copper'	),	--Paz adjusted colors
 ('ART_DEF_IMPROVEMENT_FARM_FIX',			'Improvement',	'Farm Fix'	),
 ('ART_DEF_IMPROVEMENT_PYRAMID',				'Improvement',	'Pyramids'	),
+('ART_DEF_IMPROVEMENT_STONEHENGE',			'Improvement',	'Stonehenge'),
 ('ART_DEF_IMPROVEMENT_BLIGHT',				'Improvement',	'Blight'	);
 
 INSERT INTO ArtDefine_StrategicView (StrategicViewType, TileType, Asset) VALUES
@@ -27,6 +28,7 @@ INSERT INTO ArtDefine_StrategicView (StrategicViewType, TileType, Asset) VALUES
 ('ART_DEF_RESOURCE_TIN',				'Resource',		'sv_newcopper.dds'	),
 ('ART_DEF_IMPROVEMENT_FARM_FIX',		'Improvement',	'SV_Farm.dds'		),
 ('ART_DEF_IMPROVEMENT_PYRAMID',			'Improvement',	'sv_landmark.dds'	),
+('ART_DEF_IMPROVEMENT_STONEHENGE',		'Improvement',	'sv_landmark.dds'	),
 ('ART_DEF_IMPROVEMENT_BLIGHT',			'Improvement',	'sv_uranium.dds'	);
 
 INSERT INTO ArtDefine_Landmarks (Era, State, Scale,	ImprovementType,					LayoutHandler,	ResourceType,					Model,								TerrainContour) VALUES
@@ -75,14 +77,17 @@ INSERT INTO ArtDefine_Landmarks (Era, State, Scale,	ImprovementType,					LayoutH
 --fishing on lakes
 ('Any',	'Any',					0.07000000029802322,'ART_DEF_IMPROVEMENT_FISHING_BOATS','ANIMATED',		'ART_DEF_RESOURCE_NONE',		'Fish.fxsxml',						1	),
 --Wonder improvements
-('Any', 'UnderConstruction',	1.0,  				'ART_DEF_IMPROVEMENT_PYRAMID',		'RANDOM',		'ART_DEF_RESOURCE_NONE',		'hb_pyramidsTI.fxsxml',				1	),
-('Any', 'Constructed',			1.0,  				'ART_DEF_IMPROVEMENT_PYRAMID',		'RANDOM',		'ART_DEF_RESOURCE_NONE',		'pyramidsTI.fxsxml',				1	),
-('Any', 'Pillaged',				1.0,  				'ART_DEF_IMPROVEMENT_PYRAMID',		'RANDOM',		'ART_DEF_RESOURCE_NONE',		'pl_pyramidsTI.fxsxml',				1	),
+('Any', 'UnderConstruction',	1,  				'ART_DEF_IMPROVEMENT_PYRAMID',		'RANDOM',		'ART_DEF_RESOURCE_NONE',		'hb_pyramidsTI.fxsxml',				1	),
+('Any', 'Constructed',			1,  				'ART_DEF_IMPROVEMENT_PYRAMID',		'RANDOM',		'ART_DEF_RESOURCE_NONE',		'pyramidsTI.fxsxml',				1	),
+('Any', 'Pillaged',				1,  				'ART_DEF_IMPROVEMENT_PYRAMID',		'RANDOM',		'ART_DEF_RESOURCE_NONE',		'pl_pyramidsTI.fxsxml',				1	),
+('Any', 'UnderConstruction',	1,  				'ART_DEF_IMPROVEMENT_STONEHENGE',	'RANDOM',		'ART_DEF_RESOURCE_NONE',		'hb_stonehengeTI.fxsxml',			1	),
+('Any', 'Constructed',			1,  				'ART_DEF_IMPROVEMENT_STONEHENGE',	'RANDOM',		'ART_DEF_RESOURCE_NONE',		'stonehengeTI.fxsxml',				1	),
+('Any', 'Pillaged',				1,  				'ART_DEF_IMPROVEMENT_STONEHENGE',	'RANDOM',		'ART_DEF_RESOURCE_NONE',		'pl_stonehengeTI.fxsxml',			1	),
 
 --Blight
-('Any',	'Any',					0.5,				'ART_DEF_IMPROVEMENT_BLIGHT',		'SNAPSHOT',		'ART_DEF_RESOURCE_ALL',			'feature_blight.fxsxml',			0	),
-('Any',	'Any',					0.5,				'ART_DEF_IMPROVEMENT_NONE',			'SNAPSHOT',		'ART_DEF_RESOURCE_BLIGHT',		'feature_blight.fxsxml',			0	),
-('Any',	'Any',					0.5,				'ART_DEF_IMPROVEMENT_CHATEAU',		'SNAPSHOT',		'ART_DEF_RESOURCE_BLIGHT',		'feature_blight.fxsxml',			0	);	--Arcane Tower
+('Any',	'Any',					1.45,				'ART_DEF_IMPROVEMENT_BLIGHT',		'SNAPSHOT',		'ART_DEF_RESOURCE_ALL',			'blight.fxsxml',					0	),
+('Any',	'Any',					1.45,				'ART_DEF_IMPROVEMENT_NONE',			'SNAPSHOT',		'ART_DEF_RESOURCE_BLIGHT',		'blight.fxsxml',					0	),
+('Any',	'Any',					1.45,				'ART_DEF_IMPROVEMENT_CHATEAU',		'SNAPSHOT',		'ART_DEF_RESOURCE_BLIGHT',		'blight.fxsxml',					0	);	--Arcane Tower
 
 -----------------------------------------------------------------------------------------
 -- Units
@@ -104,7 +109,8 @@ INSERT INTO ArtDefine_StrategicView(StrategicViewType, TileType, Asset) VALUES
 ('ART_DEF_UNIT_HORMAGAUNT',			'Unit',	'SV_Maori.dds'		),
 --('ART_DEF_UNIT_CARNIFEX',			'Unit',	'SV_Maori.dds'		),
 ('ART_DEF_UNIT_ANGEL_SPEARMAN',		'Unit',	'SV_Maori.dds'		),
-('ART_DEF_UNIT_ANGEL',				'Unit',	'SV_Maori.dds'		);
+('ART_DEF_UNIT_ANGEL',				'Unit',	'SV_Maori.dds'		),
+('ART_DEF_UNIT_ARCHANGEL',			'Unit',	'SV_Maori.dds'		);
 
 
 INSERT INTO ArtDefine_UnitInfos (Type,	DamageStates,	Formation) VALUES
@@ -128,6 +134,7 @@ INSERT INTO ArtDefine_UnitInfos (Type,	DamageStates,	Formation) VALUES
 --('ART_DEF_UNIT_CARNIFEX',				1,				''					),
 ('ART_DEF_UNIT_ANGEL_SPEARMAN',			1,				'Phalanx'			),
 ('ART_DEF_UNIT_ANGEL',					1,				''					),
+('ART_DEF_UNIT_ARCHANGEL',				1,				''					),
 ('ART_DEF_UNIT_EA_ENGINEER',			1,				''					),
 ('ART_DEF_UNIT_EA_MERCHANT',			1,				''					),
 ('ART_DEF_UNIT_EA_SAGE',				1,				''					),
@@ -163,6 +170,7 @@ INSERT INTO ArtDefine_UnitInfoMemberInfos (UnitInfoType,	UnitMemberInfoType,		Nu
 --('ART_DEF_UNIT_CARNIFEX',				'ART_DEF_UNIT_MEMBER_CARNIFEX',				1		),
 ('ART_DEF_UNIT_ANGEL_SPEARMAN',			'ART_DEF_UNIT_MEMBER_ANGEL_SPEARMAN',		12		),
 ('ART_DEF_UNIT_ANGEL',					'ART_DEF_UNIT_MEMBER_ANGEL',				1		),
+('ART_DEF_UNIT_ARCHANGEL',				'ART_DEF_UNIT_MEMBER_ARCHANGEL',			1		),
 ('ART_DEF_UNIT_EA_ENGINEER',			'ART_DEF_UNIT_MEMBER_EA_ENGINEER',			1		),
 ('ART_DEF_UNIT_EA_MERCHANT',			'ART_DEF_UNIT_MEMBER_EA_MERCHANT',			1		),
 ('ART_DEF_UNIT_EA_SAGE',				'ART_DEF_UNIT_MEMBER_EA_SAGE',				1		),
@@ -194,7 +202,8 @@ INSERT INTO ArtDefine_UnitMemberInfos (Type,Scale,				Domain,	Model,							Mater
 ('ART_DEF_UNIT_MEMBER_HORMAGAUNT',			6,					'',		'hormagaunt.fxsxml',			'CLOTH',			'FLESH'			),
 --('ART_DEF_UNIT_MEMBER_CARNIFEX',			6,					'',		'carnifex.fxsxml',				'CLOTH',			'FLESH'			),
 ('ART_DEF_UNIT_MEMBER_ANGEL_SPEARMAN',		0.15,				'',		'angel_spearman.fxsxml',		'CLOTH',			'FLESH'			),
-('ART_DEF_UNIT_MEMBER_ANGEL',				0.35,				'',		'angel_spearman.fxsxml',		'CLOTH',			'FLESH'			);
+('ART_DEF_UNIT_MEMBER_ANGEL',				0.35,				'',		'angel_spearman.fxsxml',		'CLOTH',			'FLESH'			),
+('ART_DEF_UNIT_MEMBER_ARCHANGEL',			0.7,				'',		'angel_spearman.fxsxml',		'CLOTH',			'FLESH'			);
 										-- use 0.7 for archangel
 
 INSERT INTO ArtDefine_UnitMemberCombats (UnitMemberType, DisableActions, EnableActions,																		ShortMoveRadius,	ShortMoveRate,		TargetHeight,	HasRefaceAfterCombat,	HasStationaryMelee,	ReformBeforeCombat,	RushAttackFormation	) VALUES
@@ -214,7 +223,8 @@ INSERT INTO ArtDefine_UnitMemberCombats (UnitMemberType, DisableActions, EnableA
 ('ART_DEF_UNIT_MEMBER_HORMAGAUNT',			'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8.0,			1,						NULL,				1,					''					),
 --('ART_DEF_UNIT_MEMBER_CARNIFEX',			'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8.0,			1,						NULL,				1,					''					),
 ('ART_DEF_UNIT_MEMBER_ANGEL_SPEARMAN',		'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8.0,			1,						NULL,				1,					''					),
-('ART_DEF_UNIT_MEMBER_ANGEL',				'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8.0,			1,						NULL,				1,					''					);
+('ART_DEF_UNIT_MEMBER_ANGEL',				'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8.0,			1,						NULL,				1,					''					),
+('ART_DEF_UNIT_MEMBER_ARCHANGEL',			'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8.0,			1,						NULL,				1,					''					);
 
 
 INSERT INTO ArtDefine_UnitMemberCombatWeapons(UnitMemberType,	"Index",	SubIndex,	"ID",	WeaponTypeTag,		WeaponTypeSoundOverrideTag,	VisKillStrengthMin,	VisKillStrengthMax,	MissTargetSlopRadius,	HitEffect	) VALUES
@@ -251,7 +261,9 @@ INSERT INTO ArtDefine_UnitMemberCombatWeapons(UnitMemberType,	"Index",	SubIndex,
 ('ART_DEF_UNIT_MEMBER_ANGEL_SPEARMAN',							0,			0,			'',		'METAL',			'SPEAR',					NULL,				NULL,				NULL,					''			),
 ('ART_DEF_UNIT_MEMBER_ANGEL_SPEARMAN',							1,			0,			'',		'FLAMING_ARROW',	'',							10.0,				20.0,				10.0,					''			),
 ('ART_DEF_UNIT_MEMBER_ANGEL',									0,			0,			'',		'METAL',			'SPEAR',					NULL,				NULL,				NULL,					''			),
-('ART_DEF_UNIT_MEMBER_ANGEL',									1,			0,			'',		'FLAMING_ARROW',	'',							10.0,				20.0,				10.0,					''			);
+('ART_DEF_UNIT_MEMBER_ANGEL',									1,			0,			'',		'FLAMING_ARROW',	'',							10.0,				20.0,				10.0,					''			),
+('ART_DEF_UNIT_MEMBER_ARCHANGEL',								0,			0,			'',		'METAL',			'SPEAR',					NULL,				NULL,				NULL,					''			),
+('ART_DEF_UNIT_MEMBER_ARCHANGEL',								1,			0,			'',		'FLAMING_ARROW',	'',							10.0,				20.0,				10.0,					''			);
 
 
 

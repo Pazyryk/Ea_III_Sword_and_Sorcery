@@ -52,8 +52,11 @@ INSERT INTO Builds (Type,	PrereqTech,						DisallowTech,			PrereqPolicy,		Disall
 
 --GP plot builds
 ('BUILD_ARCANE_TOWER',		NULL,							NULL,					NULL,				NULL,				400,	'IMPROVEMENT_ARCANE_TOWER',		'TXT_KEY_EA_BUILD_ARCANE_TOWER',		NULL,										NULL,										'ENTITY_EVENT_MINE',		'KB_P',	0,				0,			0,			0,				98,				3,			'UNIT_ACTION_ATLAS_EXP2'	),
-('BUILD_PYRAMID',			NULL,							NULL,					NULL,				NULL,				400,	'IMPROVEMENT_PYRAMID',			'TXT_KEY_EA_BUILD_PYRAMID',				NULL,										NULL,										'ENTITY_EVENT_MINE',		'KB_P',	0,				0,			0,			0,				96,				0,			'BW_ATLAS_2'		);
+('BUILD_PYRAMID',			NULL,							NULL,					NULL,				NULL,				400,	'IMPROVEMENT_PYRAMID',			'TXT_KEY_EA_BUILD_PYRAMID',				NULL,										NULL,										'ENTITY_EVENT_MINE',		'KB_P',	0,				0,			0,			0,				96,				0,			'BW_ATLAS_2'		),
+('BUILD_STONEHENGE',		NULL,							NULL,					NULL,				NULL,				400,	'IMPROVEMENT_STONEHENGE',		'TXT_KEY_EA_BUILD_STONEHENGE',			NULL,										NULL,										'ENTITY_EVENT_MINE',		'KB_P',	0,				0,			0,			0,				96,				2,			'BW_ATLAS_2'		);
 
+
+--IMPROVEMENT_STONEHENGE
 
 /*
 --GP builds (all non-consuming)

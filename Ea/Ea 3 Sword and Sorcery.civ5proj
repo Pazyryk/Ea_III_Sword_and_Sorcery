@@ -600,17 +600,13 @@
       <SubType>Lua</SubType>
       <ImportIntoVFS>True</ImportIntoVFS>
     </Content>
-    <Content Include="CoreUI_font_mod_only\TradeRouteOverview.xml">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
     <Content Include="CoreUI_InGame\ActionInfoPanel.lua">
       <SubType>Lua</SubType>
       <ImportIntoVFS>True</ImportIntoVFS>
     </Content>
     <Content Include="CoreUI_InGame\ChooseInternationalTradeRoutePopup.lua">
       <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
+      <ImportIntoVFS>False</ImportIntoVFS>
     </Content>
     <Content Include="CoreUI_InGame\CityBannerManager.lua">
       <SubType>Lua</SubType>
@@ -741,6 +737,14 @@
       <ImportIntoVFS>True</ImportIntoVFS>
     </Content>
     <Content Include="CoreUI_InGame\TopPanel.xml">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="CoreUI_InGame\TradeRouteOverview.lua">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="CoreUI_InGame\TradeRouteOverview.xml">
       <SubType>Lua</SubType>
       <ImportIntoVFS>True</ImportIntoVFS>
     </Content>
@@ -967,10 +971,6 @@
     <Content Include="EaUI\EaSpellsPopup.xml">
       <SubType>Lua</SubType>
       <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="Ea_API.txt">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>False</ImportIntoVFS>
     </Content>
     <Content Include="EventsDrivers\CityGraphicUpdater.lua">
       <SubType>Lua</SubType>
@@ -1369,6 +1369,54 @@
       <ImportIntoVFS>True</ImportIntoVFS>
     </Content>
     <Content Include="Utilities\WhowardPlotIterators.lua">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="_MoveToMediaPack\3DTerrain\Blight\Blight.fxsxml">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="_MoveToMediaPack\3DTerrain\Blight\Blight.gr2">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="_MoveToMediaPack\3DTerrain\Blight\Blight_decal_h.dds">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="_MoveToMediaPack\3DTerrain\Blight\Blight_diff.dds">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="_MoveToMediaPack\3DTerrain\Blight\Blight_sref.dds">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="_MoveToMediaPack\3DTerrain\Stonehenge\hb_stonehengeTI.fxsxml">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="_MoveToMediaPack\3DTerrain\Stonehenge\pl_stonehengeTI.fxsxml">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="_MoveToMediaPack\3DTerrain\Stonehenge\stonehengeTI.fxsxml">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="_MoveToMediaPack\3DTerrain\Stonehenge\rubble.gr2">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="_MoveToMediaPack\3DTerrain\Stonehenge\stonehengeTI.gr2">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="_MoveToMediaPack\3DTerrain\Stonehenge\stonehengeTI_hb.gr2">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="_MoveToMediaPack\3DTerrain\Stonehenge\stonehengeTI_pl.gr2">
       <SubType>Lua</SubType>
       <ImportIntoVFS>True</ImportIntoVFS>
     </Content>
@@ -1809,6 +1857,8 @@
     <Folder Include="CoreUI_InGame" />
     <Folder Include="EaMain" />
     <Folder Include="Utilities" />
+    <Folder Include="_MoveToMediaPack\3DTerrain\Blight" />
+    <Folder Include="_MoveToMediaPack\3DTerrain\Stonehenge" />
     <Folder Include="_MoveToMediaPack\3DTerrain\ThePyramids\" />
     <Folder Include="_MoveToMediaPack\3DUnits\Angel_Spearman\" />
     <Folder Include="_MoveToMediaPack\3DUnits\Great_Unclean_One\" />

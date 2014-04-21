@@ -63,6 +63,31 @@ end
 -- Interface
 --------------------------------------------------------------
 
+
+MapModData.sharedIntegerList = MapModData.sharedIntegerList or {}
+local sharedIntegerList = MapModData.sharedIntegerList
+
+local function GenerateLearnableSpellList(iPlayer, iPerson, spellClass)	--iPerson = nil if this is civ test only; spellClass = nil for both 
+	print("GenerateLearnableSpellList ", iPlayer, iPerson, spellClass)
+	local TestSpellLearnable = TestSpellLearnable
+	--This is used for human UI (Spell Panel)
+
+	local numSpells = 0
+	for spellID = FIRST_SPELL_ID, LAST_SPELL_ID do
+		if TestSpellLearnable(iPlayer, iPerson, spellID, spellClass) then
+			numSpells = numSpells + 1
+			sharedIntegerList[numSpells] = spellID
+		end
+	end
+
+	--trim recycled table for UI
+	for i = #sharedIntegerList, numSpells + 1, -1 do
+		sharedIntegerList[i] = nil
+	end
+end
+LuaEvents.EaMagicGenerateLearnableSpellList.Add(function(iPlayer, iPerson, spellClass) return HandleError31(GenerateLearnableSpellList, iPlayer, iPerson, spellClass) end)
+
+
 function UseManaOrDivineFavor(iPlayer, iPerson, pts, bNoDrain)
 	--All mana or divine favor use should go through here!
 

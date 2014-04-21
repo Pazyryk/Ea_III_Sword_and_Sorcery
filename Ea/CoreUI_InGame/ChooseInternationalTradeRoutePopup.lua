@@ -1,6 +1,8 @@
 
 --Paz: modified to show only routes opened by merchant
 
+--Paz: DELETE THIS FILE!
+
 include( "IconSupport" );
 include( "InstanceManager" );
 include( "CommonBehaviors" );
@@ -153,13 +155,13 @@ function RefreshData()
 		
 
 		--Paz add
-		local fromPlotIndex = pOriginPlot:GetPlotIndex()
-		local fromEaCity = gT.gCities[fromPlotIndex]
-		local toPlotIndex = pLoopPlot:GetPlotIndex()
+		--local fromPlotIndex = pOriginPlot:GetPlotIndex()
+		--local fromEaCity = gT.gCities[fromPlotIndex]
+		--local toPlotIndex = pLoopPlot:GetPlotIndex()
 
-		local openTradeRoutes = eDomain == GameInfoTypes.DOMAIN_LAND and fromEaCity.openLandTradeRoutes or fromEaCity.openSeaTradeRoutes
+		--local openTradeRoutes = eDomain == GameInfoTypes.DOMAIN_LAND and fromEaCity.openLandTradeRoutes or fromEaCity.openSeaTradeRoutes
 
-		if openTradeRoutes[toPlotIndex] == iTargetOwner then
+		--if openTradeRoutes[toPlotIndex] == iTargetOwner then
 			--Paz: block below was outside of if block
 
 			local pTargetPlayer = Players[iTargetOwner];
@@ -232,7 +234,7 @@ function RefreshData()
 			end
 		
 			table.insert(g_Model, tradeRoute);
-		end
+		--end
 		--end Paz modified
 	end
 end

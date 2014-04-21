@@ -662,7 +662,7 @@ local function WarStateChangedHandler(iTeam1, iTeam2, bWar)
 		end
 	end
 
-	EaTradeDataDirty()
+	--EaTradeDataDirty()
 end
 Events.WarStateChanged.Add(WarStateChangedHandler)
 

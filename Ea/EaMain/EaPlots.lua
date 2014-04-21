@@ -468,6 +468,13 @@ function BlightPlot(plot, iPlayer, iPerson, iMaxMana)		--last 3 are optional
 	return true
 end
 
+function DebugBlightWorld()
+	for iPlot = 0, Map.GetNumPlots() - 1 do
+		local plot = GetPlotByIndex(iPlot)
+		BlightPlot(plot)
+	end
+end
+
 function BreachPlot(plot, iPlayer, iPerson, iMaxMana)		--last 3 are optional
 
 	local manaConsumed = plot:GetLivingTerrainStrength() + 100

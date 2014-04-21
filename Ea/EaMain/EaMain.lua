@@ -109,7 +109,6 @@ local PeoplePerCivTurn =	PeoplePerCivTurn
 local UpdateGlobalYields =	UpdateGlobalYields
 local UpdateCityYields =	UpdateCityYields
 local PeopleAfterTurn =		PeopleAfterTurn
-local EaTradeUpdateTurn =	EaTradeUpdateTurn
 
 
 --shared
@@ -229,7 +228,6 @@ local function OnPlayerDoTurn(iPlayer)	-- Runs at begining of turn for all livin
 		timerAllPerTurnFunctions = 0
 
 		EaArmageddonPerTurn()
-		EaTradeUpdateTurn()
 		AICivsPerGameTurn()
 		AIMercenaryPerGameTurn()
 		local startPlotsPerTurn = Clock()

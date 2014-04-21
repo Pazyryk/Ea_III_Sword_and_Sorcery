@@ -1,0 +1,6 @@
+<Asset>
+  <Mesh file="Blight.gr2" source="Max" />
+  <Texture file="Blight_DIFF.dds" source="Max" />
+  <Texture file="Blight_Decal_H.dds" source="Max" />
+  <Texture file="Blight_SREF.dds" source="Max" />
+</Asset>

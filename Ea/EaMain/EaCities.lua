@@ -89,8 +89,8 @@ local UNIT_SETTLERS_ORC =					GameInfoTypes.UNIT_SETTLERS_ORC
 local UNIT_SLAVES_MAN =						GameInfoTypes.UNIT_SLAVES_MAN
 local UNIT_SLAVES_SIDHE =					GameInfoTypes.UNIT_SLAVES_SIDHE
 local UNIT_SLAVES_ORC =						GameInfoTypes.UNIT_SLAVES_ORC
-local UNIT_CARAVAN =						GameInfoTypes.UNIT_CARAVAN
-local UNIT_CARGO_SHIP =						GameInfoTypes.UNIT_CARGO_SHIP
+--local UNIT_CARAVAN =						GameInfoTypes.UNIT_CARAVAN
+--local UNIT_CARGO_SHIP =						GameInfoTypes.UNIT_CARGO_SHIP
 
 local RELIGION_ANRA =						GameInfoTypes.RELIGION_ANRA
 local RELIGION_THE_WEAVE_OF_EA =			GameInfoTypes.RELIGION_THE_WEAVE_OF_EA
@@ -151,7 +151,7 @@ local HandleError41 =		HandleError41
 local Distance =			Map.PlotDistance
 local GetPlotFromXY =		Map.GetPlot
 local GetPlotByIndex =		Map.GetPlotByIndex
-local FindOpenTradeRoute =	FindOpenTradeRoute		--in EaTrade.lua
+--local FindOpenTradeRoute =	FindOpenTradeRoute		--in EaTrade.lua
 
 --file functions
 local JustSettled
@@ -1213,17 +1213,17 @@ local function OnPlayerCanTrain(iPlayer, unitTypeID)
 	if not eaPlayer then return false end
 	if eaPlayer.blockedUnitsByID[unitTypeID] then return false end
 
-	if unitTypeID == UNIT_CARAVAN then		--this always comes before OnCityCanTrain check so we use it to count for file local (to limit number can build in CityCanTrain)
-		g_numCaravansCanTrain = FindOpenTradeRoute(iPlayer, DOMAIN_LAND, false)
-		if g_numCaravansCanTrain == 0 then return false end			--most common situation
-		g_numCaravansCanTrain = g_numCaravansCanTrain - Players[iPlayer]:GetNumAvailableTradeUnits(DOMAIN_LAND)
-		if g_numCaravansCanTrain == 0 then return false end
-	elseif unitTypeID == UNIT_CARGO_SHIP then
-		g_numCargoShipsCanTrain = FindOpenTradeRoute(iPlayer, DOMAIN_SEA, false)
-		if g_numCargoShipsCanTrain == 0 then return false end	
-		g_numCargoShipsCanTrain = g_numCargoShipsCanTrain - Players[iPlayer]:GetNumAvailableTradeUnits(DOMAIN_SEA)
-		if g_numCargoShipsCanTrain == 0 then return false end
-	end
+	--if unitTypeID == UNIT_CARAVAN then		--this always comes before OnCityCanTrain check so we use it to count for file local (to limit number can build in CityCanTrain)
+	--	g_numCaravansCanTrain = FindOpenTradeRoute(iPlayer, DOMAIN_LAND, false)
+	--	if g_numCaravansCanTrain == 0 then return false end			--most common situation
+	--	g_numCaravansCanTrain = g_numCaravansCanTrain - Players[iPlayer]:GetNumAvailableTradeUnits(DOMAIN_LAND)
+	--	if g_numCaravansCanTrain == 0 then return false end
+	--elseif unitTypeID == UNIT_CARGO_SHIP then
+	--	g_numCargoShipsCanTrain = FindOpenTradeRoute(iPlayer, DOMAIN_SEA, false)
+	--	if g_numCargoShipsCanTrain == 0 then return false end	
+	--	g_numCargoShipsCanTrain = g_numCargoShipsCanTrain - Players[iPlayer]:GetNumAvailableTradeUnits(DOMAIN_SEA)
+	--	if g_numCargoShipsCanTrain == 0 then return false end
+	--end
 
 	--if TestPlayerCanTrain[unitTypeID] then
 	--	return TestPlayerCanTrain[unitTypeID](iPlayer)
@@ -1243,7 +1243,7 @@ local function OnCityCanTrain(iPlayer, iCity, unitTypeID)
 end
 GameEvents.CityCanTrain.Add(function(iPlayer, iCity, unitTypeID) return HandleError31(OnCityCanTrain, iPlayer, iCity, unitTypeID) end)
 
-
+--[[
 TestCityCanTrain[GameInfoTypes.UNIT_CARAVAN] = function(iPlayer, iCity)
 	print("TestCityCanTrain[GameInfoTypes.UNIT_CARAVAN] ", iPlayer, iCity)
 	--Fires after OnPlayerCanTrain; we count on this for g_numCaravansCanTrain
@@ -1271,7 +1271,7 @@ TestCityCanTrain[GameInfoTypes.UNIT_CARGO_SHIP] = function(iPlayer, iCity)
 	print("g_numCargoShipsCanTrain = ", g_numCargoShipsCanTrain)
 	return 0 < g_numCargoShipsCanTrain
 end
-
+]]
 
 
 TestCityCanTrain[GameInfoTypes.UNIT_SETTLERS_MAN] = function(iPlayer, iCity)

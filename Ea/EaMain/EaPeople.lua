@@ -780,11 +780,11 @@ function MakeLeader(iPlayer, iPerson)
 	PreGame.SetLeaderName(iPlayer, newName)
 
 	local iUnit = eaPerson.iUnit
-	if iUnit ~= -1 then
-		local unit = player:GetUnitByID(iUnit)
-		unit:SetName(newName)
-	end
+	local unit = player:GetUnitByID(iUnit)
+	unit:SetName(newName)
+	unit:ChangeExperience(20)	--leader bonus
 	--apply "leader promotion"?
+
 	UpdateLeaderEffects(iPlayer)
 
 	--Since GP will stay leader from now on, adjust modMemory so they will take leadership promotions

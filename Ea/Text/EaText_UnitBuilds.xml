@@ -69,6 +69,68 @@
 			<Text>Destroy Road</Text>
 		</Row>
 
+		<Row Tag="TXT_KEY_EA_BUILD_STANHENCG">
+			<Text>Build Stânhencg (Druid)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILD_PYRAMID">
+			<Text>Build Great Pyramid (Engineer)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILD_GREAT_LIBRARY">
+			<Text>Build Great Library (Sage)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILD_ARCANE_TOWER">
+			<Text>Build Arcane Tower (Thaumaturge)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILD_TEMPLE_AZZANDARA_1">
+			<Text>Build Temple of Amərətāt (I) (Devout)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILD_TEMPLE_AZZANDARA_2">
+			<Text>Build Temple of Vohu Manah (II) (Devout)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILD_TEMPLE_AZZANDARA_3">
+			<Text>Build Temple of Haurvatāt (III) (Devout)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILD_TEMPLE_AZZANDARA_4">
+			<Text>Build Temple of Spənta Ārmaiti (IV) (Devout)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILD_TEMPLE_AZZANDARA_5">
+			<Text>Build Temple of Aša Vahišta (V) (Devout)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILD_TEMPLE_AZZANDARA_6">
+			<Text>Build Temple of Xšathra Vairya (VI) (Devout)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILD_TEMPLE_AZZANDARA_7">
+			<Text>Build Temple of Ahura Mazdā (VII) (Devout)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILD_TEMPLE_AHRIMAN_1">
+			<Text>Build Temple of Zariz (I) (Devout)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILD_TEMPLE_AHRIMAN_2">
+			<Text>Build Temple of Gannag Menog (II) (Devout)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILD_TEMPLE_AHRIMAN_3">
+			<Text>Build Temple of Akoman (III) (Devout)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILD_TEMPLE_AHRIMAN_4">
+			<Text>Build Temple of Tauriz (IV) (Devout)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILD_TEMPLE_AHRIMAN_5">
+			<Text>Build Temple of Nanghait (V) (Devout)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILD_TEMPLE_AHRIMAN_6">
+			<Text>Build Temple of Indar (VI) (Devout)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILD_TEMPLE_AHRIMAN_7">
+			<Text>Build Temple of Sawar (VII) (Devout)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILD_TEMPLE_AHRIMAN_8">
+			<Text>Build Temple of Xeshm (VIII) (Devout)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILD_TEMPLE_AHRIMAN_9">
+			<Text>Build Temple of Aŋra Mainiiu (IX) (Devout)</Text>
+		</Row>		
+		
+
 	</Language_en_US>
 
 	<EaDebugTableCheck>

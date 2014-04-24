@@ -82,10 +82,8 @@ function OnLoadEaMain()   --Called from the bottom of EaMain after all included 
 	EaUnitCombatInit(bNewGame)
 	EaUnitsInit(bNewGame)
 	AIMercInit(bNewGame)
+	EaWondersInit(bNewGame)
 
-	--AutoSaveHijack()
-
-	--for k,v in pairs(NotificationTypes) do print(k, v) end
 end
 
 function OnEnterGame()   --Runs when Begin or Countinue Your Journey pressed

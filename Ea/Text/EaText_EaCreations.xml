@@ -5,9 +5,7 @@
 		
 		<!-- EaWonders -->
 
-		<Row Tag="TXT_KEY_EA_WONDER_STANHENCG">
-			<Text>Stânhencg</Text>
-		</Row>
+
 		<Row Tag="TXT_KEY_EA_WONDER_KOLOSSOS">
 			<Text>Kolossós</Text>
 		</Row>
@@ -29,9 +27,69 @@
 		<Row Tag="TXT_KEY_EA_WONDER_DA_BAOEN_SI">
 			<Text>Da Bao'en Si</Text>
 		</Row>
+
+		<Row Tag="TXT_KEY_EA_WONDER_STANHENCG">
+			<Text>Stânhencg</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_PYRAMID">
+			<Text>Great Pyramid</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_WONDER_GREAT_LIBRARY">
 			<Text>Great Library</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_ARCANE_TOWER">
+			<Text>Arcane Tower</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_TEMPLE_AZZANDARA_1">
+			<Text>Temple of Amərətāt (I)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_TEMPLE_AZZANDARA_2">
+			<Text>Temple of Vohu Manah (II)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_TEMPLE_AZZANDARA_3">
+			<Text>Temple of Haurvatāt (III)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_TEMPLE_AZZANDARA_4">
+			<Text>Temple of Spənta Ārmaiti (IV)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_TEMPLE_AZZANDARA_5">
+			<Text>Temple of Aša Vahišta (V)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_TEMPLE_AZZANDARA_6">
+			<Text>Temple of Xšathra Vairya (VI)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_TEMPLE_AZZANDARA_7">
+			<Text>Temple of Ahura Mazdā (VII)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_TEMPLE_AHRIMAN_1">
+			<Text>Temple of Zariz (I)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_TEMPLE_AHRIMAN_2">
+			<Text>Temple of Gannag Menog (II)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_TEMPLE_AHRIMAN_3">
+			<Text>Temple of Akoman (III)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_TEMPLE_AHRIMAN_4">
+			<Text>Temple of Tauriz (IV)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_TEMPLE_AHRIMAN_5">
+			<Text>Temple of Nanghait (V)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_TEMPLE_AHRIMAN_6">
+			<Text>Temple of Indar (VI)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_TEMPLE_AHRIMAN_7">
+			<Text>Temple of Sawar (VII)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_TEMPLE_AHRIMAN_8">
+			<Text>Temple of Xeshm (VIII)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_TEMPLE_AHRIMAN_9">
+			<Text>Temple of Aŋra Mainiiu (IX)</Text>
+		</Row>
+		
+		
 
 		<!-- EaEpics -->
 		

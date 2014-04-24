@@ -113,7 +113,7 @@ INSERT INTO Buildings (Type,			Cost,	GoldMaintenance,	PrereqTech,					EaPrereqPo
 ('BUILDING_INTERNMENT_CAMP',			400,	1,					NULL,						'POLICY_SERVI_AETERNAM',		1,				'ART_DEF_BUILDING_BARRACKS',	'BW_ATLAS_1',			61,				0		),
 ('BUILDING_BARRACKS',					250,	1,					'TECH_BRONZE_WORKING',		'POLICY_DISCIPLINE',			1,				'ART_DEF_BUILDING_BARRACKS',	'BW_ATLAS_1',			5,				0		),
 ('BUILDING_PAPERMILL',					300,	1,					'TECH_LITERATURE',			'POLICY_SCHOLASTICISM',			1,				'ART_DEF_BUILDING_PAPER_MAKER',	'BW_ATLAS_1',			59,				0		),
-('BUILDING_KILN',						350,	1,					'TECH_MASONRY',				'POLICY_CRAFTING',				1,				'ART_DEF_BUILDING_BARRACKS',	'BW_ATLAS_1',			61,				0		);
+('BUILDING_KILN',						350,	1,					'TECH_CONSTRUCTION',		'POLICY_CRAFTING',				1,				'ART_DEF_BUILDING_BARRACKS',	'BW_ATLAS_1',			61,				0		);
 
 -- advanced other
 INSERT INTO Buildings (Type,			Cost,	GoldMaintenance,	PrereqTech,					Happiness,	NeverCapture,	ArtDefineTag,					IconAtlas,						PortraitIndex,	DisplayPosition) VALUES
@@ -177,16 +177,13 @@ INSERT INTO Buildings (Type,			Cost,	NeverCapture,	ArtDefineTag,	IconAtlas,		Por
 
 ('BUILDING_1C_VARIOUS_RESOURCES',		-1,		1,				'MONUMENT',		'BW_ATLAS_1',	1,				NULL,			'Util'	),
 
-
-('BUILDING_STANHENCG_MOD',				-1,		1,				'MONUMENT',		'BW_ATLAS_1',	1,				NULL,			'Util'	),
 ('BUILDING_KOLOSSOS_MOD',				-1,		1,				'MONUMENT',		'BW_ATLAS_1',	1,				NULL,			'Util'	),
 ('BUILDING_MEGALOS_FAROS_MOD',			-1,		1,				'MONUMENT',		'BW_ATLAS_1',	1,				NULL,			'Util'	),
 ('BUILDING_HANGING_GARDENS_MOD',		-1,		1,				'MONUMENT',		'BW_ATLAS_1',	1,				NULL,			'Util'	),
 ('BUILDING_UUC_YABNAL_MOD',				-1,		1,				'MONUMENT',		'BW_ATLAS_1',	1,				NULL,			'Util'	),
 ('BUILDING_THE_LONG_WALL_MOD',			-1,		1,				'MONUMENT',		'BW_ATLAS_1',	1,				NULL,			'Util'	),
 ('BUILDING_CLOG_MOR_MOD',				-1,		1,				'MONUMENT',		'BW_ATLAS_1',	1,				NULL,			'Util'	),
-('BUILDING_DA_BAOEN_SI_MOD',			-1,		1,				'MONUMENT',		'BW_ATLAS_1',	1,				NULL,			'Util'	),
-('BUILDING_GREAT_LIBRARY_MOD',			-1,		1,				'MONUMENT',		'BW_ATLAS_1',	1,				NULL,			'Util'	);
+('BUILDING_DA_BAOEN_SI_MOD',			-1,		1,				'MONUMENT',		'BW_ATLAS_1',	1,				NULL,			'Util'	);
 
 -- palaces
 INSERT INTO Buildings (Type,			Cost,	PrereqTech,		EaGreatPersonBuild,	Happiness,	NeverCapture,	ArtDefineTag,	IconAtlas,		PortraitIndex,	DisplayPosition,	ArtInfoCulturalVariation,	Defense,	Capital	) VALUES
@@ -194,7 +191,6 @@ INSERT INTO Buildings (Type,			Cost,	PrereqTech,		EaGreatPersonBuild,	Happiness,
 
 -- wonders (map visible)
 INSERT INTO Buildings (Type,			Cost,	PrereqTech,		EaGreatPersonBuild,	Happiness,	NeverCapture,	ConquestProb,	ArtDefineTag,					IconAtlas,		PortraitIndex,	DisplayPosition	) VALUES
-('BUILDING_STANHENCG',					300,	NULL,			'Engineer',			0,			0,				100,			'STONEHENGE',					'BW_ATLAS_2',	2,				4				),
 ('BUILDING_KOLOSSOS',					300,	NULL,			'Engineer',			0,			0,				100,			'THE COLOSSUS',					'BW_ATLAS_2',	4,				8				),
 ('BUILDING_MEGALOS_FAROS',				300,	NULL,			'Engineer',			0,			0,				100,			'GREAT LIGHTHOUSE',				'BW_ATLAS_2',	5,				8				),
 ('BUILDING_HANGING_GARDENS',			300,	NULL,			'Engineer',			0,			0,				100,			'THE HANGING GARDENS',			'BW_ATLAS_2',	3,				2				),
@@ -202,7 +198,10 @@ INSERT INTO Buildings (Type,			Cost,	PrereqTech,		EaGreatPersonBuild,	Happiness,
 ('BUILDING_THE_LONG_WALL',				300,	NULL,			'Engineer',			0,			0,				100,			'ART_DEF_BUILDING_GREAT_WALL',	'BW_ATLAS_2',	7,				2				),
 ('BUILDING_CLOG_MOR',					300,	NULL,			'Engineer',			0,			0,				100,			'BIG BEN',						'BW_ATLAS_2',	19,				1				),
 ('BUILDING_DA_BAOEN_SI',				300,	NULL,			'Engineer',			0,			0,				100,			'PORCELAIN TOWER',				'BW_ATLAS_2',	16,				2				),
-('BUILDING_GREAT_LIBRARY',				-1,		NULL,			NULL,				0,			0,				100,			'THE GREAT LIBRARY',			'BW_ATLAS_2',	1,				0				);		--Disabled due to untracked bug
+--plot builds
+('BUILDING_STANHENCG',					-1,		NULL,			'Engineer',			0,			1,				0,				'MONUMENT',						'BW_ATLAS_2',	2,				4				),
+('BUILDING_PYRAMID',					-1,		NULL,			'Engineer',			0,			1,				0,				'MONUMENT',						'BW_ATLAS_2',	2,				4				),
+('BUILDING_GREAT_LIBRARY',				-1,		NULL,			'Sage',				0,			1,				0,				'MONUMENT',						'BW_ATLAS_2',	1,				0				);
 
 --Build out the Buildings table for dependent strings
 UPDATE Buildings SET Description = 'TXT_KEY_EA_' || Type;
@@ -289,7 +288,8 @@ INSERT INTO BuildingClasses (Type, DefaultBuilding, Description) SELECT Building
 --Above line will use last listed Building of a BuildingClass as the DefaultBuilding and Description
 
 UPDATE BuildingClasses SET MaxPlayerInstances = 1 WHERE Type = 'BUILDINGCLASS_PALACE';
-UPDATE BuildingClasses SET MaxGlobalInstances = 1 WHERE Type IN ('BUILDINGCLASS_STANHENCG', 'BUILDINGCLASS_KOLOSSOS', 'BUILDINGCLASS_MEGALOS_FAROS', 'BUILDINGCLASS_HANGING_GARDENS', 'BUILDINGCLASS_UUC_YABNAL', 'BUILDINGCLASS_THE_LONG_WALL', 'BUILDINGCLASS_CLOG_MOR', 'BUILDINGCLASS_DA_BAOEN_SI', 'BUILDINGCLASS_GREAT_LIBRARY');
+UPDATE BuildingClasses SET MaxGlobalInstances = 1 WHERE Type IN ('BUILDINGCLASS_KOLOSSOS', 'BUILDINGCLASS_MEGALOS_FAROS', 'BUILDINGCLASS_HANGING_GARDENS', 'BUILDINGCLASS_UUC_YABNAL', 'BUILDINGCLASS_THE_LONG_WALL', 'BUILDINGCLASS_CLOG_MOR', 'BUILDINGCLASS_DA_BAOEN_SI');
+--'BUILDINGCLASS_STANHENCG', , 'BUILDINGCLASS_GREAT_LIBRARY'
 
 DELETE FROM BuildingClass_VictoryThresholds;
 
@@ -927,18 +927,14 @@ INSERT INTO Building_YieldChanges (BuildingType,	YieldType,	Yield) VALUES
 ('BUILDING_REMOTE_RES_1_PRODUCTION',	'YIELD_PRODUCTION', 1 	),
 ('BUILDING_REMOTE_RES_1_GOLD',			'YIELD_GOLD',		1 	),
 
-('BUILDING_STANHENCG',					'YIELD_CULTURE',	4	),
 ('BUILDING_KOLOSSOS',					'YIELD_CULTURE',	4	),
 ('BUILDING_MEGALOS_FAROS',				'YIELD_CULTURE',	4	),
 ('BUILDING_UUC_YABNAL',					'YIELD_CULTURE',	4	),
 ('BUILDING_THE_LONG_WALL',				'YIELD_CULTURE',	4	),
 ('BUILDING_CLOG_MOR',					'YIELD_CULTURE',	4	),
---('BUILDING_GREAT_LIBRARY',			'YIELD_CULTURE',	4	),
 
-('BUILDING_STANHENCG_MOD',				'YIELD_FAITH',		1	),
 ('BUILDING_HANGING_GARDENS_MOD',		'YIELD_CULTURE',	1	),
-('BUILDING_DA_BAOEN_SI_MOD',			'YIELD_CULTURE',	1	),
-('BUILDING_GREAT_LIBRARY_MOD',			'YIELD_SCIENCE',	1 );
+('BUILDING_DA_BAOEN_SI_MOD',			'YIELD_CULTURE',	1	);
 
 DELETE FROM Building_YieldChangesPerPop;
 INSERT INTO Building_YieldChangesPerPop (BuildingType,	YieldType,	Yield) VALUES

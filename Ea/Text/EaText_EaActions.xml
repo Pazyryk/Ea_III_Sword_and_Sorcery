@@ -75,9 +75,7 @@
 			<Text>Prophecy of Aeshema</Text>
 		</Row>
 
-		<Row Tag="TXT_KEY_EA_ACTION_STANHENCG">
-			<Text>Build Stânhencg</Text>
-		</Row>
+
 		<Row Tag="TXT_KEY_EA_ACTION_KOLOSSOS">
 			<Text>Build Kolossós</Text>
 		</Row>
@@ -99,15 +97,71 @@
 		<Row Tag="TXT_KEY_EA_ACTION_DA_BAOEN_SI">
 			<Text>Build Da Bao'en Si</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_ACTION_GREAT_LIBRARY">
-			<Text>Build Great Library</Text>
-		</Row>
 
 		<Row Tag="TXT_KEY_EA_ACTION_NATIONAL_TREASURY">
 			<Text>Build National Treasury</Text>
 		</Row>
+
+
+		<Row Tag="TXT_KEY_EA_ACTION_STANHENCG">
+			<Text>Build Stânhencg</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_PYRAMID">
+			<Text>Build Great Pyramid</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_GREAT_LIBRARY">
+			<Text>Build Great Library</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_ARCANE_TOWER">
 			<Text>Build Arcane Tower</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_AZZANDARA_1">
+			<Text>Build Temple of Amərətāt (I)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_AZZANDARA_2">
+			<Text>Build Temple of Vohu Manah (II)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_AZZANDARA_3">
+			<Text>Build Temple of Haurvatāt (III)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_AZZANDARA_4">
+			<Text>Build Temple of Spənta Ārmaiti (IV)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_AZZANDARA_5">
+			<Text>Build Temple of Aša Vahišta (V)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_AZZANDARA_6">
+			<Text>Build Temple of Xšathra Vairya (VI)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_AZZANDARA_7">
+			<Text>Build Temple of Ahura Mazdā (VII)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_AHRIMAN_1">
+			<Text>Build Temple of Zariz (I)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_AHRIMAN_2">
+			<Text>Build Temple of Gannag Menog (II)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_AHRIMAN_3">
+			<Text>Build Temple of Akoman (III)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_AHRIMAN_4">
+			<Text>Build Temple of Tauriz (IV)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_AHRIMAN_5">
+			<Text>Build Temple of Nanghait (V)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_AHRIMAN_6">
+			<Text>Build Temple of Indar (VI)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_AHRIMAN_7">
+			<Text>Build Temple of Sawar (VII)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_AHRIMAN_8">
+			<Text>Build Temple of Xeshm (VIII)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_AHRIMAN_9">
+			<Text>Build Temple of Aŋra Mainiiu (IX)</Text>
 		</Row>
 		
 		<Row Tag="TXT_KEY_EA_ACTION_EPIC_VOLUSPA">

@@ -1048,6 +1048,7 @@ function SetTowerMods(iPerson)
 		end
 	end
 
+	local modSum = 0
 	local bestCasterMod, bestTowerMod = 0, 0
 	for i = numModTypes - 7, numModTypes do
 		local casterMod = GetGPMod(iPerson, i, nil)
@@ -1058,8 +1059,12 @@ function SetTowerMods(iPerson)
 		if bestTowerMod < towerMod then
 			bestTowerMod = towerMod
 		end
-		tower[i] = towerMod < casterMod and casterMod or towerMod
+		local newMod = towerMod < casterMod and casterMod or towerMod
+		tower[i] = newMod
+		modSum = modSum + newMod
 	end
+	tower.mod = Floor(modSum / 8 + 0.5)		--average used for mana generation
+	UpdateBuildingsForPlotWonder(EA_WONDER_ARCANE_TOWER, iPerson)
 
 	if tower.iNamedFor ~= iPlayer and bestTowerMod < bestCasterMod then	--rename tower 
 		print("Renaming tower for current occupant")

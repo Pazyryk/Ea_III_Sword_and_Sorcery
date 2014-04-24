@@ -993,17 +993,22 @@ local function OnCityCanAcquirePlot(iPlayer, iCity, x, y)
 end
 GameEvents.CityCanAcquirePlot.Add(OnCityCanAcquirePlot)
 
-local function OnBuildFinished(iPlayer, x, y, improvementID)		--Is improvementID necessarily the one built, or is it any improvement that happens to be there???
+local function OnBuildFinished(iPlayer, x, y, improvementID)		--improvementID for newly built only (e.g., -1 if this is a repair)
 	print("OnBuildFinished ", iPlayer, x, y, improvementID)
 	if improvementID == -1 then
 		local plot = GetPlotFromXY(x, y)
-		if plot:GetImprovementType() == IMPROVEMENT_BLIGHT then
-			print("Worker must have removed FEATURE_BLIGHT; now removing IMPROVEMENT_BLIGHT")
-			plot:SetImprovementType(-1)
-		end
 		if plot:GetResourceType(-1) == RESOURCE_BLIGHT then
 			print("Worker must have removed FEATURE_BLIGHT; now removing RESOURCE_BLIGHT")
 			ChangeResource(plot, -1)
+		end
+		local currentImprovementID = plot:GetImprovementType()
+		if currentImprovementID ~= -1 then
+			if currentImprovementID == IMPROVEMENT_BLIGHT then
+				print("Worker must have removed FEATURE_BLIGHT; now removing IMPROVEMENT_BLIGHT")
+				plot:SetImprovementType(-1)
+			else
+				CheckUpdatePlotWonder(iPlayer, currentImprovementID)	--could be a repair
+			end
 		end
 	end
 end

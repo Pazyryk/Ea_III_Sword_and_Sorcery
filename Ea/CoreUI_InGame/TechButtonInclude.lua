@@ -111,10 +111,6 @@ end
 
 function AddSmallButtonsToTechButton( thisTechButtonInstance, tech, maxSmallButtons, textureSize )
 
-	--Paz add
-
-	--end Paz add
-
 	-- This has a few assumptions, the main one being that the small buttons are named "B1", "B2", "B3"... and that GatherInfoAboutUniqueStuff() has been called before this
 
 	-- first, hide the ones we aren't using
@@ -498,18 +494,20 @@ function AddSmallButtonsToTechButton( thisTechButtonInstance, tech, maxSmallButt
 	local arcaneToolTip
 	local divineToolTip
 	for spellInfo in GameInfo.EaActions(spellSQL) do
-		local spellClass = spellInfo.SpellClass
-		if spellClass == "Arcane" or spellClass == "Both" then
-			if not arcaneToolTip then
-				arcaneToolTip = "Can learn Arcane Spells:"
+		if spellInfo.AITarget or spellInfo.AICombatRole then	--spell has really been added to game (not just table)
+			local spellClass = spellInfo.SpellClass
+			if spellClass == "Arcane" or spellClass == "Both" then
+				if not arcaneToolTip then
+					arcaneToolTip = "Learn Arcane Spells (Thaumaturge):"
+				end
+				arcaneToolTip = arcaneToolTip .. "[NEWLINE][ICON_BULLET][COLOR_POSITIVE_TEXT]" .. Locale.Lookup(spellInfo.Description) .. "[ENDCOLOR] " .. Locale.Lookup(spellInfo.Help)
 			end
-			arcaneToolTip = arcaneToolTip .. "[NEWLINE][ICON_BULLET][COLOR_POSITIVE_TEXT]" .. Locale.Lookup(spellInfo.Description) .. "[ENDCOLOR] " .. Locale.Lookup(spellInfo.Help)
-		end
-		if spellClass == "Divine" or spellClass == "Both" then
-			if not divineToolTip then
-				divineToolTip = "Can learn Divine Spells:"
+			if spellClass == "Divine" or spellClass == "Both" then
+				if not divineToolTip then
+					divineToolTip = "Learn Divine Spells (Devout):"
+				end
+				divineToolTip = divineToolTip .. "[NEWLINE][ICON_BULLET][COLOR_POSITIVE_TEXT]" .. Locale.Lookup(spellInfo.Description) .. "[ENDCOLOR] " .. Locale.Lookup(spellInfo.Help)
 			end
-			divineToolTip = divineToolTip .. "[NEWLINE][ICON_BULLET][COLOR_POSITIVE_TEXT]" .. Locale.Lookup(spellInfo.Description) .. "[ENDCOLOR] " .. Locale.Lookup(spellInfo.Help)
 		end
 	end
 	if arcaneToolTip then

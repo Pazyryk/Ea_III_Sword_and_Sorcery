@@ -407,6 +407,7 @@ function TestEaAction(eaActionID, iPlayer, unit, iPerson, testX, testY, bAINonTa
 		g_iTeam = g_player:GetTeam()
 		g_team = Teams[g_iTeam]	
 	else
+		if g_eaAction.ReqEaWonder and not gWonders[GameInfoTypes[g_eaAction.ReqEaWonder] ] then return false end
 		if g_eaAction.ReligionNotFounded and gReligions[GameInfoTypes[g_eaAction.ReligionNotFounded] ] then return false end
 		if g_eaAction.ReligionFounded and not gReligions[GameInfoTypes[g_eaAction.ReligionFounded] ] then return false end
 		if g_eaAction.MaleficiumLearnedByAnyone and gWorld.maleficium ~= "Learned" then return false end
@@ -1213,6 +1214,9 @@ function SpecialEffects()
 end
 
 function TestSpellLearnable(iPlayer, iPerson, spellID, spellClass)		--iPerson = nil to generate civ list; spellClass is optional restriction (used for separate UI panels)
+	
+	if not SetAIValues[spellID] then return false end	--Not really added yet, even if in table
+	
 	local spellInfo = EaActionsInfo[spellID]
 	if spellClass and spellClass ~= spellInfo.SpellClass and spellInfo.SpellClass ~= "Both" then return false end
 	--order exclusions by most common first for speed
@@ -1256,6 +1260,7 @@ function TestSpellLearnable(iPlayer, iPerson, spellID, spellClass)		--iPerson = 
 		if spellInfo.LevelReq and eaPerson.level < spellInfo.LevelReq then return false end
 		if spellInfo.PromotionReq and not eaPerson.promotions[GameInfoTypes[spellInfo.PromotionReq] ] then return false end
 	end
+	if spellInfo.ReqEaWonder and not gWonders[GameInfoTypes[spellInfo.ReqEaWonder] ] then return false end
 	return true
 end
 
@@ -2243,6 +2248,7 @@ Finish[GameInfoTypes.EA_ACTION_OCCUPY_TOWER] = function()
 	gWonders[EA_WONDER_ARCANE_TOWER][g_iPlayer] = tower
 	g_eaPerson.bHasTower = true
 	gWonders[EA_WONDER_ARCANE_TOWER][g_int1] = nil
+	SetTowerMods(g_iPerson)
 	UseManaOrDivineFavor(g_iPlayer, g_iPerson, g_value, false)
 	g_specialEffectsPlot = g_plot
 end
@@ -2472,17 +2478,6 @@ end
 -- Wonders
 ------------------------------------------------------------------------------------------------------------------------------
 
---EA_ACTION_STANHENCG
-SetAIValues[GameInfoTypes.EA_ACTION_STANHENCG] = function()
-	gg_aiOptionValues.p = g_mod		--this will be mod mana
-end
-
-SetUI[GameInfoTypes.EA_ACTION_STANHENCG] = function()
-	if g_bAllTestsPassed then
-		MapModData.text = "Generates "..g_mod.." mana per turn"
-	end
-end
-
 --EA_ACTION_KOLOSSOS
 SetAIValues[GameInfoTypes.EA_ACTION_KOLOSSOS] = function()
 	local culture = (g_city:GetCultureRateModifier() + 100) / 25	--4c
@@ -2495,6 +2490,7 @@ SetUI[GameInfoTypes.EA_ACTION_KOLOSSOS] = function()
 		MapModData.text = "Increases experience of units built in city by "..g_mod
 	end
 end
+
 --EA_ACTION_MEGALOS_FAROS
 TestTarget[GameInfoTypes.EA_ACTION_MEGALOS_FAROS] = function()
 	return g_city:IsCoastal()
@@ -2585,22 +2581,6 @@ SetUI[GameInfoTypes.EA_ACTION_DA_BAOEN_SI] = function()
 	end
 end
 
-
---[[EA_ACTION_GREAT_LIBRARY
-SetAIValues[GameInfoTypes.EA_ACTION_GREAT_LIBRARY] = function()
-	local culture = (g_city:GetCultureRateModifier() + 100) / 25	--4c
-	local science = g_mod * (100 + g_city:GetBaseYieldRateModifier(YIELD_SCIENCE))/100
-	gg_aiOptionValues.p = culture + science
-	gg_aiOptionValues.i = 1000		--proxy
-end
-
-SetUI[GameInfoTypes.EA_ACTION_GREAT_LIBRARY] = function()
-	if g_bAllTestsPassed then
-		MapModData.text = "Increases science in all cities by "..g_mod.."%"
-	end
-end
-]]
-
 --EA_ACTION_NATIONAL_TREASURY
 SetUI[GameInfoTypes.EA_ACTION_NATIONAL_TREASURY] = function()
 	if g_bAllTestsPassed then
@@ -2620,6 +2600,39 @@ Finish[GameInfoTypes.EA_ACTION_NATIONAL_TREASURY] = function()
 		UpdateCityYields(g_iPlayer, g_iCity, "Gold")
 	end
 	return true
+end
+
+--EA_ACTION_STANHENCG
+SetAIValues[GameInfoTypes.EA_ACTION_STANHENCG] = function()
+	gg_aiOptionValues.p = g_mod		--this will be mod mana
+end
+
+SetUI[GameInfoTypes.EA_ACTION_STANHENCG] = function()
+	if g_bAllTestsPassed then
+		MapModData.text = "Generates "..g_mod.." mana per turn"
+	end
+end
+
+--EA_WONDER_PYRAMID
+SetAIValues[GameInfoTypes.EA_WONDER_PYRAMID] = function()
+	gg_aiOptionValues.p = g_mod		--proxy
+end
+
+SetUI[GameInfoTypes.EA_WONDER_PYRAMID] = function()
+	if g_bAllTestsPassed then
+		MapModData.text = "Increases the apparent size of your civilization and military might by "..g_mod.."%"
+	end
+end
+
+--EA_ACTION_GREAT_LIBRARY
+SetAIValues[GameInfoTypes.EA_ACTION_GREAT_LIBRARY] = function()
+	gg_aiOptionValues.p = g_mod		--proxy
+end
+
+SetUI[GameInfoTypes.EA_ACTION_GREAT_LIBRARY] = function()
+	if g_bAllTestsPassed then
+		MapModData.text = "Reduces research cost of all techs by "..g_mod.."%"
+	end
 end
 
 --EA_ACTION_ARCANE_TOWER
@@ -3885,8 +3898,8 @@ local function ModelSummon_SetUI()
 			local str
 			for unitTypeID, number in pairs(unitCounts) do
 				str = str and "; " or ""
-				local name = Locale.Lookup(GameInfo.Units[minorDemons[i] ].Description)	--TO DO: plural cases
-				str = str .. unitTypeCounts[i] .. " " .. name
+				local name = Locale.Lookup(GameInfo.Units[unitTypeID].Description)	--TO DO: plural cases
+				str = str .. unitCounts[unitTypeID] .. " " .. name
 			end
 			MapModData.text = verbCap .. " " .. str
 		elseif g_testTargetSwitch == 1 then
@@ -3895,8 +3908,10 @@ local function ModelSummon_SetUI()
 			MapModData.text = "You can only " .. verb .. " one unit with this spell"
 		elseif g_testTargetSwitch == 3 then
 			MapModData.text = "Not enough mana to " .. verb .. " additional " .. unitPlurStr
-		else
+		elseif g_testTargetSwitch == 4 then
 			MapModData.text = "Your current spell modifier (" .. g_modSpell .. ") is insufficient to " .. verb .. " any " .. unitStr .. " (power: " .. g_int2 .. ")"
+		else
+			MapModData.text = "You cannot cast this spell currently"	--why not?
 		end
 	end
 end

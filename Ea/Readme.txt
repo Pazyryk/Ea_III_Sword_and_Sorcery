@@ -68,6 +68,8 @@ void	ChangeLeaderType(eNewLeaderType)
 void	SetFoundedFirstCity()
 int		GetLeaderYieldBoost(int yieldTypeID)
 void	SetLeaderYieldBoost(int yieldTypeID, iNewValue)
+bool	IsYieldFromSpecialPlotsOnly()
+void	SetYieldFromSpecialPlotsOnly(bool bValue)	--used to restrict plot yields for Pantheistic civs
 
 --------------------------------------------------------------
 -- Plots

@@ -185,6 +185,10 @@ function OnPlayerAdoptPolicyBranch(iPlayer, policyBranchTypeID)					--called by 
 		local team = Teams[iTeam]
 		local eaPlayer = gPlayers[iPlayer]
 		local capital = player:GetCapitalCity()
+
+		--Plot yields
+		player:SetYieldFromSpecialPlotsOnly(true)	--new Ea API; this is what kills plot yields for all but resourced, GP improved, and some few other cases
+
 		--Religion
 		if gReligions[RELIGION_THE_WEAVE_OF_EA] then
 			if capital then

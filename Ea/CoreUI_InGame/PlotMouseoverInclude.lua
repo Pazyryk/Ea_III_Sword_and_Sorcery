@@ -346,7 +346,9 @@ function GetImprovementString(plot)
 			local eaEncampmentInfo = GameInfo.EaEncampments[encampmentID]
 			improvementStr = Locale.ConvertTextKey(eaEncampmentInfo.Description)
 		elseif iImprovementType == GameInfoTypes.IMPROVEMENT_ARCANE_TOWER then
-			improvementStr = plot:GetScriptData()		
+			improvementStr = plot:GetScriptData()	
+		elseif iImprovementType == GameInfoTypes.IMPROVEMENT_RUINS then
+			improvementStr = plot:GetScriptData() .. " (Ruins)"		
 		else
 			improvementStr = GetImprovementText(iImprovementType)
 		end

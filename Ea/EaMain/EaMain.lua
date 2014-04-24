@@ -65,6 +65,7 @@ include("EaCivNaming.lua")
 
 include("EaUnitCombat.lua")
 include("EaUnits.lua")
+include("EaWonders.lua")
 include("EaYields.lua")
 include("EaDiplomacy.lua")			--depends on EaPolicies
 include("EaVictories.lua")
@@ -94,26 +95,25 @@ local Clock = os.clock
 
 --localized global functions
 
-local AICivsPerGameTurn =	AICivsPerGameTurn
-local AIMercenaryPerGameTurn = AIMercenaryPerGameTurn
-local PlotsPerTurn =		PlotsPerTurn
-local UnitPerCivTurn =		UnitPerCivTurn
-local UpdateAllArtifacts =	UpdateAllArtifacts
-local CityPerCivTurn =		CityPerCivTurn
-local FullCivPerCivTurn =	FullCivPerCivTurn
-local PolicyPerCivTurn =	PolicyPerCivTurn
-local TechPerCivTurn =		TechPerCivTurn
-local TestAllCivNamingConditions =		TestAllCivNamingConditions
-local AICivRun =			AICivRun
-local PeoplePerCivTurn =	PeoplePerCivTurn
-local UpdateGlobalYields =	UpdateGlobalYields
-local UpdateCityYields =	UpdateCityYields
-local PeopleAfterTurn =		PeopleAfterTurn
-
+local AICivsPerGameTurn =			AICivsPerGameTurn
+local AIMercenaryPerGameTurn =		AIMercenaryPerGameTurn
+local PlotsPerTurn =				PlotsPerTurn
+local UnitPerCivTurn =				UnitPerCivTurn
+local UpdateAllArtifacts =			UpdateAllArtifacts
+local UpdateAllPlayerWonders =		UpdateAllPlayerWonders
+local CityPerCivTurn =				CityPerCivTurn
+local FullCivPerCivTurn =			FullCivPerCivTurn
+local PolicyPerCivTurn =			PolicyPerCivTurn
+local TechPerCivTurn =				TechPerCivTurn
+local TestAllCivNamingConditions =	TestAllCivNamingConditions
+local AICivRun =					AICivRun
+local PeoplePerCivTurn =			PeoplePerCivTurn
+local UpdateGlobalYields =			UpdateGlobalYields
+local UpdateCityYields =			UpdateCityYields
+local PeopleAfterTurn =				PeopleAfterTurn
 
 --shared
 local MapModData = MapModData
-
 
 --file control
 local g_lastPlayerID = -1
@@ -127,10 +127,7 @@ local timerAllPerTurnFunctions = 0
 local bInitialized = false
 
 local g_iActivePlayer = Game.GetActivePlayer()
-
 local g_autoSaveFreq = 5
-
---local syncTest = 0
 
 -------------------------------------------------------------------------------------------------------
 -- File Functions
@@ -261,6 +258,7 @@ local function OnPlayerDoTurn(iPlayer)	-- Runs at begining of turn for all livin
 		local eaPlayer = gPlayers[iPlayer]
 		UnitPerCivTurn(iPlayer)						--must be before PeoplePerCivTurn(iPlayer)
 		UpdateAllArtifacts()
+		UpdateAllPlayerWonders(iPlayer)
 		CityPerCivTurn(iPlayer)						--must be before FullCivPerCivTurn (religion counting) and PeoplePerCivTurn (gp point counting)
 		UpdateCivReligion(iPlayer, true)
 		PolicyPerCivTurn(iPlayer)

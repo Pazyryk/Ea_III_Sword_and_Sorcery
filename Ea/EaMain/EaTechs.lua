@@ -14,23 +14,19 @@ local Dprint = DEBUG_PRINT and print or function() end
 local KM_PER_TECH_PER_CITIZEN = 0.1
 local FAVORED_TECH_COST_REDUCTION = -20
 
-
---local KM_PER_TECH = 4.5
---local KM_FREE_TECHS = 4
---local KM_DISCOUNT_FROM_KNOWLEGE_TECHS = 0.3
-
 --------------------------------------------------------------
 -- local defs
 --------------------------------------------------------------
 
 --constants
-local BARB_PLAYER_INDEX =					BARB_PLAYER_INDEX	
+local BARB_PLAYER_INDEX =				BARB_PLAYER_INDEX	
 local AI_FREE_TECHS =					GameInfo.HandicapInfos[Game:GetHandicapType()].EaAIFreeTechs
 
 local EARACE_MAN =						GameInfoTypes.EARACE_MAN
 local EARACE_SIDHE =					GameInfoTypes.EARACE_SIDHE
 local EARACE_HELDEOFOL =				GameInfoTypes.EARACE_HELDEOFOL
 local EACIV_SISUKAS =					GameInfoTypes.EACIV_SISUKAS
+local EA_WONDER_GREAT_LIBRARY =			GameInfoTypes.EA_WONDER_GREAT_LIBRARY
 local POLICY_PANTHEISM =				GameInfoTypes.POLICY_PANTHEISM
 local POLICY_SCHOLASTICISM = 			GameInfoTypes.POLICY_SCHOLASTICISM
 local POLICY_ACADEMIC_TRADITION = 		GameInfoTypes.POLICY_ACADEMIC_TRADITION
@@ -246,6 +242,14 @@ local function OnPlayerTechCostMod(iPlayer, techID)		--Ea API
 	end
 	if arcaneTechs[techID] then
 		mod = mod + gg_playerArcaneMod[iPlayer]
+	end
+	local greatLibrary = gWonders[EA_WONDER_GREAT_LIBRARY]
+	if greatLibrary and greatLibrary.iPlayer == iPlayer then
+		mod = mod - greatLibrary.mod
+	end
+
+	if mod < -50 then
+		mod = -50 - Floor(50 * (mod + 50) / mod)		--beyond -50, becomes asymptotic to -100
 	end
 
 	return mod

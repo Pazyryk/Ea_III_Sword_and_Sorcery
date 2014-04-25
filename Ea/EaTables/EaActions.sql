@@ -72,7 +72,7 @@ CREATE TABLE EaActions ('ID' INTEGER PRIMARY KEY AUTOINCREMENT,
 						--Target reqs
 						'City' TEXT DEFAULT NULL,			--'Own', 'Foreign', 'Any', 'Not' or NULL
 						'CapitalOnly' BOOLEAN DEFAULT NULL,
-						'TowerTempleOnly' BOOLEAN DEFAULT NULL,	--Must be appropriate for caster, e.g., a Thaumaturge's own Tower)
+						'TowerTempleOnly' BOOLEAN DEFAULT NULL,	--Use for Spells only! Assumes ConsiderTowerTemple is true. Must be appropriate for caster (e.g., a Thaumaturge's own Tower)
 						'BuildingReq' TEXT DEFAULT NULL,
 						'OwnTerritory' BOOLEAN DEFAULT NULL,
 						'OwnCityRadius' BOOLEAN DEFAULT NULL,
@@ -80,7 +80,7 @@ CREATE TABLE EaActions ('ID' INTEGER PRIMARY KEY AUTOINCREMENT,
 						--Process
 						'GPModType1' TEXT DEFAULT NULL,
 						'GPModType2' TEXT DEFAULT NULL,
-						'ApplyTowerTempleMod' BOOLEAN DEFAULT NULL,
+						'ConsiderTowerTemple' BOOLEAN DEFAULT NULL,	--Use only for Spells!
 						'NoGPNumLimit' BOOLEAN DEFAULT NULL,
 						'FinishMoves' BOOLEAN DEFAULT 1,
 						'StayInvisible' BOOLEAN DEFAULT NULL,
@@ -100,7 +100,7 @@ CREATE TABLE EaActions ('ID' INTEGER PRIMARY KEY AUTOINCREMENT,
 						'HumanVisibleSound' TEXT DEFAULT NULL,
 						'PlayAnywhereSound' TEXT DEFAULT NULL,
 						--Do effect (only works when TurnsToComplete = 1)
-						'UnitUpgradeTypePrefix' TEXT DEFAULT NULL,
+						'UnitUpgradeTypePrefix' TEXT DEFAULT NULL,	--don't use for Spell!
 						--Finish effect (only works when TurnsToComplete > 1)
 						'ImprovementType' TEXT DEFAULT NULL,		--must be set with BuildType	
 						'ClaimsPlot' BOOLEAN DEFAULT NULL,			--works to radius 10 for now
@@ -154,6 +154,8 @@ UPDATE EaActions SET LevelReq = 6 WHERE Type IN ('EA_ACTION_UPGRD_MARKSMEN', 'EA
 UPDATE EaActions SET PolicyReq = 'POLICY_SLAVE_ARMIES' WHERE Type = 'EA_ACTION_UPGRD_SLAVES_WARRIORS';
 
 --GP actions
+--Lua assumes that EA_ACTION_TAKE_LEADERSHIP is the first GP action
+
 --Common actions
 INSERT INTO EaActions (Type,			Description,							Help,										GPOnly,	UIType,		AITarget,		City,	GPModType1,			ProgressHolder,	IconIndex,	IconAtlas) VALUES
 ('EA_ACTION_TAKE_LEADERSHIP',			'TXT_KEY_EA_ACTION_TAKE_LEADERSHIP',	'TXT_KEY_EA_ACTION_TAKE_LEADERSHIP_HELP',	1,		'Action',	'OwnCapital',	'Own',	'EAMOD_LEADERSHIP',	NULL,			0,			'EA_ACTION_ATLAS'	),
@@ -175,7 +177,7 @@ INSERT INTO EaActions (Type,			Description,							Help,										GPOnly,	NoGPNum
 ('EA_ACTION_CHANNEL',					'TXT_KEY_EA_ACTION_CHANNEL',			'TXT_KEY_EA_ACTION_CHANNEL_HELP',			1,		1,				'Action',	'OwnTower',			'Thaumaturge',	'Not',		'EAMOD_EVOCATION',		1000,				'Person',		17,			'BW_ATLAS_2'			);
 
 UPDATE EaActions SET GPModType2 = 'EAMOD_RITUALISM' WHERE Type = 'EA_ACTION_WORSHIP';
-UPDATE EaActions SET NotGPClass = 'Devout', TowerTempleOnly = 1 WHERE Type = 'EA_ACTION_CHANNEL';
+UPDATE EaActions SET NotGPClass = 'Devout' WHERE Type = 'EA_ACTION_CHANNEL';
 
 
 --Warrior actions
@@ -408,7 +410,7 @@ INSERT INTO EaActions (Type,			SpellClass,	GPModType1,				PantheismCult,					Cit
 
 --Build out the table for dependent strings
 UPDATE EaActions SET Description = 'TXT_KEY_' || Type, Help = 'TXT_KEY_' || Type || '_HELP' WHERE Type GLOB 'EA_SPELL_*';
-UPDATE EaActions SET GPOnly = 1, ApplyTowerTempleMod = 1, UIType = 'Build' WHERE Type GLOB 'EA_SPELL_*';		--need spell UI
+UPDATE EaActions SET GPOnly = 1, ConsiderTowerTemple = 1, UIType = 'Build' WHERE Type GLOB 'EA_SPELL_*';		--need spell UI
 UPDATE EaActions SET ProgressHolder = 'Person' WHERE Type GLOB 'EA_SPELL_*' AND TurnsToComplete > 1;
 
 

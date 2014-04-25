@@ -41,11 +41,11 @@ include("EaInit.lua")				--3rd
 
 include("_Debug.lua")
 include("EaActions.lua")
-include("EaAIActions.lua")			--depends on EaActions
+include("EaSpells.lua")
+include("EaAIActions.lua")			--depends on EaActions and EaSpells
 include("EaAIPeople.lua")
 include("EaAICivPlanning.lua")
 include("EaAIStrategy.lua")
-
 
 include("EaAIMercenaries.lua")
 include("EaTrade.lua")

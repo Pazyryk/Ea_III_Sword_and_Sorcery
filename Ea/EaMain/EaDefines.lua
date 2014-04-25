@@ -92,6 +92,7 @@ for promotion in GameInfo.UnitPromotions() do
 end
 MapModData.HIGHEST_PROMOTION_ID = HIGHEST_PROMOTION_ID
 
+FIRST_GP_ACTION = GameInfoTypes.EA_ACTION_TAKE_LEADERSHIP
 FIRST_SPELL_ID = 0
 FIRST_COMBAT_ACTION_ID = 0
 for eaAction in GameInfo.EaActions() do

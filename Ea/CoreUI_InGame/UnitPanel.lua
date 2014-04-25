@@ -246,8 +246,11 @@ function UpdateUnitActions( unit )
 			local eaActionID = 1
 			local eaAction = GameInfo.EaActions[1]
 			while eaAction do
-
-				LuaEvents.EaActionsTestEaActionForHumanUI(eaActionID, iPlayer, unit, iPerson, x, y)
+				if eaActionID < MapModData.FIRST_SPELL_ID then
+					LuaEvents.EaActionsTestEaActionForHumanUI(eaActionID, iPlayer, unit, iPerson, x, y)
+				else
+					LuaEvents.EaSpellsTestEaSpellForHumanUI(eaActionID, iPlayer, unit, iPerson, x, y)
+				end
 				local bShow = MapModData.bShow
 				local bDisabled = not MapModData.bAllow
 				local uiType = eaAction.UIType
@@ -296,7 +299,11 @@ function UpdateUnitActions( unit )
 		for i = 1, numNonGPActions do
 			local eaActionID = cachedNonGPActions[i]
 			local eaAction = GameInfo.EaActions[eaActionID]
-			LuaEvents.EaActionsTestEaActionForHumanUI(eaActionID, iPlayer, unit, nil, x, y)
+			if eaActionID < MapModData.FIRST_SPELL_ID then
+				LuaEvents.EaActionsTestEaActionForHumanUI(eaActionID, iPlayer, unit, nil, x, y)
+			else
+				LuaEvents.EaSpellsTestEaSpellForHumanUI(eaActionID, iPlayer, unit, nil, x, y)
+			end
 			local bShow = MapModData.bShow
 			local bDisabled = not MapModData.bAllow
 			local uiType = eaAction.UIType
@@ -1160,10 +1167,13 @@ function OnEaActionClicked(eaActionID)
 	if bOkayToProcess then
 		local unit = UI.GetHeadSelectedUnit()
 		local iPerson = unit:IsGreatPerson() and unit:GetPersonIndex() or nil
-		LuaEvents.EaActionsDoEaActionFromOtherState(eaActionID, unit:GetOwner(), unit, iPerson, unit:GetX(), unit:GetY())
+		if eaActionID < MapModData.FIRST_SPELL_ID then
+			LuaEvents.EaActionsDoEaActionFromOtherState(eaActionID, unit:GetOwner(), unit, iPerson, unit:GetX(), unit:GetY())
+		else
+			LuaEvents.EaSpellsDoEaSpellFromOtherState(eaActionID, unit:GetOwner(), unit, iPerson, unit:GetX(), unit:GetY())
+		end
 	end
 end
-
 --end Paz add
 
 --------------------------------------------------------------------------------
@@ -1221,8 +1231,11 @@ function EaTipHandler(control)
 	local eaAction = GameInfo.EaActions[eaActionID]
 	local iPerson = unit:IsGreatPerson() and unit:GetPersonIndex() or nil
 
-	LuaEvents.EaActionsTestEaActionForHumanUI(eaActionID, iPlayer, unit, iPerson, unit:GetX(), unit:GetY())
-
+	if eaActionID < MapModData.FIRST_SPELL_ID then
+		LuaEvents.EaActionsTestEaActionForHumanUI(eaActionID, iPlayer, unit, iPerson, unit:GetX(), unit:GetY())
+	else
+		LuaEvents.EaSpellsTestEaSpellForHumanUI(eaActionID, iPlayer, unit, iPerson, unit:GetX(), unit:GetY())
+	end
 	local bAllow = MapModData.bAllow
 
 	--print("EaTipHandler", eaActionID, bShow)

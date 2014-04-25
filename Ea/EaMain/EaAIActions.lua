@@ -40,6 +40,7 @@ local FEATURE_MARSH =	 					GameInfoTypes.FEATURE_MARSH
 
 local EA_WONDER_ARCANE_TOWER =	 			GameInfoTypes.EA_WONDER_ARCANE_TOWER
 
+local FIRST_GP_ACTION =						FIRST_GP_ACTION
 local FIRST_COMBAT_ACTION_ID =				FIRST_COMBAT_ACTION_ID
 local FIRST_SPELL_ID =						FIRST_SPELL_ID
 local LAST_SPELL_ID =						LAST_SPELL_ID
@@ -58,6 +59,9 @@ local gg_unitClusters =						gg_unitClusters	--values set in EaUnitsAI.lua; used
 local TestEaAction =						TestEaAction
 local TestEaActionTarget =					TestEaActionTarget
 local DoEaAction =							DoEaAction
+local TestEaSpell =							TestEaSpell
+local TestEaSpellTarget =					TestEaSpellTarget
+local DoEaSpell =							DoEaSpell
 local Distance =							Map.PlotDistance
 local GetPlotFromXY =						Map.GetPlot
 local Format =								string.format
@@ -215,8 +219,14 @@ local function TestAddOption(targetType, index1, index2, tieBreaker, g)
 
 	--For time discout math see: 
 	--http://forums.civfanatics.com/showpost.php?p=11452419&postcount=89
+	local bTestTarget
+	if g_eaActionID < FIRST_SPELL_ID then
+		bTestTarget = TestEaActionTarget(g_eaActionID, index1, index2, true)
+	else
+		bTestTarget = TestEaSpellTarget(g_eaActionID, index1, index2, true)
+	end
 
-	if TestEaActionTarget(g_eaActionID, index1, index2, true) then		--this will set gg_aiOptionValues from EaActions.lua
+	if bTestTarget then		--gg_aiOptionValues will be set from either EaActions.lua or EaSpells.lua
 
 		local t = gg_aiOptionValues.t					--turns to complete (integer > 0; t=1 for "instant" effect because all actions with value use up GP movement)
 		local i = gg_aiOptionValues.i					--adjusted instant gain/loss when completed
@@ -292,7 +302,6 @@ end
 local function AddCombatOptions(rallyX, rallyY)
 	--if supplied, rallyX and rallyY used for tiebreaker
 	print("Running AddCombatOptions ", rallyX, rallyY)
-	local TestEaAction = TestEaAction
 	local PlotToRadiusIterator = PlotToRadiusIterator
 	local Distance = Map.PlotDistance
 	local GetPlotIndexFromXY = GetPlotIndexFromXY
@@ -302,13 +311,21 @@ local function AddCombatOptions(rallyX, rallyY)
 	g_eaActionID = FIRST_COMBAT_ACTION_ID		--before this are actions we don't want to test
 	local eaAction = GameInfo.EaActions[g_eaActionID]
 	while eaAction do
-		if eaAction.AICombatRole and TestEaAction(g_eaActionID, g_iPlayer, g_unit, g_iPerson, nil, nil, true) then	--this will set player/person file locals
-			print("AI: Non-target tests passed for ", eaAction.Type)
-			for x, y in PlotToRadiusIterator(g_gpX, g_gpY, 5) do
-				local tieBreaker = rallyX and 5 / Distance(x, y, rallyX, rallyY) or 0
-				local iPlot = GetPlotIndexFromXY(x, y)
-				local plot = GetPlotFromXY(x, y)
-				TestAddOption("Plot", x, y, tieBreaker, nil)
+		if eaAction.AICombatRole then	--this will set player/person file locals
+			local bTest
+			if g_eaActionID < FIRST_SPELL_ID then
+				bTest = TestEaAction(g_eaActionID, g_iPlayer, g_unit, g_iPerson, nil, nil, true)
+			else
+				bTest = TestEaSpell(g_eaActionID, g_iPlayer, g_unit, g_iPerson, nil, nil, true)
+			end
+			if bTest then
+				print("AI: Non-target tests passed for ", eaAction.Type)
+				for x, y in PlotToRadiusIterator(g_gpX, g_gpY, 5) do
+					local tieBreaker = rallyX and 5 / Distance(x, y, rallyX, rallyY) or 0
+					local iPlot = GetPlotIndexFromXY(x, y)
+					local plot = GetPlotFromXY(x, y)
+					TestAddOption("Plot", x, y, tieBreaker, nil)
+				end
 			end
 		end
 		g_eaActionID = g_eaActionID + 1
@@ -621,16 +638,22 @@ local function AddNonCombatOptions()
 	
 	print("Running AddNonCombatOptions", bSpellCaster)
 
-	g_eaActionID = 1		--before this are actions we don't want to test
+	g_eaActionID = FIRST_GP_ACTION		--before this are actions we don't want to test
 	local eaAction = GameInfo.EaActions[g_eaActionID]
 	while eaAction do
-		if not eaAction.AICombatRole and TestEaAction(g_eaActionID, g_iPlayer, g_unit, g_iPerson, nil, nil, true) then	--this will set player/person file locals
-			print("AI: Non-target tests passed for ", eaAction.Type)
-			local AITargetFunction = AITarget[eaAction.AITarget]
-			if AITargetFunction then
-				AITargetFunction()
+		if not eaAction.AICombatRole then
+			local bTest
+			if g_eaActionID < FIRST_SPELL_ID then
+				bTest = TestEaAction(g_eaActionID, g_iPlayer, g_unit, g_iPerson, nil, nil, true)	--this will set player/person file locals
 			else
-				--error("No AITarget function for " .. (eaAction.AITarget or "nil") .. "   " .. eaAction.Type)
+				bTest = TestEaSpell(g_eaActionID, g_iPlayer, g_unit, g_iPerson, nil, nil, true)
+			end
+			if bTest then
+				print("AI: Non-target tests passed for ", eaAction.Type)
+				local AITargetFunction = AITarget[eaAction.AITarget]
+				if AITargetFunction then
+					AITargetFunction()
+				end
 			end
 		end
 		g_eaActionID = g_eaActionID + 1
@@ -764,12 +787,12 @@ local function DoOrGotoBestOption(bestVoption)
 	if targetPlotIndex then
 		if targetPlotIndex == g_gpPlotIndex then	--GP is here so do it
 			print("AI GP at target; attempting to do option:", bestVoption, bestV)
-			--g_eaPerson.gotoPlotIndex = -1	
-			--g_eaPerson.gotoEaActionID = -1
-			--note: g_eaPlayer.actionPlotTargeted will be set by DoEaAction if this action has turnsToComplete > 1
-			if DoEaAction(option.eaActionID, g_iPlayer, g_unit, g_iPerson) then
-				bSuccess = true
-			else				
+			if option.eaActionID < FIRST_SPELL_ID then
+				bSuccess = DoEaAction(option.eaActionID, g_iPlayer, g_unit, g_iPerson)
+			else
+				bSuccess = DoEaSpell(option.eaActionID, g_iPlayer, g_unit, g_iPerson)
+			end
+			if not bSuccess then				
 				Blacklist(option.eaActionID, targetPlotIndex)			--don't try this again
 			end
 		else								--GP needs to move to plot
@@ -837,11 +860,12 @@ function AIGPDoSomething(iPlayer, iPerson, unit)		--unit cannot be nil
 			InterruptEaAction(iPlayer, iPerson)	--cleans everything up so GP can look for something below
 		else
 			g_eaPlayer.aiUniqueTargeted[doNowEaActionID] = nil	--in case we were blocking a unique (DoEaAction will now block)
-			if DoEaAction(doNowEaActionID, iPlayer, unit, iPerson) then
-				return
+			if doNowEaActionID < FIRST_SPELL_ID then
+				if DoEaAction(doNowEaActionID, iPlayer, unit, iPerson) then return end
 			else
-				print("!!!! Warning: GP tried to do action at destination, but failed; will look for something else to do...")
+				if DoEaSpell(doNowEaActionID, iPlayer, unit, iPerson) then return end
 			end
+			print("!!!! Warning: GP tried to do action at destination, but failed; will look for something else to do...")
 		end	
 	elseif g_eaPerson.gotoEaActionID ~= -1 then	--Something went wrong and we didn't get to plot to do action; reassess from here
 		print("!!!! Warning: GP waiting for instructions, but has gotoEaActionID", g_eaPerson.gotoEaActionID)
@@ -1041,13 +1065,11 @@ function AIGPTestCombatInterrupt(iPlayer, iPerson, unit)		--called each turn (un
 		print("GP is >3 plots from rally plot; will now attempt to move to it")
 		--ClearActionPlotTargetedForPerson(g_eaPlayer, iPerson)
 		DoEaAction(EA_ACTION_GO_TO_PLOT, iPlayer, unit, iPerson, rallyX, rallyY) 	--will interrupt whatever GP was doing before
-		--DebugFunctionExitTest("AIGPTestCombatInterrupt")		
 		return true
 	end
 
 	--Note: if GP within 3 plots of rallyPoint and has no combat options, then it will be alowed to carry out non-combat options (but may be interupted again if it moves away)
 
-	--DebugFunctionExitTest("AIGPTestCombatInterrupt")
 	return false
 end
 

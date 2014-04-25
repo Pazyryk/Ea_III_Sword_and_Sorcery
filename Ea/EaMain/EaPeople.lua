@@ -10,6 +10,7 @@ local Dprint = DEBUG_PRINT and print or function() end
 --------------------------------------------------------------
 -- Local Defines
 --------------------------------------------------------------
+local FIRST_SPELL_ID =					FIRST_SPELL_ID
 local HIGHEST_PROMOTION_ID =			HIGHEST_PROMOTION_ID
 local MOD_MEMORY_HALFLIFE =				MOD_MEMORY_HALFLIFE
 
@@ -277,27 +278,33 @@ function PeoplePerCivTurn(iPlayer)
 				--Do or test action
 				if eaPerson.eaActionID ~= -1 then
 					if bHumanPlayer then	
-		
-						print("About to TestEaAction for human", eaPerson.eaActionID, iPlayer, unit, iPerson)
-						if eaPerson.eaActionID == 0 or TestEaAction(eaPerson.eaActionID, iPlayer, unit, iPerson) then --skip as long as it is a move or a valid action (human does action after turn)
-							if unit and not (eaPerson.eaActionID == 0 and eaPerson.gotoPlotIndex == GetPlotIndexFromXY(unit:GetX(), unit:GetY())) then
-								print("Skipping human GP", eaPerson.name)
-								print("GP Moves = ", unit:GetMoves())
+						local eaActionID = eaPerson.eaActionID
+						print("About to TestEaAction for human", eaActionID, iPlayer, unit, iPerson)
+						if eaActionID == 0 then
+							skipPeople[iPerson] = true
+						elseif eaActionID < FIRST_SPELL_ID then
+							if TestEaAction(eaActionID, iPlayer, unit, iPerson) then
 								skipPeople[iPerson] = true
-
-								--below works but not here (must be after turn started?)
-								--unit:PopMission()
-								--unit:PushMission(MissionTypes.MISSION_SKIP, unit:GetX(), unit:GetY(), 0, 0, 1, MissionTypes.MISSION_SKIP, unit:GetPlot(), unit)		--remove from unit cycle selection
+							else
+								print("Human GP failed TestEaAction at start of turn")
+								InterruptEaAction(iPlayer, iPerson)
 							end
 						else
-							print("Human GP failed TestEaAction at start of turn")
-							InterruptEaAction(iPlayer, iPerson)	--failed TestEaAction does not call this (as does DoEaAction) so we call it here
-							--ReappearGP(iPlayer, iPerson)
+							if TestEaSpell(eaActionID, iPlayer, unit, iPerson) then
+								skipPeople[iPerson] = true
+							else
+								print("Human GP failed TestEaSpell at start of turn")
+								InterruptEaSpell(iPlayer, iPerson)
+							end
 						end
 					elseif not AIGPTestCombatInterrupt(iPlayer, iPerson, unit) then
 						print("No combat interrupt for AI; about to do action ", eaPerson.eaActionID, iPlayer, unit, iPerson)
 						print("eaPerson.gotoPlotIndex, .gotoEaActionID = ", eaPerson.gotoPlotIndex, eaPerson.gotoEaActionID)
-						DoEaAction(eaPerson.eaActionID, iPlayer, unit, iPerson) 	--AI keeps doing action until done or fails
+						if eaPerson.eaActionID < FIRST_SPELL_ID then
+							DoEaAction(eaPerson.eaActionID, iPlayer, unit, iPerson) 	--AI keeps doing action until done or fails
+						else
+							DoEaSpell(eaPerson.eaActionID, iPlayer, unit, iPerson)
+						end
 						print("eaPerson.gotoPlotIndex, .gotoEaActionID = ", eaPerson.gotoPlotIndex, eaPerson.gotoEaActionID)
 					end
 				end
@@ -374,8 +381,14 @@ function PeopleAfterTurn(iPlayer, bActionInfoPanelCall)
 					if unit:GetMoves() > 0 then
 						local eaActionID = eaPerson.eaActionID
 						if eaActionID ~= -1 then
-							if not DoEaAction(eaActionID, iPlayer, unit, iPerson) then	--does action or cancels
-								bAllowHumanPlayerEndTurn = false
+							if eaActionID < FIRST_SPELL_ID then
+								if not DoEaAction(eaActionID, iPlayer, unit, iPerson) then	--does action or cancels
+									bAllowHumanPlayerEndTurn = false
+								end
+							else
+								if not DoEaSpell(eaActionID, iPlayer, unit, iPerson) then
+									bAllowHumanPlayerEndTurn = false
+								end
 							end
 						else
 							--clear whatever this unit thought it was doing (including skip)

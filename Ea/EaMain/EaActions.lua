@@ -78,7 +78,7 @@ local gg_playerValues =						gg_playerValues
 local gg_bToCheapToHire =					gg_bToCheapToHire
 local gg_bNormalCombatUnit =				gg_bNormalCombatUnit
 local gg_bNormalLivingCombatUnit =			gg_bNormalLivingCombatUnit
-local gg_normalizedUnitPower =					gg_normalizedUnitPower
+local gg_normalizedUnitPower =				gg_normalizedUnitPower
 
 
 --localized functions
@@ -353,9 +353,14 @@ local function FinishEaAction(eaActionID)		--only called from DoEaAction so file
 		g_city:SetNumRealBuilding(buildingID, g_mod)
 	end
 
-	if g_eaAction.EaWonder then
+	if g_eaAction.EaWonder then		--Single -instance wonders only! Multiple-instance must be done in special function
 		local wonderID = GameInfoTypes[g_eaAction.EaWonder]
-		gWonders[wonderID] = {mod = g_mod, iPlot = g_iPlot}
+		gWonders[wonderID] = {mod = g_mod, iPlot = g_iPlot, iPlayer = -1}	--iPlayer = -1 so it will update in UpdateUniqueWonder
+		if g_iOwner ~= g_iPlayer then			--claims plot if not already owned
+			local city = GetNewOwnerCityForPlot(g_iPlayer, g_iPlot)
+			g_plot:SetOwner(g_iPlayer, city:GetID())
+		end
+		UpdateUniqueWonder(g_iPlayer, wonderID)
 		--TO DO! need popup or notification
 		--LuaEvents.EaImagePopupSpecial("EaWonder", artifactID)
 
@@ -2039,12 +2044,13 @@ end
 
 Finish[GameInfoTypes.EA_ACTION_OCCUPY_TOWER] = function()
 	local tower = gWonders[EA_WONDER_ARCANE_TOWER][g_int1]
-	gWonders[EA_WONDER_ARCANE_TOWER][g_iPlayer] = tower
+	gWonders[EA_WONDER_ARCANE_TOWER][g_iPerson] = tower
 	g_eaPerson.bHasTower = true
 	gWonders[EA_WONDER_ARCANE_TOWER][g_int1] = nil
-	SetTowerMods(g_iPerson)
+	SetTowerMods(g_iPlayer, g_iPerson)
 	UseManaOrDivineFavor(g_iPlayer, g_iPerson, g_value, false)
 	g_specialEffectsPlot = g_plot
+	UpdateInstanceWonder(g_iPlayer, EA_WONDER_ARCANE_TOWER)
 end
 
 ------------------------------------------------------------------------------------------------------------------------------
@@ -2454,6 +2460,10 @@ SetAIValues[GameInfoTypes.EA_ACTION_ARCANE_TOWER] = function()
 end
 
 Finish[GameInfoTypes.EA_ACTION_ARCANE_TOWER] = function()
+	if g_iOwner ~= g_iPlayer then
+		local city = GetNewOwnerCityForPlot(g_iPlayer, g_iPlot)
+		g_plot:SetOwner(g_iPlayer, city:GetID())
+	end
 	g_eaPerson.bHasTower = true
 	if not g_eaPerson.name then
 		UngenericizePerson(g_iPlayer, g_iPerson, nil)
@@ -2465,12 +2475,9 @@ Finish[GameInfoTypes.EA_ACTION_ARCANE_TOWER] = function()
 		str = str .. "'s Tower"
 	end
 	g_plot:SetScriptData(str)
-	gWonders[EA_WONDER_ARCANE_TOWER][g_iPerson] = {iPlot = g_iPlot, iNamedFor = g_iPerson}
-	SetTowerMods(g_iPerson)
-	if g_iOwner ~= g_iPlayer then
-		local city = GetNewOwnerCityForPlot(g_iPlayer, g_iPlot)
-		g_plot:SetOwner(g_iPlayer, city:GetID())
-	end
+	gWonders[EA_WONDER_ARCANE_TOWER][g_iPerson] = {iPlot = g_iPlot, iNamedFor = g_iPerson, iPlayer = -1}
+	SetTowerMods(g_Player, g_iPerson)
+	UpdateInstanceWonder(g_iPlayer, EA_WONDER_ARCANE_TOWER)
 	return true
 end
 

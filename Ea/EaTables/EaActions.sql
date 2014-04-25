@@ -107,7 +107,7 @@ CREATE TABLE EaActions ('ID' INTEGER PRIMARY KEY AUTOINCREMENT,
 						'FoundsSpreadsCult' TEXT DEFAULT NULL,
 						'Building' TEXT DEFAULT NULL,		--this building already present acts as target disallow
 						'BuildingMod' TEXT DEFAULT NULL,	--adds mod instances of this building; this building already present acts as target disallow
-						'EaWonder' TEXT DEFAULT NULL,
+						'EaWonder' TEXT DEFAULT NULL,		--Leave NULL for multiple instance wonders!
 						'EaEpic' TEXT DEFAULT NULL,
 						'EaArtifact' TEXT DEFAULT NULL,
 						'FinishXP' INTEGER DEFAULT 0);

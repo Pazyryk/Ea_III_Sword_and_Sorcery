@@ -100,7 +100,7 @@ local AIMercenaryPerGameTurn =		AIMercenaryPerGameTurn
 local PlotsPerTurn =				PlotsPerTurn
 local UnitPerCivTurn =				UnitPerCivTurn
 local UpdateAllArtifacts =			UpdateAllArtifacts
-local UpdateAllPlayerWonders =		UpdateAllPlayerWonders
+local WondersPerCivTurn =			WondersPerCivTurn
 local CityPerCivTurn =				CityPerCivTurn
 local FullCivPerCivTurn =			FullCivPerCivTurn
 local PolicyPerCivTurn =			PolicyPerCivTurn
@@ -258,7 +258,7 @@ local function OnPlayerDoTurn(iPlayer)	-- Runs at begining of turn for all livin
 		local eaPlayer = gPlayers[iPlayer]
 		UnitPerCivTurn(iPlayer)						--must be before PeoplePerCivTurn(iPlayer)
 		UpdateAllArtifacts()
-		UpdateAllPlayerWonders(iPlayer)
+		WondersPerCivTurn(iPlayer)
 		CityPerCivTurn(iPlayer)						--must be before FullCivPerCivTurn (religion counting) and PeoplePerCivTurn (gp point counting)
 		UpdateCivReligion(iPlayer, true)
 		PolicyPerCivTurn(iPlayer)

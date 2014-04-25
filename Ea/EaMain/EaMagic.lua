@@ -88,7 +88,7 @@ end
 LuaEvents.EaMagicGenerateLearnableSpellList.Add(function(iPlayer, iPerson, spellClass) return HandleError31(GenerateLearnableSpellList, iPlayer, iPerson, spellClass) end)
 
 
-function UseManaOrDivineFavor(iPlayer, iPerson, pts, bNoDrain)
+function UseManaOrDivineFavor(iPlayer, iPerson, pts, bNoDrain, consumedFloatUpPlot)
 	--All mana or divine favor use should go through here!
 
 	--Reduces player faith, adds GP xp and depletes Ea's mana if appropriate
@@ -111,8 +111,7 @@ function UseManaOrDivineFavor(iPlayer, iPerson, pts, bNoDrain)
 			end
 			unit:ChangeExperience(xp)
 			if eaPlayer.bIsFallen then
-				bManaEaterFloatup = true
-				unit:GetPlot():AddFloatUpMessage(Locale.Lookup("TXT_KEY_EA_CONSUMED_MANA", pts), 2)	--delay until after xp
+				consumedFloatUpPlot = consumedFloatUpPlot or unit:GetPlot()
 			end
 		end
 	end
@@ -120,9 +119,8 @@ function UseManaOrDivineFavor(iPlayer, iPerson, pts, bNoDrain)
 	if eaPlayer.bIsFallen then
 		gWorld.sumOfAllMana = gWorld.sumOfAllMana - pts
 		eaPlayer.manaConsumed = (eaPlayer.manaConsumed or 0) + pts
-		if not bManaEaterFloatup then
-			player:GetCapitalCity():Plot():AddFloatUpMessage(Locale.Lookup("TXT_KEY_EA_CONSUMED_MANA", pts), 1)
-		end
+		consumedFloatUpPlot = consumedFloatUpPlot or player:GetCapitalCity():Plot()
+		consumedFloatUpPlot:AddFloatUpMessage(Locale.Lookup("TXT_KEY_EA_CONSUMED_MANA", pts), 2)
 	end
 
 	if bNoDrain then

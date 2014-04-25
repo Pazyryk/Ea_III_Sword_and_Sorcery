@@ -572,32 +572,28 @@ function UnitPerCivTurn(iPlayer)	--runs for full civs and city states
 
 end
 
-
-
 local function OnUnitTakingPromotion(iPlayer, iUnit, promotionID)
 	print("OnUnitTakingPromotion ", iPlayer, iUnit, promotionID)
 	local player = Players[iPlayer]
 	local unit = player:GetUnitByID(iUnit)
+	local iPerson = unit:GetPersonIndex() 
 	if player:IsHuman() then
 		if promotionID == PROMOTION_LEARN_SPELL then
-			local iPerson = unit:GetPersonIndex()
 			LuaEvents.LearnSpellPopup(iPerson)
 			return false
-		else
-			if unit:IsGreatPerson() then	--quick access promo levels
-				local promoInfo = GameInfo.UnitPromotions[promotionID]
-				local prefix, level = GetPromoPrefixLevelFromType(promoInfo.Type)
-				if prefix then
-					local iPerson = unit:GetPersonIndex()
-					gPeople[iPerson][prefix] = level
-				end
+		elseif iPerson ~= -1 then	--quick access promo levels
+			local promoInfo = GameInfo.UnitPromotions[promotionID]
+			local prefix, level = GetPromoPrefixLevelFromType(promoInfo.Type)
+			if prefix then
+				gPeople[iPerson][prefix] = level
 			end
-			return true		--allow whatever human player picks
+			SetTowerMods(iPlayer, iPerson)
 		end
-	else
-		if unit:IsGreatPerson() then
-			local iPerson = unit:GetPersonIndex()
+		return true		--allow whatever human player picks
+	else	--AI
+		if iPerson ~= -1 then
 			AIPickGPPromotion(iPlayer, iPerson, unit)
+			SetTowerMods(iPlayer, iPerson)
 			return false
 		else
 			return true
@@ -605,7 +601,6 @@ local function OnUnitTakingPromotion(iPlayer, iUnit, promotionID)
 	end
 end
 GameEvents.UnitTakingPromotion.Add(function(iPlayer, iUnit, promotionID) return HandleError31(OnUnitTakingPromotion, iPlayer, iUnit, promotionID) end)
-
 
 --------------------------------------------------------------
 -- Promotion utilities

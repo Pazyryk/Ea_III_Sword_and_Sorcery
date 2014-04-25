@@ -1051,10 +1051,10 @@ function GetGPMod(iPerson, modType1, modType2)
 	return Floor(levelMod + promoMod + bonuses), bHasAnyLevelsMod1		--2nd arg used for actions that require at least 1 promotion level to do
 end
 
-function SetTowerMods(iPerson)
+function SetTowerMods(iPlayer, iPerson)
 	local tower = gWonders[EA_WONDER_ARCANE_TOWER][iPerson]
 	if not tower then return end
-	print("SetTowerMods ", iPerson)
+	print("SetTowerMods ", iPlayer, iPerson)
 	if not tower[numModTypes] then		--init tower mods
 		for i = numModTypes - 7, numModTypes do
 			tower[i] = 0
@@ -1076,10 +1076,13 @@ function SetTowerMods(iPerson)
 		tower[i] = newMod
 		modSum = modSum + newMod
 	end
-	tower.mod = Floor(modSum / 8 + 0.5)		--average used for mana generation
-	UpdateBuildingsForPlotWonder(EA_WONDER_ARCANE_TOWER, iPerson)
+	local newMod = Floor(modSum / 8 + 0.5)		--average used for mana generation
+	if newMod ~= tower.mod then
+		tower.mod = newMod
+		UpdateUniqueWonder(iPlayer, EA_WONDER_ARCANE_TOWER)
+	end
 
-	if tower.iNamedFor ~= iPlayer and bestTowerMod < bestCasterMod then	--rename tower 
+	if tower.iNamedFor ~= iPerson and bestTowerMod < bestCasterMod then	--rename tower 
 		print("Renaming tower for current occupant")
 		local eaPerson = gPeople[iPerson]
 		if not eaPerson.name then

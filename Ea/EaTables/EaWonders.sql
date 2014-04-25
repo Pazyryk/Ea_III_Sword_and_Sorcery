@@ -58,6 +58,6 @@ UPDATE EaWonders SET FallenOnly = 1 WHERE Type GLOB 'EA_WONDER_TEMPLE_AHRIMAN_*'
 
 UPDATE EaWonders SET IconIndex = (SELECT IconIndex FROM EaActions WHERE EaWonder = EaWonders.Type);
 UPDATE EaWonders SET IconAtlas = (SELECT IconAtlas FROM EaActions WHERE EaWonder = EaWonders.Type);
---UPDATE EaWonders SET Description = (SELECT Description FROM EaActions WHERE EaWonder = EaWonders.Type);
+UPDATE EaWonders SET IconIndex = 3, IconAtlas = 'UNIT_ACTION_ATLAS_EXP2' WHERE Type = 'EA_WONDER_ARCANE_TOWER';
 
 INSERT INTO EaDebugTableCheck(FileName) SELECT 'EaWonders.sql';

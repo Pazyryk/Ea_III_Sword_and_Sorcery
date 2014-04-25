@@ -1422,6 +1422,30 @@
       <SubType>Lua</SubType>
       <ImportIntoVFS>True</ImportIntoVFS>
     </Content>
+    <Content Include="_MoveToMediaPack\3DTerrain\GreatLighthouse\great_lighthouseTI_B.gr2">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="_MoveToMediaPack\3DTerrain\GreatLighthouse\great_lighthouseTI_HB.gr2">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="_MoveToMediaPack\3DTerrain\GreatLighthouse\great_lighthouseTI_pl.gr2">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="_MoveToMediaPack\3DTerrain\GreatLighthouse\great_lighthouseTI_B.fxsxml">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="_MoveToMediaPack\3DTerrain\GreatLighthouse\great_lighthouseTI_HB.fxsxml">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="_MoveToMediaPack\3DTerrain\GreatLighthouse\great_lighthouseTI_pl.fxsxml">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
     <Content Include="_MoveToMediaPack\3DTerrain\Stonehenge\hb_stonehengeTI.fxsxml">
       <SubType>Lua</SubType>
       <ImportIntoVFS>True</ImportIntoVFS>
@@ -1471,6 +1495,18 @@
       <ImportIntoVFS>True</ImportIntoVFS>
     </Content>
     <Content Include="_MoveToMediaPack\3DTerrain\ThePyramids\PyramidsTI_pl.gr2">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="_MoveToMediaPack\3DTerrain\WonderCommon\Wonder_grnd_diff.dds">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="_MoveToMediaPack\3DTerrain\WonderCommon\wonder_grnd_h.dds">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="_MoveToMediaPack\3DTerrain\WonderCommon\wonder_pl.gr2">
       <SubType>Lua</SubType>
       <ImportIntoVFS>True</ImportIntoVFS>
     </Content>
@@ -1888,6 +1924,8 @@
     <Folder Include="EaMain" />
     <Folder Include="Utilities" />
     <Folder Include="_MoveToMediaPack\3DTerrain\Blight" />
+    <Folder Include="_MoveToMediaPack\3DTerrain\GreatLighthouse" />
+    <Folder Include="_MoveToMediaPack\3DTerrain\WonderCommon" />
     <Folder Include="_MoveToMediaPack\3DTerrain\Stonehenge" />
     <Folder Include="_MoveToMediaPack\3DTerrain\ThePyramids\" />
     <Folder Include="_MoveToMediaPack\3DUnits\Angel_Spearman\" />

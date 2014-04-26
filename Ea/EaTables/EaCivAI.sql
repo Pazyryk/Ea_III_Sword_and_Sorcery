@@ -598,9 +598,14 @@ INSERT INTO EaCivPlans_NamingPlotSpecialScores (PlanType, PlotSpecial, Score) VA
 ('EACIVPLAN_DAIRINE',		'Sea',			2	),
 ('EACIVPLAN_DOKKALFAR',		'Irrigable',	4	),
 ('EACIVPLAN_LJOSALFAR',		'Forest',		2	),
-('EACIVPLAN_SEGOYIM',		'Forest',		2	);
+('EACIVPLAN_SEGOYIM',		'Forest',		2	),
 
-
+('EACIVPLAN_STYGIA',		'Evil',			15	),
+('EACIVPLAN_MORIQUENDI',	'Evil',			15	),
+('EACIVPLAN_O',				'Evil',			8	),
+('EACIVPLAN_GRAEAE',		'Evil',			8	),
+('EACIVPLAN_NEZELIBA',		'Evil',			12	),
+('EACIVPLAN_GAZIYA',		'Evil',			12	);
 
 CREATE TABLE EaCivPlans_NamingGeographySpecialScores (	'PlanType' TEXT NOT NULL,
 														'GeographySpecial' TEXT NOT NULL,
@@ -989,7 +994,9 @@ INSERT INTO EaCivPlans_ContingentPlotSpecialScores (PlanType, PlotSpecial, Score
 ('EACIVPLAN_CLEARJUNGLE',		'Jungle',		5,		'Ag'	),
 ('EACIVPLAN_FOREST_DOMINION',	'Forest',		5,		'Pan'	),
 ('EACIVPLAN_FOREST_DOMINION',	'Jungle',		5,		'Pan'	),
-('EACIVPLAN_SAILING',			'Sea',			5,		NULL	);
+('EACIVPLAN_SAILING',			'Sea',			5,		NULL	),
+
+('EACIVPLAN_UNHOLY_CONTINGENT',	'Evil',			30,		NULL	);
 
 ----------------------------------------------------------------------------------------------------
 -- Plan Modules

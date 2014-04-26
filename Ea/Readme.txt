@@ -70,6 +70,7 @@ int		GetLeaderYieldBoost(int yieldTypeID)
 void	SetLeaderYieldBoost(int yieldTypeID, iNewValue)
 bool	IsYieldFromSpecialPlotsOnly()
 void	SetYieldFromSpecialPlotsOnly(bool bValue)	--used to restrict plot yields for Pantheistic civs
+int		GetNumRealPolicies()		--counts only non-Utility policies
 
 --------------------------------------------------------------
 -- Plots
@@ -91,9 +92,13 @@ void				SetPlotEffectData(effectID, effectStength, iPlayer, iCaster)
 int, int, int, int	GetPlotEffectData()								--args above
 
 --------------------------------------------------------------
+-- TeamTechs
+--------------------------------------------------------------
+int					GetNumRealTechsKnown()	--counts only non-Utility techs
+
+--------------------------------------------------------------
 -- Unit
 --------------------------------------------------------------
-
 int					GetPersonIndex()
 void				SetPersonIndex(int iIndex)
 int					GetSummonerIndex()

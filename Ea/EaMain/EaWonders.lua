@@ -150,12 +150,11 @@ function UpdateUniqueWonder(iPlayer, wonderID, bPerTurnCall)	--full Civ only
 			end
 		end
 		--wonderImprovement
-		if iOwner == -1 then
-			if not wonderImprovement[wonderID] then		--this is a city wonder and the city has been raized
-				wonder.iPlayer = -99
-				return
-			end
-		elseif not fullCivs[iOwner] then			-- minor
+		if iOwner == -1 and not wonderImprovement[wonderID] then		--this is a city wonder and the city has been raized
+			wonder.iPlayer = -99
+			return
+		end
+		if not fullCivs[iOwner] then			-- minor
 			UpdateWonderRuins(plot, wonderID, false)
 		end
 		wonder.iPlayer = iOwner
@@ -168,7 +167,7 @@ function UpdateUniqueWonder(iPlayer, wonderID, bPerTurnCall)	--full Civ only
 	local bAppropriate = IsWonderAppropriate(iPlayer, wonderID)
 	local bActive = UpdateWonderRuins(plot, wonderID, bAppropriate)
 	if bActive then
-		local iCity = plot:GetCityPurchaseID()			--WARNING: this won't update old city if plot changes city ownership without changing player ownership
+		local iCity = plot:GetCityPurchaseID()
 		local city = player:GetCityByID(iCity)
 		if buildingID then
 			city:SetNumFreeBuilding(buildingID, 1)

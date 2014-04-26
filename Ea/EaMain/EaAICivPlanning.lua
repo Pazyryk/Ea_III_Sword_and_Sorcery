@@ -29,6 +29,7 @@ local FEATURE_ICE =					GameInfoTypes.FEATURE_ICE
 local FEATURE_FOREST = 				GameInfoTypes.FEATURE_FOREST
 local FEATURE_JUNGLE = 				GameInfoTypes.FEATURE_JUNGLE
 local FEATURE_MARSH =	 			GameInfoTypes.FEATURE_MARSH
+local FEATURE_SOLOMONS_MINES =	 	GameInfoTypes.FEATURE_SOLOMONS_MINES
 
 local POLICY_DOMINIONISM =			GameInfoTypes.POLICY_DOMINIONISM
 local POLICY_PANTHEISM =			GameInfoTypes.POLICY_PANTHEISM
@@ -1428,6 +1429,8 @@ PickBestAvailableNamingPlan = function(iPlayer)
 		local plotSpecial
 		if plotTypeID == PLOT_OCEAN then
 			if featureID ~= FEATURE_ICE then plotSpecial = "Sea" end
+		elseif featureID == FEATURE_SOLOMONS_MINES then
+			plotSpecial = "Evil"
 		elseif plotTypeID == PLOT_MOUNTAIN then
 			plotSpecial = "Mountain"
 		elseif featureID == FEATURE_MARSH then

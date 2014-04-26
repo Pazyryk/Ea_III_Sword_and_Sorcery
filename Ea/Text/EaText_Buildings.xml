@@ -126,8 +126,8 @@
 		<Row Tag="TXT_KEY_EA_BUILDING_WATERMILL">
 			<Text>Watermill</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_TEMPLE">
-			<Text>Temple</Text>
+		<Row Tag="TXT_KEY_EA_BUILDING_SILOS">
+			<Text>Silos</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_WALLS">
 			<Text>Walls</Text>
@@ -191,6 +191,9 @@
 		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_AQUEDUCT">
 			<Text>Aqueduct</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_WAREHOUSES">
+			<Text>Warehouses</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_ARMORY">
 			<Text>Armory</Text>

@@ -2476,7 +2476,7 @@ Finish[GameInfoTypes.EA_ACTION_ARCANE_TOWER] = function()
 	end
 	g_plot:SetScriptData(str)
 	gWonders[EA_WONDER_ARCANE_TOWER][g_iPerson] = {iPlot = g_iPlot, iNamedFor = g_iPerson, iPlayer = -1}
-	SetTowerMods(g_Player, g_iPerson)
+	SetTowerMods(g_iPlayer, g_iPerson)
 	UpdateInstanceWonder(g_iPlayer, EA_WONDER_ARCANE_TOWER)
 	return true
 end
@@ -3144,7 +3144,7 @@ SetUI[GameInfoTypes.EA_ACTION_RITUAL_LEAVES] = function()
 				MapModData.text = "[COLOR_WARNING_TEXT]City radius must be 50% land that is 60% unimproved forest or jungle (is "..land.."%, "..forestJungle.."%)[ENDCOLOR]"
 
 			elseif g_testTargetSwitch == 2 then
-				MapModData.text = "[COLOR_WARNING_TEXT]You cannot convert any population here (perhaps you need a higher Ritualism level)[ENDCOLOR]"
+				MapModData.text = "[COLOR_WARNING_TEXT]You cannot convert any population here (perhaps you need a higher Devotion level)[ENDCOLOR]"
 			elseif g_testTargetSwitch == 3 then
 				MapModData.text = "[COLOR_WARNING_TEXT]You cannot perform the Ritual of Leaves in a holy city[ENDCOLOR]"
 			end

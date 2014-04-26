@@ -68,6 +68,7 @@ INSERT INTO Buildings (Type,			Cost,	GoldMaintenance,	PrereqTech,					NeverCaptu
 ('BUILDING_LIGHTHOUSE',					200,	0,					'TECH_NAVIGATION',			0,				'LIGHTHOUSE',				'BW_ATLAS_1',			36,				8	),
 ('BUILDING_WATERMILL',					200,	1,					'TECH_MILLING',				0,				'ART_DEF_BUILDING_WATERMILL','BW_ATLAS_1',			29,				0	),
 ('BUILDING_WINDMILL',					200,	1,					'TECH_MILLING',				0,				'ART_DEF_BUILDING_FORGE',	'BW_ATLAS_1',			1,				0	),
+('BUILDING_SILOS',						200,	1,					'TECH_CALENDAR',			0,				'ART_DEF_BUILDING_GRANARY',	'BW_ATLAS_1',			0,				0	),
 ('BUILDING_COURTHOUSE',					200,	1,					'TECH_PHILOSOPHY',			1,				'COURTHOUSE',				'BW_ATLAS_1',			63,				0	),
 ('BUILDING_WALLS',						200,	1,					'TECH_MASONRY',				0,				'ART_DEF_BUILDING_WALLS',	'BW_ATLAS_1',			32,				0	);
 
@@ -120,6 +121,7 @@ INSERT INTO Buildings (Type,			Cost,	GoldMaintenance,	PrereqTech,					Happiness,
 ('BUILDING_STRONGHOLD',					300,	1,					'TECH_CONSTRUCTION',		0,			0,				'ART_DEF_BUILDING_CASTLE',		'BW_ATLAS_1',					39,				0		),
 ('BUILDING_CASTLE',						300,	1,					'TECH_CONSTRUCTION',		0,			0,				'CASTLE',						'BW_ATLAS_1',					33,				1		),
 ('BUILDING_AQUEDUCT',					300,	1,					'TECH_CONSTRUCTION',		0,			0,				'ART_DEF_BUILDING_HOSPITAL',	'NEW_BLDG_ATLAS2_DLC',			0,				0		),
+('BUILDING_WAREHOUSES',					300,	1,					'TECH_CONSTRUCTION',		0,			0,				'ART_DEF_BUILDING_FORGE',		'BW_ATLAS_1',					28,				0		),
 ('BUILDING_PUBLIC_BATHS',				300,	1,					'TECH_SANITATION',			1,			0,				'ART_DEF_BUILDING_HOSPITAL',	'EXPANSION2_BUILDING_ATLAS',	11,				0		),
 ('BUILDING_COLOSSEUM',					400,	1,					'TECH_ENGINEERING',			2,			0,				'COLESSEUM',					'BW_ATLAS_1',					23,				2		),
 ('BUILDING_SEWERS',						400,	1,					'TECH_ENGINEERING',			0,			0,				'ART_DEF_BUILDING_HOSPITAL',	'NEW_BLDG_ATLAS2_DLC',			0,				0		),
@@ -133,8 +135,7 @@ INSERT INTO Buildings (Type,			Cost,	GoldMaintenance,	PrereqTech,					Happiness,
 INSERT INTO Buildings (Type,			Cost,	Happiness,	NeverCapture,	ArtDefineTag,							IconAtlas,				PortraitIndex,	DisplayPosition) VALUES
 ('BUILDING_FOUNDRY',					-1,		0,			1,				'ART_DEF_BUILDING_FORGE',				'NEW_BLDG_ATLAS2_DLC',	1,				0		),
 ('BUILDING_ACADEMY',					-1,		0,			1,				'ART_DEF_BUILDING_UNIVERSITY',			'BW_ATLAS_1',			13,				0		),
-('BUILDING_FESTIVAL',					-1,		0,			1,				'ART_DEF_BUILDING_CIRCUS',				'BW_ATLAS_1',			44,				0		),
-('BUILDING_TEMPLE',						-1,		0,			1,				'TEMPLE',								'BW_ATLAS_1',			37,				0		);
+('BUILDING_FESTIVAL',					-1,		0,			1,				'ART_DEF_BUILDING_CIRCUS',				'BW_ATLAS_1',			44,				0		);
 
 -- major GP builds  (multiple instances used to tailor effect to GP mod)
 INSERT INTO Buildings (Type,			Cost,	Happiness,	NeverCapture,	ArtDefineTag,							IconAtlas,				PortraitIndex,	DisplayPosition) VALUES
@@ -189,27 +190,52 @@ INSERT INTO Buildings (Type,			Cost,	NeverCapture,	ArtDefineTag,	IconAtlas,		Por
 INSERT INTO Buildings (Type,			Cost,	PrereqTech,		EaGreatPersonBuild,	Happiness,	NeverCapture,	ArtDefineTag,	IconAtlas,		PortraitIndex,	DisplayPosition,	ArtInfoCulturalVariation,	Defense,	Capital	) VALUES
 ('BUILDING_PALACE',						0,		NULL,			NULL,				0,			1,				'PALACE',		'BW_ATLAS_1',	19,				32,					1,							200,		1		);
 
--- wonders (map visible)
-INSERT INTO Buildings (Type,			Cost,	PrereqTech,		EaGreatPersonBuild,	Happiness,	NeverCapture,	ConquestProb,	ArtDefineTag,					IconAtlas,		PortraitIndex,	DisplayPosition	) VALUES
-('BUILDING_KOLOSSOS',					300,	NULL,			'Engineer',			0,			0,				100,			'THE COLOSSUS',					'BW_ATLAS_2',	4,				8				),
-('BUILDING_MEGALOS_FAROS',				300,	NULL,			'Engineer',			0,			0,				100,			'GREAT LIGHTHOUSE',				'BW_ATLAS_2',	5,				8				),
-('BUILDING_HANGING_GARDENS',			300,	NULL,			'Engineer',			0,			0,				100,			'THE HANGING GARDENS',			'BW_ATLAS_2',	3,				2				),
-('BUILDING_UUC_YABNAL',					300,	NULL,			'Engineer',			0,			0,				100,			'CHICHEN ITZA',					'BW_ATLAS_2',	12,				4				),
-('BUILDING_THE_LONG_WALL',				300,	NULL,			'Engineer',			0,			0,				100,			'ART_DEF_BUILDING_GREAT_WALL',	'BW_ATLAS_2',	7,				2				),
-('BUILDING_CLOG_MOR',					300,	NULL,			'Engineer',			0,			0,				100,			'BIG BEN',						'BW_ATLAS_2',	19,				1				),
-('BUILDING_DA_BAOEN_SI',				300,	NULL,			'Engineer',			0,			0,				100,			'PORCELAIN TOWER',				'BW_ATLAS_2',	16,				2				),
---plot builds
-('BUILDING_STANHENCG',					-1,		NULL,			'Engineer',			0,			1,				0,				'MONUMENT',						'BW_ATLAS_2',	2,				4				),
-('BUILDING_PYRAMID',					-1,		NULL,			'Engineer',			0,			1,				0,				'MONUMENT',						'BW_ATLAS_2',	2,				4				),
-('BUILDING_GREAT_LIBRARY',				-1,		NULL,			'Sage',				0,			1,				0,				'MONUMENT',						'BW_ATLAS_2',	1,				0				);
-
 --Build out the Buildings table for dependent strings
 UPDATE Buildings SET Description = 'TXT_KEY_EA_' || Type;
 UPDATE Buildings SET Help = Description || '_HELP', Civilopedia = Description || '_PEDIA', Strategy = Description || '_STRATEGY' WHERE EaHidden IS NULL;
-UPDATE Buildings SET Help = 'TXT_KEY_EA_NOTSHOWN', Civilopedia = 'TXT_KEY_EA_NOTSHOWN', Strategy = 'TXT_KEY_EA_NOTSHOWN' WHERE EaHidden IS NOT NULL;
-UPDATE Buildings SET BuildingClass = REPLACE(Type, 'BUILDING_', 'BUILDINGCLASS_');
 
---BuildingClass exceptions
+
+-- city wonders
+INSERT INTO Buildings (Type,			Cost,	PrereqTech,		EaGreatPersonBuild,	Happiness,	NeverCapture,	ConquestProb,	ArtDefineTag,					IconAtlas,		PortraitIndex,	DisplayPosition	) VALUES
+('BUILDING_KOLOSSOS',					300,	NULL,			'Engineer',			0,			0,				100,			'MONUMENT',						'BW_ATLAS_2',	4,				0				),
+('BUILDING_MEGALOS_FAROS',				300,	NULL,			'Engineer',			0,			0,				100,			'MONUMENT',						'BW_ATLAS_2',	5,				0				),
+('BUILDING_HANGING_GARDENS',			300,	NULL,			'Engineer',			0,			0,				100,			'MONUMENT',						'BW_ATLAS_2',	3,				0				),
+('BUILDING_UUC_YABNAL',					300,	NULL,			'Engineer',			0,			0,				100,			'MONUMENT',						'BW_ATLAS_2',	12,				0				),
+('BUILDING_THE_LONG_WALL',				300,	NULL,			'Engineer',			0,			0,				100,			'ART_DEF_BUILDING_GREAT_WALL',	'BW_ATLAS_2',	7,				2				),
+('BUILDING_CLOG_MOR',					300,	NULL,			'Engineer',			0,			0,				100,			'MONUMENT',						'BW_ATLAS_2',	19,				0				),
+('BUILDING_DA_BAOEN_SI',				300,	NULL,			'Engineer',			0,			0,				100,			'MONUMENT',						'BW_ATLAS_2',	16,				0				),
+-- plot wonders
+('BUILDING_MOD_STANHENCG',				-1,		NULL,			'Druid',			0,			1,				0,				'MONUMENT',						'BW_ATLAS_2',	2,				0				),
+('BUILDING_PYRAMID',					-1,		NULL,			'Engineer',			0,			1,				0,				'MONUMENT',						'BW_ATLAS_2',	0,				0				),
+('BUILDING_GREAT_LIBRARY',				-1,		NULL,			'Sage',				0,			1,				0,				'MONUMENT',						'BW_ATLAS_2',	1,				0				),
+
+('BUILDING_MOD_ARCANE_TOWER',			-1,		NULL,			'Thaumaturge',		0,			1,				0,				'MONUMENT',						'BW_ATLAS_2',	1,				0				),
+('BUILDING_TEMPLE_AZZANDARA_1',			-1,		NULL,			'Devout',			0,			1,				0,				'MONUMENT',						'BW_ATLAS_1',	37,				0				),
+('BUILDING_TEMPLE_AZZANDARA_2',			-1,		NULL,			'Devout',			0,			1,				0,				'MONUMENT',						'BW_ATLAS_1',	37,				0				),
+('BUILDING_TEMPLE_AZZANDARA_3',			-1,		NULL,			'Devout',			0,			1,				0,				'MONUMENT',						'BW_ATLAS_1',	37,				0				),
+('BUILDING_TEMPLE_AZZANDARA_4',			-1,		NULL,			'Devout',			0,			1,				0,				'MONUMENT',						'BW_ATLAS_1',	37,				0				),
+('BUILDING_TEMPLE_AZZANDARA_5',			-1,		NULL,			'Devout',			0,			1,				0,				'MONUMENT',						'BW_ATLAS_1',	37,				0				),
+('BUILDING_TEMPLE_AZZANDARA_6',			-1,		NULL,			'Devout',			0,			1,				0,				'MONUMENT',						'BW_ATLAS_1',	37,				0				),
+('BUILDING_TEMPLE_AZZANDARA_7',			-1,		NULL,			'Devout',			0,			1,				0,				'MONUMENT',						'BW_ATLAS_1',	37,				0				),
+('BUILDING_TEMPLE_AHRIMAN_1',			-1,		NULL,			'Devout',			0,			1,				0,				'MONUMENT',						'BW_ATLAS_1',	37,				0				),
+('BUILDING_TEMPLE_AHRIMAN_2',			-1,		NULL,			'Devout',			0,			1,				0,				'MONUMENT',						'BW_ATLAS_1',	37,				0				),
+('BUILDING_TEMPLE_AHRIMAN_3',			-1,		NULL,			'Devout',			0,			1,				0,				'MONUMENT',						'BW_ATLAS_1',	37,				0				),
+('BUILDING_TEMPLE_AHRIMAN_4',			-1,		NULL,			'Devout',			0,			1,				0,				'MONUMENT',						'BW_ATLAS_1',	37,				0				),
+('BUILDING_TEMPLE_AHRIMAN_5',			-1,		NULL,			'Devout',			0,			1,				0,				'MONUMENT',						'BW_ATLAS_1',	37,				0				),
+('BUILDING_TEMPLE_AHRIMAN_6',			-1,		NULL,			'Devout',			0,			1,				0,				'MONUMENT',						'BW_ATLAS_1',	37,				0				),
+('BUILDING_TEMPLE_AHRIMAN_7',			-1,		NULL,			'Devout',			0,			1,				0,				'MONUMENT',						'BW_ATLAS_1',	37,				0				),
+('BUILDING_TEMPLE_AHRIMAN_8',			-1,		NULL,			'Devout',			0,			1,				0,				'MONUMENT',						'BW_ATLAS_1',	37,				0				),
+('BUILDING_TEMPLE_AHRIMAN_9',			-1,		NULL,			'Devout',			0,			1,				0,				'MONUMENT',						'BW_ATLAS_1',	37,				0				);
+
+--Build out Wonders for dependent strings (use existing wonder txt keys)
+UPDATE Buildings SET Description = REPLACE(Type, 'BUILDING_', 'TXT_KEY_EA_WONDER_') WHERE Description IS NULL;
+UPDATE Buildings SET Help = Description || '_HELP', Civilopedia = Description || '_PEDIA', Strategy = Description || '_STRATEGY' WHERE EaHidden IS NULL AND Civilopedia IS NULL;
+
+
+UPDATE Buildings SET Help = 'TXT_KEY_EA_NOTSHOWN', Civilopedia = 'TXT_KEY_EA_NOTSHOWN', Strategy = 'TXT_KEY_EA_NOTSHOWN' WHERE EaHidden IS NOT NULL;
+
+--BuildingClass
+UPDATE Buildings SET BuildingClass = REPLACE(Type, 'BUILDING_', 'BUILDINGCLASS_');
 UPDATE Buildings SET BuildingClass = 'BUILDINGCLASS_CASTLE' WHERE Type = 'BUILDING_STRONGHOLD';
 
 
@@ -232,6 +258,8 @@ UPDATE Buildings SET Defense = 800, AllowsRangeStrike = 1 WHERE Type = 'BUILDING
 UPDATE Buildings SET AllowsWaterRoutes = 1 WHERE Type = 'BUILDING_HARBOR';
 UPDATE Buildings SET EaHealth = 2 WHERE Type = 'BUILDING_APOTHECARY';
 UPDATE Buildings SET EaHealth = 4 WHERE Type = 'BUILDING_AQUEDUCT';
+UPDATE Buildings SET AllowsFoodTradeRoutes = 1 WHERE Type = 'BUILDING_SILOS';
+UPDATE Buildings SET AllowsProductionTradeRoutes = 1 WHERE Type = 'BUILDING_WAREHOUSES';
 UPDATE Buildings SET EaHealth = 2 WHERE Type = 'BUILDING_PUBLIC_BATHS';
 UPDATE Buildings SET EaHealth = 6 WHERE Type = 'BUILDING_SEWERS';
 UPDATE Buildings SET EaHealth = 6 WHERE Type = 'BUILDING_HOSPITAL';
@@ -324,8 +352,6 @@ INSERT INTO Building_EaConvertImprovedResource (BuildingType,	ImprovedResource,	
 DELETE FROM Building_AreaYieldModifiers;
 DELETE FROM Building_BuildingClassHappiness;
 DELETE FROM Building_BuildingClassYieldChanges;
-
-DELETE FROM Building_FeatureYieldChanges;
 DELETE FROM Building_FreeSpecialistCounts;
 DELETE FROM Building_FreeUnits;
 DELETE FROM Building_LockedBuildingClasses;
@@ -338,13 +364,23 @@ DELETE FROM Building_SeaPlotYieldChanges;
 DELETE FROM Building_SpecialistYieldChanges;
 DELETE FROM Building_TerrainYieldChanges;
 DELETE FROM Building_TechEnhancedYieldChanges;	--works with EnhancedYieldTech
+
+
+DELETE FROM Building_FeatureYieldChanges;
+INSERT INTO Building_FeatureYieldChanges (BuildingType, FeatureType, YieldType, Yield) VALUES
+('BUILDING_TEMPLE_AZZANDARA_3',	'FEATURE_OASIS',	'YIELD_FOOD',	1),
+('BUILDING_TEMPLE_AZZANDARA_3',	'FEATURE_ATOLL',	'YIELD_FOOD',	1);
+
 DELETE FROM Building_LakePlotYieldChanges;
+INSERT INTO Building_LakePlotYieldChanges (BuildingType, YieldType, Yield) VALUES
+('BUILDING_TEMPLE_AZZANDARA_3',	'YIELD_FOOD',	1);
+
+
 
 DELETE FROM Building_ResourceQuantityRequirements;
 INSERT INTO Building_ResourceQuantityRequirements (BuildingType, ResourceType, Cost) VALUES
 ('BUILDING_CHRYSOPOEIA_REACTOR',	'RESOURCE_QUICKSILVER',		1	),
 ('BUILDING_ARGENTOPOEIA_REACTOR',	'RESOURCE_QUICKSILVER',		1	);
-
 
 DELETE FROM Building_ResourceQuantity;
 INSERT INTO Building_ResourceQuantity (BuildingType, ResourceType, Quantity) VALUES
@@ -432,6 +468,9 @@ INSERT INTO Building_Flavors (BuildingType,	FlavorType,	Flavor) VALUES
 ('BUILDING_WINERY',				'FLAVOR_CULTURE',			15 ),
 ('BUILDING_BREWERY',			'FLAVOR_HAPPINESS',			20 ),
 ('BUILDING_BREWERY',			'FLAVOR_CULTURE',			10 ),
+('BUILDING_SILOS',				'FLAVOR_HAPPINESS',			10 ),
+('BUILDING_SILOS',				'FLAVOR_I_LAND_TRADE_ROUTE',10 ),
+('BUILDING_SILOS',				'FLAVOR_I_SEA_TRADE_ROUTE',	10 ),
 ('BUILDING_APOTHECARY',			'FLAVOR_SCIENCE',			20 ),
 ('BUILDING_APOTHECARY',			'FLAVOR_GROWTH',			10 ),
 ('BUILDING_APOTHECARY',			'FLAVOR_GREAT_PEOPLE',		10 ),
@@ -532,6 +571,9 @@ INSERT INTO Building_Flavors (BuildingType,	FlavorType,	Flavor) VALUES
 ('BUILDING_STRONGHOLD',			'FLAVOR_CITY_DEFENSE',		40 ),
 ('BUILDING_PAPERMILL',			'FLAVOR_SCIENCE',			10 ),
 ('BUILDING_AQUEDUCT',			'FLAVOR_GROWTH',			20 ),
+('BUILDING_WAREHOUSES',			'FLAVOR_PRODUCTION',		10 ),
+('BUILDING_WAREHOUSES',			'FLAVOR_I_LAND_TRADE_ROUTE',10 ),
+('BUILDING_WAREHOUSES',			'FLAVOR_I_SEA_TRADE_ROUTE',	10 ),
 ('BUILDING_PUBLIC_BATHS',		'FLAVOR_HAPPINESS',			10 ),
 ('BUILDING_PUBLIC_BATHS',		'FLAVOR_GROWTH',			20 ),
 ('BUILDING_COLOSSEUM',			'FLAVOR_HAPPINESS',			30 ),
@@ -600,8 +642,6 @@ INSERT INTO Building_LocalResourceOrs (BuildingType, ResourceType) VALUES
 ('BUILDING_JEWELLER',		'RESOURCE_GEMS'		),
 ('BUILDING_JEWELLER',		'RESOURCE_JADE'		),
 ('BUILDING_JEWELLER',		'RESOURCE_PEARLS'	);
-
-
 
 DELETE FROM Building_SeaResourceYieldChanges;
 --INSERT INTO Building_SeaResourceYieldChanges (BuildingType,	YieldType,	Yield) VALUES
@@ -736,7 +776,6 @@ INSERT INTO Building_ResourceYieldChanges (BuildingType, ResourceType, YieldType
 ('BUILDING_ARSENAL',		'RESOURCE_IRON',			'YIELD_PRODUCTION',	1	),
 ('BUILDING_ARSENAL',		'RESOURCE_MITHRIL',			'YIELD_PRODUCTION',	1	),
 ('BUILDING_LABORATORY',		'RESOURCE_NAPHTHA',			'YIELD_SCIENCE',	2	),
---('BUILDING_LABORATORY',	'RESOURCE_BLASTING_POWDER',	'YIELD_SCIENCE',	2	),
 ('BUILDING_LABORATORY',		'RESOURCE_MITHRIL',			'YIELD_SCIENCE',	2	),
 ('BUILDING_TEXTILE_MILL',	'RESOURCE_WOOL',			'YIELD_GOLD',		1	),
 ('BUILDING_TEXTILE_MILL',	'RESOURCE_COTTON',			'YIELD_GOLD',		1	),
@@ -815,7 +854,52 @@ INSERT INTO Building_ResourceYieldChanges (BuildingType, ResourceType, YieldType
 ('BUILDING_1C_VARIOUS_RESOURCES','RESOURCE_JADE',		'YIELD_CULTURE',	1	),
 ('BUILDING_1C_VARIOUS_RESOURCES','RESOURCE_COPPER',		'YIELD_CULTURE',	1	),
 ('BUILDING_1C_VARIOUS_RESOURCES','RESOURCE_GOLD',		'YIELD_CULTURE',	1	),
-('BUILDING_1C_VARIOUS_RESOURCES','RESOURCE_SILVER',		'YIELD_CULTURE',	1	);
+('BUILDING_1C_VARIOUS_RESOURCES','RESOURCE_SILVER',		'YIELD_CULTURE',	1	),
+
+('BUILDING_TEMPLE_AZZANDARA_1',	'RESOURCE_BANANA',		'YIELD_FOOD',		1	),
+('BUILDING_TEMPLE_AZZANDARA_1',	'RESOURCE_BERRIES',		'YIELD_FOOD',		1	),
+('BUILDING_TEMPLE_AZZANDARA_1',	'RESOURCE_CITRUS',		'YIELD_FOOD',		1	),
+('BUILDING_TEMPLE_AZZANDARA_1',	'RESOURCE_COTTON',		'YIELD_FOOD',		1	),
+('BUILDING_TEMPLE_AZZANDARA_1',	'RESOURCE_DYE',			'YIELD_FOOD',		1	),
+('BUILDING_TEMPLE_AZZANDARA_1',	'RESOURCE_INCENSE',		'YIELD_FOOD',		1	),
+('BUILDING_TEMPLE_AZZANDARA_1',	'RESOURCE_MOLY',		'YIELD_FOOD',		1	),
+('BUILDING_TEMPLE_AZZANDARA_1',	'RESOURCE_OPIUM',		'YIELD_FOOD',		1	),
+('BUILDING_TEMPLE_AZZANDARA_1',	'RESOURCE_SPICES',		'YIELD_FOOD',		1	),
+('BUILDING_TEMPLE_AZZANDARA_1',	'RESOURCE_SUGAR',		'YIELD_FOOD',		1	),
+('BUILDING_TEMPLE_AZZANDARA_1',	'RESOURCE_TEA',			'YIELD_FOOD',		1	),
+('BUILDING_TEMPLE_AZZANDARA_1',	'RESOURCE_TOBACCO',		'YIELD_FOOD',		1	),
+('BUILDING_TEMPLE_AZZANDARA_1',	'RESOURCE_WHEAT',		'YIELD_FOOD',		1	),
+('BUILDING_TEMPLE_AZZANDARA_1',	'RESOURCE_WINE',		'YIELD_FOOD',		1	),
+('BUILDING_TEMPLE_AZZANDARA_1',	'RESOURCE_YEW',			'YIELD_FOOD',		1	),
+
+('BUILDING_TEMPLE_AZZANDARA_2',	'RESOURCE_BOARS',		'YIELD_FOOD',		1	),
+('BUILDING_TEMPLE_AZZANDARA_2',	'RESOURCE_COW',			'YIELD_FOOD',		1	),
+('BUILDING_TEMPLE_AZZANDARA_2',	'RESOURCE_DEER',		'YIELD_FOOD',		1	),
+('BUILDING_TEMPLE_AZZANDARA_2',	'RESOURCE_ELEPHANT',	'YIELD_FOOD',		1	),
+('BUILDING_TEMPLE_AZZANDARA_2',	'RESOURCE_FUR',			'YIELD_FOOD',		1	),
+('BUILDING_TEMPLE_AZZANDARA_2',	'RESOURCE_HORSE',		'YIELD_FOOD',		1	),
+('BUILDING_TEMPLE_AZZANDARA_2',	'RESOURCE_SILK',		'YIELD_FOOD',		1	),
+('BUILDING_TEMPLE_AZZANDARA_2',	'RESOURCE_WOOL',		'YIELD_FOOD',		1	),
+
+('BUILDING_TEMPLE_AZZANDARA_3',	'RESOURCE_CRAB',		'YIELD_FOOD',		1	),
+('BUILDING_TEMPLE_AZZANDARA_3',	'RESOURCE_FISH',		'YIELD_FOOD',		1	),
+('BUILDING_TEMPLE_AZZANDARA_3',	'RESOURCE_PEARLS',		'YIELD_FOOD',		1	),
+('BUILDING_TEMPLE_AZZANDARA_3',	'RESOURCE_WHALE',		'YIELD_FOOD',		1	),
+
+('BUILDING_TEMPLE_AZZANDARA_4',	'RESOURCE_STONE',		'YIELD_PRODUCTION',	1	),
+('BUILDING_TEMPLE_AZZANDARA_4',	'RESOURCE_MARBLE',		'YIELD_PRODUCTION',	1	),
+('BUILDING_TEMPLE_AZZANDARA_4',	'RESOURCE_JADE',		'YIELD_PRODUCTION',	1	),
+('BUILDING_TEMPLE_AZZANDARA_4',	'RESOURCE_GEMS',		'YIELD_PRODUCTION',	1	),
+('BUILDING_TEMPLE_AZZANDARA_4',	'RESOURCE_SALT',		'YIELD_PRODUCTION',	1	),
+
+('BUILDING_TEMPLE_AZZANDARA_5',	'RESOURCE_NAPHTHA',		'YIELD_SCIENCE',	4	),
+
+('BUILDING_TEMPLE_AZZANDARA_6',	'RESOURCE_COPPER',		'YIELD_PRODUCTION',	1	),
+('BUILDING_TEMPLE_AZZANDARA_6',	'RESOURCE_IRON',		'YIELD_PRODUCTION',	1	),
+('BUILDING_TEMPLE_AZZANDARA_6',	'RESOURCE_MITHRIL',		'YIELD_PRODUCTION',	1	),
+('BUILDING_TEMPLE_AZZANDARA_6',	'RESOURCE_QUICKSILVER',	'YIELD_PRODUCTION',	1	),
+('BUILDING_TEMPLE_AZZANDARA_6',	'RESOURCE_SILVER',		'YIELD_PRODUCTION',	1	),
+('BUILDING_TEMPLE_AZZANDARA_6',	'RESOURCE_GOLD',		'YIELD_PRODUCTION',	1	);
 
 
 
@@ -883,7 +967,7 @@ INSERT INTO Building_YieldChanges (BuildingType,	YieldType,	Yield) VALUES
 ('BUILDING_WINDMILL',					'YIELD_FOOD',		2	),
 ('BUILDING_WINDMILL',					'YIELD_PRODUCTION',	2	),
 ('BUILDING_WINERY',						'YIELD_CULTURE',	1	),
-
+('BUILDING_SILOS',						'YIELD_FOOD',		2	),
 ('BUILDING_SMITHS_GUILD',				'YIELD_PRODUCTION',	1	),
 ('BUILDING_TRADERS_GUILD',				'YIELD_GOLD',		1	),
 ('BUILDING_SCRIBES_GUILD',				'YIELD_SCIENCE',	1	),
@@ -912,16 +996,14 @@ INSERT INTO Building_YieldChanges (BuildingType,	YieldType,	Yield) VALUES
 ('BUILDING_KILN',						'YIELD_CULTURE',	1	),
 ('BUILDING_CASTLE',						'YIELD_GOLD',		1	),
 ('BUILDING_CASTLE',						'YIELD_CULTURE',	1	),
+('BUILDING_WAREHOUSES',					'YIELD_PRODUCTION',	2	),
 ('BUILDING_COLOSSEUM',					'YIELD_CULTURE',	1	),
 ('BUILDING_PRINTING_PRESS',				'YIELD_SCIENCE',	4	),
 ('BUILDING_OBSERVATORY',				'YIELD_SCIENCE',	6	),
 ('BUILDING_FOUNDRY',					'YIELD_PRODUCTION',	3	),
 ('BUILDING_ACADEMY',					'YIELD_SCIENCE',	3	),
 ('BUILDING_FESTIVAL',					'YIELD_CULTURE',	3	),
-('BUILDING_TEMPLE',						'YIELD_CULTURE',	1	),
-('BUILDING_TEMPLE',						'YIELD_FAITH',		2	),
 ('BUILDING_CULT_LEAVES_FOLLOWER_FOOD',	'YIELD_FOOD',		1 	),
-
 ('BUILDING_TRADE_PLUS_1_GOLD',			'YIELD_GOLD',		1 	),
 ('BUILDING_REMOTE_RES_1_FOOD',			'YIELD_FOOD',		1 	),
 ('BUILDING_REMOTE_RES_1_PRODUCTION',	'YIELD_PRODUCTION', 1 	),
@@ -932,19 +1014,56 @@ INSERT INTO Building_YieldChanges (BuildingType,	YieldType,	Yield) VALUES
 ('BUILDING_UUC_YABNAL',					'YIELD_CULTURE',	4	),
 ('BUILDING_THE_LONG_WALL',				'YIELD_CULTURE',	4	),
 ('BUILDING_CLOG_MOR',					'YIELD_CULTURE',	4	),
-
 ('BUILDING_HANGING_GARDENS_MOD',		'YIELD_CULTURE',	1	),
-('BUILDING_DA_BAOEN_SI_MOD',			'YIELD_CULTURE',	1	);
+('BUILDING_DA_BAOEN_SI_MOD',			'YIELD_CULTURE',	1	),
+
+('BUILDING_MOD_STANHENCG',				'YIELD_FAITH',		1	),
+('BUILDING_MOD_ARCANE_TOWER',			'YIELD_FAITH',		1	),
+
+('BUILDING_TEMPLE_AZZANDARA_1',			'YIELD_CULTURE',	3	),
+('BUILDING_TEMPLE_AZZANDARA_1',			'YIELD_FAITH',		3	),
+('BUILDING_TEMPLE_AZZANDARA_2',			'YIELD_CULTURE',	5	),
+('BUILDING_TEMPLE_AZZANDARA_2',			'YIELD_FAITH',		5	),
+('BUILDING_TEMPLE_AZZANDARA_3',			'YIELD_CULTURE',	8	),
+('BUILDING_TEMPLE_AZZANDARA_3',			'YIELD_FAITH',		8	),
+('BUILDING_TEMPLE_AZZANDARA_4',			'YIELD_CULTURE',	13	),
+('BUILDING_TEMPLE_AZZANDARA_4',			'YIELD_FAITH',		13	),
+('BUILDING_TEMPLE_AZZANDARA_5',			'YIELD_CULTURE',	21	),
+('BUILDING_TEMPLE_AZZANDARA_5',			'YIELD_FAITH',		21	),
+('BUILDING_TEMPLE_AZZANDARA_6',			'YIELD_CULTURE',	34	),
+('BUILDING_TEMPLE_AZZANDARA_6',			'YIELD_FAITH',		34	),
+('BUILDING_TEMPLE_AZZANDARA_7',			'YIELD_CULTURE',	55	),
+('BUILDING_TEMPLE_AZZANDARA_7',			'YIELD_FAITH',		55	),
+
+('BUILDING_TEMPLE_AHRIMAN_1',			'YIELD_SCIENCE',	13	),
+('BUILDING_TEMPLE_AHRIMAN_1',			'YIELD_FAITH',		13	),
+('BUILDING_TEMPLE_AHRIMAN_2',			'YIELD_SCIENCE',	17	),
+('BUILDING_TEMPLE_AHRIMAN_2',			'YIELD_FAITH',		17	),
+('BUILDING_TEMPLE_AHRIMAN_3',			'YIELD_SCIENCE',	19	),
+('BUILDING_TEMPLE_AHRIMAN_3',			'YIELD_FAITH',		19	),
+('BUILDING_TEMPLE_AHRIMAN_4',			'YIELD_SCIENCE',	23	),
+('BUILDING_TEMPLE_AHRIMAN_4',			'YIELD_FAITH',		23	),
+('BUILDING_TEMPLE_AHRIMAN_5',			'YIELD_SCIENCE',	29	),
+('BUILDING_TEMPLE_AHRIMAN_5',			'YIELD_FAITH',		29	),
+('BUILDING_TEMPLE_AHRIMAN_6',			'YIELD_SCIENCE',	31	),
+('BUILDING_TEMPLE_AHRIMAN_6',			'YIELD_FAITH',		31	),
+('BUILDING_TEMPLE_AHRIMAN_7',			'YIELD_SCIENCE',	37	),
+('BUILDING_TEMPLE_AHRIMAN_7',			'YIELD_FAITH',		37	),
+('BUILDING_TEMPLE_AHRIMAN_8',			'YIELD_SCIENCE',	41	),
+('BUILDING_TEMPLE_AHRIMAN_8',			'YIELD_FAITH',		41	),
+('BUILDING_TEMPLE_AHRIMAN_9',			'YIELD_SCIENCE',	43	),
+('BUILDING_TEMPLE_AHRIMAN_9',			'YIELD_FAITH',		43	);
+
 
 DELETE FROM Building_YieldChangesPerPop;
 INSERT INTO Building_YieldChangesPerPop (BuildingType,	YieldType,	Yield) VALUES
-('BUILDING_LIBRARY',		'YIELD_SCIENCE',		50	),
-('BUILDING_MAN',			'YIELD_PRODUCTION',		100	),
-('BUILDING_SIDHE',			'YIELD_PRODUCTION',		100	),
-('BUILDING_HELDEOFOL',		'YIELD_PRODUCTION',		100	),
-('BUILDING_MAN',			'YIELD_GOLD',			100	),
-('BUILDING_SIDHE',			'YIELD_GOLD',			100	),
-('BUILDING_HELDEOFOL',		'YIELD_GOLD',			100 );
+('BUILDING_LIBRARY',					'YIELD_SCIENCE',		50	),
+('BUILDING_MAN',						'YIELD_PRODUCTION',		100	),
+('BUILDING_SIDHE',						'YIELD_PRODUCTION',		100	),
+('BUILDING_HELDEOFOL',					'YIELD_PRODUCTION',		100	),
+('BUILDING_MAN',						'YIELD_GOLD',			100	),
+('BUILDING_SIDHE',						'YIELD_GOLD',			100	),
+('BUILDING_HELDEOFOL',					'YIELD_GOLD',			100 );
 
 DELETE FROM Building_YieldModifiers;	--warning! culture & faith don't work
 INSERT INTO Building_YieldModifiers (BuildingType, YieldType, Yield) VALUES

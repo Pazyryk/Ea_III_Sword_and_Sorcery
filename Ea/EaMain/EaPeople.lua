@@ -1079,7 +1079,7 @@ function SetTowerMods(iPlayer, iPerson)
 	local newMod = Floor(modSum / 8 + 0.5)		--average used for mana generation
 	if newMod ~= tower.mod then
 		tower.mod = newMod
-		UpdateUniqueWonder(iPlayer, EA_WONDER_ARCANE_TOWER)
+		UpdateInstanceWonder(iPlayer, EA_WONDER_ARCANE_TOWER)
 	end
 
 	if tower.iNamedFor ~= iPerson and bestTowerMod < bestCasterMod then	--rename tower 

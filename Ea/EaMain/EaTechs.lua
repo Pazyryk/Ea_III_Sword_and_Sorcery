@@ -267,6 +267,10 @@ function TechPerCivTurn(iPlayer)
 	local eaCivID = eaPlayer.eaCivNameID
 	local bAI = bFullCivAI[iPlayer]
 	local gameTurn = Game.GetGameTurn()
+
+	--debug
+	print("DEBUG: eaPlayer.techCount, teamTechs:GetNumRealTechsKnown() = ", eaPlayer.techCount, teamTechs:GetNumRealTechsKnown())
+
 	--zeroing
 	eaPlayer.rpFromDiffusion = 0	--these are only used for display
 	eaPlayer.rpFromConquest = 0

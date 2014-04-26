@@ -138,7 +138,6 @@ function GetNumPoliciesInBranch(player, policyBranchID)		-- includes opener and 
 	return n
 end
 
-
 function PolicyPerCivTurn(iPlayer)
 	print("PolicyPerCivTurn ", iPlayer)
 	local player = Players[iPlayer]
@@ -152,7 +151,7 @@ function PolicyPerCivTurn(iPlayer)
 
 	print("Level / policies / change / pop turns: ", eaPlayer.culturalLevel, eaPlayer.policyCount, eaPlayer.culturalLevelChange, eaPlayer.cumPopTurns)
 
-	print("Test; eaPlayer.policyCount, GetNumPolicies, GetNumPolicyBranchesFinished = ", eaPlayer.policyCount, player:GetNumPolicies(), player:GetNumPolicyBranchesFinished())
+	print("DEBUG: eaPlayer.policyCount, player:GetNumRealPolicies = ", eaPlayer.policyCount, player:GetNumRealPolicies())
 
 	if eaPlayer.policyCount < Floor(eaPlayer.culturalLevel) then
 		if bFullCivAI[iPlayer] then

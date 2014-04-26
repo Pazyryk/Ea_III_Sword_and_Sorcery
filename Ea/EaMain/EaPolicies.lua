@@ -106,6 +106,11 @@ function EaPoliciesInit(bNewGame)
 			end
 			if player:HasPolicy(GameInfoTypes.POLICY_SLAVERY) then
 				gg_slaveryPlayer[iPlayer] = true
+				if player:HasPolicy(GameInfoTypes.POLICY_SERVI_AETERNAM) then
+					WeLikeBeingUnhappy(iPlayer, 2)
+				elseif player:HasPolicy(GameInfoTypes.POLICY_SLAVE_BREEDING) then
+					WeLikeBeingUnhappy(iPlayer, 1)
+				end
 			end
 		end
 	end
@@ -373,12 +378,20 @@ OnPolicyAdopted[GameInfoTypes.POLICY_ARCANE_RESEARCH] = function(iPlayer)
 	gg_playerArcaneMod[iPlayer] = gg_playerArcaneMod[iPlayer] - 20
 end
 
+OnPolicyAdopted[GameInfoTypes.POLICY_SLAVE_BREEDING] = function(iPlayer)
+	WeLikeBeingUnhappy(iPlayer, 1)
+end
+
+OnPolicyAdopted[GameInfoTypes.POLICY_SERVI_AETERNAM] = function(iPlayer)
+	WeLikeBeingUnhappy(iPlayer, 2)
+end
+
 OnPolicyAdopted[GameInfoTypes.POLICY_SLAVE_RAIDERS] = function(iPlayer)
 	local team = Teams[Players[iPlayer]:GetTeam()]
 	team:SetHasTech(TECH_SLAVE_RAIDERS, true)
 end
 
-OnPolicyAdopted[GameInfoTypes.POLICY_SLAVE_RAIDERS] = function(iPlayer)
+OnPolicyAdopted[GameInfoTypes.POLICY_SLAVE_ARMIES] = function(iPlayer)
 	local team = Teams[Players[iPlayer]:GetTeam()]
 	team:SetHasTech(TECH_SLAVE_ARMIES, true)
 end

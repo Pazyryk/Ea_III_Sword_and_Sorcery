@@ -77,12 +77,12 @@ INSERT INTO ArtDefine_Landmarks (Era, State, Scale,	ImprovementType,					LayoutH
 --fishing on lakes
 ('Any',	'Any',					0.07000000029802322,'ART_DEF_IMPROVEMENT_FISHING_BOATS','ANIMATED',		'ART_DEF_RESOURCE_NONE',		'Fish.fxsxml',						1	),
 --Wonder improvements
-('Any', 'UnderConstruction',	1,  				'ART_DEF_IMPROVEMENT_PYRAMID',		'RANDOM',		'ART_DEF_RESOURCE_NONE',		'hb_pyramidsTI.fxsxml',				1	),
-('Any', 'Constructed',			1,  				'ART_DEF_IMPROVEMENT_PYRAMID',		'RANDOM',		'ART_DEF_RESOURCE_NONE',		'pyramidsTI.fxsxml',				1	),
-('Any', 'Pillaged',				1,  				'ART_DEF_IMPROVEMENT_PYRAMID',		'RANDOM',		'ART_DEF_RESOURCE_NONE',		'pl_pyramidsTI.fxsxml',				1	),
-('Any', 'UnderConstruction',	1,  				'ART_DEF_IMPROVEMENT_STONEHENGE',	'RANDOM',		'ART_DEF_RESOURCE_NONE',		'hb_stonehengeTI.fxsxml',			1	),
-('Any', 'Constructed',			1,  				'ART_DEF_IMPROVEMENT_STONEHENGE',	'RANDOM',		'ART_DEF_RESOURCE_NONE',		'stonehengeTI.fxsxml',				1	),
-('Any', 'Pillaged',				1,  				'ART_DEF_IMPROVEMENT_STONEHENGE',	'RANDOM',		'ART_DEF_RESOURCE_NONE',		'pl_stonehengeTI.fxsxml',			1	),
+('Any', 'UnderConstruction',	1,  				'ART_DEF_IMPROVEMENT_PYRAMID',		'SNAPSHOT',		'ART_DEF_RESOURCE_NONE',		'hb_pyramidsTI.fxsxml',				1	),
+('Any', 'Constructed',			1,  				'ART_DEF_IMPROVEMENT_PYRAMID',		'SNAPSHOT',		'ART_DEF_RESOURCE_NONE',		'pyramidsTI.fxsxml',				1	),
+('Any', 'Pillaged',				1,  				'ART_DEF_IMPROVEMENT_PYRAMID',		'SNAPSHOT',		'ART_DEF_RESOURCE_NONE',		'pl_pyramidsTI.fxsxml',				1	),
+('Any', 'UnderConstruction',	1,  				'ART_DEF_IMPROVEMENT_STONEHENGE',	'SNAPSHOT',		'ART_DEF_RESOURCE_NONE',		'hb_stonehengeTI.fxsxml',			1	),
+('Any', 'Constructed',			1,  				'ART_DEF_IMPROVEMENT_STONEHENGE',	'SNAPSHOT',		'ART_DEF_RESOURCE_NONE',		'stonehengeTI.fxsxml',				1	),
+('Any', 'Pillaged',				1,  				'ART_DEF_IMPROVEMENT_STONEHENGE',	'SNAPSHOT',		'ART_DEF_RESOURCE_NONE',		'pl_stonehengeTI.fxsxml',			1	),
 
 --Blight
 ('Any',	'Any',					1.45,				'ART_DEF_IMPROVEMENT_BLIGHT',		'SNAPSHOT',		'ART_DEF_RESOURCE_ALL',			'blight.fxsxml',					0	),

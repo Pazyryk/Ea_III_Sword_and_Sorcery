@@ -385,14 +385,14 @@ end
 -- Interface
 --------------------------------------------------------------
 
-function GetNewOwnerCityForPlot(iPlayer, iPlot)
+function GetNewOwnerCityForPlot(iPlayer, iPlot, requiredReligionID)
 	local plot = GetPlotByIndex(iPlot)
 	for radius = 1, 30 do
 		local bestCity
 		local biggestSize = 0
 		for testPlot in PlotRingIterator(plot, radius, 1, false) do
 			local testCity = testPlot:GetPlotCity()
-			if testCity and testCity:GetOwner() == iPlayer then
+			if testCity and testCity:GetOwner() == iPlayer and (not requiredReligionID or testCity:GetReligiousMajority() == requiredReligionID) then
 				local size = testCity:GetPopulation()
 				if biggestSize < size or (biggestSize == size and testCity:IsCapital()) then
 					biggestSize = size

@@ -8,7 +8,7 @@ local DOMAIN_LAND =							DomainTypes.DOMAIN_LAND
 local HandleError51 = HandleError51
 
 local function OnCanCreateTradeRoute(iOriginPlot, iDestPlot, iDestPlayer, eDomain, eConnectionType)
-	print("OnCanCreateTradeRoute ", iOriginPlot, iDestPlot, iDestPlayer, eDomain, eConnectionType)
+	--print("OnCanCreateTradeRoute ", iOriginPlot, iDestPlot, iDestPlayer, eDomain, eConnectionType)
 	if MapModData.bBypassOnCanCreateTradeRoute then return true end
 	local iOpenRouteDestPlayer = (eDomain == DOMAIN_LAND) and gCities[iOriginPlot].openLandTradeRoutes[iDestPlot] or gCities[iOriginPlot].openSeaTradeRoutes[iDestPlot]
 	local bIsOpenRoute = iOpenRouteDestPlayer == iDestPlayer

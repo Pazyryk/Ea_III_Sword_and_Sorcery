@@ -45,14 +45,6 @@ VictComp, WondComp, MinorComp, Boldness, DiploBal, WarHate, WorkAgnst, WorkWith,
 ,	5,		  5,		5,		   5,		 5,		   5,		5,		   5,		 5,		   5,		5,		 5,		    5,		 5,		 5,		   5,	  5,	  5,	  5,	  5,	  5,	  5,	  5,	  5,	  5,	  5,	  5,	  5,	5,	  5,	 5,		5,		5,	   5,	 5,	   5,	   5,	   5,	   5,	 5,	   5,	 5,	   5,	 5,	   5,	 5,	   5,	 5,	   5,	5,	  5,	5,	  5,	 5,		5,	  5,	 5,	   5,	  5,	 5,		5,	  5,	5,		5,		5
 
 
-
-
-
-
-
-
-
-
 > for k, v in pairs(Players[1]:GetTradeRoutesAvailable()[1]) do print(k, v) end
  EaMain: ToGPT	125
  EaMain: ToFood	0

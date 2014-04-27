@@ -88,7 +88,114 @@
 		<Row Tag="TXT_KEY_EA_WONDER_TEMPLE_AHRIMAN_9">
 			<Text>Temple of Aŋra Mainiiu (IX)</Text>
 		</Row>
-		
+		<Row Tag="TXT_KEY_EA_WONDER_TEMPLE_FAGUS">
+			<Text>Temple of Fagus</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_TEMPLE_ABELLIO">
+			<Text>Temple of Abellio</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_TEMPLE_BUXENUS">
+			<Text>Temple of Buxenus</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_TEMPLE_ROBOR">
+			<Text>Temple of Robor</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_TEMPLE_ABNOAB">
+			<Text>Temple of Abnoab</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_TEMPLE_EPONA">
+			<Text>Temple of Epona</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_TEMPLE_ATEPOMARUS">
+			<Text>Temple of Atepomarus</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_TEMPLE_SABAZIOS">
+			<Text>Temple of Sabazios</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_TEMPLE_AVETA">
+			<Text>Temple of Aveta</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_TEMPLE_CONDATIS">
+			<Text>Temple of Condatis</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_TEMPLE_ABANDINUS">
+			<Text>Temple of Abandinus</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_TEMPLE_ADSULLATA">
+			<Text>Temple of Adsullata</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_TEMPLE_ICAUNUS">
+			<Text>Temple of Icaunus</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_TEMPLE_BELISAMA">
+			<Text>Temple of Belisama</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_TEMPLE_CLOTA">
+			<Text>Temple of Clota</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_TEMPLE_SABRINA">
+			<Text>Temple of Sabrina</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_TEMPLE_SEQUANA">
+			<Text>Temple of Sequana</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_TEMPLE_VERBEIA">
+			<Text>Temple of Verbeia</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_TEMPLE_BORVO">
+			<Text>Temple of Borvo</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_TEMPLE_AEGIR">
+			<Text>Temple of Ægir</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_TEMPLE_BARINTHUS">
+			<Text>Temple of Barinthus</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_TEMPLE_LIBAN">
+			<Text>Temple of Lí Ban</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_TEMPLE_FIMAFENG">
+			<Text>Temple of Fimafeng</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_TEMPLE_ELDIR">
+			<Text>Temple of Eldir</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_TEMPLE_RITONA">
+			<Text>Temple of Ritona</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_TEMPLE_BAKKHOS">
+			<Text>Temple of Bakkhos</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_TEMPLE_PAN">
+			<Text>Temple of Pan</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_TEMPLE_SILENUS">
+			<Text>Temple of Silenus</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_TEMPLE_ERECURA">
+			<Text>Temple of Erecura</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_TEMPLE_VOSEGUS">
+			<Text>Temple of Vosegus</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_TEMPLE_NANTOSUELTA">
+			<Text>Temple of Nantosuelta</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_TEMPLE_DIS_PATER">
+			<Text>Temple of Dis Pater</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_TEMPLE_NERGAL">
+			<Text>Temple of Nergal</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_TEMPLE_WADD">
+			<Text>Temple of Wadd</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_TEMPLE_ABGAL">
+			<Text>Temple of Abgal</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_TEMPLE_NESR">
+			<Text>Temple of Nesr</Text>
+		</Row>		
 		
 
 		<!-- EaEpics -->

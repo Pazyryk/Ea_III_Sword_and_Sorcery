@@ -782,7 +782,7 @@ function PlotsPerTurn()
 					end
 					--Possible take-over by adjacent player with Forest Dominion policy
 					if (featureID == FEATURE_FOREST or featureID == FEATURE_JUNGLE) and plot:IsAdjacentOwned() then
-						if Rand(50, "Forest Dominion takeover") < 1 then		-- 2% chance if qualified plot
+						if Rand(100, "Forest Dominion takeover") < 1 then		-- 1% chance if qualified plot
 							local iNewOwner = -1
 							for i = 1, numForestDominionPlayers do
 								local iFDPlayer = g_forestDominionPlayers[i]

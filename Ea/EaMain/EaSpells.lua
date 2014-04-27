@@ -71,7 +71,7 @@ local gg_normalizedUnitPower =				gg_normalizedUnitPower
 local Floor =								math.floor
 local GetPlotByIndex =						Map.GetPlotByIndex
 local GetPlotFromXY =						Map.GetPlot
-local Distance =							Map.PlotDistance
+local PlotDistance =						Map.PlotDistance
 local Rand =								Map.Rand
 local HandleError61 =						HandleError61
 local HandleError21 =						HandleError21
@@ -286,29 +286,9 @@ function FinishEaSpell(eaActionID)		--only called from DoEaSpell so file locals 
 	g_eaPlayer.aiUniqueTargeted[eaActionID] = nil
 
 	--Effects
-	if g_eaAction.ClaimsPlot and g_iOwner ~= g_iPlayer then		--claim plot for nearest city; size breaks ties
-		local biggestCity	
-		for radius = 1, 10 do
-			local biggestCitySize = 0
-			for loopPlot in PlotRingIterator(g_plot, radius, 1, false) do
-				local loopCity = g_plot:PlotCity()
-				if loopCity and loopCity:GetOwner() == g_iPlayer then
-					local pop = loopCity:GetPopulation()
-					if biggestCitySize < pop then
-						biggestCitySize = pop
-						biggestCity = loopCity
-					elseif biggestCitySize == pop and loopCity:IsCapital() then		--capital wins
-						biggestCity = loopCity
-					end
-				end
-			end
-			if biggestCity then break end
-		end
-		if biggestCity then
-			g_plot:SetOwner(g_iPlayer, biggestCity:GetID())
-		else
-			error("Could not find city for plot ownership")
-		end
+	if g_eaAction.ClaimsPlot and g_iOwner ~= g_iPlayer then
+		local city = GetNewOwnerCityForPlot(g_iPlayer, g_iPlot, g_eaAction.ReqNearbyCityReligion and GameInfoTypes[g_eaAction.ReqNearbyCityReligion])
+		g_plot:SetOwner(g_iPlayer, city:GetID())
 	end
 
 	if g_eaAction.ImprovementType then
@@ -332,9 +312,6 @@ function FinishEaSpell(eaActionID)		--only called from DoEaSpell so file locals 
 			g_eaPlayer.nationalUniqueAction[eaActionID] = -1
 		end
 	end
-	--if g_bAIControl and g_eaPlayer.aiGPDoingOrOnWay[eaActionID] then
-	--	g_eaPlayer.aiGPDoingOrOnWay[eaActionID][g_iPlot] = nil
-	--end
 
 	print("About to try action-specific Finish function, if any")
 	if Finish[eaActionID] and not Finish[eaActionID]() then return false end	--this is the custom Finish call
@@ -544,12 +521,30 @@ function TestEaSpellTarget(eaActionID, testX, testY, bAITargetTest)
 	end
 
 	g_plot = GetPlotFromXY(testX, testY)
-	--print("g_plot from TestTarget ", g_plot)
-
-	if g_eaAction.OwnCityRadius and not g_plot:IsPlayerCityRadius(g_iPlayer) then return false end
 	if g_eaAction.BuildType and not g_plot:CanBuild(GameInfoTypes[g_eaAction.BuildType], g_iPlayer) then return false end
-
 	g_iOwner = g_plot:GetOwner()
+
+	if g_eaAction.OwnCityRadius then
+		if not g_plot:IsPlayerCityRadius(g_iPlayer) then return false end
+		if g_eaAction.ReqNearbyCityReligion then
+			if g_iOwner == g_iPlayer then
+				local iCity = g_plot:GetCityPurchaseID()
+				local city = g_player:GetCityByID(iCity)
+				if city:GetReligiousMajority() ~= GameInfoTypes[g_eaAction.ReqNearbyCityReligion] then return false end
+			else	--does any player city in radius have religion (faster to iterate cities or plots?)
+				local religionID = GameInfoTypes[g_eaAction.ReqNearbyCityReligion]
+				local bNoCity = true
+				for city in g_player:Cities() do
+					if city:GetReligiousMajority() == religionID and PlotDistance(g_x, g_y, city:GetX(), city:GetY()) < 4 then
+						bNoCity = false
+						break
+					end
+				end
+				if bNoCity then return false end
+			end
+		end
+	end
+
 	if g_eaAction.OwnTerritory and g_iOwner ~= g_iPlayer then
 		if g_bUICall and g_eaAction.UnitUpgradeTypePrefix then
 			g_bSetDelayedFailForUI = true
@@ -772,11 +767,6 @@ function DoEaSpell(eaActionID, iPlayer, unit, iPerson, targetX, targetY)
 			elseif uniqueType == "National" then
 				g_eaPlayer.nationalUniqueAction[eaActionID] = iPerson
 			end
-		end
-
-		--Show under construction for city wonder // THIS DOESN'T WORK!!!
-		if g_eaAction.BuildingUnderConstruction then
-			g_city:SetBuildingProduction(GameInfoTypes[g_eaAction.BuildingUnderConstruction], 290)	--all have arbitrary build cost 300
 		end
 
 		--Update progress

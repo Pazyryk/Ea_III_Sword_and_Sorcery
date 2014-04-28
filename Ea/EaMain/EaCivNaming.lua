@@ -259,6 +259,9 @@ function SetNewCivName(iPlayer, eaCivID)
 		UnlockReservedGPs()
 	end
 
+	--debug class
+	--GenerateGreatPerson(iPlayer, "Merchant", nil)
+
 end
 LuaEvents.EaCivNamingSetNewCivName.Add(function(iPlayer, eaCivID) return HandleError21(SetNewCivName, iPlayer, eaCivID) end)
 

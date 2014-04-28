@@ -75,9 +75,7 @@
 			<Text>Prophecy of Aeshema</Text>
 		</Row>
 
-		<Row Tag="TXT_KEY_EA_ACTION_STANHENCG">
-			<Text>Build Stânhencg</Text>
-		</Row>
+
 		<Row Tag="TXT_KEY_EA_ACTION_KOLOSSOS">
 			<Text>Build Kolossós</Text>
 		</Row>
@@ -99,16 +97,182 @@
 		<Row Tag="TXT_KEY_EA_ACTION_DA_BAOEN_SI">
 			<Text>Build Da Bao'en Si</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_ACTION_GREAT_LIBRARY">
-			<Text>Build Great Library</Text>
-		</Row>
 
 		<Row Tag="TXT_KEY_EA_ACTION_NATIONAL_TREASURY">
 			<Text>Build National Treasury</Text>
 		</Row>
+
+
+		<Row Tag="TXT_KEY_EA_ACTION_STANHENCG">
+			<Text>Build Stânhencg</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_PYRAMID">
+			<Text>Build Great Pyramid</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_GREAT_LIBRARY">
+			<Text>Build Great Library</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_ARCANE_TOWER">
 			<Text>Build Arcane Tower</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_AZZANDARA_1">
+			<Text>Build Temple of Amərətāt (I)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_AZZANDARA_2">
+			<Text>Build Temple of Vohu Manah (II)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_AZZANDARA_3">
+			<Text>Build Temple of Haurvatāt (III)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_AZZANDARA_4">
+			<Text>Build Temple of Spənta Ārmaiti (IV)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_AZZANDARA_5">
+			<Text>Build Temple of Aša Vahišta (V)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_AZZANDARA_6">
+			<Text>Build Temple of Xšathra Vairya (VI)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_AZZANDARA_7">
+			<Text>Build Temple of Ahura Mazdā (VII)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_AHRIMAN_1">
+			<Text>Build Temple of Zariz (I)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_AHRIMAN_2">
+			<Text>Build Temple of Gannag Menog (II)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_AHRIMAN_3">
+			<Text>Build Temple of Akoman (III)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_AHRIMAN_4">
+			<Text>Build Temple of Tauriz (IV)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_AHRIMAN_5">
+			<Text>Build Temple of Nanghait (V)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_AHRIMAN_6">
+			<Text>Build Temple of Indar (VI)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_AHRIMAN_7">
+			<Text>Build Temple of Sawar (VII)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_AHRIMAN_8">
+			<Text>Build Temple of Xeshm (VIII)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_AHRIMAN_9">
+			<Text>Build Temple of Aŋra Mainiiu (IX)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_FAGUS">
+			<Text>Build Temple of Fagus</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_ABELLIO">
+			<Text>Build Temple of Abellio</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_BUXENUS">
+			<Text>Build Temple of Buxenus</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_ROBOR">
+			<Text>Build Temple of Robor</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_ABNOAB">
+			<Text>Build Temple of Abnoab</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_EPONA">
+			<Text>Build Temple of Epona</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_ATEPOMARUS">
+			<Text>Build Temple of Atepomarus</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_SABAZIOS">
+			<Text>Build Temple of Sabazios</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_AVETA">
+			<Text>Build Temple of Aveta</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_CONDATIS">
+			<Text>Build Temple of Condatis</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_ABANDINUS">
+			<Text>Build Temple of Abandinus</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_ADSULLATA">
+			<Text>Build Temple of Adsullata</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_ICAUNUS">
+			<Text>Build Temple of Icaunus</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_BELISAMA">
+			<Text>Build Temple of Belisama</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_CLOTA">
+			<Text>Build Temple of Clota</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_SABRINA">
+			<Text>Build Temple of Sabrina</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_SEQUANA">
+			<Text>Build Temple of Sequana</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_VERBEIA">
+			<Text>Build Temple of Verbeia</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_BORVO">
+			<Text>Build Temple of Borvo</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_AEGIR">
+			<Text>Build Temple of Ægir</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_BARINTHUS">
+			<Text>Build Temple of Barinthus</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_LIBAN">
+			<Text>Build Temple of Lí Ban</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_FIMAFENG">
+			<Text>Build Temple of Fimafeng</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_ELDIR">
+			<Text>Build Temple of Eldir</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_RITONA">
+			<Text>Build Temple of Ritona</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_BAKKHOS">
+			<Text>Build Temple of Bakkhos</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_PAN">
+			<Text>Build Temple of Pan</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_SILENUS">
+			<Text>Build Temple of Silenus</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_ERECURA">
+			<Text>Build Temple of Erecura</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_VOSEGUS">
+			<Text>Build Temple of Vosegus</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_NANTOSUELTA">
+			<Text>Build Temple of Nantosuelta</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_DIS_PATER">
+			<Text>Build Temple of Dis Pater</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_NERGAL">
+			<Text>Build Temple of Nergal</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_WADD">
+			<Text>Build Temple of Wadd</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_ABGAL">
+			<Text>Build Temple of Abgal</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_NESR">
+			<Text>Build Temple of Nesr</Text>
+		</Row>		
+		
+	
 		
 		<Row Tag="TXT_KEY_EA_ACTION_EPIC_VOLUSPA">
 			<Text>Craft the Völuspá</Text>
@@ -269,14 +433,18 @@
 		<Row Tag="TXT_KEY_EA_SPELL_HEX">
 			<Text>Hex</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_SPELL_SUMMON_MONSTER">
-			<Text>Summon Monster</Text>
+		<Row Tag="TXT_KEY_EA_SPELL_SUMMON_ABYSSAL_CREATURES">
+			<Text>Summon Abyssal Creatures</Text>
+		</Row>
+		
+		<Row Tag="TXT_KEY_EA_SPELL_CONJURE_MONSTER">
+			<Text>Conjure Monster</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_TELEPORT">
 			<Text>Teleport</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_SPELL_SUMMON_MINOR_DEMON">
-			<Text>Summon Minor Demon</Text>
+		<Row Tag="TXT_KEY_EA_SPELL_SUMMON_DEMON">
+			<Text>Summon Demon</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_PHASE_DOOR">
 			<Text>Phase Door</Text>
@@ -372,8 +540,8 @@
 		<Row Tag="TXT_KEY_EA_SPELL_CONSECRATE">
 			<Text>Consecrate</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_SPELL_CALL_MINOR_ANGEL">
-			<Text>Call Minor Angel</Text>
+		<Row Tag="TXT_KEY_EA_SPELL_CALL_HEAVENS_GUARD">
+			<Text>Call Heaven's Guard</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_RESURRECTION">
 			<Text>Resurrection</Text>
@@ -405,9 +573,6 @@
 		<Row Tag="TXT_KEY_EA_SPELL_DESECRATE">
 			<Text>Desecrate</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_SPELL_SUMMON_MINOR_DEMON_D">
-			<Text>Summon Minor Demon</Text>
-		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_GREATER_REANIMATION">
 			<Text>Greater Reanimation</Text>
 		</Row>
@@ -415,6 +580,13 @@
 		<Row Tag="TXT_KEY_EA_SPELL_EAS_BLESSING">
 			<Text>Éa's Blessing</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_CALL_ANIMALS">
+			<Text>Call Animals</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_CALL_TREE_ENTS">
+			<Text>Call Tree-Ents</Text>
+		</Row>
+		
 		<Row Tag="TXT_KEY_EA_SPELL_BLOOM">
 			<Text>Bloom</Text>
 		</Row>

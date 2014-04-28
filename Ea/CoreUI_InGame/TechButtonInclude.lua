@@ -111,10 +111,6 @@ end
 
 function AddSmallButtonsToTechButton( thisTechButtonInstance, tech, maxSmallButtons, textureSize )
 
-	--Paz add
-
-	--end Paz add
-
 	-- This has a few assumptions, the main one being that the small buttons are named "B1", "B2", "B3"... and that GatherInfoAboutUniqueStuff() has been called before this
 
 	-- first, hide the ones we aren't using
@@ -448,6 +444,17 @@ function AddSmallButtonsToTechButton( thisTechButtonInstance, tech, maxSmallButt
 			buttonNum = buttonNum + 1;
 		end
 	end
+
+	if tech.InternationalTradeRoutesChange > 0 then
+		local buttonName = "B"..tostring(buttonNum);
+		local thisButton = thisTechButtonInstance[buttonName];
+		if thisButton then
+			IconHookup( 0, textureSize, "GENERIC_FUNC_ATLAS", thisButton );
+			thisButton:SetHide( false );
+			thisButton:SetToolTipString( Locale.ConvertTextKey( "TXT_KEY_ADDITIONAL_INTERNATIONAL_TRADE_ROUTE" ) );
+			buttonNum = buttonNum + 1;
+		end	
+	end
 	
 	for row in GameInfo.Technology_FreePromotions(condition) do
 		local promotion = GameInfo.UnitPromotions[row.PromotionType];
@@ -487,16 +494,20 @@ function AddSmallButtonsToTechButton( thisTechButtonInstance, tech, maxSmallButt
 	local arcaneToolTip
 	local divineToolTip
 	for spellInfo in GameInfo.EaActions(spellSQL) do
-		if spellInfo.SpellClass == "Arcane" then
-			if not arcaneToolTip then
-				arcaneToolTip = "Can learn Arcane Spells:"
+		if spellInfo.AITarget or spellInfo.AICombatRole then	--spell has really been added to game (not just table)
+			local spellClass = spellInfo.SpellClass
+			if spellClass == "Arcane" or spellClass == "Both" then
+				if not arcaneToolTip then
+					arcaneToolTip = "Learn Arcane Spells (Thaumaturge):"
+				end
+				arcaneToolTip = arcaneToolTip .. "[NEWLINE][ICON_BULLET][COLOR_POSITIVE_TEXT]" .. Locale.Lookup(spellInfo.Description) .. "[ENDCOLOR] " .. Locale.Lookup(spellInfo.Help)
 			end
-			arcaneToolTip = arcaneToolTip .. "[NEWLINE][ICON_BULLET][COLOR_POSITIVE_TEXT]" .. Locale.Lookup(spellInfo.Description) .. "[ENDCOLOR] " .. Locale.Lookup(spellInfo.Help)
-		elseif spellInfo.SpellClass == "Divine" then
-			if not divineToolTip then
-				divineToolTip = "Can learn Divine Spells:"
+			if spellClass == "Divine" or spellClass == "Both" then
+				if not divineToolTip then
+					divineToolTip = "Learn Divine Spells (Devout):"
+				end
+				divineToolTip = divineToolTip .. "[NEWLINE][ICON_BULLET][COLOR_POSITIVE_TEXT]" .. Locale.Lookup(spellInfo.Description) .. "[ENDCOLOR] " .. Locale.Lookup(spellInfo.Help)
 			end
-			divineToolTip = divineToolTip .. "[NEWLINE][ICON_BULLET][COLOR_POSITIVE_TEXT]" .. Locale.Lookup(spellInfo.Description) .. "[ENDCOLOR] " .. Locale.Lookup(spellInfo.Help)
 		end
 	end
 	if arcaneToolTip then

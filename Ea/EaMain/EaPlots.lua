@@ -457,15 +457,22 @@ function BlightPlot(plot, iPlayer, iPerson, iMaxMana)		--last 3 are optional
 	end
 
 	local player = iPlayer and Players[iPlayer]
-	if player and player:IsAlive() then
-		player:ChangeFaith(manaConsumed)						--generates mana as it consumes it
-		UseManaOrDivineFavor(iPlayer, iPerson, manaConsumed)
+	if player and player:IsAlive() then		
+		UseManaOrDivineFavor(iPlayer, iPerson, manaConsumed, true)		--used but not drained from player stores
 	else
 		gWorld.sumOfAllMana = gWorld.sumOfAllMana - manaConsumed
+		plot:AddFloatUpMessage(Locale.Lookup("TXT_KEY_EA_CONSUMED_MANA", manaConsumed), 1)
 	end
 
 	plot:SetFeatureType(FEATURE_BLIGHT)
 	return true
+end
+
+function DebugBlightWorld()
+	for iPlot = 0, Map.GetNumPlots() - 1 do
+		local plot = GetPlotByIndex(iPlot)
+		BlightPlot(plot)
+	end
 end
 
 function BreachPlot(plot, iPlayer, iPerson, iMaxMana)		--last 3 are optional
@@ -493,6 +500,7 @@ function BreachPlot(plot, iPlayer, iPerson, iMaxMana)		--last 3 are optional
 		UseManaOrDivineFavor(iPlayer, iPerson, manaConsumed)
 	else
 		gWorld.sumOfAllMana = gWorld.sumOfAllMana - manaConsumed
+		plot:AddFloatUpMessage(Locale.Lookup("TXT_KEY_EA_CONSUMED_MANA", manaConsumed), 1)
 	end
 
 	plot:SetFeatureType(FEATURE_FALLOUT)
@@ -774,7 +782,7 @@ function PlotsPerTurn()
 					end
 					--Possible take-over by adjacent player with Forest Dominion policy
 					if (featureID == FEATURE_FOREST or featureID == FEATURE_JUNGLE) and plot:IsAdjacentOwned() then
-						if Rand(50, "Forest Dominion takeover") < 1 then		-- 2% chance if qualified plot
+						if Rand(100, "Forest Dominion takeover") < 1 then		-- 1% chance if qualified plot
 							local iNewOwner = -1
 							for i = 1, numForestDominionPlayers do
 								local iFDPlayer = g_forestDominionPlayers[i]
@@ -985,17 +993,22 @@ local function OnCityCanAcquirePlot(iPlayer, iCity, x, y)
 end
 GameEvents.CityCanAcquirePlot.Add(OnCityCanAcquirePlot)
 
-local function OnBuildFinished(iPlayer, x, y, improvementID)		--Is improvementID necessarily the one built, or is it any improvement that happens to be there???
+local function OnBuildFinished(iPlayer, x, y, improvementID)		--improvementID for newly built only (e.g., -1 if this is a repair)
 	print("OnBuildFinished ", iPlayer, x, y, improvementID)
 	if improvementID == -1 then
 		local plot = GetPlotFromXY(x, y)
-		if plot:GetImprovementType() == IMPROVEMENT_BLIGHT then
-			print("Worker must have removed FEATURE_BLIGHT; now removing IMPROVEMENT_BLIGHT")
-			plot:SetImprovementType(-1)
-		end
 		if plot:GetResourceType(-1) == RESOURCE_BLIGHT then
 			print("Worker must have removed FEATURE_BLIGHT; now removing RESOURCE_BLIGHT")
 			ChangeResource(plot, -1)
+		end
+		local currentImprovementID = plot:GetImprovementType()
+		if currentImprovementID ~= -1 then
+			if currentImprovementID == IMPROVEMENT_BLIGHT then
+				print("Worker must have removed FEATURE_BLIGHT; now removing IMPROVEMENT_BLIGHT")
+				plot:SetImprovementType(-1)
+			else
+				CheckUpdatePlotWonder(iPlayer, currentImprovementID)	--could be a repair
+			end
 		end
 	end
 end

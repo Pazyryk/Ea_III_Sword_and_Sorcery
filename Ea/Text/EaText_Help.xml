@@ -509,32 +509,32 @@
 		<Row Tag="TXT_KEY_EA_PROMOTION_PROSELYTISM_HELP">
 			<Text>Increases religious conversion by the Proselytize action.</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_PROMOTION_RITUALISM_HELP">
-			<Text>Increases the effect of all Rituals.</Text>
+		<Row Tag="TXT_KEY_EA_PROMOTION_DEVOTION_HELP">
+			<Text>Increases the effect or duration of all Divine Spells and Mana or Divine Favor from the Worship action.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_DIVINATION_HELP">
-			<Text>Increases the effect or durationof all Divine Spells and Mana or Divine Favor from the Worship action.</Text>
+			<Text>Increases the effect or duration of all Divination spells.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_ABJURATION_HELP">
-			<Text>placeholder</Text>
+			<Text>Increases the effect or duration of all Abjuration spells.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_EVOCATION_HELP">
-			<Text>placeholder</Text>
+			<Text>Increases the effect or duration of all Evocation spells.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_TRANSMUTATION_HELP">
-			<Text>placeholder</Text>
+			<Text>Increases the effect or duration of all Transmutation spells.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_CONJURATION_HELP">
-			<Text>placeholder</Text>
+			<Text>Increases the effect or duration of all Conjuration spells.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_NECROMANCY_HELP">
-			<Text>placeholder</Text>
+			<Text>Increases the effect or duration of all Necromancy spells.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_ENCHANTMENT_HELP">
-			<Text>placeholder</Text>
+			<Text>Increases the effect or duration of all Enchantment spells.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_ILLUSION_HELP">
-			<Text>placeholder</Text>
+			<Text>Increases the effect or duration of all Illusion spells.</Text>
 		</Row>
 
 
@@ -542,7 +542,7 @@
 			<Text>This Great Person consumes Mana.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_PROPHET_HELP">
-			<Text>This Great Person has made a Prophecy and has +2 Divination, Ritualism and Proselytizing.</Text>
+			<Text>This Great Person has made a Prophecy and has +4 Devotion and Proselytizing.</Text>
 		</Row>
 
 

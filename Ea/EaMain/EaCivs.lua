@@ -280,7 +280,7 @@ function FullCivPerCivTurn(iPlayer)		-- called for full civs only
 
 	--GP point counting for civ
 	if nameTrait then
-		if Map.Rand(4, "one-quarter chance") == 0 then
+		--if Map.Rand(4, "one-quarter chance") == 0 then
 			local nameTraitInfo = GameInfo.EaCivs[nameTrait]
 			local favoredClass = nameTraitInfo.FavoredGPClass
 			if favoredClass then
@@ -288,7 +288,7 @@ function FullCivPerCivTurn(iPlayer)		-- called for full civs only
 				print("Adding GP point for civ favored class: ", favoredClass, i)
 				classPoints[i] = classPoints[i] + 1
 			end
-		end
+		--end
 	end
 
 	--GP points for buildings and specialists
@@ -662,7 +662,7 @@ local function WarStateChangedHandler(iTeam1, iTeam2, bWar)
 		end
 	end
 
-	EaTradeDataDirty()
+	--EaTradeDataDirty()
 end
 Events.WarStateChanged.Add(WarStateChangedHandler)
 

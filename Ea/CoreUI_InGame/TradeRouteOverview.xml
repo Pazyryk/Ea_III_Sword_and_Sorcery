@@ -80,32 +80,47 @@
 		<!-- Top Panel  -->
 		<Box Anchor="C,T" Size="955,32" Offset="0,44" Color="0.0.0.128">
 			<Stack Anchor="C,T" Size="971,32" Offset="0,0" Padding="0" StackGrowth="Right">
-				<Button Anchor="L,T" Size="300,24" Offset="0,0" String="TXT_KEY_TRO_TAB_EXISTING_TR" ToolTip="TXT_KEY_TO_EXISTING_TR_TT" ID="TabButtonYourTR">
+				<!--Paz adjusted all widths from 300 to 250 below -->
+				<!--Paz modified txt keys below <Button Anchor="L,T" Size="250,24" Offset="0,0" String="TXT_KEY_TRO_TAB_EXISTING_TR" ToolTip="TXT_KEY_TO_EXISTING_TR_TT" ID="TabButtonYourTR">-->
+				<Button Anchor="L,T" Size="250,24" Offset="0,0" String="TXT_KEY_EA_TRO_TAB_EXISTING_TR" ToolTip="TXT_KEY_EA_TO_EXISTING_TR_TT" ID="TabButtonYourTR">
 					<ShowOnMouseOver>
-						<AlphaAnim Anchor="L,C" Size="300,27" Pause="0" Cycle="Bounce" Speed="1" AlphaStart="2" AlphaEnd="1">
-							<Grid Size="300,27" Offset="0,2" Padding="0,0" Style="Grid9FrameTurnsHL"/>
+						<AlphaAnim Anchor="L,C" Size="250,27" Pause="0" Cycle="Bounce" Speed="1" AlphaStart="2" AlphaEnd="1">
+							<Grid Size="250,27" Offset="0,2" Padding="0,0" Style="Grid9FrameTurnsHL"/>
 						</AlphaAnim>
 					</ShowOnMouseOver>
 					<!-- Selected State  -->
-					<Grid Anchor="C,C" Offset="0,1" Size="300,26" Style="Grid9FrameTurns" Hidden="0" ID="YourTRSelectHighlight"/>
+					<Grid Anchor="C,C" Offset="0,1" Size="250,26" Style="Grid9FrameTurns" Hidden="0" ID="YourTRSelectHighlight"/>
 				</Button>
-				<Button Anchor="L,T" Size="300,24" Offset="0,0" String="TXT_KEY_TRO_TAB_AVAILABLE_TR" ToolTip="TXT_KEY_TO_AVAILABLE_TR_TT" ID="TabButtonAvailableTR">
+		
+				<!--Paz modified txt keys below <Button Anchor="L,T" Size="300,24" Offset="0,0" String="TXT_KEY_TRO_TAB_AVAILABLE_TR" ToolTip="TXT_KEY_TO_AVAILABLE_TR_TT" ID="TabButtonAvailableTR">-->
+				<Button Anchor="L,T" Size="250,24" Offset="0,0" String="TXT_KEY_EA_TRO_TAB_AVAILABLE_TR" ToolTip="TXT_KEY_EA_TO_AVAILABLE_TR_TT" ID="TabButtonAvailableTR">
 					<ShowOnMouseOver>
-						<AlphaAnim Anchor="L,C" Size="300,27" Pause="0" Cycle="Bounce" Speed="1" AlphaStart="2" AlphaEnd="1">
-							<Grid Size="300,27" Offset="0,2" Padding="0,0" Style="Grid9FrameTurnsHL"/>
+						<AlphaAnim Anchor="L,C" Size="250,27" Pause="0" Cycle="Bounce" Speed="1" AlphaStart="2" AlphaEnd="1">
+							<Grid Size="250,27" Offset="0,2" Padding="0,0" Style="Grid9FrameTurnsHL"/>
 						</AlphaAnim>
 					</ShowOnMouseOver>
 					<!-- Selected State  -->
-					<Grid Anchor="C,C" Offset="0,1" Size="300,26" Style="Grid9FrameTurns" Hidden="1" ID="AvailableTRSelectHighlight"/>
+					<Grid Anchor="C,C" Offset="0,1" Size="250,26" Style="Grid9FrameTurns" Hidden="1" ID="AvailableTRSelectHighlight"/>
 				</Button>
-				<Button Anchor="L,T" Size="300,24" Offset="0,0" String="TXT_KEY_TRO_TAB_TR_WITH_YOU" ToolTip="TXT_KEY_TO_OTHERS_TR_TT" ID="TabButtonTRWithYou">
+				<!--Paz added CanOpenTR tab below-->				
+				<Button Anchor="L,T" Size="250,24" Offset="0,0" String="TXT_KEY_EA_TRO_TAB_CAN_OPEN_TR" ToolTip="TXT_KEY_EA_TO_CAN_OPEN_TR_TT" ID="TabButtonCanOpenTR">
 					<ShowOnMouseOver>
-						<AlphaAnim Anchor="L,C" Size="300,27" Pause="0" Cycle="Bounce" Speed="1" AlphaStart="2" AlphaEnd="1">
-							<Grid Size="300,27" Offset="0,2" Padding="0,0" Style="Grid9FrameTurnsHL"/>
+						<AlphaAnim Anchor="L,C" Size="250,27" Pause="0" Cycle="Bounce" Speed="1" AlphaStart="2" AlphaEnd="1">
+							<Grid Size="250,27" Offset="0,2" Padding="0,0" Style="Grid9FrameTurnsHL"/>
 						</AlphaAnim>
 					</ShowOnMouseOver>
 					<!-- Selected State  -->
-					<Grid Anchor="C,C" Offset="0,1" Size="300,26" Style="Grid9FrameTurns" Hidden="1" ID="TRWithYouSelectHighlight"/>
+					<Grid Anchor="C,C" Offset="0,1" Size="250,26" Style="Grid9FrameTurns" Hidden="1" ID="CanOpenTRSelectHighlight"/>
+				</Button>
+				
+				<Button Anchor="L,T" Size="250,24" Offset="0,0" String="TXT_KEY_TRO_TAB_TR_WITH_YOU" ToolTip="TXT_KEY_TO_OTHERS_TR_TT" ID="TabButtonTRWithYou">
+					<ShowOnMouseOver>
+						<AlphaAnim Anchor="L,C" Size="250,27" Pause="0" Cycle="Bounce" Speed="1" AlphaStart="2" AlphaEnd="1">
+							<Grid Size="250,27" Offset="0,2" Padding="0,0" Style="Grid9FrameTurnsHL"/>
+						</AlphaAnim>
+					</ShowOnMouseOver>
+					<!-- Selected State  -->
+					<Grid Anchor="C,C" Offset="0,1" Size="250,26" Style="Grid9FrameTurns" Hidden="1" ID="TRWithYouSelectHighlight"/>
 				</Button>
 			</Stack>
 			<Image Anchor="C,B" Offset="0,0" Texture="HorizontalTrim.dds" Size="971,5"/>

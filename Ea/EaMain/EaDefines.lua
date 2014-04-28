@@ -92,6 +92,7 @@ for promotion in GameInfo.UnitPromotions() do
 end
 MapModData.HIGHEST_PROMOTION_ID = HIGHEST_PROMOTION_ID
 
+FIRST_GP_ACTION = GameInfoTypes.EA_ACTION_TAKE_LEADERSHIP
 FIRST_SPELL_ID = 0
 FIRST_COMBAT_ACTION_ID = 0
 for eaAction in GameInfo.EaActions() do
@@ -115,14 +116,21 @@ for promotionInfo in GameInfo.UnitPromotions() do
 	end
 end
 
-LEADER_XP = GameInfo.EaActions.EA_ACTION_TAKE_LEADERSHIP.DoXP
-
+MAP_W, MAP_H =		Map.GetGridSize()
+MAX_RANGE =			Map.PlotDistance(0, 0, math.floor(MAP_W / 2 + 0.5), MAP_H - 1)	--other side of world (sort of)
 
 ---------------------------------------------------------------
 -- Cached Tables
 ---------------------------------------------------------------
 gg_unitPrefixUnitIDs = {}
 gg_bToCheapToHire = {}
+gg_eaSpecial = {}
+gg_baseUnitPower = {}
+gg_normalizedUnitPower = {}
+gg_bNormalCombatUnit = {}
+gg_bNormalLivingCombatUnit = {}
+gg_gpTempType = {}
+
 for unitInfo in GameInfo.Units() do
 	for i = 1, #UNIT_SUFFIXES do
 		local suffix = UNIT_SUFFIXES[i]
@@ -138,6 +146,17 @@ for unitInfo in GameInfo.Units() do
 	if string.find(unitType, "UNIT_WARRIORS") or string.find(unitType, "UNIT_SCOUTS") then
 		gg_bToCheapToHire[unitInfo.ID] = true
 	end
+	gg_eaSpecial[unitInfo.ID] = unitInfo.EaSpecial
+	gg_baseUnitPower[unitInfo.ID] = Game.GetUnitPower(unitInfo.ID)
+	gg_normalizedUnitPower[unitInfo.ID] = math.floor(gg_baseUnitPower[unitInfo.ID] ^ 0.6667)
+	if unitInfo.EaGPTempRole then
+		gg_gpTempType[unitInfo.ID] = unitInfo.EaGPTempRole
+	elseif not unitInfo.Special and not unitInfo.EaSpecial and unitInfo.CombatLimit == 100 then
+		gg_bNormalCombatUnit[unitInfo.ID] = true
+		if unitInfo.EaLiving then
+			gg_bNormalLivingCombatUnit[unitInfo.ID] = true
+		end
+	end
 end
 
 MapModData.civNamesByRace = MapModData.civNamesByRace or {}
@@ -152,22 +171,6 @@ for row in GameInfo.EaCiv_Races() do
 		print("!!!! WARNING: EaCiv_Races references non-existent civ name: ", row.EaCivNameType)
 	end
 end
-
-
-gg_bNormalCombatUnit = {}
-gg_bNormalLivingCombatUnit = {}
-gg_gpTempType = {}
-for unitInfo in GameInfo.Units() do
-	if unitInfo.EaGPTempRole then
-		gg_gpTempType[unitInfo.ID] = unitInfo.EaGPTempRole
-	elseif not unitInfo.Special and unitInfo.CombatLimit == 100 then
-		gg_bNormalCombatUnit[unitInfo.ID] = true
-		if unitInfo.EaLiving then
-			gg_bNormalLivingCombatUnit[unitInfo.ID] = true
-		end
-	end
-end
-
 
 gg_naturalWonders = {}	--index by featureID; filled in EaPlots Init
 ----------------------------------------------------------------------------------------------------------------------------
@@ -270,6 +273,7 @@ MapModData.gT = MapModData.gT or {} --use these 2 lines in any other state that 
 gT = MapModData.gT
 
 gWorld = {	sumOfAllMana =				MapModData.STARTING_SUM_OF_ALL_MANA,
+			armageddonStage =			0,
 			bAllCivsHaveNames =			false,
 			returnAsPlayer =			Game.GetActivePlayer(),
 			encampments =				{},

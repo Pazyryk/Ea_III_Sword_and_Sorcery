@@ -134,7 +134,7 @@ end
 
 local bAnimal = {}
 for unitInfo in GameInfo.Units() do
-	if unitInfo.EaAnimal then
+	if unitInfo.EaSpecial == "Animal" or unitInfo.EaSpecial == "Beast" then
 		bAnimal[unitInfo.ID] = true
 	end
 end
@@ -572,32 +572,28 @@ function UnitPerCivTurn(iPlayer)	--runs for full civs and city states
 
 end
 
-
-
 local function OnUnitTakingPromotion(iPlayer, iUnit, promotionID)
 	print("OnUnitTakingPromotion ", iPlayer, iUnit, promotionID)
 	local player = Players[iPlayer]
 	local unit = player:GetUnitByID(iUnit)
+	local iPerson = unit:GetPersonIndex() 
 	if player:IsHuman() then
 		if promotionID == PROMOTION_LEARN_SPELL then
-			local iPerson = unit:GetPersonIndex()
 			LuaEvents.LearnSpellPopup(iPerson)
 			return false
-		else
-			if unit:IsGreatPerson() then	--quick access promo levels
-				local promoInfo = GameInfo.UnitPromotions[promotionID]
-				local prefix, level = GetPromoPrefixLevelFromType(promoInfo.Type)
-				if prefix then
-					local iPerson = unit:GetPersonIndex()
-					gPeople[iPerson][prefix] = level
-				end
+		elseif iPerson ~= -1 then	--quick access promo levels
+			local promoInfo = GameInfo.UnitPromotions[promotionID]
+			local prefix, level = GetPromoPrefixLevelFromType(promoInfo.Type)
+			if prefix then
+				gPeople[iPerson][prefix] = level
 			end
-			return true		--allow whatever human player picks
+			SetTowerMods(iPlayer, iPerson)
 		end
-	else
-		if unit:IsGreatPerson() then
-			local iPerson = unit:GetPersonIndex()
+		return true		--allow whatever human player picks
+	else	--AI
+		if iPerson ~= -1 then
 			AIPickGPPromotion(iPlayer, iPerson, unit)
+			SetTowerMods(iPlayer, iPerson)
 			return false
 		else
 			return true
@@ -605,7 +601,6 @@ local function OnUnitTakingPromotion(iPlayer, iUnit, promotionID)
 	end
 end
 GameEvents.UnitTakingPromotion.Add(function(iPlayer, iUnit, promotionID) return HandleError31(OnUnitTakingPromotion, iPlayer, iUnit, promotionID) end)
-
 
 --------------------------------------------------------------
 -- Promotion utilities
@@ -778,6 +773,7 @@ UseUnit[GameInfoTypes.UNIT_HUNTERS] = function(iPlayer, unit)
 	unit:Kill(true, -1)		--remove unit
 end
 
+--[[
 UseAIUnit[GameInfoTypes.UNIT_CARAVAN] = function(iPlayer, unit)
 	--happens when AI route expires
 	--need logic to cance
@@ -808,6 +804,7 @@ UseAIUnit[GameInfoTypes.UNIT_CARGO_SHIP] = function(iPlayer, unit)
 
 
 end
+]]
 
 RemoveOwnedFishingResourcePlot = function(iPlot, iOwnerPlayer, iOwnerCity)
 	for iPlayer in pairs(realCivs) do
@@ -889,7 +886,7 @@ end
 SustainedPromotionDo[GameInfoTypes.PROMOTION_HEX] = function(player, unit, iCaster)
 	local eaPerson = gPeople[iCaster]
 	if not eaPerson then return false end	--caster died
-	local mod = GetGPMod(iPerson, EAMOD_CONJURATION, nil)
+	local mod = GetGPMod(iCaster, EAMOD_CONJURATION, nil)
 	if Rand(mod, "hello") == 0 then return false end	--1/mod chance to wear off each turn
 	return UseManaOrDivineFavor(eaPerson.iPlayer, iCaster, 1)		--wear off if caster has no more mana or divine favor
 end
@@ -897,7 +894,7 @@ end
 SustainedPromotionDo[GameInfoTypes.PROMOTION_BLESSED] = function(player, unit, iCaster)
 	local eaPerson = gPeople[iCaster]
 	if not eaPerson then return false end	--caster died
-	local mod = GetGPMod(iPerson, EAMOD_DEVOTION, EAMOD_EVOCATION)
+	local mod = GetGPMod(iCaster, EAMOD_DEVOTION, EAMOD_EVOCATION)
 	if Rand(mod, "hello") == 0 then return false end	--1/mod chance to wear off each turn
 	return UseManaOrDivineFavor(eaPerson.iPlayer, iCaster, 1)		--wear off if caster has no more mana or divine favor
 end
@@ -905,7 +902,7 @@ end
 SustainedPromotionDo[GameInfoTypes.PROMOTION_PROTECTION_FROM_EVIL] = function(player, unit, iCaster)
 	local eaPerson = gPeople[iCaster]
 	if not eaPerson then return false end	--caster died
-	local mod = GetGPMod(iPerson, EAMOD_DEVOTION, EAMOD_ABJURATION)
+	local mod = GetGPMod(iCaster, EAMOD_DEVOTION, EAMOD_ABJURATION)
 	if Rand(mod, "hello") == 0 then return false end	--1/mod chance to wear off each turn
 	return UseManaOrDivineFavor(eaPerson.iPlayer, iCaster, 1)		--wear off if caster has no more mana or divine favor
 end
@@ -913,7 +910,7 @@ end
 SustainedPromotionDo[GameInfoTypes.PROMOTION_CURSED] = function(player, unit, iCaster)
 	local eaPerson = gPeople[iCaster]
 	if not eaPerson then return false end	--caster died
-	local mod = GetGPMod(iPerson, EAMOD_DEVOTION, EAMOD_ABJURATION)
+	local mod = GetGPMod(iCaster, EAMOD_DEVOTION, EAMOD_ABJURATION)
 	if Rand(mod, "hello") == 0 then return false end	--1/mod chance to wear off each turn
 	return UseManaOrDivineFavor(eaPerson.iPlayer, iCaster, 1)		--wear off if caster has no more mana or divine favor
 end
@@ -921,8 +918,9 @@ end
 SustainedPromotionDo[GameInfoTypes.PROMOTION_RIDE_LIKE_THE_WINDS] = function(player, unit, iCaster)
 	local eaPerson = gPeople[iCaster]
 	if not eaPerson then return false end	--caster died
+	local mod = GetGPMod(iCaster, EAMOD_DEVOTION, EAMOD_CONJURATION)
 	local caster = Players[eaPerson.iPlayer]:GetUnitByID(eaPerson.iUnit)
-	if eaPerson.modDevotion < Distance(caster:GetX(), caster:GetY(), unit:GetX(), unit:GetY()) then return false end
+	if mod < Distance(caster:GetX(), caster:GetY(), unit:GetX(), unit:GetY()) then return false end
 	return UseManaOrDivineFavor(eaPerson.iPlayer, iCaster, 1)
 end
 

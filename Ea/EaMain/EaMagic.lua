@@ -37,6 +37,7 @@ local Floor =				math.floor
 local Vector2 =				Vector2
 local ToHexFromGrid =		ToHexFromGrid
 local HandleError21 =		HandleError21
+local HandleError31 =		HandleError31
 
 --file functions
 local OnPlotEffect = {}
@@ -48,8 +49,89 @@ local g_iActiveTeam = g_activePlayer:GetTeam()
 local g_activeTeam = Teams[g_iActiveTeam]
 
 --------------------------------------------------------------
+-- Cached Tables
+--------------------------------------------------------------
+
+local xpBoostFromManaUse = {}
+for eaCivInfo in GameInfo.EaCivs() do
+	if eaCivInfo.XPBoostFromManaUse ~= 0 then
+		xpBoostFromManaUse[eaCivInfo.ID] = eaCivInfo.XPBoostFromManaUse
+	end
+end
+
+--------------------------------------------------------------
 -- Interface
 --------------------------------------------------------------
+
+
+MapModData.sharedIntegerList = MapModData.sharedIntegerList or {}
+local sharedIntegerList = MapModData.sharedIntegerList
+
+local function GenerateLearnableSpellList(iPlayer, iPerson, spellClass)	--iPerson = nil if this is civ test only; spellClass = nil for both 
+	print("GenerateLearnableSpellList ", iPlayer, iPerson, spellClass)
+	local TestSpellLearnable = TestSpellLearnable
+	--This is used for human UI (Spell Panel)
+
+	local numSpells = 0
+	for spellID = FIRST_SPELL_ID, LAST_SPELL_ID do
+		if TestSpellLearnable(iPlayer, iPerson, spellID, spellClass) then
+			numSpells = numSpells + 1
+			sharedIntegerList[numSpells] = spellID
+		end
+	end
+
+	--trim recycled table for UI
+	for i = #sharedIntegerList, numSpells + 1, -1 do
+		sharedIntegerList[i] = nil
+	end
+end
+LuaEvents.EaMagicGenerateLearnableSpellList.Add(function(iPlayer, iPerson, spellClass) return HandleError31(GenerateLearnableSpellList, iPlayer, iPerson, spellClass) end)
+
+
+function UseManaOrDivineFavor(iPlayer, iPerson, pts, bNoDrain, consumedFloatUpPlot)
+	--All mana or divine favor use should go through here!
+
+	--Reduces player faith, adds GP xp and depletes Ea's mana if appropriate
+	--Returns false if player lacks sufficient mana or divine favor
+	--If iPerson is nil (or dead) then no experience is given, but all other effects occur
+	local player = Players[iPlayer]
+	if not player:IsAlive() then return end
+
+	local currentFaith = player:GetFaith()
+	local eaPlayer = gPlayers[iPlayer]
+	
+	local bManaEaterFloatup = false
+	if iPerson then
+		local eaPerson = gPeople[iPerson]
+		if eaPerson then
+			local unit = player:GetUnitByID(eaPerson.iUnit)
+			local xp = pts
+			if xpBoostFromManaUse[eaPlayer.eaCivNameID] then
+				xp = xp + Floor(pts * xpBoostFromManaUse[eaPlayer.eaCivNameID] / 100)
+			end
+			unit:ChangeExperience(xp)
+			if eaPlayer.bIsFallen then
+				consumedFloatUpPlot = consumedFloatUpPlot or unit:GetPlot()
+			end
+		end
+	end
+
+	if eaPlayer.bIsFallen then
+		gWorld.sumOfAllMana = gWorld.sumOfAllMana - pts
+		eaPlayer.manaConsumed = (eaPlayer.manaConsumed or 0) + pts
+		consumedFloatUpPlot = consumedFloatUpPlot or player:GetCapitalCity():Plot()
+		consumedFloatUpPlot:AddFloatUpMessage(Locale.Lookup("TXT_KEY_EA_CONSUMED_MANA", pts), 2)
+	end
+
+	if bNoDrain then
+		return true
+	else
+		local newFaith = currentFaith - pts
+		player:SetFaith(newFaith)
+		return 0 <= newFaith	--deficit?
+	end
+end
+
 
 function DrainExperience(unit, xp)
 	print("DrainExperience ", unit, xp)
@@ -138,39 +220,27 @@ end
 --plot effect highlighting
 local g_plotEffectsShowState = 0		--0, hide; 1, other player's; 2, ours
 
-function UpdatePlotEffectHighlight(iPlot, newShowState)	--all plots if iPlot == nil
-	print("UpdatePlotEffectHighlight ", iPlot, newShowState)
-	if g_plotEffectsShowState == 0 and newShowState == nil then return end
-	if newShowState then
-		g_plotEffectsShowState = newShowState
-	end
-
-	if g_plotEffectsShowState == 0 then	--Hide plot effects
-		print("Hiding plot effect highlights")
+function UpdatePlotEffectHighlight(iPlot, newShowState, bForceFullUpdate)	--all plots if iPlot == nil
+	print("UpdatePlotEffectHighlight ", iPlot, newShowState, bForceFullUpdate)
+	if UI.IsCityScreenUp() then
+		print("Clearing plot effect highlights for city screen")
 		Events.ClearHexHighlightStyle("")
 	else
-		local bShowOurs = g_plotEffectsShowState == 2		
-		local bObserver = (not bShowOurs) and (g_iActiveTeam == OBSERVER_TEAM)
-		local revealedPlotEffects = (not bShowOurs and not bObserver) and gPlayers[g_iActivePlayer].revealedPlotEffects
+		if g_plotEffectsShowState == 0 and newShowState == nil and not bForceFullUpdate then return end
+		if newShowState then
+			g_plotEffectsShowState = newShowState
+		end
 
-		if iPlot then
-			print("Updating plot effect highlight for single plot", iPlot)
-			local plot = GetPlotByIndex(iPlot)
-			if plot:IsRevealed(g_iActiveTeam) then
-				local effectID, effectStength, iEffectPlayer, iCaster = plot:GetPlotEffectData()
-				local bOwnEffect = g_iActivePlayer == iEffectPlayer
-				if effectID ~= -1 and ((bShowOurs and bOwnEffect) or (not bShowOurs and not bOwnEffect and (bObserver or revealedPlotEffects[iPlot]))) then	--show it
-					local effectInfo = GameInfo.EaPlotEffects[effectID]
-					local color = HIGHLIGHT_COLOR[effectInfo.HighlightColor]
-					Events.SerialEventHexHighlight(ToHexFromGrid(Vector2(plot:GetX(), plot:GetY())), true, color)	
-				else
-					Events.SerialEventHexHighlight(ToHexFromGrid(Vector2(plot:GetX(), plot:GetY())), false, HIGHLIGHT_COLOR.GREEN)
-				end
-			end
-		else
-			print("Updating plot effect highlight for all revealed plots")
+		if g_plotEffectsShowState == 0 then	--Hide plot effects
+			print("Hiding plot effect highlights")
 			Events.ClearHexHighlightStyle("")
-			for iPlot = 0, Map.GetNumPlots() - 1 do
+		else
+			local bShowOurs = g_plotEffectsShowState == 2		
+			local bObserver = (not bShowOurs) and (g_iActiveTeam == OBSERVER_TEAM)
+			local revealedPlotEffects = (not bShowOurs and not bObserver) and gPlayers[g_iActivePlayer].revealedPlotEffects
+
+			if iPlot and not bForceFullUpdate then
+				print("Updating plot effect highlight for single plot", iPlot)
 				local plot = GetPlotByIndex(iPlot)
 				if plot:IsRevealed(g_iActiveTeam) then
 					local effectID, effectStength, iEffectPlayer, iCaster = plot:GetPlotEffectData()
@@ -183,95 +253,28 @@ function UpdatePlotEffectHighlight(iPlot, newShowState)	--all plots if iPlot == 
 						Events.SerialEventHexHighlight(ToHexFromGrid(Vector2(plot:GetX(), plot:GetY())), false, HIGHLIGHT_COLOR.GREEN)
 					end
 				end
-			end
-		end
-	end
-end
-LuaEvents.EaMagicUpdatePlotEffectHighlight.Add(function(iPlot, newShowState) return HandleError21(UpdatePlotEffectHighlight, iPlot, newShowState) end)
-
-
---EOTW effects (Emo Open To Wristcutting)
-
-local g_radius = -1
-local g_minRadius = 0
-local g_destroyerCapitalPlot
-
-function EOTW(iDestroyerPlayer)
-	local destroyerPlayer = Players[iDestroyerPlayer]
-	local destroyerCapital = destroyerPlayer:GetCapitalCity()
-	g_destroyerCapitalPlot = destroyerCapital:Plot()
-	local bDestroyerIsActivePlayer = iDestroyerPerson == g_iActivePlayer
-
-	local cameraCenterPlot = bDestroyerIsActivePlayer and destroyerCapitalPlot or g_activePlayer:GetCapitalCity():Plot()
-	local cameraX, cameraY = cameraCenterPlot:GetXY()
-	local viewRadius = 10	--TO DO: calculate this
-	local maxRadius = bDestroyerIsActivePlayer and viewRadius or PlotDistance(destroyerCapital:GetX(), destroyerCapital:GetY(), cameraX, cameraY) + Floor(viewRadius / 2)
-	g_minRadius = bDestroyerIsActivePlayer and 0 or maxRadius - viewRadius
-
-	ContextPtr:SetHide(false)					--lockout the active player so they can't move the camera
-	UI.LookAt(cameraCenterPlot, 2)				--look at capital, zoom out
-
-	for radius = maxRadius, 1, -1 do
-		local bExit = false
-		for plot in PlotRingIterator(g_destroyerCapitalPlot, radius, 1, false) do
-			local x, y = plot:GetXY()
-			if PlotDistance(cameraX, cameraY, x, y) < viewRadius then
-				if plot:IsVisible(g_iActiveTeam) then
-					g_radius = radius
-					bExit = true
-					break
+			else
+				print("Updating plot effect highlight for all revealed plots")
+				Events.ClearHexHighlightStyle("")
+				for iPlot = 0, Map.GetNumPlots() - 1 do
+					local plot = GetPlotByIndex(iPlot)
+					if plot:IsRevealed(g_iActiveTeam) then
+						local effectID, effectStength, iEffectPlayer, iCaster = plot:GetPlotEffectData()
+						local bOwnEffect = g_iActivePlayer == iEffectPlayer
+						if effectID ~= -1 and ((bShowOurs and bOwnEffect) or (not bShowOurs and not bOwnEffect and (bObserver or revealedPlotEffects[iPlot]))) then	--show it
+							local effectInfo = GameInfo.EaPlotEffects[effectID]
+							local color = HIGHLIGHT_COLOR[effectInfo.HighlightColor]
+							Events.SerialEventHexHighlight(ToHexFromGrid(Vector2(plot:GetX(), plot:GetY())), true, color)	
+						else
+							Events.SerialEventHexHighlight(ToHexFromGrid(Vector2(plot:GetX(), plot:GetY())), false, HIGHLIGHT_COLOR.GREEN)
+						end
+					end
 				end
 			end
 		end
-		if bExit then break end
-	end
-	DelayedEOTW()
-end
-
-local EOTW_RING_DELAY = 500
-local g_tickStop = 0
-local g_bEOTWInitClock = true
-
-function DelayedEOTW()
-	if g_radius == 0 then
-		local x, y = g_destroyerCapitalPlot:GetXY()
-		DoDummyUnitRangedAttack(BARB_PLAYER_INDEX, x, y, nil, GameInfoTypes.UNIT_DUMMY_NUKE)
-		ContextPtr:SetHide(false)	--we're done
-	else
-		for plot in PlotRingIterator(g_destroyerCapitalPlot, g_radius, 1, false) do
-			if plot:IsCity() then
-				local x, y = plot:GetXY()
-				DoDummyUnitRangedAttack(BARB_PLAYER_INDEX, x, y, nil, GameInfoTypes.UNIT_DUMMY_NUKE)
-			else
-				BreachPlot(plot)
-			end
-		end
-		g_radius = g_radius - 1
-		if g_radius == 0 then
-			EOTW_RING_DELAY = EOTW_RING_DELAY * 5
-		end
-		if g_radius >= g_minRadius then
-			g_bEOTWInitClock = true
-			Events.LocalMachineAppUpdate.Add(EOTWRingDelay)	
-		else
-			ContextPtr:SetHide(false)		--we're done
-		end
 	end
 end
-
-function EOTWRingDelay(tickCount, timeIncrement)		--DON'T LOCALIZE! Causes CTD with RemoveAll
-	if g_bEOTWInitClock then
-		g_tickStop = tickCount + EOTW_RING_DELAY
-		g_bEOTWInitClock = false
-		print("Start EOTWRingDelay ", tickCount, g_tickStop)
-	elseif g_tickStop < tickCount then
-		print("Stop EOTWRingDelay ", tickCount, g_tickStop)
-		Events.LocalMachineAppUpdate.RemoveAll()	--also removes tutorial checks (good riddence!)
-		DelayedEOTW()
-	end
-end
-
-
+LuaEvents.EaMagicUpdatePlotEffectHighlight.Add(function(iPlot, newShowState, bForceFullUpdate) return HandleError31(UpdatePlotEffectHighlight, iPlot, newShowState, bForceFullUpdate) end)
 
 --------------------------------------------------------------
 -- GameEvents

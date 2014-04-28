@@ -1,10 +1,134 @@
 This repository tracks changes for Ea III Sword & Sorcery
 
-Current build requires Ea Media Pack 20140305, download project at:
-http://ge.tt/8CNVC3P1/v/0?c
-
+Current build requires Ea Media Pack 20140305, download project at: http://ge.tt/8CNVC3P1/v/0?c
 
 Mod info and credits: http://forums.civfanatics.com/showthread.php?t=483622
+
+-----------------------------------------------------------------------------
+Ea API
+New GameDefines, GameEvents and Lua methods by class
+
+--------------------------------------------------------------
+-- GameDefines
+--------------------------------------------------------------
+
+EA_DLL_VERSION	(=1)
+ANIMAL_PLAYER	(=62)
+ANIMAL_TEAM		(=62)
+
+--------------------------------------------------------------
+-- GameEvents
+--------------------------------------------------------------
+
+--CallHook
+CombatResult(iAttackingPlayer, iAttackingUnit, attackerDamage, attackerFinalDamage, attackerMaxHP,iDefendingPlayer, iDefendingUnit, defenderDamage, defenderFinalDamage, defenderMaxHP, iInterceptingPlayer, iInterceptingUnit, interceptorDamage, plotX, plotY)
+CombatEnded(iAttackingPlayer, iAttackingUnit, attackerDamage, attackerFinalDamage, attackerMaxHP,iDefendingPlayer, iDefendingUnit, defenderDamage, defenderFinalDamage, defenderMaxHP, iInterceptingPlayer, iInterceptingUnit, interceptorDamage, plotX, plotY)
+UnitSetXYPlotEffect(iPlayer, iUnit, x, y, plotEffectID, plotEffectStrength, plotEffectPlayer, plotEffectCaster)
+UnitCaptured(iPlayer, iUnit)
+BarbExperienceDenied(iPlayer, iUnit, iSummoner, iExperience)	--unmodded experience unit would get if not barb
+
+--CallTestAll
+CanAutoSave(bInitial, bPostTurn)
+MustAbortAttack(iAttackingPlayer, iAttackingUnit, attackerDamage, attackerFinalDamage, attackerMaxHP,iDefendingPlayer, iDefendingUnit, defenderDamage, defenderFinalDamage, defenderMaxHP, iInterceptingPlayer, iInterceptingUnit, interceptorDamage, plotX, plotY)
+CanMeetTeam(iTeam1, iTeam2)
+CanContactMajorTeam(iTeam1, iTeam2)
+CityCanAcquirePlot(iPlayer, iCity, x, y)
+UnitTakingPromotion(iPlayer, iUnit, promotionID)
+CanCaptureCivilian(iPlayer, iUnit)				--not used because it won't allow recapture & civilian returns (used UnitCaptured instead)
+CanChangeExperience(iPlayer, iUnit, iSummoner, iExperience, iMax, bFromCombat, bInBorders, bUpdateGlobal)	--false prevents xp change to summoned unit
+CanCreateTradeRoute(iOriginPlot, iDestPlot, iDestPlayer, eDomain, eConnectionType)
+
+--CallAccumulator
+PlayerTechCostMod(iPlayer, techID)
+PlayerMinorFriendshipAnchor(eMajor, eMinor)
+
+--Added but currently disabled:
+//CityCanRangeStrikeAt(iAttacker, iCity, x, y)	CallTestAll
+
+--------------------------------------------------------------
+-- Game
+--------------------------------------------------------------
+
+int		GetUnitPower(unitTypeID)	--returns CvUnitEntry::GetPower() for supplied ID 
+bool	CanCreateTradeRoute(pOriginCity, pDestCity, DomainTypes, TradeConnectionType, bIgnoreExisting, bCheckPath)
+
+--------------------------------------------------------------
+-- City
+--------------------------------------------------------------
+
+int		GetCityResidentYieldBoost(int yieldTypeID)
+void	SetCityResidentYieldBoost(int yieldTypeID, iNewValue)
+void	SetNumFreeBuilding(BuildingTypes iIndex, int iNewValue)
+
+--------------------------------------------------------------
+-- Player
+--------------------------------------------------------------
+void	ChangeCivilizationType(eNewCivType)
+void	ChangeLeaderType(eNewLeaderType)
+void	SetFoundedFirstCity()
+int		GetLeaderYieldBoost(int yieldTypeID)
+void	SetLeaderYieldBoost(int yieldTypeID, iNewValue)
+bool	IsYieldFromSpecialPlotsOnly()
+void	SetYieldFromSpecialPlotsOnly(bool bValue)	--used to restrict plot yields for Pantheistic civs
+int		GetNumRealPolicies()		--counts only non-Utility policies
+
+--------------------------------------------------------------
+-- Plots
+--------------------------------------------------------------
+void				AddFloatUpMessage(sMessage, fDelay, iShowPlayer)	--last two optional	
+int, int			GetXY()
+int, int, int		GetXYIndex()
+int					GetLivingTerrainType()
+void				SetLivingTerrainType(int)
+int					GetLivingTerrainStrength()
+void				SetLivingTerrainStrength(int)
+int					GetLivingTerrainChopTurn()
+void				SetLivingTerrainChopTurn(int)
+bool				GetLivingTerrainPresent()
+void				SetLivingTerrainPresent(bool)
+int, bool, int, int	GetLivingTerrainData()
+void				SetLivingTerrainData(int, bool, int, int)
+void				SetPlotEffectData(effectID, effectStength, iPlayer, iCaster)
+int, int, int, int	GetPlotEffectData()								--args above
+
+--------------------------------------------------------------
+-- TeamTechs
+--------------------------------------------------------------
+int					GetNumRealTechsKnown()	--counts only non-Utility techs
+
+--------------------------------------------------------------
+-- Unit
+--------------------------------------------------------------
+int					GetPersonIndex()
+void				SetPersonIndex(int iIndex)
+int					GetSummonerIndex()
+void				SetSummonerIndex(int iIndex)
+int					GetMorale()
+void				SetMorale(int iMorale)
+void				ChangeMorale(int iChange)
+void				DecayMorale(int iDecayTo)
+int InvisibleTypes	SetInvisibleType()
+int InvisibleTypes	SetSeeInvisibleType()
+int					GetGPAttackState()
+void				SetGPAttackState(int iIndex)
+void				TestPromotionReady()
+int					TurnsToReachTarget(Plot targetPlot, bool bReusePaths, bool bIgnoreUnits, bool bIgnoreStacking)		--0 means can reach with movement left; returns 2147483647 if no path
+int					GetPower()
+
+--------------------------------------------------------------
+API Notes:
+1. PersonIndex has no effect on dll side; only used by Lua.
+2. Morale is used on dll side to modify combat strength.
+3. GPAttackState is set on Lua side but used by dll to control combat rules:
+	 -1  GP Default: can only attack other GPs; weak defender for defender unit selection
+	  0  Warrior Default: strong defender if attack is from GP; otherwise weak defender
+	  1  Warrior Charge (temp): must be a normal combat unit to attack
+	  2  Warrior Challenge (temp): must be a Warrior GP to attack
+4. Get/SetBaseCombatStrength are useful now because combat value is persisted and Get returns actual unit value rather than table value. 
+
+
+
+
 
 -----------------------------------------------------------------------------
 Overall Mod organization by folder:

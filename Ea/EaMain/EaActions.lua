@@ -22,26 +22,15 @@ local DOMAIN_SEA =							DomainTypes.DOMAIN_SEA
 local EA_ACTION_GO_TO_PLOT =				GameInfoTypes.EA_ACTION_GO_TO_PLOT
 local EA_WONDER_ARCANE_TOWER =				GameInfoTypes.EA_WONDER_ARCANE_TOWER
 local EACIV_NEZELIBA =						GameInfoTypes.EACIV_NEZELIBA
-local FEATURE_BLIGHT =	 					GameInfoTypes.FEATURE_BLIGHT
-local FEATURE_FALLOUT =	 					GameInfoTypes.FEATURE_FALLOUT
 local FEATURE_FOREST = 						GameInfoTypes.FEATURE_FOREST
 local FEATURE_JUNGLE = 						GameInfoTypes.FEATURE_JUNGLE
 local FEATURE_MARSH =	 					GameInfoTypes.FEATURE_MARSH
 local IMPROVEMENT_ARCANE_TOWER =			GameInfoTypes.IMPROVEMENT_ARCANE_TOWER
-local IMPROVEMENT_BLIGHT =					GameInfoTypes.IMPROVEMENT_BLIGHT
 local INVISIBLE_SUBMARINE =					GameInfoTypes.INVISIBLE_SUBMARINE
 local LEADER_FAND =							GameInfoTypes.LEADER_FAND
 local PLOT_LAND =							PlotTypes.PLOT_LAND
 local PLOT_MOUNTAIN =						PlotTypes.PLOT_MOUNTAIN
 local PLOT_OCEAN =							PlotTypes.PLOT_OCEAN
-local POLICY_PANTHEISM =					GameInfoTypes.POLICY_PANTHEISM
-local PROMOTION_BLESSED =					GameInfoTypes.PROMOTION_BLESSED
-local PROMOTION_CURSED =					GameInfoTypes.PROMOTION_CURSED
-local PROMOTION_EVIL_EYE =					GameInfoTypes.PROMOTION_EVIL_EYE
-local PROMOTION_FAIR_WINDS =				GameInfoTypes.PROMOTION_FAIR_WINDS
-local PROMOTION_HEX =						GameInfoTypes.PROMOTION_HEX
-local PROMOTION_PROTECTION_FROM_EVIL =		GameInfoTypes.PROMOTION_PROTECTION_FROM_EVIL
-local PROMOTION_RIDE_LIKE_THE_WINDS =		GameInfoTypes.PROMOTION_RIDE_LIKE_THE_WINDS
 local RELIGION_ANRA =						GameInfoTypes.RELIGION_ANRA
 local RELIGION_AZZANDARAYASNA =				GameInfoTypes.RELIGION_AZZANDARAYASNA
 local RELIGION_CULT_OF_AEGIR =				GameInfoTypes.RELIGION_CULT_OF_AEGIR
@@ -50,7 +39,6 @@ local RELIGION_CULT_OF_EPONA =				GameInfoTypes.RELIGION_CULT_OF_EPONA
 local RELIGION_CULT_OF_LEAVES =				GameInfoTypes.RELIGION_CULT_OF_LEAVES
 local RELIGION_CULT_OF_PURE_WATERS =		GameInfoTypes.RELIGION_CULT_OF_PURE_WATERS
 local RELIGION_THE_WEAVE_OF_EA =			GameInfoTypes.RELIGION_THE_WEAVE_OF_EA
-local RESOURCE_BLIGHT =						GameInfoTypes.RESOURCE_BLIGHT
 local RESOURCE_HORSE =						GameInfoTypes.RESOURCE_HORSE
 local RESOURCE_WINE =						GameInfoTypes.RESOURCE_WINE
 local TECH_MALEFICIUM =						GameInfoTypes.TECH_MALEFICIUM
@@ -65,7 +53,6 @@ local YIELD_PRODUCTION =					GameInfoTypes.YIELD_PRODUCTION
 local YIELD_SCIENCE = 						GameInfoTypes.YIELD_SCIENCE
 
 local MAX_MAJOR_CIVS =						GameDefines.MAX_MAJOR_CIVS
-local UNHAPPINESS_PER_CITY =				GameDefines.UNHAPPINESS_PER_CITY
 local ENEMY_HEAL_RATE =						GameDefines.ENEMY_HEAL_RATE
 local NEUTRAL_HEAL_RATE =					GameDefines.NEUTRAL_HEAL_RATE
 local FRIENDLY_HEAL_RATE =					GameDefines.FRIENDLY_HEAL_RATE
@@ -73,13 +60,10 @@ local FRIENDLY_HEAL_RATE =					GameDefines.FRIENDLY_HEAL_RATE
 local UNIT_SUFFIXES =						UNIT_SUFFIXES
 local NUM_UNIT_SUFFIXES =					#UNIT_SUFFIXES
 local MOD_MEMORY_HALFLIFE =					MOD_MEMORY_HALFLIFE
-
-local MAP_W, MAP_H =						Map.GetGridSize()
-local MAX_RANGE =							Map.PlotDistance(0, 0, math.floor(MAP_W / 2 + 0.5), MAP_H - 1)	--other side of world (sort of)
 local FIRST_SPELL_ID =						FIRST_SPELL_ID
-local LAST_SPELL_ID =						LAST_SPELL_ID
 
 --global tables
+local GameInfoTypes =						GameInfoTypes
 local MapModData =							MapModData
 local fullCivs =							MapModData.fullCivs
 local bFullCivAI =							MapModData.bFullCivAI
@@ -94,19 +78,17 @@ local gg_playerValues =						gg_playerValues
 local gg_bToCheapToHire =					gg_bToCheapToHire
 local gg_bNormalCombatUnit =				gg_bNormalCombatUnit
 local gg_bNormalLivingCombatUnit =			gg_bNormalLivingCombatUnit
+local gg_normalizedUnitPower =				gg_normalizedUnitPower
 
 
 --localized functions
-local FindOpenTradeRoute =					FindOpenTradeRoute		--in EaTrade
-local IsLivingUnit =						IsLivingUnit
 local Floor =								math.floor
 local GetPlotByIndex =						Map.GetPlotByIndex
 local GetPlotFromXY =						Map.GetPlot
-local Distance =							Map.PlotDistance
+local PlotDistance =						Map.PlotDistance
 local Rand =								Map.Rand
-local HandleError =							HandleError
+local HandleError61 =						HandleError61
 local HandleError21 =						HandleError21
-local HandleError41 =						HandleError41
 
 
 --local functions
@@ -122,7 +104,6 @@ local Finish = {}
 --	All applicable are calculated in TestEaAction any time we are in this file. Never change anywhere else!
 --  Non-applicable variables will hold value from last call
 local g_eaAction
-local g_SpellClass				-- nil, "Arcane" or "Devine"
 local g_bAIControl				--for AI control of unit (can be true for human if Autoplay)
 local g_iActivePlayer = Game.GetActivePlayer()
 
@@ -133,14 +114,13 @@ local g_eaPlayer
 local g_player
 local g_iTeam
 local g_team
-local g_faith
+--local g_faith
 
-local g_bMapUnit		--if true then the following values are always calculated
 local g_unit
 local g_iUnit
 local g_unitTypeID
 
-local g_bGreatPerson	--if true then the following values are always calculated
+local g_bGreatPerson				--if true then the following values are always calculated
 local g_iPerson
 local g_eaPerson
 local g_mod
@@ -150,19 +130,16 @@ local g_class2
 local g_iUnitJoined
 local g_joinedUnit
 
-local g_unitX				--if g_bMapUnit then this is from g_unit; otherwise it is GP stat that may be from g_eaPerson.x, .y or from g_joinedUnit x,y
-local g_unitY				--		(same as g_x, g_y below if no targetX,Y supplied in function call)
+local g_unitX						--same as g_x, g_y below if no targetX,Y supplied in function call
+local g_unitY				
 
-local g_bTarget			--true if targetX, targetY provided; otherwise, values are for g_unitX, g_unitY
+local g_bTarget						--true if targetX, targetY provided; otherwise, values are for g_unitX, g_unitY
 local g_iPlot
 local g_plot
 local g_specialEffectsPlot			--same as g_plot unless changed in specific function
 local g_iOwner
 local g_x
 local g_y
-
-local g_bInTowerOrTemple	--these two are only set if g_eaAction.ApplyTowerTempleMod
-local g_modSpell			--g_mod plus plot Tower/Temple mod
 
 local g_bIsCity		--if true then the following values are always calculated (follows target g_x, g_y if provided; otherwise g_unit g_x,g_y)
 local g_iCity
@@ -178,8 +155,6 @@ local g_bAllTestsPassed = false
 local g_bSufficientFaith = true
 local g_bSetDelayedFailForUI = false
 
---local g_bAllowUnitCycle = true
-
 --communicate from TestTarget to SetUI or SetAIValues when needed
 local g_testTargetSwitch = 0
 
@@ -187,8 +162,8 @@ local g_testTargetSwitch = 0
 local g_count = 0
 local g_value = 0
 local g_int1, g_int2, g_int3, g_int4, g_int5 = 0, 0, 0, 0, 0
-local g_bool1, g_bool2, g_bool3, g_bool4, g_bool5 = false, false, false, false, false
-local g_text1, g_text2, g_text3, g_text4, g_text5 = "", "", "", "", ""
+local g_bool1 = false
+local g_text1 = ""
 local g_obj1, g_obj2
 
 local g_integers = {}
@@ -202,25 +177,11 @@ local g_tradeAvailableTable = {}
 -- Cached table values
 ---------------------------------------------------------------
 
-local EaActionsInfo = {}			-- Contains the entire table for speed
+local EaActionsInfo = {}			-- Contains the entire table for speed (id < FIRST_SPELL_ID)
 for row in GameInfo.EaActions() do
 	local id = row.ID
-	EaActionsInfo[id] = row
-end
-
-local gpTempTypeUnits = {}	--index by role, originalTypeID; holds tempTypeID
-for unitInfo in GameInfo.Units() do
-	if unitInfo.EaGPTempRole then
-		local role = unitInfo.EaGPTempRole
-		local tempType = unitInfo.Type
-		local tempTypeID = unitInfo.ID
-		for row in GameInfo.Unit_EaGPTempTypes() do
-			if row.TempUnitType == tempType then
-				local originalTypeID = GameInfoTypes[row.UnitType]
-				gpTempTypeUnits[role] = gpTempTypeUnits[role] or {}
-				gpTempTypeUnits[role][originalTypeID] = tempTypeID
-			end
-		end
+	if id < FIRST_SPELL_ID then
+		EaActionsInfo[id] = row
 	end
 end
 
@@ -251,13 +212,12 @@ local OutOfRangeReturnZeroMetaTable = {__index = function() return 0 end}	--retu
 setmetatable(discountRateTable, OutOfRangeReturnZeroMetaTable)
 setmetatable(discountCombatRateTable, OutOfRangeReturnZeroMetaTable)
 
-function TimeDiscount(t, i, p, b)		--used in multiple trade route valuation; AI has same calculation with travel time in AddOption
-	local numerator = b + discountRateTable[t - 1] * (i + p - discountRateTable[1] * (i + b))
-	if numerator < 0 then return 0 end
-	local denominator = 1 - discountRateTable[t]
-	return numerator / denominator
-end
-local TimeDiscount = TimeDiscount
+--local function TimeDiscount(t, i, p, b)		--Not used currently
+--	local numerator = b + discountRateTable[t - 1] * (i + p - discountRateTable[1] * (i + b))
+--	if numerator < 0 then return 0 end
+--	local denominator = 1 - discountRateTable[t]
+--	return numerator / denominator
+--end
 
 ----------------------------------------------------------------
 -- Player change
@@ -268,13 +228,157 @@ local function OnActivePlayerChanged(iActivePlayer, iPrevActivePlayer)
 end
 Events.GameplaySetActivePlayer.Add(OnActivePlayerChanged)
 
+----------------------------------------------------------------
+-- Local functions
+----------------------------------------------------------------
+
+local function SpecialEffects()
+	print("Running SpecialEffects ", g_eaAction.Type, g_eaAction.HumanOnlyFX, g_eaAction.HumanVisibleFX, g_eaAction.HumanOnlySound, g_eaAction.HumanVisibleSound, g_eaAction.PlayAnywhereSound)
+	local fx, sound
+	if g_iPlayer == g_iActivePlayer then
+		fx = g_eaAction.HumanOnlyFX or g_eaAction.HumanVisibleFX
+		sound = g_eaAction.HumanOnlySound or g_eaAction.HumanVisibleSound
+	elseif g_specialEffectsPlot:IsVisible(Game.GetActiveTeam(), false) then
+		fx = g_eaAction.HumanVisibleFX
+		sound = g_eaAction.HumanVisibleSound
+	end
+	local bLookAt = fx or sound
+	sound = sound or g_eaAction.PlayAnywhereSound
+	if bLookAt then
+		UI.LookAt(g_specialEffectsPlot, 0)
+	end
+	if sound then
+		Events.AudioPlay2DSound(sound)
+	end
+	if fx then
+		local hex = ToHexFromGrid( Vector2(g_specialEffectsPlot:GetX(), g_specialEffectsPlot:GetY() ) )
+		Events.GameplayFX(hex.x, hex.y, -1)
+	end
+end
+
+local function FinishEaAction(eaActionID)		--only called from DoEaAction so file locals already set
+	print("FinishEaAction", g_iPlayer, g_eaAction.Type)
+
+	if g_eaAction.TurnsToComplete == 1000 and g_bAIControl then	--this is a sustained action interrupt (not really a "finish")
+		InterruptEaAction(g_iPlayer, g_iPerson)		
+		return true
+	end
+
+	--Plot Float Up Text
+	if not g_eaAction.NoFloatUpText or MapModData.bAutoplay then
+		g_plot:AddFloatUpMessage(Locale.Lookup(g_eaAction.Description), 1)
+	end
+
+	ClearActionPlotTargetedForPerson(g_eaPlayer, g_iPerson)
+	g_eaPerson.eaActionID = -1		--will bring back to map on next turn
+
+	--g_unit:SetInvisibleType(INVISIBLE_SUBMARINE)
+
+	--Mana or divine favor
+	if 0 < g_eaAction.FixedFaith then
+		UseManaOrDivineFavor(g_iPlayer, g_iPerson, g_eaAction.FixedFaith, false)
+	end
+
+	--XP
+	if g_eaAction.FinishXP > 0 then
+		g_unit:ChangeExperience(g_eaAction.FinishXP)
+	end
+
+	g_eaPlayer.aiUniqueTargeted[eaActionID] = nil
+
+	--Pantheism cult found or spread
+	local cultType = g_eaAction.FoundsSpreadsCult
+	if cultType then
+		local cultID = GameInfoTypes[cultType]
+		--if not g_eaPerson.cult then		--join and learn free spell the first time
+		--	g_eaPerson.cult = cultID
+			local freeSpellType = GameInfo.Religions[cultID].EaFreeCultSpell
+			if freeSpellType then
+				g_eaPerson.spells[GameInfoTypes[freeSpellType] ] = true
+			end
+		--end
+		if gReligions[cultID] then		--already founded
+			for i = -1, HIGHEST_RELIGION_ID do
+				if g_tablePointer[i] > 0 then
+					--need percentage (round up or down???)
+					local convertPercent = Floor(1 + 100 * g_tablePointer[i] / g_city:GetNumFollowers(i))
+					g_city:ConvertPercentFollowers(cultID, i, convertPercent)
+				end
+			end
+		else
+			FoundReligion(g_iPlayer, g_iCity, cultID)
+			g_city:ConvertPercentFollowers(cultID, RELIGION_THE_WEAVE_OF_EA, 100)
+
+		end
+
+	end
+
+	--Effects
+	if g_eaAction.ClaimsPlot and g_iOwner ~= g_iPlayer then
+		local city = GetNewOwnerCityForPlot(g_iPlayer, g_iPlot, g_eaAction.ReqNearbyCityReligion and GameInfoTypes[g_eaAction.ReqNearbyCityReligion])
+		g_plot:SetOwner(g_iPlayer, city:GetID())
+	end
+
+	if g_eaAction.ImprovementType then
+		local improvementID = GameInfoTypes[g_eaAction.ImprovementType]
+		g_plot:SetImprovementType(improvementID)
+	end
+
+	if g_eaAction.Building then
+		local buildingID = GameInfoTypes[g_eaAction.Building]
+		g_city:SetNumRealBuilding(buildingID, 1)
+	end
+	if g_eaAction.BuildingMod then
+		local buildingID = GameInfoTypes[g_eaAction.BuildingMod]
+		g_city:SetNumRealBuilding(buildingID, g_mod)
+	end
+
+	if g_eaAction.EaWonder then		--Single -instance wonders only! Multiple-instance must be done in special function
+		local wonderID = GameInfoTypes[g_eaAction.EaWonder]
+		gWonders[wonderID] = {mod = g_mod, iPlot = g_iPlot, iPlayer = -1}	--iPlayer = -1 so it will update in UpdateUniqueWonder
+		UpdateUniqueWonder(g_iPlayer, wonderID)
+		--TO DO! need popup or notification
+		--LuaEvents.EaImagePopupSpecial("EaWonder", artifactID)
+
+	elseif g_eaAction.EaEpic then
+		local epicID = GameInfoTypes[g_eaAction.EaEpic]
+		gEpics[epicID] = {mod = g_mod, iPlayer = g_iPlayer}
+		--TO DO! need popup or notification
+		--LuaEvents.EaImagePopupSpecial("EaEpic", artifactID)
+		--DEPRECIATE: g_eaPlayer.epicList[#g_eaPlayer.epicList + 1] = epicID
+
+	elseif g_eaAction.EaArtifact then
+		local artifactID = GameInfoTypes[g_eaAction.EaArtifact]
+		gArtifacts[artifactID] = {mod = g_mod, iPlayer = -1, locationType = "iPlot", locationIndex = g_iPlot}	--iPlayer is -1 here so it will properly update in EaArtifacts.lua
+		--TO DO! need popup or notification
+		--Events.AudioPlay2DSound("AS2D_INTERFACE_NEW_ERA")
+		--LuaEvents.EaImagePopupSpecial("EaArtifact", artifactID)
+		--DEPRECIATE: g_eaPlayer.itemList[#g_eaPlayer.itemList + 1] = artifactID
+		UpdateArtifact(artifactID)	--will figure out new owner from location and run any artifact specific "gain" effect
+
+	end
+
+	if g_eaAction.UniqueType then							--make NOT available permanently for any GP
+		if g_eaAction.UniqueType == "World" then
+			gWorldUniqueAction[eaActionID] = -1
+		elseif g_eaAction.UniqueType == "National" then
+			g_eaPlayer.nationalUniqueAction[eaActionID] = -1
+		end
+	end
+
+	print("About to try action-specific Finish function, if any")
+	if Finish[eaActionID] and not Finish[eaActionID]() then return false end	--this is the custom Finish call
+
+	SpecialEffects()
+	return true
+end
+
 ---------------------------------------------------------------
 -- Top level (generic) Test, Do, Finish and Interrupt functions
 ---------------------------------------------------------------
 
 --For actions with TurnsToComplete > 1, the Do function is called by Lua each turn (end of turn for human, beginning for AI). 
 --Finish functions are for actions that take time, runs when completed (does generic function like building add, or calls custom function).
-
 
 function TestEaActionForHumanUI(eaActionID, iPlayer, unit, iPerson, testX, testY)	--called from UnitPanel
 	Dprint("TestEaActionForHumanUI ", eaActionID, iPlayer, unit, iPerson, testX, testY)
@@ -325,18 +429,7 @@ function TestEaActionForHumanUI(eaActionID, iPlayer, unit, iPerson, testX, testY
 		MapModData.text = "[COLOR_WARNING_TEXT]You cannot do this in the same place as another great person from your civilization[ENDCOLOR]"	
 	end
 
-	if g_eaAction.SpellClass then
-		if g_eaPerson.spells and g_eaPerson.spells[eaActionID] then
-			MapModData.bShow = true
-			if not g_bSufficientFaith then
-				if g_faith < 1 then
-					MapModData.text = "[COLOR_WARNING_TEXT]You do not have any mana or divine favor[ENDCOLOR]"
-				else
-					MapModData.text = "[COLOR_WARNING_TEXT]You do not have sufficient mana or divine favor to cast this spell (" .. g_eaAction.FixedFaith .. " needed)[ENDCOLOR]"
-				end
-			end
-		end
-	elseif g_eaAction.UnitUpgradeTypePrefix then
+	if g_eaAction.UnitUpgradeTypePrefix then
 		if g_bAllTestsPassed then
 			MapModData.bShow = true
 			local upgradeUnitInfo = GameInfo.Units[g_int1]
@@ -382,7 +475,7 @@ function TestEaActionForHumanUI(eaActionID, iPlayer, unit, iPerson, testX, testY
 	g_bSetDelayedFailForUI = false
 end
 --LuaEvents.EaActionsTestEaActionForHumanUI.Add(TestEaActionForHumanUI)
-LuaEvents.EaActionsTestEaActionForHumanUI.Add(function(eaActionID, iPlayer, unit, iPerson, testX, testY) return HandleError(TestEaActionForHumanUI, eaActionID, iPlayer, unit, iPerson, testX, testY) end)
+LuaEvents.EaActionsTestEaActionForHumanUI.Add(function(eaActionID, iPlayer, unit, iPerson, testX, testY) return HandleError61(TestEaActionForHumanUI, eaActionID, iPlayer, unit, iPerson, testX, testY) end)
 
 function TestEaAction(eaActionID, iPlayer, unit, iPerson, testX, testY, bAINonTargetTest)
 	--This function sets all file locals related to iPlayer and iPerson 
@@ -391,49 +484,38 @@ function TestEaAction(eaActionID, iPlayer, unit, iPerson, testX, testY, bAINonTa
 	g_eaAction = EaActionsInfo[eaActionID]
 	g_gameTurn = Game.GetGameTurn()
 
-	--print("TestEaAction", g_eaAction.Type, iPlayer, unit, iPerson, testX, testY, bAINonTargetTest)
+	print("TestEaAction", eaActionID, iPlayer, unit, iPerson, testX, testY, bAINonTargetTest)
 
 	g_bNonTargetTestsPassed = false
 	g_testTargetSwitch = 0
 
-	--do return false end	--PazDebug
-
-	g_SpellClass = g_eaAction.SpellClass
-	if g_SpellClass then
-		--skip all world and civ-level reqs (for spells, these only apply to learning not casting) except for FixedFaith
-		if not iPerson then return false end	--we'll handle non-GP spellcasting later
-		g_eaPerson = gPeople[iPerson]
-		if not g_eaPerson.spells or not g_eaPerson.spells[eaActionID] then return false end		--don't have spells or this spell (most common exclude)
-		g_iPlayer = iPlayer
-		g_eaPlayer = gPlayers[iPlayer]
-		g_player = Players[iPlayer]
-		
-		g_iTeam = g_player:GetTeam()
-		g_team = Teams[g_iTeam]	
-	else
-		if g_eaAction.ReligionNotFounded and gReligions[GameInfoTypes[g_eaAction.ReligionNotFounded] ] then return false end
-		if g_eaAction.ReligionFounded and not gReligions[GameInfoTypes[g_eaAction.ReligionFounded] ] then return false end
-		if g_eaAction.MaleficiumLearnedByAnyone and gWorld.maleficium ~= "Learned" then return false end
-
-		g_eaPlayer = gPlayers[iPlayer]
-		if g_eaAction.ExcludeFallen and g_eaPlayer.bIsFallen then return false end
-		if g_eaAction.CivReligion and g_eaPlayer.religionID ~= GameInfoTypes[g_eaAction.CivReligion] then return false end
-
-		g_player = Players[iPlayer]
-		if g_eaAction.PolicyReq and not g_player:HasPolicy(GameInfoTypes[g_eaAction.PolicyReq]) and (not g_eaAction.OrPolicyReq or not g_player:HasPolicy(GameInfoTypes[g_eaAction.OrPolicyReq])) then return false end
-		g_iTeam = g_player:GetTeam()
-		g_team = Teams[g_iTeam]	
-		if g_eaAction.TechReq then
-			if not (g_eaAction.PolicyTrumpsTechReq and g_player:HasPolicy(GameInfoTypes[g_eaAction.PolicyTrumpsTechReq])) then
-				if not g_team:IsHasTech(GameInfoTypes[g_eaAction.TechReq]) then
-					if not g_eaAction.OrTechReq or not g_team:IsHasTech(GameInfoTypes[g_eaAction.OrTechReq]) then return false end
-				end
-				if g_eaAction.AndTechReq and not g_team:IsHasTech(GameInfoTypes[g_eaAction.AndTechReq]) then return false end
-			end
-		end
-		if g_eaAction.TechDisallow and g_team:IsHasTech(GameInfoTypes[g_eaAction.TechDisallow]) then return false end
-		g_iPlayer = iPlayer
+	if g_eaAction.SpellClass then
+		error("TestEaAction g_eaAction had a SpellClass")
 	end
+
+	if g_eaAction.ReqEaWonder and not gWonders[GameInfoTypes[g_eaAction.ReqEaWonder] ] then return false end
+	if g_eaAction.ReligionNotFounded and gReligions[GameInfoTypes[g_eaAction.ReligionNotFounded] ] then return false end
+	if g_eaAction.ReligionFounded and not gReligions[GameInfoTypes[g_eaAction.ReligionFounded] ] then return false end
+	if g_eaAction.MaleficiumLearnedByAnyone and gWorld.maleficium ~= "Learned" then return false end
+
+	g_eaPlayer = gPlayers[iPlayer]
+	if g_eaAction.ExcludeFallen and g_eaPlayer.bIsFallen then return false end
+	if g_eaAction.CivReligion and g_eaPlayer.religionID ~= GameInfoTypes[g_eaAction.CivReligion] then return false end
+
+	g_player = Players[iPlayer]
+	if g_eaAction.PolicyReq and not g_player:HasPolicy(GameInfoTypes[g_eaAction.PolicyReq]) and (not g_eaAction.OrPolicyReq or not g_player:HasPolicy(GameInfoTypes[g_eaAction.OrPolicyReq])) then return false end
+	g_iTeam = g_player:GetTeam()
+	g_team = Teams[g_iTeam]	
+	if g_eaAction.TechReq then
+		if not (g_eaAction.PolicyTrumpsTechReq and g_player:HasPolicy(GameInfoTypes[g_eaAction.PolicyTrumpsTechReq])) then
+			if not g_team:IsHasTech(GameInfoTypes[g_eaAction.TechReq]) then
+				if not g_eaAction.OrTechReq or not g_team:IsHasTech(GameInfoTypes[g_eaAction.OrTechReq]) then return false end
+			end
+			if g_eaAction.AndTechReq and not g_team:IsHasTech(GameInfoTypes[g_eaAction.AndTechReq]) then return false end
+		end
+	end
+	if g_eaAction.TechDisallow and g_team:IsHasTech(GameInfoTypes[g_eaAction.TechDisallow]) then return false end
+	g_iPlayer = iPlayer
 
 	if bAINonTargetTest then
 		if g_eaPlayer.aiUniqueTargeted[eaActionID] and g_eaPlayer.aiUniqueTargeted[eaActionID] ~= iPerson then return false end	--ai specific exclude (someone on way to do this)
@@ -442,148 +524,75 @@ function TestEaAction(eaActionID, iPlayer, unit, iPerson, testX, testY, bAINonTa
 		g_bAIControl = bFullCivAI[iPlayer]
 	end
 
-	--for GP, unit can be gotten from iPerson or visa versa; for non-GP, unit must be supplied
-	if unit then
-		g_bMapUnit = true
-		g_unit = unit
-		g_unitX, g_unitY = unit:GetX(), unit:GetY()
-		g_iUnit = unit:GetID()
-		g_unitTypeID = unit:GetUnitType()
-		if unit:IsGreatPerson() then
-			g_bGreatPerson = true
-			g_iPerson = iPerson or unit:GetPersonIndex()
-			g_eaPerson = gPeople[g_iPerson]
-			g_iUnitJoined = g_eaPerson.iUnitJoined
-			if g_iUnitJoined ~= -1 then
-				g_joinedUnit = g_player:GetUnitByID(g_iUnitJoined)
-			end
-		else
-			g_bGreatPerson = false
-		end 
-	elseif iPerson then
+	g_unit = unit
+	g_unitX, g_unitY = unit:GetX(), unit:GetY()
+	g_iUnit = unit:GetID()
+	g_unitTypeID = unit:GetUnitType()
+	if unit:IsGreatPerson() then
 		g_bGreatPerson = true
-		g_iPerson = iPerson
+		g_iPerson = iPerson or unit:GetPersonIndex()
 		g_eaPerson = gPeople[g_iPerson]
-		g_iUnit = g_eaPerson.iUnit
-		if g_iUnit == -1 then
-			g_iUnitJoined = g_eaPerson.iUnitJoined
-			--[[
-			if g_iUnitJoined ~= -1 then
-				g_joinedUnit = g_player:GetUnitByID(g_iUnitJoined)
-				if g_joinedUnit then
-					g_unitX, g_unitY = g_joinedUnit:GetX(), g_joinedUnit:GetY()
-				else
-					UnJoinGP(g_iPlayer, g_eaPerson)
-					g_unit = ReappearGP(g_iPlayer, g_iPerson)
-					g_iUnit = g_eaPerson.iUnit
-					g_iUnitJoined = -1
-				end
-			else
-				
-			end
-			]]
-			g_unitX, g_unitY = g_eaPerson.x, g_eaPerson.y
-		end
-		if g_iUnit == -1 then
-			g_bMapUnit = false
-			g_unit = nil
-		else
-			g_bMapUnit = true
-			unit = g_player:GetUnitByID(g_iUnit)
-			g_unit = unit
-			g_unitX, g_unitY = unit:GetX(), unit:GetY()
-			g_unitTypeID = unit:GetUnitType()
-			g_iUnitJoined = g_eaPerson.iUnitJoined
-			if g_iUnitJoined ~= -1 then
-				g_joinedUnit = g_player:GetUnitByID(g_iUnitJoined)
-			end
+		g_iUnitJoined = g_eaPerson.iUnitJoined
+		if g_iUnitJoined ~= -1 then
+			g_joinedUnit = g_player:GetUnitByID(g_iUnitJoined)
 		end
 	else
-		print("!!!! ERROR: TestEaAction called with both unit and iPerson = nil")
-	end
-	--print("2")
-	--unit characteristics (or stored unit info if GP not on map)
+		g_bGreatPerson = false
+	end 
 
-	if g_SpellClass then
-		g_faith = g_player:GetFaith()
-		if g_faith < 1 or (g_faith < g_eaAction.FixedFaith and g_eaPerson.tempFaith ~= g_eaAction.FixedFaith) then
-			g_bSufficientFaith = false
+	if g_eaAction.LevelReq and unit:GetLevel() < g_eaAction.LevelReq then
+		if g_bUICall and g_eaAction.UnitUpgradeTypePrefix then
+			g_bSetDelayedFailForUI = true
 		else
-			g_bSufficientFaith = true
-		end
-	else
-		if g_bMapUnit then
-			if g_eaAction.LevelReq and unit:GetLevel() < g_eaAction.LevelReq then
-				if g_bUICall and g_eaAction.UnitUpgradeTypePrefix then
-					g_bSetDelayedFailForUI = true
-				else
-					return false
-				end
-			end
-			if g_eaAction.PromotionReq and not unit:IsHasPromotion(GameInfoTypes[g_eaAction.PromotionReq]) then return false end
-			if g_eaAction.PromotionDisallow then
-				if unit:IsHasPromotion(GameInfoTypes[g_eaAction.PromotionDisallow]) then return false end
-				if g_eaAction.PromotionDisallow2 and unit:IsHasPromotion(GameInfoTypes[g_eaAction.PromotionDisallow2]) then return false end
-				if g_eaAction.PromotionDisallow3 and unit:IsHasPromotion(GameInfoTypes[g_eaAction.PromotionDisallow3]) then return false end
-			end
-			if g_eaAction.UnitCombatType and GameInfoTypes[g_eaAction.UnitCombatType] ~= unit:GetUnitCombatType() then return false end
-			if g_eaAction.NormalCombatUnit and (g_bGreatPerson or unit:GetUnitCombatType() == -1) then return false end
-			
-			if g_eaAction.UnitTypePrefix1 then
-				local bAllow = false
-				for i = 1, NUM_UNIT_SUFFIXES do
-					local suffix = UNIT_SUFFIXES[i]
-					if GameInfoTypes[g_eaAction.UnitTypePrefix1 .. suffix] == g_unitTypeID then
-						bAllow = true
-						break
-					elseif g_eaAction.UnitTypePrefix2 then
-						if GameInfoTypes[g_eaAction.UnitTypePrefix2 .. suffix] == g_unitTypeID then
-							bAllow = true
-							break
-						elseif g_eaAction.UnitTypePrefix3 then
-							if GameInfoTypes[g_eaAction.UnitTypePrefix3 .. suffix] == g_unitTypeID then
-								bAllow = true
-								break
-							end
-						end					
-					end
-				end
-				if not bAllow then return false end
-			end
-
-			if g_eaAction.UnitType and GameInfoTypes[g_eaAction.UnitType] ~= g_unitTypeID 
-				and (not g_eaAction.OrUnitType or GameInfoTypes[g_eaAction.OrUnitType] ~= g_unitTypeID)
-				and (not g_eaAction.OrUnitType2 or GameInfoTypes[g_eaAction.OrUnitType2] ~= g_unitTypeID) then return false end
-		
-		elseif g_bGreatPerson then		--for GP not on map
-			if g_eaAction.LevelReq and g_eaPerson.level < g_eaAction.LevelReq then return false end
-			if g_eaAction.PromotionReq and not g_eaPerson.promotions[GameInfoTypes[g_eaAction.PromotionReq] ] then return false end
-			--shouldn't use others for GP
-		end
-
-		--GP only
-		if g_bGreatPerson then
-
-			g_subclass = g_eaPerson.subclass
-			if g_eaAction.GPSubclass and g_eaAction.GPSubclass ~= g_subclass and g_eaAction.OrGPSubclass ~= g_subclass then return false end
-			if g_eaAction.ExcludeGPSubclass and g_eaAction.ExcludeGPSubclass == g_subclass then return false end
-			g_class1 = g_eaPerson.class1
-			g_class2 = g_eaPerson.class2	--nil unless dual-class GP
-			if g_eaAction.GPClass and g_eaAction.GPClass ~= g_class1 and g_eaAction.GPClass ~= g_class2 then return false end
-			if g_eaAction.NotGPClass and (g_eaAction.NotGPClass == g_class1 or g_eaAction.NotGPClass == g_class2) then return false end
-			--if g_eaAction.PantheismCult and (g_eaPerson.cult and g_eaPerson.cult ~= GameInfoTypes[g_eaAction.PantheismCult]) then return false end
-
-			--if g_eaAction.GPClass then
-			--	if g_eaAction.OrGPClass then
-			--		if g_eaAction.GPClass ~= g_class1 and g_eaAction.GPClass ~= g_class2 and g_eaAction.OrGPClass ~= g_class1 and g_eaAction.OrGPClass ~= g_class2 then return false end
-			--	else
-			--		if g_eaAction.GPClass ~= g_class1 and g_eaAction.GPClass ~= g_class2 then return false end
-			--	end
-			--end
-
-		elseif g_eaAction.GPOnly then
 			return false
 		end
+	end
+	if g_eaAction.PromotionReq and not unit:IsHasPromotion(GameInfoTypes[g_eaAction.PromotionReq]) then return false end
+	if g_eaAction.PromotionDisallow then
+		if unit:IsHasPromotion(GameInfoTypes[g_eaAction.PromotionDisallow]) then return false end
+		if g_eaAction.PromotionDisallow2 and unit:IsHasPromotion(GameInfoTypes[g_eaAction.PromotionDisallow2]) then return false end
+		if g_eaAction.PromotionDisallow3 and unit:IsHasPromotion(GameInfoTypes[g_eaAction.PromotionDisallow3]) then return false end
+	end
+	if g_eaAction.UnitCombatType and GameInfoTypes[g_eaAction.UnitCombatType] ~= unit:GetUnitCombatType() then return false end
+	if g_eaAction.NormalCombatUnit and (g_bGreatPerson or unit:GetUnitCombatType() == -1) then return false end
+			
+	if g_eaAction.UnitTypePrefix1 then
+		local bAllow = false
+		for i = 1, NUM_UNIT_SUFFIXES do
+			local suffix = UNIT_SUFFIXES[i]
+			if GameInfoTypes[g_eaAction.UnitTypePrefix1 .. suffix] == g_unitTypeID then
+				bAllow = true
+				break
+			elseif g_eaAction.UnitTypePrefix2 then
+				if GameInfoTypes[g_eaAction.UnitTypePrefix2 .. suffix] == g_unitTypeID then
+					bAllow = true
+					break
+				elseif g_eaAction.UnitTypePrefix3 then
+					if GameInfoTypes[g_eaAction.UnitTypePrefix3 .. suffix] == g_unitTypeID then
+						bAllow = true
+						break
+					end
+				end					
+			end
+		end
+		if not bAllow then return false end
+	end
+
+	if g_eaAction.UnitType and GameInfoTypes[g_eaAction.UnitType] ~= g_unitTypeID 
+		and (not g_eaAction.OrUnitType or GameInfoTypes[g_eaAction.OrUnitType] ~= g_unitTypeID)
+		and (not g_eaAction.OrUnitType2 or GameInfoTypes[g_eaAction.OrUnitType2] ~= g_unitTypeID) then return false end
+
+	--GP only
+	if g_bGreatPerson then
+		g_subclass = g_eaPerson.subclass
+		if g_eaAction.GPSubclass and g_eaAction.GPSubclass ~= g_subclass and g_eaAction.OrGPSubclass ~= g_subclass then return false end
+		if g_eaAction.ExcludeGPSubclass and g_eaAction.ExcludeGPSubclass == g_subclass then return false end
+		g_class1 = g_eaPerson.class1
+		g_class2 = g_eaPerson.class2	--nil unless dual-class GP
+		if g_eaAction.GPClass and g_eaAction.GPClass ~= g_class1 and g_eaAction.GPClass ~= g_class2 then return false end
+		if g_eaAction.NotGPClass and (g_eaAction.NotGPClass == g_class1 or g_eaAction.NotGPClass == g_class2) then return false end
+	elseif g_eaAction.GPOnly then
+		return false
 	end
 
 	--Unique already created or being created			TEST THIS!!!
@@ -598,10 +607,7 @@ function TestEaAction(eaActionID, iPlayer, unit, iPerson, testX, testY, bAINonTa
 	--Action Modifiers
 	if g_bGreatPerson then
 		local modType1 = g_eaAction.GPModType1
-		--g_mod = modType and (g_eaPerson[modType] or 0) or 0
-
 		g_mod = modType1 and GetGPMod(g_iPerson, modType1, g_eaAction.GPModType2) or 0
-		--print(g_mod)
 	end
 
 	--Specific action test (runs if it exists)
@@ -647,12 +653,30 @@ function TestEaActionTarget(eaActionID, testX, testY, bAITargetTest)
 	end
 
 	g_plot = GetPlotFromXY(testX, testY)
-	--print("g_plot from TestTarget ", g_plot)
-
-	if g_eaAction.OwnCityRadius and not g_plot:IsPlayerCityRadius(g_iPlayer) then return false end
 	if g_eaAction.BuildType and not g_plot:CanBuild(GameInfoTypes[g_eaAction.BuildType], g_iPlayer) then return false end
-
 	g_iOwner = g_plot:GetOwner()
+
+	if g_eaAction.OwnCityRadius then
+		if not g_plot:IsPlayerCityRadius(g_iPlayer) then return false end
+		if g_eaAction.ReqNearbyCityReligion then
+			if g_iOwner == g_iPlayer then
+				local iCity = g_plot:GetCityPurchaseID()
+				local city = g_player:GetCityByID(iCity)
+				if city:GetReligiousMajority() ~= GameInfoTypes[g_eaAction.ReqNearbyCityReligion] then return false end
+			else	--does any player city in radius have religion (faster to iterate cities or plots?)
+				local religionID = GameInfoTypes[g_eaAction.ReqNearbyCityReligion]
+				local bNoCity = true
+				for city in g_player:Cities() do
+					if city:GetReligiousMajority() == religionID and PlotDistance(g_x, g_y, city:GetX(), city:GetY()) < 4 then
+						bNoCity = false
+						break
+					end
+				end
+				if bNoCity then return false end
+			end
+		end
+	end
+
 	if g_eaAction.OwnTerritory and g_iOwner ~= g_iPlayer then
 		if g_bUICall and g_eaAction.UnitUpgradeTypePrefix then
 			g_bSetDelayedFailForUI = true
@@ -683,13 +707,9 @@ function TestEaActionTarget(eaActionID, testX, testY, bAITargetTest)
 
 	if g_bIsCity then
 		if g_iOwner ~= g_iPlayer and g_team:IsAtWar(Players[g_iOwner]:GetTeam()) then return false end		--fail if enemy city
-
 		g_city = g_plot:GetPlotCity()
-
-
 		if g_eaAction.Building and g_city:GetNumBuilding(GameInfoTypes[g_eaAction.Building]) > 0 then return false end	--already has building
 		if g_eaAction.BuildingMod and g_city:GetNumBuilding(GameInfoTypes[g_eaAction.BuildingMod]) > 0 then return false end
-
 		g_iCity = g_city:GetID()
 		g_eaCity = gCities[g_iPlot]
 	end
@@ -701,7 +721,7 @@ function TestEaActionTarget(eaActionID, testX, testY, bAITargetTest)
 		if g_city:GetNumBuilding(GameInfoTypes[g_eaAction.BuildingReq]) < 1 then return false end
 	end
 
-	g_specialEffectsPlot = g_plot	--can be changed in TestTarget
+	g_specialEffectsPlot = g_plot	--can be changed in by action specific function
 
 	--Alt unit upgrades (we can set some file locals here to pass to human UI or other specific methods; these values could be changed in specific TestTarget method)
 	if g_eaAction.UnitUpgradeTypePrefix then
@@ -733,18 +753,6 @@ function TestEaActionTarget(eaActionID, testX, testY, bAITargetTest)
 					return false
 				end
 			end
-		end
-	end
-
-	--set g_modSpell for Tower or Temple
-	if g_eaAction.ApplyTowerTempleMod or g_eaAction.TowerTempleOnly then
-		if gWonders[EA_WONDER_ARCANE_TOWER][g_iPerson] and gWonders[EA_WONDER_ARCANE_TOWER][g_iPerson].iPlot == g_iPlot then
-			g_modSpell = g_mod + gWonders[EA_WONDER_ARCANE_TOWER][g_iPerson][GameInfoTypes[g_eaAction.GPModType1] ]		--Assume all spells have exactly one mod
-			g_bInTowerOrTemple = true
-		else
-			if g_eaAction.TowerTempleOnly then return false end
-			g_modSpell = g_mod
-			g_bInTowerOrTemple = false
 		end
 	end
 
@@ -791,13 +799,11 @@ function TestEaActionTarget(eaActionID, testX, testY, bAITargetTest)
 	return true
 end
 
-function DoEaActionFromOtherState(eaActionID, iPlayer, unit, iPerson, targetX, targetY)	--UnitPanel.lua or WorldView.lua
+local function DoEaActionFromOtherState(eaActionID, iPlayer, unit, iPerson, targetX, targetY)	--UnitPanel.lua or WorldView.lua
 	print("DoEaActionFromOtherState ", eaActionID, iPlayer, unit, iPerson, targetX, targetY)
-	local bSuccess =  DoEaAction(eaActionID, iPlayer, unit, iPerson, targetX, targetY)
-	MapModData.bSuccess = bSuccess
-
+	MapModData.bSuccess = DoEaAction(eaActionID, iPlayer, unit, iPerson, targetX, targetY)
 end
-LuaEvents.EaActionsDoEaActionFromOtherState.Add(function(eaActionID, iPlayer, unit, iPerson, targetX, targetY) return HandleError(DoEaActionFromOtherState, eaActionID, iPlayer, unit, iPerson, targetX, targetY) end)
+LuaEvents.EaActionsDoEaActionFromOtherState.Add(function(eaActionID, iPlayer, unit, iPerson, targetX, targetY) return HandleError61(DoEaActionFromOtherState, eaActionID, iPlayer, unit, iPerson, targetX, targetY) end)
 
 function DoEaAction(eaActionID, iPlayer, unit, iPerson, targetX, targetY)
 	print("DoEaAction before test ", eaActionID, iPlayer, unit, iPerson, targetX, targetY)
@@ -861,7 +867,7 @@ function DoEaAction(eaActionID, iPlayer, unit, iPerson, targetX, targetY)
 		g_player:ChangeGold(-g_int2)
 	end
 
-	--effects on GP
+	--Effects on unit
 	if g_eaAction.DoXP > 0 then
 		g_unit:ChangeExperience(g_eaAction.DoXP)
 	end
@@ -869,26 +875,9 @@ function DoEaAction(eaActionID, iPlayer, unit, iPerson, targetX, targetY)
 		g_unit:SetHasPromotion(GameInfoTypes[g_eaAction.DoGainPromotion], true)
 	end
 
-	--Dissapear and/or finish moves
-	if g_bGreatPerson then
-		if g_bMapUnit then
-			if g_eaAction.FinishMoves then
-				g_unit:FinishMoves()
-			end
-			--if g_eaAction.Disappear then
-			--	DisappearGP(g_iPlayer, g_iPerson, g_unit)
-			--end
-		else
-			error("GP g_bMapUnit = false")	--Depreciated disappear kludge
-			--if g_eaAction.FinishMoves then
-			--	g_eaPerson.moves = 0
-			--	g_eaPerson.disappearTurn = Game.GetGameTurn()
-			--end
-		end
-	else
-		if g_eaAction.FinishMoves and g_unit then
-			g_unit:FinishMoves()
-		end
+	--Finish moves
+	if g_eaAction.FinishMoves  then
+		g_unit:FinishMoves()
 	end
 
 	--Don't get stuck on unit with no moves
@@ -917,7 +906,7 @@ function DoEaAction(eaActionID, iPlayer, unit, iPerson, targetX, targetY)
 		end
 
 		if 0 < g_eaAction.FixedFaith then
-			UseManaOrDivineFavor(g_iPlayer, g_iPerson, g_eaAction.FixedFaith)
+			UseManaOrDivineFavor(g_iPlayer, g_iPerson, g_eaAction.FixedFaith, false)
 		end
 
 		if g_eaAction.UniqueType then							--make NOT available permanently for any GP
@@ -945,11 +934,6 @@ function DoEaAction(eaActionID, iPlayer, unit, iPerson, targetX, targetY)
 			elseif uniqueType == "National" then
 				g_eaPlayer.nationalUniqueAction[eaActionID] = iPerson
 			end
-		end
-
-		--Show under construction for city wonder // THIS DOESN'T WORK!!!
-		if g_eaAction.BuildingUnderConstruction then
-			g_city:SetBuildingProduction(GameInfoTypes[g_eaAction.BuildingUnderConstruction], 290)	--all have arbitrary build cost 300
 		end
 
 		--Update progress
@@ -980,14 +964,6 @@ function DoEaAction(eaActionID, iPlayer, unit, iPerson, targetX, targetY)
 				print("getting progressTable from CityCiv ", progressTable, g_eaAction.Type)
 			end
 			local progress = progressTable[eaActionID] or 0
-
-			if progress == 0 then	--this is first turn of multiturn action
-				if 0 < g_eaAction.FixedFaith then
-					g_eaPerson.tempFaith = g_eaAction.FixedFaith
-					g_player:ChangeFaith(-g_eaAction.FixedFaith)
-				end
-			end
-
 			progress = progress + 1
 			print("progress, turnsToComplete = ", progress, turnsToComplete)
 			if progress >= turnsToComplete then
@@ -1011,10 +987,14 @@ function InterruptEaAction(iPlayer, iPerson)
 	--WARNING! DO NOT USE FILE-LEVEL LOCALS FOR INTERRUPT FUNCTIONS! (Can be called externally or with "previous" eaActionID)
 	--Does not reappear GP immediately (do that elsewhere if needed)
 	print("InterruptEaAction", iPlayer, iPerson)
-	local player = Players[iPlayer]
-	local eaPlayer = gPlayers[iPlayer]
 	local eaPerson = gPeople[iPerson]
 	local eaActionID = eaPerson.eaActionID
+	if eaActionID >= FIRST_SPELL_ID then
+		InterruptEaSpell(iPlayer, iPerson)
+		return
+	end
+	local player = Players[iPlayer]
+	local eaPlayer = gPlayers[iPlayer]
 
 	eaPerson.gotoPlotIndex = -1
 	eaPerson.gotoEaActionID = -1
@@ -1023,19 +1003,7 @@ function InterruptEaAction(iPlayer, iPerson)
 
 	eaPerson.eaActionID = -1
 
-	--return tempFaith
-	if eaPerson.tempFaith ~= 0 then
-		player:ChangeFaith(eaPerson.tempFaith)
-		eaPerson.tempFaith = 0
-	end
-
 	local eaAction = EaActionsInfo[eaActionID]
-
-	if eaAction.SpellClass and 0 < eaPerson.tempFaith then	--give back and remove progress
-		player:ChangeFaith(eaPerson.tempFaith)
-		eaPerson.tempFaith = 0
-		eaPerson.progress[eaActionID] = nil
-	end
 
 	if eaAction.UniqueType then							--make available for other GPs
 		if eaAction.UniqueType == "World" then
@@ -1072,252 +1040,7 @@ function ClearActionPlotTargetedForPerson(eaPlayer, iPerson)
 	end
 end
 
-function FinishEaAction(eaActionID)		--only called from DoEaAction so file locals already set
-	print("FinishEaAction", g_iPlayer, g_eaAction.Type)
-
-
-	if g_eaAction.TurnsToComplete == 1000 and g_bAIControl then	--this is a sustained action interrupt (not really a "finish")
-		InterruptEaAction(g_iPlayer, g_iPerson)		
-		return true
-	end
-
-	--Plot Float Up Text
-	if not g_eaAction.NoFloatUpText or MapModData.bAutoplay then
-		g_plot:AddFloatUpMessage(Locale.Lookup(g_eaAction.Description), 1)
-	end
-
-	ClearActionPlotTargetedForPerson(g_eaPlayer, g_iPerson)
-	g_eaPerson.eaActionID = -1		--will bring back to map on next turn
-
-	--g_unit:SetInvisibleType(INVISIBLE_SUBMARINE)
-
-	--Temp faith system (faith was "moved" to caster; use it now)
-	local faithUsed = g_eaPerson.tempFaith
-	if 0 < faithUsed then
-		g_eaPerson.tempFaith = 0 
-		g_unit:ChangeExperience(faithUsed)
-		if g_eaPlayer.bIsFallen then
-			gWorld.sumOfAllMana = gWorld.sumOfAllMana - faithUsed
-		end
-	end
-
-
-	--XP
-	if g_eaAction.FinishXP > 0 then
-		g_unit:ChangeExperience(g_eaAction.FinishXP)
-	end
-
-	g_eaPlayer.aiUniqueTargeted[eaActionID] = nil
-
-	--Pantheism cult found or spread
-	local cultType = g_eaAction.FoundsSpreadsCult
-	if cultType then
-		local cultID = GameInfoTypes[cultType]
-		--if not g_eaPerson.cult then		--join and learn free spell the first time
-		--	g_eaPerson.cult = cultID
-			local freeSpellType = GameInfo.Religions[cultID].EaFreeCultSpell
-			if freeSpellType then
-				g_eaPerson.spells[GameInfoTypes[freeSpellType] ] = true
-			end
-		--end
-		if gReligions[cultID] then		--already founded
-			for i = -1, HIGHEST_RELIGION_ID do
-				if g_tablePointer[i] > 0 then
-					--need percentage (round up or down???)
-					local convertPercent = Floor(1 + 100 * g_tablePointer[i] / g_city:GetNumFollowers(i))
-					g_city:ConvertPercentFollowers(cultID, i, convertPercent)
-				end
-			end
-		else
-			FoundReligion(g_iPlayer, g_iCity, cultID)
-			g_city:ConvertPercentFollowers(cultID, RELIGION_THE_WEAVE_OF_EA, 100)
-
-		end
-
-	end
-
-	--Effects
-	if g_eaAction.ClaimsPlot and g_iOwner ~= g_iPlayer then		--claim plot for nearest city; size breaks ties
-		local biggestCity	
-		for radius = 1, 10 do
-			local biggestCitySize = 0
-			for loopPlot in PlotRingIterator(g_plot, radius, 1, false) do
-				local loopCity = g_plot:PlotCity()
-				if loopCity and loopCity:GetOwner() == g_iPlayer then
-					local pop = loopCity:GetPopulation()
-					if biggestCitySize < pop then
-						biggestCitySize = pop
-						biggestCity = loopCity
-					elseif biggestCitySize == pop and loopCity:IsCapital() then		--capital wins
-						biggestCity = loopCity
-					end
-				end
-			end
-			if biggestCity then break end
-		end
-		if biggestCity then
-			g_plot:SetOwner(g_iPlayer, biggestCity:GetID())
-		else
-			error("Could not find city for plot ownership")
-		end
-	end
-
-	if g_eaAction.ImprovementType then
-		local improvementID = GameInfoTypes[g_eaAction.ImprovementType]
-		g_plot:SetImprovementType(improvementID)
-	end
-
-	if g_eaAction.Building then
-		local buildingID = GameInfoTypes[g_eaAction.Building]
-		g_city:SetNumRealBuilding(buildingID, 1)
-	end
-	if g_eaAction.BuildingMod then
-		local buildingID = GameInfoTypes[g_eaAction.BuildingMod]
-		g_city:SetNumRealBuilding(buildingID, g_mod)
-	end
-
-	if g_eaAction.EaWonder then
-		local wonderID = GameInfoTypes[g_eaAction.EaWonder]
-		gWonders[wonderID] = {mod = g_mod, iPlot = g_iPlot}
-		--TO DO! need popup or notification
-		--LuaEvents.EaImagePopupSpecial("EaWonder", artifactID)
-
-	elseif g_eaAction.EaEpic then
-		local epicID = GameInfoTypes[g_eaAction.EaEpic]
-		gEpics[epicID] = {mod = g_mod, iPlayer = g_iPlayer}
-		--TO DO! need popup or notification
-		--LuaEvents.EaImagePopupSpecial("EaEpic", artifactID)
-		--DEPRECIATE: g_eaPlayer.epicList[#g_eaPlayer.epicList + 1] = epicID
-
-	elseif g_eaAction.EaArtifact then
-		local artifactID = GameInfoTypes[g_eaAction.EaArtifact]
-		gArtifacts[artifactID] = {mod = g_mod, iPlayer = -1, locationType = "iPlot", locationIndex = g_iPlot}	--iPlayer is -1 here so it will properly update in EaArtifacts.lua
-		--TO DO! need popup or notification
-		--Events.AudioPlay2DSound("AS2D_INTERFACE_NEW_ERA")
-		--LuaEvents.EaImagePopupSpecial("EaArtifact", artifactID)
-		--DEPRECIATE: g_eaPlayer.itemList[#g_eaPlayer.itemList + 1] = artifactID
-		UpdateArtifact(artifactID)	--will figure out new owner from location and run any artifact specific "gain" effect
-
-	end
-
-	if g_eaAction.UniqueType then							--make NOT available permanently for any GP
-		if g_eaAction.UniqueType == "World" then
-			gWorldUniqueAction[eaActionID] = -1
-		elseif g_eaAction.UniqueType == "National" then
-			g_eaPlayer.nationalUniqueAction[eaActionID] = -1
-		end
-	end
-	--if g_bAIControl and g_eaPlayer.aiGPDoingOrOnWay[eaActionID] then
-	--	g_eaPlayer.aiGPDoingOrOnWay[eaActionID][g_iPlot] = nil
-	--end
-
-	print("About to try action-specific Finish function, if any")
-	if Finish[eaActionID] and not Finish[eaActionID]() then return false end	--this is the custom Finish call
-
-	SpecialEffects()
-	return true
-end
-
-function SpecialEffects()
-	print("Running SpecialEffects ", g_eaAction.Type, g_eaAction.HumanOnlyFX, g_eaAction.HumanVisibleFX, g_eaAction.HumanOnlySound, g_eaAction.HumanVisibleSound, g_eaAction.PlayAnywhereSound)
-	local fx, sound
-	if g_iPlayer == g_iActivePlayer then
-		fx = g_eaAction.HumanOnlyFX or g_eaAction.HumanVisibleFX
-		sound = g_eaAction.HumanOnlySound or g_eaAction.HumanVisibleSound
-	elseif g_specialEffectsPlot:IsVisible(Game.GetActiveTeam(), false) then
-		fx = g_eaAction.HumanVisibleFX
-		sound = g_eaAction.HumanVisibleSound
-	end
-	local bLookAt = fx or sound
-	sound = sound or g_eaAction.PlayAnywhereSound
-	if bLookAt then
-		UI.LookAt(g_specialEffectsPlot, 0)
-	end
-	if sound then
-		Events.AudioPlay2DSound(sound)
-	end
-	if fx then
-		local hex = ToHexFromGrid( Vector2(g_specialEffectsPlot:GetX(), g_specialEffectsPlot:GetY() ) )
-		Events.GameplayFX(hex.x, hex.y, -1)
-	end
-end
-
-function TestSpellLearnable(iPlayer, iPerson, spellID, spellClass)		--iPerson = nil to generate civ list; spellClass is optional restriction (used for separate UI panels)
-	
-	if not SetAIValues[spellID] then return false end	--Spell hasn't really been added yet, even if in table
-	
-	local spellInfo = EaActionsInfo[spellID]
-	if spellClass and spellClass ~= spellInfo.SpellClass then return false end
-	--order exclusions by most common first for speed
-	if iPerson then
-		local eaPerson = gPeople[iPerson]
-		if spellInfo.SpellClass == "Arcane" then
-			if eaPerson.class1 ~= "Thaumaturge" and eaPerson.class2 ~= "Thaumaturge" then return false end
-		elseif spellInfo.SpellClass == "Divine" then
-			if eaPerson.class1 ~= "Devout" and eaPerson.class2 ~= "Devout" then return false end
-		else
-			error("spellID was not Arcane or Divine ", spellID)
-		end
-		if spellInfo.PantheismCult then return false end		--TO DO: Reactivate these!
-		if eaPerson.spells[spellID] then return false end	--already known
-	end
-	local eaPlayer = gPlayers[iPlayer]
-	if eaPlayer.bIsFallen then
-		if spellInfo.FallenAltSpell and spellInfo.FallenAltSpell ~= "IsFallen" then return false end
-	else
-		if spellInfo.FallenAltSpell == "IsFallen" then return false end
-	end
-	local player = Players[iPlayer]
-	local team = Teams[player:GetTeam()]
-	if spellInfo.TechReq then
-		if not (spellInfo.PolicyTrumpsTechReq and player:HasPolicy(GameInfoTypes[spellInfo.PolicyTrumpsTechReq])) then
-			if not team:IsHasTech(GameInfoTypes[spellInfo.TechReq]) then
-				if not spellInfo.OrTechReq or not team:IsHasTech(GameInfoTypes[spellInfo.OrTechReq]) then return false end
-			end
-			if spellInfo.AndTechReq and not team:IsHasTech(GameInfoTypes[spellInfo.AndTechReq]) then return false end
-		end
-	end
-	if spellInfo.PantheismCult and not player:HasPolicy(POLICY_PANTHEISM) then return end		--show cult spell only if Pantheistic
-	if spellInfo.ReligionNotFounded and gReligions[GameInfoTypes[spellInfo.ReligionNotFounded] ] then return false end
-	if spellInfo.ReligionFounded and not gReligions[GameInfoTypes[spellInfo.ReligionFounded] ] then return false end
-	if spellInfo.MaleficiumLearnedByAnyone and gWorld.maleficium ~= "Learned" then return false end
-	if spellInfo.ExcludeFallen and eaPlayer.bIsFallen then return false end
-	if spellInfo.CivReligion and eaPlayer.religionID ~= GameInfoTypes[spellInfo.CivReligion] then return false end
-	if spellInfo.PolicyReq and not player:HasPolicy(GameInfoTypes[spellInfo.PolicyReq]) then return false end
-	if spellInfo.TechDisallow and team:IsHasTech(GameInfoTypes[spellInfo.TechDisallow]) then return false end
-	if iPerson and (spellInfo.LevelReq or spellInfo.PromotionReq) then
-		local eaPerson = gPeople[iPerson]
-		local unit = player:GetUnitByID(eaPerson.iUnit)
-		if spellInfo.LevelReq and eaPerson.level < spellInfo.LevelReq then return false end
-		if spellInfo.PromotionReq and not eaPerson.promotions[GameInfoTypes[spellInfo.PromotionReq] ] then return false end
-	end
-	return true
-end
-
-MapModData.sharedIntegerList = MapModData.sharedIntegerList or {}
-local sharedIntegerList = MapModData.sharedIntegerList
-
-function GenerateLearnableSpellList(iPlayer, iPerson, spellClass)	--iPerson = nil if this is civ test only; spellClass = nil for both 
-	print("GenerateLearnableSpellList ", iPlayer, iPerson, spellClass)
-	local TestSpellLearnable = TestSpellLearnable
-	--This is used for human UI (Spell Panel)
-
-	local numSpells = 0
-	for spellID = FIRST_SPELL_ID, LAST_SPELL_ID do
-		if TestSpellLearnable(iPlayer, iPerson, spellID, spellClass) then
-			numSpells = numSpells + 1
-			sharedIntegerList[numSpells] = spellID
-		end
-	end
-
-	--trim recycled table for UI
-	for i = #sharedIntegerList, numSpells + 1, -1 do
-		sharedIntegerList[i] = nil
-	end
-end
-LuaEvents.EaActionsGenerateLearnableSpellList.Add(function(iPlayer, iPerson, spellClass) return HandleError41(GenerateLearnableSpellList, iPlayer, iPerson, spellClass) end)
-
-function SetWEAHelp(eaActionID, mod)
+local function SetWEAHelp(eaActionID, mod)
 	Dprint("SetWEAHelp ", eaActionID, mod)
 	MapModData.text = "no help text"
 	g_bAllTestsPassed = true
@@ -1330,7 +1053,6 @@ function SetWEAHelp(eaActionID, mod)
 		end
 	end
 end
---LuaEvents.EaActionsSetWEAHelp.Add(SetWEAHelp)
 LuaEvents.EaActionsSetWEAHelp.Add(function(eaActionID, mod) return HandleError21(SetWEAHelp, eaActionID, mod) end)
 
 ------------------------------------------------------------------------------------------------------------------------------
@@ -2003,13 +1725,22 @@ Test[GameInfoTypes.EA_ACTION_CHANNEL] = function()
 	return true
 end
 
+TestTarget[GameInfoTypes.EA_ACTION_CHANNEL] = function()
+	return gWonders[EA_WONDER_ARCANE_TOWER][g_iPerson] and gWonders[EA_WONDER_ARCANE_TOWER][g_iPerson].iPlot == g_iPlot 	--only in own tower
+end
+
 SetUI[GameInfoTypes.EA_ACTION_CHANNEL] = function()
-	if g_bAllTestsPassed then
-		local pts = Floor(g_mod / 2)
-		local iCity = g_plot:GetCityPurchaseID()
-		local city = g_player:GetCityByID(iCity)
-		local cityName = city:GetName()
-		MapModData.text = "Provide " .. pts .. " Mana per turn from " .. cityName
+	if g_bNonTargetTestsPassed then		--has spell so show it
+		MapModData.bShow = true
+		if g_bAllTestsPassed then
+			local pts = Floor(g_mod / 2)
+			local iCity = g_plot:GetCityPurchaseID()
+			local city = g_player:GetCityByID(iCity)
+			local cityName = city:GetName()
+			MapModData.text = "Provide " .. pts .. " Mana per turn from " .. cityName
+		else
+			MapModData.text = "Thaumaturges can channel mana only from their own tower "
+		end
 	end
 end
 
@@ -2023,8 +1754,7 @@ Do[GameInfoTypes.EA_ACTION_CHANNEL] = function()
 	local city = g_player:GetCityByID(iCity)
 	local eaCity = gCities[city:Plot():GetPlotIndex()]
 
-
-	eaCity.gpFaith = g_eaCity.gpFaith or {}
+	eaCity.gpFaith = eaCity.gpFaith or {}
 	eaCity.gpFaith[g_iPerson] = pts
 	g_eaPerson.eaActionData = g_iPlot
 	g_unit:ChangeExperience(pts)
@@ -2180,7 +1910,7 @@ TestTarget[GameInfoTypes.EA_ACTION_RALLY_TROOPS] = function()
 				if gg_bNormalLivingCombatUnit[unitTypeID] and unit:IsEnemyInMovementRange(false, false) then
 					numQualifiedUnits = numQualifiedUnits + 1
 					g_table[numQualifiedUnits] = unit
-					value = value + GameInfo.Units[unitTypeID].Cost * unit:GetCurrHitPoints()
+					value = value + unit:GetPower()
 				end
 			end
 		end
@@ -2200,7 +1930,7 @@ SetUI[GameInfoTypes.EA_ACTION_RALLY_TROOPS] = function()
 end
 
 SetAIValues[GameInfoTypes.EA_ACTION_RALLY_TROOPS] = function()
-	gg_aiOptionValues.i = g_mod * g_value / 1000				
+	gg_aiOptionValues.i = g_mod * g_value / 100			
 end
 
 Do[GameInfoTypes.EA_ACTION_RALLY_TROOPS] = function()
@@ -2218,7 +1948,6 @@ end
 
 --EA_ACTION_TRAIN_UNIT
 TestTarget[GameInfoTypes.EA_ACTION_TRAIN_UNIT] = function()
-	--print("TestTarget EA_ACTION_TRAIN_UNIT")
 	--Must be combat unit at plot
 	local unitCount = g_plot:GetNumUnits()
 	for i = 0, unitCount - 1 do
@@ -2227,38 +1956,30 @@ TestTarget[GameInfoTypes.EA_ACTION_TRAIN_UNIT] = function()
 			local unitTypeID = unit:GetUnitType()
 			if gg_bNormalLivingCombatUnit[unitTypeID] then
 				g_obj1 = unit
-				g_obj2 = GameInfo.Units[unitTypeID]
-				print("return true")
+				g_int1 = unitTypeID
 				return true
 			end
 		end
 	end
-	--print("return false")	
 	return false
 end
 
 SetUI[GameInfoTypes.EA_ACTION_TRAIN_UNIT] = function()
-	--print("SetUI EA_ACTION_TRAIN_UNIT")
 	if g_bAllTestsPassed then
-		local unitText = Locale.ConvertTextKey(g_obj2.Description)
+		local unitText = Locale.ConvertTextKey(GameInfo.Units[g_int1])
 		local xp = Floor(g_mod / 2)
 		MapModData.text = "Provide " .. unitText .. " with " .. xp .. " experience per turn"
 	end
-	--print("done")
 end
 
 SetAIValues[GameInfoTypes.EA_ACTION_TRAIN_UNIT] = function()
-	--print("SetAIValues EA_ACTION_TRAIN_UNIT")
-	gg_aiOptionValues.i = g_mod * g_obj2.Cost / 8			
-	--print("done")
+	gg_aiOptionValues.i = g_mod * g_obj1:GetPower()			
 end
 
 Do[GameInfoTypes.EA_ACTION_TRAIN_UNIT] = function()
-	print("Do EA_ACTION_TRAIN_UNIT")
 	local xp = Floor(g_mod / 2)	--give to unit and GP
 	g_obj1:ChangeExperience(xp)
 	g_unit:ChangeExperience(xp)
-	print("return true")
 	return true
 end
 
@@ -2288,6 +2009,9 @@ TestTarget[GameInfoTypes.EA_ACTION_OCCUPY_TOWER] = function()
 		local tower = gWonders[EA_WONDER_ARCANE_TOWER][iPerson]
 		if tower.iPlot == g_iPlot then
 			g_int1 = iPerson
+
+			g_value = 20	--TO DO: Calculate value as sum of tower mods 
+
 			return true
 		end
 	end
@@ -2299,13 +2023,20 @@ SetUI[GameInfoTypes.EA_ACTION_OCCUPY_TOWER] = function()
 	MapModData.text = "Occupy " .. improvementStr .. " and make it your own"
 end
 
+
+SetAIValues[GameInfoTypes.EA_ACTION_OCCUPY_TOWER] = function()
+	gg_aiOptionValues.i = g_value			
+end
+
 Finish[GameInfoTypes.EA_ACTION_OCCUPY_TOWER] = function()
 	local tower = gWonders[EA_WONDER_ARCANE_TOWER][g_int1]
-	gWonders[EA_WONDER_ARCANE_TOWER][g_iPlayer] = tower
+	gWonders[EA_WONDER_ARCANE_TOWER][g_iPerson] = tower
 	g_eaPerson.bHasTower = true
 	gWonders[EA_WONDER_ARCANE_TOWER][g_int1] = nil
-	g_unit:ChangeExperience(20)
+	SetTowerMods(g_iPlayer, g_iPerson)
+	UseManaOrDivineFavor(g_iPlayer, g_iPerson, g_value, false)
 	g_specialEffectsPlot = g_plot
+	UpdateInstanceWonder(g_iPlayer, EA_WONDER_ARCANE_TOWER)
 end
 
 ------------------------------------------------------------------------------------------------------------------------------
@@ -2458,7 +2189,7 @@ Do[GameInfoTypes.EA_ACTION_PROPHECY_VA] = function()	--All civs with Maleficium 
 					if loopTeam:IsHasTech(TECH_MALEFICIUM) then
 						for city in loopPlayer:Cities() do
 							if not city:IsHolyCityAnyReligion() and city:GetReligiousMajority() == RELIGION_AZZANDARAYASNA then
-								local distance = Distance(azzCenterX, azzCenterY, city:GetX(), city:GetY())
+								local distance = PlotDistance(azzCenterX, azzCenterY, city:GetX(), city:GetY())
 								if farthestCityDistance < distance then
 									anraHolyCity = city
 									farthestCityDistance = distance
@@ -2533,17 +2264,6 @@ end
 -- Wonders
 ------------------------------------------------------------------------------------------------------------------------------
 
---EA_ACTION_STANHENCG
-SetAIValues[GameInfoTypes.EA_ACTION_STANHENCG] = function()
-	gg_aiOptionValues.p = g_mod		--this will be mod mana
-end
-
-SetUI[GameInfoTypes.EA_ACTION_STANHENCG] = function()
-	if g_bAllTestsPassed then
-		MapModData.text = "Generates "..g_mod.." mana per turn"
-	end
-end
-
 --EA_ACTION_KOLOSSOS
 SetAIValues[GameInfoTypes.EA_ACTION_KOLOSSOS] = function()
 	local culture = (g_city:GetCultureRateModifier() + 100) / 25	--4c
@@ -2556,6 +2276,7 @@ SetUI[GameInfoTypes.EA_ACTION_KOLOSSOS] = function()
 		MapModData.text = "Increases experience of units built in city by "..g_mod
 	end
 end
+
 --EA_ACTION_MEGALOS_FAROS
 TestTarget[GameInfoTypes.EA_ACTION_MEGALOS_FAROS] = function()
 	return g_city:IsCoastal()
@@ -2646,22 +2367,6 @@ SetUI[GameInfoTypes.EA_ACTION_DA_BAOEN_SI] = function()
 	end
 end
 
-
---[[EA_ACTION_GREAT_LIBRARY
-SetAIValues[GameInfoTypes.EA_ACTION_GREAT_LIBRARY] = function()
-	local culture = (g_city:GetCultureRateModifier() + 100) / 25	--4c
-	local science = g_mod * (100 + g_city:GetBaseYieldRateModifier(YIELD_SCIENCE))/100
-	gg_aiOptionValues.p = culture + science
-	gg_aiOptionValues.i = 1000		--proxy
-end
-
-SetUI[GameInfoTypes.EA_ACTION_GREAT_LIBRARY] = function()
-	if g_bAllTestsPassed then
-		MapModData.text = "Increases science in all cities by "..g_mod.."%"
-	end
-end
-]]
-
 --EA_ACTION_NATIONAL_TREASURY
 SetUI[GameInfoTypes.EA_ACTION_NATIONAL_TREASURY] = function()
 	if g_bAllTestsPassed then
@@ -2681,6 +2386,39 @@ Finish[GameInfoTypes.EA_ACTION_NATIONAL_TREASURY] = function()
 		UpdateCityYields(g_iPlayer, g_iCity, "Gold")
 	end
 	return true
+end
+
+--EA_ACTION_STANHENCG
+SetAIValues[GameInfoTypes.EA_ACTION_STANHENCG] = function()
+	gg_aiOptionValues.p = g_mod		--this will be mod mana
+end
+
+SetUI[GameInfoTypes.EA_ACTION_STANHENCG] = function()
+	if g_bAllTestsPassed then
+		MapModData.text = "Generates "..g_mod.." mana per turn"
+	end
+end
+
+--EA_WONDER_PYRAMID
+SetAIValues[GameInfoTypes.EA_WONDER_PYRAMID] = function()
+	gg_aiOptionValues.p = g_mod		--proxy
+end
+
+SetUI[GameInfoTypes.EA_WONDER_PYRAMID] = function()
+	if g_bAllTestsPassed then
+		MapModData.text = "Increases the apparent size of your civilization and military might by "..g_mod.."%"
+	end
+end
+
+--EA_ACTION_GREAT_LIBRARY
+SetAIValues[GameInfoTypes.EA_ACTION_GREAT_LIBRARY] = function()
+	gg_aiOptionValues.p = g_mod		--proxy
+end
+
+SetUI[GameInfoTypes.EA_ACTION_GREAT_LIBRARY] = function()
+	if g_bAllTestsPassed then
+		MapModData.text = "Reduces research cost of all techs by "..g_mod.."%"
+	end
 end
 
 --EA_ACTION_ARCANE_TOWER
@@ -2719,14 +2457,13 @@ Finish[GameInfoTypes.EA_ACTION_ARCANE_TOWER] = function()
 		str = str .. "'s Tower"
 	end
 	g_plot:SetScriptData(str)
-	gWonders[EA_WONDER_ARCANE_TOWER][g_iPerson] = {iPlot = g_iPlot, iNamedFor = g_iPerson}
-	SetTowerMods(g_iPerson)
-	if g_iOwner ~= g_iPlayer then
-		local city = GetNewOwnerCityForPlot(g_iPlayer, g_iPlot)
-		g_plot:SetOwner(g_iPlayer, city:GetID())
-	end
+	gWonders[EA_WONDER_ARCANE_TOWER][g_iPerson] = {iPlot = g_iPlot, iNamedFor = g_iPerson, iPlayer = -1}
+	SetTowerMods(g_iPlayer, g_iPerson)
+	UpdateInstanceWonder(g_iPlayer, EA_WONDER_ARCANE_TOWER)
 	return true
 end
+
+
 
 ------------------------------------------------------------------------------------------------------------------------------
 -- Epics
@@ -2887,7 +2624,9 @@ end
 --EA_ACTION_LAND_TRADE_ROUTE
 Test[GameInfoTypes.EA_ACTION_LAND_TRADE_ROUTE] = function()
 	--There is no test here; but we need to set g_tradeAvailableTable and gg_tradeAvailableTable
+	MapModData.bBypassOnCanCreateTradeRoute = true
 	g_tradeAvailableTable = g_player:GetTradeRoutesAvailable()
+	MapModData.bBypassOnCanCreateTradeRoute = false
 	print("Refreshing g_tradeAvailableTable from Test[GameInfoTypes.EA_ACTION_LAND_TRADE_ROUTE]")
 	local numRoutes = #g_tradeAvailableTable
 
@@ -2909,9 +2648,9 @@ TestTarget[GameInfoTypes.EA_ACTION_LAND_TRADE_ROUTE] = function()
 	g_integersPos = 0
 	for i = 1, #g_tradeAvailableTable do
 		local route = g_tradeAvailableTable[i]
-		print(g_city, route.ToCity, route.Domain, route.TurnsLeft)
-		print(g_city:GetID(), route.ToCity:GetID())
-		print(g_city:GetName(), route.ToCity:GetName())
+		--print(g_city, route.ToCity, route.Domain, route.TurnsLeft)
+		--print(g_city:GetID(), route.ToCity:GetID())
+		--print(g_city:GetName(), route.ToCity:GetName())
 		if route.ToCity == g_city and route.Domain == DOMAIN_LAND then
 			if route.TurnsLeft == -1 then
 				local fromCity = route.FromCity
@@ -2987,7 +2726,8 @@ SetAIValues[GameInfoTypes.EA_ACTION_LAND_TRADE_ROUTE] = function()
 end
 
 Finish[GameInfoTypes.EA_ACTION_LAND_TRADE_ROUTE] = function()
-	--human pops UI to choose FromCity
+
+	--TO DO: human pops UI to choose FromCity
 
 	--AI logic for now
 	local bestRoute
@@ -3008,15 +2748,15 @@ Finish[GameInfoTypes.EA_ACTION_LAND_TRADE_ROUTE] = function()
 		print("!!!Warning: trade rounte missmatch ", g_x, toX, g_y, toY)
 	end
 
+	--open route in eaCity object
+	local fromCityPlot = fromCity:Plot()
+	local fromEaCity = gCities[fromCityPlot:GetPlotIndex()]
+	fromEaCity.openLandTradeRoutes[g_iPlot] = bestRoute.ToID		--open route associated with particular eaCity and iPlayer (still there if city conquered and recaptured)
+
+	--free caravan starts the route
+	g_specialEffectsPlot = fromCityPlot
 	local unit = g_player:InitUnit(GameInfoTypes.UNIT_CARAVAN, fromCity:GetX(), fromCity:GetY())
 	unit:PushMission(MissionTypes.MISSION_ESTABLISH_TRADE_ROUTE, g_iPlot, 0, 0, 0, 1)
-
-	--open route in eaCity object
-	local fromCityPlotIndex = fromCity:Plot():GetPlotIndex()
-	local fromEaCity = gCities[fromCityPlotIndex]		
-
-	fromEaCity.openLandTradeRoutes[g_iPlot] = bestRoute.ToID		--open route associated with particular eaCity and iPlayer (still there if city conquered and recaptured)
-	EaTradeDataDirty()
 	return true
 end
 
@@ -3024,7 +2764,9 @@ end
 --EA_ACTION_SEA_TRADE_ROUTE
 Test[GameInfoTypes.EA_ACTION_SEA_TRADE_ROUTE] = function()
 	--There is no test here; but we need to set g_tradeAvailableTable and gg_tradeAvailableTable
+	MapModData.bBypassOnCanCreateTradeRoute = true
 	g_tradeAvailableTable = g_player:GetTradeRoutesAvailable()
+	MapModData.bBypassOnCanCreateTradeRoute = false
 	print("Refreshing g_tradeAvailableTable from Test[GameInfoTypes.EA_ACTION_SEA_TRADE_ROUTE]")
 	local numRoutes = #g_tradeAvailableTable
 
@@ -3145,15 +2887,15 @@ Finish[GameInfoTypes.EA_ACTION_SEA_TRADE_ROUTE] = function()
 		print("!!!Warning: trade rounte missmatch ", g_x, toX, g_y, toY)
 	end
 
+	--open route in eaCity object
+	local fromCityPlot = fromCity:Plot()
+	local fromEaCity = gCities[fromCityPlot:GetPlotIndex()]
+	fromEaCity.openSeaTradeRoutes[g_iPlot] = bestRoute.ToID		--open route associated with particular eaCity and iPlayer (still there if city conquered and recaptured)
+	
+	--free cargo ship starts the route
+	g_specialEffectsPlot = fromCityPlot
 	local unit = g_player:InitUnit(GameInfoTypes.UNIT_CARGO_SHIP, fromCity:GetX(), fromCity:GetY())
 	unit:PushMission(MissionTypes.MISSION_ESTABLISH_TRADE_ROUTE, g_iPlot, 2, 0, 0, 1)				--2nd arg?
-
-	--open route in eaCity object
-	local fromCityPlotIndex = fromCity:Plot():GetPlotIndex()
-	local fromEaCity = gCities[fromCityPlotIndex]		
-
-	fromEaCity.openSeaTradeRoutes[g_iPlot] = bestRoute.ToID		--open route associated with particular eaCity and iPlayer (still there if city conquered and recaptured)
-	EaTradeDataDirty()
 	return true
 end
 
@@ -3386,7 +3128,7 @@ SetUI[GameInfoTypes.EA_ACTION_RITUAL_LEAVES] = function()
 				MapModData.text = "[COLOR_WARNING_TEXT]City radius must be 50% land that is 60% unimproved forest or jungle (is "..land.."%, "..forestJungle.."%)[ENDCOLOR]"
 
 			elseif g_testTargetSwitch == 2 then
-				MapModData.text = "[COLOR_WARNING_TEXT]You cannot convert any population here (perhaps you need a higher Ritualism level)[ENDCOLOR]"
+				MapModData.text = "[COLOR_WARNING_TEXT]You cannot convert any population here (perhaps you need a higher Devotion level)[ENDCOLOR]"
 			elseif g_testTargetSwitch == 3 then
 				MapModData.text = "[COLOR_WARNING_TEXT]You cannot perform the Ritual of Leaves in a holy city[ENDCOLOR]"
 			end
@@ -3795,1253 +3537,4 @@ end
 
 
 ------------------------------------------------------------------------------------------------------------------------------
--- Spells go here...!
-------------------------------------------------------------------------------------------------------------------------------
---Note: spells skip over generic civ and caster prereqs: Test function won't be called
---Use TestTarget, SetUI, SetAIValues, Do (for 1 turn completion) and Finish (for >1 turn completion)
-
-
---EA_SPELL_SCRYING
---EA_SPELL_SEEING_EYE_GLYPH
---EA_SPELL_DETECT_GLYPHS_RUNES_WARDS
---EA_SPELL_KNOW_WORLD
---EA_SPELL_DISPEL_HEXES
---EA_SPELL_DESPEL_GLYPHS_RUNES_WARDS
---EA_SPELL_DISPEL_ILLUSIONS
---EA_SPELL_BANISHMENT
---EA_SPELL_PROTECTIVE_WARD
---EA_SPELL_DISPEL_MAGIC
---EA_SPELL_TIME_STOP
-
-
---EA_SPELL_MAGIC_MISSILE
-TestTarget[GameInfoTypes.EA_SPELL_MAGIC_MISSILE] = function()	--TO DO: need better AI targeting logic (for now, value goes up with existing damage)
-
-	g_bool1 = g_faith < g_modSpell
-	if g_bool1 then return false end
-	local maxDamage = -1								--Any target makes valid, but AI will value based on current target damage
-	for x, y in PlotToRadiusIterator(g_x, g_y, 2, nil, nil, true) do	--excludes center
-		local plot = GetPlotFromXY(x, y)
-		if plot:IsCity() then
-			if g_team:IsAtWar(Players[plot:GetOwner()]:GetTeam()) then
-				local damage = plot:GetPlotCity():GetDamage()
-				if maxDamage < damage then	
-					maxDamage = damage
-					g_obj1 = plot
-				end				
-			end
-		elseif plot:IsVisibleEnemyUnit(g_iPlayer) then
-			local unitCount = plot:GetNumUnits()
-			for i = 0, unitCount - 1 do
-				local unit = plot:GetUnit(i)
-				local unitTypeID = unit:GetUnitType()
-				if gg_bNormalCombatUnit[unitTypeID] and g_team:IsAtWar(Players[unit:GetOwner()]:GetTeam()) then	--combat unit that we are at war with (need to cache at-war players for speed!)
-					local damage = unit:GetDamage()
-					if maxDamage < damage then	
-						maxDamage = damage
-						g_obj1 = plot
-					end
-				end
-			end
-		end
-	end
-	if maxDamage == -1 then return false end	--no targets found
-	--if target found, then g_obj1 now holds plot for best potential target for AI
-	g_value = 100 + maxDamage
-	return true
-end
-
-SetUI[GameInfoTypes.EA_SPELL_MAGIC_MISSILE] = function()
-	if g_bNonTargetTestsPassed then		--has spell so show it
-		MapModData.bShow = true
-		if g_bAllTestsPassed then
-			MapModData.text = "Magic Missile attack (ranged strength " .. g_modSpell .. ")"
-		else
-			if g_bool1 then
-				MapModData.text = "[COLOR_WARNING_TEXT]You do not have sufficent mana (requres " .. g_modSpell .. ")[ENDCOLOR]"
-			else
-				MapModData.text = "[COLOR_WARNING_TEXT]No valid target in range[ENDCOLOR]"
-			end
-		end
-	end
-end
-
-SetAIValues[GameInfoTypes.EA_SPELL_MAGIC_MISSILE] = function()
-	gg_aiOptionValues.i = g_value
-end
-
-Do[GameInfoTypes.EA_SPELL_MAGIC_MISSILE] = function()
-	--convert to ranged unit 
-	UpdateGreatPersonStatsFromUnit(g_unit, g_eaPerson)
-
-	local direction = g_unit:GetFacingDirection()
-	local newUnitTypeID = gpTempTypeUnits.MagicMissle[g_unit:GetUnitType()] or GameInfoTypes.UNIT_DRUID_MAGIC_MISSLE	--fallback to druid if we haven't added tempType unit yet
-
-	local newUnit = g_player:InitUnit(newUnitTypeID, g_x, g_y, nil, direction)
-	MapModData.bBypassOnCanSaveUnit = true
-	newUnit:Convert(g_unit, false)
-	newUnit:SetPersonIndex(g_iPerson)
-	local iNewUnit = newUnit:GetID()
-	g_eaPerson.iUnit = iNewUnit
-
-	newUnit:SetMorale(g_modSpell * 10 - 100)	--Use morale to modify up or down from ranged strength 10 (can't change ranged strength)
-
-	if g_bAIControl then		--Carry out attack
-		newUnit:PushMission(MissionTypes.MISSION_RANGE_ATTACK, g_obj1:GetX(), g_obj1:GetY(), 0, 0, 1)
-		if newUnit:MovesLeft() > 0  then
-			error("AI GP has movement after Magic Missile! Did it not fire?")
-		end
-	elseif g_iPlayer == g_iActivePlayer then
-		MapModData.forcedUnitSelection = iNewUnit
-		MapModData.forcedInterfaceMode = InterfaceModeTypes.INTERFACEMODE_RANGE_ATTACK
-		UI.SelectUnit(newUnit)
-		UI.LookAtSelectionPlot(0)
-	end
-
-	return true
-end
-
---EA_SPELL_EXPLOSIVE_RUNE
-TestTarget[GameInfoTypes.EA_SPELL_EXPLOSIVE_RUNE] = function()
-	if g_faith < g_modSpell then
-		g_testTargetSwitch = 1
-		return false
-	end
-	g_int1, g_int2, g_int3, g_int4 = g_plot:GetPlotEffectData()	--effectID, effectStength, iEffectPlayer, iCaster
-	if g_int1 ~= -1 then
-		if g_int3 == g_iPlayer then
-			g_testTargetSwitch = 2
-			return false			
-		end
-		--need more logic here for overwriteable effects
-		g_testTargetSwitch = 3
-		return false
-	end
-	return true
-end
-
-SetUI[GameInfoTypes.EA_SPELL_EXPLOSIVE_RUNE] = function()
-	if g_bNonTargetTestsPassed then		--has spell so show it
-		MapModData.bShow = true
-		if g_bAllTestsPassed then
-			MapModData.text = "Place Explosive Runes on this plot"
-		elseif g_testTargetSwitch == 1 then
-			MapModData.text = "[COLOR_WARNING_TEXT]You do not have sufficent mana (requres " .. g_modSpell .. ")[ENDCOLOR]"
-		elseif g_testTargetSwitch == 2 then
-			MapModData.text = "[COLOR_WARNING_TEXT]Your civilization has already placed a Glyph, Rune or Ward on this plot[ENDCOLOR]"
-		elseif g_testTargetSwitch == 3 then
-			MapModData.text = "[COLOR_WARNING_TEXT]Another civilization has placed a Glyph, Rune or Ward on this plot[ENDCOLOR]"
-		end
-	end
-end
-
-SetAIValues[GameInfoTypes.EA_SPELL_EXPLOSIVE_RUNE] = function()	--already restricted by AI heuristic; just value good defence plot
-	gg_aiOptionValues.i = 10		--placeholder
-end
-
-Finish[GameInfoTypes.EA_SPELL_EXPLOSIVE_RUNE] = function()
-	g_plot:SetPlotEffectData(GameInfoTypes.EA_PLOTEFFECT_EXPLOSIVE_RUNE, g_modSpell, g_iPlayer, g_iPerson)	--effectID, effectStength, iPlayer, iCaster
-	UpdatePlotEffectHighlight(g_iPlot)
-	UseManaOrDivineFavor(g_iPlayer, g_iPerson, 1)
-	return true
-end
-
---EA_SPELL_MAGE_SWORD
---EA_SPELL_BREACH
---EA_SPELL_WISH
---EA_SPELL_SLOW
---EA_SPELL_HASTE
---EA_SPELL_ENCHANT_WEAPONS
---EA_SPELL_POLYMORPH
-
-
---EA_SPELL_BLIGHT
-TestTarget[GameInfoTypes.EA_SPELL_BLIGHT] = function()
-
-	--if true, then:
-	--g_obj1 = affected plot (this plot or distant plot from tower/temple)
-	--g_int2 = terrainStrength
-	--g_int3 = radius (tower/temple only)
-	--g_int4 = ownPlotsInDanger (tower/temple only)
-	--g_int5 = totalPlotsInDanger (tower/temple only)
-
-	if g_bInTowerOrTemple then	--Can distant plot be blighted? (max range = mod)
-
-		--random sector/direction, spiral in until valid plot found
-		local sector = Rand(6, "hello") + 1
-		local anticlock = Rand(2, "hello") == 0
-		local maxRadius = g_modSpell < MAX_RANGE and g_modSpell or MAX_RANGE
-		for radius = maxRadius, 1, -1 do	--test one full ring at a time (we test whole ring so AI can account for own plots in danger)
-			g_obj1 = nil
-			local ownPlotsInDanger, totalPlotsInDanger = 0, 0
-			for plot in PlotRingIterator(g_plot, radius, sector, anticlock) do	
-				if not (plot:IsWater() or plot:IsMountain() or plot:IsImpassable()) then
-					local featureID = plot:GetFeatureType()
-					if not (featureID == FEATURE_BLIGHT or featureID == FEATURE_FALLOUT) then
-						if featureID == FEATURE_FOREST or featureID == FEATURE_JUNGLE or featureID == FEATURE_MARSH then	--Must overpower any living terrain here (subtract range from mod)
-							local terrainStrength = plot:GetLivingTerrainStrength()
-							if g_modSpell - radius > terrainStrength then
-								totalPlotsInDanger = totalPlotsInDanger + 1
-								if plot:IsPlayerCityRadius(g_iPlayer) then
-									ownPlotsInDanger = ownPlotsInDanger + 1
-								end		
-								g_int2 = terrainStrength		
-								g_obj1 = plot
-							end
-						else
-							totalPlotsInDanger = totalPlotsInDanger + 1
-							if plot:IsPlayerCityRadius(g_iPlayer) then
-								ownPlotsInDanger = ownPlotsInDanger + 1
-							end	
-							g_int2 = 0
-							g_obj1 = plot
-						end
-					end
-				end
-			end
-			if g_obj1 then
-				g_int3 = radius
-				g_int4 = ownPlotsInDanger
-				g_int5 = totalPlotsInDanger
-				return true
-			else
-				return false
-			end
-		end
-	else	--Can this plot be blighted?
-		if g_plot:IsWater() or g_plot:IsMountain() or g_plot:IsImpassable() then return false end	--IsImpassable protects Natural Wonders (unless they become passible) 
-		local featureID = g_plot:GetFeatureType()
-		if featureID == FEATURE_BLIGHT or featureID == FEATURE_FALLOUT then return false end
-		if featureID == FEATURE_FOREST or featureID == FEATURE_JUNGLE or featureID == FEATURE_MARSH then	--Must overpower any living terrain here
-			g_int2 = g_plot:GetLivingTerrainStrength()
-			if g_modSpell < g_int2 then
-				return false
-			end
-		else
-			g_int2 = 0	
-		end
-		g_obj1 = g_plot
-		return true
-	end
-end
-
-SetUI[GameInfoTypes.EA_SPELL_BLIGHT] = function()
-	if g_bNonTargetTestsPassed then		--has spell so show it
-		if g_bAllTestsPassed then
-			if g_bInTowerOrTemple then
-				MapModData.text = "Blight land at range " .. g_int3
-			else
-				if g_int2 > 0 then
-					MapModData.text = "Blight this land (overcome terrain strength " .. g_int2 .. ")"
-				else
-					MapModData.text = "Blight this land"
-				end
-			end			
-		else
-			if g_bInTowerOrTemple then
-				MapModData.text = "No land within the caster's " .. g_modSpell .. "-plot range can be blighted"
-			else
-				if g_testTargetSwitch == 1 then
-					MapModData.text = "You cannot overcome this land's strength (" .. g_int2 .. ")"
-				else
-					MapModData.text = "This plot cannot be blighted"
-				end
-			end
-		end
-	end
-end
-
-SetAIValues[GameInfoTypes.EA_SPELL_BLIGHT] = function()
-	if g_bInTowerOrTemple then
-		gg_aiOptionValues.i = g_modSpell * (1 - g_int4 / g_int5)	-- deduct for proportion of possibly affected plots in own city's 3-plot radius
-	elseif not g_plot:IsPlayerCityRadius(g_iPlayer) then
-		gg_aiOptionValues.i = g_modSpell + g_int2	--prefer to kill strongest living terrain possible
-	end		--no value if in our city's 3-plot radius
-end
-
-Finish[GameInfoTypes.EA_SPELL_BLIGHT] = function()
-	g_specialEffectsPlot = g_obj1
-	BlightPlot(g_obj1, g_iPlayer, g_iPerson)	--player doesn't lose mana, but gets credit for mana consummed
-end
-
-
---EA_SPELL_HEX
-TestTarget[GameInfoTypes.EA_SPELL_HEX] = function()
-	--Priority: strongest adjacent enemy (cost x current hp)
-	--g_obj1 = unit
-	--g_value = unit cost for AI
-	local value = 0
-	for x, y in PlotToRadiusIterator(g_x, g_y, 1, nil, nil, false) do
-		local plot = GetPlotFromXY(x, y)
-		local unitCount = plot:GetNumUnits()
-		for i = 0, unitCount - 1 do
-			local unit = plot:GetUnit(i)
-			if not unit:IsHasPromotion(PROMOTION_HEX) and not unit:IsHasPromotion(PROMOTION_PROTECTION_FROM_EVIL) then
-				if g_team:IsAtWar(Players[unit:GetOwner()]:GetTeam()) then
-					local unitTypeID = unit:GetUnitType()	
-					if gg_bNormalCombatUnit[unitTypeID] then
-						local unitTypeInfo = GameInfo.Units[unitTypeID]
-						if value < unitTypeInfo.Cost * unit:GetCurrHitPoints() then
-							g_obj1 = unit
-							value = unitTypeInfo.Cost
-						end
-					end
-				end
-			end
-		end
-	end
-	if value == 0 then return false end	--no valid target
-	g_value = value
-	return true
-end
-
-SetUI[GameInfoTypes.EA_SPELL_HEX] = function()
-	if g_bNonTargetTestsPassed then		--has spell so show it
-		MapModData.bShow = true
-		if g_bAllTestsPassed then
-			local unitTypeInfo = GameInfo.Units[g_obj1:GetUnitType()]
-			local unitText = Locale.ConvertTextKey(unitTypeInfo.Description)
-			MapModData.text = "Hex adjacent " .. unitText
-		else
-			MapModData.text = "[COLOR_WARNING_TEXT]No valid target[ENDCOLOR]"
-		end
-	end
-end
-
-SetAIValues[GameInfoTypes.EA_SPELL_HEX] = function()
-	gg_aiOptionValues.i = g_value / 100
-end
-
-Do[GameInfoTypes.EA_SPELL_HEX] = function()
-	g_obj1:SetHasPromotion(PROMOTION_HEX, true)
-	local iOtherPlayer = g_obj1:GetOwner()
-	local iOtherUnit = g_obj1:GetID()
-	local sustainedPromotions = gPlayers[iOtherPlayer].sustainedPromotions
-	sustainedPromotions[iOtherUnit] = sustainedPromotions[iOtherUnit] or {}
-	sustainedPromotions[iOtherUnit][PROMOTION_HEX] = g_iPerson
-	g_specialEffectsPlot = g_obj1:GetPlot()
-	return true
-end
-
---EA_SPELL_SUMMON_MONSTER
---EA_SPELL_TELEPORT
---EA_SPELL_SUMMON_MINOR_DEMON
---EA_SPELL_PHASE_DOOR
---EA_SPELL_REANIMATE_DEAD
---EA_SPELL_RAISE_DEAD
-
-
---EA_SPELL_DEATH_RUNE			(almost a copy of EA_SPELL_EXPLOSIVE_RUNE)
-TestTarget[GameInfoTypes.EA_SPELL_DEATH_RUNE] = function()
-	if g_faith < g_modSpell then
-		g_testTargetSwitch = 1
-		return false
-	end
-	g_int1, g_int2, g_int3, g_int4 = g_plot:GetPlotEffectData()	--effectID, effectStength, iEffectPlayer, iCaster
-	if g_int1 ~= -1 then
-		if g_int3 == g_iPlayer then
-			g_testTargetSwitch = 2
-			return false			
-		end
-		--need more logic here for overwriteable effects
-		g_testTargetSwitch = 3
-		return false
-	end
-	return true
-end
-
-SetUI[GameInfoTypes.EA_SPELL_DEATH_RUNE] = function()
-	if g_bNonTargetTestsPassed then		--has spell so show it
-		MapModData.bShow = true
-		if g_bAllTestsPassed then
-			MapModData.text = "Place Explosive Runes on this plot"
-		elseif g_testTargetSwitch == 1 then
-			MapModData.text = "[COLOR_WARNING_TEXT]You do not have sufficent mana (requres " .. g_modSpell .. ")[ENDCOLOR]"
-		elseif g_testTargetSwitch == 2 then
-			MapModData.text = "[COLOR_WARNING_TEXT]Your civilization has already placed a Glyph, Rune or Ward on this plot[ENDCOLOR]"
-		elseif g_testTargetSwitch == 3 then
-			MapModData.text = "[COLOR_WARNING_TEXT]Another civilization has placed a Glyph, Rune or Ward on this plot[ENDCOLOR]"
-		end
-	end
-end
-
-SetAIValues[GameInfoTypes.EA_SPELL_DEATH_RUNE] = function()	--already restricted by AI heuristic; just value good defence plot
-	gg_aiOptionValues.i = 10		--placeholder
-end
-
-Finish[GameInfoTypes.EA_SPELL_DEATH_RUNE] = function()
-	g_plot:SetPlotEffectData(GameInfoTypes.EA_PLOTEFFECT_DEATH_RUNE, g_modSpell, g_iPlayer, g_iPerson)	--effectID, effectStength, iPlayer, iCaster
-	UpdatePlotEffectHighlight(g_iPlot)
-	UseManaOrDivineFavor(g_iPlayer, g_iPerson, 1)
-	return true
-end
-
-
-
---EA_SPELL_VAMPIRIC_TOUCH
---EA_SPELL_DEATH_STAY
---EA_SPELL_BECOME_LICH
---EA_SPELL_FINGER_OF_DEATH
---EA_SPELL_CHARM_MONSTER
---EA_SPELL_CAUSE_FEAR
---EA_SPELL_CAUSE_DISPAIR
---EA_SPELL_SLEEP
---EA_SPELL_DREAM
---EA_SPELL_NIGHTMARE
---EA_SPELL_LESSER_GEAS
---EA_SPELL_GREATER_GEAS
---EA_SPELL_PRESTIDIGITATION
---EA_SPELL_OBSCURE_TERRAIN
---EA_SPELL_FOG_OF_WAR
---EA_SPELL_SIMULACRUM
---EA_SPELL_PHANTASMAGORIA
-
-
---EA_SPELL_HEAL
-TestTarget[GameInfoTypes.EA_SPELL_HEAL] = function()
-	--Heal same plot or adjacent living unit from my team. Priority:
-	--2. Heal unit that can use full healing effect
-	--1. Heal unit that needs less than full ealing effect
-
-	--Use g_testTargetSwitch to step through priority level (initial 0 means no target)
-	--Within category 1-2, pick costliest unit
-	--g_int1 = hp heal
-	--g_obj1 = unit
-
-	local pts = g_modSpell < g_faith and g_modSpell or g_faith
-	if pts == 0 then return false end
-	local unitCost = 0
-	for x, y in PlotToRadiusIterator(g_x, g_y, 1) do	--includes center
-		local plot = GetPlotFromXY(x, y)
-		local unitCount = plot:GetNumUnits()
-		for i = 0, unitCount - 1 do
-			local unit = plot:GetUnit(i)
-			local unitTypeID = unit:GetUnitType()
-			if gg_bNormalLivingCombatUnit[unitTypeID] then
-				local damage = unit:GetDamage()
-				if 0 < damage and Players[unit:GetOwner()]:GetTeam() == g_iTeam then
-					local unitTypeInfo = GameInfo.Units[unitTypeID]
-					if damage < pts then --partial use of heal potential
-						if g_testTargetSwitch == 0 then
-							g_obj1 = unit
-							g_int1 = damage
-							unitCost = unitTypeInfo.Cost
-							g_testTargetSwitch = 1
-						elseif g_testTargetSwitch == 1 and unitCost < unitTypeInfo.Cost then
-							g_obj1 = unit
-							g_int1 = damage
-							unitCost = unitTypeInfo.Cost
-						end
-					else	--full use of heal potential
-						if g_testTargetSwitch < 2 then
-							g_obj1 = unit
-							g_int1 = pts
-							unitCost = unitTypeInfo.Cost
-							g_testTargetSwitch = 2
-						elseif unitCost < unitTypeInfo.Cost then
-							g_obj1 = unit
-							g_int1 = pts
-							unitCost = unitTypeInfo.Cost
-						end
-					end
-				end
-			end
-		end
-	end
-	if g_testTargetSwitch == 0 then return false end	--no valid target
-
-	g_int2 = unitCost	--for AI
-
-	return true
-end
-
-SetUI[GameInfoTypes.EA_SPELL_HEAL] = function()
-	if g_bNonTargetTestsPassed then		--has spell so show it
-		MapModData.bShow = true
-		if g_testTargetSwitch == 0 then
-			local pts = g_modSpell < g_faith and g_modSpell or g_faith
-			if pts == 0 then
-				MapModData.text = "[COLOR_WARNING_TEXT]Heal friendly unit on this or adjacent plot (no mana or divine favor)[ENDCOLOR]"
-			else
-				MapModData.text = "[COLOR_WARNING_TEXT]Heal friendly unit on this or adjacent plot by " .. pts .. " HP (no valid target)[ENDCOLOR]"
-			end
-		else
-			local unitTypeInfo = GameInfo.Units[g_obj1:GetUnitType()]
-			local unitText = Locale.ConvertTextKey(unitTypeInfo.Description)
-			if g_testTargetSwitch == 1 then
-				MapModData.text = "Fully heal " .. unitText .. " (" .. g_int1 .. " hp)"
-			else
-				MapModData.text = "Partially heal " .. unitText .. " (" .. g_int1 .. " hp)"
-			end
-		end
-	end
-end
-
-SetAIValues[GameInfoTypes.EA_SPELL_HEAL] = function()
-	--The AI value for a Heal spell is an instant payoff (i) = hp * unitCost / 100; use this as baseline for other spell values
-	gg_aiOptionValues.i = g_int1 * g_int2 / 100
-	--print("AI value for Heal spell= ", gg_aiOptionValues.i)
-end
-
-Do[GameInfoTypes.EA_SPELL_HEAL] = function()
-	--GetCurrHitPoints, GetMaxHitPoints, GetDamage, SetDamage
-	g_obj1:SetDamage(g_obj1:GetDamage() - g_int1, -1)		-- heal
-	UseManaOrDivineFavor(g_iPlayer, g_iPerson, g_int1)
-	g_specialEffectsPlot = g_obj1:GetPlot()
-	return true
-end
-
---EA_SPELL_BLESS
-TestTarget[GameInfoTypes.EA_SPELL_BLESS] = function()
-	--Priority: strongest same-tile oradjacent ally (cost x current hp)
-	--g_obj1 = unit
-	--g_value = unit cost for AI
-	local value = 0
-	for x, y in PlotToRadiusIterator(g_x, g_y, 1) do	--includes center
-		local plot = GetPlotFromXY(x, y)
-		local unitCount = plot:GetNumUnits()
-		for i = 0, unitCount - 1 do
-			local unit = plot:GetUnit(i)
-			if unit:GetOwner() == g_iPlayer then		--change to allied
-				if not unit:IsHasPromotion(PROMOTION_BLESSED) and not unit:IsHasPromotion(PROMOTION_EVIL_EYE) then
-					local unitTypeID = unit:GetUnitType()	
-					if gg_bNormalLivingCombatUnit[unitTypeID] then
-						local unitTypeInfo = GameInfo.Units[unitTypeID]
-						if value < unitTypeInfo.Cost * unit:GetCurrHitPoints() then
-							g_obj1 = unit
-							value = unitTypeInfo.Cost
-						end
-					end
-				end
-			end
-		end
-	end
-	if value == 0 then return false end	--no valid target
-	g_value = value
-	return true
-end
-
-SetUI[GameInfoTypes.EA_SPELL_BLESS] = function()
-	if g_bNonTargetTestsPassed then		--has spell so show it
-		MapModData.bShow = true
-		if g_bAllTestsPassed then
-			local unitTypeInfo = GameInfo.Units[g_obj1:GetUnitType()]
-			local unitText = Locale.ConvertTextKey(unitTypeInfo.Description)
-			MapModData.text = "Bless adjacent " .. unitText
-		else
-			MapModData.text = "[COLOR_WARNING_TEXT]No valid target[ENDCOLOR]"
-		end
-	end
-end
-
-SetAIValues[GameInfoTypes.EA_SPELL_BLESS] = function()
-	gg_aiOptionValues.i = g_modSpell * g_value / 1000
-end
-
-Do[GameInfoTypes.EA_SPELL_BLESS] = function()
-	g_obj1:SetHasPromotion(PROMOTION_BLESSED, true)
-	local iOtherPlayer = g_obj1:GetOwner()
-	local iOtherUnit = g_obj1:GetID()
-	local sustainedPromotions = gPlayers[iOtherPlayer].sustainedPromotions
-	sustainedPromotions[iOtherUnit] = sustainedPromotions[iOtherUnit] or {}
-	sustainedPromotions[iOtherUnit][PROMOTION_BLESSED] = g_iPerson
-	g_specialEffectsPlot = g_obj1:GetPlot()
-	return true
-end
-
---EA_SPELL_PROTECTION_FROM_EVIL
-TestTarget[GameInfoTypes.EA_SPELL_PROTECTION_FROM_EVIL] = function()
-	--Priority: strongest same-tile oradjacent ally (cost x current hp)
-	--g_obj1 = unit
-	--g_value = unit cost for AI
-	local value = 0
-	for x, y in PlotToRadiusIterator(g_x, g_y, 1) do	--includes center
-		local plot = GetPlotFromXY(x, y)
-		local unitCount = plot:GetNumUnits()
-		for i = 0, unitCount - 1 do
-			local unit = plot:GetUnit(i)
-			if unit:GetOwner() == g_iPlayer then		--change to allied
-				if not unit:IsHasPromotion(PROMOTION_PROTECTION_FROM_EVIL) and not unit:IsHasPromotion(PROMOTION_EVIL_EYE) then
-					local unitTypeID = unit:GetUnitType()	
-					if gg_bNormalLivingCombatUnit[unitTypeID] then
-						local unitTypeInfo = GameInfo.Units[unitTypeID]
-						if value < unitTypeInfo.Cost * unit:GetCurrHitPoints() then
-							g_obj1 = unit
-							value = unitTypeInfo.Cost
-						end
-					end
-				end
-			end
-		end
-	end
-	if value == 0 then return false end	--no valid target
-	g_value = value
-	return true
-end
-
-SetUI[GameInfoTypes.EA_SPELL_PROTECTION_FROM_EVIL] = function()
-	if g_bNonTargetTestsPassed then		--has spell so show it
-		MapModData.bShow = true
-		if g_bAllTestsPassed then
-			local unitTypeInfo = GameInfo.Units[g_obj1:GetUnitType()]
-			local unitText = Locale.ConvertTextKey(unitTypeInfo.Description)
-			MapModData.text = "Give Protection frm Evil to adjacent " .. unitText
-		else
-			MapModData.text = "[COLOR_WARNING_TEXT]No valid target[ENDCOLOR]"
-		end
-	end
-end
-
-SetAIValues[GameInfoTypes.EA_SPELL_PROTECTION_FROM_EVIL] = function()
-	gg_aiOptionValues.i = g_modSpell * g_value / 1000
-end
-
-Do[GameInfoTypes.EA_SPELL_PROTECTION_FROM_EVIL] = function()
-	g_obj1:SetHasPromotion(PROMOTION_PROTECTION_FROM_EVIL, true)
-	local iOtherPlayer = g_obj1:GetOwner()
-	local iOtherUnit = g_obj1:GetID()
-	local sustainedPromotions = gPlayers[iOtherPlayer].sustainedPromotions
-	sustainedPromotions[iOtherUnit] = sustainedPromotions[iOtherUnit] or {}
-	sustainedPromotions[iOtherUnit][PROMOTION_PROTECTION_FROM_EVIL] = g_iPerson
-	g_specialEffectsPlot = g_obj1:GetPlot()
-	return true
-end
-
---EA_SPELL_HURT
-TestTarget[GameInfoTypes.EA_SPELL_HURT] = function()
-	--Hurt same plot or adjacent living unit enemy team. Priority:
-	--2. Hurt unit that will be killed
-	--1. Hurt unit that won't be killed
-
-	--Use g_testTargetSwitch to step through priority level (initial 0 means no target)
-	--Within category 1-2, pick costliest unit
-	--g_int1 = hp hurt
-	--g_obj1 = unit
-
-	local pts = g_modSpell < g_faith and g_modSpell or g_faith
-	if pts == 0 then return false end				--make this a generic test?
-	local unitCost = 0
-	for x, y in PlotToRadiusIterator(g_x, g_y, 1) do	--includes center
-		local plot = GetPlotFromXY(x, y)
-		local unitCount = plot:GetNumUnits()
-		for i = 0, unitCount - 1 do
-			local unit = plot:GetUnit(i)
-			if g_team:IsAtWar(Players[unit:GetOwner()]:GetTeam()) then
-				local unitTypeID = unit:GetUnitType()	
-				if gg_bNormalLivingCombatUnit[unitTypeID] then
-					local unitTypeInfo = GameInfo.Units[unitTypeID]
-					local currentHP = unit:GetCurrHitPoints()
-					if pts < currentHP then --won't kill
-						if g_testTargetSwitch == 0 then
-							g_obj1 = unit
-							g_int1 = pts
-							unitCost = unitTypeInfo.Cost
-							g_testTargetSwitch = 1
-						elseif g_testTargetSwitch == 1 and unitCost < unitTypeInfo.Cost then
-							g_obj1 = unit
-							g_int1 = pts
-							unitCost = unitTypeInfo.Cost
-						end
-					else					--will kill
-						if g_testTargetSwitch < 2 then
-							g_obj1 = unit
-							g_int1 = currentHP
-							unitCost = unitTypeInfo.Cost
-							g_testTargetSwitch = 2
-						elseif unitCost < unitTypeInfo.Cost then
-							g_obj1 = unit
-							g_int1 = currentHP
-							unitCost = unitTypeInfo.Cost
-						end
-					end
-				end
-			end
-		end
-	end
-	if g_testTargetSwitch == 0 then return false end	--no valid target
-
-	g_int2 = unitCost	--for AI
-
-	return true
-end
-
-SetUI[GameInfoTypes.EA_SPELL_HURT] = function()
-	if g_bNonTargetTestsPassed then		--has spell so show it
-		MapModData.bShow = true
-		if g_testTargetSwitch == 0 then
-			local pts = g_modSpell < g_faith and g_modSpell or g_faith
-			if pts == 0 then
-				MapModData.text = "[COLOR_WARNING_TEXT]Hurt enemy unit on this or adjacent plot (no mana or divine favor)[ENDCOLOR]"
-			else
-				MapModData.text = "[COLOR_WARNING_TEXT]Hurt enemy unit on this or adjacent plot by " .. pts .. " HP (no valid target)[ENDCOLOR]"
-			end
-		else
-			local unitTypeInfo = GameInfo.Units[g_obj1:GetUnitType()]
-			local unitText = Locale.ConvertTextKey(unitTypeInfo.Description)
-			if g_testTargetSwitch == 1 then
-				MapModData.text = "Hurt " .. unitText .. " (" .. g_int1 .. " hp; will kill unit)"
-			else
-				MapModData.text = "Hurt " .. unitText .. " (" .. g_int1 .. " hp)"
-			end
-			print("SetUI for EA_SPELL_HEAL", g_int1, g_int2, g_obj1)
-		end
-	end
-end
-
-SetAIValues[GameInfoTypes.EA_SPELL_HURT] = function()
-	--The AI value for a Heal spell is an instant payoff (i) = hp * unitCost / 100; use this as baseline for other spell values
-	gg_aiOptionValues.i = g_int1 * g_int2 / 100
-	--print("AI value for Heal spell= ", gg_aiOptionValues.i)
-end
-
-Do[GameInfoTypes.EA_SPELL_HURT] = function()
-	--GetCurrHitPoints, GetMaxHitPoints, GetDamage, SetDamage
-	g_obj1:SetDamage(g_obj1:GetDamage() + g_int1, g_iPlayer)		-- hurt
-	UseManaOrDivineFavor(g_iPlayer, g_iPerson, g_int1)
-	g_specialEffectsPlot = g_obj1:GetPlot()
-	return true
-end
-
---EA_SPELL_CURSE
-TestTarget[GameInfoTypes.EA_SPELL_CURSE] = function()
-	--Priority: strongest adjacent enemy (cost x current hp)
-	--g_obj1 = unit
-	--g_value = unit cost for AI
-	local value = 0
-	for x, y in PlotToRadiusIterator(g_x, g_y, 1) do	--includes center
-		local plot = GetPlotFromXY(x, y)
-		local unitCount = plot:GetNumUnits()
-		for i = 0, unitCount - 1 do
-			local unit = plot:GetUnit(i)
-			if not unit:IsHasPromotion(PROMOTION_CURSED) and not unit:IsHasPromotion(PROMOTION_PROTECTION_FROM_EVIL) then
-				if g_team:IsAtWar(Players[unit:GetOwner()]:GetTeam()) then
-					local unitTypeID = unit:GetUnitType()	
-					if gg_bNormalLivingCombatUnit[unitTypeID] then
-						local unitTypeInfo = GameInfo.Units[unitTypeID]
-						if value < unitTypeInfo.Cost * unit:GetCurrHitPoints() then
-							g_obj1 = unit
-							value = unitTypeInfo.Cost
-						end
-					end
-				end
-			end
-		end
-	end
-	if value == 0 then return false end	--no valid target
-	g_value = value
-	return true
-end
-
-SetUI[GameInfoTypes.EA_SPELL_CURSE] = function()
-	if g_bNonTargetTestsPassed then		--has spell so show it
-		MapModData.bShow = true
-		if g_bAllTestsPassed then
-			local unitTypeInfo = GameInfo.Units[g_obj1:GetUnitType()]
-			local unitText = Locale.ConvertTextKey(unitTypeInfo.Description)
-			MapModData.text = "Curse adjacent " .. unitText
-		else
-			MapModData.text = "[COLOR_WARNING_TEXT]No valid target[ENDCOLOR]"
-		end
-	end
-end
-
-SetAIValues[GameInfoTypes.EA_SPELL_CURSE] = function()
-	gg_aiOptionValues.i = g_modSpell * g_value / 1000
-end
-
-Do[GameInfoTypes.EA_SPELL_CURSE] = function()
-	g_obj1:SetHasPromotion(PROMOTION_CURSED, true)
-	local iOtherPlayer = g_obj1:GetOwner()
-	local iOtherUnit = g_obj1:GetID()
-	local sustainedPromotions = gPlayers[iOtherPlayer].sustainedPromotions
-	sustainedPromotions[iOtherUnit] = sustainedPromotions[iOtherUnit] or {}
-	sustainedPromotions[iOtherUnit][PROMOTION_CURSED] = g_iPerson
-	g_specialEffectsPlot = g_obj1:GetPlot()
-	return true
-end
-
---EA_SPELL_EVIL_EYE
-TestTarget[GameInfoTypes.EA_SPELL_EVIL_EYE] = function()
-	--Priority: strongest adjacent enemy (cost x current hp)
-	--g_obj1 = unit
-	--g_value = unit cost for AI
-	local value = 0
-	for x, y in PlotToRadiusIterator(g_x, g_y, 1) do	--includes center
-		local plot = GetPlotFromXY(x, y)
-		local unitCount = plot:GetNumUnits()
-		for i = 0, unitCount - 1 do
-			local unit = plot:GetUnit(i)
-			if not unit:IsHasPromotion(PROMOTION_EVIL_EYE) and not unit:IsHasPromotion(PROMOTION_PROTECTION_FROM_EVIL) then
-				if g_team:IsAtWar(Players[unit:GetOwner()]:GetTeam()) then
-					local unitTypeID = unit:GetUnitType()	
-					if gg_bNormalCombatUnit[unitTypeID] then
-						local unitTypeInfo = GameInfo.Units[unitTypeID]
-						if value < unitTypeInfo.Cost * unit:GetCurrHitPoints() then
-							g_obj1 = unit
-							value = unitTypeInfo.Cost
-						end
-					end
-				end
-			end
-		end
-	end
-	if value == 0 then return false end	--no valid target
-	g_value = value
-	return true
-end
-
-SetUI[GameInfoTypes.EA_SPELL_EVIL_EYE] = function()
-	if g_bNonTargetTestsPassed then		--has spell so show it
-		MapModData.bShow = true
-		if g_bAllTestsPassed then
-			local unitTypeInfo = GameInfo.Units[g_obj1:GetUnitType()]
-			local unitText = Locale.ConvertTextKey(unitTypeInfo.Description)
-			MapModData.text = "Cast Evil-Eye on adjacent " .. unitText
-		else
-			MapModData.text = "[COLOR_WARNING_TEXT]No valid target[ENDCOLOR]"
-		end
-	end
-end
-
-SetAIValues[GameInfoTypes.EA_SPELL_EVIL_EYE] = function()
-	gg_aiOptionValues.i = g_modSpell * g_value / 1000
-end
-
-Do[GameInfoTypes.EA_SPELL_EVIL_EYE] = function()
-	g_obj1:SetHasPromotion(PROMOTION_EVIL_EYE, true)
-	local iOtherPlayer = g_obj1:GetOwner()
-	local iOtherUnit = g_obj1:GetID()
-	local sustainedPromotions = gPlayers[iOtherPlayer].sustainedPromotions
-	sustainedPromotions[iOtherUnit] = sustainedPromotions[iOtherUnit] or {}
-	sustainedPromotions[iOtherUnit][PROMOTION_EVIL_EYE] = g_iPerson
-	g_specialEffectsPlot = g_obj1:GetPlot()
-	return true
-end
-
---EA_SPELL_EAS_BLESSING
-TestTarget[GameInfoTypes.EA_SPELL_EAS_BLESSING] = function()
-	local featureID = g_plot:GetFeatureType()
-	if featureID == FEATURE_FOREST or featureID == FEATURE_JUNGLE or featureID == FEATURE_MARSH then
-		g_int1 = g_modSpell < g_faith and g_modSpell or g_faith
-		g_int2 = featureID
-		return true
-	end
-	return false
-end
-
-SetUI[GameInfoTypes.EA_SPELL_EAS_BLESSING] = function()
-	if g_bNonTargetTestsPassed then		--has spell so show it
-		if g_bAllTestsPassed then
-			local featureInfo = GameInfo.Features[g_int2]
-			local featureName = Locale.ConvertTextKey(featureInfo.Description)
-			MapModData.text = "Increase spreading and regeneration strength of " .. featureName .. " by " .. g_int1
-		else
-			MapModData.text = "Plot must be Living Terrain (Forest, Jungle or Marsh)"
-		end
-	end
-end
-
-SetAIValues[GameInfoTypes.EA_SPELL_EAS_BLESSING] = function()
-	local countCanSpreadAdj = 0
-	for x, y in  PlotToRadiusIterator(g_x, g_y, 1, nil, nil, true) do
-		local adjPlot = GetPlotFromXY(x, y)
-		if adjPlot:GetFeatureType() == -1 and adjPlot:GetImprovementType() == -1 and not adjPlot:IsCity() then
-			local terrainID = adjPlot:GetTerrainType()
-			if g_int2 == FEATURE_FOREST then
-				if terrainID == TERRAIN_GRASS or terrainID == TERRAIN_PLAINS or terrainID == TERRAIN_TUNDRA then
-					countCanSpreadAdj = countCanSpreadAdj + 1
-				end
-			elseif g_int2 == FEATURE_JUNGLE then
-				if terrainID == TERRAIN_GRASS or terrainID == TERRAIN_PLAINS then
-					countCanSpreadAdj = countCanSpreadAdj + 1
-				end
-			elseif g_int2 == FEATURE_MARSH then
-				if terrainID == TERRAIN_GRASS and adjPlot:GetPlotType() == PLOT_LAND then
-					countCanSpreadAdj = countCanSpreadAdj + 1
-				end
-			end
-		end
-	end
-	local strength = g_plot:GetLivingTerrainStrength()
-	gg_aiOptionValues.i = g_int1 * (countCanSpreadAdj + 0.1) / (strength + 1)		--tiny positive even if it can't spread
-end
-
-Finish[GameInfoTypes.EA_SPELL_EAS_BLESSING] = function()
-	local type, present, strength, turnChopped = g_plot:GetLivingTerrainData()
-	if type == -1 then
-		if g_int2 == FEATURE_FOREST then
-			type = 1	--"forest"
-		elseif g_int2 == FEATURE_JUNGLE then
-			type = 2	--"jungle"
-		else
-			type = 3	--"marsh"
-		end
-		present = true
-		strength = 0
-		turnChopped = -100
-	end
-	strength = strength + g_int1
-	g_plot:SetLivingTerrainData(type, present, strength, turnChopped)
-	UseManaOrDivineFavor(g_iPlayer, g_iPerson, g_int1)
-	g_eaPlayer.livingTerrainStrengthAdded = (g_eaPlayer.livingTerrainStrengthAdded or 0) + g_int1
-	return true
-end
-
-
---EA_SPELL_BLOOM
-TestTarget[GameInfoTypes.EA_SPELL_BLOOM] = function()
-	--target tests (must be valid terrain type without feature or improvement and adjacent to forest or jungle)
-	if g_bIsCity then return false end
-	if g_plot:GetFeatureType() ~= -1 then return false end
-	local terrainID = g_plot:GetTerrainType()
-	if terrainID ~= TERRAIN_GRASS and terrainID ~= TERRAIN_PLAINS and terrainID ~= TERRAIN_TUNDRA then return false end
-	local imprID = g_plot:GetImprovementType()
-	if imprID ~= -1 then return false end
-	local forestCount, jungleCount = 0, 0
-	for x, y in  PlotToRadiusIterator(g_x, g_y, 1, nil, nil, true) do
-		local adjPlot = GetPlotFromXY(x, y)
-		local adjFeature = adjPlot:GetFeatureType()
-		if adjFeature == FEATURE_FOREST then
-			forestCount = forestCount + 1
-		elseif adjFeature == FEATURE_JUNGLE then
-			jungleCount = jungleCount + 1
-		end
-	end
-	if forestCount == 0 and jungleCount == 0 then return false end
-
-	if terrainID ~= TERRAIN_PLAINS or terrainID ~= TERRAIN_TUNDRA then
-		g_bool1 = true	--forest
-		return true
-	end
-	g_bool1 = jungleCount < forestCount	--forest or jungle
-	g_int1 = g_modSpell < g_faith and g_modSpell or g_faith
-	return true
-end
-
-SetUI[GameInfoTypes.EA_SPELL_BLOOM] = function()
-	if g_bNonTargetTestsPassed then		--has spell so show it
-		if g_bAllTestsPassed then
-			if g_bool1 then
-				MapModData.text = "Grow a forest on this plot"
-			else
-				MapModData.text = "Grow a jungle on this plot"
-			end
-		else
-			MapModData.text = "Plot must be unimproved grass, plains or tundra next to existing forest or jungle"
-		end
-	end
-end
-
-SetAIValues[GameInfoTypes.EA_SPELL_BLOOM] = function()
-	local countCanSpreadAdj = 1
-	for x, y in  PlotToRadiusIterator(g_x, g_y, 1, nil, nil, true) do
-		local adjPlot = GetPlotFromXY(x, y)
-		if adjPlot:GetFeatureType() == -1 and adjPlot:GetImprovementType() == -1 and not adjPlot:IsCity() then
-			local terrainID = adjPlot:GetTerrainType()
-			if g_bool1 then		--will be forest
-				if terrainID == TERRAIN_GRASS or terrainID == TERRAIN_PLAINS or terrainID == TERRAIN_TUNDRA then
-					countCanSpreadAdj = countCanSpreadAdj + 1
-				end
-			else	--will be jungle
-				if terrainID == TERRAIN_GRASS or terrainID == TERRAIN_PLAINS then
-					countCanSpreadAdj = countCanSpreadAdj + 1
-				end
-			end
-		end
-	end
-	gg_aiOptionValues.i = g_int1 * countCanSpreadAdj 		--always better than Ea's Blessing
-end
-
-Finish[GameInfoTypes.EA_SPELL_BLOOM] = function()
-	local type = g_bool1 and 1 or 2	--"forest" or "jungle"
-	LivingTerrainGrowHere(g_iPlot, type)
-	g_plot:SetLivingTerrainData(type, true, g_int1, -100)
-
-	UseManaOrDivineFavor(g_iPlayer, g_iPerson, g_int1)
-	g_eaPlayer.livingTerrainAdded = (g_eaPlayer.livingTerrainAdded or 0) + 1
-	g_eaPlayer.livingTerrainStrengthAdded = (g_eaPlayer.livingTerrainStrengthAdded or 0) + g_int1
-	return true
-end
-
---EA_SPELL_RIDE_LIKE_THE_WIND
-TestTarget[GameInfoTypes.EA_SPELL_RIDE_LIKE_THE_WIND] = function()
-	--Affects all adjacent: value each = cost x current hp
-	--g_int1 = numQualifiedUnits
-	--g_table holds potentially affected units
-	--g_value = cummulative
-	local numQualifiedUnits = 0
-	local value = 0
-	for x, y in PlotToRadiusIterator(g_x, g_y, 1) do	--includes center
-		local plot = GetPlotFromXY(x, y)
-		local unitCount = plot:GetNumUnits()
-		for i = 0, unitCount - 1 do
-			local unit = plot:GetUnit(i)
-			if unit:GetOwner() == g_iPlayer then
-				if not unit:IsHasPromotion(PROMOTION_RIDE_LIKE_THE_WINDS) and not unit:IsHasPromotion(PROMOTION_EVIL_EYE) then
-					local unitTypeID = unit:GetUnitType()	
-					if gg_bNormalCombatUnit[unitTypeID] then
-						local unitTypeInfo = GameInfo.Units[unitTypeID]
-						numQualifiedUnits = numQualifiedUnits + 1
-						g_table[numQualifiedUnits] = unit
-						value = value + GameInfo.Units[unitTypeID].Cost * unit:GetCurrHitPoints()
-					end
-				end
-			end
-		end
-	end
-	if value == 0 then return false end	--no valid target
-	g_int1 = numQualifiedUnits
-	g_value = value
-	return true
-end
-
-SetUI[GameInfoTypes.EA_SPELL_RIDE_LIKE_THE_WIND] = function()
-	if g_bNonTargetTestsPassed then		--has spell so show it
-		MapModData.bShow = true
-		if g_bAllTestsPassed then
-			MapModData.text = "Increase movement of " .. g_int1 .. " nearby horse-mounted unit(s) by 2"
-		else
-			MapModData.text = "[COLOR_WARNING_TEXT]No valid targets[ENDCOLOR]"
-		end
-	end
-end
-
-SetAIValues[GameInfoTypes.EA_SPELL_RIDE_LIKE_THE_WIND] = function()
-	gg_aiOptionValues.i = g_modSpell * g_value / 1000
-end
-
-Do[GameInfoTypes.EA_SPELL_RIDE_LIKE_THE_WIND] = function()
-	for i = 1, g_int1 do
-		local unit = g_table[i]
-		unit:SetHasPromotion(PROMOTION_RIDE_LIKE_THE_WINDS, true)
-		local iOtherPlayer = unit:GetOwner()
-		local iOtherUnit = unit:GetID()
-		local sustainedPromotions = gPlayers[iOtherPlayer].sustainedPromotions
-		sustainedPromotions[iOtherUnit] = sustainedPromotions[iOtherUnit] or {}
-		sustainedPromotions[iOtherUnit][PROMOTION_RIDE_LIKE_THE_WINDS] = g_iPerson
-	end
-	return true
-end
-
-local removedByPurify = {PROMOTION_HEX, PROMOTION_CURSED, PROMOTION_EVIL_EYE}
-local numRemovedByPurify = #removedByPurify
-
---EA_SPELL_PURIFY
-TestTarget[GameInfoTypes.EA_SPELL_PURIFY] = function()
-	--Priority: best effect
-	--g_obj1 = unit
-	--g_value = unit cost for AI
-	local pts = g_modSpell < g_faith and g_modSpell or g_faith
-	local healHP = Floor(pts * 0.667)
-	local bestValue = 0
-	for x, y in PlotToRadiusIterator(g_x, g_y, 1) do	--includes center
-		local plot = GetPlotFromXY(x, y)
-		local unitCount = plot:GetNumUnits()
-		for i = 0, unitCount - 1 do
-			local unit = plot:GetUnit(i)
-			if unit:GetOwner() == g_iPlayer then		--change to allied
-				local unitTypeID = unit:GetUnitType()	
-				if gg_bNormalLivingCombatUnit[unitTypeID] then
-					local damage = unit:GetDamage()
-					local hpHealed = healHP < damage and healHP or damage
-					local removeBonus = 0
-					for j = 1, numRemovedByPurify do
-						local promoID = removedByPurify[j]
-						if unit:IsHasPromotion(promoID) then
-							removeBonus = removeBonus + 20
-						end
-					end
-					local unitTypeInfo = GameInfo.Units[unitTypeID]
-					local value = unitTypeInfo.Cost * (hpHealed + removeBonus)
-					if bestValue < value then
-						g_obj1 = unit
-						bestValue = value
-					end
-				end
-			end
-		end
-	end
-	if bestValue == 0 then return false end	--no valid target
-	g_value = bestValue
-	return true
-end
-
-SetUI[GameInfoTypes.EA_SPELL_PURIFY] = function()
-	if g_bNonTargetTestsPassed then		--has spell so show it
-		MapModData.bShow = true
-		if g_bAllTestsPassed then
-			local unitTypeInfo = GameInfo.Units[g_obj1:GetUnitType()]
-			local unitText = Locale.ConvertTextKey(unitTypeInfo.Description)
-			--recalculate what we need as above
-			local pts = g_modSpell < g_faith and g_modSpell or g_faith
-			local healHP = Floor(pts * 0.667)
-			local damage = g_obj1:GetDamage()
-			local hpHealed = healHP < damage and healHP or damage
-			local healText = ""
-			if hpHealed > 0 then
-				healText = "heal " .. hpHealed .. " hp"
-			end
-			local removeText = ""
-			local removeCount = 0
-			local lastItem = ""
-			for i = 1, numRemovedByPurify do
-				local promoID = removedByPurify[i]
-				if g_obj1:IsHasPromotion(promoID) then
-					removeCount = removeCount + 1
-					local promoInfo = GameInfo.UnitPromotions[promoID]
-					if removeCount == 1 then
-						removeText = (healText == "" and "remove " or "; remove ") .. Locale.ConvertTextKey(promoInfo.Description)
-					else
-						if removeCount > 2 then
-							removeText = removeText .. ", " .. lastItem
-						end
-						lastItem = Locale.ConvertTextKey(promoInfo.Description)
-					end
-				end
-			end
-			if removeCount > 1 then
-				removeText = removeText .. " and " .. lastItem
-			end
-
-			MapModData.text = "Purify adjacent " .. unitText .. " (" .. healText .. removeText .. ")"
-		else
-			MapModData.text = "[COLOR_WARNING_TEXT]No valid target[ENDCOLOR]"
-		end
-	end
-end
-
-SetAIValues[GameInfoTypes.EA_SPELL_PURIFY] = function()
-	gg_aiOptionValues.i = g_modSpell * g_value / 1000
-end
-
-Do[GameInfoTypes.EA_SPELL_PURIFY] = function()
-	local pts = g_modSpell < g_faith and g_modSpell or g_faith
-	local healHP = Floor(pts * 0.667)
-	local damage = g_obj1:GetDamage()
-	local hpHealed = healHP < damage and healHP or damage
-	g_obj1:SetDamage(g_obj1:GetDamage() - hpHealed, -1)
-
-	local removeCount = 0
-	for i = 1, numRemovedByPurify do
-		local promoID = removedByPurify[i]
-		if g_obj1:IsHasPromotion(promoID) then
-			removeCount = removeCount + 1
-			g_obj1:SetHasPromotion(promoID, false)
-		end
-	end
-	pts = pts + removeCount
-	pts = pts < g_faith and pts or g_faith
-	UseManaOrDivineFavor(g_iPlayer, g_iPerson, 5)
-	g_specialEffectsPlot = g_obj1:GetPlot()
-	return true
-end
-
---EA_SPELL_FAIR_WINDS
-TestTarget[GameInfoTypes.EA_SPELL_FAIR_WINDS] = function()
-	--Priority: strongest adjacent enemy (cost x current hp)
-	--g_obj1 = unit
-	--g_value = unit cost for AI
-	local value = 0
-	for x, y in PlotToRadiusIterator(g_x, g_y, 1) do	--includes center
-		local plot = GetPlotFromXY(x, y)
-		local unitCount = plot:GetNumUnits()
-		for i = 0, unitCount - 1 do
-			local unit = plot:GetUnit(i)
-			if unit:GetDomainType() == DOMAIN_SEA and unit:GetOwner() == g_iPlayer then
-				if not unit:IsHasPromotion(PROMOTION_FAIR_WINDS) then
-					local unitTypeID = unit:GetUnitType()	
-					if gg_bNormalCombatUnit[unitTypeID] then
-						local unitTypeInfo = GameInfo.Units[unitTypeID]
-						if value < unitTypeInfo.Cost then
-							g_obj1 = unit
-							value = unitTypeInfo.Cost
-						end
-					end
-				end	
-			end
-		end
-	end
-	if value == 0 then return false end	--no valid target
-	g_value = value
-	return true
-end
-
-SetUI[GameInfoTypes.EA_SPELL_FAIR_WINDS] = function()
-	if g_bNonTargetTestsPassed then		--has spell so show it
-		MapModData.bShow = true
-		if g_bAllTestsPassed then
-			local unitTypeInfo = GameInfo.Units[g_obj1:GetUnitType()]
-			local unitText = Locale.ConvertTextKey(unitTypeInfo.Description)
-			MapModData.text = "Permanently increase movement of adjacent " .. unitText .. " by 1"
-		else
-			MapModData.text = "[COLOR_WARNING_TEXT]No valid target[ENDCOLOR]"
-		end
-	end
-end
-
-SetAIValues[GameInfoTypes.EA_SPELL_FAIR_WINDS] = function()
-	gg_aiOptionValues.i = g_value / 100
-end
-
-Do[GameInfoTypes.EA_SPELL_FAIR_WINDS] = function()
-	g_obj1:SetHasPromotion(PROMOTION_FAIR_WINDS, true)
-	g_specialEffectsPlot = g_obj1:GetPlot()
-	UseManaOrDivineFavor(g_iPlayer, g_iPerson, 5)
-	g_specialEffectsPlot = g_obj1:GetPlot()
-	return true
-end
-
---EA_SPELL_REVELRY
-TestTarget[GameInfoTypes.EA_SPELL_REVELRY] = function()
-	g_int1 = UNHAPPINESS_PER_CITY + g_city:GetPopulation() - g_city:GetLocalHappiness() 	--CHECK THIS !!!!	
-	return 0 < g_int1
-end
-
-SetUI[GameInfoTypes.EA_SPELL_REVELRY] = function()
-	if g_bNonTargetTestsPassed then		--has spell so show it
-		MapModData.bShow = true
-		if g_bAllTestsPassed then
-			local pts = Floor(g_modSpell / 2)
-			pts = pts < g_int1 and pts or g_int1
-			MapModData.text = "Increase happiness by " .. pts
-		elseif g_bIsCity and g_iOwner == g_iPlayer then
-			MapModData.text = "[COLOR_WARNING_TEXT]This city is generating maximum happiness for its population already[ENDCOLOR]"
-		else
-			MapModData.text = "[COLOR_WARNING_TEXT]Must be in one of your cities[ENDCOLOR]"
-		end
-	end
-end
-
-SetAIValues[GameInfoTypes.EA_SPELL_REVELRY] = function()
-	local pts = Floor(g_modSpell / 2)
-	pts = pts < g_int1 and pts or g_int1
-	gg_aiOptionValues.b = pts
-end
-
-Do[GameInfoTypes.EA_SPELL_REVELRY] = function()
-	local pts = Floor(g_modSpell / 2)
-	pts = pts < g_int1 and pts or g_int1
-	g_eaCity.gpHappiness = g_eaCity.gpHappiness or {}
-	g_eaCity.gpHappiness[g_iPerson] = pts
-	g_eaPerson.eaActionData = g_iPlot
-	UseManaOrDivineFavor(g_iPlayer, g_iPerson, pts)
-	if g_iPlayer == g_iActivePlayer then
-		UpdateCityYields(g_iPlayer, g_iCity, "Happiness")	--instant UI update for human
-	end
-	return true
-end
-
-Interrupt[GameInfoTypes.EA_SPELL_REVELRY] = function(iPlayer, iPerson)
-	local eaPerson = gPeople[iPerson]
-	local eaCityIndex = eaPerson.eaActionData
-	local eaCity = gCities[eaCityIndex]
-	if eaCity then
-		eaCity.gpHappiness[iPerson] = nil
-		eaPerson.eaActionData = -1
-		if iPlayer == g_iActivePlayer then
-			local iCity = GetPlotByIndex(eaCityIndex):GetPlotCity():GetID()
-			UpdateCityYields(iPlayer, iCity, "Happiness")
-		end
-	end
-end
-
+-- Spells go in EaSpells.lua...

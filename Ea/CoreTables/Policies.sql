@@ -193,12 +193,11 @@ UPDATE Policies SET EaFirstInBranchGPClass = 'Merchant' WHERE Type IN ('POLICY_M
 
 UPDATE Policies SET CultureCost = 10 WHERE PolicyBranchType != NULL;		--don't think this does anything at all
 
---NumExtraBuilders?
 UPDATE Policies SET UnhappinessMod = -33 WHERE Type = 'POLICY_FEUDALISM';
 UPDATE Policies SET HalfSpecialistFood = 1 WHERE Type = 'POLICY_TRADE_UNIONS';
 UPDATE Policies SET HalfSpecialistUnhappiness = 1 WHERE Type = 'POLICY_GUILDS';
 
-
+--NumExtraBuilders?
 
 --WoundedUnitDamageMod		--Negative value in base !!!???
 --UnitSupplyMod
@@ -521,10 +520,6 @@ INSERT INTO Policy_ImprovementYieldChanges (PolicyType,	ImprovementType,	YieldTy
 ('POLICY_INDUSTRIALIZATION',		'IMPROVEMENT_WHALING_BOATS',	'YIELD_PRODUCTION',	1	),
 
 --Pantheism
-('POLICY_PANTHEISM',				'IMPROVEMENT_FARM',				'YIELD_FOOD',		-10	),	--These 3 are the non-resource versions
-('POLICY_PANTHEISM',				'IMPROVEMENT_MINE',				'YIELD_PRODUCTION',	-10	),	--modded dll to allow negative
-('POLICY_PANTHEISM',				'IMPROVEMENT_LUMBERMILL',		'YIELD_PRODUCTION',	-10	),
-
 ('POLICY_ANIMAL_LORE',				'IMPROVEMENT_PASTURE',			'YIELD_FOOD',		1	),
 ('POLICY_ANIMAL_LORE',				'IMPROVEMENT_PASTURE',			'YIELD_PRODUCTION',	1	),
 ('POLICY_ANIMAL_LORE',				'IMPROVEMENT_CAMP',				'YIELD_FOOD',		1	),

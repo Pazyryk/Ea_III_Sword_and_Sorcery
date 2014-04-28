@@ -28,10 +28,10 @@ CREATE TABLE EaActions ('ID' INTEGER PRIMARY KEY AUTOINCREMENT,
 						'AISimpleYield' INTEGER DEFAULT 0,	-- Sets the "per turn payoff" value (p); not needed if AI values set in specific SetAIValues function in EaAction.lua
 						'AIAdHocValue' INTEGER DEFAULT 0,	-- Sets an "instant payoff" value (i); not needed if AI values set in specific SetAIValues function in EaAction.lua
 						--Spells (if set, all "caster reqs" below are treated as "learn prereq"; they don't apply to casting)
-						'SpellClass' TEXT DEFAULT NULL,	--'Divine', 'Arcane' or NULL
+						'SpellClass' TEXT DEFAULT NULL,	--'Divine', 'Arcane', 'Both' or NULL
 						'FreeSpellSubclass' TEXT DEFAULT NULL,
 						'FallenAltSpell' TEXT DEFAULT NULL,
-						--Civ reqs
+						--Civ or world reqs
 						'TechReq' TEXT DEFAULT NULL,
 						'OrTechReq' TEXT DEFAULT NULL,
 						'AndTechReq' TEXT DEFAULT NULL,
@@ -44,8 +44,9 @@ CREATE TABLE EaActions ('ID' INTEGER PRIMARY KEY AUTOINCREMENT,
 						'CivReligion' TEXT DEFAULT NULL,
 						'MaleficiumLearnedByAnyone' BOOLEAN DEFAULT NULL,
 						'ExcludeFallen' BOOLEAN DEFAULT NULL,
+						'ReqEaWonder' TEXT DEFAULT NULL,
 
-						--Caster reqs (any EaAction may also have a Lua req defined in EaActions.lua)
+						--Unit reqs (any EaAction may also have a Lua req defined in EaActions.lua)
 						'GPOnly' BOOLEAN DEFAULT NULL,
 						'GPClass' TEXT DEFAULT NULL,	
 						'NotGPClass' TEXT DEFAULT NULL,		
@@ -57,8 +58,7 @@ CREATE TABLE EaActions ('ID' INTEGER PRIMARY KEY AUTOINCREMENT,
 						'PromotionDisallow' TEXT DEFAULT NULL,
 						'PromotionDisallow2' TEXT DEFAULT NULL,
 						'PromotionDisallow3' TEXT DEFAULT NULL,
-
-						'PantheismCult' TEXT DEFAULT NULL,
+						'PantheismCult' TEXT DEFAULT NULL,			--doesn't do anything now except restrict to pantheistic
 						--non-GP caster prereqs
 						'UnitCombatType' TEXT DEFAULT NULL,		
 						'NormalCombatUnit' BOOLEAN DEFAULT NULL,		
@@ -71,15 +71,16 @@ CREATE TABLE EaActions ('ID' INTEGER PRIMARY KEY AUTOINCREMENT,
 						--Target reqs
 						'City' TEXT DEFAULT NULL,			--'Own', 'Foreign', 'Any', 'Not' or NULL
 						'CapitalOnly' BOOLEAN DEFAULT NULL,
-						'TowerTempleOnly' BOOLEAN DEFAULT NULL,	--Must be appropriate for caster, e.g., a Thaumaturge's own Tower)
+						'TowerTempleOnly' BOOLEAN DEFAULT NULL,	--Use for Spells only! Assumes ConsiderTowerTemple is true. Must be appropriate for caster (e.g., a Thaumaturge's own Tower)
 						'BuildingReq' TEXT DEFAULT NULL,
 						'OwnTerritory' BOOLEAN DEFAULT NULL,
 						'OwnCityRadius' BOOLEAN DEFAULT NULL,
+						'ReqNearbyCityReligion' TEXT DEFAULT NULL,	--Lua checks this only if OwnCityRadius = true
 						--'HolyCityDisallow' BOOLEAN DEFAULT NULL,
 						--Process
 						'GPModType1' TEXT DEFAULT NULL,
 						'GPModType2' TEXT DEFAULT NULL,
-						'ApplyTowerTempleMod' BOOLEAN DEFAULT NULL,
+						'ConsiderTowerTemple' BOOLEAN DEFAULT NULL,	--Use only for Spells!
 						'NoGPNumLimit' BOOLEAN DEFAULT NULL,
 						'FinishMoves' BOOLEAN DEFAULT 1,
 						'StayInvisible' BOOLEAN DEFAULT NULL,
@@ -88,10 +89,9 @@ CREATE TABLE EaActions ('ID' INTEGER PRIMARY KEY AUTOINCREMENT,
 						'ProgressHolder' TEXT DEFAULT NULL,			--Person, City or CityCiv or Plot
 						'BuildType' TEXT DEFAULT NULL,				--if above is Plot then this should be a valid BuildType
 						'UniqueType' TEXT DEFAULT NULL,			-- "National" or "World"
-						'BuildingUnderConstruction' TEXT DEFAULT NULL,		--to show under construction when started
 						'DoXP' INTEGER DEFAULT 0,
 						'DoGainPromotion' TEXT DEFAULT NULL,
-						'FixedFaith' INTEGER DEFAULT 0,		--NOT YET IMPLEMENTED
+						'FixedFaith' INTEGER DEFAULT 0,
 						--Do or Finish sound and FX
 						'HumanOnlyFX' INTEGER DEFAULT NULL,		--only one FX now, so it is just a nil test (will be specific ID later)
 						'HumanVisibleFX' INTEGER DEFAULT NULL,	--any player but must be visible plot (don't use at same time as above)
@@ -99,14 +99,14 @@ CREATE TABLE EaActions ('ID' INTEGER PRIMARY KEY AUTOINCREMENT,
 						'HumanVisibleSound' TEXT DEFAULT NULL,
 						'PlayAnywhereSound' TEXT DEFAULT NULL,
 						--Do effect (only works when TurnsToComplete = 1)
-						'UnitUpgradeTypePrefix' TEXT DEFAULT NULL,
+						'UnitUpgradeTypePrefix' TEXT DEFAULT NULL,	--don't use for Spell!
 						--Finish effect (only works when TurnsToComplete > 1)
 						'ImprovementType' TEXT DEFAULT NULL,		--must be set with BuildType	
 						'ClaimsPlot' BOOLEAN DEFAULT NULL,			--works to radius 10 for now
 						'FoundsSpreadsCult' TEXT DEFAULT NULL,
 						'Building' TEXT DEFAULT NULL,		--this building already present acts as target disallow
 						'BuildingMod' TEXT DEFAULT NULL,	--adds mod instances of this building; this building already present acts as target disallow
-						'EaWonder' TEXT DEFAULT NULL,
+						'EaWonder' TEXT DEFAULT NULL,		--Leave NULL for multiple instance wonders!
 						'EaEpic' TEXT DEFAULT NULL,
 						'EaArtifact' TEXT DEFAULT NULL,
 						'FinishXP' INTEGER DEFAULT 0);
@@ -153,6 +153,8 @@ UPDATE EaActions SET LevelReq = 6 WHERE Type IN ('EA_ACTION_UPGRD_MARKSMEN', 'EA
 UPDATE EaActions SET PolicyReq = 'POLICY_SLAVE_ARMIES' WHERE Type = 'EA_ACTION_UPGRD_SLAVES_WARRIORS';
 
 --GP actions
+--Lua assumes that EA_ACTION_TAKE_LEADERSHIP is the first GP action
+
 --Common actions
 INSERT INTO EaActions (Type,			Description,							Help,										GPOnly,	UIType,		AITarget,		City,	GPModType1,			ProgressHolder,	IconIndex,	IconAtlas) VALUES
 ('EA_ACTION_TAKE_LEADERSHIP',			'TXT_KEY_EA_ACTION_TAKE_LEADERSHIP',	'TXT_KEY_EA_ACTION_TAKE_LEADERSHIP_HELP',	1,		'Action',	'OwnCapital',	'Own',	'EAMOD_LEADERSHIP',	NULL,			0,			'EA_ACTION_ATLAS'	),
@@ -160,7 +162,7 @@ INSERT INTO EaActions (Type,			Description,							Help,										GPOnly,	UIType,
 --('EA_ACTION_JOIN',					'TXT_KEY_EA_ACTION_JOIN',				NULL,										1,		'Action',	NULL,			NULL,	NULL,				NULL,			18,			'UNIT_ACTION_ATLAS' ),
 ('EA_ACTION_HEAL',						'TXT_KEY_EA_ACTION_HEAL',				NULL,										1,		'Action',	'Self',			NULL,	NULL,				NULL,			40,			'UNIT_ACTION_ATLAS'	);
 
-UPDATE EaActions SET CapitalOnly = 1, DoXP = 20 WHERE Type = 'EA_ACTION_TAKE_LEADERSHIP';
+UPDATE EaActions SET CapitalOnly = 1 WHERE Type = 'EA_ACTION_TAKE_LEADERSHIP';
 UPDATE EaActions SET TurnsToComplete = 1000 WHERE Type = 'EA_ACTION_TAKE_RESIDENCE';
 UPDATE EaActions SET TurnsToComplete = 1, StayInvisible = 1 WHERE Type = 'EA_ACTION_HEAL';
 
@@ -173,8 +175,7 @@ INSERT INTO EaActions (Type,			Description,							Help,										GPOnly,	NoGPNum
 ('EA_ACTION_WORSHIP',					'TXT_KEY_EA_ACTION_WORSHIP',			'TXT_KEY_EA_ACTION_WORSHIP_HELP',			1,		1,				'Action',	'OwnClosestCity',	'Devout',		'Own',		'EAMOD_DEVOTION',		1000,				'Person',		17,			'BW_ATLAS_2'			),
 ('EA_ACTION_CHANNEL',					'TXT_KEY_EA_ACTION_CHANNEL',			'TXT_KEY_EA_ACTION_CHANNEL_HELP',			1,		1,				'Action',	'OwnTower',			'Thaumaturge',	'Not',		'EAMOD_EVOCATION',		1000,				'Person',		17,			'BW_ATLAS_2'			);
 
-UPDATE EaActions SET GPModType2 = 'EAMOD_RITUALISM' WHERE Type = 'EA_ACTION_WORSHIP';
-UPDATE EaActions SET NotGPClass = 'Devout', TowerTempleOnly = 1 WHERE Type = 'EA_ACTION_CHANNEL';
+UPDATE EaActions SET NotGPClass = 'Devout' WHERE Type = 'EA_ACTION_CHANNEL';
 
 
 --Warrior actions
@@ -187,8 +188,8 @@ INSERT INTO EaActions (Type,			Description,							Help,										GPOnly,	UIType,
 UPDATE EaActions SET FinishMoves = NULL WHERE Type = 'EA_ACTION_LEAD_CHARGE';
 
 --Misc actions
-INSERT INTO EaActions (Type,			Description,							Help,										GPOnly,	UIType,		GPClass,		AITarget,		AICombatRole,	GPModType1,				TurnsToComplete,	ProgressHolder,	HumanVisibleFX,	IconIndex,	IconAtlas		) VALUES
-('EA_ACTION_OCCUPY_TOWER',				'TXT_KEY_EA_ACTION_OCCUPY_TOWER',		'TXT_KEY_EA_ACTION_OCCUPY_TOWER_HELP',		1,		'Action',	'Thaumaturge',	'VacantTower',	NULL,			NULL,					3,					'Person',		1,				6,			'BW_ATLAS_1'	);
+INSERT INTO EaActions (Type,			Description,							Help,										GPOnly,	UIType,		GPClass,		OwnTerritory,	AITarget,		AICombatRole,	GPModType1,				TurnsToComplete,	ProgressHolder,	HumanVisibleFX,	IconIndex,	IconAtlas		) VALUES
+('EA_ACTION_OCCUPY_TOWER',				'TXT_KEY_EA_ACTION_OCCUPY_TOWER',		'TXT_KEY_EA_ACTION_OCCUPY_TOWER_HELP',		1,		'Action',	'Thaumaturge',	1,				'VacantTower',	NULL,			NULL,					3,					'Person',		1,				6,			'BW_ATLAS_1'	);
 
 UPDATE EaActions SET NotGPClass = 'Devout' WHERE Type = 'EA_ACTION_OCCUPY_TOWER';
 
@@ -208,25 +209,80 @@ UPDATE EaActions SET ReligionFounded = 'RELIGION_AZZANDARAYASNA', PolicyReq = 'P
 UPDATE EaActions SET DoGainPromotion = 'PROMOTION_PROPHET' WHERE Type GLOB 'EA_ACTION_PROPHECY_*';
 
 --Wonders
-INSERT INTO EaActions (Type,			Description,								GPOnly,	TechReq,				UIType,		FinishXP,	AITarget,			GPClass,		City,	OwnCityRadius,	GPModType1,				TurnsToComplete,	ProgressHolder,	BuildType,				ImprovementType,			UniqueType,	EaWonder,						BuildingUnderConstruction,	Building,					BuildingMod,					IconIndex,	IconAtlas) VALUES
-('EA_ACTION_STANHENCG',					'TXT_KEY_EA_ACTION_STANHENCG',				1,		NULL,					'Build',	100,		'OwnCities',		'Devout',		'Own',	NULL,			'EAMOD_RITUALISM',		25,					'City',			NULL,					NULL,						'World',	'EA_WONDER_STANHENCG',			'BUILDING_STANHENCG',		'BUILDING_STANHENCG',		'BUILDING_STANHENCG_MOD',		2,			'BW_ATLAS_2'			),
-('EA_ACTION_KOLOSSOS',					'TXT_KEY_EA_ACTION_KOLOSSOS',				1,		'TECH_BRONZE_WORKING',	'Build',	100,		'OwnCities',		'Engineer',		'Own',	NULL,			'EAMOD_CONSTRUCTION',	25,					'City',			NULL,					NULL,						'World',	'EA_WONDER_KOLOSSOS',			'BUILDING_KOLOSSOS',		'BUILDING_KOLOSSOS',		'BUILDING_KOLOSSOS_MOD',		4,			'BW_ATLAS_2'			),
-('EA_ACTION_MEGALOS_FAROS',				'TXT_KEY_EA_ACTION_MEGALOS_FAROS',			1,		'TECH_SAILING',			'Build',	100,		'OwnCities',		'Engineer',		'Own',	NULL,			'EAMOD_CONSTRUCTION',	25,					'City',			NULL,					NULL,						'World',	'EA_WONDER_MEGALOS_FAROS',		'BUILDING_MEGALOS_FAROS',	'BUILDING_MEGALOS_FAROS',	'BUILDING_MEGALOS_FAROS_MOD',	5,			'BW_ATLAS_2'			),
-('EA_ACTION_HANGING_GARDENS',			'TXT_KEY_EA_ACTION_HANGING_GARDENS',		1,		'TECH_IRRIGATION',		'Build',	100,		'OwnCities',		'Engineer',		'Own',	NULL,			'EAMOD_CONSTRUCTION',	25,					'City',			NULL,					NULL,						'World',	'EA_WONDER_HANGING_GARDENS',	'BUILDING_HANGING_GARDENS',	'BUILDING_HANGING_GARDENS',	'BUILDING_HANGING_GARDENS_MOD',	3,			'BW_ATLAS_2'			),
-('EA_ACTION_UUC_YABNAL',				'TXT_KEY_EA_ACTION_UUC_YABNAL',				1,		'TECH_MASONRY',			'Build',	100,		'OwnCities',		'Engineer',		'Own',	NULL,			'EAMOD_CONSTRUCTION',	25,					'City',			NULL,					NULL,						'World',	'EA_WONDER_UUC_YABNAL',			'BUILDING_UUC_YABNAL',		'BUILDING_UUC_YABNAL',		'BUILDING_UUC_YABNAL_MOD',		12,			'BW_ATLAS_2'			),
-('EA_ACTION_THE_LONG_WALL',				'TXT_KEY_EA_ACTION_THE_LONG_WALL',			1,		'TECH_CONSTRUCTION',	'Build',	100,		'OwnCities',		'Engineer',		'Own',	NULL,			'EAMOD_CONSTRUCTION',	25,					'City',			NULL,					NULL,						'World',	'EA_WONDER_THE_LONG_WALL',		'BUILDING_THE_LONG_WALL',	'BUILDING_THE_LONG_WALL',	'BUILDING_THE_LONG_WALL_MOD',	7,			'BW_ATLAS_2'			),
-('EA_ACTION_CLOG_MOR',					'TXT_KEY_EA_ACTION_CLOG_MOR',				1,		'TECH_MACHINERY',		'Build',	100,		'OwnCities',		'Engineer',		'Own',	NULL,			'EAMOD_CONSTRUCTION',	25,					'City',			NULL,					NULL,						'World',	'EA_WONDER_CLOG_MOR',			'BUILDING_CLOG_MOR',		'BUILDING_CLOG_MOR',		'BUILDING_CLOG_MOR_MOD',		19,			'BW_ATLAS_2'			),
-('EA_ACTION_DA_BAOEN_SI',				'TXT_KEY_EA_ACTION_DA_BAOEN_SI',			1,		'TECH_ARCHITECTURE',	'Build',	100,		'OwnCities',		'Engineer',		'Own',	NULL,			'EAMOD_CONSTRUCTION',	25,					'City',			NULL,					NULL,						'World',	'EA_WONDER_DA_BAOEN_SI',		'BUILDING_DA_BAOEN_SI',		'BUILDING_DA_BAOEN_SI',		'BUILDING_DA_BAOEN_SI_MOD',		16,			'BW_ATLAS_2'			),
---('EA_ACTION_GREAT_LIBRARY',			'TXT_KEY_EA_ACTION_GREAT_LIBRARY',			1,		'TECH_WRITING',			'Build',	100,		'OwnCities',		'Sage',			'Own',	NULL,			'EAMOD_SCHOLARSHIP',	25,					'City',			NULL,					NULL,						'World',	'EA_WONDER_GREAT_LIBRARY',		'BUILDING_GREAT_LIBRARY',	'BUILDING_GREAT_LIBRARY',	NULL,							1,			'BW_ATLAS_2'			),	--Ughhh. This CTDs when completed. Did not CTD when substituting BUILDING_UUC_YABNAL. 'EA_WONDER_GREAT_LIBRARY',		'BUILDING_GREAT_LIBRARY',	'BUILDING_GREAT_LIBRARY',	'BUILDING_GREAT_LIBRARY_MOD'
-('EA_ACTION_NATIONAL_TREASURY',			'TXT_KEY_EA_ACTION_NATIONAL_TREASURY',		1,		'TECH_COINAGE',			'Build',	100,		'OwnCities',		'Merchant',		'Own',	NULL,			'EAMOD_TRADE',			25,					'City',			NULL,					NULL,						'National',	NULL,							NULL,						NULL,						'BUILDING_NATIONAL_TREASURY',	1,			'NEW_BLDG_ATLAS_DLC'	),
-('EA_ACTION_ARCANE_TOWER',				'TXT_KEY_EA_ACTION_ARCANE_TOWER',			1,		NULL,					'Build',	100,		'WonderNoWorkPlot',	'Thaumaturge',	'Not',	1,				NULL,					4,					'Plot',			'BUILD_ARCANE_TOWER',	'IMPROVEMENT_ARCANE_TOWER',	NULL,		NULL,							NULL,						NULL,						NULL,							3,			'UNIT_ACTION_ATLAS_EXP2'	);
+INSERT INTO EaActions (Type,			Description,								GPOnly,	TechReq,					UIType,		FinishXP,	AITarget,			AIAdHocValue,	GPClass,		GPSubclass,	OrGPSubclass,	City,	OwnCityRadius,	ClaimsPlot,	GPModType1,				TurnsToComplete,	ProgressHolder,	BuildType,					ImprovementType,					UniqueType,	EaWonder,						ReqEaWonder,					ReqNearbyCityReligion,			Building,					BuildingMod,					IconIndex,	IconAtlas) VALUES
+('EA_ACTION_KOLOSSOS',					'TXT_KEY_EA_ACTION_KOLOSSOS',				1,		'TECH_BRONZE_WORKING',		'Build',	100,		'OwnCities',		0,				'Engineer',		NULL,		NULL,			'Own',	NULL,			NULL,		'EAMOD_CONSTRUCTION',	25,					'City',			NULL,						NULL,								'World',	'EA_WONDER_KOLOSSOS',			NULL,							NULL,							'BUILDING_KOLOSSOS',		'BUILDING_KOLOSSOS_MOD',		4,			'BW_ATLAS_2'				),
+('EA_ACTION_MEGALOS_FAROS',				'TXT_KEY_EA_ACTION_MEGALOS_FAROS',			1,		'TECH_SAILING',				'Build',	100,		'OwnCities',		0,				'Engineer',		NULL,		NULL,			'Own',	NULL,			NULL,		'EAMOD_CONSTRUCTION',	25,					'City',			NULL,						NULL,								'World',	'EA_WONDER_MEGALOS_FAROS',		NULL,							NULL,							'BUILDING_MEGALOS_FAROS',	'BUILDING_MEGALOS_FAROS_MOD',	5,			'BW_ATLAS_2'				),
+('EA_ACTION_HANGING_GARDENS',			'TXT_KEY_EA_ACTION_HANGING_GARDENS',		1,		'TECH_IRRIGATION',			'Build',	100,		'OwnCities',		0,				'Engineer',		NULL,		NULL,			'Own',	NULL,			NULL,		'EAMOD_CONSTRUCTION',	25,					'City',			NULL,						NULL,								'World',	'EA_WONDER_HANGING_GARDENS',	NULL,							NULL,							'BUILDING_HANGING_GARDENS',	'BUILDING_HANGING_GARDENS_MOD',	3,			'BW_ATLAS_2'				),
+('EA_ACTION_UUC_YABNAL',				'TXT_KEY_EA_ACTION_UUC_YABNAL',				1,		'TECH_MASONRY',				'Build',	100,		'OwnCities',		0,				'Engineer',		NULL,		NULL,			'Own',	NULL,			NULL,		'EAMOD_CONSTRUCTION',	25,					'City',			NULL,						NULL,								'World',	'EA_WONDER_UUC_YABNAL',			NULL,							NULL,							'BUILDING_UUC_YABNAL',		'BUILDING_UUC_YABNAL_MOD',		12,			'BW_ATLAS_2'				),
+('EA_ACTION_THE_LONG_WALL',				'TXT_KEY_EA_ACTION_THE_LONG_WALL',			1,		'TECH_CONSTRUCTION',		'Build',	100,		'OwnCities',		0,				'Engineer',		NULL,		NULL,			'Own',	NULL,			NULL,		'EAMOD_CONSTRUCTION',	25,					'City',			NULL,						NULL,								'World',	'EA_WONDER_THE_LONG_WALL',		NULL,							NULL,							'BUILDING_THE_LONG_WALL',	'BUILDING_THE_LONG_WALL_MOD',	7,			'BW_ATLAS_2'				),
+('EA_ACTION_CLOG_MOR',					'TXT_KEY_EA_ACTION_CLOG_MOR',				1,		'TECH_MACHINERY',			'Build',	100,		'OwnCities',		0,				'Engineer',		NULL,		NULL,			'Own',	NULL,			NULL,		'EAMOD_CONSTRUCTION',	25,					'City',			NULL,						NULL,								'World',	'EA_WONDER_CLOG_MOR',			NULL,							NULL,							'BUILDING_CLOG_MOR',		'BUILDING_CLOG_MOR_MOD',		19,			'BW_ATLAS_2'				),
+('EA_ACTION_DA_BAOEN_SI',				'TXT_KEY_EA_ACTION_DA_BAOEN_SI',			1,		'TECH_ARCHITECTURE',		'Build',	100,		'OwnCities',		0,				'Engineer',		NULL,		NULL,			'Own',	NULL,			NULL,		'EAMOD_CONSTRUCTION',	25,					'City',			NULL,						NULL,								'World',	'EA_WONDER_DA_BAOEN_SI',		NULL,							NULL,							'BUILDING_DA_BAOEN_SI',		'BUILDING_DA_BAOEN_SI_MOD',		16,			'BW_ATLAS_2'				),
 
-UPDATE EaActions SET PolicyReq = 'POLICY_PANTHEISM', GPSubclass = 'Druid' WHERE Type = 'EA_ACTION_STANHENCG';
+('EA_ACTION_NATIONAL_TREASURY',			'TXT_KEY_EA_ACTION_NATIONAL_TREASURY',		1,		'TECH_COINAGE',				'Build',	100,		'OwnCities',		0,				'Merchant',		NULL,		NULL,			'Own',	NULL,			NULL,		'EAMOD_TRADE',			25,					'City',			NULL,						NULL,								'National',	NULL,							NULL,							NULL,							NULL,						'BUILDING_NATIONAL_TREASURY',	1,			'NEW_BLDG_ATLAS_DLC'		),
+
+--plot wonders
+('EA_ACTION_STANHENCG',					'TXT_KEY_EA_ACTION_STANHENCG',				1,		NULL,						'Build',	100,		'WonderWorkPlot',	0,				'Devout',		'Druid',	NULL,			'Not',	1,				1,			'EAMOD_DEVOTION',		25,					'Plot',			'BUILD_STANHENCG',			'IMPROVEMENT_STANHENCG',			'World',	'EA_WONDER_STANHENCG',			NULL,							NULL,							NULL,						NULL,							2,			'BW_ATLAS_2'				),
+('EA_ACTION_PYRAMID',					'TXT_KEY_EA_ACTION_PYRAMID',				1,		'TECH_MASONRY',				'Build',	100,		'WonderWorkPlot',	0,				'Engineer',		NULL,		NULL,			'Not',	1,				1,			'EAMOD_CONSTRUCTION',	25,					'Plot',			'BUILD_PYRAMID',			'IMPROVEMENT_PYRAMID',				'World',	'EA_WONDER_PYRAMID',			NULL,							NULL,							NULL,						NULL,							0,			'BW_ATLAS_2'				),
+('EA_ACTION_GREAT_LIBRARY',				'TXT_KEY_EA_ACTION_GREAT_LIBRARY',			1,		'TECH_PHILOSOPHY',			'Build',	100,		'WonderWorkPlot',	0,				'Sage',			NULL,		NULL,			'Not',	1,				1,			'EAMOD_SCHOLARSHIP',	25,					'Plot',			'BUILD_GREAT_LIBRARY',		'IMPROVEMENT_GREAT_LIBRARY',		'World',	'EA_WONDER_GREAT_LIBRARY',		NULL,							NULL,							NULL,						NULL,							1,			'BW_ATLAS_2'				),
+('EA_ACTION_ARCANE_TOWER',				'TXT_KEY_EA_ACTION_ARCANE_TOWER',			1,		'TECH_THAUMATURGY',			'Build',	100,		'WonderNoWorkPlot',	0,				'Thaumaturge',	NULL,		NULL,			'Not',	1,				1,			NULL,					25,					'Plot',			'BUILD_ARCANE_TOWER',		'IMPROVEMENT_ARCANE_TOWER',			NULL,		NULL,							NULL,							NULL,							NULL,						NULL,							3,			'UNIT_ACTION_ATLAS_EXP2'	),
+('EA_ACTION_TEMPLE_AZZANDARA_1',		'TXT_KEY_EA_ACTION_TEMPLE_AZZANDARA_1',		1,		'TECH_DIVINE_LITURGY',		'Build',	100,		'WonderWorkPlot',	1000,			'Devout',		'Priest',	'Paladin',		'Not',	1,				1,			'EAMOD_DEVOTION',		25,					'Plot',			'BUILD_TEMPLE_AZZANDARA_1',	'IMPROVEMENT_TEMPLE_AZZANDARA_1',	'World',	'EA_WONDER_TEMPLE_AZZANDARA_1',	NULL,							'RELIGION_AZZANDARAYASNA',		NULL,						NULL,							37,			'BW_ATLAS_1'				),
+('EA_ACTION_TEMPLE_AZZANDARA_2',		'TXT_KEY_EA_ACTION_TEMPLE_AZZANDARA_2',		1,		'TECH_DIVINE_VITALISM',		'Build',	100,		'WonderWorkPlot',	2000,			'Devout',		'Priest',	'Paladin',		'Not',	1,				1,			'EAMOD_DEVOTION',		25,					'Plot',			'BUILD_TEMPLE_AZZANDARA_2',	'IMPROVEMENT_TEMPLE_AZZANDARA_2',	'World',	'EA_WONDER_TEMPLE_AZZANDARA_2',	'EA_WONDER_TEMPLE_AZZANDARA_1',	'RELIGION_AZZANDARAYASNA',		NULL,						NULL,							37,			'BW_ATLAS_1'				),
+('EA_ACTION_TEMPLE_AZZANDARA_3',		'TXT_KEY_EA_ACTION_TEMPLE_AZZANDARA_3',		1,		'TECH_DIVINE_ESSENCE',		'Build',	100,		'WonderWorkPlot',	3000,			'Devout',		'Priest',	'Paladin',		'Not',	1,				1,			'EAMOD_DEVOTION',		25,					'Plot',			'BUILD_TEMPLE_AZZANDARA_3',	'IMPROVEMENT_TEMPLE_AZZANDARA_3',	'World',	'EA_WONDER_TEMPLE_AZZANDARA_3',	'EA_WONDER_TEMPLE_AZZANDARA_2',	'RELIGION_AZZANDARAYASNA',		NULL,						NULL,							37,			'BW_ATLAS_1'				),
+('EA_ACTION_TEMPLE_AZZANDARA_4',		'TXT_KEY_EA_ACTION_TEMPLE_AZZANDARA_4',		1,		'TECH_HEAVENLY_CYCLES',		'Build',	100,		'WonderWorkPlot',	5000,			'Devout',		'Priest',	'Paladin',		'Not',	1,				1,			'EAMOD_DEVOTION',		25,					'Plot',			'BUILD_TEMPLE_AZZANDARA_4',	'IMPROVEMENT_TEMPLE_AZZANDARA_4',	'World',	'EA_WONDER_TEMPLE_AZZANDARA_4',	'EA_WONDER_TEMPLE_AZZANDARA_3',	'RELIGION_AZZANDARAYASNA',		NULL,						NULL,							37,			'BW_ATLAS_1'				),
+('EA_ACTION_TEMPLE_AZZANDARA_5',		'TXT_KEY_EA_ACTION_TEMPLE_AZZANDARA_5',		1,		'TECH_CELESTIAL_KNOWLEDGE',	'Build',	100,		'WonderWorkPlot',	8000,			'Devout',		'Priest',	'Paladin',		'Not',	1,				1,			'EAMOD_DEVOTION',		25,					'Plot',			'BUILD_TEMPLE_AZZANDARA_5',	'IMPROVEMENT_TEMPLE_AZZANDARA_5',	'World',	'EA_WONDER_TEMPLE_AZZANDARA_5',	'EA_WONDER_TEMPLE_AZZANDARA_4',	'RELIGION_AZZANDARAYASNA',		NULL,						NULL,							37,			'BW_ATLAS_1'				),
+('EA_ACTION_TEMPLE_AZZANDARA_6',		'TXT_KEY_EA_ACTION_TEMPLE_AZZANDARA_6',		1,		'TECH_DIVINE_INTERVENTION',	'Build',	100,		'WonderWorkPlot',	9000,			'Devout',		'Priest',	'Paladin',		'Not',	1,				1,			'EAMOD_DEVOTION',		25,					'Plot',			'BUILD_TEMPLE_AZZANDARA_6',	'IMPROVEMENT_TEMPLE_AZZANDARA_6',	'World',	'EA_WONDER_TEMPLE_AZZANDARA_6',	'EA_WONDER_TEMPLE_AZZANDARA_5',	'RELIGION_AZZANDARAYASNA',		NULL,						NULL,							37,			'BW_ATLAS_1'				),
+('EA_ACTION_TEMPLE_AZZANDARA_7',		'TXT_KEY_EA_ACTION_TEMPLE_AZZANDARA_7',		1,		'TECH_KNOWLEDGE_OF_HEAVEN',	'Build',	100,		'WonderWorkPlot',	10000,			'Devout',		'Priest',	'Paladin',		'Not',	1,				1,			'EAMOD_DEVOTION',		25,					'Plot',			'BUILD_TEMPLE_AZZANDARA_7',	'IMPROVEMENT_TEMPLE_AZZANDARA_7',	'World',	'EA_WONDER_TEMPLE_AZZANDARA_7',	'EA_WONDER_TEMPLE_AZZANDARA_6',	'RELIGION_AZZANDARAYASNA',		NULL,						NULL,							37,			'BW_ATLAS_1'				),
+('EA_ACTION_TEMPLE_AHRIMAN_1',			'TXT_KEY_EA_ACTION_TEMPLE_AHRIMAN_1',		1,		'TECH_MALEFICIUM',			'Build',	100,		'WonderWorkPlot',	1000,			'Devout',		'FallenPriest','Eidolon',	'Not',	1,				1,			'EAMOD_DEVOTION',		25,					'Plot',			'BUILD_TEMPLE_AHRIMAN_1',	'IMPROVEMENT_TEMPLE_AHRIMAN_1',		'World',	'EA_WONDER_TEMPLE_AHRIMAN_1',	NULL,							'RELIGION_ANRA',				NULL,						NULL,							37,			'BW_ATLAS_1'				),
+('EA_ACTION_TEMPLE_AHRIMAN_2',			'TXT_KEY_EA_ACTION_TEMPLE_AHRIMAN_2',		1,		'TECH_REANIMATION',			'Build',	100,		'WonderWorkPlot',	2000,			'Devout',		'FallenPriest','Eidolon',	'Not',	1,				1,			'EAMOD_DEVOTION',		25,					'Plot',			'BUILD_TEMPLE_AHRIMAN_2',	'IMPROVEMENT_TEMPLE_AHRIMAN_2',		'World',	'EA_WONDER_TEMPLE_AHRIMAN_2',	'EA_WONDER_TEMPLE_AHRIMAN_1',	'RELIGION_ANRA',				NULL,						NULL,							37,			'BW_ATLAS_1'				),
+('EA_ACTION_TEMPLE_AHRIMAN_3',			'TXT_KEY_EA_ACTION_TEMPLE_AHRIMAN_3',		1,		'TECH_SORCERY',				'Build',	100,		'WonderWorkPlot',	3000,			'Devout',		'FallenPriest','Eidolon',	'Not',	1,				1,			'EAMOD_DEVOTION',		25,					'Plot',			'BUILD_TEMPLE_AHRIMAN_3',	'IMPROVEMENT_TEMPLE_AHRIMAN_3',		'World',	'EA_WONDER_TEMPLE_AHRIMAN_3',	'EA_WONDER_TEMPLE_AHRIMAN_2',	'RELIGION_ANRA',				NULL,						NULL,							37,			'BW_ATLAS_1'				),
+('EA_ACTION_TEMPLE_AHRIMAN_4',			'TXT_KEY_EA_ACTION_TEMPLE_AHRIMAN_4',		1,		'TECH_NECROMANCY',			'Build',	100,		'WonderWorkPlot',	5000,			'Devout',		'FallenPriest','Eidolon',	'Not',	1,				1,			'EAMOD_DEVOTION',		25,					'Plot',			'BUILD_TEMPLE_AHRIMAN_4',	'IMPROVEMENT_TEMPLE_AHRIMAN_4',		'World',	'EA_WONDER_TEMPLE_AHRIMAN_4',	'EA_WONDER_TEMPLE_AHRIMAN_3',	'RELIGION_ANRA',				NULL,						NULL,							37,			'BW_ATLAS_1'				),
+('EA_ACTION_TEMPLE_AHRIMAN_5',			'TXT_KEY_EA_ACTION_TEMPLE_AHRIMAN_5',		1,		'TECH_SUMMONING',			'Build',	100,		'WonderWorkPlot',	5000,			'Devout',		'FallenPriest','Eidolon',	'Not',	1,				1,			'EAMOD_DEVOTION',		25,					'Plot',			'BUILD_TEMPLE_AHRIMAN_5',	'IMPROVEMENT_TEMPLE_AHRIMAN_5',		'World',	'EA_WONDER_TEMPLE_AHRIMAN_5',	'EA_WONDER_TEMPLE_AHRIMAN_4',	'RELIGION_ANRA',				NULL,						NULL,							37,			'BW_ATLAS_1'				),
+('EA_ACTION_TEMPLE_AHRIMAN_6',			'TXT_KEY_EA_ACTION_TEMPLE_AHRIMAN_6',		1,		'TECH_SOUL_BINDING',		'Build',	100,		'WonderWorkPlot',	8000,			'Devout',		'FallenPriest','Eidolon',	'Not',	1,				1,			'EAMOD_DEVOTION',		25,					'Plot',			'BUILD_TEMPLE_AHRIMAN_6',	'IMPROVEMENT_TEMPLE_AHRIMAN_6',		'World',	'EA_WONDER_TEMPLE_AHRIMAN_6',	'EA_WONDER_TEMPLE_AHRIMAN_5',	'RELIGION_ANRA',				NULL,						NULL,							37,			'BW_ATLAS_1'				),
+('EA_ACTION_TEMPLE_AHRIMAN_7',			'TXT_KEY_EA_ACTION_TEMPLE_AHRIMAN_7',		1,		'TECH_INVOCATION',			'Build',	100,		'WonderWorkPlot',	8000,			'Devout',		'FallenPriest','Eidolon',	'Not',	1,				1,			'EAMOD_DEVOTION',		25,					'Plot',			'BUILD_TEMPLE_AHRIMAN_7',	'IMPROVEMENT_TEMPLE_AHRIMAN_7',		'World',	'EA_WONDER_TEMPLE_AHRIMAN_7',	'EA_WONDER_TEMPLE_AHRIMAN_6',	'RELIGION_ANRA',				NULL,						NULL,							37,			'BW_ATLAS_1'				),
+('EA_ACTION_TEMPLE_AHRIMAN_8',			'TXT_KEY_EA_ACTION_TEMPLE_AHRIMAN_8',		1,		'TECH_BREACH',				'Build',	100,		'WonderWorkPlot',	9000,			'Devout',		'FallenPriest','Eidolon',	'Not',	1,				1,			'EAMOD_DEVOTION',		25,					'Plot',			'BUILD_TEMPLE_AHRIMAN_8',	'IMPROVEMENT_TEMPLE_AHRIMAN_8',		'World',	'EA_WONDER_TEMPLE_AHRIMAN_8',	'EA_WONDER_TEMPLE_AHRIMAN_7',	'RELIGION_ANRA',				NULL,						NULL,							37,			'BW_ATLAS_1'				),
+('EA_ACTION_TEMPLE_AHRIMAN_9',			'TXT_KEY_EA_ACTION_TEMPLE_AHRIMAN_9',		1,		'TECH_ARMAGEDDON_RITUALS',	'Build',	100,		'WonderWorkPlot',	10000,			'Devout',		'FallenPriest','Eidolon',	'Not',	1,				1,			'EAMOD_DEVOTION',		25,					'Plot',			'BUILD_TEMPLE_AHRIMAN_9',	'IMPROVEMENT_TEMPLE_AHRIMAN_9',		'World',	'EA_WONDER_TEMPLE_AHRIMAN_9',	'EA_WONDER_TEMPLE_AHRIMAN_8',	'RELIGION_ANRA',				NULL,						NULL,							37,			'BW_ATLAS_1'				),
+('EA_ACTION_TEMPLE_FAGUS',				'TXT_KEY_EA_ACTION_TEMPLE_FAGUS',			1,		NULL,						'Build',	100,		'WonderWorkPlot',	1000,			'Devout',		'Druid',	NULL,			'Not',	1,				1,			'EAMOD_DEVOTION',		25,					'Plot',			'BUILD_TEMPLE_FAGUS',		'IMPROVEMENT_TEMPLE_FAGUS',			'World',	'EA_WONDER_TEMPLE_FAGUS',		NULL,							'RELIGION_CULT_OF_LEAVES',		NULL,						NULL,							37,			'BW_ATLAS_1'				),
+('EA_ACTION_TEMPLE_ABELLIO',			'TXT_KEY_EA_ACTION_TEMPLE_ABELLIO',			1,		NULL,						'Build',	100,		'WonderWorkPlot',	1000,			'Devout',		'Druid',	NULL,			'Not',	1,				1,			'EAMOD_DEVOTION',		25,					'Plot',			'BUILD_TEMPLE_ABELLIO',		'IMPROVEMENT_TEMPLE_ABELLIO',		'World',	'EA_WONDER_TEMPLE_ABELLIO',		NULL,							'RELIGION_CULT_OF_LEAVES',		NULL,						NULL,							37,			'BW_ATLAS_1'				),
+('EA_ACTION_TEMPLE_BUXENUS',			'TXT_KEY_EA_ACTION_TEMPLE_BUXENUS',			1,		NULL,						'Build',	100,		'WonderWorkPlot',	1000,			'Devout',		'Druid',	NULL,			'Not',	1,				1,			'EAMOD_DEVOTION',		25,					'Plot',			'BUILD_TEMPLE_BUXENUS',		'IMPROVEMENT_TEMPLE_BUXENUS',		'World',	'EA_WONDER_TEMPLE_BUXENUS',		NULL,							'RELIGION_CULT_OF_LEAVES',		NULL,						NULL,							37,			'BW_ATLAS_1'				),
+('EA_ACTION_TEMPLE_ROBOR',				'TXT_KEY_EA_ACTION_TEMPLE_ROBOR',			1,		NULL,						'Build',	100,		'WonderWorkPlot',	1000,			'Devout',		'Druid',	NULL,			'Not',	1,				1,			'EAMOD_DEVOTION',		25,					'Plot',			'BUILD_TEMPLE_ROBOR',		'IMPROVEMENT_TEMPLE_ROBOR',			'World',	'EA_WONDER_TEMPLE_ROBOR',		NULL,							'RELIGION_CULT_OF_LEAVES',		NULL,						NULL,							37,			'BW_ATLAS_1'				),
+('EA_ACTION_TEMPLE_ABNOAB',				'TXT_KEY_EA_ACTION_TEMPLE_ABNOAB',			1,		NULL,						'Build',	100,		'WonderWorkPlot',	1000,			'Devout',		'Druid',	NULL,			'Not',	1,				1,			'EAMOD_DEVOTION',		25,					'Plot',			'BUILD_TEMPLE_ABNOAB',		'IMPROVEMENT_TEMPLE_ABNOAB',		'World',	'EA_WONDER_TEMPLE_ABNOAB',		NULL,							'RELIGION_CULT_OF_LEAVES',		NULL,						NULL,							37,			'BW_ATLAS_1'				),
+('EA_ACTION_TEMPLE_EPONA',				'TXT_KEY_EA_ACTION_TEMPLE_EPONA',			1,		NULL,						'Build',	100,		'WonderWorkPlot',	1000,			'Devout',		'Druid',	NULL,			'Not',	1,				1,			'EAMOD_DEVOTION',		25,					'Plot',			'BUILD_TEMPLE_EPONA',		'IMPROVEMENT_TEMPLE_EPONA',			'World',	'EA_WONDER_TEMPLE_EPONA',		NULL,							'RELIGION_CULT_OF_EPONA',		NULL,						NULL,							37,			'BW_ATLAS_1'				),
+('EA_ACTION_TEMPLE_ATEPOMARUS',			'TXT_KEY_EA_ACTION_TEMPLE_ATEPOMARUS',		1,		NULL,						'Build',	100,		'WonderWorkPlot',	1000,			'Devout',		'Druid',	NULL,			'Not',	1,				1,			'EAMOD_DEVOTION',		25,					'Plot',			'BUILD_TEMPLE_ATEPOMARUS',	'IMPROVEMENT_TEMPLE_ATEPOMARUS',	'World',	'EA_WONDER_TEMPLE_ATEPOMARUS',	NULL,							'RELIGION_CULT_OF_EPONA',		NULL,						NULL,							37,			'BW_ATLAS_1'				),
+('EA_ACTION_TEMPLE_SABAZIOS',			'TXT_KEY_EA_ACTION_TEMPLE_SABAZIOS',		1,		NULL,						'Build',	100,		'WonderWorkPlot',	1000,			'Devout',		'Druid',	NULL,			'Not',	1,				1,			'EAMOD_DEVOTION',		25,					'Plot',			'BUILD_TEMPLE_SABAZIOS',	'IMPROVEMENT_TEMPLE_SABAZIOS',		'World',	'EA_WONDER_TEMPLE_SABAZIOS',	NULL,							'RELIGION_CULT_OF_EPONA',		NULL,						NULL,							37,			'BW_ATLAS_1'				),
+('EA_ACTION_TEMPLE_AVETA',				'TXT_KEY_EA_ACTION_TEMPLE_AVETA',			1,		NULL,						'Build',	100,		'WonderWorkPlot',	1000,			'Devout',		'Druid',	NULL,			'Not',	1,				1,			'EAMOD_DEVOTION',		25,					'Plot',			'BUILD_TEMPLE_AVETA',		'IMPROVEMENT_TEMPLE_AVETA',			'World',	'EA_WONDER_TEMPLE_AVETA',		NULL,							'RELIGION_CULT_OF_PURE_WATERS',	NULL,						NULL,							37,			'BW_ATLAS_1'				),
+('EA_ACTION_TEMPLE_CONDATIS',			'TXT_KEY_EA_ACTION_TEMPLE_CONDATIS',		1,		NULL,						'Build',	100,		'WonderWorkPlot',	1000,			'Devout',		'Druid',	NULL,			'Not',	1,				1,			'EAMOD_DEVOTION',		25,					'Plot',			'BUILD_TEMPLE_CONDATIS',	'IMPROVEMENT_TEMPLE_CONDATIS',		'World',	'EA_WONDER_TEMPLE_CONDATIS',	NULL,							'RELIGION_CULT_OF_PURE_WATERS',	NULL,						NULL,							37,			'BW_ATLAS_1'				),
+('EA_ACTION_TEMPLE_ABANDINUS',			'TXT_KEY_EA_ACTION_TEMPLE_ABANDINUS',		1,		NULL,						'Build',	100,		'WonderWorkPlot',	1000,			'Devout',		'Druid',	NULL,			'Not',	1,				1,			'EAMOD_DEVOTION',		25,					'Plot',			'BUILD_TEMPLE_ABANDINUS',	'IMPROVEMENT_TEMPLE_ABANDINUS',		'World',	'EA_WONDER_TEMPLE_ABANDINUS',	NULL,							'RELIGION_CULT_OF_PURE_WATERS',	NULL,						NULL,							37,			'BW_ATLAS_1'				),
+('EA_ACTION_TEMPLE_ADSULLATA',			'TXT_KEY_EA_ACTION_TEMPLE_ADSULLATA',		1,		NULL,						'Build',	100,		'WonderWorkPlot',	1000,			'Devout',		'Druid',	NULL,			'Not',	1,				1,			'EAMOD_DEVOTION',		25,					'Plot',			'BUILD_TEMPLE_ADSULLATA',	'IMPROVEMENT_TEMPLE_ADSULLATA',		'World',	'EA_WONDER_TEMPLE_ADSULLATA',	NULL,							'RELIGION_CULT_OF_PURE_WATERS',	NULL,						NULL,							37,			'BW_ATLAS_1'				),
+('EA_ACTION_TEMPLE_ICAUNUS',			'TXT_KEY_EA_ACTION_TEMPLE_ICAUNUS',			1,		NULL,						'Build',	100,		'WonderWorkPlot',	1000,			'Devout',		'Druid',	NULL,			'Not',	1,				1,			'EAMOD_DEVOTION',		25,					'Plot',			'BUILD_TEMPLE_ICAUNUS',		'IMPROVEMENT_TEMPLE_ICAUNUS',		'World',	'EA_WONDER_TEMPLE_ICAUNUS',		NULL,							'RELIGION_CULT_OF_PURE_WATERS',	NULL,						NULL,							37,			'BW_ATLAS_1'				),
+('EA_ACTION_TEMPLE_BELISAMA',			'TXT_KEY_EA_ACTION_TEMPLE_BELISAMA',		1,		NULL,						'Build',	100,		'WonderWorkPlot',	1000,			'Devout',		'Druid',	NULL,			'Not',	1,				1,			'EAMOD_DEVOTION',		25,					'Plot',			'BUILD_TEMPLE_BELISAMA',	'IMPROVEMENT_TEMPLE_BELISAMA',		'World',	'EA_WONDER_TEMPLE_BELISAMA',	NULL,							'RELIGION_CULT_OF_PURE_WATERS',	NULL,						NULL,							37,			'BW_ATLAS_1'				),
+('EA_ACTION_TEMPLE_CLOTA',				'TXT_KEY_EA_ACTION_TEMPLE_CLOTA',			1,		NULL,						'Build',	100,		'WonderWorkPlot',	1000,			'Devout',		'Druid',	NULL,			'Not',	1,				1,			'EAMOD_DEVOTION',		25,					'Plot',			'BUILD_TEMPLE_CLOTA',		'IMPROVEMENT_TEMPLE_CLOTA',			'World',	'EA_WONDER_TEMPLE_CLOTA',		NULL,							'RELIGION_CULT_OF_PURE_WATERS',	NULL,						NULL,							37,			'BW_ATLAS_1'				),
+('EA_ACTION_TEMPLE_SABRINA',			'TXT_KEY_EA_ACTION_TEMPLE_SABRINA',			1,		NULL,						'Build',	100,		'WonderWorkPlot',	1000,			'Devout',		'Druid',	NULL,			'Not',	1,				1,			'EAMOD_DEVOTION',		25,					'Plot',			'BUILD_TEMPLE_SABRINA',		'IMPROVEMENT_TEMPLE_SABRINA',		'World',	'EA_WONDER_TEMPLE_SABRINA',		NULL,							'RELIGION_CULT_OF_PURE_WATERS',	NULL,						NULL,							37,			'BW_ATLAS_1'				),
+('EA_ACTION_TEMPLE_SEQUANA',			'TXT_KEY_EA_ACTION_TEMPLE_SEQUANA',			1,		NULL,						'Build',	100,		'WonderWorkPlot',	1000,			'Devout',		'Druid',	NULL,			'Not',	1,				1,			'EAMOD_DEVOTION',		25,					'Plot',			'BUILD_TEMPLE_SEQUANA',		'IMPROVEMENT_TEMPLE_SEQUANA',		'World',	'EA_WONDER_TEMPLE_SEQUANA',		NULL,							'RELIGION_CULT_OF_PURE_WATERS',	NULL,						NULL,							37,			'BW_ATLAS_1'				),
+('EA_ACTION_TEMPLE_VERBEIA',			'TXT_KEY_EA_ACTION_TEMPLE_VERBEIA',			1,		NULL,						'Build',	100,		'WonderWorkPlot',	1000,			'Devout',		'Druid',	NULL,			'Not',	1,				1,			'EAMOD_DEVOTION',		25,					'Plot',			'BUILD_TEMPLE_VERBEIA',		'IMPROVEMENT_TEMPLE_VERBEIA',		'World',	'EA_WONDER_TEMPLE_VERBEIA',		NULL,							'RELIGION_CULT_OF_PURE_WATERS',	NULL,						NULL,							37,			'BW_ATLAS_1'				),
+('EA_ACTION_TEMPLE_BORVO',				'TXT_KEY_EA_ACTION_TEMPLE_BORVO',			1,		NULL,						'Build',	100,		'WonderWorkPlot',	1000,			'Devout',		'Druid',	NULL,			'Not',	1,				1,			'EAMOD_DEVOTION',		25,					'Plot',			'BUILD_TEMPLE_BORVO',		'IMPROVEMENT_TEMPLE_BORVO',			'World',	'EA_WONDER_TEMPLE_BORVO',		NULL,							'RELIGION_CULT_OF_PURE_WATERS',	NULL,						NULL,							37,			'BW_ATLAS_1'				),
+('EA_ACTION_TEMPLE_AEGIR',				'TXT_KEY_EA_ACTION_TEMPLE_AEGIR',			1,		NULL,						'Build',	100,		'WonderWorkPlot',	1000,			'Devout',		'Druid',	NULL,			'Not',	1,				1,			'EAMOD_DEVOTION',		25,					'Plot',			'BUILD_TEMPLE_AEGIR',		'IMPROVEMENT_TEMPLE_AEGIR',			'World',	'EA_WONDER_TEMPLE_AEGIR',		NULL,							'RELIGION_CULT_OF_AEGIR',		NULL,						NULL,							37,			'BW_ATLAS_1'				),
+('EA_ACTION_TEMPLE_BARINTHUS',			'TXT_KEY_EA_ACTION_TEMPLE_BARINTHUS',		1,		NULL,						'Build',	100,		'WonderWorkPlot',	1000,			'Devout',		'Druid',	NULL,			'Not',	1,				1,			'EAMOD_DEVOTION',		25,					'Plot',			'BUILD_TEMPLE_BARINTHUS',	'IMPROVEMENT_TEMPLE_BARINTHUS',		'World',	'EA_WONDER_TEMPLE_BARINTHUS',	NULL,							'RELIGION_CULT_OF_AEGIR',		NULL,						NULL,							37,			'BW_ATLAS_1'				),
+('EA_ACTION_TEMPLE_LIBAN',				'TXT_KEY_EA_ACTION_TEMPLE_LIBAN',			1,		NULL,						'Build',	100,		'WonderWorkPlot',	1000,			'Devout',		'Druid',	NULL,			'Not',	1,				1,			'EAMOD_DEVOTION',		25,					'Plot',			'BUILD_TEMPLE_LIBAN',		'IMPROVEMENT_TEMPLE_LIBAN',			'World',	'EA_WONDER_TEMPLE_LIBAN',		NULL,							'RELIGION_CULT_OF_AEGIR',		NULL,						NULL,							37,			'BW_ATLAS_1'				),
+('EA_ACTION_TEMPLE_FIMAFENG',			'TXT_KEY_EA_ACTION_TEMPLE_FIMAFENG',		1,		NULL,						'Build',	100,		'WonderWorkPlot',	1000,			'Devout',		'Druid',	NULL,			'Not',	1,				1,			'EAMOD_DEVOTION',		25,					'Plot',			'BUILD_TEMPLE_FIMAFENG',	'IMPROVEMENT_TEMPLE_FIMAFENG',		'World',	'EA_WONDER_TEMPLE_FIMAFENG',	NULL,							'RELIGION_CULT_OF_AEGIR',		NULL,						NULL,							37,			'BW_ATLAS_1'				),
+('EA_ACTION_TEMPLE_ELDIR',				'TXT_KEY_EA_ACTION_TEMPLE_ELDIR',			1,		NULL,						'Build',	100,		'WonderWorkPlot',	1000,			'Devout',		'Druid',	NULL,			'Not',	1,				1,			'EAMOD_DEVOTION',		25,					'Plot',			'BUILD_TEMPLE_ELDIR',		'IMPROVEMENT_TEMPLE_ELDIR',			'World',	'EA_WONDER_TEMPLE_ELDIR',		NULL,							'RELIGION_CULT_OF_AEGIR',		NULL,						NULL,							37,			'BW_ATLAS_1'				),
+('EA_ACTION_TEMPLE_RITONA',				'TXT_KEY_EA_ACTION_TEMPLE_RITONA',			1,		NULL,						'Build',	100,		'WonderWorkPlot',	1000,			'Devout',		'Druid',	NULL,			'Not',	1,				1,			'EAMOD_DEVOTION',		25,					'Plot',			'BUILD_TEMPLE_RITONA',		'IMPROVEMENT_TEMPLE_RITONA',		'World',	'EA_WONDER_TEMPLE_RITONA',		NULL,							'RELIGION_CULT_OF_AEGIR',		NULL,						NULL,							37,			'BW_ATLAS_1'				),
+('EA_ACTION_TEMPLE_BAKKHOS',			'TXT_KEY_EA_ACTION_TEMPLE_BAKKHOS',			1,		NULL,						'Build',	100,		'WonderWorkPlot',	1000,			'Devout',		'Druid',	NULL,			'Not',	1,				1,			'EAMOD_DEVOTION',		25,					'Plot',			'BUILD_TEMPLE_BAKKHOS',		'IMPROVEMENT_TEMPLE_BAKKHOS',		'World',	'EA_WONDER_TEMPLE_BAKKHOS',		NULL,							'RELIGION_CULT_OF_BAKKHEIA',	NULL,						NULL,							37,			'BW_ATLAS_1'				),
+('EA_ACTION_TEMPLE_PAN',				'TXT_KEY_EA_ACTION_TEMPLE_PAN',				1,		NULL,						'Build',	100,		'WonderWorkPlot',	1000,			'Devout',		'Druid',	NULL,			'Not',	1,				1,			'EAMOD_DEVOTION',		25,					'Plot',			'BUILD_TEMPLE_PAN',			'IMPROVEMENT_TEMPLE_PAN',			'World',	'EA_WONDER_TEMPLE_PAN',			NULL,							'RELIGION_CULT_OF_BAKKHEIA',	NULL,						NULL,							37,			'BW_ATLAS_1'				),
+('EA_ACTION_TEMPLE_SILENUS',			'TXT_KEY_EA_ACTION_TEMPLE_SILENUS',			1,		NULL,						'Build',	100,		'WonderWorkPlot',	1000,			'Devout',		'Druid',	NULL,			'Not',	1,				1,			'EAMOD_DEVOTION',		25,					'Plot',			'BUILD_TEMPLE_SILENUS',		'IMPROVEMENT_TEMPLE_SILENUS',		'World',	'EA_WONDER_TEMPLE_SILENUS',		NULL,							'RELIGION_CULT_OF_BAKKHEIA',	NULL,						NULL,							37,			'BW_ATLAS_1'				),
+('EA_ACTION_TEMPLE_ERECURA',			'TXT_KEY_EA_ACTION_TEMPLE_ERECURA',			1,		NULL,						'Build',	100,		'WonderWorkPlot',	1000,			'Devout',		'Druid',	NULL,			'Not',	1,				1,			'EAMOD_DEVOTION',		25,					'Plot',			'BUILD_TEMPLE_ERECURA',		'IMPROVEMENT_TEMPLE_ERECURA',		'World',	'EA_WONDER_TEMPLE_ERECURA',		NULL,							NULL,							NULL,						NULL,							37,			'BW_ATLAS_1'				),
+('EA_ACTION_TEMPLE_VOSEGUS',			'TXT_KEY_EA_ACTION_TEMPLE_VOSEGUS',			1,		NULL,						'Build',	100,		'WonderWorkPlot',	1000,			'Devout',		'Druid',	NULL,			'Not',	1,				1,			'EAMOD_DEVOTION',		25,					'Plot',			'BUILD_TEMPLE_VOSEGUS',		'IMPROVEMENT_TEMPLE_VOSEGUS',		'World',	'EA_WONDER_TEMPLE_VOSEGUS',		NULL,							NULL,							NULL,						NULL,							37,			'BW_ATLAS_1'				),
+('EA_ACTION_TEMPLE_NANTOSUELTA',		'TXT_KEY_EA_ACTION_TEMPLE_NANTOSUELTA',		1,		NULL,						'Build',	100,		'WonderWorkPlot',	1000,			'Devout',		'Druid',	NULL,			'Not',	1,				1,			'EAMOD_DEVOTION',		25,					'Plot',			'BUILD_TEMPLE_NANTOSUELTA',	'IMPROVEMENT_TEMPLE_NANTOSUELTA',	'World',	'EA_WONDER_TEMPLE_NANTOSUELTA',	NULL,							NULL,							NULL,						NULL,							37,			'BW_ATLAS_1'				),
+('EA_ACTION_TEMPLE_DIS_PATER',			'TXT_KEY_EA_ACTION_TEMPLE_DIS_PATER',		1,		NULL,						'Build',	100,		'WonderWorkPlot',	1000,			'Devout',		'Druid',	NULL,			'Not',	1,				1,			'EAMOD_DEVOTION',		25,					'Plot',			'BUILD_TEMPLE_DIS_PATER',	'IMPROVEMENT_TEMPLE_DIS_PATER',		'World',	'EA_WONDER_TEMPLE_DIS_PATER',	NULL,							NULL,							NULL,						NULL,							37,			'BW_ATLAS_1'				),
+('EA_ACTION_TEMPLE_NERGAL',				'TXT_KEY_EA_ACTION_TEMPLE_NERGAL',			1,		NULL,						'Build',	100,		'WonderWorkPlot',	1000,			'Devout',		'Druid',	NULL,			'Not',	1,				1,			'EAMOD_DEVOTION',		25,					'Plot',			'BUILD_TEMPLE_NERGAL',		'IMPROVEMENT_TEMPLE_NERGAL',		'World',	'EA_WONDER_TEMPLE_NERGAL',		NULL,							NULL,							NULL,						NULL,							37,			'BW_ATLAS_1'				),
+('EA_ACTION_TEMPLE_WADD',				'TXT_KEY_EA_ACTION_TEMPLE_WADD',			1,		NULL,						'Build',	100,		'WonderWorkPlot',	1000,			'Devout',		'Druid',	NULL,			'Not',	1,				1,			'EAMOD_DEVOTION',		25,					'Plot',			'BUILD_TEMPLE_WADD',		'IMPROVEMENT_TEMPLE_WADD',			'World',	'EA_WONDER_TEMPLE_WADD',		NULL,							NULL,							NULL,						NULL,							37,			'BW_ATLAS_1'				),
+('EA_ACTION_TEMPLE_ABGAL',				'TXT_KEY_EA_ACTION_TEMPLE_ABGAL',			1,		NULL,						'Build',	100,		'WonderWorkPlot',	1000,			'Devout',		'Druid',	NULL,			'Not',	1,				1,			'EAMOD_DEVOTION',		25,					'Plot',			'BUILD_TEMPLE_ABGAL',		'IMPROVEMENT_TEMPLE_ABGAL',			'World',	'EA_WONDER_TEMPLE_ABGAL',		NULL,							NULL,							NULL,						NULL,							37,			'BW_ATLAS_1'				),
+('EA_ACTION_TEMPLE_NESR',				'TXT_KEY_EA_ACTION_TEMPLE_NESR',			1,		NULL,						'Build',	100,		'WonderWorkPlot',	1000,			'Devout',		'Druid',	NULL,			'Not',	1,				1,			'EAMOD_DEVOTION',		25,					'Plot',			'BUILD_TEMPLE_NESR',		'IMPROVEMENT_TEMPLE_NESR',			'World',	'EA_WONDER_TEMPLE_NESR',		NULL,							NULL,							NULL,						NULL,							37,			'BW_ATLAS_1'				);
+
+UPDATE EaActions SET PolicyReq = 'POLICY_PANTHEISM' WHERE Type = 'EA_ACTION_STANHENCG';
 UPDATE EaActions SET AndTechReq = 'TECH_MASONRY' WHERE Type = 'EA_ACTION_MEGALOS_FAROS';
 UPDATE EaActions SET PolicyReq = 'POLICY_SLAVERY' WHERE Type = 'EA_ACTION_UUC_YABNAL';
-UPDATE EaActions SET PolicyReq = 'POLICY_SCHOLASTICISM' WHERE Type = 'EA_ACTION_GREAT_LIBRARY';
 UPDATE EaActions SET NotGPClass = 'Devout' WHERE Type = 'EA_ACTION_ARCANE_TOWER';
-
+UPDATE EaActions SET Help = 'TXT_KEY_' || Type || '_HELP' WHERE Type GLOB 'EA_ACTION_TEMPLE_*';
 
 --Epics
 INSERT INTO EaActions (Type,			Description,								Help,											GPOnly,	TechReq,				PolicyReq,			UIType,		FinishXP,	AITarget,			AIAdHocValue,	GPClass,	City,		GPModType1,			TurnsToComplete,	ProgressHolder,	UniqueType,	EaEpic,							IconIndex,	IconAtlas) VALUES
@@ -254,10 +310,7 @@ INSERT INTO EaActions (Type,			Description,							Help,								GPOnly,	UIType,		
 ('EA_ACTION_FOUNDRY',					'TXT_KEY_EA_ACTION_FOUNDRY',			'TXT_KEY_EA_ACTION_FOUNDRY_HELP',	1,		'Build',	'TECH_IRON_WORKING',	NULL,					25,			'OwnCities',	3,				'Engineer',	'Own',		NULL,			8,					'City',			'BUILDING_FOUNDRY',		NULL,					'AS2D_BUILD_UNIT',		1,			'NEW_BLDG_ATLAS2_DLC'	),
 ('EA_ACTION_ACADEMY',					'TXT_KEY_EA_ACTION_ACADEMY',			'TXT_KEY_EA_ACTION_ACADEMY_HELP',	1,		'Build',	'TECH_PHILOSOPHY',		NULL,					25,			'OwnCities',	3,				'Sage',		'Own',		NULL,			8,					'City',			'BUILDING_ACADEMY',		NULL,					'AS2D_BUILD_UNIT',		1,			'BW_ATLAS_2'			),
 ('EA_ACTION_FESTIVAL',					'TXT_KEY_EA_ACTION_FESTIVAL',			'TXT_KEY_EA_ACTION_FESTIVAL_HELP',	1,		'Build',	'TECH_CALENDAR',		NULL,					25,			'OwnCities',	3,				'Artist',	'Own',		NULL,			8,					'City',			'BUILDING_FESTIVAL',	NULL,					'AS2D_BUILD_UNIT',		44,			'BW_ATLAS_1'			),
-('EA_ACTION_TEMPLE',					'TXT_KEY_EA_ACTION_TEMPLE',				'TXT_KEY_EA_ACTION_TEMPLE_HELP',	1,		'Build',	NULL,					'POLICY_PRIESTHOOD',	25,			'OwnCities',	3,				'Devout',	'Own',		NULL,			8,					'City',			'BUILDING_TEMPLE',		NULL,					'AS2D_BUILD_UNIT',		37,			'BW_ATLAS_1'			),
 ('EA_ACTION_TRADE_HOUSE',				'TXT_KEY_EA_ACTION_TRADE_HOUSE',		NULL,								1,		'Build',	NULL,					'POLICY_FREE_MARKETS',	25,			'OwnCities',	0,				'Merchant',	'Own',		'EAMOD_TRADE',	8,					'City',			NULL,					'BUILDING_TRADE_HOUSE',	'AS2D_BUILD_UNIT',		1,			'NEW_BLDG_ATLAS_DLC'	);
-
-UPDATE EaActions SET OrPolicyReq = 'POLICY_FELLOWSHIP_OF_LEAVES' WHERE Type = 'EA_ACTION_TEMPLE';
 
 --Other GP builds
 INSERT INTO EaActions (Type,			Description,							GPOnly,	UIType,		TechReq,			PolicyReq,				FinishXP,	AITarget,			GPClass,	GPSubclass,		FoundsSpreadsCult,	City,		GPModType1,				TurnsToComplete,	ProgressHolder,	HumanOnlySound,			PlayAnywhereSound,					IconIndex,	IconAtlas) VALUES
@@ -272,11 +325,11 @@ UPDATE EaActions SET CapitalOnly = 1 WHERE Type = 'EA_ACTION_TRADE_MISSION';
 INSERT INTO EaActions (Type,			Description,							GPOnly,	UIType,		TechReq,				PolicyReq,				ReligionFounded,			FinishXP,	AITarget,			GPClass,	GPSubclass,		FoundsSpreadsCult,				City,		GPModType1,				TurnsToComplete,	ProgressHolder,	HumanOnlySound,			PlayAnywhereSound,					IconIndex,	IconAtlas) VALUES
 ('EA_ACTION_PROSELYTIZE',				'TXT_KEY_EA_ACTION_PROSELYTIZE',		1,		'Action',	NULL,					NULL,					'RELIGION_AZZANDARAYASNA',	25,			'AzzandaraSpread',	'Devout',	'Priest',		NULL,							'Any',		'EAMOD_PROSELYTISM',	8,					'City',			NULL,					'AS2D_EVENT_NOTIFICATION_GOOD',		1,			'EXPANSION_UNIT_ACTION_ATLAS'	),
 ('EA_ACTION_ANTIPROSELYTIZE',			'TXT_KEY_EA_ACTION_PROSELYTIZE',		1,		'Action',	NULL,					NULL,					'RELIGION_ANRA',			25,			'AnraSpread',		'Devout',	'FallenPriest',	NULL,							'Any',		'EAMOD_PROSELYTISM',	8,					'City',			NULL,					'AS2D_EVENT_NOTIFICATION_VERY_BAD',	1,			'EXPANSION_UNIT_ACTION_ATLAS'	),
-('EA_ACTION_RITUAL_LEAVES',				'TXT_KEY_EA_ACTION_RITUAL_LEAVES',		1,		'Build',	NULL,					NULL,					'RELIGION_THE_WEAVE_OF_EA',	25,			'AllCities',		'Devout',	'Druid',		'RELIGION_CULT_OF_LEAVES',		'Any',		'EAMOD_RITUALISM',		8,					'City',			NULL,					'AS2D_EVENT_NOTIFICATION_GOOD',		2,			'BW_ATLAS_2'					),
-('EA_ACTION_RITUAL_EQUUS',				'TXT_KEY_EA_ACTION_RITUAL_EQUUS',		1,		'Build',	NULL,					NULL,					'RELIGION_THE_WEAVE_OF_EA',	25,			'AllCities',		'Devout',	'Druid',		'RELIGION_CULT_OF_EPONA',		'Any',		'EAMOD_RITUALISM',		8,					'City',			NULL,					'AS2D_EVENT_NOTIFICATION_GOOD',		2,			'BW_ATLAS_2'					),
-('EA_ACTION_RITUAL_CLEANSING',			'TXT_KEY_EA_ACTION_RITUAL_CLEANSING',	1,		'Build',	NULL,					NULL,					'RELIGION_THE_WEAVE_OF_EA',	25,			'AllCities',		'Devout',	'Druid',		'RELIGION_CULT_OF_PURE_WATERS',	'Any',		'EAMOD_RITUALISM',		8,					'City',			NULL,					'AS2D_EVENT_NOTIFICATION_GOOD',		2,			'BW_ATLAS_2'					),
-('EA_ACTION_RITUAL_AEGIR',				'TXT_KEY_EA_ACTION_RITUAL_AEGIR',		1,		'Build',	NULL,					NULL,					'RELIGION_THE_WEAVE_OF_EA',	25,			'AllCities',		'Devout',	'Druid',		'RELIGION_CULT_OF_AEGIR',		'Any',		'EAMOD_RITUALISM',		8,					'City',			NULL,					'AS2D_EVENT_NOTIFICATION_GOOD',		2,			'BW_ATLAS_2'					),
-('EA_ACTION_RITUAL_BAKKHEIA',			'TXT_KEY_EA_ACTION_RITUAL_BAKKHEIA',	1,		'Build',	NULL,					NULL,					'RELIGION_THE_WEAVE_OF_EA',	25,			'AllCities',		'Devout',	'Druid',		'RELIGION_CULT_OF_BAKKHEIA',	'Any',		'EAMOD_RITUALISM',		8,					'City',			NULL,					'AS2D_EVENT_NOTIFICATION_GOOD',		2,			'BW_ATLAS_2'					);
+('EA_ACTION_RITUAL_LEAVES',				'TXT_KEY_EA_ACTION_RITUAL_LEAVES',		1,		'Build',	NULL,					NULL,					'RELIGION_THE_WEAVE_OF_EA',	25,			'AllCities',		'Devout',	'Druid',		'RELIGION_CULT_OF_LEAVES',		'Any',		'EAMOD_DEVOTION',		8,					'City',			NULL,					'AS2D_EVENT_NOTIFICATION_GOOD',		2,			'BW_ATLAS_2'					),
+('EA_ACTION_RITUAL_EQUUS',				'TXT_KEY_EA_ACTION_RITUAL_EQUUS',		1,		'Build',	NULL,					NULL,					'RELIGION_THE_WEAVE_OF_EA',	25,			'AllCities',		'Devout',	'Druid',		'RELIGION_CULT_OF_EPONA',		'Any',		'EAMOD_DEVOTION',		8,					'City',			NULL,					'AS2D_EVENT_NOTIFICATION_GOOD',		2,			'BW_ATLAS_2'					),
+('EA_ACTION_RITUAL_CLEANSING',			'TXT_KEY_EA_ACTION_RITUAL_CLEANSING',	1,		'Build',	NULL,					NULL,					'RELIGION_THE_WEAVE_OF_EA',	25,			'AllCities',		'Devout',	'Druid',		'RELIGION_CULT_OF_PURE_WATERS',	'Any',		'EAMOD_DEVOTION',		8,					'City',			NULL,					'AS2D_EVENT_NOTIFICATION_GOOD',		2,			'BW_ATLAS_2'					),
+('EA_ACTION_RITUAL_AEGIR',				'TXT_KEY_EA_ACTION_RITUAL_AEGIR',		1,		'Build',	NULL,					NULL,					'RELIGION_THE_WEAVE_OF_EA',	25,			'AllCities',		'Devout',	'Druid',		'RELIGION_CULT_OF_AEGIR',		'Any',		'EAMOD_DEVOTION',		8,					'City',			NULL,					'AS2D_EVENT_NOTIFICATION_GOOD',		2,			'BW_ATLAS_2'					),
+('EA_ACTION_RITUAL_BAKKHEIA',			'TXT_KEY_EA_ACTION_RITUAL_BAKKHEIA',	1,		'Build',	NULL,					NULL,					'RELIGION_THE_WEAVE_OF_EA',	25,			'AllCities',		'Devout',	'Druid',		'RELIGION_CULT_OF_BAKKHEIA',	'Any',		'EAMOD_DEVOTION',		8,					'City',			NULL,					'AS2D_EVENT_NOTIFICATION_GOOD',		2,			'BW_ATLAS_2'					);
 
 UPDATE EaActions SET OrGPSubclass = 'Paladin' WHERE Type = 'EA_ACTION_PROSELYTIZE';
 UPDATE EaActions SET OrGPSubclass = 'Eidolon' WHERE Type = 'EA_ACTION_ANTIPROSELYTIZE';
@@ -313,12 +366,11 @@ INSERT INTO EaActions (Type,			SpellClass,	GPModType1,				TechReq,						City,	AI
 ('EA_SPELL_POLYMORPH',					'Arcane',	'EAMOD_TRANSMUTATION',	'TECH_TRANSMUTATION',			NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
 ('EA_SPELL_BLIGHT',						'Arcane',	'EAMOD_TRANSMUTATION',	'TECH_SORCERY',					'Not',	'NIMBY',			NULL,			5,					0,			1,				9,			'TECH_ATLAS_2'			),
 ('EA_SPELL_HEX',						'Arcane',	'EAMOD_CONJURATION',	'TECH_MALEFICIUM',				NULL,	NULL,				'Any',			1,					0,			1,				9,			'TECH_ATLAS_2'			),
-('EA_SPELL_SUMMON_MONSTER',				'Arcane',	'EAMOD_CONJURATION',	'TECH_CONJURATION',				NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
+('EA_SPELL_CONJURE_MONSTER',			'Arcane',	'EAMOD_CONJURATION',	'TECH_CONJURATION',				NULL,	'SelfAndTower',		NULL,			3,					0,			1,				7,			'TECH_ATLAS_2'			),
 ('EA_SPELL_TELEPORT',					'Arcane',	'EAMOD_CONJURATION',	'TECH_CONJURATION',				NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
-('EA_SPELL_SUMMON_MINOR_DEMON',			'Arcane',	'EAMOD_CONJURATION',	'TECH_SUMMONING',				NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
 ('EA_SPELL_PHASE_DOOR',					'Arcane',	'EAMOD_CONJURATION',	'TECH_INVOCATION',				NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
 ('EA_SPELL_REANIMATE_DEAD',				'Arcane',	'EAMOD_NECROMANCY',		'TECH_REANIMATION',				NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
-('EA_SPELL_RAISE_DEAD',					'Arcane',	'EAMOD_NECROMANCY',		'TECH_NECROMANCY',				NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
+('EA_SPELL_RAISE_DEAD',					'Arcane',	'EAMOD_NECROMANCY',		'TECH_NECROMANCY',				NULL,	'SelfAndTower',		NULL,			3,					0,			1,				7,			'TECH_ATLAS_2'			),
 ('EA_SPELL_DEATH_RUNE',					'Arcane',	'EAMOD_NECROMANCY',		'TECH_NECROMANCY',				'Not',	'BoobyTrap',		NULL,			3,					0,			1,				7,			'TECH_ATLAS_2'			),
 ('EA_SPELL_VAMPIRIC_TOUCH',				'Arcane',	'EAMOD_NECROMANCY',		'TECH_NECROMANCY',				NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
 ('EA_SPELL_DEATH_STAY',					'Arcane',	'EAMOD_NECROMANCY',		'TECH_NECROMANCY',				NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
@@ -338,6 +390,11 @@ INSERT INTO EaActions (Type,			SpellClass,	GPModType1,				TechReq,						City,	AI
 ('EA_SPELL_SIMULACRUM',					'Arcane',	'EAMOD_ILLUSION',		'TECH_GREATER_ILLUSION',		NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
 ('EA_SPELL_PHANTASMAGORIA',				'Arcane',	'EAMOD_ILLUSION',		'TECH_PHANTASMAGORIA',			NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			);
 
+--Both Arcane and Divine
+INSERT INTO EaActions (Type,			SpellClass,	GPModType1,				TechReq,						City,	AITarget,			AICombatRole,	FallenAltSpell,					TurnsToComplete,	FixedFaith,	HumanVisibleFX,	IconIndex,	IconAtlas				) VALUES
+('EA_SPELL_SUMMON_ABYSSAL_CREATURES',	'Both',		'EAMOD_CONJURATION',	'TECH_SORCERY',					NULL,	'SelfAndTower',		NULL,			'IsFallen',						3,					0,			1,				9,			'TECH_ATLAS_2'			),
+('EA_SPELL_SUMMON_DEMON',				'Both',		'EAMOD_CONJURATION',	'TECH_SUMMONING',				NULL,	'SelfAndTower',		NULL,			'IsFallen',						3,					0,			1,				9,			'TECH_ATLAS_2'			);
+
 
 --Divine
 INSERT INTO EaActions (Type,			SpellClass,	GPModType1,				TechReq,						City,	AITarget,			AICombatRole,	FallenAltSpell,					TurnsToComplete,	FixedFaith,	HumanVisibleFX,	IconIndex,	IconAtlas				) VALUES
@@ -351,7 +408,8 @@ INSERT INTO EaActions (Type,			SpellClass,	GPModType1,				TechReq,						City,	AI
 ('EA_SPELL_COMMAND',					'Divine',	'EAMOD_ENCHANTMENT',	'TECH_DIVINE_ESSENCE',			NULL,	NULL,				NULL,			NULL,							1,					0,			1,				38,			'BW_ATLAS_1'			),
 ('EA_SPELL_BANISH_UNDEAD',				'Divine',	'EAMOD_ABJURATION',		'TECH_HEAVENLY_CYCLES',			NULL,	NULL,				NULL,			'EA_SPELL_TURN_UNDEAD',			1,					0,			1,				38,			'BW_ATLAS_1'			),
 ('EA_SPELL_CONSECRATE',					'Divine',	'EAMOD_EVOCATION',		'TECH_HEAVENLY_CYCLES',			NULL,	NULL,				NULL,			'EA_SPELL_DESECRATE',			1,					0,			1,				38,			'BW_ATLAS_1'			),
-('EA_SPELL_CALL_MINOR_ANGEL',			'Divine',	'EAMOD_CONJURATION',	'TECH_DIVINE_INTERVENTION',		NULL,	NULL,				NULL,			'EA_SPELL_SUMMON_MINOR_DEMON',	1,					0,			1,				38,			'BW_ATLAS_1'			),
+('EA_SPELL_CALL_HEAVENS_GUARD',			'Divine',	'EAMOD_CONJURATION',	'TECH_HEAVENLY_CYCLES',			NULL,	'SelfAndTower',		NULL,			'EA_SPELL_SUMMON_ABYSSAL_CREATURES', 3,				0,			1,				38,			'BW_ATLAS_1'			),
+('EA_SPELL_CALL_ANGEL',					'Divine',	'EAMOD_CONJURATION',	'TECH_CELESTIAL_KNOWLEDGE',		NULL,	'SelfAndTower',		NULL,			'EA_SPELL_SUMMON_DEMON',		3,					0,			1,				38,			'BW_ATLAS_1'			),
 ('EA_SPELL_RESURRECTION',				'Divine',	'EAMOD_NECROMANCY',		'TECH_DIVINE_INTERVENTION',		NULL,	NULL,				NULL,			'EA_SPELL_GREATER_REANIMATION',	1,					0,			1,				38,			'BW_ATLAS_1'			),
 
 --fallen
@@ -364,11 +422,13 @@ INSERT INTO EaActions (Type,			SpellClass,	GPModType1,				TechReq,						City,	AI
 ('EA_SPELL_CAUSE_PLAGUE',				'Divine',	'EAMOD_NECROMANCY',		'TECH_NECROMANCY',				NULL,	NULL,				NULL,			'IsFallen',						1,					0,			1,				9,			'TECH_ATLAS_2'			),
 ('EA_SPELL_TURN_UNDEAD',				'Divine',	'EAMOD_NECROMANCY',		'TECH_NECROMANCY',				NULL,	NULL,				NULL,			'IsFallen',						1,					0,			1,				9,			'TECH_ATLAS_2'			),
 ('EA_SPELL_DESECRATE',					'Divine',	'EAMOD_TRANSMUTATION',	'TECH_SUMMONING',				NULL,	NULL,				NULL,			'IsFallen',						1,					0,			1,				9,			'TECH_ATLAS_2'			),
-('EA_SPELL_SUMMON_MINOR_DEMON_D',		'Divine',	'EAMOD_CONJURATION',	'TECH_SUMMONING',				NULL,	NULL,				NULL,			'IsFallen',						1,					0,			1,				9,			'TECH_ATLAS_2'			),
-('EA_SPELL_GREATER_REANIMATION',		'Divine',	'EAMOD_NECROMANCY',		'TECH_SOUL_BINDING',			NULL,	NULL,				NULL,			'IsFallen',						1,					0,			1,				9,			'TECH_ATLAS_2'			),
+('EA_SPELL_GREATER_REANIMATION',		'Divine',	'EAMOD_NECROMANCY',		'TECH_SOUL_BINDING',			NULL,	NULL,				NULL,			'IsFallen',						1,					0,			1,				9,			'TECH_ATLAS_2'			);
 
---druid only learned
-('EA_SPELL_EAS_BLESSING',				'Divine',	'EAMOD_TRANSMUTATION',	NULL,							'Not',	'NearbyLivTerrain',	NULL,			NULL,							5,					0,			1,				10,			'EXPANSION_BW_ATLAS_2'	);
+--pantheism
+INSERT INTO EaActions (Type,			SpellClass,	GPModType1,				PolicyReq,						City,	AITarget,			AICombatRole,	FallenAltSpell,					TurnsToComplete,	FixedFaith,	HumanVisibleFX,	IconIndex,	IconAtlas				) VALUES
+('EA_SPELL_EAS_BLESSING',				'Divine',	'EAMOD_TRANSMUTATION',	'POLICY_WOODS_LORE',			'Not',	'NearbyLivTerrain',	NULL,			NULL,							3,					0,			1,				10,			'EXPANSION_BW_ATLAS_2'	),
+('EA_SPELL_CALL_ANIMALS',				'Divine',	'EAMOD_CONJURATION',	'POLICY_FERAL_BOND',			'Not',	'SelfAndTower',		NULL,			NULL,							3,					0,			1,				10,			'EXPANSION_BW_ATLAS_2'	),
+('EA_SPELL_CALL_TREE_ENTS',				'Divine',	'EAMOD_CONJURATION',	'POLICY_FOREST_DOMINION',		'Not',	'SelfAndTower',		NULL,			NULL,							3,					0,			1,				10,			'EXPANSION_BW_ATLAS_2'	);
 
 --druid cult spells (learned from ritual)
 INSERT INTO EaActions (Type,			SpellClass,	GPModType1,				PantheismCult,					City,	AITarget,			AICombatRole,		TurnsToComplete,	FixedFaith,	HumanVisibleFX,	IconIndex,	IconAtlas) VALUES
@@ -381,16 +441,13 @@ INSERT INTO EaActions (Type,			SpellClass,	GPModType1,				PantheismCult,					Cit
 
 --Build out the table for dependent strings
 UPDATE EaActions SET Description = 'TXT_KEY_' || Type, Help = 'TXT_KEY_' || Type || '_HELP' WHERE Type GLOB 'EA_SPELL_*';
-UPDATE EaActions SET GPOnly = 1, ApplyTowerTempleMod = 1, UIType = 'Build' WHERE Type GLOB 'EA_SPELL_*';		--need spell UI
+UPDATE EaActions SET GPOnly = 1, ConsiderTowerTemple = 1, UIType = 'Build' WHERE Type GLOB 'EA_SPELL_*';		--need spell UI
 UPDATE EaActions SET ProgressHolder = 'Person' WHERE Type GLOB 'EA_SPELL_*' AND TurnsToComplete > 1;
 
 
-
-
 UPDATE EaActions SET PolicyTrumpsTechReq = 'POLICY_WITCHCRAFT' WHERE Type IN ('EA_SPELL_SCRYING', 'EA_SPELL_SLOW', 'EA_SPELL_HEX', 'EA_SPELL_DEATH_STAY', 'EA_SPELL_SLEEP');
-UPDATE EaActions SET GPModType2 = 'EAMOD_DEVOTION' WHERE SpellClass = 'Divine';
+UPDATE EaActions SET GPModType2 = 'EAMOD_DEVOTION' WHERE SpellClass IN ('Divine', 'Both');
 
-UPDATE EaActions SET PolicyReq = 'POLICY_PANTHEISM' WHERE Type = 'EA_SPELL_EAS_BLESSING';
 UPDATE EaActions SET FreeSpellSubclass = 'Priest' WHERE Type = 'EA_SPELL_HEAL';
 UPDATE EaActions SET FreeSpellSubclass = 'FallenPriest' WHERE Type = 'EA_SPELL_HURT';
 

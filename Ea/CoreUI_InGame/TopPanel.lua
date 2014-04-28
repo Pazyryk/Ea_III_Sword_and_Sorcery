@@ -1173,7 +1173,7 @@ function FaithTipHandler( control )
 			else
 				local percentConsumed = 100 * consumed / MapModData.STARTING_SUM_OF_ALL_MANA
 				local decimalPlaces = math.floor(1 - math.log10(percentConsumed))
-				decimalPlaces = decimalPlacesNeeded < 0 and 0 or decimalPlacesNeeded
+				decimalPlaces = decimalPlaces < 0 and 0 or decimalPlaces
 				percentStr = string.format("%.".. decimalPlaces .. "f", percentConsumed)
 			end
 			strText = strText .. "[NEWLINE][NEWLINE]" .. Locale.ConvertTextKey("TXT_KEY_EA_TP_MANA_CONSUMED", consumed, percentStr)

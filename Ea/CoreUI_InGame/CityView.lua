@@ -99,6 +99,10 @@ function CityScreenClosed()
 	end
 	
 	UI.SetCityScreenViewingMode(false);
+
+	--Paz add
+	LuaEvents.EaMagicUpdatePlotEffectHighlight(nil, nil, true)
+	--end Paz add
 end
 Events.SerialEventExitCityScreen.Add(CityScreenClosed);
 
@@ -1826,6 +1830,10 @@ function OnEnterCityScreen()
 	LuaEvents.TryQueueTutorial("CITY_SCREEN", true);
 	
 	UI.SetInterfaceMode(InterfaceModeTypes.INTERFACEMODE_SELECTION);
+
+	--Paz add
+	LuaEvents.EaMagicUpdatePlotEffectHighlight(nil, nil, true)
+	--end Paz add
 end
 Events.SerialEventEnterCityScreen.Add(OnEnterCityScreen);
 
@@ -1865,7 +1873,7 @@ function UpdateWorkingHexes()
     if( pCity == nil ) then
         return;
     end
-    
+
 	if (UI.IsCityScreenUp()) then   
 	
 		-- display worked plots

@@ -36,8 +36,6 @@
 			<Text>[COLOR_LIGHT_GREY]Consumed {1_Num} mana[ENDCOLOR]</Text>
 		</Row>
 
-
-
 		<!-- Notifications -->
 		<Row Tag="TXT_KEY_EA_RELIGIOUS_CONVERSION">
 			<Text>Your civilization has gained [COLOR_POSITIVE_TEXT]{1_religion}[ENDCOLOR] as its dominant religion.</Text>
@@ -54,9 +52,6 @@
 		<Row Tag="TXT_KEY_EA_LOST_DIVINE_FAVOR">
 			<Text>Your civilization can no longer use [ICON_PEACE] Divine Favor. Previous accumulation of [COLOR_NEGATIVE_TEXT]{1_num}[ENDCOLOR] will be restored if conditions change.</Text>
 		</Row>
-		
-		
-
 		
 		<!-- Mini Map Buttons -->
 		<Row Tag="TXT_KEY_EA_TT_PLOT_EFFECTS_HIDE">
@@ -116,7 +111,6 @@
 			<Text>You are currently generating [COLOR_POSITIVE_TEXT]{1_Num}[ENDCOLOR] total [ICON_STAR] Mana from the following sources:</Text>
 		</Row>
 
-
 		<Row Tag="TXT_KEY_EA_TP_FAITH_FROM_GODS">
 			<Text>[ICON_BULLET][COLOR_POSITIVE_TEXT]+{1_Num}[ENDCOLOR] from the Gods.</Text>
 		</Row>
@@ -129,7 +123,6 @@
 		<Row Tag="TXT_KEY_EA_TP_CULTURE_FROM_LEADER">
 			<Text>[ICON_BULLET][COLOR_POSITIVE_TEXT]+{1_Num}[ENDCOLOR] from Leader bonus to non-city sources.</Text>
 		</Row>
-
 
 		<Row Tag="TXT_KEY_EA_TP_FAITH_FROM_CULT_OF_LEAVES_FOUNDER">
 			<Text>[ICON_BULLET][COLOR_POSITIVE_TEXT]+{1_Num}[ENDCOLOR] from Forest & Jungle world-wide (Cult of Leaves Founder).</Text>
@@ -146,8 +139,6 @@
 		<Row Tag="TXT_KEY_EA_TP_FAITH_FROM_CULT_OF_BAKKHEIA_FOUNDER">
 			<Text>[ICON_BULLET][COLOR_POSITIVE_TEXT]+{1_Num}[ENDCOLOR] from  (Cult of Bakkheia Founder).</Text>
 		</Row>
-
-
 
 		<Row Tag="TXT_KEY_EA_TP_FAITH_FROM_WILDLANDS">
 			<Text>[ICON_BULLET][COLOR_POSITIVE_TEXT]+{1_Num}[ENDCOLOR] from Wildlands.</Text>
@@ -167,7 +158,6 @@
 		<Row Tag="TXT_KEY_EA_TP_FAITH_TO_AHRIMAN_TRIBUTE">
 			<Text>[ICON_BULLET][COLOR_NEGATIVE_TEXT]-{1_Num}[ENDCOLOR] consumed by Ahriman's Tribute.</Text>
 		</Row>
-
 
 		<Row Tag="TXT_KEY_EA_TP_GREAT_PEOPLE">
 			<Text>Your civilization has a [COLOR_POSITIVE_TEXT]{1_Num}%[ENDCOLOR] chance of generating a [ICON_GREAT_PEOPLE] Great Person per turn based on [COLOR_POSITIVE_TEXT]{2_Num}[ENDCOLOR] currently existing and [COLOR_POSITIVE_TEXT]{3_Num}[ENDCOLOR] total points.</Text>
@@ -221,8 +211,6 @@
 			<Text>[NEWLINE][ICON_BULLET]City Resident Modifier: {1_Num}%</Text>
 		</Row>
 		
-
-
 		<!-- POPUPS -->
 
 		<!-- City State (and Gods) Popup -->
@@ -281,8 +269,6 @@
 		<Row Tag="TXT_KEY_EA_GOD_SPHERES">
 			<Text>Spheres:</Text>
 		</Row>
-
-		<!-- Minor Civ Popups -->
 		<Row Tag="TXT_KEY_EA_POP_NATURAL_WONDER_FOUND_DEFAULT">
 			<Text>Congratulations! The discovery of {@1_NWName} has increased [ICON_HAPPINESS_1] Happiness in the empire.[NEWLINE][NEWLINE]Output if worked: </Text>
 		</Row>
@@ -309,8 +295,8 @@
 		<Row Tag="TXT_KEY_EA_POLICY_BRANCH_RACE_BLOCKED">
 			<Text>[COLOR_WARNING_TEXT]Your race cannot open this policy branch.[ENDCOLOR]</Text>
 		</Row>
+		
 		<!-- Religions popup -->
-
 		<Row Tag="TXT_KEY_EA_RELIGION_POPUP">
 			<Text>Religions</Text>
 		</Row>
@@ -379,6 +365,26 @@
 		</Row>
 		<Row Tag="TXT_KEY_EA_RELIGION_NON_FALLEN">
 			<Text>non-Fallen</Text>
+		</Row>
+
+		<!-- Trade Overview popup -->
+		<Row Tag="TXT_KEY_EA_TRO_TAB_EXISTING_TR">
+			<Text>Your Active Trade Routes</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TO_EXISTING_TR_TT">
+			<Text>Lists all currently active trade routes you have with other cities.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TRO_TAB_AVAILABLE_TR">
+			<Text>Open Trade Routes</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TO_AVAILABLE_TR_TT">
+			<Text>Lists all trade routes that have been opened to other cities, including currently active and inactive.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TRO_TAB_CAN_OPEN_TR">
+			<Text>Trade Routes You Can Open</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TO_CAN_OPEN_TR_TT">
+			<Text>Lists all trade routes that can be opened. Send a Merchant to one of these destination cities to open a trade route.</Text>
 		</Row>
 
 		<!-- Mercenary popup -->

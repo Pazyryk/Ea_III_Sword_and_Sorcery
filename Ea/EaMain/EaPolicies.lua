@@ -106,6 +106,11 @@ function EaPoliciesInit(bNewGame)
 			end
 			if player:HasPolicy(GameInfoTypes.POLICY_SLAVERY) then
 				gg_slaveryPlayer[iPlayer] = true
+				if player:HasPolicy(GameInfoTypes.POLICY_SERVI_AETERNAM) then
+					WeLikeBeingUnhappy(iPlayer, 2)
+				elseif player:HasPolicy(GameInfoTypes.POLICY_SLAVE_BREEDING) then
+					WeLikeBeingUnhappy(iPlayer, 1)
+				end
 			end
 		end
 	end
@@ -138,7 +143,6 @@ function GetNumPoliciesInBranch(player, policyBranchID)		-- includes opener and 
 	return n
 end
 
-
 function PolicyPerCivTurn(iPlayer)
 	print("PolicyPerCivTurn ", iPlayer)
 	local player = Players[iPlayer]
@@ -152,7 +156,7 @@ function PolicyPerCivTurn(iPlayer)
 
 	print("Level / policies / change / pop turns: ", eaPlayer.culturalLevel, eaPlayer.policyCount, eaPlayer.culturalLevelChange, eaPlayer.cumPopTurns)
 
-	print("Test; eaPlayer.policyCount, GetNumPolicies, GetNumPolicyBranchesFinished = ", eaPlayer.policyCount, player:GetNumPolicies(), player:GetNumPolicyBranchesFinished())
+	print("DEBUG: eaPlayer.policyCount, player:GetNumRealPolicies = ", eaPlayer.policyCount, player:GetNumRealPolicies())
 
 	if eaPlayer.policyCount < Floor(eaPlayer.culturalLevel) then
 		if bFullCivAI[iPlayer] then
@@ -185,6 +189,10 @@ function OnPlayerAdoptPolicyBranch(iPlayer, policyBranchTypeID)					--called by 
 		local team = Teams[iTeam]
 		local eaPlayer = gPlayers[iPlayer]
 		local capital = player:GetCapitalCity()
+
+		--Plot yields
+		player:SetYieldFromSpecialPlotsOnly(true)	--new Ea API; this is what kills plot yields for all but resourced, GP improved, and some few other cases
+
 		--Religion
 		if gReligions[RELIGION_THE_WEAVE_OF_EA] then
 			if capital then
@@ -370,12 +378,20 @@ OnPolicyAdopted[GameInfoTypes.POLICY_ARCANE_RESEARCH] = function(iPlayer)
 	gg_playerArcaneMod[iPlayer] = gg_playerArcaneMod[iPlayer] - 20
 end
 
+OnPolicyAdopted[GameInfoTypes.POLICY_SLAVE_BREEDING] = function(iPlayer)
+	WeLikeBeingUnhappy(iPlayer, 1)
+end
+
+OnPolicyAdopted[GameInfoTypes.POLICY_SERVI_AETERNAM] = function(iPlayer)
+	WeLikeBeingUnhappy(iPlayer, 2)
+end
+
 OnPolicyAdopted[GameInfoTypes.POLICY_SLAVE_RAIDERS] = function(iPlayer)
 	local team = Teams[Players[iPlayer]:GetTeam()]
 	team:SetHasTech(TECH_SLAVE_RAIDERS, true)
 end
 
-OnPolicyAdopted[GameInfoTypes.POLICY_SLAVE_RAIDERS] = function(iPlayer)
+OnPolicyAdopted[GameInfoTypes.POLICY_SLAVE_ARMIES] = function(iPlayer)
 	local team = Teams[Players[iPlayer]:GetTeam()]
 	team:SetHasTech(TECH_SLAVE_ARMIES, true)
 end

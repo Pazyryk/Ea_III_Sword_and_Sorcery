@@ -10,6 +10,7 @@ local Dprint = DEBUG_PRINT and print or function() end
 --------------------------------------------------------------
 -- Local Defines
 --------------------------------------------------------------
+local FIRST_SPELL_ID =					FIRST_SPELL_ID
 local HIGHEST_PROMOTION_ID =			HIGHEST_PROMOTION_ID
 local MOD_MEMORY_HALFLIFE =				MOD_MEMORY_HALFLIFE
 
@@ -85,15 +86,10 @@ modsForUI.firstMagicMod = numModTypes - 7
 modsForUI[numModTypes + 1] = {text = "All Magic Schools", value = 0}
 modsForUI[numModTypes + 2] = {text = "Other Magic Schools", value = 0}
 
-
 local reservedGPs = {}		--nil all entries after all civs gain names
-local xpBoostFromManaUse = {}
 for eaCivInfo in GameInfo.EaCivs() do
 	if eaCivInfo.FoundingGPType then
 		reservedGPs[GameInfoTypes[eaCivInfo.FoundingGPType] ] = true
-	end
-	if eaCivInfo.XPBoostFromManaUse ~= 0 then
-		xpBoostFromManaUse[eaCivInfo.ID] = eaCivInfo.XPBoostFromManaUse
 	end
 end
 
@@ -282,27 +278,33 @@ function PeoplePerCivTurn(iPlayer)
 				--Do or test action
 				if eaPerson.eaActionID ~= -1 then
 					if bHumanPlayer then	
-		
-						print("About to TestEaAction for human", eaPerson.eaActionID, iPlayer, unit, iPerson)
-						if eaPerson.eaActionID == 0 or TestEaAction(eaPerson.eaActionID, iPlayer, unit, iPerson) then --skip as long as it is a move or a valid action (human does action after turn)
-							if unit and not (eaPerson.eaActionID == 0 and eaPerson.gotoPlotIndex == GetPlotIndexFromXY(unit:GetX(), unit:GetY())) then
-								print("Skipping human GP", eaPerson.name)
-								print("GP Moves = ", unit:GetMoves())
+						local eaActionID = eaPerson.eaActionID
+						print("About to TestEaAction for human", eaActionID, iPlayer, unit, iPerson)
+						if eaActionID == 0 then
+							skipPeople[iPerson] = true
+						elseif eaActionID < FIRST_SPELL_ID then
+							if TestEaAction(eaActionID, iPlayer, unit, iPerson) then
 								skipPeople[iPerson] = true
-
-								--below works but not here (must be after turn started?)
-								--unit:PopMission()
-								--unit:PushMission(MissionTypes.MISSION_SKIP, unit:GetX(), unit:GetY(), 0, 0, 1, MissionTypes.MISSION_SKIP, unit:GetPlot(), unit)		--remove from unit cycle selection
+							else
+								print("Human GP failed TestEaAction at start of turn")
+								InterruptEaAction(iPlayer, iPerson)
 							end
 						else
-							print("Human GP failed TestEaAction at start of turn")
-							InterruptEaAction(iPlayer, iPerson)	--failed TestEaAction does not call this (as does DoEaAction) so we call it here
-							--ReappearGP(iPlayer, iPerson)
+							if TestEaSpell(eaActionID, iPlayer, unit, iPerson) then
+								skipPeople[iPerson] = true
+							else
+								print("Human GP failed TestEaSpell at start of turn")
+								InterruptEaSpell(iPlayer, iPerson)
+							end
 						end
 					elseif not AIGPTestCombatInterrupt(iPlayer, iPerson, unit) then
 						print("No combat interrupt for AI; about to do action ", eaPerson.eaActionID, iPlayer, unit, iPerson)
 						print("eaPerson.gotoPlotIndex, .gotoEaActionID = ", eaPerson.gotoPlotIndex, eaPerson.gotoEaActionID)
-						DoEaAction(eaPerson.eaActionID, iPlayer, unit, iPerson) 	--AI keeps doing action until done or fails
+						if eaPerson.eaActionID < FIRST_SPELL_ID then
+							DoEaAction(eaPerson.eaActionID, iPlayer, unit, iPerson) 	--AI keeps doing action until done or fails
+						else
+							DoEaSpell(eaPerson.eaActionID, iPlayer, unit, iPerson)
+						end
 						print("eaPerson.gotoPlotIndex, .gotoEaActionID = ", eaPerson.gotoPlotIndex, eaPerson.gotoEaActionID)
 					end
 				end
@@ -379,8 +381,14 @@ function PeopleAfterTurn(iPlayer, bActionInfoPanelCall)
 					if unit:GetMoves() > 0 then
 						local eaActionID = eaPerson.eaActionID
 						if eaActionID ~= -1 then
-							if not DoEaAction(eaActionID, iPlayer, unit, iPerson) then	--does action or cancels
-								bAllowHumanPlayerEndTurn = false
+							if eaActionID < FIRST_SPELL_ID then
+								if not DoEaAction(eaActionID, iPlayer, unit, iPerson) then	--does action or cancels
+									bAllowHumanPlayerEndTurn = false
+								end
+							else
+								if not DoEaSpell(eaActionID, iPlayer, unit, iPerson) then
+									bAllowHumanPlayerEndTurn = false
+								end
 							end
 						else
 							--clear whatever this unit thought it was doing (including skip)
@@ -475,7 +483,6 @@ function GenerateGreatPerson(iPlayer, class, subclass, eaPersonRowID, bAsLeader,
 							eaActionData = -1,
 							gotoPlotIndex = -1,
 							gotoEaActionID = -1,
-							tempFaith = 0,
 							moves = 0,
 							modMemory = {}	}		
 		
@@ -741,44 +748,6 @@ function UnlockReservedGPs()
 	reservedGPs = nil		--garbage collect cached table
 end
 
---------------------------------------------------------------
--- GP Utilities
---------------------------------------------------------------
-
-function UseManaOrDivineFavor(iPlayer, iPerson, pts)
-	--reduces player faith, adds GP xp and depletes Ea's mana if appropriate
-	--returns false if player lacks sufficient mana or divine favor
-	--if iPerson is nil (or dead) then no experience is given
-	local player = Players[iPlayer]
-	local currentFaith = player:GetFaith()
-	player:SetFaith(currentFaith - pts)
-	local eaPlayer = gPlayers[iPlayer]
-	local bManaEaterFloatup = false
-	if iPerson then
-		local eaPerson = gPeople[iPerson]
-		if eaPerson then
-			local unit = player:GetUnitByID(eaPerson.iUnit)
-			local xp = pts
-			if xpBoostFromManaUse[eaPlayer.eaCivNameID] then
-				xp = xp + Floor(pts * xpBoostFromManaUse[eaPlayer.eaCivNameID] / 100)
-			end
-			unit:ChangeExperience(xp)
-			if eaPlayer.bIsFallen then
-				bManaEaterFloatup = true
-				unit:GetPlot():AddFloatUpMessage(Locale.Lookup("TXT_KEY_EA_CONSUMED_MANA", pts), 1)
-			end
-		end
-	end
-
-	if eaPlayer.bIsFallen then
-		gWorld.sumOfAllMana = gWorld.sumOfAllMana - pts
-		eaPlayer.manaConsumed = (eaPlayer.manaConsumed or 0) + pts
-		if not bManaEaterFloatup then
-			player:GetCapitalCity():Plot():AddFloatUpMessage(Locale.Lookup("TXT_KEY_EA_CONSUMED_MANA", pts), 1)
-		end
-	end
-	return 0 <= currentFaith - pts	--deficit?
-end
 
 --------------------------------------------------------------
 -- Leader Functions
@@ -824,11 +793,11 @@ function MakeLeader(iPlayer, iPerson)
 	PreGame.SetLeaderName(iPlayer, newName)
 
 	local iUnit = eaPerson.iUnit
-	if iUnit ~= -1 then
-		local unit = player:GetUnitByID(iUnit)
-		unit:SetName(newName)
-	end
+	local unit = player:GetUnitByID(iUnit)
+	unit:SetName(newName)
+	unit:ChangeExperience(20)	--leader bonus
 	--apply "leader promotion"?
+
 	UpdateLeaderEffects(iPlayer)
 
 	--Since GP will stay leader from now on, adjust modMemory so they will take leadership promotions
@@ -1082,16 +1051,17 @@ function GetGPMod(iPerson, modType1, modType2)
 	return Floor(levelMod + promoMod + bonuses), bHasAnyLevelsMod1		--2nd arg used for actions that require at least 1 promotion level to do
 end
 
-function SetTowerMods(iPerson)
+function SetTowerMods(iPlayer, iPerson)
 	local tower = gWonders[EA_WONDER_ARCANE_TOWER][iPerson]
 	if not tower then return end
-	print("SetTowerMods ", iPerson)
+	print("SetTowerMods ", iPlayer, iPerson)
 	if not tower[numModTypes] then		--init tower mods
 		for i = numModTypes - 7, numModTypes do
 			tower[i] = 0
 		end
 	end
 
+	local modSum = 0
 	local bestCasterMod, bestTowerMod = 0, 0
 	for i = numModTypes - 7, numModTypes do
 		local casterMod = GetGPMod(iPerson, i, nil)
@@ -1102,10 +1072,17 @@ function SetTowerMods(iPerson)
 		if bestTowerMod < towerMod then
 			bestTowerMod = towerMod
 		end
-		tower[i] = towerMod < casterMod and casterMod or towerMod
+		local newMod = towerMod < casterMod and casterMod or towerMod
+		tower[i] = newMod
+		modSum = modSum + newMod
+	end
+	local newMod = Floor(modSum / 8 + 0.5)		--average used for mana generation
+	if newMod ~= tower.mod then
+		tower.mod = newMod
+		UpdateInstanceWonder(iPlayer, EA_WONDER_ARCANE_TOWER)
 	end
 
-	if tower.iNamedFor ~= iPlayer and bestTowerMod < bestCasterMod then	--rename tower 
+	if tower.iNamedFor ~= iPerson and bestTowerMod < bestCasterMod then	--rename tower 
 		print("Renaming tower for current occupant")
 		local eaPerson = gPeople[iPerson]
 		if not eaPerson.name then

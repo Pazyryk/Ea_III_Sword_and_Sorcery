@@ -19,7 +19,6 @@ INSERT INTO EaModifiers(Type,	Description,			Class,			PromotionPrefix					) VALU
 ('EAMOD_SCHOLARSHIP',			'Scholarship',			'Sage',			'PROMOTION_SCHOLARSHIP'			),
 ('EAMOD_BARDING',				'Barding',				'Artist',		'PROMOTION_BARDING'				),
 ('EAMOD_COMBAT',				'Combat',				'Warrior',		'PROMOTION_COMBAT'				),
-('EAMOD_RITUALISM',				'Ritualism',			'Devout',		'PROMOTION_RITUALISM'			),
 ('EAMOD_PROSELYTISM',			'Proselytism',			'Devout',		'PROMOTION_PROSELYTISM'			),
 ('EAMOD_DEVOTION',				'Devotion',				'Devout',		'PROMOTION_DEVOTION'			),
 --Lua expects last 8 to be magic schools
@@ -32,9 +31,8 @@ INSERT INTO EaModifiers(Type,	Description,			Class,			PromotionPrefix					) VALU
 ('EAMOD_ENCHANTMENT',			'Enchantment',			'Thaumaturge',	'PROMOTION_ENCHANTMENT'			),
 ('EAMOD_ILLUSION',				'Illusion',				'Thaumaturge',	'PROMOTION_ILLUSION'			);
 
-UPDATE EaModifiers SET Subclass = 'Druid' WHERE Type = 'EAMOD_RITUALISM';
 UPDATE EaModifiers SET ExcludeSubclass = 'Druid' WHERE Type = 'EAMOD_PROSELYTISM';
-UPDATE EaModifiers SET ProphetBonus = 1 WHERE Type IN ('EAMOD_RITUALISM', 'EAMOD_PROSELYTISM','EAMOD_DEVOTION');
+UPDATE EaModifiers SET ProphetBonus = 1 WHERE Type IN ('EAMOD_PROSELYTISM','EAMOD_DEVOTION');
 
 
 /*

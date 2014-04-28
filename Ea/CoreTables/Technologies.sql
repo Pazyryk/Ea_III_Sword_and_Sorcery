@@ -1,8 +1,8 @@
 DELETE FROM Technologies;
 ALTER TABLE Technologies ADD COLUMN 'Utility' BOOLEAN DEFAULT NULL;
 ALTER TABLE Technologies ADD COLUMN 'EaArcane' BOOLEAN DEFAULT NULL;
-ALTER TABLE Technologies ADD COLUMN 'EaLandTradeRoutesChange' INTEGER DEFAULT 0;
-ALTER TABLE Technologies ADD COLUMN 'EaSeaTradeRoutesChange' INTEGER DEFAULT 0;
+--ALTER TABLE Technologies ADD COLUMN 'EaLandTradeRoutesChange' INTEGER DEFAULT 0;	--Not implemented (maybe never will be)
+--ALTER TABLE Technologies ADD COLUMN 'EaSeaTradeRoutesChange' INTEGER DEFAULT 0;
 
 -- Tier 1
 INSERT INTO Technologies (GridX, GridY, Type, Cost, EaArcane, Quote,					PortraitIndex,	IconAtlas		) VALUES
@@ -145,8 +145,10 @@ INSERT INTO Technologies (Type,		Utility) VALUES
 UPDATE Technologies SET GridX = 9, GridY = 36, Cost = -1, Description = 'TXT_KEY_EA_NOTSHOWN', Civilopedia = 'TXT_KEY_EA_NOTSHOWN', Help = 'TXT_KEY_EA_NOTSHOWN', PortraitIndex = 13, IconAtlas = 'TECH_ATLAS_1' WHERE Utility = 1;
 
 UPDATE Technologies SET Trade='TRUE', GoodyTech='FALSE', Era='ERA_ANCIENT';		--Is NULL for quote OK?
+UPDATE Technologies SET InternationalTradeRoutesChange = 1 WHERE Type IN ('TECH_CURRENCY', 'TECH_SAILING', 'TECH_COINAGE', 'TECH_SHIP_BUILDING', 'TECH_BANKING', 'TECH_CONSTRUCTION', 'TECH_NAVIGATION', 'TECH_ENGINEERING', 'TECH_NAVAL_ENGINEERING', 'TECH_ADV_NAVAL_ENGINEERING', 'TECH_STEAM_POWER');
+UPDATE Technologies SET GoldTrading = 1 WHERE Type = 'TECH_COINAGE';		--TO DO: trade route techs
 
-UPDATE Technologies SET GoldTrading=1, InternationalTradeRoutesChange = 10 WHERE Type = 'TECH_CURRENCY';		--TO DO: trade route techs
+
 UPDATE Technologies SET BridgeBuilding=1 WHERE Type='TECH_ENGINEERING';
 UPDATE Technologies SET OpenBordersTradingAllowed=1 WHERE Type='TECH_GAIN_WITH_NAMING';
 UPDATE Technologies SET WaterWork = 1 WHERE Type = 'TECH_FISHING';

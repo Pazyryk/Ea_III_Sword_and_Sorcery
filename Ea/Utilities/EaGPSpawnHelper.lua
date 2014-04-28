@@ -71,7 +71,7 @@ local RELIGION_ANRA =				GameInfoTypes.RELIGION_ANRA
 local RELIGION_AZZANDARAYASNA =		GameInfoTypes.RELIGION_AZZANDARAYASNA
 local TECH_ALCHEMY =				GameInfoTypes.TECH_ALCHEMY
 local TECH_DIVINE_LITURGY =			GameInfoTypes.TECH_DIVINE_LITURGY
-local TECH_MALEFICIUM =				GameInfoTypes.TECH_MALEFICIUM
+local TECH_SORCERY =				GameInfoTypes.TECH_SORCERY
 local TECH_THAUMATURGY =			GameInfoTypes.TECH_THAUMATURGY
 local TECH_NECROMANCY =				GameInfoTypes.TECH_NECROMANCY
 local EACIV_GRAEAE =				GameInfoTypes.EACIV_GRAEAE
@@ -108,7 +108,7 @@ function PickSubclassForSpawnedClass(iPlayer, class)
 			return "Witch"
 		elseif team:IsHasTech(TECH_NECROMANCY) then
 			return "Necromancer"
-		elseif team:IsHasTech(TECH_MALEFICIUM) then
+		elseif team:IsHasTech(TECH_SORCERY) then
 			return "Sorcerer"
 		elseif team:IsHasTech(TECH_THAUMATURGY) then
 			return "Wizard"

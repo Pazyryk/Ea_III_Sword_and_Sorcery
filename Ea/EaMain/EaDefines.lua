@@ -184,6 +184,7 @@ MapModData.bHidden = MapModData.bHidden or {}
 local playerType = MapModData.playerType
 local bFullCivAI = MapModData.bFullCivAI
 local bHidden = MapModData.bHidden
+gg_minorPlayerByTypeID = {}
 print("Player Types by ID at game init:")
 for iPlayer = 0, BARB_PLAYER_INDEX do
 	local player = Players[iPlayer]
@@ -207,9 +208,11 @@ for iPlayer = 0, BARB_PLAYER_INDEX do
 			print(iPlayer, ": God")
 			playerType[iPlayer] = "God"
 			bHidden[iPlayer] = true
+			gg_minorPlayerByTypeID[player:GetMinorCivType()] = iPlayer
 		else
 			print(iPlayer, ": CityState")
 			playerType[iPlayer] = "CityState"
+			gg_minorPlayerByTypeID[player:GetMinorCivType()] = iPlayer
 		end
 	end
 end

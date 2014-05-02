@@ -568,7 +568,7 @@ function GetFaithFromEaCityStates(iPlayer)		--For Arcane, Holy and Unholy CSs; g
 	return faithFromCityStates
 end
 
-
+--[[
 function MeetRandomPantheisticGod(iPlayer, triggerType, id)
 	--compile eligible into integers table
 	local team = Teams[Players[iPlayer]:GetTeam()]
@@ -623,6 +623,7 @@ function MeetRandomPantheisticGod(iPlayer, triggerType, id)
 		team:Meet(Players[iGod]:GetTeam(), true)
 	end
 end
+]]
 
 local function TeemMeetListener(iActiveTeam, iMetTeam)	--player or team?
 	print("TeemMeetListener: ", iActiveTeam, iMetTeam)	--returning true did not prevent meeting (contrary to wiki)

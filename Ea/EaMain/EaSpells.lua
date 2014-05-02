@@ -411,7 +411,7 @@ function TestEaSpell(eaActionID, iPlayer, unit, iPerson, testX, testY, bAINonTar
 	g_eaAction = EaActionsInfo[eaActionID]
 	g_gameTurn = Game.GetGameTurn()
 
-	print("TestEaSpell", eaActionID, iPlayer, unit, iPerson, testX, testY, bAINonTargetTest)
+	--print("TestEaSpell", eaActionID, iPlayer, unit, iPerson, testX, testY, bAINonTargetTest)
 
 	g_bNonTargetTestsPassed = false
 	g_testTargetSwitch = 0

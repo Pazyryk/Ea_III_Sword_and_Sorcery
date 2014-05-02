@@ -130,7 +130,7 @@ local count = 0
 -- Cached Tables
 --------------------------------------------------------------
 
-local planSets = {"aiStartPlans", "aiNamingPlans", "aiContingency1Plans", "aiFocusPlans", "aiContingency2Plans"}	--this sets order of plan execution
+local planSets = {"aiStartPlans", "aiNamingPlans", "aiContingency1Plans", "aiFocusPlans", "aiContingency2Plans"}	--this sets priority of plan execution
 local numPlanSets = #planSets
 
 local policyPrereqs = {}			--indexed by policyID, holds arrays of all prereqs including opener
@@ -502,13 +502,16 @@ function AIPushTechsFromCivPlans(iPlayer, bReset)	--called from above and when t
 			if techs then
 				for i = 1, #techs do
 					local techID = techs[i]
+					if not techID then
+						error("techID is nil")		--could happen if we made a typo in EaCivPlans_TechModules
+					end
 					if not team:IsHasTech(techID) and player:CanEverResearch(techID) and player:GetQueuePosition( techID ) == -1 then
 						print("Attempting to push tech ", techID, GameInfo.Technologies[techID].Type)
 						player:PushResearch(techID, false)
 						print("Queue length / position of last push ", player:GetLengthResearchQueue(), player:GetQueuePosition(techID))
 					end
 				end
-				if player:GetLengthResearchQueue() > 0 then break end
+				if player:GetLengthResearchQueue() > 0 then return end
 			end
 			planNum = planNum + 1
 			planID = plans[planNum]
@@ -532,9 +535,19 @@ function AIPushTechsFromCivPlans(iPlayer, bReset)	--called from above and when t
 					plans = eaPlayer[planSet]
 					planNum = 1
 					planID = plans[1]
-				else 
-					planID = EACIVPLAN_GENERIC
-					print("!!!! WARNING: AI resorting to generic plan for techs !!!!")
+				else
+					print("!!!! WARNING: AI has no techs in its plans, pushing first it can research")
+					--just push the first tech we can research; IDs are ordered from cheapest so there is some sense to this (but skip maleficium)
+					for techInfo in GameInfo.Technologies() do
+						if techInfo.Type ~= "TECH_MALEFICIUM" and player:CanResearch(techInfo.ID) then
+							print("Attempting to push tech ", techInfo.ID, GameInfo.Technologies[techInfo.ID].Type)
+							player:PushResearch(techInfo.ID, false)
+							print("Queue length / position of last push ", player:GetLengthResearchQueue(), player:GetQueuePosition(techInfo.ID))
+							return
+						end
+					end
+					print("!!!! WARNING: Exiting AIPushTechsFromCivPlans; could not find any tech that was researchable !!!!")
+					return
 				end
 			end
 		end

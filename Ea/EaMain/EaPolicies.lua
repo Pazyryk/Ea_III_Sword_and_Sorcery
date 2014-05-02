@@ -283,9 +283,9 @@ function OnPlayerAdoptPolicyDelayedEffect()		--called by closing policy window a
 		local policyInfo = GameInfo.Policies[policyID]
 
 		--Meet pantheistic god
-		if policyInfo.PolicyBranchType == "POLICY_BRANCH_PANTHEISM" then
-			MeetRandomPantheisticGod(iPlayer, "PantheisticPolicy", policyID)
-		end
+		--if policyInfo.PolicyBranchType == "POLICY_BRANCH_PANTHEISM" then
+		--	MeetRandomPantheisticGod(iPlayer, "PantheisticPolicy", policyID)
+		--end
 
 		RefreshBeliefs(policyID)
 

@@ -79,7 +79,7 @@ local gg_bToCheapToHire =					gg_bToCheapToHire
 local gg_bNormalCombatUnit =				gg_bNormalCombatUnit
 local gg_bNormalLivingCombatUnit =			gg_bNormalLivingCombatUnit
 local gg_normalizedUnitPower =				gg_normalizedUnitPower
-
+local gg_minorPlayerByTypeID =				gg_minorPlayerByTypeID
 
 --localized functions
 local Floor =								math.floor
@@ -310,7 +310,6 @@ local function FinishEaAction(eaActionID)		--only called from DoEaAction so file
 			g_city:ConvertPercentFollowers(cultID, RELIGION_THE_WEAVE_OF_EA, 100)
 
 		end
-
 	end
 
 	--Effects
@@ -366,6 +365,13 @@ local function FinishEaAction(eaActionID)		--only called from DoEaAction so file
 		end
 	end
 
+	if g_eaAction.MeetGod then
+		local iGodTeam = Players[GameInfoTypes[g_eaAction.MeetGod] ]:GetTeam()
+		if not g_team:IsHasMet(iGodTeam) then
+			g_team:Meet(iGodTeam, true)
+		end
+	end
+
 	print("About to try action-specific Finish function, if any")
 	if Finish[eaActionID] and not Finish[eaActionID]() then return false end	--this is the custom Finish call
 
@@ -390,7 +396,7 @@ function TestEaActionForHumanUI(eaActionID, iPlayer, unit, iPerson, testX, testY
 	
 	g_bAllTestsPassed = TestEaAction(eaActionID, iPlayer, unit, iPerson, testX, testY, false)
 	MapModData.bAllow = g_bAllTestsPassed and not g_bSetDelayedFailForUI
-	MapModData.bShow = g_bAllTestsPassed	--may change below
+	MapModData.bShow = g_bAllTestsPassed or (g_bNonTargetTestsPassed and g_eaAction.UIType == "Build")	--may change below
 	MapModData.text = "no help text"		--will change below or take eaAction.Help value (if bShow)
 
 	--By default, bShow follows bAllow and text will be from eaAction.Help. If we want bShow=true when bAllow=false,
@@ -483,8 +489,9 @@ function TestEaAction(eaActionID, iPlayer, unit, iPerson, testX, testY, bAINonTa
 	--unit must be non-nil EXCEPT if this is a GP not on map
 	g_eaAction = EaActionsInfo[eaActionID]
 	g_gameTurn = Game.GetGameTurn()
-
-	print("TestEaAction", eaActionID, iPlayer, unit, iPerson, testX, testY, bAINonTargetTest)
+	
+	--print("TestEaAction", eaActionID, iPlayer, unit, iPerson, testX, testY, bAINonTargetTest)
+	--print("TestEaAction", g_eaAction.Type, iPlayer, unit, iPerson, testX, testY, bAINonTargetTest)
 
 	g_bNonTargetTestsPassed = false
 	g_testTargetSwitch = 0
@@ -497,6 +504,10 @@ function TestEaAction(eaActionID, iPlayer, unit, iPerson, testX, testY, bAINonTa
 	if g_eaAction.ReligionNotFounded and gReligions[GameInfoTypes[g_eaAction.ReligionNotFounded] ] then return false end
 	if g_eaAction.ReligionFounded and not gReligions[GameInfoTypes[g_eaAction.ReligionFounded] ] then return false end
 	if g_eaAction.MaleficiumLearnedByAnyone and gWorld.maleficium ~= "Learned" then return false end
+
+	if g_eaAction.MeetGod and not gg_minorPlayerByTypeID[GameInfoTypes[g_eaAction.MeetGod] ] then return false end	--god not in this game
+
+	--print("pass a")
 
 	g_eaPlayer = gPlayers[iPlayer]
 	if g_eaAction.ExcludeFallen and g_eaPlayer.bIsFallen then return false end
@@ -515,6 +526,9 @@ function TestEaAction(eaActionID, iPlayer, unit, iPerson, testX, testY, bAINonTa
 		end
 	end
 	if g_eaAction.TechDisallow and g_team:IsHasTech(GameInfoTypes[g_eaAction.TechDisallow]) then return false end
+
+	--print("pass b")
+
 	g_iPlayer = iPlayer
 
 	if bAINonTargetTest then
@@ -540,6 +554,8 @@ function TestEaAction(eaActionID, iPlayer, unit, iPerson, testX, testY, bAINonTa
 		g_bGreatPerson = false
 	end 
 
+	--print("pass c")
+
 	if g_eaAction.LevelReq and unit:GetLevel() < g_eaAction.LevelReq then
 		if g_bUICall and g_eaAction.UnitUpgradeTypePrefix then
 			g_bSetDelayedFailForUI = true
@@ -555,6 +571,8 @@ function TestEaAction(eaActionID, iPlayer, unit, iPerson, testX, testY, bAINonTa
 	end
 	if g_eaAction.UnitCombatType and GameInfoTypes[g_eaAction.UnitCombatType] ~= unit:GetUnitCombatType() then return false end
 	if g_eaAction.NormalCombatUnit and (g_bGreatPerson or unit:GetUnitCombatType() == -1) then return false end
+	
+	--print("pass d")
 			
 	if g_eaAction.UnitTypePrefix1 then
 		local bAllow = false
@@ -582,6 +600,8 @@ function TestEaAction(eaActionID, iPlayer, unit, iPerson, testX, testY, bAINonTa
 		and (not g_eaAction.OrUnitType or GameInfoTypes[g_eaAction.OrUnitType] ~= g_unitTypeID)
 		and (not g_eaAction.OrUnitType2 or GameInfoTypes[g_eaAction.OrUnitType2] ~= g_unitTypeID) then return false end
 
+	--print("pass e")
+
 	--GP only
 	if g_bGreatPerson then
 		g_subclass = g_eaPerson.subclass
@@ -594,6 +614,8 @@ function TestEaAction(eaActionID, iPlayer, unit, iPerson, testX, testY, bAINonTa
 	elseif g_eaAction.GPOnly then
 		return false
 	end
+
+	--print("pass f")
 
 	--Unique already created or being created			TEST THIS!!!
 	if g_bGreatPerson and g_eaAction.UniqueType then		--built or someone else building
@@ -610,8 +632,12 @@ function TestEaAction(eaActionID, iPlayer, unit, iPerson, testX, testY, bAINonTa
 		g_mod = modType1 and GetGPMod(g_iPerson, modType1, g_eaAction.GPModType2) or 0
 	end
 
+	--print("pass g")
+
 	--Specific action test (runs if it exists)
 	if Test[eaActionID] and not Test[eaActionID]() then return false end
+
+	--print("pass h")
 
 	--All non-target tests have passed
 	g_bNonTargetTestsPassed = true
@@ -622,13 +648,14 @@ function TestEaAction(eaActionID, iPlayer, unit, iPerson, testX, testY, bAINonTa
 		end
 		if not TestEaActionTarget(eaActionID, testX, testY, false) then return false end
 	end
+
 	return true	
 end					
 
 function TestEaActionTarget(eaActionID, testX, testY, bAITargetTest)
 	--This function sets all file locals related to the target plot
 	--AI can call this directly but ONLY after a call to TestEaAction so that civ/caster file locals are correct
-	--g_eaAction = EaActionsInfo[eaActionID]		--needed here in case function called directly by AI
+
 	--print("TestEaActionTarget",eaActionID, testX, testY, bAITargetTest)
 
 	g_testTargetSwitch = 0
@@ -637,6 +664,8 @@ function TestEaActionTarget(eaActionID, testX, testY, bAITargetTest)
 	--Plot and city
 	g_x, g_y = testX, testY
 	g_iPlot = GetPlotIndexFromXY(testX, testY)
+
+	--print("pass i")
 
 	--Action being done here (or GP on way for AI)? 
 	if not g_eaAction.NoGPNumLimit then
@@ -652,12 +681,15 @@ function TestEaActionTarget(eaActionID, testX, testY, bAITargetTest)
 		end
 	end
 
+	--print("pass j")
+
 	g_plot = GetPlotFromXY(testX, testY)
 	if g_eaAction.BuildType and not g_plot:CanBuild(GameInfoTypes[g_eaAction.BuildType], g_iPlayer) then return false end
 	g_iOwner = g_plot:GetOwner()
 
 	if g_eaAction.OwnCityRadius then
 		if not g_plot:IsPlayerCityRadius(g_iPlayer) then return false end
+		--print("pass k")
 		if g_eaAction.ReqNearbyCityReligion then
 			if g_iOwner == g_iPlayer then
 				local iCity = g_plot:GetCityPurchaseID()
@@ -666,6 +698,7 @@ function TestEaActionTarget(eaActionID, testX, testY, bAITargetTest)
 			else	--does any player city in radius have religion (faster to iterate cities or plots?)
 				local religionID = GameInfoTypes[g_eaAction.ReqNearbyCityReligion]
 				local bNoCity = true
+				--print("pass l")
 				for city in g_player:Cities() do
 					if city:GetReligiousMajority() == religionID and PlotDistance(g_x, g_y, city:GetX(), city:GetY()) < 4 then
 						bNoCity = false
@@ -673,9 +706,12 @@ function TestEaActionTarget(eaActionID, testX, testY, bAITargetTest)
 					end
 				end
 				if bNoCity then return false end
+				--print("pass m")
 			end
 		end
 	end
+
+	--print("pass n")
 
 	if g_eaAction.OwnTerritory and g_iOwner ~= g_iPlayer then
 		if g_bUICall and g_eaAction.UnitUpgradeTypePrefix then
@@ -705,6 +741,8 @@ function TestEaActionTarget(eaActionID, testX, testY, bAITargetTest)
 		end
 	end
 
+	--print("pass o")
+
 	if g_bIsCity then
 		if g_iOwner ~= g_iPlayer and g_team:IsAtWar(Players[g_iOwner]:GetTeam()) then return false end		--fail if enemy city
 		g_city = g_plot:GetPlotCity()
@@ -722,6 +760,8 @@ function TestEaActionTarget(eaActionID, testX, testY, bAITargetTest)
 	end
 
 	g_specialEffectsPlot = g_plot	--can be changed in by action specific function
+
+	--print("pass p")
 
 	--Alt unit upgrades (we can set some file locals here to pass to human UI or other specific methods; these values could be changed in specific TestTarget method)
 	if g_eaAction.UnitUpgradeTypePrefix then
@@ -756,9 +796,13 @@ function TestEaActionTarget(eaActionID, testX, testY, bAITargetTest)
 		end
 	end
 
+	--print("pass q")
+
 	if TestTarget[eaActionID] and not TestTarget[eaActionID]() then return false end
 
 	if g_bSomeoneElseDoingHere then return false end	--after TestTarget so special human UI can be shown if needed
+
+	--print("pass r")
 
 	--Caluculate turns to complete
 	local turnsToComplete = g_eaAction.TurnsToComplete
@@ -3155,7 +3199,7 @@ end
 
 Finish[GameInfoTypes.EA_ACTION_RITUAL_LEAVES] = function()
 	UpdateCivReligion(g_iOwner)
-	MeetRandomPantheisticGod(g_iPlayer, "CultFounding", RELIGION_CULT_OF_LEAVES)
+	--MeetRandomPantheisticGod(g_iPlayer, "CultFounding", RELIGION_CULT_OF_LEAVES)
 	return true
 end
 
@@ -3261,7 +3305,7 @@ end
 
 Finish[GameInfoTypes.EA_ACTION_RITUAL_EQUUS] = function()
 	UpdateCivReligion(g_iOwner)
-	MeetRandomPantheisticGod(g_iPlayer, "CultFounding", RELIGION_CULT_OF_EPONA)
+	--MeetRandomPantheisticGod(g_iPlayer, "CultFounding", RELIGION_CULT_OF_EPONA)
 	return true
 end
 
@@ -3350,7 +3394,7 @@ end
 
 Finish[GameInfoTypes.EA_ACTION_RITUAL_CLEANSING] = function()
 	UpdateCivReligion(g_iOwner)
-	MeetRandomPantheisticGod(g_iPlayer, "CultFounding", RELIGION_CULT_OF_PURE_WATERS)
+	--MeetRandomPantheisticGod(g_iPlayer, "CultFounding", RELIGION_CULT_OF_PURE_WATERS)
 	return true
 end
 
@@ -3439,7 +3483,7 @@ end
 
 Finish[GameInfoTypes.EA_ACTION_RITUAL_AEGIR] = function()
 	UpdateCivReligion(g_iOwner)
-	MeetRandomPantheisticGod(g_iPlayer, "CultFounding", RELIGION_CULT_OF_AEGIR)
+	--MeetRandomPantheisticGod(g_iPlayer, "CultFounding", RELIGION_CULT_OF_AEGIR)
 	return true
 end
 
@@ -3531,7 +3575,7 @@ end
 
 Finish[GameInfoTypes.EA_ACTION_RITUAL_BAKKHEIA] = function()
 	UpdateCivReligion(g_iOwner)
-	MeetRandomPantheisticGod(g_iPlayer, "CultFounding", RELIGION_CULT_OF_BAKKHEIA)
+	--MeetRandomPantheisticGod(g_iPlayer, "CultFounding", RELIGION_CULT_OF_BAKKHEIA)
 	return true
 end
 

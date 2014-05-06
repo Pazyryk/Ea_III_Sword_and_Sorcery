@@ -18,6 +18,7 @@ local Dprint = DEBUG_PRINT and print or function() end
 --constants
 local DOMAIN_LAND =							DomainTypes.DOMAIN_LAND
 local DOMAIN_SEA =							DomainTypes.DOMAIN_SEA
+local EAMOD_DEVOTION =						GameInfoTypes.EAMOD_DEVOTION
 local EA_WONDER_ARCANE_TOWER =				GameInfoTypes.EA_WONDER_ARCANE_TOWER
 local FEATURE_BLIGHT =	 					GameInfoTypes.FEATURE_BLIGHT
 local FEATURE_FALLOUT =	 					GameInfoTypes.FEATURE_FALLOUT
@@ -591,15 +592,29 @@ function TestEaSpellTarget(eaActionID, testX, testY, bAITargetTest)
 
 	g_specialEffectsPlot = g_plot	--can be changed in by action specific function
 
-	--set g_modSpell for Tower or Temple
+	--set g_modSpell if caster is in her Tower or Temple
 	if g_eaAction.ConsiderTowerTemple then
-		if gWonders[EA_WONDER_ARCANE_TOWER][g_iPerson] and gWonders[EA_WONDER_ARCANE_TOWER][g_iPerson].iPlot == g_iPlot then	--in tower
-			g_modSpell = g_mod + gWonders[EA_WONDER_ARCANE_TOWER][g_iPerson][GameInfoTypes[g_eaAction.GPModType1] ]		--Assume all spells have exactly one mod
+		if gWonders[EA_WONDER_ARCANE_TOWER][g_iPerson] then
+			if gWonders[EA_WONDER_ARCANE_TOWER][g_iPerson].iPlot == g_iPlot then	--in tower
+				g_bInTowerOrTemple = true
+				g_modSpell = g_mod + gWonders[EA_WONDER_ARCANE_TOWER][g_iPerson][GameInfoTypes[g_eaAction.GPModType1] ]		--Assume all spells have exactly one mod
+			else	--not in tower
+				if g_eaAction.TowerTempleOnly then return false end
+				g_bInTowerOrTemple = false
+				g_modSpell = g_mod
+			end
+		elseif g_eaPerson.templeID and gWonders[g_eaPerson.templeID].iPlot == g_iPlot then
 			g_bInTowerOrTemple = true
-		else		--not in tower
+			local temple = gWonders[g_eaPerson.templeID]
+			if 0 < temple[EAMOD_DEVOTION] then		--Azz temple, no magic schools
+				g_modSpell = g_mod + temple[EAMOD_DEVOTION]
+			else									--all other temples
+				g_modSpell = g_mod + temple[GameInfoTypes[g_eaAction.GPModType1] ]
+			end
+		else	
 			if g_eaAction.TowerTempleOnly then return false end
-			g_modSpell = g_mod
 			g_bInTowerOrTemple = false
+			g_modSpell = g_mod
 		end
 	end
 

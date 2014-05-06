@@ -4,6 +4,7 @@
 --------------------------------------------------------------
 print("Loading EaImagePopup.lua")
 
+include ("EaErrorHandler.lua")
 include ("EaImageScaling.lua")
 include ("EaTextUtils.lua")
 include("EaCivTextHelper.lua")
@@ -21,6 +22,8 @@ local POLICY_PANTHEISM =				GameInfoTypes.POLICY_PANTHEISM
 local EARACE_MAN =						GameInfoTypes.EARACE_MAN
 local EARACE_SIDHE =					GameInfoTypes.EARACE_SIDHE
 local EARACE_HELDEOFOL =				GameInfoTypes.EARACE_HELDEOFOL
+
+local HandleError10 =					HandleError10
 
 --------------------------------------------------------------
 -- file control vars
@@ -57,7 +60,7 @@ function ShowEaImagePopup(info)
 
 	end
 end
-LuaEvents.EaImagePopup.Add(ShowEaImagePopup)
+LuaEvents.EaImagePopup.Add(function(info) return HandleError10(ShowEaImagePopup, info) end)
 
 function ShowPortrait(info)
 	print("Running ShowPortrait")
@@ -88,42 +91,50 @@ function ShowPortrait(info)
 		textRows = textRows + 1			
 	end
 
+	--Action/Spell modifiers
 	LuaEvents.EaPeopleSetModsTable(iPerson)		--TO DO: move to helper file
-
 	for i = 1, #modsForUI do
 		local mod = modsForUI[i].value
 		if 0 < mod then
 			text = text .. "[NEWLINE]   " .. modsForUI[i].text .. ": " .. mod
-			if i >= modsForUI.firstMagicMod and modsForUI.bApplyTowerMods then
+			if (modsForUI.bApplyMagicMods and i >= modsForUI.firstMagicMod) or (modsForUI.bApplyDevotionMod and i == modsForUI.firstMagicMod - 1) then
 				text = text .. "*"
 			end
-			--[[
-			local subTable = modsForUI[i].subTable
-			if subTable then
-				local modModText = ""
-				for j = 1, #subTable do
-					if subTable[j].value ~= mod then
-						if modModText ~= "" then
-							modModText = modModText .. ", "
-						end
-						modModText = modModText .. subTable[j].text .. ": " .. subTable[j].value
-					end
-				end
-				if modModText ~= "" then
-					text = text .. " (" .. modModText .. ")"
-				end
-			end
-			]]
 			textRows = textRows + 1			
 		end
 	end
-	if modsForUI.bApplyTowerMods then
-		text = text .. "[NEWLINE]    *includes Tower modifiers"
-		textRows = textRows + 1	
+
+	--Tower/Temple info
+	local towerTempleName
+	if eaPerson.templeID then
+		towerTempleName = Locale.Lookup(GameInfo.EaWonders[eaPerson.templeID].Description)
+	else
+		local tower = gT.gWonders[GameInfoTypes.EA_WONDER_ARCANE_TOWER][iPerson]
+		if tower then
+			local plot = Map.GetPlotByIndex(tower.iPlot)
+			towerTempleName = plot:GetScriptData()	
+		end
+	end
+	if towerTempleName then
+		if modsForUI.bApplyMagicMods then
+			text = text .. "[NEWLINE]*Includes modifiers from " .. towerTempleName
+			textRows = textRows + 1	
+		elseif modsForUI.bApplyDevotionMod then
+			text = text .. "[NEWLINE]*Includes modifier from " .. towerTempleName
+			textRows = textRows + 1	
+		elseif eaPerson.templeID then
+			text = text .. "[NEWLINE]Head priest at the " .. towerTempleName .. " (boosts spell modifiers)"
+			textRows = textRows + 1	
+		else
+			text = text .. "[NEWLINE]Owns " .. towerTempleName .. " (boosts spell modifiers)"
+			textRows = textRows + 1	
+		end
+	elseif modsForUI.bApplyMagicMods or modsForUI.bApplyDevotionMod then
+		error("GP seems to have spell mods but didn't find name for tower or temple")
 	end
 
+	--Process image
 	local dds = g_artInfo.File
-	
 	local gridSize, gridOffset, imageFrame, imageSize, imageOffset = ScaleImage("TextBox", dds, textRows)
 	print(imageFrame, imageSize.x, imageSize.y, imageOffset.x, imageOffset.y, gridSize.x, gridSize.y, gridOffset.x, gridOffset.y)
 

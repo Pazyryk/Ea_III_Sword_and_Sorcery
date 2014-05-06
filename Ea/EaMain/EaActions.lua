@@ -335,7 +335,23 @@ local function FinishEaAction(eaActionID)		--only called from DoEaAction so file
 	if g_eaAction.EaWonder then		--Single -instance wonders only! Multiple-instance must be done in special function
 		local wonderID = GameInfoTypes[g_eaAction.EaWonder]
 		gWonders[wonderID] = {mod = g_mod, iPlot = g_iPlot, iPlayer = -1}	--iPlayer = -1 so it will update in UpdateUniqueWonder
-		UpdateUniqueWonder(g_iPlayer, wonderID)
+		if g_eaAction.BuildsTemple then
+			g_eaPerson.templeID = wonderID
+			local temple = gWonders[wonderID]
+			temple.iPerson = g_iPerson
+			local wonderInfo = GameInfo.EaWonders[wonderID]
+			temple.mod = wonderInfo.Mod
+			temple[GameInfoTypes.EAMOD_DEVOTION] = wonderInfo.Devotion
+			temple[GameInfoTypes.EAMOD_DIVINATION] = wonderInfo.Divi
+			temple[GameInfoTypes.EAMOD_ABJURATION] = wonderInfo.Abju
+			temple[GameInfoTypes.EAMOD_EVOCATION] = wonderInfo.Evoc
+			temple[GameInfoTypes.EAMOD_TRANSMUTATION] = wonderInfo.Trans
+			temple[GameInfoTypes.EAMOD_CONJURATION] = wonderInfo.Conj
+			temple[GameInfoTypes.EAMOD_NECROMANCY] = wonderInfo.Necr
+			temple[GameInfoTypes.EAMOD_ENCHANTMENT] = wonderInfo.Ench
+			temple[GameInfoTypes.EAMOD_ILLUSION] = wonderInfo.Illu
+		end
+		UpdateUniqueWonder(g_iPlayer, wonderID)		--updates ownership, sets appropriate buildings in nearby city, and other effects
 		--TO DO! need popup or notification
 		--LuaEvents.EaImagePopupSpecial("EaWonder", artifactID)
 
@@ -2083,6 +2099,100 @@ Finish[GameInfoTypes.EA_ACTION_OCCUPY_TOWER] = function()
 	UpdateInstanceWonder(g_iPlayer, EA_WONDER_ARCANE_TOWER)
 end
 
+--this is not table safe!
+local EA_WONDER_TEMPLE_FAGUS =				GameInfoTypes.EA_WONDER_TEMPLE_FAGUS
+local EA_WONDER_TEMPLE_NESR =				GameInfoTypes.EA_WONDER_TEMPLE_NESR
+local EA_WONDER_TEMPLE_AZZANDARA_1 =				GameInfoTypes.EA_WONDER_TEMPLE_AZZANDARA_1
+local EA_ACTION_TEMPLE_AHRIMAN_1 =				GameInfoTypes.EA_ACTION_TEMPLE_AHRIMAN_1
+local IMPROVEMENT_TEMPLE_FAGUS =				GameInfoTypes.IMPROVEMENT_TEMPLE_FAGUS
+local IMPROVEMENT_TEMPLE_AZZANDARA_1 =				GameInfoTypes.IMPROVEMENT_TEMPLE_AZZANDARA_1
+local IMPROVEMENT_TEMPLE_AHRIMAN_1 =				GameInfoTypes.IMPROVEMENT_TEMPLE_AHRIMAN_1
+
+
+--EA_ACTION_OCCUPY_TEMPLE
+Test[GameInfoTypes.EA_ACTION_OCCUPY_TEMPLE] = function()
+	local currentTempleMod = 0
+	if g_eaPerson.templeID then
+		currentTempleMod = gWonders[g_eaPerson.templeID].mod
+	end
+	--do quick tally of vacant temples applicable to this GP
+	local first, last
+	if g_eaPerson.subclass == "Druid" then
+		first = EA_WONDER_TEMPLE_FAGUS
+		last = EA_WONDER_TEMPLE_NESR
+	elseif g_eaPerson.subclass == "Priest" or g_eaPerson.subclass == "Paladin" then
+		first = EA_WONDER_TEMPLE_AZZANDARA_1
+		last = EA_ACTION_TEMPLE_AHRIMAN_1 - 1	
+	else
+		first = EA_ACTION_TEMPLE_AHRIMAN_1
+		last = EA_WONDER_TEMPLE_FAGUS - 1	
+	end
+	g_integersPos = 0
+	for wonderID = first, last do
+		local temple = gWonders[wonderID]
+		if temple and currentTempleMod < temple.mod and not gPeople[temple.iPerson] then	--this is an upgrade and no occupant or last occupant is dead
+			g_integersPos = g_integersPos + 1
+			g_integers[g_integersPos] = wonderID
+		end
+	end
+	if 0 < g_integersPos then
+		g_int2 = currentTempleMod
+		return true
+	end
+	return false
+end
+
+TestTarget[GameInfoTypes.EA_ACTION_OCCUPY_TEMPLE] = function()
+	local improvementID = g_plot:GetImprovementType()
+	if g_eaPerson.subclass == "Druid" then
+		if improvementID < IMPROVEMENT_TEMPLE_FAGUS then return false end
+	elseif g_eaPerson.subclass == "Priest" or g_eaPerson.subclass == "Paladin" then
+		if improvementID < IMPROVEMENT_TEMPLE_AZZANDARA_1 or improvementID >= IMPROVEMENT_TEMPLE_AHRIMAN_1 then return false end
+	else
+		if improvementID < IMPROVEMENT_TEMPLE_AHRIMAN_1 or improvementID >= IMPROVEMENT_TEMPLE_FAGUS then return false end
+	end
+
+	if g_iOwner ~= g_iPlayer and (g_iOwner ~= -1 or not g_plot:IsCityRadius(g_iPlayer)) then return false end
+	--is it in vacant temple list?
+	for i = 1, g_integersPos do
+		local wonderID = g_integers[i]
+		local temple = gWonders[wonderID]
+		if temple.iPlot == g_iPlot then
+			g_int1 = wonderID
+
+			g_value = temple.mod - g_int2	--how much better than previous temple
+
+			return true
+		end
+	end
+	return false
+end
+
+SetUI[GameInfoTypes.EA_ACTION_OCCUPY_TEMPLE] = function()
+	local improvementStr = g_plot:GetScriptData()
+	MapModData.text = "Occupy " .. improvementStr .. " and make it your own"
+end
+
+
+SetAIValues[GameInfoTypes.EA_ACTION_OCCUPY_TEMPLE] = function()
+	gg_aiOptionValues.i = g_value			
+end
+
+Finish[GameInfoTypes.EA_ACTION_OCCUPY_TEMPLE] = function()
+	local temple = gWonders[g_int1]
+	temple.iPerson = g_iPerson
+	g_eaPerson.templeID = g_int1
+	--clear coccupancy of any other temple
+	for wonderID = EA_WONDER_TEMPLE_AZZANDARA_1, EA_WONDER_TEMPLE_NESR do
+		if wonderID ~= g_int1 and gWonder[wonderID] and gWonder[wonderID].iPerson == g_iPerson then
+			gWonder[wonderID].iPerson = -1
+		end
+	end
+
+	UseManaOrDivineFavor(g_iPlayer, g_iPerson, 20, false)	--20 mana or divine favor
+	g_specialEffectsPlot = g_plot
+	UpdateUniqueWonder(g_iPlayer, g_int1)
+end
 ------------------------------------------------------------------------------------------------------------------------------
 -- Prophecies
 ------------------------------------------------------------------------------------------------------------------------------

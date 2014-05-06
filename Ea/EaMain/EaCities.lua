@@ -1362,6 +1362,7 @@ TestCityCanTrain[GameInfoTypes.UNIT_HUNTERS] = function(iPlayer, iCity)
 	return false
 end
 
+--[[	May depreciate this; if so, remove g_cacheAIWorkerAlternative above
 TestCityCanTrain[GameInfoTypes.UNIT_WORKERS_MAN] = function(iPlayer, iCity)
 	if playerType[iPlayer] == "CityState" or bFullCivAI[iPlayer] then
 		local alternatives = g_cacheAIWorkerAlternative[iPlayer][iCity]
@@ -1379,7 +1380,7 @@ TestCityCanTrain[GameInfoTypes.UNIT_WORKERS_ORC] = TestCityCanTrain[GameInfoType
 TestCityCanTrain[GameInfoTypes.UNIT_SLAVES_MAN] = TestCityCanTrain[GameInfoTypes.UNIT_WORKERS_MAN]
 TestCityCanTrain[GameInfoTypes.UNIT_SLAVES_SIDHE] = TestCityCanTrain[GameInfoTypes.UNIT_WORKERS_MAN]
 TestCityCanTrain[GameInfoTypes.UNIT_SLAVES_ORC] = TestCityCanTrain[GameInfoTypes.UNIT_WORKERS_MAN]
-
+]]
 
 
 

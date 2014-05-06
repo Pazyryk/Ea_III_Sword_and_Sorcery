@@ -109,6 +109,7 @@ CREATE TABLE EaActions ('ID' INTEGER PRIMARY KEY AUTOINCREMENT,
 						'EaWonder' TEXT DEFAULT NULL,		--Leave NULL for multiple instance wonders!
 						'EaEpic' TEXT DEFAULT NULL,
 						'EaArtifact' TEXT DEFAULT NULL,
+						'BuildsTemple' BOOLEAN DEFAULT NULL,
 						'MeetGod' TEXT DEFAULT NULL,		--Note: this is used also as a req (check god present in game)
 						'FinishXP' INTEGER DEFAULT 0);
 
@@ -190,7 +191,8 @@ UPDATE EaActions SET FinishMoves = NULL WHERE Type = 'EA_ACTION_LEAD_CHARGE';
 
 --Misc actions
 INSERT INTO EaActions (Type,			Description,							Help,										GPOnly,	UIType,		GPClass,		OwnTerritory,	AITarget,		AICombatRole,	GPModType1,				TurnsToComplete,	ProgressHolder,	HumanVisibleFX,	IconIndex,	IconAtlas		) VALUES
-('EA_ACTION_OCCUPY_TOWER',				'TXT_KEY_EA_ACTION_OCCUPY_TOWER',		'TXT_KEY_EA_ACTION_OCCUPY_TOWER_HELP',		1,		'Action',	'Thaumaturge',	1,				'VacantTower',	NULL,			NULL,					3,					'Person',		1,				6,			'BW_ATLAS_1'	);
+('EA_ACTION_OCCUPY_TOWER',				'TXT_KEY_EA_ACTION_OCCUPY_TOWER',		'TXT_KEY_EA_ACTION_OCCUPY_TOWER_HELP',		1,		'Action',	'Thaumaturge',	1,				'VacantTower',	NULL,			NULL,					3,					'Person',		1,				6,			'BW_ATLAS_1'	),
+('EA_ACTION_OCCUPY_TEMPLE',				'TXT_KEY_EA_ACTION_OCCUPY_TEMPLE',		'TXT_KEY_EA_ACTION_OCCUPY_TEMPLE_HELP',		1,		'Action',	'Devout',		1,				'VacantTemple',	NULL,			NULL,					3,					'Person',		1,				6,			'BW_ATLAS_1'	);
 
 UPDATE EaActions SET NotGPClass = 'Devout' WHERE Type = 'EA_ACTION_OCCUPY_TOWER';
 
@@ -283,7 +285,7 @@ UPDATE EaActions SET PolicyReq = 'POLICY_PANTHEISM' WHERE Type = 'EA_ACTION_STAN
 UPDATE EaActions SET AndTechReq = 'TECH_MASONRY' WHERE Type = 'EA_ACTION_MEGALOS_FAROS';
 UPDATE EaActions SET PolicyReq = 'POLICY_SLAVERY' WHERE Type = 'EA_ACTION_UUC_YABNAL';
 UPDATE EaActions SET NotGPClass = 'Devout' WHERE Type = 'EA_ACTION_ARCANE_TOWER';
-UPDATE EaActions SET Help = 'TXT_KEY_' || Type || '_HELP' WHERE Type GLOB 'EA_ACTION_TEMPLE_*';
+UPDATE EaActions SET BuildsTemple = 1, Help = 'TXT_KEY_' || Type || '_HELP' WHERE Type GLOB 'EA_ACTION_TEMPLE_*';
 
 --Epics
 INSERT INTO EaActions (Type,			Description,								Help,											GPOnly,	TechReq,				PolicyReq,			UIType,		FinishXP,	AITarget,			AIAdHocValue,	GPClass,	City,		GPModType1,			TurnsToComplete,	ProgressHolder,	UniqueType,	EaEpic,							IconIndex,	IconAtlas) VALUES

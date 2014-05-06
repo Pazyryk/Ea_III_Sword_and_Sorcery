@@ -88,6 +88,16 @@ local csBaselineRelationshipByRace = {
 											[GameInfoTypes.EARACE_SIDHE] = -50,
 											[GameInfoTypes.EARACE_HELDEOFOL] = -20	}	}
 
+local godTempleID = {}	--index by god iPlayer, holds temple wonderID
+for wonderInfo in GameInfo.EaWonders() do
+	if wonderInfo.God then
+		local minorCivTypeID = GameInfoTypes[wonderInfo.God]
+		local iGod = gg_minorPlayerByTypeID[minorCivTypeID]
+		if iGod then
+			godTempleID[iGod] = wonderInfo.ID
+		end
+	end
+end
 
 --------------------------------------------------------------
 -- Init
@@ -470,10 +480,9 @@ local function OnPlayerMinorFriendshipAnchor(iMajorPlayer, iMinorPlayer)
 		else
 			local eaMajorPlayer = gPlayers[iMajorPlayer]
 			if eaMajorPlayer.eaCivNameID == EACIV_SKOGR then
-				return 15
-			else
-				return 0		
+				return 15		
 			end
+			return 0
 		end
 	end
 end
@@ -484,10 +493,13 @@ local function OnPlayerMinorFriendshipDecayMod(iMajorPlayer, iMinorPlayer)
 	if cityStates[iMinorPlayer] then	--City States
 		if gg_bHasPatronage[iMajorPlayer] then
 			return -50
-		else
-			return 0
 		end
+		return 0
 	else	-- God
+		local templeWonderID = godTempleID[iMinorPlayer]
+		if templeWonderID and gWonders[templeWonderID] and gWonders[templeWonderID].iPlayer == iMajorPlayer then
+			return -50
+		end
 		return 0
 	end
 end

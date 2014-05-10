@@ -51,7 +51,7 @@ local BUILDING_SMOKEHOUSE =					GameInfoTypes.BUILDING_SMOKEHOUSE
 local BUILDING_WINERY =						GameInfoTypes.BUILDING_WINERY
 local BUILDING_BREWERY =					GameInfoTypes.BUILDING_BREWERY
 local BUILDING_DISTILLERY =					GameInfoTypes.BUILDING_DISTILLERY
-
+local BUILDING_RIVER_DOCK =					GameInfoTypes.BUILDING_RIVER_DOCK
 
 
 local PROCESS_WORLD_WEAVE =					GameInfoTypes.PROCESS_WORLD_WEAVE
@@ -148,6 +148,7 @@ local HandleError =			HandleError
 local HandleError21 =		HandleError21
 local HandleError31 =		HandleError31
 local HandleError41 =		HandleError41
+local HandleError61 =		HandleError61
 local Distance =			Map.PlotDistance
 local GetPlotFromXY =		Map.GetPlot
 local GetPlotByIndex =		Map.GetPlotByIndex
@@ -163,6 +164,7 @@ local bInitialized = false
 local g_gameTurn = Game.GetGameTurn()
 local g_handicapAIGrowthBonus = {}
 local g_cacheAIWorkerAlternative = {}
+local g_riverDockByPlotIndex = {}
 local integers = {}
 
 local g_iActivePlayer = Game.GetActivePlayer()
@@ -221,6 +223,14 @@ function EaCityInit(bNewGame)
 			local player = Players[iPlayer]
 			for city in player:Cities() do
 				AddCityToResDistanceMatrixes(iPlayer, city)
+			end
+		end
+		for iPlayer, eaPlayer in pairs(fullCivs) do
+			local player = Players[iPlayer]
+			for city in player:Cities() do
+				if city:GetNumBuilding(BUILDING_RIVER_DOCK) > 0 then
+					g_riverDockByPlotIndex[city:Plot():GetPlotIndex()] = true
+				end
 			end
 		end
 	end
@@ -710,6 +720,9 @@ function CityPerCivTurn(iPlayer)		--Full civ only
 				end
 				]]
 
+				--River Dock?
+				g_riverDockByPlotIndex[iPlot] = 0 < city:GetNumBuilding(BUILDING_RIVER_DOCK) or nil
+			
 				--Windy?
 				if bCheckWindy and city:GetNumBuilding(BUILDING_WINDMILL) ~= 1 then
 					local countWindBreak = 0
@@ -1066,6 +1079,37 @@ function DeadPlayer(iPlayer)
 	cityStates[iPlayer] = nil
 end
 
+--------------------------------------------------------------
+-- River Connections
+--------------------------------------------------------------
+
+GameEvents.CityConnections.Add(function(iPlayer, bDirect) return not bDirect end)	--register testing for "non-direct" routes
+
+local MAP_W, MAP_H = Map.GetGridSize()
+local riverManager = RiverManager:new(function(iPlot) return true end)
+
+function OnCityConnected(iPlayer, iCityX, iCityY, iToCityX, iToCityY, bDirect)
+	--print("OnCityConnected ", iPlayer, iCityX, iCityY, iToCityX, iToCityY, bDirect)
+	if g_riverDockByPlotIndex[iCityY * MAP_W + iCityX] and g_riverDockByPlotIndex[iToCityY * MAP_W + iToCityX] then
+		local fromRivers = riverManager:getRivers(iCityX, iCityY)
+		local toRivers = riverManager:getRivers(iToCityX, iToCityY)
+		for _, iFromRiver in pairs(fromRivers) do
+			for _, iToRiver in pairs(toRivers) do
+				if iFromRiver == iToRiver then
+					return true
+				end
+			end
+		end
+	end
+	return false	
+end
+GameEvents.CityConnected.Add(function(iPlayer, iCityX, iCityY, iToCityX, iToCityY, bDirect) return HandleError61(OnCityConnected, iPlayer, iCityX, iCityY, iToCityX, iToCityY, bDirect) end)
+
+
+--------------------------------------------------------------
+-- City builds
+--------------------------------------------------------------
+
 local function OnPlayerCanConstruct(iPlayer, buildingTypeID)
 	--print("PazDebug OnPlayerCanConstruct ", iPlayer, buildingTypeID)
 	local buildingInfo = GameInfo.Buildings[buildingTypeID]
@@ -1106,9 +1150,6 @@ local function OnPlayerCanMaintain(iPlayer, processTypeID)
 	return false
 end
 GameEvents.PlayerCanMaintain.Add(function(iPlayer, processTypeID) return HandleError21(OnPlayerCanMaintain, iPlayer, processTypeID) end)
-
-
-
 
 local TestCityCanConstruct = {}
 local function OnCityCanConstruct(iPlayer, iCity, buildingTypeID)

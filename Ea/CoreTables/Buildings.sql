@@ -31,7 +31,6 @@ INSERT INTO Buildings (Type,			Cost,	GoldMaintenance,	PrereqTech,					EaPrereqPo
 ('BUILDING_MAGE_SCHOOL',				200,	1,					'TECH_THAUMATURGY',			NULL,				'Arcane',		0,			'SPECIALIST_ADEPT',		1,					1,				'TEMPLE',					'EXPANSION_BW_ATLAS_1',	9	),
 ('BUILDING_PHARMAKEIA',					200,	1,					'TECH_MALEFICIUM',			NULL,				'Arcane',		0,			'SPECIALIST_ADEPT',		1,					1,				'TEMPLE',					'EXPANSION_BW_ATLAS_1',	9	);
 
-
 -- early resource
 INSERT INTO Buildings (Type,			Cost,	GoldMaintenance,	PrereqTech,					Happiness,	NeverCapture,	ArtDefineTag,				IconAtlas,						PortraitIndex,	DisplayPosition) VALUES
 ('BUILDING_SMOKEHOUSE',					200,	1,					'TECH_HUNTING',				0,			0,				'ART_DEF_BUILDING_FORGE',	'BW_ATLAS_1',					57,				0	),
@@ -40,7 +39,7 @@ INSERT INTO Buildings (Type,			Cost,	GoldMaintenance,	PrereqTech,					Happiness,
 ('BUILDING_GRANARY',					200,	1,					'TECH_AGRICULTURE',			0,			0,				'ART_DEF_BUILDING_GRANARY',	'BW_ATLAS_1',					0,				0	),
 ('BUILDING_SALTWORKS',					200,	1,					'TECH_MINING',				0,			0,				'ART_DEF_BUILDING_FORGE',	'NEW_BLDG_ATLAS2_DLC',			1,				0	),
 ('BUILDING_STABLE',						200,	1,					'TECH_HORSEBACK_RIDING',	0,			0,				'ART_DEF_BUILDING_STABLE',	'BW_ATLAS_1',					7,				0	),
-('BUILDING_ELEPHANT_STOCKADE',			200,	1,					'TECH_ELEPHANT_LABOR',		0,			0,				'ART_DEF_BUILDING_GARDEN',	'EXPANSION2_BUILDING_ATLAS2',	0,			0	),
+('BUILDING_ELEPHANT_STOCKADE',			200,	1,					'TECH_ELEPHANT_LABOR',		0,			0,				'ART_DEF_BUILDING_GARDEN',	'EXPANSION2_BUILDING_ATLAS2',	0,				0	),
 ('BUILDING_HUNTING_LODGE',				200,	1,					'TECH_TRACKING_TRAPPING',	0,			0,				'ART_DEF_BUILDING_GARDEN',	'BW_ATLAS_1',					24,				0	),
 ('BUILDING_ABATTOIR',					200,	1,					'TECH_ANIMAL_HUSBANDRY',	0,			0,				'ART_DEF_BUILDING_GARDEN',	'BW_ATLAS_1',					24,				0	),
 ('BUILDING_KNACKERY',					200,	1,					'TECH_ANIMAL_INDUSTRY',		0,			0,				'ART_DEF_BUILDING_GARDEN',	'BW_ATLAS_1',					24,				0	),
@@ -65,6 +64,7 @@ INSERT INTO Buildings (Type,			Cost,	GoldMaintenance,	PrereqTech,					EaPrereqPo
 
 -- other early
 INSERT INTO Buildings (Type,			Cost,	GoldMaintenance,	PrereqTech,					NeverCapture,	ArtDefineTag,				IconAtlas,				PortraitIndex,	DisplayPosition) VALUES
+('BUILDING_RIVER_DOCK',					200,	0,					'TECH_FISHING',				0,				'MONUMENT',					'BW_ATLAS_1',			26,				0	),
 ('BUILDING_LIGHTHOUSE',					200,	0,					'TECH_NAVIGATION',			0,				'LIGHTHOUSE',				'BW_ATLAS_1',			36,				8	),
 ('BUILDING_WATERMILL',					200,	1,					'TECH_MILLING',				0,				'ART_DEF_BUILDING_WATERMILL','BW_ATLAS_1',			29,				0	),
 ('BUILDING_WINDMILL',					200,	1,					'TECH_MILLING',				0,				'ART_DEF_BUILDING_FORGE',	'BW_ATLAS_1',			1,				0	),
@@ -264,7 +264,7 @@ UPDATE Buildings SET EaHealth = 2 WHERE Type = 'BUILDING_PUBLIC_BATHS';
 UPDATE Buildings SET EaHealth = 6 WHERE Type = 'BUILDING_SEWERS';
 UPDATE Buildings SET EaHealth = 6 WHERE Type = 'BUILDING_HOSPITAL';
 UPDATE Buildings SET EaHealth = -4 WHERE Type = 'BUILDING_ROASTING_FURNACE';
-UPDATE Buildings SET River = 1 WHERE Type = 'BUILDING_WATERMILL';
+UPDATE Buildings SET River = 1 WHERE Type IN ('BUILDING_WATERMILL', 'BUILDING_RIVER_DOCK');
 UPDATE Buildings SET Mountain = 1 WHERE Type = 'BUILDING_OBSERVATORY';
 UPDATE Buildings SET TrainedFreePromotion = 'PROMOTION_STALLIONS_OF_EPONA' WHERE Type = 'BUILDING_CULT_OF_EPONA_FOLLOWER';
 UPDATE Buildings SET TrainedFreePromotion = 'PROMOTION_DRUNKARD' WHERE Type = 'BUILDING_CULT_OF_BAKKHEIA_FOLLOWER';
@@ -486,6 +486,8 @@ INSERT INTO Building_Flavors (BuildingType,	FlavorType,	Flavor) VALUES
 ('BUILDING_GOVERNORS_COMPOUND',	'FLAVOR_HAPPINESS',			10 ),
 ('BUILDING_TRIBAL_COUNCIL',		'FLAVOR_HAPPINESS',			30 ),
 ('BUILDING_FOREFATHERS_STATUE',	'FLAVOR_HAPPINESS',			30 ),
+('BUILDING_RIVER_DOCK',			'FLAVOR_PRODUCTION',		10 ),
+('BUILDING_RIVER_DOCK',			'FLAVOR_GOLD',				20 ),
 ('BUILDING_LIGHTHOUSE',			'FLAVOR_GOLD',				10 ),
 ('BUILDING_WINDMILL',			'FLAVOR_GROWTH',			10 ),
 ('BUILDING_WINDMILL',			'FLAVOR_PRODUCTION',		10 ),
@@ -960,6 +962,8 @@ INSERT INTO Building_YieldChanges (BuildingType,	YieldType,	Yield) VALUES
 ('BUILDING_MAGE_SCHOOL',				'YIELD_FAITH',		2	),
 ('BUILDING_PHARMAKEIA',					'YIELD_FAITH',		2	),
 ('BUILDING_MOUNDS',						'YIELD_FAITH',		2	),
+('BUILDING_RIVER_DOCK',					'YIELD_FOOD',		1	),
+('BUILDING_RIVER_DOCK',					'YIELD_PRODUCTION',	1	),
 ('BUILDING_LIGHTHOUSE',					'YIELD_GOLD',		2	),
 ('BUILDING_MINT',						'YIELD_GOLD',		2	),
 ('BUILDING_WATERMILL',					'YIELD_FOOD',		2	),

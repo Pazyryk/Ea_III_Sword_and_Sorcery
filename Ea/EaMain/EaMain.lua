@@ -34,6 +34,7 @@ include("EaCultureLevelHelper.lua")
 include("EaGPSpawnHelper.lua")
 include("EaFaithHelper.lua")
 include("EaVictoriesHelper.lua")
+include("RiverConnections.lua")
 
 include("EaDefines.lua")			--1st after utils (before any files that reference mod specific data)
 include("TableSaverLoader.lua")		--2rd

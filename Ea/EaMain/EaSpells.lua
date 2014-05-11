@@ -90,6 +90,7 @@ local Finish = {}
 --	All applicable are calculated in TestEaSpell any time we are in this file. Never change anywhere else!
 --  Non-applicable variables will hold value from last call
 local g_eaAction
+local g_eaActionID
 local g_SpellClass				-- nil, "Arcane" or "Devine"
 local g_bAIControl				--for AI control of unit (can be true for human if Autoplay)
 local g_iActivePlayer = Game.GetActivePlayer()
@@ -410,6 +411,7 @@ function TestEaSpell(eaActionID, iPlayer, unit, iPerson, testX, testY, bAINonTar
 	--iPerson must have value if this is a great person
 	--unit must be non-nil EXCEPT if this is a GP not on map
 	g_eaAction = EaActionsInfo[eaActionID]
+	g_eaActionID = g_eaAction.ID
 	g_gameTurn = Game.GetGameTurn()
 
 	--print("TestEaSpell", eaActionID, iPlayer, unit, iPerson, testX, testY, bAINonTargetTest)
@@ -497,7 +499,6 @@ end
 function TestEaSpellTarget(eaActionID, testX, testY, bAITargetTest)
 	--This function sets all file locals related to the target plot
 	--AI can call this directly but ONLY after a call to TestEaSpell so that civ/caster file locals are correct
-	--g_eaAction = EaActionsInfo[eaActionID]		--needed here in case function called directly by AI
 	--print("TestEaSpellTarget",eaActionID, testX, testY, bAITargetTest)
 
 	g_testTargetSwitch = 0
@@ -956,32 +957,31 @@ local function ModelSummon_TestTarget()
 
 	local unitTable, numUnits
 	local bLimitOneOnly = false
-	g_int1 = g_eaAction.ID
-	if g_int1 == EA_SPELL_CONJURE_MONSTER then
+	if g_eaActionID == EA_SPELL_CONJURE_MONSTER then
 		unitTable = monsters
 		numUnits = 1
 		bLimitOneOnly = true
-	elseif g_int1 == EA_SPELL_RAISE_DEAD then
+	elseif g_eaActionID == EA_SPELL_RAISE_DEAD then
 		unitTable = undead
 		numUnits = 1
-	elseif g_int1 == EA_SPELL_SUMMON_ABYSSAL_CREATURES then
+	elseif g_eaActionID == EA_SPELL_SUMMON_ABYSSAL_CREATURES then
 		unitTable = abyssalCreatures
 		numUnits = 1
-	elseif g_int1 == EA_SPELL_SUMMON_DEMON then
+	elseif g_eaActionID == EA_SPELL_SUMMON_DEMON then
 		unitTable = demons
 		numUnits = 2
 		bLimitOneOnly = true
-	elseif g_int1 == EA_SPELL_CALL_HEAVENS_GUARD then
+	elseif g_eaActionID == EA_SPELL_CALL_HEAVENS_GUARD then
 		unitTable = heavensGuard
 		numUnits = 1
-	elseif g_int1 == EA_SPELL_CALL_ANGEL then
+	elseif g_eaActionID == EA_SPELL_CALL_ANGEL then
 		unitTable = angels
 		numUnits = 1
 		bLimitOneOnly = true
-	elseif g_int1 == EA_SPELL_CALL_ANIMALS then
+	elseif g_eaActionID == EA_SPELL_CALL_ANIMALS then
 		unitTable = animals
 		numUnits = 2
-	elseif g_int1 == EA_SPELL_CALL_TREE_ENTS then
+	elseif g_eaActionID == EA_SPELL_CALL_TREE_ENTS then
 		unitTable = treeEnts
 		numUnits = 1
 	end
@@ -1038,21 +1038,21 @@ local function ModelSummon_SetUI()
 		MapModData.bShow = true
 		--text for different spells
 		local verb, verbCap, unitStr, unitPlurStr
-		if g_int1 == EA_SPELL_CONJURE_MONSTER then
+		if g_eaActionID == EA_SPELL_CONJURE_MONSTER then
 			verb, verbCap, unitStr, unitPlurStr = "conjure", "Conjure", "monster", "monsters"
-		elseif g_int1 == EA_SPELL_RAISE_DEAD then
+		elseif g_eaActionID == EA_SPELL_RAISE_DEAD then
 			verb, verbCap, unitStr, unitPlurStr = "raise", "Raise", "undead", "undead"
-		elseif g_int1 == EA_SPELL_SUMMON_ABYSSAL_CREATURES then
+		elseif g_eaActionID == EA_SPELL_SUMMON_ABYSSAL_CREATURES then
 			verb, verbCap, unitStr, unitPlurStr = "summon", "Summon", "Abyssal Creatures", "Abyssal Creatures"
-		elseif g_int1 == EA_SPELL_SUMMON_DEMON then
+		elseif g_eaActionID == EA_SPELL_SUMMON_DEMON then
 			verb, verbCap, unitStr, unitPlurStr = "summon", "Summon", "Demon", "Demons"
-		elseif g_int1 == EA_SPELL_CALL_HEAVENS_GUARD then
+		elseif g_eaActionID == EA_SPELL_CALL_HEAVENS_GUARD then
 			verb, verbCap, unitStr, unitPlurStr = "call", "Call", "Heaven's Guard", "Heaven's Guard"
-		elseif g_int1 == EA_SPELL_CALL_ANGEL then
+		elseif g_eaActionID == EA_SPELL_CALL_ANGEL then
 			verb, verbCap, unitStr, unitPlurStr = "call", "Call", "Angel", "Angels"
-		elseif g_int1 == EA_SPELL_CALL_ANIMALS then
+		elseif g_eaActionID == EA_SPELL_CALL_ANIMALS then
 			verb, verbCap, unitStr, unitPlurStr = "call", "Call", "animals", "animals"
-		elseif g_int1 == EA_SPELL_CALL_TREE_ENTS then
+		elseif g_eaActionID == EA_SPELL_CALL_TREE_ENTS then
 			verb, verbCap, unitStr, unitPlurStr = "call", "Call", "Tree-Ent", "Tree-Ents"
 		end
 

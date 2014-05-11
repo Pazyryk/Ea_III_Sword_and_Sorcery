@@ -7,7 +7,13 @@
     </Image>
 
     <Image Anchor="L,B"  Offset="350,0"  Texture="assets/UI/Art/UnitPanel/BottomLeft128x224.dds" Size="128,224"/>
+	
+	<!-- Paz add: Spells / Rituals Panel  -->
 
+	<Grid Anchor="L,B" Offset="53,123" Size="280,210" Padding="0,0" Style="Grid9DetailFive140" Hidden="1" ID="SpellPanel" ConsumeMouse="1">
+		<Label  Anchor="C,T" Offset="0,18" Font="EaTwCnMT20" FontStyle="Shadow" String="TXT_KEY_EA_UNIT_PANEL_SPELLS" ID="SpellsRitualsPropheciesText"/>
+	</Grid>	
+	
     <!-- Unit Actions Secondary 522Back -->
 
     <Grid Anchor="L,B" Offset="50,-106" Size="74,446" Padding="0,0" Style="Grid9Detail48Black" Hidden="0" ID="SecondaryStretchy" ConsumeMouse="1" >
@@ -39,13 +45,11 @@
 
     </Grid>
 
-
-
     <Grid Anchor="L,B" Offset="200,116" Size="280,210" Padding="0,0" Style="Grid9DetailFive140" Hidden="1" ID="" ConsumeMouse="1">
         <Label Anchor="C,T" Offset="0,18" Font="EaTwCnMT20" String="TXT_KEY_UPANEL_UNIT_PROMOTED"  FontStyle="Shadow"  />
         <FlipAnim Size="64,64" Offset="28,-14" Anchor="L,T" Columns="4" Speed="10" Pause=".5" StepSize="64,64" FrameCount="8" Texture="assets\UI\Art\Notification\PromotionAnimation.dds" />
     </Grid>
-
+	
     <!-- UNIT PROMOTED needs to be DELETED after the top is implemented -->
 
     <GridButton ID="PromotionButton" Size="266,32" Anchor="L,B" Offset="220,160"  ToolTip="TXT_KEY_UPANEL_UNIT_PROMOTED_TT"  Hidden="1">
@@ -129,8 +133,7 @@
                     <TextButton Anchor="R,C" Offset="90,-2"  String="TXT_KEY_UPANEL_RANGED_ATTACK" ID="UnitStatNameRangedAttack" ToolTip="TXT_KEY_UPANEL_RANGED_ATTACK_TT" />
                 </Grid>
 				-->
-				
-				
+							
             </Stack>
 
             <!-- Work in Progress Image -->
@@ -142,13 +145,8 @@
                 </Box>
                 <Image Anchor="C,C" Offset="0,0" Size="45,45" ID="WorkerProgressIcon"/>
             </Grid>
-
         </Box>
-
-
-
     </Grid>
-
 
     <Instance Name="UnitAction" >
         <GridButton Anchor="R,T" ID="UnitActionButton" Size="36,36" Offset="0,0"  Style="SmallButton2"  Hidden="0" ToolTipType="TypeUnitAction">
@@ -156,12 +154,18 @@
         </GridButton>
     </Instance>
 
+	<!-- Paz: spell instances -->
+	<Instance Name="Spell" >
+		<Button Anchor="R,T" ID="SpellButton" Size="36,36" Offset="0,0" Hidden="0" ToolTipType="TypeUnitAction">
+			<Image Anchor="C,C" Offset="0,0" Size="45,45" Texture="UnitActions360.dds" ID="SpellIcon" />
+		</Button>	
+	</Instance>
+
     <!-- Unit Upgrade definition -->
     <Instance Name="Upgrade" >
     </Instance>
 
     <Box Anchor="L,B" Size="166,128" Offset="0,0" Color="PlayerColor2,200" Hidden="1" />
-
 
     <!-- Unit Portrait  -->
 

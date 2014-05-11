@@ -1906,6 +1906,18 @@
       <SubType>Lua</SubType>
       <ImportIntoVFS>True</ImportIntoVFS>
     </Content>
+    <Content Include="_MoveToMediaPack\IconAtlases\EaSpellsAtlas45.dds">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="_MoveToMediaPack\IconAtlases\EaSpellsAtlas48.dds">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="_MoveToMediaPack\IconAtlases\EaSpellsAtlas64.dds">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="EventsDrivers" />
@@ -1941,6 +1953,7 @@
     <Folder Include="_MoveToMediaPack\Misc" />
     <Folder Include="_MoveToMediaPack\3DUnits" />
     <Folder Include="_MoveToMediaPack\3DTerrain" />
+    <Folder Include="_MoveToMediaPack\IconAtlases" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Firaxis\ModBuddy\Civ5Mod.targets" />
 </Project>

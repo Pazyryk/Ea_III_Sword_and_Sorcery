@@ -33,11 +33,6 @@ local PLOT_MOUNTAIN =						PlotTypes.PLOT_MOUNTAIN
 local PLOT_OCEAN =							PlotTypes.PLOT_OCEAN
 local RELIGION_ANRA =						GameInfoTypes.RELIGION_ANRA
 local RELIGION_AZZANDARAYASNA =				GameInfoTypes.RELIGION_AZZANDARAYASNA
-local RELIGION_CULT_OF_AEGIR =				GameInfoTypes.RELIGION_CULT_OF_AEGIR
-local RELIGION_CULT_OF_BAKKHEIA =			GameInfoTypes.RELIGION_CULT_OF_BAKKHEIA
-local RELIGION_CULT_OF_EPONA =				GameInfoTypes.RELIGION_CULT_OF_EPONA
-local RELIGION_CULT_OF_LEAVES =				GameInfoTypes.RELIGION_CULT_OF_LEAVES
-local RELIGION_CULT_OF_PURE_WATERS =		GameInfoTypes.RELIGION_CULT_OF_PURE_WATERS
 local RELIGION_THE_WEAVE_OF_EA =			GameInfoTypes.RELIGION_THE_WEAVE_OF_EA
 local RESOURCE_HORSE =						GameInfoTypes.RESOURCE_HORSE
 local RESOURCE_WINE =						GameInfoTypes.RESOURCE_WINE
@@ -104,6 +99,7 @@ local Finish = {}
 --	All applicable are calculated in TestEaAction any time we are in this file. Never change anywhere else!
 --  Non-applicable variables will hold value from last call
 local g_eaAction
+local g_eaActionID
 local g_bAIControl				--for AI control of unit (can be true for human if Autoplay)
 local g_iActivePlayer = Game.GetActivePlayer()
 
@@ -310,6 +306,7 @@ local function FinishEaAction(eaActionID)		--only called from DoEaAction so file
 			g_city:ConvertPercentFollowers(cultID, RELIGION_THE_WEAVE_OF_EA, 100)
 
 		end
+		UpdateCivReligion(g_iOwner)
 	end
 
 	--Effects
@@ -412,7 +409,7 @@ function TestEaActionForHumanUI(eaActionID, iPlayer, unit, iPerson, testX, testY
 	
 	g_bAllTestsPassed = TestEaAction(eaActionID, iPlayer, unit, iPerson, testX, testY, false)
 	MapModData.bAllow = g_bAllTestsPassed and not g_bSetDelayedFailForUI
-	MapModData.bShow = g_bAllTestsPassed or (g_bNonTargetTestsPassed and g_eaAction.UIType == "Build")	--may change below
+	MapModData.bShow = g_bAllTestsPassed --or (g_bNonTargetTestsPassed and g_eaAction.UIType == "Build")	--may change below
 	MapModData.text = "no help text"		--will change below or take eaAction.Help value (if bShow)
 
 	--By default, bShow follows bAllow and text will be from eaAction.Help. If we want bShow=true when bAllow=false,
@@ -504,6 +501,7 @@ function TestEaAction(eaActionID, iPlayer, unit, iPerson, testX, testY, bAINonTa
 	--iPerson must have value if this is a great person
 	--unit must be non-nil EXCEPT if this is a GP not on map
 	g_eaAction = EaActionsInfo[eaActionID]
+	g_eaActionID = g_eaAction.ID
 	g_gameTurn = Game.GetGameTurn()
 	
 	--print("TestEaAction", eaActionID, iPlayer, unit, iPerson, testX, testY, bAINonTargetTest)
@@ -3196,38 +3194,112 @@ end
 ------------------------------------------------------------------------------------------------------------------------------
 --Methods are identical for all cults except for the "Test cult-specific city req" section (and cult name and various texts)
 
---EA_ACTION_RITUAL_LEAVES
-TestTarget[GameInfoTypes.EA_ACTION_RITUAL_LEAVES] = function()
+--Model functions for Cult Rituals
+local EA_ACTION_RITUAL_LEAVES =	GameInfoTypes.EA_ACTION_RITUAL_LEAVES
+local EA_ACTION_RITUAL_CLEANSING =	GameInfoTypes.EA_ACTION_RITUAL_CLEANSING
+local EA_ACTION_RITUAL_AEGIR =	GameInfoTypes.EA_ACTION_RITUAL_AEGIR
+local EA_ACTION_RITUAL_EQUUS =	GameInfoTypes.EA_ACTION_RITUAL_EQUUS
+local EA_ACTION_RITUAL_BAKKHEIA =	GameInfoTypes.EA_ACTION_RITUAL_BAKKHEIA
+
+local cultRitualReligions = {	[EA_ACTION_RITUAL_LEAVES] = GameInfoTypes.RELIGION_CULT_OF_LEAVES,
+								[EA_ACTION_RITUAL_CLEANSING] = GameInfoTypes.RELIGION_CULT_OF_PURE_WATERS,
+								[EA_ACTION_RITUAL_AEGIR] = GameInfoTypes.RELIGION_CULT_OF_AEGIR,
+								[EA_ACTION_RITUAL_EQUUS] = GameInfoTypes.RELIGION_CULT_OF_EPONA,
+								[EA_ACTION_RITUAL_BAKKHEIA] = GameInfoTypes.RELIGION_CULT_OF_BAKKHEIA	}
+
+local function ModelCultRitual_TestTarget()
+	g_int1 = cultRitualReligions[g_eaActionID]
 
 	--Can't do in foreign city unless we are founder
-	if g_iOwner ~= g_iPlayer and (not gReligions[RELIGION_CULT_OF_LEAVES] or gReligions[RELIGION_CULT_OF_LEAVES].founder ~= g_iPlayer) then return false end
+	if g_iOwner ~= g_iPlayer and (not gReligions[g_int1] or gReligions[g_int1].founder ~= g_iPlayer) then return false end
 
 	--Test cult-specific city req
-	local totalLand, totalUnimprovedForestJungle = 0, 0
-	local totalPlots = g_city:GetNumCityPlots()
-	for i = 0, totalPlots - 1 do
-		local plot = g_city:GetCityIndexPlot(i)
-		if plot and plot:GetPlotType() ~= PLOT_OCEAN then
-			totalLand = totalLand + 1
-			local featureID = plot:GetFeatureType()
-			if featureID == FEATURE_FOREST or featureID == FEATURE_JUNGLE then
-				if plot:GetImprovementType() == -1 then
-					totalUnimprovedForestJungle = totalUnimprovedForestJungle + 1
+	if g_eaActionID == EA_ACTION_RITUAL_LEAVES then
+		local totalLand, totalUnimprovedForestJungle = 0, 0
+		local totalPlots = g_city:GetNumCityPlots()
+		for i = 0, totalPlots - 1 do
+			local plot = g_city:GetCityIndexPlot(i)
+			if plot and plot:GetPlotType() ~= PLOT_OCEAN then
+				totalLand = totalLand + 1
+				local featureID = plot:GetFeatureType()
+				if featureID == FEATURE_FOREST or featureID == FEATURE_JUNGLE then
+					if plot:GetImprovementType() == -1 then
+						totalUnimprovedForestJungle = totalUnimprovedForestJungle + 1
+					end
 				end
 			end
 		end
+		if totalUnimprovedForestJungle / totalLand < 0.6 or totalLand / totalPlots < 0.5 then
+			g_int4 = totalUnimprovedForestJungle
+			g_int2 = totalLand
+			g_int3 = totalPlots
+			return false
+		end
+	elseif g_eaActionID == EA_ACTION_RITUAL_CLEANSING then
+		local totalPureWater = 0
+		local totalPlots = g_city:GetNumCityPlots()
+		for i = 0, totalPlots - 1 do
+			local plot = g_city:GetCityIndexPlot(i)
+			if plot and (plot:IsRiver() or plot:IsLake() or plot:IsFreshWater() or plot:GetFeatureType() == FEATURE_MARSH) then
+				totalPureWater = totalPureWater + 1
+			end
+		end
+		if totalPureWater / totalPlots < 0.35 then return false end
+	elseif g_eaActionID == EA_ACTION_RITUAL_AEGIR then
+		local totalSea = 0
+		local totalPlots = g_city:GetNumCityPlots()
+		for i = 0, totalPlots - 1 do
+			local plot = g_city:GetCityIndexPlot(i)
+			if plot and plot:GetPlotType() == PLOT_OCEAN then
+				totalSea = totalSea + 1
+			end
+		end
+		if totalSea / totalPlots < 0.7 then return false end
+	elseif g_eaActionID == EA_ACTION_RITUAL_EQUUS then
+		local totalLand, totalGoodFlatland, totalHorses = 0, 0, 0
+		local totalPlots = g_city:GetNumCityPlots()
+		for i = 0, totalPlots - 1 do
+			local plot = g_city:GetCityIndexPlot(i)
+			if plot then 
+				local plotTypeID = plot:GetPlotType()
+				if plotTypeID ~= PLOT_OCEAN then
+					totalLand = totalLand + 1
+					if plot:GetResourceType(-1) == RESOURCE_HORSE then
+						totalHorses = totalHorses + 1
+						if totalHorses > 2 then break end
+					end
+					if plotTypeID == PLOT_LAND and plot:GetFeatureType() == -1 then
+						local terrainID = plot:GetTerrainType()
+						if terrainID == TERRAIN_GRASS or  terrainID == TERRAIN_PLAINS then
+							totalGoodFlatland = totalGoodFlatland + 1
+						end
+					end
+				end
+			end
+		end
+		if totalHorses < 2 then
+			return false
+		elseif totalHorses < 3 then
+			if totalGoodFlatland / totalLand < 0.5 then return false end
+		end
+	elseif g_eaActionID == EA_ACTION_RITUAL_BAKKHEIA then
+		local boozeBuildings = g_city:GetNumBuilding(BUILDING_WINERY) + g_city:GetNumBuilding(BUILDING_BREWERY) + g_city:GetNumBuilding(BUILDING_DISTILLERY)
+		if boozeBuildings < 2 then
+			local totalWine = 0
+			local totalPlots = g_city:GetNumCityPlots()
+			for i = 0, totalPlots - 1 do
+				local plot = g_city:GetCityIndexPlot(i)
+				if plot and plot:GetResourceType(-1) == RESOURCE_WINE then
+					totalWine = totalWine + 1
+				end
+			end
+			if totalWine < 2 then return false end
+		end	
 	end
-	if totalUnimprovedForestJungle / totalLand < 0.6 or totalLand / totalPlots < 0.5 then
-		g_testTargetSwitch = 1
-		g_int1 = totalUnimprovedForestJungle
-		g_int2 = totalLand
-		g_int3 = totalPlots
-		return false
-	end
-	--End cult-specific part
 
-	if gReligions[RELIGION_CULT_OF_LEAVES] then		--already founded
-		local totalConversions, bFlip, religionConversionTable = GetConversionOutcome(g_city, RELIGION_CULT_OF_LEAVES, g_mod)
+	--Get conversion or found info
+	if gReligions[g_int1] then		--already founded
+		local totalConversions, bFlip, religionConversionTable = GetConversionOutcome(g_city, g_int1, g_mod)
 		if totalConversions == 0 then
 			g_testTargetSwitch = 2
 			return false
@@ -3235,7 +3307,7 @@ TestTarget[GameInfoTypes.EA_ACTION_RITUAL_LEAVES] = function()
 		g_tablePointer = religionConversionTable
 		g_bool1 = bFlip
 		g_value = totalConversions + (bFlip and 10 or 0) --for AI; passing conversion threshold worth 10 citizens 
-		if gReligions[RELIGION_CULT_OF_LEAVES].founder ~= g_iPlayer then
+		if gReligions[g_int1].founder ~= g_iPlayer then
 			g_value = g_value / 10
 		end
 	else	--found
@@ -3249,11 +3321,11 @@ TestTarget[GameInfoTypes.EA_ACTION_RITUAL_LEAVES] = function()
 	return true
 end
 
-SetUI[GameInfoTypes.EA_ACTION_RITUAL_LEAVES] = function()
-	if g_bNonTargetTestsPassed and g_bIsCity then
+local function ModelCultRitual_SetUI()
+	if g_bNonTargetTestsPassed then
 		MapModData.bShow = true
 		if g_bAllTestsPassed then
-			if gReligions[RELIGION_CULT_OF_LEAVES] then
+			if gReligions[g_int1] then		--already founded
 				local atheistsConverted = g_tablePointer[-1]
 				if atheistsConverted > 0 then
 					MapModData.text = "Will convert " .. atheistsConverted .. " non-followers[NEWLINE]"
@@ -3263,145 +3335,42 @@ SetUI[GameInfoTypes.EA_ACTION_RITUAL_LEAVES] = function()
 				for i = 0, HIGHEST_RELIGION_ID do
 					local numConverted = g_tablePointer[i]
 					if numConverted > 0 then
-						MapModData.text = MapModData.text .. "Will convert ".. numConverted .. " followers of ".. Locale.ConvertTextKey(GameInfo.Religions[i].Type) .. "[NEWLINE]"
+						MapModData.text = MapModData.text .. "Will convert ".. numConverted .. " followers of ".. Locale.ConvertTextKey(GameInfo.Religions[i].Description) .. "[NEWLINE]"
 					end
 				end
 				if g_bool1 then
-					MapModData.text = MapModData.text .. "Cult of Leaves will become the city's dominant religion"
+					local cultStr = Locale.Lookup(GameInfo.Religions[g_int1].Description)
+					MapModData.text = MapModData.text .. cultStr .. " will become the city's dominant religion"
 				end
 			else
-				MapModData.text = "Will found the Cult of Leaves in this city"
+				local cultStr = Locale.Lookup(GameInfo.Religions[g_int1].Description)
+				MapModData.text = "Will found the " .. cultStr .. " in this city"
 			end
-			--if not g_eaPerson.cult then
-			--	MapModData.text = MapModData.text .. "[NEWLINE]" .. GetEaPersonFullTitle(g_eaPerson) .. " will join the Cult of Leaves"
-			--end
-		else
-			if g_testTargetSwitch == 1 then
+		elseif not g_bIsCity then
+			local cultStr = Locale.Lookup(GameInfo.Religions[g_int1].Description)
+			MapModData.text = cultStr .. " can be performed only in cities"
+		elseif g_testTargetSwitch == 2 then
+			MapModData.text = "[COLOR_WARNING_TEXT]You cannot convert any population here (perhaps you need a higher Devotion level)[ENDCOLOR]"
+		elseif g_testTargetSwitch == 3 then
+			local cultStr = Locale.Lookup(GameInfo.Religions[g_int1].Description)
+			MapModData.text = "[COLOR_WARNING_TEXT]You cannot perform the " .. cultStr .. " in a holy city[ENDCOLOR]"
+		else	--failed for some cult-specific reason
+			if g_eaActionID == EA_ACTION_RITUAL_LEAVES then
 				local land = Floor(100 * g_int2 / g_int3)
-				local forestJungle = Floor(100 * g_int1 / g_int2)
-				MapModData.text = "[COLOR_WARNING_TEXT]City radius must be 50% land that is 60% unimproved forest or jungle (is "..land.."%, "..forestJungle.."%)[ENDCOLOR]"
-
-			elseif g_testTargetSwitch == 2 then
-				MapModData.text = "[COLOR_WARNING_TEXT]You cannot convert any population here (perhaps you need a higher Devotion level)[ENDCOLOR]"
-			elseif g_testTargetSwitch == 3 then
-				MapModData.text = "[COLOR_WARNING_TEXT]You cannot perform the Ritual of Leaves in a holy city[ENDCOLOR]"
-			end
-		
-		end
-	end
-end
-
-SetAIValues[GameInfoTypes.EA_ACTION_RITUAL_LEAVES] = function()
-	print("SetAIValues for EA_ACTION_RITUAL_LEAVES")
-	local majorityReligionID = g_city:GetReligiousMajority()
-	local iMajorityFounder
-	if majorityReligionID ~= -1 and majorityReligionID ~= RELIGION_THE_WEAVE_OF_EA and majorityReligionID ~= RELIGION_CULT_OF_LEAVES then
-		iMajorityFounder = gReligions[majorityReligionID].founder
-	end
-	if iMajorityFounder == g_iPlayer then	--don't do it if city has majority cult for which we are founder
-		gg_aiOptionValues.i = 0
-	elseif g_iOwner == g_iPlayer then
-		gg_aiOptionValues.i = g_value * 2	--double value for converting our own
-	else
-		gg_aiOptionValues.i = g_value
-	end
-end
-
-Finish[GameInfoTypes.EA_ACTION_RITUAL_LEAVES] = function()
-	UpdateCivReligion(g_iOwner)
-	--MeetRandomPantheisticGod(g_iPlayer, "CultFounding", RELIGION_CULT_OF_LEAVES)
-	return true
-end
-
---EA_ACTION_RITUAL_EQUUS
-TestTarget[GameInfoTypes.EA_ACTION_RITUAL_EQUUS] = function()
-
-	--Can't do in foreign city unless we are founder
-	if g_iOwner ~= g_iPlayer and (not gReligions[RELIGION_CULT_OF_EPONA] or gReligions[RELIGION_CULT_OF_EPONA].founder ~= g_iPlayer) then return false end
-
-	--Test cult-specific city req
-	local totalLand, totalGoodFlatland, totalHorses = 0, 0, 0
-	local totalPlots = g_city:GetNumCityPlots()
-	for i = 0, totalPlots - 1 do
-		local plot = g_city:GetCityIndexPlot(i)
-		if plot then 
-			local plotTypeID = plot:GetPlotType()
-			if plotTypeID ~= PLOT_OCEAN then
-				totalLand = totalLand + 1
-				if plot:GetResourceType(-1) == RESOURCE_HORSE then
-					totalHorses = totalHorses + 1
-					if totalHorses > 2 then break end
-				end
-				if plotTypeID == PLOT_LAND and plot:GetFeatureType() == -1 then
-					local terrainID = plot:GetTerrainType()
-					if terrainID == TERRAIN_GRASS or  terrainID == TERRAIN_PLAINS then
-						totalGoodFlatland = totalGoodFlatland + 1
-					end
-				end
-			end
-		end
-	end
-	if totalHorses < 2 then
-		return false
-	elseif totalHorses < 3 then
-		if totalGoodFlatland / totalLand < 0.5 then return false end
-	end
-	--End cult-specific part
-
-	if gReligions[RELIGION_CULT_OF_EPONA] then		--already founded
-		local totalConversions, bFlip, religionConversionTable = GetConversionOutcome(g_city, RELIGION_CULT_OF_EPONA, g_mod)
-		if totalConversions == 0 then return false end
-		g_tablePointer = religionConversionTable
-		g_bool1 = bFlip
-		g_value = totalConversions + (bFlip and 10 or 0) --for AI; passing conversion threshold worth 10 citizens 
-		if gReligions[RELIGION_CULT_OF_EPONA].founder ~= g_iPlayer then
-			g_value = g_value / 10
-		end
-	else	--found
-		if g_city:IsHolyCityAnyReligion() then return false end
-		g_value = 500
-	end
-
-	return true
-end
-
-SetUI[GameInfoTypes.EA_ACTION_RITUAL_EQUUS] = function()
-	if g_bNonTargetTestsPassed and g_bIsCity then
-		MapModData.bShow = true
-		if g_bAllTestsPassed then
-			if gReligions[RELIGION_CULT_OF_EPONA] then
-				local atheistsConverted = g_tablePointer[-1]
-				if atheistsConverted > 0 then
-					MapModData.text = "Will convert " .. atheistsConverted .. " non-followers[NEWLINE]"
-				else
-					MapModData.text = ""
-				end
-				for i = 0, HIGHEST_RELIGION_ID do
-					local numConverted = g_tablePointer[i]
-					if numConverted > 0 then
-						MapModData.text = MapModData.text .. "Will convert ".. numConverted .. " followers of ".. Locale.ConvertTextKey(GameInfo.Religions[i].Type) .. "[NEWLINE]"
-					end
-				end
-				if g_bool1 then
-					MapModData.text = MapModData.text .. "Cult of Epona will become the city's dominant religion"
-				end
+				local forestJungle = Floor(100 * g_int4 / g_int2)
+				MapModData.text = "[COLOR_WARNING_TEXT]City radius must be 50% land that is 60% unimproved forest or jungle (this city has "..land.."%, "..forestJungle.."%)[ENDCOLOR]"
 			else
-				MapModData.text = "Will found the Cult of Epona in this city"
-			end
-			--if not g_eaPerson.cult then
-			--	MapModData.text = MapModData.text .. "[NEWLINE]" .. GetEaPersonFullTitle(g_eaPerson) .. " will join the Cult of Epona"
-			--end
-		else
-			MapModData.text = "[COLOR_WARNING_TEXT]You cannot perform the Ritual of Equus in this city[ENDCOLOR]"
+				--TO DO: Explanitory UI for all other cults
+				MapModData.text = "[COLOR_WARNING_TEXT]You cannot perform this ritual in this city[ENDCOLOR]"
+			end		
 		end
 	end
 end
 
-SetAIValues[GameInfoTypes.EA_ACTION_RITUAL_EQUUS] = function()
-	print("SetAIValues for EA_ACTION_RITUAL_EQUUS")
+local function ModelCultRitual_SetAIValues()
 	local majorityReligionID = g_city:GetReligiousMajority()
 	local iMajorityFounder
-	if majorityReligionID ~= -1 and majorityReligionID ~= RELIGION_THE_WEAVE_OF_EA and majorityReligionID ~= RELIGION_CULT_OF_EPONA then
+	if majorityReligionID ~= -1 and majorityReligionID ~= RELIGION_THE_WEAVE_OF_EA and majorityReligionID ~= g_int1 then
 		iMajorityFounder = gReligions[majorityReligionID].founder
 	end
 	if iMajorityFounder == g_iPlayer then	--don't do it if city has majority cult for which we are founder
@@ -3413,282 +3382,30 @@ SetAIValues[GameInfoTypes.EA_ACTION_RITUAL_EQUUS] = function()
 	end
 end
 
-Finish[GameInfoTypes.EA_ACTION_RITUAL_EQUUS] = function()
-	UpdateCivReligion(g_iOwner)
-	--MeetRandomPantheisticGod(g_iPlayer, "CultFounding", RELIGION_CULT_OF_EPONA)
-	return true
-end
+--EA_ACTION_RITUAL_LEAVES
+TestTarget[GameInfoTypes.EA_ACTION_RITUAL_LEAVES] = ModelCultRitual_TestTarget
+SetUI[GameInfoTypes.EA_ACTION_RITUAL_LEAVES] = ModelCultRitual_SetUI
+SetAIValues[GameInfoTypes.EA_ACTION_RITUAL_LEAVES] = ModelCultRitual_SetAIValues
 
 --EA_ACTION_RITUAL_CLEANSING
-TestTarget[GameInfoTypes.EA_ACTION_RITUAL_CLEANSING] = function()
-
-	--Can't do in foreign city unless we are founder
-	if g_iOwner ~= g_iPlayer and (not gReligions[RELIGION_CULT_OF_PURE_WATERS] or gReligions[RELIGION_CULT_OF_PURE_WATERS].founder ~= g_iPlayer) then return false end
-
-	--Test cult-specific city req
-	local totalPureWater = 0
-	local totalPlots = g_city:GetNumCityPlots()
-	for i = 0, totalPlots - 1 do
-		local plot = g_city:GetCityIndexPlot(i)
-		if plot and (plot:IsRiver() or plot:IsLake() or plot:IsFreshWater() or plot:GetFeatureType() == FEATURE_MARSH) then
-			totalPureWater = totalPureWater + 1
-		end
-	end
-	if totalPureWater / totalPlots < 0.35 then return false end
-	--End cult-specific part
-
-	if gReligions[RELIGION_CULT_OF_PURE_WATERS] then		--already founded
-		local totalConversions, bFlip, religionConversionTable = GetConversionOutcome(g_city, RELIGION_CULT_OF_PURE_WATERS, g_mod)
-		if totalConversions == 0 then return false end
-		g_tablePointer = religionConversionTable
-		g_bool1 = bFlip
-		g_value = totalConversions + (bFlip and 10 or 0) --for AI; passing conversion threshold worth 10 citizens
-		if gReligions[RELIGION_CULT_OF_PURE_WATERS].founder ~= g_iPlayer then
-			g_value = g_value / 10
-		end 
-	else	--found
-		if g_city:IsHolyCityAnyReligion() then return false end
-		g_value = 500
-	end
-
-	return true
-end
-
-SetUI[GameInfoTypes.EA_ACTION_RITUAL_CLEANSING] = function()
-	if g_bNonTargetTestsPassed and g_bIsCity then
-		MapModData.bShow = true
-		if g_bAllTestsPassed then
-			if gReligions[RELIGION_CULT_OF_PURE_WATERS] then
-				local atheistsConverted = g_tablePointer[-1]
-				if atheistsConverted > 0 then
-					MapModData.text = "Will convert " .. atheistsConverted .. " non-followers[NEWLINE]"
-				else
-					MapModData.text = ""
-				end
-				for i = 0, HIGHEST_RELIGION_ID do
-					local numConverted = g_tablePointer[i]
-					if numConverted > 0 then
-						MapModData.text = MapModData.text .. "Will convert ".. numConverted .. " followers of ".. Locale.ConvertTextKey(GameInfo.Religions[i].Type) .. "[NEWLINE]"
-					end
-				end
-				if g_bool1 then
-					MapModData.text = MapModData.text .. "Cult of Pure Waters will become the city's dominant religion"
-				end
-			else
-				MapModData.text = "Will found the Cult of Pure Waters in this city"
-			end
-			--if not g_eaPerson.cult then
-			--	MapModData.text = MapModData.text .. "[NEWLINE]" .. GetEaPersonFullTitle(g_eaPerson) .. " will join the Cult of Pure Waters"
-			--end
-		else
-			MapModData.text = "[COLOR_WARNING_TEXT]You cannot perform the Ritual of Cleansing in this city[ENDCOLOR]"
-		end
-	end
-end
-
-SetAIValues[GameInfoTypes.EA_ACTION_RITUAL_CLEANSING] = function()
-	print("SetAIValues for EA_ACTION_RITUAL_CLEANSING")
-	local majorityReligionID = g_city:GetReligiousMajority()
-	local iMajorityFounder
-	if majorityReligionID ~= -1 and majorityReligionID ~= RELIGION_THE_WEAVE_OF_EA and majorityReligionID ~= RELIGION_CULT_OF_PURE_WATERS then
-		iMajorityFounder = gReligions[majorityReligionID].founder
-	end
-	if iMajorityFounder == g_iPlayer then	--don't do it if city has majority cult for which we are founder
-		gg_aiOptionValues.i = 0
-	elseif g_iOwner == g_iPlayer then
-		gg_aiOptionValues.i = g_value * 2	--double value for converting our own
-	else
-		gg_aiOptionValues.i = g_value
-	end
-end
-
-Finish[GameInfoTypes.EA_ACTION_RITUAL_CLEANSING] = function()
-	UpdateCivReligion(g_iOwner)
-	--MeetRandomPantheisticGod(g_iPlayer, "CultFounding", RELIGION_CULT_OF_PURE_WATERS)
-	return true
-end
+TestTarget[GameInfoTypes.EA_ACTION_RITUAL_CLEANSING] = ModelCultRitual_TestTarget
+SetUI[GameInfoTypes.EA_ACTION_RITUAL_CLEANSING] = ModelCultRitual_SetUI
+SetAIValues[GameInfoTypes.EA_ACTION_RITUAL_CLEANSING] = ModelCultRitual_SetAIValues
 
 --EA_ACTION_RITUAL_AEGIR
-TestTarget[GameInfoTypes.EA_ACTION_RITUAL_AEGIR] = function()
+TestTarget[GameInfoTypes.EA_ACTION_RITUAL_AEGIR] = ModelCultRitual_TestTarget
+SetUI[GameInfoTypes.EA_ACTION_RITUAL_AEGIR] = ModelCultRitual_SetUI
+SetAIValues[GameInfoTypes.EA_ACTION_RITUAL_AEGIR] = ModelCultRitual_SetAIValues
 
-	--Can't do in foreign city unless we are founder
-	if g_iOwner ~= g_iPlayer and (not gReligions[RELIGION_CULT_OF_AEGIR] or gReligions[RELIGION_CULT_OF_AEGIR].founder ~= g_iPlayer) then return false end
-
-	--Test cult-specific city req
-	local totalSea = 0
-	local totalPlots = g_city:GetNumCityPlots()
-	for i = 0, totalPlots - 1 do
-		local plot = g_city:GetCityIndexPlot(i)
-		if plot and plot:GetPlotType() == PLOT_OCEAN then
-			totalSea = totalSea + 1
-		end
-	end
-	if totalSea / totalPlots < 0.7 then return false end
-	--End cult-specific part
-
-	if gReligions[RELIGION_CULT_OF_AEGIR] then		--already founded
-		local totalConversions, bFlip, religionConversionTable = GetConversionOutcome(g_city, RELIGION_CULT_OF_AEGIR, g_mod)
-		if totalConversions == 0 then return false end
-		g_tablePointer = religionConversionTable
-		g_bool1 = bFlip
-		g_value = totalConversions + (bFlip and 10 or 0) --for AI; passing conversion threshold worth 10 citizens 
-		if gReligions[RELIGION_CULT_OF_AEGIR].founder ~= g_iPlayer then
-			g_value = g_value / 10
-		end
-	else	--found
-		if g_city:IsHolyCityAnyReligion() then return false end
-		g_value = 500
-	end
-
-	return true
-end
-
-SetUI[GameInfoTypes.EA_ACTION_RITUAL_AEGIR] = function()
-	if g_bNonTargetTestsPassed and g_bIsCity then
-		MapModData.bShow = true
-		if g_bAllTestsPassed then
-			if gReligions[RELIGION_CULT_OF_AEGIR] then
-				local atheistsConverted = g_tablePointer[-1]
-				if atheistsConverted > 0 then
-					MapModData.text = "Will convert " .. atheistsConverted .. " non-followers[NEWLINE]"
-				else
-					MapModData.text = ""
-				end
-				for i = 0, HIGHEST_RELIGION_ID do
-					local numConverted = g_tablePointer[i]
-					if numConverted > 0 then
-						MapModData.text = MapModData.text .. "Will convert ".. numConverted .. " followers of ".. Locale.ConvertTextKey(GameInfo.Religions[i].Type) .. "[NEWLINE]"
-					end
-				end
-				if g_bool1 then
-					MapModData.text = MapModData.text .. "Cult of Aegir will become the city's dominant religion"
-				end
-			else
-				MapModData.text = "Will found the Cult of Aegir in this city"
-			end
-			--if not g_eaPerson.cult then
-			--	MapModData.text = MapModData.text .. "[NEWLINE]" .. GetEaPersonFullTitle(g_eaPerson) .. " will join the Cult of Aegire"
-			--end
-		else
-			MapModData.text = "[COLOR_WARNING_TEXT]You cannot perform the Ritual of Aegir in this city[ENDCOLOR]"
-		end
-	end
-end
-
-SetAIValues[GameInfoTypes.EA_ACTION_RITUAL_AEGIR] = function()
-	print("SetAIValues for EA_ACTION_RITUAL_AEGIR")
-	local majorityReligionID = g_city:GetReligiousMajority()
-	local iMajorityFounder
-	if majorityReligionID ~= -1 and majorityReligionID ~= RELIGION_THE_WEAVE_OF_EA and majorityReligionID ~= RELIGION_CULT_OF_AEGIR then
-		iMajorityFounder = gReligions[majorityReligionID].founder
-	end
-	if iMajorityFounder == g_iPlayer then	--don't do it if city has majority cult for which we are founder
-		gg_aiOptionValues.i = 0
-	elseif g_iOwner == g_iPlayer then
-		gg_aiOptionValues.i = g_value * 2	--double value for converting our own
-	else
-		gg_aiOptionValues.i = g_value
-	end
-end
-
-Finish[GameInfoTypes.EA_ACTION_RITUAL_AEGIR] = function()
-	UpdateCivReligion(g_iOwner)
-	--MeetRandomPantheisticGod(g_iPlayer, "CultFounding", RELIGION_CULT_OF_AEGIR)
-	return true
-end
+--EA_ACTION_RITUAL_EQUUS
+TestTarget[GameInfoTypes.EA_ACTION_RITUAL_EQUUS] = ModelCultRitual_TestTarget
+SetUI[GameInfoTypes.EA_ACTION_RITUAL_EQUUS] = ModelCultRitual_SetUI
+SetAIValues[GameInfoTypes.EA_ACTION_RITUAL_EQUUS] = ModelCultRitual_SetAIValues
 
 --EA_ACTION_RITUAL_BAKKHEIA
-TestTarget[GameInfoTypes.EA_ACTION_RITUAL_BAKKHEIA] = function()
-
-	--Can't do in foreign city unless we are founder
-	if g_iOwner ~= g_iPlayer and (not gReligions[RELIGION_CULT_OF_BAKKHEIA] or gReligions[RELIGION_CULT_OF_BAKKHEIA].founder ~= g_iPlayer) then return false end
-
-	--Test cult-specific city req
-	local boozeBuildings = g_city:GetNumBuilding(BUILDING_WINERY) + g_city:GetNumBuilding(BUILDING_BREWERY) + g_city:GetNumBuilding(BUILDING_DISTILLERY)
-	if boozeBuildings < 2 then
-		local totalWine = 0
-		local totalPlots = g_city:GetNumCityPlots()
-		for i = 0, totalPlots - 1 do
-			local plot = g_city:GetCityIndexPlot(i)
-			if plot and plot:GetResourceType(-1) == RESOURCE_WINE then
-				totalWine = totalWine + 1
-			end
-		end
-		if totalWine < 2 then return false end
-	end
-	--End cult-specific part
-
-	if gReligions[RELIGION_CULT_OF_BAKKHEIA] then		--already founded
-		local totalConversions, bFlip, religionConversionTable = GetConversionOutcome(g_city, RELIGION_CULT_OF_BAKKHEIA, g_mod)
-		if totalConversions == 0 then return false end
-		g_tablePointer = religionConversionTable
-		g_bool1 = bFlip
-		g_value = totalConversions + (bFlip and 10 or 0) --for AI; passing conversion threshold worth 10 citizens 
-		if gReligions[RELIGION_CULT_OF_BAKKHEIA].founder ~= g_iPlayer then
-			g_value = g_value / 10
-		end
-	else	--found
-		if g_city:IsHolyCityAnyReligion() then return false end
-		g_value = 500
-	end
-
-	return true
-end
-
-SetUI[GameInfoTypes.EA_ACTION_RITUAL_BAKKHEIA] = function()
-	if g_bNonTargetTestsPassed and g_bIsCity then
-		MapModData.bShow = true
-		if g_bAllTestsPassed then
-			if gReligions[RELIGION_CULT_OF_BAKKHEIA] then
-				local atheistsConverted = g_tablePointer[-1]
-				if atheistsConverted > 0 then
-					MapModData.text = "Will convert " .. atheistsConverted .. " non-followers[NEWLINE]"
-				else
-					MapModData.text = ""
-				end
-				for i = 0, HIGHEST_RELIGION_ID do
-					local numConverted = g_tablePointer[i]
-					if numConverted > 0 then
-						MapModData.text = MapModData.text .. "Will convert ".. numConverted .. " followers of ".. Locale.ConvertTextKey(GameInfo.Religions[i].Type) .. "[NEWLINE]"
-					end
-				end
-				if g_bool1 then
-					MapModData.text = MapModData.text .. "Cult of Bakkheia will become the city's dominant religion"
-				end
-			else
-				MapModData.text = "Will found the Cult of Bakkheia in this city"
-			end
-			--if not g_eaPerson.cult then
-			--	MapModData.text = MapModData.text .. "[NEWLINE]" .. GetEaPersonFullTitle(g_eaPerson) .. " will join the Cult of Bakkheia"
-			--end
-		else
-			MapModData.text = "[COLOR_WARNING_TEXT]You cannot perform the Ritual of Bakkheia in this city[ENDCOLOR]"
-		end
-	end
-end
-
-SetAIValues[GameInfoTypes.EA_ACTION_RITUAL_BAKKHEIA] = function()
-	print("SetAIValues for EA_ACTION_RITUAL_BAKKHEIA")
-	local majorityReligionID = g_city:GetReligiousMajority()
-	local iMajorityFounder
-	if majorityReligionID ~= -1 and majorityReligionID ~= RELIGION_THE_WEAVE_OF_EA and majorityReligionID ~= RELIGION_CULT_OF_BAKKHEIA then
-		iMajorityFounder = gReligions[majorityReligionID].founder
-	end
-	if iMajorityFounder == g_iPlayer then	--don't do it if city has majority cult for which we are founder
-		gg_aiOptionValues.i = 0
-	elseif g_iOwner == g_iPlayer then
-		gg_aiOptionValues.i = g_value * 2	--double value for converting our own
-	else
-		gg_aiOptionValues.i = g_value
-	end
-end
-
-Finish[GameInfoTypes.EA_ACTION_RITUAL_BAKKHEIA] = function()
-	UpdateCivReligion(g_iOwner)
-	--MeetRandomPantheisticGod(g_iPlayer, "CultFounding", RELIGION_CULT_OF_BAKKHEIA)
-	return true
-end
-
+TestTarget[GameInfoTypes.EA_ACTION_RITUAL_BAKKHEIA] = ModelCultRitual_TestTarget
+SetUI[GameInfoTypes.EA_ACTION_RITUAL_BAKKHEIA] = ModelCultRitual_SetUI
+SetAIValues[GameInfoTypes.EA_ACTION_RITUAL_BAKKHEIA] = ModelCultRitual_SetAIValues
 
 ------------------------------------------------------------------------------------------------------------------------------
 -- Spells go in EaSpells.lua...

@@ -169,6 +169,20 @@
 			<Text>The liklihood for a specific Great Person class is proportional to the number of points accumulated below (specific subclasses may be generated depending on civilization factors):</Text>
 		</Row>
 
+		<!-- Unit Panel -->
+		<Row Tag="TXT_KEY_EA_UNIT_PANEL_BUILDS_GREAT_WORKS">
+			<Text>Builds & Great Works</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_PANEL_SPELLS">
+			<Text>Spells</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_PANEL_SPELLS_RITUALS">
+			<Text>Rituals & Spells</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_PANEL_SPELLS_PROPHECIES">
+			<Text>Prophecies, Rituals & Spells</Text>
+		</Row>
+
 		<!-- City View -->
 		<Row Tag="TXT_KEY_CITYVIEW_CONSCRIPT_BUTTON_TEXT">
 			<Text>Conscript/Indenture</Text>

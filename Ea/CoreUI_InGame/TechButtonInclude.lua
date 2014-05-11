@@ -493,6 +493,7 @@ function AddSmallButtonsToTechButton( thisTechButtonInstance, tech, maxSmallButt
 	local spellSQL = "SpellClass IS NOT NULL AND (TechReq = '" .. techType .. "' OR OrTechReq = '" .. techType .. "')"
 	local arcaneToolTip
 	local divineToolTip
+	local fallenToolTip
 	for spellInfo in GameInfo.EaActions(spellSQL) do
 		if spellInfo.AITarget or spellInfo.AICombatRole then	--spell has really been added to game (not just table)
 			local spellClass = spellInfo.SpellClass
@@ -503,10 +504,17 @@ function AddSmallButtonsToTechButton( thisTechButtonInstance, tech, maxSmallButt
 				arcaneToolTip = arcaneToolTip .. "[NEWLINE][ICON_BULLET][COLOR_POSITIVE_TEXT]" .. Locale.Lookup(spellInfo.Description) .. "[ENDCOLOR] " .. Locale.Lookup(spellInfo.Help)
 			end
 			if spellClass == "Divine" or spellClass == "Both" then
-				if not divineToolTip then
-					divineToolTip = "Learn Divine Spells (Devout):"
+				if spellClass.FallenAltSpell == "IsFallen" then
+					if not fallenToolTip then
+						fallenToolTip = "Learn Divine Spells (Devout):"
+					end
+					fallenToolTip = fallenToolTip .. "[NEWLINE][ICON_BULLET][COLOR_POSITIVE_TEXT]" .. Locale.Lookup(spellInfo.Description) .. "[ENDCOLOR] " .. Locale.Lookup(spellInfo.Help)
+				else
+					if not divineToolTip then
+						divineToolTip = "Learn Divine Spells (Devout):"
+					end
+					divineToolTip = divineToolTip .. "[NEWLINE][ICON_BULLET][COLOR_POSITIVE_TEXT]" .. Locale.Lookup(spellInfo.Description) .. "[ENDCOLOR] " .. Locale.Lookup(spellInfo.Help)
 				end
-				divineToolTip = divineToolTip .. "[NEWLINE][ICON_BULLET][COLOR_POSITIVE_TEXT]" .. Locale.Lookup(spellInfo.Description) .. "[ENDCOLOR] " .. Locale.Lookup(spellInfo.Help)
 			end
 		end
 	end
@@ -514,7 +522,7 @@ function AddSmallButtonsToTechButton( thisTechButtonInstance, tech, maxSmallButt
 		local buttonName = "B"..tostring(buttonNum)
 		local thisButton = thisTechButtonInstance[buttonName]
 		if thisButton then
-			local iconAtlas, iconIndex = "GENERIC_FUNC_ATLAS", 0	--need generic arcane and divine spell icons
+			local iconAtlas, iconIndex = "EA_SPELLS_ATLAS", 0
 			IconHookup(iconIndex, textureSize, iconAtlas, thisButton)
 			thisButton:SetHide( false )
 			thisButton:SetToolTipString(arcaneToolTip)
@@ -525,7 +533,18 @@ function AddSmallButtonsToTechButton( thisTechButtonInstance, tech, maxSmallButt
 		local buttonName = "B"..tostring(buttonNum)
 		local thisButton = thisTechButtonInstance[buttonName]
 		if thisButton then
-			local iconAtlas, iconIndex = "GENERIC_FUNC_ATLAS", 0	--need generic arcane and divine spell icons
+			local iconAtlas, iconIndex = "EA_SPELLS_ATLAS", 2
+			IconHookup(iconIndex, textureSize, iconAtlas, thisButton)
+			thisButton:SetHide( false )
+			thisButton:SetToolTipString(divineToolTip)
+			buttonNum = buttonNum + 1
+		end	
+	end
+	if fallenToolTip then
+		local buttonName = "B"..tostring(buttonNum)
+		local thisButton = thisTechButtonInstance[buttonName]
+		if thisButton then
+			local iconAtlas, iconIndex = "EA_SPELLS_ATLAS", 1
 			IconHookup(iconIndex, textureSize, iconAtlas, thisButton)
 			thisButton:SetHide( false )
 			thisButton:SetToolTipString(divineToolTip)

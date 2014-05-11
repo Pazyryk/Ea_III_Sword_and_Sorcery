@@ -198,12 +198,12 @@ UPDATE EaActions SET NotGPClass = 'Devout' WHERE Type = 'EA_ACTION_OCCUPY_TOWER'
 
 --Prophecies
 INSERT INTO EaActions (Type,			Description,								Help,											GPOnly,	UIType,		DoXP,	AITarget,		AIAdHocValue,	GPClass,	City,		UniqueType,	PlayAnywhereSound,					IconIndex,	IconAtlas) VALUES
-('EA_ACTION_PROPHECY_AHURADHATA',		'TXT_KEY_EA_ACTION_PROPHECY_AHURADHATA',	'TXT_KEY_EA_ACTION_PROPHECY_AHURADHATA_HELP',	1,		'Action',	100,	'OwnCities',	10000,			'Devout',	'Own',		'World',	'AS2D_EVENT_NOTIFICATION_GOOD',		16,			'EXPANSION_UNIT_ATLAS_1'			),
-('EA_ACTION_PROPHECY_MITHRA',			'TXT_KEY_EA_ACTION_PROPHECY_MITHRA',		'TXT_KEY_EA_ACTION_PROPHECY_MITHRA_HELP',		1,		'Action',	100,	'OwnCities',	10000,			'Devout',	'Own',		'World',	'AS2D_EVENT_NOTIFICATION_GOOD',		16,			'EXPANSION_UNIT_ATLAS_1'			),
-('EA_ACTION_PROPHECY_MA',				'TXT_KEY_EA_ACTION_PROPHECY_MA',			'TXT_KEY_EA_ACTION_PROPHECY_MA_HELP',			1,		'Action',	100,	'OwnCities',	0,				'Devout',	'Own',		'World',	'AS2D_EVENT_NOTIFICATION_GOOD',		16,			'EXPANSION_UNIT_ATLAS_1'			),
-('EA_ACTION_PROPHECY_VA',				'TXT_KEY_EA_ACTION_PROPHECY_VA',			'TXT_KEY_EA_ACTION_PROPHECY_VA_HELP',			1,		'Action',	100,	'Self',			0,				'Devout',	NULL,		'World',	'AS2D_EVENT_NOTIFICATION_VERY_BAD',	16,			'EXPANSION_UNIT_ATLAS_1'			),
-('EA_ACTION_PROPHECY_ANRA',				'TXT_KEY_EA_ACTION_PROPHECY_ANRA',			'TXT_KEY_EA_ACTION_PROPHECY_ANRA_HELP',			1,		'Action',	100,	'OwnCities',	10000,			'Devout',	'Own',		'World',	'AS2D_EVENT_NOTIFICATION_VERY_BAD',	16,			'EXPANSION_UNIT_ATLAS_1'			),
-('EA_ACTION_PROPHECY_AESHEMA',			'TXT_KEY_EA_ACTION_PROPHECY_AESHEMA',		'TXT_KEY_EA_ACTION_PROPHECY_AESHEMA_HELP',		1,		'Action',	100,	'Self',			0,				NULL,		NULL,		'World',	'AS2D_EVENT_NOTIFICATION_VERY_BAD',	16,			'EXPANSION_UNIT_ATLAS_1'			);
+('EA_ACTION_PROPHECY_AHURADHATA',		'TXT_KEY_EA_ACTION_PROPHECY_AHURADHATA',	'TXT_KEY_EA_ACTION_PROPHECY_AHURADHATA_HELP',	1,		'Spell',	100,	'OwnCities',	10000,			'Devout',	'Own',		'World',	'AS2D_EVENT_NOTIFICATION_GOOD',		16,			'EXPANSION_UNIT_ATLAS_1'			),
+('EA_ACTION_PROPHECY_MITHRA',			'TXT_KEY_EA_ACTION_PROPHECY_MITHRA',		'TXT_KEY_EA_ACTION_PROPHECY_MITHRA_HELP',		1,		'Spell',	100,	'OwnCities',	10000,			'Devout',	'Own',		'World',	'AS2D_EVENT_NOTIFICATION_GOOD',		16,			'EXPANSION_UNIT_ATLAS_1'			),
+('EA_ACTION_PROPHECY_MA',				'TXT_KEY_EA_ACTION_PROPHECY_MA',			'TXT_KEY_EA_ACTION_PROPHECY_MA_HELP',			1,		'Spell',	100,	'OwnCities',	0,				'Devout',	'Own',		'World',	'AS2D_EVENT_NOTIFICATION_GOOD',		16,			'EXPANSION_UNIT_ATLAS_1'			),
+('EA_ACTION_PROPHECY_VA',				'TXT_KEY_EA_ACTION_PROPHECY_VA',			'TXT_KEY_EA_ACTION_PROPHECY_VA_HELP',			1,		'Spell',	100,	'Self',			0,				'Devout',	NULL,		'World',	'AS2D_EVENT_NOTIFICATION_VERY_BAD',	16,			'EXPANSION_UNIT_ATLAS_1'			),
+('EA_ACTION_PROPHECY_ANRA',				'TXT_KEY_EA_ACTION_PROPHECY_ANRA',			'TXT_KEY_EA_ACTION_PROPHECY_ANRA_HELP',			1,		'Spell',	100,	'OwnCities',	10000,			'Devout',	'Own',		'World',	'AS2D_EVENT_NOTIFICATION_VERY_BAD',	16,			'EXPANSION_UNIT_ATLAS_1'			),
+('EA_ACTION_PROPHECY_AESHEMA',			'TXT_KEY_EA_ACTION_PROPHECY_AESHEMA',		'TXT_KEY_EA_ACTION_PROPHECY_AESHEMA_HELP',		1,		'Spell',	100,	'Self',			0,				NULL,		NULL,		'World',	'AS2D_EVENT_NOTIFICATION_VERY_BAD',	16,			'EXPANSION_UNIT_ATLAS_1'			);
 
 UPDATE EaActions SET ReligionNotFounded = 'RELIGION_AZZANDARAYASNA', PolicyReq = 'POLICY_THEISM', TechDisallow = 'TECH_MALEFICIUM', ExcludeFallen = 1 WHERE Type = 'EA_ACTION_PROPHECY_AHURADHATA';
 UPDATE EaActions SET ReligionNotFounded = 'RELIGION_ANRA', TechReq = 'TECH_MALEFICIUM' WHERE Type = 'EA_ACTION_PROPHECY_ANRA';
@@ -328,11 +328,11 @@ UPDATE EaActions SET CapitalOnly = 1 WHERE Type = 'EA_ACTION_TRADE_MISSION';
 INSERT INTO EaActions (Type,			Description,							GPOnly,	UIType,		TechReq,				PolicyReq,				ReligionFounded,			FinishXP,	AITarget,			GPClass,	GPSubclass,		FoundsSpreadsCult,				City,		GPModType1,				TurnsToComplete,	ProgressHolder,	HumanOnlySound,			PlayAnywhereSound,					IconIndex,	IconAtlas) VALUES
 ('EA_ACTION_PROSELYTIZE',				'TXT_KEY_EA_ACTION_PROSELYTIZE',		1,		'Action',	NULL,					NULL,					'RELIGION_AZZANDARAYASNA',	25,			'AzzandaraSpread',	'Devout',	'Priest',		NULL,							'Any',		'EAMOD_PROSELYTISM',	8,					'City',			NULL,					'AS2D_EVENT_NOTIFICATION_GOOD',		1,			'EXPANSION_UNIT_ACTION_ATLAS'	),
 ('EA_ACTION_ANTIPROSELYTIZE',			'TXT_KEY_EA_ACTION_PROSELYTIZE',		1,		'Action',	NULL,					NULL,					'RELIGION_ANRA',			25,			'AnraSpread',		'Devout',	'FallenPriest',	NULL,							'Any',		'EAMOD_PROSELYTISM',	8,					'City',			NULL,					'AS2D_EVENT_NOTIFICATION_VERY_BAD',	1,			'EXPANSION_UNIT_ACTION_ATLAS'	),
-('EA_ACTION_RITUAL_LEAVES',				'TXT_KEY_EA_ACTION_RITUAL_LEAVES',		1,		'Build',	NULL,					NULL,					'RELIGION_THE_WEAVE_OF_EA',	25,			'AllCities',		'Devout',	'Druid',		'RELIGION_CULT_OF_LEAVES',		'Any',		'EAMOD_DEVOTION',		8,					'City',			NULL,					'AS2D_EVENT_NOTIFICATION_GOOD',		2,			'BW_ATLAS_2'					),
-('EA_ACTION_RITUAL_EQUUS',				'TXT_KEY_EA_ACTION_RITUAL_EQUUS',		1,		'Build',	NULL,					NULL,					'RELIGION_THE_WEAVE_OF_EA',	25,			'AllCities',		'Devout',	'Druid',		'RELIGION_CULT_OF_EPONA',		'Any',		'EAMOD_DEVOTION',		8,					'City',			NULL,					'AS2D_EVENT_NOTIFICATION_GOOD',		2,			'BW_ATLAS_2'					),
-('EA_ACTION_RITUAL_CLEANSING',			'TXT_KEY_EA_ACTION_RITUAL_CLEANSING',	1,		'Build',	NULL,					NULL,					'RELIGION_THE_WEAVE_OF_EA',	25,			'AllCities',		'Devout',	'Druid',		'RELIGION_CULT_OF_PURE_WATERS',	'Any',		'EAMOD_DEVOTION',		8,					'City',			NULL,					'AS2D_EVENT_NOTIFICATION_GOOD',		2,			'BW_ATLAS_2'					),
-('EA_ACTION_RITUAL_AEGIR',				'TXT_KEY_EA_ACTION_RITUAL_AEGIR',		1,		'Build',	NULL,					NULL,					'RELIGION_THE_WEAVE_OF_EA',	25,			'AllCities',		'Devout',	'Druid',		'RELIGION_CULT_OF_AEGIR',		'Any',		'EAMOD_DEVOTION',		8,					'City',			NULL,					'AS2D_EVENT_NOTIFICATION_GOOD',		2,			'BW_ATLAS_2'					),
-('EA_ACTION_RITUAL_BAKKHEIA',			'TXT_KEY_EA_ACTION_RITUAL_BAKKHEIA',	1,		'Build',	NULL,					NULL,					'RELIGION_THE_WEAVE_OF_EA',	25,			'AllCities',		'Devout',	'Druid',		'RELIGION_CULT_OF_BAKKHEIA',	'Any',		'EAMOD_DEVOTION',		8,					'City',			NULL,					'AS2D_EVENT_NOTIFICATION_GOOD',		2,			'BW_ATLAS_2'					);
+('EA_ACTION_RITUAL_LEAVES',				'TXT_KEY_EA_ACTION_RITUAL_LEAVES',		1,		'Spell',	NULL,					NULL,					'RELIGION_THE_WEAVE_OF_EA',	25,			'AllCities',		'Devout',	'Druid',		'RELIGION_CULT_OF_LEAVES',		'Any',		'EAMOD_DEVOTION',		8,					'City',			NULL,					'AS2D_EVENT_NOTIFICATION_GOOD',		3,			'EA_RELIGION_ATLAS'				),
+('EA_ACTION_RITUAL_EQUUS',				'TXT_KEY_EA_ACTION_RITUAL_EQUUS',		1,		'Spell',	NULL,					NULL,					'RELIGION_THE_WEAVE_OF_EA',	25,			'AllCities',		'Devout',	'Druid',		'RELIGION_CULT_OF_EPONA',		'Any',		'EAMOD_DEVOTION',		8,					'City',			NULL,					'AS2D_EVENT_NOTIFICATION_GOOD',		5,			'EA_RELIGION_ATLAS'				),
+('EA_ACTION_RITUAL_CLEANSING',			'TXT_KEY_EA_ACTION_RITUAL_CLEANSING',	1,		'Spell',	NULL,					NULL,					'RELIGION_THE_WEAVE_OF_EA',	25,			'AllCities',		'Devout',	'Druid',		'RELIGION_CULT_OF_PURE_WATERS',	'Any',		'EAMOD_DEVOTION',		8,					'City',			NULL,					'AS2D_EVENT_NOTIFICATION_GOOD',		6,			'EA_RELIGION_ATLAS'				),
+('EA_ACTION_RITUAL_AEGIR',				'TXT_KEY_EA_ACTION_RITUAL_AEGIR',		1,		'Spell',	NULL,					NULL,					'RELIGION_THE_WEAVE_OF_EA',	25,			'AllCities',		'Devout',	'Druid',		'RELIGION_CULT_OF_AEGIR',		'Any',		'EAMOD_DEVOTION',		8,					'City',			NULL,					'AS2D_EVENT_NOTIFICATION_GOOD',		7,			'EA_RELIGION_ATLAS'				),
+('EA_ACTION_RITUAL_BAKKHEIA',			'TXT_KEY_EA_ACTION_RITUAL_BAKKHEIA',	1,		'Spell',	NULL,					NULL,					'RELIGION_THE_WEAVE_OF_EA',	25,			'AllCities',		'Devout',	'Druid',		'RELIGION_CULT_OF_BAKKHEIA',	'Any',		'EAMOD_DEVOTION',		8,					'City',			NULL,					'AS2D_EVENT_NOTIFICATION_GOOD',		4,			'EA_RELIGION_ATLAS'				);
 
 UPDATE EaActions SET OrGPSubclass = 'Paladin' WHERE Type = 'EA_ACTION_PROSELYTIZE';
 UPDATE EaActions SET OrGPSubclass = 'Eidolon' WHERE Type = 'EA_ACTION_ANTIPROSELYTIZE';
@@ -346,105 +346,105 @@ UPDATE EaActions SET OrGPSubclass = 'Eidolon' WHERE Type = 'EA_ACTION_ANTIPROSEL
 -- The spell is always castable if it is known and target is valid and player has sufficient mana or divine favor.
 
 --Arcane
-INSERT INTO EaActions (Type,			SpellClass,	GPModType1,				TechReq,						City,	AITarget,			AICombatRole,	TurnsToComplete,	FixedFaith,	HumanVisibleFX,	IconIndex,	IconAtlas				) VALUES
-('EA_SPELL_SCRYING',					'Arcane',	'EAMOD_DIVINATION',		'TECH_THAUMATURGY',				NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
-('EA_SPELL_SEEING_EYE_GLYPH',			'Arcane',	'EAMOD_DIVINATION',		'TECH_THAUMATURGY',				NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
-('EA_SPELL_DETECT_GLYPHS_RUNES_WARDS',	'Arcane',	'EAMOD_DIVINATION',		'TECH_THAUMATURGY',				NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
-('EA_SPELL_KNOW_WORLD',					'Arcane',	'EAMOD_DIVINATION',		'TECH_COSMOGONY',				NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
-('EA_SPELL_DISPEL_HEXES',				'Arcane',	'EAMOD_ABJURATION',		'TECH_ABJURATION',				NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
-('EA_SPELL_DISPEL_GLYPHS_RUNES_WARDS',	'Arcane',	'EAMOD_ABJURATION',		'TECH_ABJURATION',				NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
-('EA_SPELL_DISPEL_ILLUSIONS',			'Arcane',	'EAMOD_ABJURATION',		'TECH_ABJURATION',				NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
-('EA_SPELL_BANISHMENT',					'Arcane',	'EAMOD_ABJURATION',		'TECH_ABJURATION',				NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
-('EA_SPELL_PROTECTIVE_WARD',			'Arcane',	'EAMOD_ABJURATION',		'TECH_ABJURATION',				NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
-('EA_SPELL_DISPEL_MAGIC',				'Arcane',	'EAMOD_ABJURATION',		'TECH_INVOCATION',				NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
-('EA_SPELL_TIME_STOP',					'Arcane',	'EAMOD_ABJURATION',		'TECH_GREATER_ARCANA',			NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
-('EA_SPELL_MAGIC_MISSILE',				'Arcane',	'EAMOD_EVOCATION',		'TECH_THAUMATURGY',				NULL,	NULL,				'Any',			1,					0,			NULL,			7,			'TECH_ATLAS_2'			),
-('EA_SPELL_EXPLOSIVE_RUNE',				'Arcane',	'EAMOD_EVOCATION',		'TECH_EVOCATION',				'Not',	'BoobyTrap',		NULL,			3,					0,			1,				7,			'TECH_ATLAS_2'			),
-('EA_SPELL_MAGE_SWORD',					'Arcane',	'EAMOD_EVOCATION',		'TECH_EVOCATION',				NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
-('EA_SPELL_BREACH',						'Arcane',	'EAMOD_EVOCATION',		'TECH_BREACH',					NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
-('EA_SPELL_WISH',						'Arcane',	'EAMOD_EVOCATION',		'TECH_ESOTERIC_ARCANA',			NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
-('EA_SPELL_SLOW',						'Arcane',	'EAMOD_EVOCATION',		'TECH_TRANSMUTATION',			NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
-('EA_SPELL_HASTE',						'Arcane',	'EAMOD_TRANSMUTATION',	'TECH_TRANSMUTATION',			NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
-('EA_SPELL_ENCHANT_WEAPONS',			'Arcane',	'EAMOD_TRANSMUTATION',	'TECH_TRANSMUTATION',			NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
-('EA_SPELL_POLYMORPH',					'Arcane',	'EAMOD_TRANSMUTATION',	'TECH_TRANSMUTATION',			NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
-('EA_SPELL_BLIGHT',						'Arcane',	'EAMOD_TRANSMUTATION',	'TECH_SORCERY',					'Not',	'NIMBY',			NULL,			5,					0,			1,				9,			'TECH_ATLAS_2'			),
-('EA_SPELL_HEX',						'Arcane',	'EAMOD_CONJURATION',	'TECH_MALEFICIUM',				NULL,	NULL,				'Any',			1,					0,			1,				9,			'TECH_ATLAS_2'			),
-('EA_SPELL_CONJURE_MONSTER',			'Arcane',	'EAMOD_CONJURATION',	'TECH_CONJURATION',				NULL,	'SelfAndTower',		NULL,			3,					0,			1,				7,			'TECH_ATLAS_2'			),
-('EA_SPELL_TELEPORT',					'Arcane',	'EAMOD_CONJURATION',	'TECH_CONJURATION',				NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
-('EA_SPELL_PHASE_DOOR',					'Arcane',	'EAMOD_CONJURATION',	'TECH_INVOCATION',				NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
-('EA_SPELL_REANIMATE_DEAD',				'Arcane',	'EAMOD_NECROMANCY',		'TECH_REANIMATION',				NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
-('EA_SPELL_RAISE_DEAD',					'Arcane',	'EAMOD_NECROMANCY',		'TECH_NECROMANCY',				NULL,	'SelfAndTower',		NULL,			3,					0,			1,				7,			'TECH_ATLAS_2'			),
-('EA_SPELL_DEATH_RUNE',					'Arcane',	'EAMOD_NECROMANCY',		'TECH_NECROMANCY',				'Not',	'BoobyTrap',		NULL,			3,					0,			1,				7,			'TECH_ATLAS_2'			),
-('EA_SPELL_VAMPIRIC_TOUCH',				'Arcane',	'EAMOD_NECROMANCY',		'TECH_NECROMANCY',				NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
-('EA_SPELL_DEATH_STAY',					'Arcane',	'EAMOD_NECROMANCY',		'TECH_NECROMANCY',				NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
-('EA_SPELL_BECOME_LICH',				'Arcane',	'EAMOD_NECROMANCY',		'TECH_SOUL_BINDING',			NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
-('EA_SPELL_FINGER_OF_DEATH',			'Arcane',	'EAMOD_NECROMANCY',		'TECH_SOUL_BINDING',			NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
-('EA_SPELL_CHARM_MONSTER',				'Arcane',	'EAMOD_ENCHANTMENT',	'TECH_MUSIC',					NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
-('EA_SPELL_CAUSE_FEAR',					'Arcane',	'EAMOD_ENCHANTMENT',	'TECH_ENCHANTMENT',				NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
-('EA_SPELL_CAUSE_DISPAIR',				'Arcane',	'EAMOD_ENCHANTMENT',	'TECH_ENCHANTMENT',				NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
-('EA_SPELL_SLEEP',						'Arcane',	'EAMOD_ENCHANTMENT',	'TECH_ENCHANTMENT',				NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
-('EA_SPELL_DREAM',						'Arcane',	'EAMOD_ENCHANTMENT',	'TECH_ENCHANTMENT',				NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
-('EA_SPELL_NIGHTMARE',					'Arcane',	'EAMOD_ENCHANTMENT',	'TECH_ENCHANTMENT',				NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
-('EA_SPELL_LESSER_GEAS',				'Arcane',	'EAMOD_ENCHANTMENT',	'TECH_ENCHANTMENT',				NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
-('EA_SPELL_GREATER_GEAS',				'Arcane',	'EAMOD_ENCHANTMENT',	'TECH_ENCHANTMENT',				NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
-('EA_SPELL_PRESTIDIGITATION',			'Arcane',	'EAMOD_ILLUSION',		'TECH_ILLUSION',				NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
-('EA_SPELL_OBSCURE_TERRAIN',			'Arcane',	'EAMOD_ILLUSION',		'TECH_ILLUSION',				NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
-('EA_SPELL_FOG_OF_WAR',					'Arcane',	'EAMOD_ILLUSION',		'TECH_GREATER_ILLUSION',		NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
-('EA_SPELL_SIMULACRUM',					'Arcane',	'EAMOD_ILLUSION',		'TECH_GREATER_ILLUSION',		NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			),
-('EA_SPELL_PHANTASMAGORIA',				'Arcane',	'EAMOD_ILLUSION',		'TECH_PHANTASMAGORIA',			NULL,	NULL,				NULL,			1,					0,			1,				7,			'TECH_ATLAS_2'			);
+INSERT INTO EaActions (Type,			SpellClass,	GPModType1,				TechReq,						City,	AITarget,			AICombatRole,	TurnsToComplete,	FixedFaith,	HumanVisibleFX,	IconIndex,	IconAtlas			) VALUES
+('EA_SPELL_SCRYING',					'Arcane',	'EAMOD_DIVINATION',		'TECH_THAUMATURGY',				NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_SEEING_EYE_GLYPH',			'Arcane',	'EAMOD_DIVINATION',		'TECH_THAUMATURGY',				NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_DETECT_GLYPHS_RUNES_WARDS',	'Arcane',	'EAMOD_DIVINATION',		'TECH_THAUMATURGY',				NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_KNOW_WORLD',					'Arcane',	'EAMOD_DIVINATION',		'TECH_COSMOGONY',				NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_DISPEL_HEXES',				'Arcane',	'EAMOD_ABJURATION',		'TECH_ABJURATION',				NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_DISPEL_GLYPHS_RUNES_WARDS',	'Arcane',	'EAMOD_ABJURATION',		'TECH_ABJURATION',				NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_DISPEL_ILLUSIONS',			'Arcane',	'EAMOD_ABJURATION',		'TECH_ABJURATION',				NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_BANISHMENT',					'Arcane',	'EAMOD_ABJURATION',		'TECH_ABJURATION',				NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_PROTECTIVE_WARD',			'Arcane',	'EAMOD_ABJURATION',		'TECH_ABJURATION',				NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_DISPEL_MAGIC',				'Arcane',	'EAMOD_ABJURATION',		'TECH_INVOCATION',				NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_TIME_STOP',					'Arcane',	'EAMOD_ABJURATION',		'TECH_GREATER_ARCANA',			NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_MAGIC_MISSILE',				'Arcane',	'EAMOD_EVOCATION',		'TECH_THAUMATURGY',				NULL,	NULL,				'Any',			1,					0,			NULL,			0,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_EXPLOSIVE_RUNE',				'Arcane',	'EAMOD_EVOCATION',		'TECH_EVOCATION',				'Not',	'BoobyTrap',		NULL,			3,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_MAGE_SWORD',					'Arcane',	'EAMOD_EVOCATION',		'TECH_EVOCATION',				NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_BREACH',						'Arcane',	'EAMOD_EVOCATION',		'TECH_BREACH',					NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_WISH',						'Arcane',	'EAMOD_EVOCATION',		'TECH_ESOTERIC_ARCANA',			NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_SLOW',						'Arcane',	'EAMOD_EVOCATION',		'TECH_TRANSMUTATION',			NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_HASTE',						'Arcane',	'EAMOD_TRANSMUTATION',	'TECH_TRANSMUTATION',			NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_ENCHANT_WEAPONS',			'Arcane',	'EAMOD_TRANSMUTATION',	'TECH_TRANSMUTATION',			NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_POLYMORPH',					'Arcane',	'EAMOD_TRANSMUTATION',	'TECH_TRANSMUTATION',			NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_BLIGHT',						'Arcane',	'EAMOD_TRANSMUTATION',	'TECH_SORCERY',					'Not',	'NIMBY',			NULL,			5,					0,			1,				9,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_HEX',						'Arcane',	'EAMOD_CONJURATION',	'TECH_MALEFICIUM',				NULL,	NULL,				'Any',			1,					0,			1,				9,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_CONJURE_MONSTER',			'Arcane',	'EAMOD_CONJURATION',	'TECH_CONJURATION',				NULL,	'SelfAndTower',		NULL,			3,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_TELEPORT',					'Arcane',	'EAMOD_CONJURATION',	'TECH_CONJURATION',				NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_PHASE_DOOR',					'Arcane',	'EAMOD_CONJURATION',	'TECH_INVOCATION',				NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_REANIMATE_DEAD',				'Arcane',	'EAMOD_NECROMANCY',		'TECH_REANIMATION',				NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_RAISE_DEAD',					'Arcane',	'EAMOD_NECROMANCY',		'TECH_NECROMANCY',				NULL,	'SelfAndTower',		NULL,			3,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_DEATH_RUNE',					'Arcane',	'EAMOD_NECROMANCY',		'TECH_NECROMANCY',				'Not',	'BoobyTrap',		NULL,			3,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_VAMPIRIC_TOUCH',				'Arcane',	'EAMOD_NECROMANCY',		'TECH_NECROMANCY',				NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_DEATH_STAY',					'Arcane',	'EAMOD_NECROMANCY',		'TECH_NECROMANCY',				NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_BECOME_LICH',				'Arcane',	'EAMOD_NECROMANCY',		'TECH_SOUL_BINDING',			NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_FINGER_OF_DEATH',			'Arcane',	'EAMOD_NECROMANCY',		'TECH_SOUL_BINDING',			NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_CHARM_MONSTER',				'Arcane',	'EAMOD_ENCHANTMENT',	'TECH_MUSIC',					NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_CAUSE_FEAR',					'Arcane',	'EAMOD_ENCHANTMENT',	'TECH_ENCHANTMENT',				NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_CAUSE_DISPAIR',				'Arcane',	'EAMOD_ENCHANTMENT',	'TECH_ENCHANTMENT',				NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_SLEEP',						'Arcane',	'EAMOD_ENCHANTMENT',	'TECH_ENCHANTMENT',				NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_DREAM',						'Arcane',	'EAMOD_ENCHANTMENT',	'TECH_ENCHANTMENT',				NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_NIGHTMARE',					'Arcane',	'EAMOD_ENCHANTMENT',	'TECH_ENCHANTMENT',				NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_LESSER_GEAS',				'Arcane',	'EAMOD_ENCHANTMENT',	'TECH_ENCHANTMENT',				NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_GREATER_GEAS',				'Arcane',	'EAMOD_ENCHANTMENT',	'TECH_ENCHANTMENT',				NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_PRESTIDIGITATION',			'Arcane',	'EAMOD_ILLUSION',		'TECH_ILLUSION',				NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_OBSCURE_TERRAIN',			'Arcane',	'EAMOD_ILLUSION',		'TECH_ILLUSION',				NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_FOG_OF_WAR',					'Arcane',	'EAMOD_ILLUSION',		'TECH_GREATER_ILLUSION',		NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_SIMULACRUM',					'Arcane',	'EAMOD_ILLUSION',		'TECH_GREATER_ILLUSION',		NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_PHANTASMAGORIA',				'Arcane',	'EAMOD_ILLUSION',		'TECH_PHANTASMAGORIA',			NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	);
 
 --Both Arcane and Divine
-INSERT INTO EaActions (Type,			SpellClass,	GPModType1,				TechReq,						City,	AITarget,			AICombatRole,	FallenAltSpell,					TurnsToComplete,	FixedFaith,	HumanVisibleFX,	IconIndex,	IconAtlas				) VALUES
-('EA_SPELL_SUMMON_ABYSSAL_CREATURES',	'Both',		'EAMOD_CONJURATION',	'TECH_SORCERY',					NULL,	'SelfAndTower',		NULL,			'IsFallen',						3,					0,			1,				9,			'TECH_ATLAS_2'			),
-('EA_SPELL_SUMMON_DEMON',				'Both',		'EAMOD_CONJURATION',	'TECH_SUMMONING',				NULL,	'SelfAndTower',		NULL,			'IsFallen',						3,					0,			1,				9,			'TECH_ATLAS_2'			);
+INSERT INTO EaActions (Type,			SpellClass,	GPModType1,				TechReq,						City,	AITarget,			AICombatRole,	FallenAltSpell,					TurnsToComplete,	FixedFaith,	HumanVisibleFX,	IconIndex,	IconAtlas			) VALUES
+('EA_SPELL_SUMMON_ABYSSAL_CREATURES',	'Both',		'EAMOD_CONJURATION',	'TECH_SORCERY',					NULL,	'SelfAndTower',		NULL,			'IsFallen',						3,					0,			1,				1,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_SUMMON_DEMON',				'Both',		'EAMOD_CONJURATION',	'TECH_SUMMONING',				NULL,	'SelfAndTower',		NULL,			'IsFallen',						3,					0,			1,				1,			'EA_SPELLS_ATLAS'	);
 
 
 --Divine
-INSERT INTO EaActions (Type,			SpellClass,	GPModType1,				TechReq,						City,	AITarget,			AICombatRole,	FallenAltSpell,					TurnsToComplete,	FixedFaith,	HumanVisibleFX,	IconIndex,	IconAtlas				) VALUES
-('EA_SPELL_HEAL',						'Divine',	'EAMOD_NECROMANCY',		NULL,							NULL,	NULL,				'Any',			'EA_SPELL_HURT',				1,					0,			1,				3,			'UNIT_ACTION_ATLAS'		),
-('EA_SPELL_BLESS',						'Divine',	'EAMOD_CONJURATION',	'TECH_DIVINE_LITURGY',			NULL,	NULL,				'Any',			'EA_SPELL_CURSE',				1,					0,			1,				38,			'BW_ATLAS_1'			),
-('EA_SPELL_PROTECTION_FROM_EVIL',		'Divine',	'EAMOD_ABJURATION',		'TECH_DIVINE_LITURGY',			NULL,	NULL,				'Any',			'EA_SPELL_EVIL_EYE',			1,					0,			1,				38,			'BW_ATLAS_1'			),
-('EA_SPELL_SANCTIFY',					'Divine',	'EAMOD_ABJURATION',		'TECH_DIVINE_VITALISM',			NULL,	NULL,				NULL,			'EA_SPELL_DEFILE',				1,					0,			1,				38,			'BW_ATLAS_1'			),
-('EA_SPELL_MASS_HEAL',					'Divine',	'EAMOD_NECROMANCY',		'TECH_DIVINE_VITALISM',			NULL,	NULL,				NULL,			'EA_SPELL_MASS_HURT',			1,					0,			1,				38,			'BW_ATLAS_1'			),
-('EA_SPELL_CURE_DISEASE',				'Divine',	'EAMOD_NECROMANCY',		'TECH_DIVINE_VITALISM',			NULL,	NULL,				NULL,			'EA_SPELL_CAUSE_DISEASE',		1,					0,			1,				38,			'BW_ATLAS_1'			),
-('EA_SPELL_CURE_PLAGUE',				'Divine',	'EAMOD_NECROMANCY',		'TECH_DIVINE_ESSENCE',			NULL,	NULL,				NULL,			'EA_SPELL_CAUSE_PLAGUE',		1,					0,			1,				38,			'BW_ATLAS_1'			),
-('EA_SPELL_COMMAND',					'Divine',	'EAMOD_ENCHANTMENT',	'TECH_DIVINE_ESSENCE',			NULL,	NULL,				NULL,			NULL,							1,					0,			1,				38,			'BW_ATLAS_1'			),
-('EA_SPELL_BANISH_UNDEAD',				'Divine',	'EAMOD_ABJURATION',		'TECH_HEAVENLY_CYCLES',			NULL,	NULL,				NULL,			'EA_SPELL_TURN_UNDEAD',			1,					0,			1,				38,			'BW_ATLAS_1'			),
-('EA_SPELL_CONSECRATE',					'Divine',	'EAMOD_EVOCATION',		'TECH_HEAVENLY_CYCLES',			NULL,	NULL,				NULL,			'EA_SPELL_DESECRATE',			1,					0,			1,				38,			'BW_ATLAS_1'			),
-('EA_SPELL_CALL_HEAVENS_GUARD',			'Divine',	'EAMOD_CONJURATION',	'TECH_HEAVENLY_CYCLES',			NULL,	'SelfAndTower',		NULL,			'EA_SPELL_SUMMON_ABYSSAL_CREATURES', 3,				0,			1,				38,			'BW_ATLAS_1'			),
-('EA_SPELL_CALL_ANGEL',					'Divine',	'EAMOD_CONJURATION',	'TECH_CELESTIAL_KNOWLEDGE',		NULL,	'SelfAndTower',		NULL,			'EA_SPELL_SUMMON_DEMON',		3,					0,			1,				38,			'BW_ATLAS_1'			),
-('EA_SPELL_RESURRECTION',				'Divine',	'EAMOD_NECROMANCY',		'TECH_DIVINE_INTERVENTION',		NULL,	NULL,				NULL,			'EA_SPELL_GREATER_REANIMATION',	1,					0,			1,				38,			'BW_ATLAS_1'			),
+INSERT INTO EaActions (Type,			SpellClass,	GPModType1,				TechReq,						City,	AITarget,			AICombatRole,	FallenAltSpell,					TurnsToComplete,	FixedFaith,	HumanVisibleFX,	IconIndex,	IconAtlas			) VALUES
+('EA_SPELL_HEAL',						'Divine',	'EAMOD_NECROMANCY',		NULL,							NULL,	NULL,				'Any',			'EA_SPELL_HURT',				1,					0,			1,				2,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_BLESS',						'Divine',	'EAMOD_CONJURATION',	'TECH_DIVINE_LITURGY',			NULL,	NULL,				'Any',			'EA_SPELL_CURSE',				1,					0,			1,				2,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_PROTECTION_FROM_EVIL',		'Divine',	'EAMOD_ABJURATION',		'TECH_DIVINE_LITURGY',			NULL,	NULL,				'Any',			'EA_SPELL_EVIL_EYE',			1,					0,			1,				2,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_SANCTIFY',					'Divine',	'EAMOD_ABJURATION',		'TECH_DIVINE_VITALISM',			NULL,	NULL,				NULL,			'EA_SPELL_DEFILE',				1,					0,			1,				2,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_MASS_HEAL',					'Divine',	'EAMOD_NECROMANCY',		'TECH_DIVINE_VITALISM',			NULL,	NULL,				NULL,			'EA_SPELL_MASS_HURT',			1,					0,			1,				2,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_CURE_DISEASE',				'Divine',	'EAMOD_NECROMANCY',		'TECH_DIVINE_VITALISM',			NULL,	NULL,				NULL,			'EA_SPELL_CAUSE_DISEASE',		1,					0,			1,				2,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_CURE_PLAGUE',				'Divine',	'EAMOD_NECROMANCY',		'TECH_DIVINE_ESSENCE',			NULL,	NULL,				NULL,			'EA_SPELL_CAUSE_PLAGUE',		1,					0,			1,				2,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_COMMAND',					'Divine',	'EAMOD_ENCHANTMENT',	'TECH_DIVINE_ESSENCE',			NULL,	NULL,				NULL,			NULL,							1,					0,			1,				2,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_BANISH_UNDEAD',				'Divine',	'EAMOD_ABJURATION',		'TECH_HEAVENLY_CYCLES',			NULL,	NULL,				NULL,			'EA_SPELL_TURN_UNDEAD',			1,					0,			1,				2,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_CONSECRATE',					'Divine',	'EAMOD_EVOCATION',		'TECH_HEAVENLY_CYCLES',			NULL,	NULL,				NULL,			'EA_SPELL_DESECRATE',			1,					0,			1,				2,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_CALL_HEAVENS_GUARD',			'Divine',	'EAMOD_CONJURATION',	'TECH_HEAVENLY_CYCLES',			NULL,	'SelfAndTower',		NULL,			'EA_SPELL_SUMMON_ABYSSAL_CREATURES', 3,				0,			1,				2,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_CALL_ANGEL',					'Divine',	'EAMOD_CONJURATION',	'TECH_CELESTIAL_KNOWLEDGE',		NULL,	'SelfAndTower',		NULL,			'EA_SPELL_SUMMON_DEMON',		3,					0,			1,				2,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_RESURRECTION',				'Divine',	'EAMOD_NECROMANCY',		'TECH_DIVINE_INTERVENTION',		NULL,	NULL,				NULL,			'EA_SPELL_GREATER_REANIMATION',	1,					0,			1,				2,			'EA_SPELLS_ATLAS'	),
 
 --fallen
-('EA_SPELL_HURT',						'Divine',	'EAMOD_NECROMANCY',		NULL,							NULL,	NULL,				'Any',			'IsFallen',						1,					0,			1,				9,			'TECH_ATLAS_2'			),
-('EA_SPELL_CURSE',						'Divine',	'EAMOD_CONJURATION',	'TECH_MALEFICIUM',				NULL,	NULL,				'Any',			'IsFallen',						1,					0,			1,				9,			'TECH_ATLAS_2'			),
-('EA_SPELL_EVIL_EYE',					'Divine',	'EAMOD_NECROMANCY',		'TECH_MALEFICIUM',				NULL,	NULL,				'Any',			'IsFallen',						1,					0,			1,				9,			'TECH_ATLAS_2'			),
-('EA_SPELL_DEFILE',						'Divine',	'EAMOD_TRANSMUTATION',	'TECH_REANIMATION',				NULL,	NULL,				NULL,			'IsFallen',						1,					0,			1,				9,			'TECH_ATLAS_2'			),
-('EA_SPELL_MASS_HURT',					'Divine',	'EAMOD_NECROMANCY',		'TECH_SORCERY',					NULL,	NULL,				NULL,			'IsFallen',						1,					0,			1,				9,			'TECH_ATLAS_2'			),
-('EA_SPELL_CAUSE_DISEASE',				'Divine',	'EAMOD_NECROMANCY',		'TECH_NECROMANCY',				NULL,	NULL,				NULL,			'IsFallen',						1,					0,			1,				9,			'TECH_ATLAS_2'			),
-('EA_SPELL_CAUSE_PLAGUE',				'Divine',	'EAMOD_NECROMANCY',		'TECH_NECROMANCY',				NULL,	NULL,				NULL,			'IsFallen',						1,					0,			1,				9,			'TECH_ATLAS_2'			),
-('EA_SPELL_TURN_UNDEAD',				'Divine',	'EAMOD_NECROMANCY',		'TECH_NECROMANCY',				NULL,	NULL,				NULL,			'IsFallen',						1,					0,			1,				9,			'TECH_ATLAS_2'			),
-('EA_SPELL_DESECRATE',					'Divine',	'EAMOD_TRANSMUTATION',	'TECH_SUMMONING',				NULL,	NULL,				NULL,			'IsFallen',						1,					0,			1,				9,			'TECH_ATLAS_2'			),
-('EA_SPELL_GREATER_REANIMATION',		'Divine',	'EAMOD_NECROMANCY',		'TECH_SOUL_BINDING',			NULL,	NULL,				NULL,			'IsFallen',						1,					0,			1,				9,			'TECH_ATLAS_2'			);
+('EA_SPELL_HURT',						'Divine',	'EAMOD_NECROMANCY',		NULL,							NULL,	NULL,				'Any',			'IsFallen',						1,					0,			1,				1,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_CURSE',						'Divine',	'EAMOD_CONJURATION',	'TECH_MALEFICIUM',				NULL,	NULL,				'Any',			'IsFallen',						1,					0,			1,				1,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_EVIL_EYE',					'Divine',	'EAMOD_NECROMANCY',		'TECH_MALEFICIUM',				NULL,	NULL,				'Any',			'IsFallen',						1,					0,			1,				1,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_DEFILE',						'Divine',	'EAMOD_TRANSMUTATION',	'TECH_REANIMATION',				NULL,	NULL,				NULL,			'IsFallen',						1,					0,			1,				1,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_MASS_HURT',					'Divine',	'EAMOD_NECROMANCY',		'TECH_SORCERY',					NULL,	NULL,				NULL,			'IsFallen',						1,					0,			1,				1,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_CAUSE_DISEASE',				'Divine',	'EAMOD_NECROMANCY',		'TECH_NECROMANCY',				NULL,	NULL,				NULL,			'IsFallen',						1,					0,			1,				1,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_CAUSE_PLAGUE',				'Divine',	'EAMOD_NECROMANCY',		'TECH_NECROMANCY',				NULL,	NULL,				NULL,			'IsFallen',						1,					0,			1,				1,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_TURN_UNDEAD',				'Divine',	'EAMOD_NECROMANCY',		'TECH_NECROMANCY',				NULL,	NULL,				NULL,			'IsFallen',						1,					0,			1,				1,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_DESECRATE',					'Divine',	'EAMOD_TRANSMUTATION',	'TECH_SUMMONING',				NULL,	NULL,				NULL,			'IsFallen',						1,					0,			1,				1,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_GREATER_REANIMATION',		'Divine',	'EAMOD_NECROMANCY',		'TECH_SOUL_BINDING',			NULL,	NULL,				NULL,			'IsFallen',						1,					0,			1,				1,			'EA_SPELLS_ATLAS'	);
 
 --pantheism
-INSERT INTO EaActions (Type,			SpellClass,	GPModType1,				PolicyReq,						City,	AITarget,			AICombatRole,	FallenAltSpell,					TurnsToComplete,	FixedFaith,	HumanVisibleFX,	IconIndex,	IconAtlas				) VALUES
-('EA_SPELL_EAS_BLESSING',				'Divine',	'EAMOD_TRANSMUTATION',	'POLICY_WOODS_LORE',			'Not',	'NearbyLivTerrain',	NULL,			NULL,							3,					0,			1,				10,			'EXPANSION_BW_ATLAS_2'	),
-('EA_SPELL_CALL_ANIMALS',				'Divine',	'EAMOD_CONJURATION',	'POLICY_FERAL_BOND',			'Not',	'SelfAndTower',		NULL,			NULL,							3,					0,			1,				10,			'EXPANSION_BW_ATLAS_2'	),
-('EA_SPELL_CALL_TREE_ENTS',				'Divine',	'EAMOD_CONJURATION',	'POLICY_FOREST_DOMINION',		'Not',	'SelfAndTower',		NULL,			NULL,							3,					0,			1,				10,			'EXPANSION_BW_ATLAS_2'	);
+INSERT INTO EaActions (Type,			SpellClass,	GPModType1,				PolicyReq,						City,	AITarget,			AICombatRole,	FallenAltSpell,					TurnsToComplete,	FixedFaith,	HumanVisibleFX,	IconIndex,	IconAtlas			) VALUES
+('EA_SPELL_EAS_BLESSING',				'Divine',	'EAMOD_TRANSMUTATION',	'POLICY_WOODS_LORE',			'Not',	'NearbyLivTerrain',	NULL,			NULL,							3,					0,			1,				2,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_CALL_ANIMALS',				'Divine',	'EAMOD_CONJURATION',	'POLICY_FERAL_BOND',			'Not',	'SelfAndTower',		NULL,			NULL,							3,					0,			1,				2,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_CALL_TREE_ENTS',				'Divine',	'EAMOD_CONJURATION',	'POLICY_FOREST_DOMINION',		'Not',	'SelfAndTower',		NULL,			NULL,							3,					0,			1,				2,			'EA_SPELLS_ATLAS'	);
 
 --druid cult spells (learned from ritual)
-INSERT INTO EaActions (Type,			SpellClass,	GPModType1,				PantheismCult,					City,	AITarget,			AICombatRole,		TurnsToComplete,	FixedFaith,	HumanVisibleFX,	IconIndex,	IconAtlas) VALUES
-('EA_SPELL_BLOOM',						'Divine',	'EAMOD_TRANSMUTATION',	'RELIGION_CULT_OF_LEAVES',		'Not',	'NearbyNonFeature',	NULL,				5,					0,			1,				10,			'EXPANSION_BW_ATLAS_2'		),
-('EA_SPELL_RIDE_LIKE_THE_WIND',			'Divine',	'EAMOD_CONJURATION',	'RELIGION_CULT_OF_EPONA',		NULL,	NULL,				'Any',				1,					0,			1,				9,			'EXPANSION_SCEN_UNIT_ATLAS'	),
-('EA_SPELL_PURIFY',						'Divine',	'EAMOD_CONJURATION',	'RELIGION_CULT_OF_PURE_WATERS',	NULL,	NULL,				'Any',				1,					0,			1,				1,			'NW_ATLAS_DLC'				),
-('EA_SPELL_FAIR_WINDS',					'Divine',	'EAMOD_CONJURATION',	'RELIGION_CULT_OF_AEGIR',		NULL,	'OwnNavalUnits',	NULL,				1,					0,			1,				3,			'EXPANSION_SCEN_TECH_ATLAS'	),
-('EA_SPELL_REVELRY',					'Divine',	'EAMOD_CONJURATION',	'RELIGION_CULT_OF_BAKKHEIA',	'Own',	'OwnClosestCity',	NULL,				1000,				0,			1,				44,			'BW_ATLAS_1'				);
+INSERT INTO EaActions (Type,			SpellClass,	GPModType1,				PantheismCult,					City,	AITarget,			AICombatRole,		TurnsToComplete,	FixedFaith,	HumanVisibleFX,	IconIndex,	IconAtlas			) VALUES
+('EA_SPELL_BLOOM',						'Divine',	'EAMOD_TRANSMUTATION',	'RELIGION_CULT_OF_LEAVES',		'Not',	'NearbyNonFeature',	NULL,				5,					0,			1,				2,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_RIDE_LIKE_THE_WIND',			'Divine',	'EAMOD_CONJURATION',	'RELIGION_CULT_OF_EPONA',		NULL,	NULL,				'Any',				1,					0,			1,				2,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_PURIFY',						'Divine',	'EAMOD_CONJURATION',	'RELIGION_CULT_OF_PURE_WATERS',	NULL,	NULL,				'Any',				1,					0,			1,				2,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_FAIR_WINDS',					'Divine',	'EAMOD_CONJURATION',	'RELIGION_CULT_OF_AEGIR',		NULL,	'OwnNavalUnits',	NULL,				1,					0,			1,				2,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_REVELRY',					'Divine',	'EAMOD_CONJURATION',	'RELIGION_CULT_OF_BAKKHEIA',	'Own',	'OwnClosestCity',	NULL,				1000,				0,			1,				2,			'EA_SPELLS_ATLAS'	);
 
 
 --Build out the table for dependent strings
-UPDATE EaActions SET Description = 'TXT_KEY_' || Type, Help = 'TXT_KEY_' || Type || '_HELP' WHERE Type GLOB 'EA_SPELL_*';
-UPDATE EaActions SET GPOnly = 1, ConsiderTowerTemple = 1, UIType = 'Build' WHERE Type GLOB 'EA_SPELL_*';		--need spell UI
+UPDATE EaActions SET Description = 'TXT_KEY_' || Type, Help = 'TXT_KEY_' || Type || '_HELP' WHERE SpellClass IS NOT NULL;
+UPDATE EaActions SET GPOnly = 1, ConsiderTowerTemple = 1, UIType = 'Spell' WHERE SpellClass IS NOT NULL;
 UPDATE EaActions SET ProgressHolder = 'Person' WHERE Type GLOB 'EA_SPELL_*' AND TurnsToComplete > 1;
 
 

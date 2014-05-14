@@ -268,6 +268,14 @@ gg_teamCanMeetFay = {}
 gg_animalSpawnPlots = {pos = 0}
 gg_animalSpawnInhibitTeams = {}
 
+--misc counts
+gg_counts = {	freshWaterAbzuFollowerCities = 0,
+				coastalAegirFollowerCities = 0,
+				earthResWorkedByPloutonFollower = 0,
+				stallionsOfEpona = 0,
+				grapeAndSpiritsBuildingsBakkheiaFollowerCities = 0
+}
+
 ----------------------------------------------------------------------------------------------------------------------------
 -- gT and referenced tables that are saved/restored through game save/loads
 ----------------------------------------------------------------------------------------------------------------------------
@@ -283,11 +291,7 @@ gWorld = {	sumOfAllMana =				MapModData.STARTING_SUM_OF_ALL_MANA,
 			azzConvertNum =				0,
 			anraConvertNum =			0,
 			weaveConvertNum =			0,
-			livingTerrainConvertStr =	0,
-			stallionsOfEpona =			0,
-			riverSideCultOfPureWatersFollowerCities = 0,
-			coastalCultOfAegirFollowerCities = 0,
-			bakkheiaMana = 0
+			livingTerrainConvertStr =	0
 			}
 
 

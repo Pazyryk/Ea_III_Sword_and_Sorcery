@@ -3,6 +3,7 @@ CREATE TABLE Ea_ExpectedTableFiles ('FileName' TEXT NOT NULL);
 
 INSERT INTO Ea_ExpectedTableFiles (FileName) VALUES
 	('EaImages.sql'),				--from Ea Media Pack
+	('EaSounds.sql'),				--from Ea Media Pack
 	('EaActions.sql'),
 	('EaAI.sql'),
 	('EaAnimals.sql'),
@@ -51,7 +52,6 @@ INSERT INTO Ea_ExpectedTableFiles (FileName) VALUES
 	('EaText_Technologies.xml'),
 	('EaText_Terrain.xml'),
 	('EaText_Help.xml'),
-	('EaText_Pedia.xml'),
 	('EaText_UnitBuilds.xml'),
 	('EaText_UnitPromotions.xml'),
 	('EaText_Units.xml'),

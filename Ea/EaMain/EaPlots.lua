@@ -22,6 +22,7 @@ local PLOT_MOUNTAIN =						PlotTypes.PLOT_MOUNTAIN
 local TERRAIN_GRASS =						GameInfoTypes.TERRAIN_GRASS
 local TERRAIN_PLAINS =						GameInfoTypes.TERRAIN_PLAINS
 local TERRAIN_TUNDRA =						GameInfoTypes.TERRAIN_TUNDRA
+local TERRAIN_DESERT =						GameInfoTypes.TERRAIN_DESERT
 
 local FEATURE_ICE =							GameInfoTypes.FEATURE_ICE
 local FEATURE_FOREST = 						GameInfoTypes.FEATURE_FOREST
@@ -51,7 +52,6 @@ local IMPROVEMENT_BLIGHT =					GameInfoTypes.IMPROVEMENT_BLIGHT
 
 local BUILDING_TIMBERYARD_ALLOW =			GameInfoTypes.BUILDING_TIMBERYARD_ALLOW
 local BUILDING_TIMBERYARD =					GameInfoTypes.BUILDING_TIMBERYARD
-local BUILDING_CULT_LEAVES_FOLLOWER_FOOD =	GameInfoTypes.BUILDING_CULT_LEAVES_FOLLOWER_FOOD
 
 local TECH_BRONZE_WORKING =					GameInfoTypes.TECH_BRONZE_WORKING
 local TECH_IRON_WORKING =					GameInfoTypes.TECH_IRON_WORKING
@@ -63,8 +63,11 @@ local POLICY_COMMUNE_WITH_NATURE =			GameInfoTypes.POLICY_COMMUNE_WITH_NATURE
 local POLICY_FOREST_DOMINION =				GameInfoTypes.POLICY_FOREST_DOMINION
 
 local RELIGION_CULT_OF_LEAVES =				GameInfoTypes.RELIGION_CULT_OF_LEAVES
-local RELIGION_CULT_OF_PURE_WATERS =		GameInfoTypes.RELIGION_CULT_OF_PURE_WATERS
+local RELIGION_CULT_OF_PLOUTON =			GameInfoTypes.RELIGION_CULT_OF_PLOUTON
+local RELIGION_CULT_OF_CAHRA =				GameInfoTypes.RELIGION_CULT_OF_CAHRA
 local RELIGION_CULT_OF_BAKKHEIA =			GameInfoTypes.RELIGION_CULT_OF_BAKKHEIA
+
+
 
 --global tables
 local Players =		Players
@@ -78,6 +81,7 @@ local gg_animalSpawnPlots = gg_animalSpawnPlots
 local gg_animalSpawnInhibitTeams = gg_animalSpawnInhibitTeams
 
 --localized functions
+local Rand = Map.Rand
 local Distance = Map.PlotDistance
 local GetPlotFromXY = Map.GetPlot
 local GetPlotByIndex = Map.GetPlotByIndex
@@ -85,8 +89,6 @@ local Floor = math.floor
 local StrChar = string.char
 local HandleError41 = HandleError41
 local HandleError = HandleError
-
-local Rand = Map.Rand
 
 --file control
 --local g_validForestJunglePlots = 0		--counted at init (grass + plains + tundra)
@@ -105,9 +107,9 @@ local g_wildlandsCountCommuneWithNature = {}
 local g_forestDominionPlayers = {}
 local g_nonImprovedLivingTerrainStr = {}		--index by iPlot, holds str but only for non-improved
 	--city tables below indexed by city object (clear all after use)
-local g_cityPlots = {}
 local g_cityFollowerReligion = {}	
 local g_cityUnimprovedForestJungle = {}	--count for Cult of Leaves only
+local g_cityDesertCahraFollower = {}	--count for Cult of Cahra only
 
 
 local integers1 = {}
@@ -143,6 +145,11 @@ for improvementInfo in GameInfo.Improvements() do
 	if improvementInfo.EaBlightSafe then
 		blightSafeImprovement[improvementInfo.ID] = true
 	end
+end
+
+local resourceClass = {}
+for resourceInfo in GameInfo.Resources() do
+	resourceClass[resourceInfo.ID] = resourceInfo.EaClass
 end
 
 --------------------------------------------------------------
@@ -668,8 +675,8 @@ function PlotsPerTurn()
 	local totalLivingTerrainStrength = 0
 	local forestPlots = 0
 	local junglePlots = 0
-	local waterWorkedByPureWatersFollower = 0
 	local grapesWorkedByBakkeiaFollower = 0
+	local earthResWorkedByPloutonFollower = 0
 
 	--Main plot loop
 	for iPlot = 0, Map.GetNumPlots() - 1 do
@@ -677,6 +684,7 @@ function PlotsPerTurn()
 		local plot = GetPlotByIndex(iPlot)
 		local type, present, strength, turnChopped = plot:GetLivingTerrainData()
 		local plotTypeID = plot:GetPlotType()
+		local terrainID = plot:GetTerrainType()
 		local featureID = plot:GetFeatureType()
 		local improvementID = plot:GetImprovementType()
 		local resourceID = plot:GetResourceType(-1)
@@ -834,8 +842,6 @@ function PlotsPerTurn()
 			if resourceID ~= -1 and not g_bNotVisibleByResourceID[iOwner][resourceID] and not g_bBlockedByFeatureID[iOwner][resourceID] then		--visible test is now useless???
 				eaOwner.resourcesInBorders[resourceID] = (eaOwner.resourcesInBorders[resourceID] or 0) + 1
 			end
-			--local plotTypeID = plot:GetPlotType()
-			--local terrainID = plot:GetTerrainType()
 			local bFreshWater = plot:IsFreshWater()
 			local plotSpecial
 			if plotTypeID == PLOT_OCEAN then
@@ -870,9 +876,6 @@ function PlotsPerTurn()
 			--working city counts
 			local workingCity = plot:GetWorkingCity()
 			if workingCity then
-
-				g_cityPlots[workingCity] = (g_cityPlots[workingCity] or 0) + 1
-
 				g_cityFollowerReligion[workingCity] = g_cityFollowerReligion[workingCity] or workingCity:GetReligiousMajority()
 				if featureID == FEATURE_FOREST or featureID == FEATURE_JUNGLE then
 					--timber and timberyard
@@ -885,19 +888,39 @@ function PlotsPerTurn()
 					else
 						workingCity:SetNumRealBuilding(BUILDING_TIMBERYARD_ALLOW, 1)
 					end
-					--cult of leaves info
-					if improvementID == -1 and g_cityFollowerReligion[workingCity] == RELIGION_CULT_OF_LEAVES then
-						g_cityUnimprovedForestJungle[workingCity] = (g_cityUnimprovedForestJungle[workingCity] or 0) + 1
-					end
-				elseif featureID == FEATURE_OASIS or plot:IsLake() then
-					if g_cityFollowerReligion[workingCity] == RELIGION_CULT_OF_PURE_WATERS then
-						waterWorkedByPureWatersFollower = waterWorkedByPureWatersFollower + 1
-					end
 				end
 				if improvementID == IMPROVEMENT_VINEYARD then
 					if g_cityFollowerReligion[workingCity] == RELIGION_CULT_OF_BAKKHEIA then
 						grapesWorkedByBakkeiaFollower = grapesWorkedByBakkeiaFollower + 1
 					end
+				end
+				if resourceID ~= -1 and resourceClass[resourceID] == "Earth" then
+					if g_cityFollowerReligion[workingCity] == RELIGION_CULT_OF_PLOUTON then
+						earthResWorkedByPloutonFollower = earthResWorkedByPloutonFollower + 1
+					end
+				end
+			end
+
+			--Cult effects for owned plots
+			if terrainID == TERRAIN_DESERT then
+				local iOwningCity = plot:GetCityPurchaseID()
+				local owningCity = owner:GetCityByID(iOwningCity)
+				if not owningCity then
+					error("Plot is owned but no owningCity")		--I don't think this can happen
+				end
+				g_cityFollowerReligion[owningCity] = g_cityFollowerReligion[owningCity] or owningCity:GetReligiousMajority()
+				if g_cityFollowerReligion[owningCity] == RELIGION_CULT_OF_CAHRA then
+					g_cityDesertCahraFollower[owningCity] = (g_cityDesertCahraFollower[owningCity] or 0) + 1
+				end
+			elseif (featureID == FEATURE_FOREST or featureID == FEATURE_JUNGLE) and improvementID == -1 then
+				local iOwningCity = plot:GetCityPurchaseID()
+				local owningCity = owner:GetCityByID(iOwningCity)
+				if not owningCity then
+					error("Plot is owned but no owningCity")		--I don't think this can happen
+				end
+				g_cityFollowerReligion[owningCity] = g_cityFollowerReligion[owningCity] or owningCity:GetReligiousMajority()
+				if g_cityFollowerReligion[owningCity] == RELIGION_CULT_OF_LEAVES then
+					g_cityUnimprovedForestJungle[owningCity] = (g_cityUnimprovedForestJungle[owningCity] or 0) + 1
 				end
 			end
 
@@ -926,10 +949,27 @@ function PlotsPerTurn()
 	gg_animalSpawnPlots.pos = numAnimalSpawnPlots
 	MapModData.totalLivingTerrainStrength = totalLivingTerrainStrength
 
-	-- apply resources or yields
+	gg_counts.grapeAndSpiritsBuildingsBakkheiaFollowerCities = gg_counts.grapeAndSpiritsBuildingsBakkheiaFollowerCities + grapesWorkedByBakkeiaFollower
+	gg_counts.earthResWorkedByPloutonFollower = earthResWorkedByPloutonFollower
+
+	local totalUnimprovedForestJungle = 0
+	for city, unimprovedForestJungle in pairs(g_cityUnimprovedForestJungle) do
+		local eaCity = gCities[city:Plot():GetPlotIndex()]
+		eaCity.unimprovedForestJungle = unimprovedForestJungle
+		totalUnimprovedForestJungle = totalUnimprovedForestJungle + unimprovedForestJungle
+		g_cityUnimprovedForestJungle[city] = nil		--recycle table
+	end
+	local totalDesertCahraFollower = 0
+	for city, desertCahraFollower in pairs(g_cityDesertCahraFollower) do
+		local eaCity = gCities[city:Plot():GetPlotIndex()]
+		eaCity.desertCahraFollower = desertCahraFollower
+		totalDesertCahraFollower = totalDesertCahraFollower + desertCahraFollower
+		g_cityDesertCahraFollower[city] = nil		--recycle table
+	end
+
 	local iCultOfLeavesFounder = gReligions[RELIGION_CULT_OF_LEAVES] and gReligions[RELIGION_CULT_OF_LEAVES].founder
-	local iCultOfPureWatersFounder = gReligions[RELIGION_CULT_OF_PURE_WATERS] and gReligions[RELIGION_CULT_OF_PURE_WATERS].founder
-	local iCultOfBakkheiaFounder = gReligions[RELIGION_CULT_OF_BAKKHEIA] and gReligions[RELIGION_CULT_OF_BAKKHEIA].founder
+	local iCultOfCahraFounder = gReligions[RELIGION_CULT_OF_CAHRA] and gReligions[RELIGION_CULT_OF_CAHRA].founder
+
 	for iPlayer, eaPlayer in pairs(realCivs) do
 		local player = Players[iPlayer]
 		for resourceID, number in pairs(g_addResource[iPlayer]) do
@@ -940,35 +980,21 @@ function PlotsPerTurn()
 				eaPlayer.addedResources[resourceID] = number
 			end
 		end
-
+		if iPlayer == iCultOfLeavesFounder then
+			eaPlayer.manaForCultOfLeavesFounder = Floor(totalUnimprovedForestJungle / 10)
+		end
+		if iPlayer == iCultOfCahraFounder then
+			eaPlayer.manaForCultOfCahraFounder = Floor(totalDesertCahraFollower / 10)
+		end
 		if g_wildlandsCountCommuneWithNature[iPlayer] then
 			eaPlayer.cultureManaFromWildlands = Floor(g_wildlandsCountCommuneWithNature[iPlayer] / 4)
 		end
-		if iPlayer == iCultOfLeavesFounder then
-			local mana = Floor(100 * (forestPlots + junglePlots - MapModData.originalForestJunglePlots) / MapModData.validForestJunglePlots)
-			if 0 < mana then
-				eaPlayer.manaForCultOfLeavesFounder = mana
-			end
-		end
-		if iPlayer == iCultOfPureWatersFounder then
-			eaPlayer.manaForCultOfPureWatersFounder = waterWorkedByPureWatersFollower	--added to by EaCities.lua
-		end
-		if iPlayer == iCultOfBakkheiaFounder then
-			eaPlayer.manaForCultOfBakkheiaFounder = grapesWorkedByBakkeiaFollower		--added to by EaCities.lua
-		end
+
 	end
 
-	--city effects
-	for city, unimprovedForestJungle in pairs(g_cityUnimprovedForestJungle) do
-		local food = Floor(10 * unimprovedForestJungle / g_cityPlots[city])
-		city:SetNumRealBuilding(BUILDING_CULT_LEAVES_FOLLOWER_FOOD, food)
-		g_cityUnimprovedForestJungle[city] = nil		--recycle table
-	end
+	--recycle table
 	for city in pairs(g_cityFollowerReligion) do
 		g_cityFollowerReligion[city] = nil
-	end
-	for city in pairs(g_cityPlots) do
-		g_cityPlots[city] = nil
 	end
 
 	DoLivingTerrainSpread()

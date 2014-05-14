@@ -12,34 +12,20 @@ local Dprint = DEBUG_PRINT and print or function() end
 ---------------------------------------------------------------
 
 --constants
-local BUILDING_BREWERY =					GameInfoTypes.BUILDING_BREWERY
-local BUILDING_DISTILLERY =					GameInfoTypes.BUILDING_DISTILLERY
 local BUILDING_LIBRARY =					GameInfoTypes.BUILDING_LIBRARY
 local BUILDING_TRADE_HOUSE =				GameInfoTypes.BUILDING_TRADE_HOUSE
-local BUILDING_WINERY =						GameInfoTypes.BUILDING_WINERY
 local DOMAIN_LAND =							DomainTypes.DOMAIN_LAND
 local DOMAIN_SEA =							DomainTypes.DOMAIN_SEA
 local EA_ACTION_GO_TO_PLOT =				GameInfoTypes.EA_ACTION_GO_TO_PLOT
 local EA_WONDER_ARCANE_TOWER =				GameInfoTypes.EA_WONDER_ARCANE_TOWER
 local EACIV_NEZELIBA =						GameInfoTypes.EACIV_NEZELIBA
-local FEATURE_FOREST = 						GameInfoTypes.FEATURE_FOREST
-local FEATURE_JUNGLE = 						GameInfoTypes.FEATURE_JUNGLE
-local FEATURE_MARSH =	 					GameInfoTypes.FEATURE_MARSH
 local IMPROVEMENT_ARCANE_TOWER =			GameInfoTypes.IMPROVEMENT_ARCANE_TOWER
 local INVISIBLE_SUBMARINE =					GameInfoTypes.INVISIBLE_SUBMARINE
 local LEADER_FAND =							GameInfoTypes.LEADER_FAND
-local PLOT_LAND =							PlotTypes.PLOT_LAND
-local PLOT_MOUNTAIN =						PlotTypes.PLOT_MOUNTAIN
-local PLOT_OCEAN =							PlotTypes.PLOT_OCEAN
 local RELIGION_ANRA =						GameInfoTypes.RELIGION_ANRA
 local RELIGION_AZZANDARAYASNA =				GameInfoTypes.RELIGION_AZZANDARAYASNA
 local RELIGION_THE_WEAVE_OF_EA =			GameInfoTypes.RELIGION_THE_WEAVE_OF_EA
-local RESOURCE_HORSE =						GameInfoTypes.RESOURCE_HORSE
-local RESOURCE_WINE =						GameInfoTypes.RESOURCE_WINE
 local TECH_MALEFICIUM =						GameInfoTypes.TECH_MALEFICIUM
-local TERRAIN_GRASS =						GameInfoTypes.TERRAIN_GRASS
-local TERRAIN_PLAINS =						GameInfoTypes.TERRAIN_PLAINS
-local TERRAIN_TUNDRA =						GameInfoTypes.TERRAIN_TUNDRA
 local UNITCOMBAT_MOUNTED =					GameInfoTypes.UNITCOMBAT_MOUNTED
 local YIELD_CULTURE = 						GameInfoTypes.YIELD_CULTURE
 local YIELD_FAITH = 						GameInfoTypes.YIELD_FAITH
@@ -174,10 +160,14 @@ local g_tradeAvailableTable = {}
 ---------------------------------------------------------------
 
 local EaActionsInfo = {}			-- Contains the entire table for speed (id < FIRST_SPELL_ID)
+local cultRitualReligions = {}
 for row in GameInfo.EaActions() do
 	local id = row.ID
 	if id < FIRST_SPELL_ID then
 		EaActionsInfo[id] = row
+		if row.FoundsSpreadsCult then
+			cultRitualReligions[id] = GameInfoTypes[row.FoundsSpreadsCult]
+		end
 	end
 end
 
@@ -2431,7 +2421,7 @@ end
 
 --EA_ACTION_MEGALOS_FAROS
 TestTarget[GameInfoTypes.EA_ACTION_MEGALOS_FAROS] = function()
-	return g_city:IsCoastal()
+	return g_city:IsCoastal(10)
 end
 
 SetUI[GameInfoTypes.EA_ACTION_MEGALOS_FAROS] = function()
@@ -3195,17 +3185,6 @@ end
 --Methods are identical for all cults except for the "Test cult-specific city req" section (and cult name and various texts)
 
 --Model functions for Cult Rituals
-local EA_ACTION_RITUAL_LEAVES =	GameInfoTypes.EA_ACTION_RITUAL_LEAVES
-local EA_ACTION_RITUAL_CLEANSING =	GameInfoTypes.EA_ACTION_RITUAL_CLEANSING
-local EA_ACTION_RITUAL_AEGIR =	GameInfoTypes.EA_ACTION_RITUAL_AEGIR
-local EA_ACTION_RITUAL_EQUUS =	GameInfoTypes.EA_ACTION_RITUAL_EQUUS
-local EA_ACTION_RITUAL_BAKKHEIA =	GameInfoTypes.EA_ACTION_RITUAL_BAKKHEIA
-
-local cultRitualReligions = {	[EA_ACTION_RITUAL_LEAVES] = GameInfoTypes.RELIGION_CULT_OF_LEAVES,
-								[EA_ACTION_RITUAL_CLEANSING] = GameInfoTypes.RELIGION_CULT_OF_PURE_WATERS,
-								[EA_ACTION_RITUAL_AEGIR] = GameInfoTypes.RELIGION_CULT_OF_AEGIR,
-								[EA_ACTION_RITUAL_EQUUS] = GameInfoTypes.RELIGION_CULT_OF_EPONA,
-								[EA_ACTION_RITUAL_BAKKHEIA] = GameInfoTypes.RELIGION_CULT_OF_BAKKHEIA	}
 
 local function ModelCultRitual_TestTarget()
 	g_int1 = cultRitualReligions[g_eaActionID]
@@ -3213,89 +3192,8 @@ local function ModelCultRitual_TestTarget()
 	--Can't do in foreign city unless we are founder
 	if g_iOwner ~= g_iPlayer and (not gReligions[g_int1] or gReligions[g_int1].founder ~= g_iPlayer) then return false end
 
-	--Test cult-specific city req
-	if g_eaActionID == EA_ACTION_RITUAL_LEAVES then
-		local totalLand, totalUnimprovedForestJungle = 0, 0
-		local totalPlots = g_city:GetNumCityPlots()
-		for i = 0, totalPlots - 1 do
-			local plot = g_city:GetCityIndexPlot(i)
-			if plot and plot:GetPlotType() ~= PLOT_OCEAN then
-				totalLand = totalLand + 1
-				local featureID = plot:GetFeatureType()
-				if featureID == FEATURE_FOREST or featureID == FEATURE_JUNGLE then
-					if plot:GetImprovementType() == -1 then
-						totalUnimprovedForestJungle = totalUnimprovedForestJungle + 1
-					end
-				end
-			end
-		end
-		if totalUnimprovedForestJungle / totalLand < 0.6 or totalLand / totalPlots < 0.5 then
-			g_int4 = totalUnimprovedForestJungle
-			g_int2 = totalLand
-			g_int3 = totalPlots
-			return false
-		end
-	elseif g_eaActionID == EA_ACTION_RITUAL_CLEANSING then
-		local totalPureWater = 0
-		local totalPlots = g_city:GetNumCityPlots()
-		for i = 0, totalPlots - 1 do
-			local plot = g_city:GetCityIndexPlot(i)
-			if plot and (plot:IsRiver() or plot:IsLake() or plot:IsFreshWater() or plot:GetFeatureType() == FEATURE_MARSH) then
-				totalPureWater = totalPureWater + 1
-			end
-		end
-		if totalPureWater / totalPlots < 0.35 then return false end
-	elseif g_eaActionID == EA_ACTION_RITUAL_AEGIR then
-		local totalSea = 0
-		local totalPlots = g_city:GetNumCityPlots()
-		for i = 0, totalPlots - 1 do
-			local plot = g_city:GetCityIndexPlot(i)
-			if plot and plot:GetPlotType() == PLOT_OCEAN then
-				totalSea = totalSea + 1
-			end
-		end
-		if totalSea / totalPlots < 0.7 then return false end
-	elseif g_eaActionID == EA_ACTION_RITUAL_EQUUS then
-		local totalLand, totalGoodFlatland, totalHorses = 0, 0, 0
-		local totalPlots = g_city:GetNumCityPlots()
-		for i = 0, totalPlots - 1 do
-			local plot = g_city:GetCityIndexPlot(i)
-			if plot then 
-				local plotTypeID = plot:GetPlotType()
-				if plotTypeID ~= PLOT_OCEAN then
-					totalLand = totalLand + 1
-					if plot:GetResourceType(-1) == RESOURCE_HORSE then
-						totalHorses = totalHorses + 1
-						if totalHorses > 2 then break end
-					end
-					if plotTypeID == PLOT_LAND and plot:GetFeatureType() == -1 then
-						local terrainID = plot:GetTerrainType()
-						if terrainID == TERRAIN_GRASS or  terrainID == TERRAIN_PLAINS then
-							totalGoodFlatland = totalGoodFlatland + 1
-						end
-					end
-				end
-			end
-		end
-		if totalHorses < 2 then
-			return false
-		elseif totalHorses < 3 then
-			if totalGoodFlatland / totalLand < 0.5 then return false end
-		end
-	elseif g_eaActionID == EA_ACTION_RITUAL_BAKKHEIA then
-		local boozeBuildings = g_city:GetNumBuilding(BUILDING_WINERY) + g_city:GetNumBuilding(BUILDING_BREWERY) + g_city:GetNumBuilding(BUILDING_DISTILLERY)
-		if boozeBuildings < 2 then
-			local totalWine = 0
-			local totalPlots = g_city:GetNumCityPlots()
-			for i = 0, totalPlots - 1 do
-				local plot = g_city:GetCityIndexPlot(i)
-				if plot and plot:GetResourceType(-1) == RESOURCE_WINE then
-					totalWine = totalWine + 1
-				end
-			end
-			if totalWine < 2 then return false end
-		end	
-	end
+	--Test cult-specific city eligibility
+	if not g_eaCity.eligibleCults[g_int1] then return false end
 
 	--Get conversion or found info
 	if gReligions[g_int1] then		--already founded
@@ -3355,14 +3253,8 @@ local function ModelCultRitual_SetUI()
 			local cultStr = Locale.Lookup(GameInfo.Religions[g_int1].Description)
 			MapModData.text = "[COLOR_WARNING_TEXT]You cannot perform the " .. cultStr .. " in a holy city[ENDCOLOR]"
 		else	--failed for some cult-specific reason
-			if g_eaActionID == EA_ACTION_RITUAL_LEAVES then
-				local land = Floor(100 * g_int2 / g_int3)
-				local forestJungle = Floor(100 * g_int4 / g_int2)
-				MapModData.text = "[COLOR_WARNING_TEXT]City radius must be 50% land that is 60% unimproved forest or jungle (this city has "..land.."%, "..forestJungle.."%)[ENDCOLOR]"
-			else
-				--TO DO: Explanitory UI for all other cults
-				MapModData.text = "[COLOR_WARNING_TEXT]You cannot perform this ritual in this city[ENDCOLOR]"
-			end		
+			local failReason = TestSetEligibleCityCults(g_city, g_eaCity, g_int1)
+			MapModData.text = "[COLOR_WARNING_TEXT]" .. failReason .. "[ENDCOLOR]"	
 		end
 	end
 end

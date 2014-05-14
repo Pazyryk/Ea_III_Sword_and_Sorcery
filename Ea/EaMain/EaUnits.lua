@@ -478,7 +478,7 @@ function UnitPerCivTurn(iPlayer)	--runs for full civs and city states
 				end
 			elseif bHorseMounted[unitTypeID] then
 				if unit:IsHasPromotion(PROMOTION_STALLIONS_OF_EPONA) then
-					gWorld.stallionsOfEpona = gWorld.stallionsOfEpona + 1
+					gg_counts.stallionsOfEpona = gg_counts.stallionsOfEpona + 1
 				end
 				if bHorseMountedXP then
 					local dice = Rand(5, "hello there!")

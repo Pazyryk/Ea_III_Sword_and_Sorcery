@@ -21,9 +21,11 @@ local MINOR_TRAIT_ARCANE =						GameInfoTypes.MINOR_TRAIT_ARCANE
 local MINOR_TRAIT_HOLY =						GameInfoTypes.MINOR_TRAIT_HOLY
 local RELIGION_AZZANDARAYASNA =					GameInfoTypes.RELIGION_AZZANDARAYASNA
 local RELIGION_ANRA =							GameInfoTypes.RELIGION_ANRA
-local RELIGION_CULT_OF_EPONA =					GameInfoTypes.RELIGION_CULT_OF_EPONA
-local RELIGION_CULT_OF_PURE_WATERS =			GameInfoTypes.RELIGION_CULT_OF_PURE_WATERS
+local RELIGION_CULT_OF_ABZU =					GameInfoTypes.RELIGION_CULT_OF_ABZU
 local RELIGION_CULT_OF_AEGIR =					GameInfoTypes.RELIGION_CULT_OF_AEGIR
+local RELIGION_CULT_OF_PLOUTON =				GameInfoTypes.RELIGION_CULT_OF_PLOUTON
+local RELIGION_CULT_OF_EPONA =					GameInfoTypes.RELIGION_CULT_OF_EPONA
+local RELIGION_CULT_OF_BAKKHEIA =				GameInfoTypes.RELIGION_CULT_OF_BAKKHEIA
 
 local FEATURE_CRATER =							GameInfoTypes.FEATURE_CRATER
 local FEATURE_SOLOMONS_MINES =					GameInfoTypes.FEATURE_SOLOMONS_MINES
@@ -361,22 +363,31 @@ function FullCivPerCivTurn(iPlayer)		-- called for full civs only
 	local cultureManaFromWildlands = eaPlayer.cultureManaFromWildlands or 0
 
 	local cultFounderMana = eaPlayer.manaForCultOfLeavesFounder or 0	--calculated in EaPlots.lua
+	cultFounderMana = cultFounderMana + (eaPlayer.manaForCultOfCahraFounder or 0)
 
-
-	if gReligions[RELIGION_CULT_OF_EPONA] and iPlayer == gReligions[RELIGION_CULT_OF_EPONA].founder then
-		eaPlayer.manaForCultOfEponaFounder = gWorld.stallionsOfEpona
-		gWorld.stallionsOfEpona = 0
-		cultFounderMana = cultFounderMana + eaPlayer.manaForCultOfEponaFounder
-	end
-	if gReligions[RELIGION_CULT_OF_PURE_WATERS] and iPlayer == gReligions[RELIGION_CULT_OF_PURE_WATERS].founder then
-		eaPlayer.manaForCultOfPureWatersFounder = eaPlayer.manaForCultOfPureWatersFounder + gWorld.riverSideCultOfPureWatersFollowerCities	--adds to value calculated in EaPlots.lua
-		gWorld.riverSideCultOfPureWatersFollowerCities = 0
-		cultFounderMana = cultFounderMana + eaPlayer.manaForCultOfPureWatersFounder
+	if gReligions[RELIGION_CULT_OF_ABZU] and iPlayer == gReligions[RELIGION_CULT_OF_ABZU].founder then
+		eaPlayer.manaForCultOfAbzuFounder = gg_counts.freshWaterAbzuFollowerCities
+		gg_counts.freshWaterAbzuFollowerCities = 0
+		cultFounderMana = cultFounderMana + eaPlayer.manaForCultOfAbzuFounder
 	end
 	if gReligions[RELIGION_CULT_OF_AEGIR] and iPlayer == gReligions[RELIGION_CULT_OF_AEGIR].founder then
-		eaPlayer.manaForCultOfAegirFounder = gWorld.coastalCultOfAegirFollowerCities
-		gWorld.coastalCultOfAegirFollowerCities = 0
+		eaPlayer.manaForCultOfAegirFounder = 2 * gg_counts.coastalAegirFollowerCities
+		gg_counts.coastalAegirFollowerCities = 0
 		cultFounderMana = cultFounderMana + eaPlayer.manaForCultOfAegirFounder
+	end
+	if gReligions[RELIGION_CULT_OF_PLOUTON] and iPlayer == gReligions[RELIGION_CULT_OF_PLOUTON].founder then
+		eaPlayer.manaForCultOfPloutonFounder = Floor(gg_counts.earthResWorkedByPloutonFollower / 2)
+		cultFounderMana = cultFounderMana + eaPlayer.manaForCultOfPloutonFounder
+	end
+	if gReligions[RELIGION_CULT_OF_EPONA] and iPlayer == gReligions[RELIGION_CULT_OF_EPONA].founder then
+		eaPlayer.manaForCultOfEponaFounder = gg_counts.stallionsOfEpona
+		gg_counts.stallionsOfEpona = 0
+		cultFounderMana = cultFounderMana + eaPlayer.manaForCultOfEponaFounder
+	end
+	if gReligions[RELIGION_CULT_OF_BAKKHEIA] and iPlayer == gReligions[RELIGION_CULT_OF_BAKKHEIA].founder then
+		eaPlayer.manaForCultOfBakkheiaFounder = gg_counts.grapeAndSpiritsBuildingsBakkheiaFollowerCities	--added to in EaCities and EaPlots
+		gg_counts.grapeAndSpiritsBuildingsBakkheiaFollowerCities = 0
+		cultFounderMana = cultFounderMana + eaPlayer.manaForCultOfBakkheiaFounder
 	end
 
 	local totalFaith = faithFromCityStates + faithFromPolicyFinisher + cultureManaFromWildlands + cultFounderMana

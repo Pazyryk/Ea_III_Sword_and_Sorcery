@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Context  ColorSet="Beige_Black" Font="TwCenMT22" FontStyle="Shadow"  >
+<Context  ColorSet="Beige_Black" Font="EaTwCnMT22" FontStyle="Shadow"  >
 
 
     <Box Anchor="C,C" Size="1024,768" Color="0,0,0,0" />
@@ -29,18 +29,18 @@
 
                     <!-- Randomize Button  -->
                     <GridButton Anchor="L,C"  Style="SmallButton" Size="150,32"  Offset="0,0" StateOffsetIncrement="0,0" ID="RandomizeButton" >
-                        <Label Anchor="C,C"  Offset="0,0"  String="TXT_KEY_GAME_SETUP_RANDOMIZE" Font="TwCenMT18" ColorSet="Beige_Black_Alpha" FontStyle="Shadow"  />
+                        <Label Anchor="C,C"  Offset="0,0"  String="TXT_KEY_GAME_SETUP_RANDOMIZE" Font="EaTwCnMT18" ColorSet="Beige_Black_Alpha" FontStyle="Shadow"  />
                     </GridButton>
                     <!-- Advanced Button -->
                     <GridButton Anchor="L,C"  Style="SmallButton" Size="150,32"  Offset="0,0" StateOffsetIncrement="0,0" ID="AdvancedButton" >
-                        <Label Anchor="C,C"  Offset="0,0"  String="TXT_KEY_GAME_ADVANCED_SETUP" Font="TwCenMT18" ColorSet="Beige_Black_Alpha" FontStyle="Shadow"  />
+                        <Label Anchor="C,C"  Offset="0,0"  String="TXT_KEY_GAME_ADVANCED_SETUP" Font="EaTwCnMT18" ColorSet="Beige_Black_Alpha" FontStyle="Shadow"  />
                     </GridButton>
 
                 </Stack>
 
                 <!-- Back Button -->
                 <GridButton Anchor="L,B"  Style="SmallButton" Size="150,32"  Offset="14,0" StateOffsetIncrement="0,0" ID="BackButton"  >
-                    <Label Anchor="C,C"  Offset="0,0"  String="TXT_KEY_BACK_BUTTON" Font="TwCenMT18" ColorSet="Beige_Black_Alpha" FontStyle="Shadow"  />
+                    <Label Anchor="C,C"  Offset="0,0"  String="TXT_KEY_BACK_BUTTON" Font="EaTwCnMT18" ColorSet="Beige_Black_Alpha" FontStyle="Shadow"  />
                 </GridButton>
 
             </Box>
@@ -50,7 +50,7 @@
 
             <!-- Screen Title  -->
 
-          <Label Anchor="C,T" ID="ScreenTitle"  Offset="0,19" Font="TwCenMT20" Color0="30.50.80.255" Color1="133.184.186.255" Color2="133.184.186.255" FontStyle="SoftShadow" String="TXT_KEY_GAME_SELECTION_SCREEN" />
+          <Label Anchor="C,T" ID="ScreenTitle"  Offset="0,19" Font="EaTwCnMT20" Color0="30.50.80.255" Color1="133.184.186.255" Color2="133.184.186.255" FontStyle="SoftShadow" String="TXT_KEY_GAME_SELECTION_SCREEN" />
 
         </Grid>
 
@@ -63,8 +63,8 @@
 	
             <Button Anchor="C,T"  Offset="0,0"   Size="544,100" Color="255,255,255,0" ID="CivilizationButton"  >
 				<!--Paz disabled
-                <TextButton Offset="5,5" Anchor="r,t" Font="TwCenMT16" ColorSet="Beige_Black_Alpha" String="TXT_KEY_EDIT_BUTTON" ToolTip="TXT_KEY_NAME_CIV_TITLE" FontStyle="Shadow" MouseOverStyle="SoftShadow" ConsumeMouse="1" ID="EditButton" >
-                    <TextButton Offset="20,0" Anchor="L,C" AnchorSide="o,i" Font="TwCenMT16" ColorSet="Beige_Black_Alpha" String="TXT_KEY_CANCEL_BUTTON" FontStyle="Shadow" MouseOverStyle="SoftShadow" ConsumeMouse="1" ID="RemoveButton" >
+                <TextButton Offset="5,5" Anchor="r,t" Font="EaTwCnMT16" ColorSet="Beige_Black_Alpha" String="TXT_KEY_EDIT_BUTTON" ToolTip="TXT_KEY_NAME_CIV_TITLE" FontStyle="Shadow" MouseOverStyle="SoftShadow" ConsumeMouse="1" ID="EditButton" >
+                    <TextButton Offset="20,0" Anchor="L,C" AnchorSide="o,i" Font="EaTwCnMT16" ColorSet="Beige_Black_Alpha" String="TXT_KEY_CANCEL_BUTTON" FontStyle="Shadow" MouseOverStyle="SoftShadow" ConsumeMouse="1" ID="RemoveButton" >
                         <Box Offset="-10,0"  Anchor="R,C" Size="1,16"  Color="Beige.128" />
                     </TextButton>
                 </TextButton>
@@ -84,9 +84,9 @@
 
                 <Stack Anchor="L,T" Size="565,128" Offset="116,4"   StackGrowth="Bottom" Padding="6" >
                     <Box Offset="-12,0"  Anchor="L,T" Size="424,28"  Color="White.0" >
-                        <Label Anchor="L,T" Offset="12,4" Font="TwCenMT22" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" ID="Title" />
+                        <Label Anchor="L,T" Offset="12,4" Font="EaTwCnMT22" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" ID="Title" />
                     </Box>
-                    <Label Anchor="L,T" Offset="0,0"  WrapWidth="410" LeadingOffset="-5" Font="TwCenMT18" ID="BonusDescription" String="[ICON_BULLET]Civ Specific Bonus 2"/>
+                    <Label Anchor="L,T" Offset="0,0"  WrapWidth="410" LeadingOffset="-5" Font="EaTwCnMT18" ID="BonusDescription" String="[ICON_BULLET]Civ Specific Bonus 2"/>
 
                 </Stack>
 			
@@ -130,9 +130,9 @@
                     </ShowOnMouseOver>
 
                     <Stack Anchor="L,T" Size="565,128" Offset="116,14"   StackGrowth="Bottom" Padding="6" >
-                        <Label Anchor="L,T" Offset="0,0" Font="TwCenMT22" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" ID="TypeName" />
+                        <Label Anchor="L,T" Offset="0,0" Font="EaTwCnMT22" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" ID="TypeName" />
 
-                        <Label Anchor="L,T" Offset="0,0"  WrapWidth="410" LeadingOffset="-6" Font="TwCenMT18" ID="TypeHelp" />
+                        <Label Anchor="L,T" Offset="0,0"  WrapWidth="410" LeadingOffset="-6" Font="EaTwCnMT18" ID="TypeHelp" />
                     </Stack>
 
                     <Box Anchor="L,B"  Offset="116,0" Color="White.64" Size="430,30" ConsumeMouse="1"  ID="LoadScenarioBox">
@@ -160,8 +160,8 @@
                     </ShowOnMouseOver>
 
                     <Stack Anchor="L,T" Size="565,128" Offset="116,14"   StackGrowth="Bottom" Padding="6" >
-                        <Label Anchor="L,T" Offset="0,0" Font="TwCenMT22" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" ID="SizeName" />
-                        <Label Anchor="L,T" Offset="0,0"  WrapWidth="410" LeadingOffset="-6" Font="TwCenMT18" ID="SizeHelp" />
+                        <Label Anchor="L,T" Offset="0,0" Font="EaTwCnMT22" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" ID="SizeName" />
+                        <Label Anchor="L,T" Offset="0,0"  WrapWidth="410" LeadingOffset="-6" Font="EaTwCnMT18" ID="SizeHelp" />
                     </Stack>
 
                     <Image Anchor="L,C"  Size="128,128" Offset="-12,0"   Texture="Assets/UI/Art/Icons/LeaderPortraits1024Frame.dds"  >
@@ -184,8 +184,8 @@
 
 
                     <Stack Anchor="L,T" Size="565,128" Offset="116,14"   StackGrowth="Bottom" Padding="6" >
-                        <Label Anchor="L,T" Offset="0,0" Font="TwCenMT22" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" ID="DifficultyName" />
-                        <Label Anchor="L,T" Offset="0,0"  WrapWidth="410" LeadingOffset="-6" Font="TwCenMT18" ID="DifficultyHelp" />
+                        <Label Anchor="L,T" Offset="0,0" Font="EaTwCnMT22" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" ID="DifficultyName" />
+                        <Label Anchor="L,T" Offset="0,0"  WrapWidth="410" LeadingOffset="-6" Font="EaTwCnMT18" ID="DifficultyHelp" />
                     </Stack>
 
                     <Image Anchor="L,C"  Size="128,128" Offset="-12,0"   Texture="Assets/UI/Art/Icons/LeaderPortraits1024Frame.dds"  >
@@ -208,8 +208,8 @@
                     </ShowOnMouseOver>
 
                     <Stack Anchor="L,T" Size="565,128" Offset="116,14"   StackGrowth="Bottom" Padding="6" >
-                        <Label Anchor="L,T" Offset="0,0" Font="TwCenMT22" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" ID="SpeedName" />
-                        <Label Anchor="L,T" Offset="0,0"  WrapWidth="410" LeadingOffset="-6" Font="TwCenMT18" ID="SpeedHelp" />
+                        <Label Anchor="L,T" Offset="0,0" Font="EaTwCnMT22" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" ID="SpeedName" />
+                        <Label Anchor="L,T" Offset="0,0"  WrapWidth="410" LeadingOffset="-6" Font="EaTwCnMT18" ID="SpeedHelp" />
                     </Stack>
 
 

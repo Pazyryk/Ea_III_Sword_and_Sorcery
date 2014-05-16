@@ -504,7 +504,7 @@ function AddSmallButtonsToTechButton( thisTechButtonInstance, tech, maxSmallButt
 				arcaneToolTip = arcaneToolTip .. "[NEWLINE][ICON_BULLET][COLOR_POSITIVE_TEXT]" .. Locale.Lookup(spellInfo.Description) .. "[ENDCOLOR] " .. Locale.Lookup(spellInfo.Help)
 			end
 			if spellClass == "Divine" or spellClass == "Both" then
-				if spellClass.FallenAltSpell == "IsFallen" then
+				if spellInfo.FallenAltSpell == "IsFallen" then
 					if not fallenToolTip then
 						fallenToolTip = "Learn Divine Spells (Devout):"
 					end
@@ -547,7 +547,7 @@ function AddSmallButtonsToTechButton( thisTechButtonInstance, tech, maxSmallButt
 			local iconAtlas, iconIndex = "EA_SPELLS_ATLAS", 1
 			IconHookup(iconIndex, textureSize, iconAtlas, thisButton)
 			thisButton:SetHide( false )
-			thisButton:SetToolTipString(divineToolTip)
+			thisButton:SetToolTipString(fallenToolTip)
 			buttonNum = buttonNum + 1
 		end	
 	end

@@ -183,10 +183,10 @@
 			<Text>Spells</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_PANEL_SPELLS_RITUALS">
-			<Text>Rituals & Spells</Text>
+			<Text>Spells & Rituals</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_PANEL_SPELLS_PROPHECIES">
-			<Text>Prophecies, Rituals & Spells</Text>
+			<Text>Spells, Rituals & Prophecies</Text>
 		</Row>
 
 		<!-- City View -->

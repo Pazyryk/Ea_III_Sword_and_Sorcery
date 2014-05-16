@@ -369,7 +369,8 @@ local function FinishEaAction(eaActionID)		--only called from DoEaAction so file
 	end
 
 	if g_eaAction.MeetGod then
-		local iGodTeam = Players[GameInfoTypes[g_eaAction.MeetGod] ]:GetTeam()
+		local iGod = gg_minorPlayerByTypeID[GameInfoTypes[g_eaAction.MeetGod] ]
+		local iGodTeam = Players[iGod]:GetTeam()
 		if not g_team:IsHasMet(iGodTeam) then
 			g_team:Meet(iGodTeam, true)
 		end
@@ -3193,7 +3194,10 @@ local function ModelCultRitual_TestTarget()
 	if g_iOwner ~= g_iPlayer and (not gReligions[g_int1] or gReligions[g_int1].founder ~= g_iPlayer) then return false end
 
 	--Test cult-specific city eligibility
-	if not g_eaCity.eligibleCults[g_int1] then return false end
+	if not g_eaCity.eligibleCults[g_int1] then
+		g_testTargetSwitch = 1
+		return false
+	end
 
 	--Get conversion or found info
 	if gReligions[g_int1] then		--already founded
@@ -3245,16 +3249,16 @@ local function ModelCultRitual_SetUI()
 				MapModData.text = "Will found the " .. cultStr .. " in this city"
 			end
 		elseif not g_bIsCity then
-			local cultStr = Locale.Lookup(GameInfo.Religions[g_int1].Description)
-			MapModData.text = cultStr .. " can be performed only in cities"
+			MapModData.text = cultStr .. "Cult founding/spreading rituals can be performed only in cities"
 		elseif g_testTargetSwitch == 2 then
 			MapModData.text = "[COLOR_WARNING_TEXT]You cannot convert any population here (perhaps you need a higher Devotion level)[ENDCOLOR]"
 		elseif g_testTargetSwitch == 3 then
-			local cultStr = Locale.Lookup(GameInfo.Religions[g_int1].Description)
-			MapModData.text = "[COLOR_WARNING_TEXT]You cannot perform the " .. cultStr .. " in a holy city[ENDCOLOR]"
-		else	--failed for some cult-specific reason
+			MapModData.text = "[COLOR_WARNING_TEXT]You cannot perform cult founding/spreading rituals in a holy city[ENDCOLOR]"
+		elseif g_testTargetSwitch == 1 then	--city not eligible for some reason
 			local failReason = TestSetEligibleCityCults(g_city, g_eaCity, g_int1)
 			MapModData.text = "[COLOR_WARNING_TEXT]" .. failReason .. "[ENDCOLOR]"	
+		else
+			MapModData.text = "[COLOR_WARNING_TEXT]You cannot perform this ritual here[ENDCOLOR]"
 		end
 	end
 end

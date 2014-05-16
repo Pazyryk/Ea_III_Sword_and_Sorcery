@@ -1,6 +1,6 @@
 This repository tracks changes for Ea III Sword & Sorcery
 
-Current build requires Ea Media Pack 20140305, download project at: http://ge.tt/8CNVC3P1/v/0?c
+Current build requires Ea Media Pack (v 4), download at: http://ge.tt/9B9AMFh1/v/0?c
 
 Mod info and credits: http://forums.civfanatics.com/showthread.php?t=483622
 

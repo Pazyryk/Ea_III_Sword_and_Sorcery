@@ -360,9 +360,6 @@
 			<Text>Reduces Knowledge Maintenence by 1% per tech known</Text>
 		</Row>
 
-		<Row Tag="TXT_KEY_EA_TECH_BOWYERS_SPECIAL">
-			<Text>Level 6 Bowmen and Bowed Cavalry can upgrade to Marksmen and Sagitarii, respectively</Text>
-		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_SHIP_BUILDING_SPECIAL">
 			<Text>+2 range at which you can establish Fishing and Whailing Boats (i.e., 5 plots from coastal city if no other modifiers)</Text>
 		</Row>

@@ -129,14 +129,21 @@
 		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_ARMORED_CAVALRY">
 			<Text>Armored Cavalry</Text>
-		</Row>	
+		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_CATAPHRACTS">
 			<Text>Cataphracts</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_CLIBANARII">
 			<Text>Clibanarii</Text>
-		</Row>		
+		</Row>
 		
+		<Row Tag="TXT_KEY_EA_UNIT_WOLF_RIDERS">
+			<Text>Wolf Rider</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_WARG_RIDERS">
+			<Text>Warg Riders</Text>
+		</Row>
+
 		<Row Tag="TXT_KEY_EA_UNIT_ARCHERS">
 			<Text>Archers</Text>
 		</Row>
@@ -186,7 +193,13 @@
 			<Text>Axmen</Text>
 		</Row>
 
-		
+
+		<Row Tag="TXT_KEY_EA_UNIT_NAGA_GREEN">
+			<Text>Green Nagas</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_NAGA_BLUE">
+			<Text>Blue Nagas</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_OGRES">
 			<Text>Ogres</Text>
 		</Row>
@@ -199,10 +212,22 @@
 		<Row Tag="TXT_KEY_EA_UNIT_LIONS">
 			<Text>Lions</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_SCORPIONS_SAND">
+			<Text>Sand Scorpions</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_SCORPIONS_BLACK">
+			<Text>Black Scorpions</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_SCORPIONS_WHITE">
+			<Text>Snow Scorpions</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_GIANT_SPIDER">
 			<Text>Giant Spider</Text>
 		</Row>
 
+		<Row Tag="TXT_KEY_EA_UNIT_SKELETON_SWORDSMEN">
+			<Text>Skeletons</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_ZOMBIES">
 			<Text>Zombies</Text>
 		</Row>

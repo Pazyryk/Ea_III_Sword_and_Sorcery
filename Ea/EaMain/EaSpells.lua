@@ -940,7 +940,7 @@ local EA_SPELL_CALL_ANIMALS =				GameInfoTypes.EA_SPELL_CALL_ANIMALS
 local EA_SPELL_CALL_TREE_ENTS =				GameInfoTypes.EA_SPELL_CALL_TREE_ENTS
 
 local monsters = {GameInfoTypes.UNIT_GIANT_SPIDER}
-local undead = {GameInfoTypes.UNIT_ZOMBIES}
+local undead = {GameInfoTypes.UNIT_SKELETON_SWORDSMEN, GameInfoTypes.UNIT_ZOMBIES}
 local abyssalCreatures = {GameInfoTypes.UNIT_HORMAGAUNT}
 local demons = {GameInfoTypes.UNIT_LICTOR, GameInfoTypes.UNIT_HIVE_TYRANT}	--weakest first
 local heavensGuard = {GameInfoTypes.UNIT_ANGEL_SPEARMAN}

@@ -703,17 +703,19 @@ function PlotsPerTurn()
 		end
 
 		--Animals
-		if not bIsWater and plotTypeID ~= PLOT_MOUNTAIN and not bIsCity and not bIsImpassable and (iOwner == -1 or g_hasFeralBond[iOwner]) and plot:GetNumUnits() == 0 then
-			local bAllow = true
-			for i = 1, numAnimalSpawnInhibitTeams do
-				if 0 < plot:GetVisibilityCount(gg_animalSpawnInhibitTeams[i]) then
-					bAllow = false
-					break
+		if not bIsCity and not bIsImpassable and (iOwner == -1 or g_hasFeralBond[iOwner]) and plot:GetNumUnits() == 0 then
+			if plotTypeID ~= PLOT_OCEAN then --or (iPlot % 7 == 0 and not plot:IsLake()) then	--allow 1/7th of sea plots to be tested
+				local bAllow = true
+				for i = 1, numAnimalSpawnInhibitTeams do
+					if 0 < plot:GetVisibilityCount(gg_animalSpawnInhibitTeams[i]) then
+						bAllow = false
+						break
+					end
 				end
-			end
-			if bAllow then
-				numAnimalSpawnPlots = numAnimalSpawnPlots + 1
-				gg_animalSpawnPlots[numAnimalSpawnPlots] = iPlot
+				if bAllow then
+					numAnimalSpawnPlots = numAnimalSpawnPlots + 1
+					gg_animalSpawnPlots[numAnimalSpawnPlots] = iPlot
+				end
 			end
 		end
 

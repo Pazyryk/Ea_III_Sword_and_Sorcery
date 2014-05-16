@@ -3,6 +3,10 @@
 -- DateCreated: 8/16/2011 7:17:51 PM
 --------------------------------------------------------------
 
+local EA_MEDIA_PACK_MIN_VERSION = 4
+
+include("EaErrorHandler.lua")
+
 print("Loading EaMain.lua...")
 print("")
 print("****************************************************************")
@@ -11,6 +15,11 @@ local unsortedInstalledMods = Modding.GetInstalledMods()
 for key, modInfo in pairs(unsortedInstalledMods) do
 	if modInfo.Enabled then
 		print("*ENABLED: " .. modInfo.Name .. " (v " .. modInfo.Version .. ") " .. modInfo.ID)
+		if modInfo.ID == "7a7395e6-ad0d-47c0-87f8-af9d8f6c94e9" then
+			if modInfo.Version < EA_MEDIA_PACK_MIN_VERSION then
+				HandleError10(function() error("Ea Media Pack version is too old; download v." .. EA_MEDIA_PACK_MIN_VERSION) end)
+			end
+		end
 	else
 		print("Disabled: " .. modInfo.Name .. " (v " .. modInfo.Version .. ") " .. modInfo.ID)	
 	end
@@ -22,7 +31,7 @@ print("")
 -- Includes
 -------------------------------------------------------------------------------------------------------
 
-include("EaErrorHandler.lua")		--Always 1st
+
 include("EaPlotUtils.lua")	
 include("WhowardPlotIterators.lua")	
 
@@ -95,7 +104,7 @@ local fullCivs = MapModData.fullCivs
 local Clock = os.clock
 
 --localized global functions
-
+local HandleError10 =				HandleError10
 local AICivsPerGameTurn =			AICivsPerGameTurn
 local AIMercenaryPerGameTurn =		AIMercenaryPerGameTurn
 local PlotsPerTurn =				PlotsPerTurn

@@ -78,13 +78,13 @@
 		</Row>
 
 		<!-- Housekeeping -->
-		<Row Tag="TXT_KEY_EAPERSON_NO_LEADER_MAN">
+		<Row Tag="TXT_KEY_EAPERSON_NO_LDR_MAN">
 			<Text>No Leader</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EAPERSON_NO_LEADER_SIDHE">
+		<Row Tag="TXT_KEY_EAPERSON_NO_LDR_SIDHE">
 			<Text>No Leader</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EAPERSON_NO_LEADER_HELDEOFOL">
+		<Row Tag="TXT_KEY_EAPERSON_NO_LDR_HELDEOFOL">
 			<Text>No Leader</Text>
 		</Row>
 		

@@ -1,10 +1,10 @@
 Welcome to the Ea III Sword & Sorcery mod!
 
-Current mod version requires Ea Media Pack 20140305. You can
-download that at:
+Current build requires Ea Media Pack (v 4), download at:
+http://ge.tt/9B9AMFh1/v/0?c
 
-http://ge.tt/3n14dpP1/v/0
+THIS repository tracks changes in Lua, SQL, XML and other
+files included in the main (non-media) Modbuddy project. It
+does not include dll or pdb files (build these from EaDll
+repository).
 
-
-THIS repository tracks changes in Lua, SQL, XML and some other
-files included in the main (non-media) Modbuddy project.

@@ -1198,11 +1198,11 @@ function KillPerson(iPlayer, iPerson, unit, iKillerPlayer, deathType)
 		print("Person was leader; changing player leader to No Leader")
 		eaPlayer.leaderEaPersonIndex = -1
 		if eaPlayer.race == GameInfoTypes.EARACE_MAN then
-			player:ChangeLeaderType(GameInfoTypes.LEADER_NO_LEADER_MAN)
+			player:ChangeLeaderType(GameInfoTypes.LEADER_NO_LDR_MAN)
 		elseif eaPlayer.race == GameInfoTypes.EARACE_SIDHE then
-			player:ChangeLeaderType(GameInfoTypes.LEADER_NO_LEADER_SIDHE)
+			player:ChangeLeaderType(GameInfoTypes.LEADER_NO_LDR_SIDHE)
 		elseif eaPlayer.race == GameInfoTypes.EARACE_HELDEOFOL then
-			player:ChangeLeaderType(GameInfoTypes.LEADER_NO_LEADER_HELDEOFOL)
+			player:ChangeLeaderType(GameInfoTypes.LEADER_NO_LDR_HELDEOFOL)
 		end
 		PreGame.SetLeaderName(iPlayer, "TXT_KEY_EA_NO_LEADER")
 

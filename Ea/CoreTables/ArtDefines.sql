@@ -89,19 +89,45 @@ INSERT INTO ArtDefine_Landmarks (Era, State, Scale,	ImprovementType,					LayoutH
 ('Any',	'Any',					1.45,				'ART_DEF_IMPROVEMENT_NONE',			'SNAPSHOT',		'ART_DEF_RESOURCE_BLIGHT',		'blight.fxsxml',					0	),
 ('Any',	'Any',					1.45,				'ART_DEF_IMPROVEMENT_CHATEAU',		'SNAPSHOT',		'ART_DEF_RESOURCE_BLIGHT',		'blight.fxsxml',					0	);	--Arcane Tower
 
+
 -----------------------------------------------------------------------------------------
 -- Units
 -----------------------------------------------------------------------------------------
+
 INSERT INTO ArtDefine_StrategicView(StrategicViewType, TileType, Asset) VALUES
+--animals
 ('ART_DEF_UNIT_WOLF',				'Unit',	'SV_Jaguar.dds'		),
 ('ART_DEF_UNIT_WOLVES',				'Unit',	'SV_Jaguar.dds'		),
 ('ART_DEF_UNIT_LION',				'Unit',	'SV_Jaguar.dds'		),
 ('ART_DEF_UNIT_LIONS',				'Unit',	'SV_Jaguar.dds'		),
+('ART_DEF_UNIT_GRIFFON',			'Unit',	'SV_Jaguar.dds'		),
+('ART_DEF_UNIT_GRIFFONS',			'Unit',	'SV_Jaguar.dds'		),
+('ART_DEF_UNIT_SCORPION_SAND',		'Unit',	'SV_Jaguar.dds'		),
+('ART_DEF_UNIT_SCORPIONS_SAND',		'Unit',	'SV_Jaguar.dds'		),
+('ART_DEF_UNIT_SCORPION_BLACK',		'Unit',	'SV_Jaguar.dds'		),
+('ART_DEF_UNIT_SCORPIONS_BLACK',	'Unit',	'SV_Jaguar.dds'		),
+('ART_DEF_UNIT_SCORPION_WHITE',		'Unit',	'SV_Jaguar.dds'		),
+('ART_DEF_UNIT_SCORPIONS_WHITE',	'Unit',	'SV_Jaguar.dds'		),
+--beasts
+('ART_DEF_UNIT_KRAKEN',				'Unit',	'SV_Jaguar.dds'		),
 ('ART_DEF_UNIT_GIANT_SPIDER',		'Unit',	'SV_Jaguar.dds'		),
-('ART_DEF_UNIT_ORC_SPEARMAN',		'Unit',	'SV_Spearman.dds'	),
+--barbs
 ('ART_DEF_UNIT_OGRE',				'Unit',	'SV_Maori.dds'		),
 ('ART_DEF_UNIT_STONESKIN_OGRE',		'Unit',	'SV_Maori.dds'		),
+('ART_DEF_UNIT_NAGA_GREEN',			'Unit',	'SV_Maori.dds'		),
+('ART_DEF_UNIT_NAGA_BLUE',			'Unit',	'SV_Maori.dds'		),
+--regulars
+('ART_DEF_UNIT_MAN_CHARIOT',		'Unit',	'SV_Maori.dds'		),
+('ART_DEF_UNIT_ORC_SPEARMAN',		'Unit',	'SV_Spearman.dds'	),
+('ART_DEF_UNIT_GOBLIN_WARRIOR',		'Unit',	'SV_Spearman.dds'	),
+('ART_DEF_UNIT_GOBLIN_ARCHER',		'Unit',	'SV_Spearman.dds'	),
+('ART_DEF_UNIT_GOBLIN_CROSSBOWMAN',	'Unit',	'SV_Spearman.dds'	),
+('ART_DEF_UNIT_GOBLIN_SCOUT',		'Unit',	'SV_Spearman.dds'	),
+('ART_DEF_UNIT_GOBLIN_TRACKER',		'Unit',	'SV_Spearman.dds'	),
+('ART_DEF_UNIT_GOBLIN_WOLF_RIDER',	'Unit',	'SV_Spearman.dds'	),
+--summoned/called
 ('ART_DEF_UNIT_TREE_ENT',			'Unit',	'SV_Maori.dds'		),
+('ART_DEF_UNIT_SKELETON_SWORDSMAN',	'Unit',	'SV_Maori.dds'		),
 ('ART_DEF_UNIT_ZOMBIE',				'Unit',	'SV_Maori.dds'		),
 ('ART_DEF_UNIT_GREAT_UNCLEAN_ONE',	'Unit',	'SV_Maori.dds'		),
 ('ART_DEF_UNIT_HIVE_TYRANT',		'Unit',	'SV_Maori.dds'		),
@@ -114,18 +140,41 @@ INSERT INTO ArtDefine_StrategicView(StrategicViewType, TileType, Asset) VALUES
 
 
 INSERT INTO ArtDefine_UnitInfos (Type,	DamageStates,	Formation) VALUES
+--animals
 ('ART_DEF_UNIT_WOLF',					1,				''					),
 ('ART_DEF_UNIT_WOLVES',					1,				'Barbarian'			),
 ('ART_DEF_UNIT_LION',					1,				''					),
 ('ART_DEF_UNIT_LIONS',					1,				'Barbarian'			),
+('ART_DEF_UNIT_GRIFFON',				1,				''					),
+('ART_DEF_UNIT_GRIFFONS',				1,				'Barbarian'			),
+('ART_DEF_UNIT_SCORPION_SAND',			1,				''					),
+('ART_DEF_UNIT_SCORPIONS_SAND',			1,				'Barbarian'			),
+('ART_DEF_UNIT_SCORPION_BLACK',			1,				''					),
+('ART_DEF_UNIT_SCORPIONS_BLACK',		1,				'Barbarian'			),
+('ART_DEF_UNIT_SCORPION_WHITE',			1,				''					),
+('ART_DEF_UNIT_SCORPIONS_WHITE',		1,				'Barbarian'			),
+--beasts
 --('ART_DEF_UNIT_SPIDER',				1,				''					),
 --('ART_DEF_UNIT_SPIDERS',				1,				'Barbarian'			),
+('ART_DEF_UNIT_KRAKEN',					1,				''					),
 ('ART_DEF_UNIT_GIANT_SPIDER',			1,				''					),
-('ART_DEF_UNIT_ORC_SPEARMAN',			1,				'Barbarian'			),
+--barbs
 ('ART_DEF_UNIT_OGRE',					1,				'UnFormed'			),	--Hobgoblins
 ('ART_DEF_UNIT_STONESKIN_OGRE',			1,				'UnFormed'			),	--Ogres
+('ART_DEF_UNIT_NAGA_GREEN',				1,				'Barbarian'			),	
+('ART_DEF_UNIT_NAGA_BLUE',				1,				'Barbarian'			),	
+--regulars
 ('ART_DEF_UNIT_MAN_CHARIOT',			1,				'ChariotElephant'	),
+('ART_DEF_UNIT_ORC_SPEARMAN',			1,				'Barbarian'			),
+('ART_DEF_UNIT_GOBLIN_WARRIOR',			1,				'Barbarian'			),
+('ART_DEF_UNIT_GOBLIN_ARCHER',			1,				'Archer'			),
+('ART_DEF_UNIT_GOBLIN_CROSSBOWMAN',		1,				'Archer'			),
+('ART_DEF_UNIT_GOBLIN_SCOUT',			1,				'Scout'				),
+('ART_DEF_UNIT_GOBLIN_TRACKER',			1,				'Scout'				),
+('ART_DEF_UNIT_GOBLIN_WOLF_RIDER',		1,				'DefaultCavalry'	),
+--summoned/called
 ('ART_DEF_UNIT_TREE_ENT',				1,				''					),
+('ART_DEF_UNIT_SKELETON_SWORDSMAN',		1,				'Barbarian'			),
 ('ART_DEF_UNIT_ZOMBIE',					1,				'Barbarian'			),
 ('ART_DEF_UNIT_GREAT_UNCLEAN_ONE',		1,				''					),
 ('ART_DEF_UNIT_HIVE_TYRANT',			1,				''					),
@@ -148,20 +197,45 @@ INSERT INTO ArtDefine_UnitInfos (Type,	DamageStates,	Formation) VALUES
 ('ART_DEF_UNIT_EA_PRIEST_MAGIC_MISSLE',	1,				''					);
 
 INSERT INTO ArtDefine_UnitInfoMemberInfos (UnitInfoType,	UnitMemberInfoType,		NumMembers) VALUES
-('ART_DEF_UNIT_WOLF',					'ART_DEF_UNIT_MEMBER_WOLF',					1		),
-('ART_DEF_UNIT_WOLVES',					'ART_DEF_UNIT_MEMBER_WOLF',					7		),
+--animals
+('ART_DEF_UNIT_WOLF',					'ART_DEF_UNIT_MEMBER_DIREWOLF',				1		),
+('ART_DEF_UNIT_WOLVES',					'ART_DEF_UNIT_MEMBER_DIREWOLF',				7		),
+--('ART_DEF_UNIT_WOLVES',					'ART_DEF_UNIT_MEMBER_DIREWOLF_DARK',		3		),
 ('ART_DEF_UNIT_LION',					'ART_DEF_UNIT_MEMBER_LION',					1		),
 ('ART_DEF_UNIT_LIONS',					'ART_DEF_UNIT_MEMBER_LION',					4		),
+('ART_DEF_UNIT_GRIFFON',				'ART_DEF_UNIT_MEMBER_GRIFFON',				1		),
+('ART_DEF_UNIT_GRIFFONS',				'ART_DEF_UNIT_MEMBER_GRIFFON',				4		),
+('ART_DEF_UNIT_SCORPION_SAND',			'ART_DEF_UNIT_MEMBER_SCORPION_SAND',		1		),
+('ART_DEF_UNIT_SCORPIONS_SAND',			'ART_DEF_UNIT_MEMBER_SCORPION_SAND',		6		),
+('ART_DEF_UNIT_SCORPION_BLACK',			'ART_DEF_UNIT_MEMBER_SCORPION_BLACK',		1		),
+('ART_DEF_UNIT_SCORPIONS_BLACK',		'ART_DEF_UNIT_MEMBER_SCORPION_BLACK',		6		),
+('ART_DEF_UNIT_SCORPION_WHITE',			'ART_DEF_UNIT_MEMBER_SCORPION_WHITE',		1		),
+('ART_DEF_UNIT_SCORPIONS_WHITE',		'ART_DEF_UNIT_MEMBER_SCORPION_WHITE',		6		),
+--beasts
+('ART_DEF_UNIT_KRAKEN',					'ART_DEF_UNIT_MEMBER_KRAKEN',				1		),
 ('ART_DEF_UNIT_GIANT_SPIDER',			'ART_DEF_UNIT_MEMBER_GIANT_SPIDER',			1		),
-('ART_DEF_UNIT_ORC_SPEARMAN',			'ART_DEF_UNIT_MEMBER_ORC_SPEARMAN',			12		),
-('ART_DEF_UNIT_OGRE',					'ART_DEF_UNIT_MEMBER_OGRE',					12		),
+--barbs
+('ART_DEF_UNIT_OGRE',					'ART_DEF_UNIT_MEMBER_OGRE',					10		),
 ('ART_DEF_UNIT_STONESKIN_OGRE',			'ART_DEF_UNIT_MEMBER_STONESKIN_OGRE',		1		),
 ('ART_DEF_UNIT_STONESKIN_OGRE',			'ART_DEF_UNIT_MEMBER_STONESKIN_OGRE_2',		1		),
 ('ART_DEF_UNIT_STONESKIN_OGRE',			'ART_DEF_UNIT_MEMBER_STONESKIN_OGRE',		1		),
 ('ART_DEF_UNIT_STONESKIN_OGRE',			'ART_DEF_UNIT_MEMBER_STONESKIN_OGRE_2',		1		),
 ('ART_DEF_UNIT_STONESKIN_OGRE',			'ART_DEF_UNIT_MEMBER_STONESKIN_OGRE',		1		),
+
+('ART_DEF_UNIT_NAGA_GREEN',				'ART_DEF_UNIT_MEMBER_NAGA_GREEN',			6		),
+('ART_DEF_UNIT_NAGA_BLUE',				'ART_DEF_UNIT_MEMBER_NAGA_BLUE',			6		),
+--regulars
 ('ART_DEF_UNIT_MAN_CHARIOT',			'ART_DEF_UNIT_MEMBER_MAN_CHARIOT',			2		),
+('ART_DEF_UNIT_ORC_SPEARMAN',			'ART_DEF_UNIT_MEMBER_ORC_SPEARMAN',			12		),
+('ART_DEF_UNIT_GOBLIN_WARRIOR',			'ART_DEF_UNIT_MEMBER_GOBLIN_WARRIOR',		18		),
+('ART_DEF_UNIT_GOBLIN_ARCHER',			'ART_DEF_UNIT_MEMBER_GOBLIN_ARCHER',		12		),
+('ART_DEF_UNIT_GOBLIN_CROSSBOWMAN',		'ART_DEF_UNIT_MEMBER_GOBLIN_CROSSBOWMAN',	12		),
+('ART_DEF_UNIT_GOBLIN_SCOUT',			'ART_DEF_UNIT_MEMBER_GOBLIN_SCOUT',			8		),
+('ART_DEF_UNIT_GOBLIN_TRACKER',			'ART_DEF_UNIT_MEMBER_GOBLIN_TRACKER',		8		),
+('ART_DEF_UNIT_GOBLIN_WOLF_RIDER',		'ART_DEF_UNIT_MEMBER_GOBLIN_WOLF_RIDER',	10		),
+--summoned/called
 ('ART_DEF_UNIT_TREE_ENT',				'ART_DEF_UNIT_MEMBER_TREE_ENT',				1		),
+('ART_DEF_UNIT_SKELETON_SWORDSMAN',		'ART_DEF_UNIT_MEMBER_SKELETON_SWORDSMAN',	11		),
 ('ART_DEF_UNIT_ZOMBIE',					'ART_DEF_UNIT_MEMBER_ZOMBIE',				11		),
 ('ART_DEF_UNIT_GREAT_UNCLEAN_ONE',		'ART_DEF_UNIT_MEMBER_GREAT_UNCLEAN_ONE',	1		),
 ('ART_DEF_UNIT_HIVE_TYRANT',			'ART_DEF_UNIT_MEMBER_HIVE_TYRANT',			1		),
@@ -186,15 +260,37 @@ INSERT INTO ArtDefine_UnitInfoMemberInfos (UnitInfoType,	UnitMemberInfoType,		Nu
 
 
 INSERT INTO ArtDefine_UnitMemberInfos (Type,Scale,				Domain,	Model,							MaterialTypeTag,	MaterialTypeSoundOverrideTag) VALUES
-('ART_DEF_UNIT_MEMBER_WOLF',				2,					'',		'wolf.fxsxml',					'CLOTH',			'FLESH'			),
-('ART_DEF_UNIT_MEMBER_LION',				2.7,				'',		'lion.fxsxml',					'CLOTH',			'FLESH'			),
+--animals
+('ART_DEF_UNIT_MEMBER_DIREWOLF',			2,					'',		'direwolf.fxsxml',				'CLOTH',			'FLESH'			),
+--('ART_DEF_UNIT_MEMBER_DIREWOLF_DARK',		2,					'',		'direwolf_dark.fxsxml',			'CLOTH',			'FLESH'			),
+('ART_DEF_UNIT_MEMBER_LION',				2.5,				'',		'lion.fxsxml',					'CLOTH',			'FLESH'			),
+('ART_DEF_UNIT_MEMBER_GRIFFON',				2.5,				'',		'griffon.fxsxml',				'CLOTH',			'FLESH'			),
+('ART_DEF_UNIT_MEMBER_SCORPION_SAND',		0.2,				'',		'Scorpion_Sand.fxsxml',			'CLOTH',			'FLESH'			),
+('ART_DEF_UNIT_MEMBER_SCORPION_BLACK',		0.2,				'',		'Scorpion_Black.fxsxml',		'CLOTH',			'FLESH'			),
+('ART_DEF_UNIT_MEMBER_SCORPION_WHITE',		0.2,				'',		'Scorpion_White.fxsxml',		'CLOTH',			'FLESH'			),
+--beasts
+('ART_DEF_UNIT_MEMBER_KRAKEN',				1,					'',		'kraken.fxsxml',				'CLOTH',			'FLESH'			),
 ('ART_DEF_UNIT_MEMBER_GIANT_SPIDER',		1,					'',		'spider.fxsxml',				'CLOTH',			'FLESH'			),
-('ART_DEF_UNIT_MEMBER_ORC_SPEARMAN',		0.14,				'',		'orc_spearman.fxsxml',			'CLOTH',			'FLESH'			),
+--barbs
 ('ART_DEF_UNIT_MEMBER_OGRE',				0.14,				'',		'ogre.fxsxml',					'CLOTH',			'FLESH'			),
 ('ART_DEF_UNIT_MEMBER_STONESKIN_OGRE',		0.2,				'',		'stoneskin_ogre_tall.fxsxml',	'CLOTH',			'FLESH'			),
 ('ART_DEF_UNIT_MEMBER_STONESKIN_OGRE_2',	0.2,				'',		'stoneskin_ogre_short.fxsxml',	'CLOTH',			'FLESH'			),
+
+('ART_DEF_UNIT_MEMBER_NAGA_GREEN',			0.14,				'',		'Naga_Green.fxsxml',			'CLOTH',			'FLESH'			),
+('ART_DEF_UNIT_MEMBER_NAGA_BLUE',			0.14,				'',		'Naga_Blue.dds',				'CLOTH',			'FLESH'			),
+--regulars
 ('ART_DEF_UNIT_MEMBER_MAN_CHARIOT',			0.13,				'',		'Chariot_Viking.fxsxml',		'CLOTH',			'WOODSM'		),
+('ART_DEF_UNIT_MEMBER_ORC_SPEARMAN',		0.14,				'',		'orc_spearman.fxsxml',			'CLOTH',			'FLESH'			),
+
+('ART_DEF_UNIT_MEMBER_GOBLIN_WARRIOR',		0.1,				'',		'Goblin_Warrior.fxsxml',		'CLOTH',			'FLESH'			),
+('ART_DEF_UNIT_MEMBER_GOBLIN_ARCHER',		0.1,				'',		'Goblin_Archer.fxsxml',			'CLOTH',			'FLESH'			),
+('ART_DEF_UNIT_MEMBER_GOBLIN_CROSSBOWMAN',	0.1,				'',		'Goblin_Crossbowman.fxsxml',	'CLOTH',			'FLESH'			),
+('ART_DEF_UNIT_MEMBER_GOBLIN_SCOUT',		0.1,				'',		'Goblin_Scout.fxsxml',			'CLOTH',			'FLESH'			),
+('ART_DEF_UNIT_MEMBER_GOBLIN_TRACKER',		0.1,				'',		'Goblin_Hunter.fxsxml',			'CLOTH',			'FLESH'			),
+('ART_DEF_UNIT_MEMBER_GOBLIN_WOLF_RIDER',	0.1,				'',		'Goblin_Wolfrider.fxsxml',		'CLOTH',			'FLESH'			),
+--summoned/called
 ('ART_DEF_UNIT_MEMBER_TREE_ENT',			1,					'',		'tree.fxsxml',					'CLOTH',			'FLESH'			),
+('ART_DEF_UNIT_MEMBER_SKELETON_SWORDSMAN',	0.11,				'',		'skeleton_swordsman.fxsxml',	'CLOTH',			'FLESH'			),
 ('ART_DEF_UNIT_MEMBER_ZOMBIE',				0.14,				'',		'zombie.fxsxml',				'CLOTH',			'FLESH'			),
 ('ART_DEF_UNIT_MEMBER_GREAT_UNCLEAN_ONE',	6,					'',		'guo.fxsxml',					'CLOTH',			'FLESH'			),
 ('ART_DEF_UNIT_MEMBER_HIVE_TYRANT',			6,					'',		'hive_tyrant.fxsxml',			'CLOTH',			'FLESH'			),
@@ -206,64 +302,136 @@ INSERT INTO ArtDefine_UnitMemberInfos (Type,Scale,				Domain,	Model,							Mater
 ('ART_DEF_UNIT_MEMBER_ARCHANGEL',			0.7,				'',		'angel_spearman.fxsxml',		'CLOTH',			'FLESH'			);
 										-- use 0.7 for archangel
 
-INSERT INTO ArtDefine_UnitMemberCombats (UnitMemberType, DisableActions, EnableActions,																		ShortMoveRadius,	ShortMoveRate,		TargetHeight,	HasRefaceAfterCombat,	HasStationaryMelee,	ReformBeforeCombat,	RushAttackFormation	) VALUES
-('ART_DEF_UNIT_MEMBER_WOLF',				'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8.0,			1,						NULL,				1,					''					),
-('ART_DEF_UNIT_MEMBER_LION',				'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8.0,			1,						NULL,				1,					''					),
-('ART_DEF_UNIT_MEMBER_GIANT_SPIDER',		'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8.0,			1,						NULL,				1,					''					),
-('ART_DEF_UNIT_MEMBER_ORC_SPEARMAN',		'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8.0,			1,						NULL,				1,					''					),
-('ART_DEF_UNIT_MEMBER_OGRE',				'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8.0,			1,						NULL,				1,					''					),
-('ART_DEF_UNIT_MEMBER_STONESKIN_OGRE',		'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8.0,			1,						NULL,				1,					''					),
-('ART_DEF_UNIT_MEMBER_STONESKIN_OGRE_2',	'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8.0,			1,						NULL,				1,					''					),
-('ART_DEF_UNIT_MEMBER_MAN_CHARIOT',			'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk',				24.0,				0.349999994039536,	8.0,			1,						1,					2,					'DefaultCavalry'	),
-('ART_DEF_UNIT_MEMBER_TREE_ENT',			'',	'Idle Attack RunCharge Death Run Fortify CombatReady Walk AttackCharge',									12.0,				0.349999994039536,	8.0,			1,						NULL,				1,					''					),
-('ART_DEF_UNIT_MEMBER_ZOMBIE',				'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8.0,			1,						NULL,				1,					''					),
-('ART_DEF_UNIT_MEMBER_GREAT_UNCLEAN_ONE',	'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8.0,			1,						NULL,				1,					''					),
-('ART_DEF_UNIT_MEMBER_HIVE_TYRANT',			'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8.0,			1,						NULL,				1,					''					),
-('ART_DEF_UNIT_MEMBER_LICTOR',				'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8.0,			1,						NULL,				1,					''					),
-('ART_DEF_UNIT_MEMBER_HORMAGAUNT',			'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8.0,			1,						NULL,				1,					''					),
---('ART_DEF_UNIT_MEMBER_CARNIFEX',			'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8.0,			1,						NULL,				1,					''					),
-('ART_DEF_UNIT_MEMBER_ANGEL_SPEARMAN',		'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8.0,			1,						NULL,				1,					''					),
-('ART_DEF_UNIT_MEMBER_ANGEL',				'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8.0,			1,						NULL,				1,					''					),
-('ART_DEF_UNIT_MEMBER_ARCHANGEL',			'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8.0,			1,						NULL,				1,					''					);
+INSERT INTO ArtDefine_UnitMemberCombats (UnitMemberType, DisableActions, EnableActions,																		ShortMoveRadius,	ShortMoveRate,		TargetHeight,	HasRefaceAfterCombat,	ReformBeforeCombat	) VALUES
+--animals
+('ART_DEF_UNIT_MEMBER_DIREWOLF',			'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					),
+--('ART_DEF_UNIT_MEMBER_DIREWOLF_DARK',		'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					),
+('ART_DEF_UNIT_MEMBER_LION',				'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					),
+('ART_DEF_UNIT_MEMBER_GRIFFON',				'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					),
+('ART_DEF_UNIT_MEMBER_SCORPION_SAND',		'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					),
+('ART_DEF_UNIT_MEMBER_SCORPION_BLACK',		'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					),
+('ART_DEF_UNIT_MEMBER_SCORPION_WHITE',		'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					),
+--beasts
+('ART_DEF_UNIT_MEMBER_KRAKEN',				'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					),
+('ART_DEF_UNIT_MEMBER_GIANT_SPIDER',		'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					),
+--barbs
+('ART_DEF_UNIT_MEMBER_OGRE',				'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					),
+('ART_DEF_UNIT_MEMBER_STONESKIN_OGRE',		'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					),
+('ART_DEF_UNIT_MEMBER_STONESKIN_OGRE_2',	'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					),
 
+('ART_DEF_UNIT_MEMBER_NAGA_GREEN',			'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					),
+('ART_DEF_UNIT_MEMBER_NAGA_BLUE',			'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					),
+--regulars
+('ART_DEF_UNIT_MEMBER_MAN_CHARIOT',			'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk',				24.0,				0.349999994039536,	12,				1,						2					),
+('ART_DEF_UNIT_MEMBER_ORC_SPEARMAN',		'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					),
+('ART_DEF_UNIT_MEMBER_GOBLIN_WARRIOR',		'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					),
+('ART_DEF_UNIT_MEMBER_GOBLIN_ARCHER',		'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					),
+('ART_DEF_UNIT_MEMBER_GOBLIN_CROSSBOWMAN',	'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					),
+('ART_DEF_UNIT_MEMBER_GOBLIN_SCOUT',		'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						NULL				),
+('ART_DEF_UNIT_MEMBER_GOBLIN_TRACKER',		'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					),
+('ART_DEF_UNIT_MEMBER_GOBLIN_WOLF_RIDER',	'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk',				24.0,				0.349999994039536,	12,				1,						2					),
+--summoned/called
+('ART_DEF_UNIT_MEMBER_TREE_ENT',			'',	'Idle Attack RunCharge Death Run Fortify CombatReady Walk AttackCharge',									12.0,				0.349999994039536,	8,				1,						1					),
+('ART_DEF_UNIT_MEMBER_SKELETON_SWORDSMAN',	'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					),
+('ART_DEF_UNIT_MEMBER_ZOMBIE',				'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					),
+('ART_DEF_UNIT_MEMBER_GREAT_UNCLEAN_ONE',	'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					),
+('ART_DEF_UNIT_MEMBER_HIVE_TYRANT',			'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					),
+('ART_DEF_UNIT_MEMBER_LICTOR',				'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					),
+('ART_DEF_UNIT_MEMBER_HORMAGAUNT',			'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					),
+--('ART_DEF_UNIT_MEMBER_CARNIFEX',			'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					),
+('ART_DEF_UNIT_MEMBER_ANGEL_SPEARMAN',		'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					),
+('ART_DEF_UNIT_MEMBER_ANGEL',				'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					),
+('ART_DEF_UNIT_MEMBER_ARCHANGEL',			'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					);
+
+UPDATE ArtDefine_UnitMemberCombats SET TurnRateMin = 0.5, TurnRateMax = 0.75, TurnFacingRateMin = 15, TurnFacingRateMax = 20, HasStationaryMelee = 1, OnlyTurnInMovementActions = 1, RushAttackFormation = 'DefaultCavalry' WHERE UnitMemberType IN
+('ART_DEF_UNIT_MEMBER_MAN_CHARIOT', 'ART_DEF_UNIT_MEMBER_GOBLIN_WOLF_RIDER');
+
+UPDATE ArtDefine_UnitMemberCombats SET HasShortRangedAttack = 1, HasLongRangedAttack = 1 WHERE UnitMemberType IN
+('ART_DEF_UNIT_MEMBER_GOBLIN_ARCHER', 'ART_DEF_UNIT_MEMBER_GOBLIN_CROSSBOWMAN');
 
 INSERT INTO ArtDefine_UnitMemberCombatWeapons(UnitMemberType,	"Index",	SubIndex,	"ID",	WeaponTypeTag,		WeaponTypeSoundOverrideTag,	VisKillStrengthMin,	VisKillStrengthMax,	MissTargetSlopRadius,	HitEffect	) VALUES
-('ART_DEF_UNIT_MEMBER_WOLF',									0,			0,			'',		'METAL',			'SPEAR',					NULL,				NULL,				NULL,					''			),
-('ART_DEF_UNIT_MEMBER_WOLF',									1,			0,			'',		'FLAMING_ARROW',	'',							10.0,				20.0,				10.0,					''			),
-('ART_DEF_UNIT_MEMBER_LION',									0,			0,			'',		'METAL',			'SPEAR',					NULL,				NULL,				NULL,					''			),
-('ART_DEF_UNIT_MEMBER_LION',									1,			0,			'',		'FLAMING_ARROW',	'',							10.0,				20.0,				10.0,					''			),
-('ART_DEF_UNIT_MEMBER_GIANT_SPIDER',							0,			0,			'',		'METAL',			'SPEAR',					NULL,				NULL,				NULL,					''			),
-('ART_DEF_UNIT_MEMBER_GIANT_SPIDER',							1,			0,			'',		'FLAMING_ARROW',	'',							10.0,				20.0,				10.0,					''			),
-('ART_DEF_UNIT_MEMBER_ORC_SPEARMAN',							0,			0,			'',		'METAL',			'SPEAR',					NULL,				NULL,				NULL,					''			),
-('ART_DEF_UNIT_MEMBER_ORC_SPEARMAN',							1,			0,			'',		'FLAMING_ARROW',	'',							10.0,				20.0,				10.0,					''			),
+--animals
+--('ART_DEF_UNIT_MEMBER_WOLF',									0,			0,			'',		'METAL',			'SPEAR',					NULL,				NULL,				NULL,					''			),
+--('ART_DEF_UNIT_MEMBER_WOLF',									1,			0,			'',		'FLAMING_ARROW',	'',							10.0,				20.0,				10.0,					''			),
+--('ART_DEF_UNIT_MEMBER_LION',									0,			0,			'',		'METAL',			'SPEAR',					NULL,				NULL,				NULL,					''			),
+--('ART_DEF_UNIT_MEMBER_LION',									1,			0,			'',		'FLAMING_ARROW',	'',							10.0,				20.0,				10.0,					''			),
+--('ART_DEF_UNIT_MEMBER_GRIFFON',									0,			0,			'',		'METAL',			'SPEAR',					NULL,				NULL,				NULL,					''			),
+--('ART_DEF_UNIT_MEMBER_GRIFFON',									1,			0,			'',		'FLAMING_ARROW',	'',							10.0,				20.0,				10.0,					''			),
+--('ART_DEF_UNIT_MEMBER_GIANT_SPIDER',							0,			0,			'',		'METAL',			'SPEAR',					NULL,				NULL,				NULL,					''			),
+--('ART_DEF_UNIT_MEMBER_GIANT_SPIDER',							1,			0,			'',		'FLAMING_ARROW',	'',							10.0,				20.0,				10.0,					''			),
+
+
+
+('ART_DEF_UNIT_MEMBER_DIREWOLF',								0,			0,			'',		'BLUNT',			'BLUNT',					NULL,				NULL,				NULL,					''			),
+--('ART_DEF_UNIT_MEMBER_DIREWOLF_DARK',							0,			0,			'',		'BLUNT',			'BLUNT',					NULL,				NULL,				NULL,					''			),
+('ART_DEF_UNIT_MEMBER_LION',									0,			0,			'',		'BLUNT',			'BLUNT',					NULL,				NULL,				NULL,					''			),
+('ART_DEF_UNIT_MEMBER_GRIFFON',									0,			0,			'',		'BLUNT',			'BLUNT',					NULL,				NULL,				NULL,					''			),
+('ART_DEF_UNIT_MEMBER_SCORPION_SAND',							0,			0,			'',		'BLUNT',			'BLUNT',					NULL,				NULL,				NULL,					''			),
+('ART_DEF_UNIT_MEMBER_SCORPION_BLACK',							0,			0,			'',		'BLUNT',			'BLUNT',					NULL,				NULL,				NULL,					''			),
+('ART_DEF_UNIT_MEMBER_SCORPION_WHITE',							0,			0,			'',		'BLUNT',			'BLUNT',					NULL,				NULL,				NULL,					''			),
+--beasts
+('ART_DEF_UNIT_MEMBER_KRAKEN',									0,			0,			'',		'BLUNT',			'BLUNT',					NULL,				NULL,				NULL,					''			),
+('ART_DEF_UNIT_MEMBER_GIANT_SPIDER',							0,			0,			'',		'BLUNT',			'BLUNT',					NULL,				NULL,				NULL,					''			),
+
+
+--barbs
 ('ART_DEF_UNIT_MEMBER_OGRE',									0,			0,			'',		'BLUNT',			'BLUNT',					NULL,				NULL,				NULL,					''			),
-('ART_DEF_UNIT_MEMBER_OGRE',									1,			0,			'',		'FLAMING_ARROW',	'',							10.0,				20.0,				10.0,					''			),
+('ART_DEF_UNIT_MEMBER_OGRE',									1,			0,			'',		'FLAMING_ARROW',	'',							10,					20,					10,						''			),
 ('ART_DEF_UNIT_MEMBER_STONESKIN_OGRE',							0,			0,			'',		'METAL',			'SWORD',					NULL,				NULL,				NULL,					''			),
-('ART_DEF_UNIT_MEMBER_STONESKIN_OGRE',							1,			0,			'',		'FLAMING_ARROW',	'',							10.0,				20.0,				10.0,					''			),
+('ART_DEF_UNIT_MEMBER_STONESKIN_OGRE',							1,			0,			'',		'FLAMING_ARROW',	'',							10,					20,					10,						''			),
 ('ART_DEF_UNIT_MEMBER_STONESKIN_OGRE_2',						0,			0,			'',		'METAL',			'SWORD',					NULL,				NULL,				NULL,					''			),
-('ART_DEF_UNIT_MEMBER_STONESKIN_OGRE_2',						1,			0,			'',		'FLAMING_ARROW',	'',							10.0,				20.0,				10.0,					''			),
+('ART_DEF_UNIT_MEMBER_STONESKIN_OGRE_2',						1,			0,			'',		'FLAMING_ARROW',	'',							10,					20,					10,						''			),
+
+('ART_DEF_UNIT_MEMBER_NAGA_GREEN',								0,			0,			'',		'BLUNT',			'BLUNT',					NULL,				NULL,				NULL,					''			),
+('ART_DEF_UNIT_MEMBER_NAGA_BLUE',								0,			0,			'',		'BLUNT',			'BLUNT',					NULL,				NULL,				NULL,					''			),
+
+--regulars
 ('ART_DEF_UNIT_MEMBER_MAN_CHARIOT',								0,			0,			'',		'METAL',			'SWORD',					NULL,				NULL,				NULL,					''			),
-('ART_DEF_UNIT_MEMBER_MAN_CHARIOT',								1,			0,			'',		'FLAMING_ARROW',	'',							10.0,				20.0,				10.0,					''			),
+('ART_DEF_UNIT_MEMBER_MAN_CHARIOT',								1,			0,			'',		'FLAMING_ARROW',	'',							10,					20,					10,						''			),
+('ART_DEF_UNIT_MEMBER_ORC_SPEARMAN',							0,			0,			'',		'METAL',			'SPEAR',					NULL,				NULL,				NULL,					''			),
+('ART_DEF_UNIT_MEMBER_ORC_SPEARMAN',							1,			0,			'',		'FLAMING_ARROW',	'',							10,					20,					10,						''			),
+
+('ART_DEF_UNIT_MEMBER_GOBLIN_WARRIOR',							0,			0,			'',		'BLUNT',			'BLUNT',					NULL,				NULL,				NULL,					''			),
+('ART_DEF_UNIT_MEMBER_GOBLIN_WARRIOR',							1,			0,			'',		'FLAMING_ARROW',	'',							10,					20,					10,						''			),
+
+('ART_DEF_UNIT_MEMBER_GOBLIN_ARCHER',							0,			0,			'',		'ARROW',			'ARROW',					NULL,				NULL,				10,						''			),
+('ART_DEF_UNIT_MEMBER_GOBLIN_ARCHER',							1,			0,			'',		'FLAMING_ARROW',	'',							10,					20,					10,						''			),
+
+('ART_DEF_UNIT_MEMBER_GOBLIN_CROSSBOWMAN',						0,			0,			'',		'ARROW',			'ARROW',					NULL,				NULL,				10,						''			),
+('ART_DEF_UNIT_MEMBER_GOBLIN_CROSSBOWMAN',						1,			0,			'',		'FLAMING_ARROW',	'',							10,					20,					10,						''			),
+
+('ART_DEF_UNIT_MEMBER_GOBLIN_SCOUT',							0,			0,			'',		'BLUNT',			'SPEAR',					NULL,				NULL,				NULL,					''			),
+
+('ART_DEF_UNIT_MEMBER_GOBLIN_TRACKER',							0,			0,			'',		'METAL',			'SPEAR',					NULL,				NULL,				NULL,					''			),
+('ART_DEF_UNIT_MEMBER_GOBLIN_TRACKER',							1,			0,			'',		'FLAMING_ARROW',	'',							10,					20,					10,						''			),
+
+('ART_DEF_UNIT_MEMBER_GOBLIN_WOLF_RIDER',						0,			0,			'',		'METAL',			'SWORD',					NULL,				NULL,				NULL,					''			),
+('ART_DEF_UNIT_MEMBER_GOBLIN_WOLF_RIDER',						1,			0,			'',		'FLAMING_ARROW',	'',							10,					20,					10,						''			),
+
+
+--summoned/called
 ('ART_DEF_UNIT_MEMBER_TREE_ENT',								0,			0,			'',		'METAL',			'SPEAR',					NULL,				NULL,				NULL,					''			),
-('ART_DEF_UNIT_MEMBER_TREE_ENT',								1,			0,			'',		'FLAMING_ARROW',	'',							10.0,				20.0,				10.0,					''			),
+('ART_DEF_UNIT_MEMBER_TREE_ENT',								1,			0,			'',		'FLAMING_ARROW',	'',							10,					20,					10,						''			),
+('ART_DEF_UNIT_MEMBER_SKELETON_SWORDSMAN',						0,			0,			'',		'METAL',			'SPEAR',					NULL,				NULL,				NULL,					''			),
+('ART_DEF_UNIT_MEMBER_SKELETON_SWORDSMAN',						1,			0,			'',		'FLAMING_ARROW',	'',							10,					20,					10,						''			),
 ('ART_DEF_UNIT_MEMBER_ZOMBIE',									0,			0,			'',		'METAL',			'SPEAR',					NULL,				NULL,				NULL,					''			),
-('ART_DEF_UNIT_MEMBER_ZOMBIE',									1,			0,			'',		'FLAMING_ARROW',	'',							10.0,				20.0,				10.0,					''			),
+('ART_DEF_UNIT_MEMBER_ZOMBIE',									1,			0,			'',		'FLAMING_ARROW',	'',							10,					20,					10,						''			),
 ('ART_DEF_UNIT_MEMBER_GREAT_UNCLEAN_ONE',						0,			0,			'',		'METAL',			'SPEAR',					NULL,				NULL,				NULL,					''			),
-('ART_DEF_UNIT_MEMBER_GREAT_UNCLEAN_ONE',						1,			0,			'',		'FLAMING_ARROW',	'',							10.0,				20.0,				10.0,					''			),
+('ART_DEF_UNIT_MEMBER_GREAT_UNCLEAN_ONE',						1,			0,			'',		'FLAMING_ARROW',	'',							10,					20,					10,						''			),
 ('ART_DEF_UNIT_MEMBER_HIVE_TYRANT',								0,			0,			'',		'METAL',			'SPEAR',					NULL,				NULL,				NULL,					''			),
-('ART_DEF_UNIT_MEMBER_HIVE_TYRANT',								1,			0,			'',		'FLAMING_ARROW',	'',							10.0,				20.0,				10.0,					''			),
+('ART_DEF_UNIT_MEMBER_HIVE_TYRANT',								1,			0,			'',		'FLAMING_ARROW',	'',							10,					20,					10,						''			),
 ('ART_DEF_UNIT_MEMBER_LICTOR',									0,			0,			'',		'METAL',			'SPEAR',					NULL,				NULL,				NULL,					''			),
-('ART_DEF_UNIT_MEMBER_LICTOR',									1,			0,			'',		'FLAMING_ARROW',	'',							10.0,				20.0,				10.0,					''			),
+('ART_DEF_UNIT_MEMBER_LICTOR',									1,			0,			'',		'FLAMING_ARROW',	'',							10,					20,					10,						''			),
 ('ART_DEF_UNIT_MEMBER_HORMAGAUNT',								0,			0,			'',		'METAL',			'SPEAR',					NULL,				NULL,				NULL,					''			),
-('ART_DEF_UNIT_MEMBER_HORMAGAUNT',								1,			0,			'',		'FLAMING_ARROW',	'',							10.0,				20.0,				10.0,					''			),
+('ART_DEF_UNIT_MEMBER_HORMAGAUNT',								1,			0,			'',		'FLAMING_ARROW',	'',							10,					20,					10,						''			),
 --('ART_DEF_UNIT_MEMBER_CARNIFEX',								0,			0,			'',		'METAL',			'SPEAR',					NULL,				NULL,				NULL,					''			),
---('ART_DEF_UNIT_MEMBER_CARNIFEX',								1,			0,			'',		'FLAMING_ARROW',	'',							10.0,				20.0,				10.0,					''			),
+--('ART_DEF_UNIT_MEMBER_CARNIFEX',								1,			0,			'',		'FLAMING_ARROW',	'',							10,					20,					10,						''			),
 ('ART_DEF_UNIT_MEMBER_ANGEL_SPEARMAN',							0,			0,			'',		'METAL',			'SPEAR',					NULL,				NULL,				NULL,					''			),
-('ART_DEF_UNIT_MEMBER_ANGEL_SPEARMAN',							1,			0,			'',		'FLAMING_ARROW',	'',							10.0,				20.0,				10.0,					''			),
+('ART_DEF_UNIT_MEMBER_ANGEL_SPEARMAN',							1,			0,			'',		'FLAMING_ARROW',	'',							10,					20,					10,						''			),
 ('ART_DEF_UNIT_MEMBER_ANGEL',									0,			0,			'',		'METAL',			'SPEAR',					NULL,				NULL,				NULL,					''			),
-('ART_DEF_UNIT_MEMBER_ANGEL',									1,			0,			'',		'FLAMING_ARROW',	'',							10.0,				20.0,				10.0,					''			),
+('ART_DEF_UNIT_MEMBER_ANGEL',									1,			0,			'',		'FLAMING_ARROW',	'',							10,					20,					10,						''			),
 ('ART_DEF_UNIT_MEMBER_ARCHANGEL',								0,			0,			'',		'METAL',			'SPEAR',					NULL,				NULL,				NULL,					''			),
-('ART_DEF_UNIT_MEMBER_ARCHANGEL',								1,			0,			'',		'FLAMING_ARROW',	'',							10.0,				20.0,				10.0,					''			);
+('ART_DEF_UNIT_MEMBER_ARCHANGEL',								1,			0,			'',		'FLAMING_ARROW',	'',							10,					20,					10,						''			);
 
 
 

@@ -10,7 +10,18 @@ local Dprint = DEBUG_PRINT and print or function() end
 -- File Locals
 --------------------------------------------------------------
 --constants
+local EAMOD_DIVINATION =			GameInfoTypes.EAMOD_DIVINATION
+local EAMOD_ABJURATION =			GameInfoTypes.EAMOD_ABJURATION
+local EAMOD_EVOCATION =				GameInfoTypes.EAMOD_EVOCATION
+local EAMOD_TRANSMUTATION =			GameInfoTypes.EAMOD_TRANSMUTATION
+local EAMOD_CONJURATION =			GameInfoTypes.EAMOD_CONJURATION
+local EAMOD_NECROMANCY =			GameInfoTypes.EAMOD_NECROMANCY
+local EAMOD_ENCHANTMENT =			GameInfoTypes.EAMOD_ENCHANTMENT
+local EAMOD_ILLUSION =				GameInfoTypes.EAMOD_ILLUSION
+
+
 local EA_WONDER_ARCANE_TOWER =		GameInfoTypes.EA_WONDER_ARCANE_TOWER
+local EA_WONDER_TEMPLE_FAGUS =		GameInfoTypes.EA_WONDER_TEMPLE_FAGUS
 local IMPROVEMENT_RUINS =			GameInfoTypes.IMPROVEMENT_RUINS
 local POLICY_ARCANA =				GameInfoTypes.POLICY_ARCANA
 local POLICY_PANTHEISM =			GameInfoTypes.POLICY_PANTHEISM
@@ -25,6 +36,7 @@ local fullCivs = MapModData.fullCivs
 
 --localized functions
 local GetPlotByIndex =		Map.GetPlotByIndex
+local Floor =				math.floor
 
 --file control
 local DoPerTurnUniqueWonder = {}
@@ -38,6 +50,7 @@ local wonderBuildingMod = {}
 local bPantheisticOnly = {}
 local bAzzFollowerOnly = {}
 local bFallenOnly = {}
+local iGodPlayerByWonderID = {}
 local improvementWonder = {}	--index by improvementID
 for wonderInfo in GameInfo.EaWonders() do
 	if wonderInfo.ImprovementType then
@@ -59,6 +72,10 @@ for wonderInfo in GameInfo.EaWonders() do
 	end
 	if wonderInfo.FallenOnly then
 		bFallenOnly[wonderInfo.ID] = true
+	end
+	if wonderInfo.God then
+		local minorID = GameInfoTypes[wonderInfo.God]
+		iGodPlayerByWonderID[wonderInfo.ID] = gg_minorPlayerByTypeID[minorID]	--nil if not in game
 	end
 end
 
@@ -175,9 +192,29 @@ function UpdateUniqueWonder(iPlayer, wonderID, bPerTurnCall)	--full Civ only
 		if buildingModID then
 			city:SetNumFreeBuilding(buildingModID, wonder.mod)		--some wonder mods change, so update each turn is ok
 		end
-		--specific per turn effects
-		if bPerTurnCall and DoPerTurnUniqueWonder[wonderID] then
-			 DoPerTurnUniqueWonder[wonderID](iPlayer, plot)
+		if wonderID >= EA_WONDER_TEMPLE_FAGUS then	--Pan temple so update mod from relationship
+			local iGod = iGodPlayerByWonderID[wonderID]
+			local friendship = Players[iGod]:GetMinorCivFriendshipWithMajor(iPlayer)
+			local mod = Floor(friendship ^ 0.333333)	--cube root
+			local temple = gWonders[wonderID]
+			if mod ~= temple.mod then			--update mod and all magic schools
+				temple.mod = mod
+				temple[EAMOD_DIVINATION] = mod
+				temple[EAMOD_ABJURATION] = mod
+				temple[EAMOD_EVOCATION] = mod
+				temple[EAMOD_TRANSMUTATION] = mod
+				temple[EAMOD_CONJURATION] = mod
+				temple[EAMOD_NECROMANCY] = mod
+				temple[EAMOD_ENCHANTMENT] = mod
+				temple[EAMOD_ILLUSION] = mod
+			end
+		end
+
+		--per turn effects
+		if bPerTurnCall then
+			if DoPerTurnUniqueWonder[wonderID] then
+				DoPerTurnUniqueWonder[wonderID](iPlayer, plot)
+			end
 		end
 	else
 		for city in player:Cities() do

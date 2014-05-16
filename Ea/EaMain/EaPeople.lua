@@ -15,6 +15,7 @@ local HIGHEST_PROMOTION_ID =			HIGHEST_PROMOTION_ID
 local MOD_MEMORY_HALFLIFE =				MOD_MEMORY_HALFLIFE
 
 local EACIV_LJOSALFAR =					GameInfoTypes.EACIV_LJOSALFAR
+local EAMOD_DEVOTION =					GameInfoTypes.EAMOD_DEVOTION
 local EAMOD_LEADERSHIP =				GameInfoTypes.EAMOD_LEADERSHIP
 
 local EA_WONDER_ARCANE_TOWER =			GameInfoTypes.EA_WONDER_ARCANE_TOWER
@@ -67,7 +68,6 @@ for modInfo in GameInfo.EaModifiers() do		--cache table values for speed
 	modTypes[id] = modType
 	modTexts[id] = modInfo.Description			--make text key
 	modsPromotionTable[modType] = modInfo.PromotionPrefix
-	--modsMultiplier[modType] = modInfo.ModMultiplier
 	modsProphetBonus[modType] = modInfo.ProphetBonus
 	modsClassTable[modType] = modInfo.Class
 	modsSubclassTable[modType] = modInfo.Subclass
@@ -125,38 +125,59 @@ local function SetGPModsTable(iPerson)	--used by EaImagePopup for showing GP mod
 	local class1 = eaPerson.class1
 	local class2 = eaPerson.class2
 	local subclass = eaPerson.subclass
-	local bApplyTowerMods = false
+
+	local bApplyMagicMods = false
+	local bApplyDevotionMod = false
 	local tower = gWonders[EA_WONDER_ARCANE_TOWER][iPerson]
+	local temple
 	if tower then
 		local player = Players[eaPerson.iPlayer]
 		local unit = player:GetUnitByID(eaPerson.iUnit)
 		if unit:GetPlot():GetPlotIndex() == tower.iPlot then
-			bApplyTowerMods = true
+			bApplyMagicMods = true
+		end
+	else
+		temple = eaPerson.templeID and gWonders[eaPerson.templeID]
+		if temple then
+			local player = Players[eaPerson.iPlayer]
+			local unit = player:GetUnitByID(eaPerson.iUnit)
+			if unit:GetPlot():GetPlotIndex() == temple.iPlot then
+				if 0 < temple[EAMOD_DEVOTION] then
+					bApplyDevotionMod = true
+				else
+					tower = temple
+					bApplyMagicMods = true
+				end
+			end
 		end
 	end
-	modsForUI.bApplyTowerMods = bApplyTowerMods
+	modsForUI.bApplyMagicMods = bApplyMagicMods
+	modsForUI.bApplyDevotionMod = bApplyDevotionMod
 
 	local highestMagicSchool, lowestMagicSchool = 0, 99999
 	for i = 1, numModTypes do
 		local modType = modTypes[i]
 		local value = TestGPModValid(modType, class1, class2, subclass) and GetGPMod(iPerson, modType, nil) or 0
-
-		if value > 0 and i > numModTypes - 8 then		--last 8 are always magic schools (and value always > 0 for all spellcasters)
-			if bApplyTowerMods then
-				value = value + tower[i]
-			end
-			if highestMagicSchool < value then
-				highestMagicSchool = value
-			end
-			if lowestMagicSchool > value then
-				lowestMagicSchool = value
+		if value > 0 then
+			if i > numModTypes - 8 then		--last 8 are always magic schools (and value always > 0 for all spellcasters)
+				if bApplyMagicMods then
+					value = value + tower[i]		--tower could really be temple from above
+				end
+				if highestMagicSchool < value then
+					highestMagicSchool = value
+				end
+				if lowestMagicSchool > value then
+					lowestMagicSchool = value
+				end
+			elseif bApplyDevotionMod and i == numModTypes - 8  then	--Devotion
+				value = value + temple[i]
 			end
 		end
 		modsForUI[i].value = value
-
 	end
+	--Note: this is so we don't have to display all 8 spell modifiers, since 6 or 7 of them are likley to be the same for most casters
 	if highestMagicSchool == 0 then
-		modsForUI[numModTypes + 1].value = 0	--"All Magic Schools"
+		modsForUI[numModTypes + 1].value = 0	--"All Magic Schools"	(value = 0 means that this item won't display)
 		modsForUI[numModTypes + 2].value = 0	--"Other Magic Schools"
 	elseif lowestMagicSchool == highestMagicSchool then
 		for i = numModTypes - 7, numModTypes do
@@ -1177,11 +1198,11 @@ function KillPerson(iPlayer, iPerson, unit, iKillerPlayer, deathType)
 		print("Person was leader; changing player leader to No Leader")
 		eaPlayer.leaderEaPersonIndex = -1
 		if eaPlayer.race == GameInfoTypes.EARACE_MAN then
-			player:ChangeLeaderType(GameInfoTypes.LEADER_NO_LEADER_MAN)
+			player:ChangeLeaderType(GameInfoTypes.LEADER_NO_LDR_MAN)
 		elseif eaPlayer.race == GameInfoTypes.EARACE_SIDHE then
-			player:ChangeLeaderType(GameInfoTypes.LEADER_NO_LEADER_SIDHE)
+			player:ChangeLeaderType(GameInfoTypes.LEADER_NO_LDR_SIDHE)
 		elseif eaPlayer.race == GameInfoTypes.EARACE_HELDEOFOL then
-			player:ChangeLeaderType(GameInfoTypes.LEADER_NO_LEADER_HELDEOFOL)
+			player:ChangeLeaderType(GameInfoTypes.LEADER_NO_LDR_HELDEOFOL)
 		end
 		PreGame.SetLeaderName(iPlayer, "TXT_KEY_EA_NO_LEADER")
 

@@ -25,6 +25,7 @@ end
 local g_PrimaryIM    = InstanceManager:new( "UnitAction",  "UnitActionButton", Controls.PrimaryStack );
 local g_SecondaryIM  = InstanceManager:new( "UnitAction",  "UnitActionButton", Controls.SecondaryStack );
 local g_BuildIM      = InstanceManager:new( "UnitAction",  "UnitActionButton", Controls.WorkerActionPanel );
+local g_SpellIM      = InstanceManager:new( "Spell",  "SpellButton", Controls.SpellPanel );	--Paz add
 local g_PromotionIM  = InstanceManager:new( "UnitAction",  "UnitActionButton", Controls.WorkerActionPanel );
 local g_EarnedPromotionIM   = InstanceManager:new( "EarnedPromotionInstance", "UnitPromotionImage", Controls.EarnedPromotionStack );
 
@@ -34,7 +35,8 @@ local g_lastUnitID = -1;        -- Used to determine if a different unit has bee
 local g_ActionButtons = {};
 local g_PromotionsOpen = false;
 local g_SecondaryOpen = false;
-local g_WorkerActionPanelOpen = false;
+local g_bWorkerActionPanelOpen = false;	--Paz added "b"
+local g_bSpellPanelOpen = false;		--Paz add
 
 local MaxDamage = GameDefines.MAX_HIT_POINTS;
 
@@ -168,9 +170,9 @@ function UpdateUnitActions( unit )
 		eaPerson = gT.gPeople[iPerson]
 		inProgressEaActionID = eaPerson.eaActionID
 
-		Controls.WorkerText:SetText( "Builds / Great Works" )
+		Controls.WorkerText:SetText(Locale.ConvertTextKey("TXT_KEY_EA_UNIT_PANEL_BUILDS_GREAT_WORKS"))
 	else
-		Controls.WorkerText:SetText( Locale.ConvertTextKey( "TXT_KEY_WORKERACTION_TEXT" ))
+		Controls.WorkerText:SetText(Locale.ConvertTextKey("TXT_KEY_WORKERACTION_TEXT"))
 	end
 
 	--print("UpdateUnitActions", iPerson, inProgressEaActionID)
@@ -179,6 +181,7 @@ function UpdateUnitActions( unit )
     g_PrimaryIM:ResetInstances();
     g_SecondaryIM:ResetInstances();
     g_BuildIM:ResetInstances();
+    g_SpellIM:ResetInstances();		--Paz add
     g_PromotionIM:ResetInstances();
     Controls.BuildCityButton:SetHide( true );
     Controls.WorkerActionPanel:SetHide(true);
@@ -207,6 +210,11 @@ function UpdateUnitActions( unit )
 	local numPromotions = 0;
 	local numPrimaryActions = 0;
 	local numSecondaryActions = 0;
+	--Paz add
+	local numSpells = 0;		--Paz add
+	local bRitual = false
+	local bProphecy = false
+	--end Paz add
 	
 	local numberOfButtonsPerRow = 4;
 	local buttonSize = 60;
@@ -254,17 +262,28 @@ function UpdateUnitActions( unit )
 				local bShow = MapModData.bShow
 				local bDisabled = not MapModData.bAllow
 				local uiType = eaAction.UIType
-				--bShow = bShow and bUnitHasMovesLeft
 				if bShow then
-					local instance       
+					local instance, spellInstance      
 					local uiType = eaAction.UIType
 					if uiType == "Build" then
 						if not hasPromotion then
-							--bBuild = true;
 							instance = g_BuildIM:GetInstance()
 							instance.UnitActionButton:SetAnchor( "L,B" )
 							instance.UnitActionButton:SetOffsetVal( (numBuildActions % numberOfButtonsPerRow) * buttonSize + buttonPadding + buttonOffsetX, math.floor(numBuildActions / numberOfButtonsPerRow) * buttonSize + buttonPadding + buttonOffsetY )	
 							numBuildActions = numBuildActions + 1
+						end
+					elseif uiType == "Spell" then
+						if not hasPromotion then
+							spellInstance = g_SpellIM:GetInstance()
+							spellInstance.SpellButton:SetAnchor( "L,B" )
+							spellInstance.SpellButton:SetOffsetVal( (numSpells % numberOfButtonsPerRow) * buttonSize + buttonPadding + buttonOffsetX, math.floor(numSpells / numberOfButtonsPerRow) * buttonSize + buttonPadding + buttonOffsetY )	
+							numSpells = numSpells + 1
+							if not bRitual and string.find(eaAction.Type, "^EA_ACTION_RITUAL_") then
+								bRitual = true
+							end
+							if not bProphecy and string.find(eaAction.Type, "^EA_ACTION_PROPHECY_") then
+								bProphecy = true
+							end
 						end
 					elseif uiType == "Action" then
 						instance = g_PrimaryIM:GetInstance()
@@ -289,6 +308,22 @@ function UpdateUnitActions( unit )
 						instance.UnitActionButton:RegisterCallback( Mouse.eLClick, OnEaActionClicked )
 						instance.UnitActionButton:SetVoid1( eaAction.ID )
 						instance.UnitActionButton:SetToolTipCallback( EaTipHandler )
+					elseif spellInstance then
+						if bDisabled then
+							spellInstance.SpellButton:SetAlpha( 0.4 )           
+							spellInstance.SpellButton:SetDisabled( true )                
+						else
+							spellInstance.SpellButton:SetAlpha( 1.0 )
+							spellInstance.SpellButton:SetDisabled( false )                
+						end
+
+						if spellInstance.SpellIcon ~= nil then
+							IconHookup(eaAction.IconIndex, actionIconSize, eaAction.IconAtlas, spellInstance.SpellIcon)
+						end
+
+						spellInstance.SpellButton:RegisterCallback( Mouse.eLClick, OnEaActionClicked )
+						spellInstance.SpellButton:SetVoid1( eaAction.ID )
+						spellInstance.SpellButton:SetToolTipCallback( EaTipHandler )					
 					end
 				end
 				eaActionID = eaActionID + 1
@@ -497,6 +532,9 @@ function UpdateUnitActions( unit )
 
     --Controls.BuildStack:CalculateSize();
     --Controls.BuildStack:ReprocessAnchoring();
+	--Paz add
+	local buildActionsY = 45
+	--end Paz add
     if numBuildActions > 0 or hasPromotion then
 		Controls.WorkerActionPanel:SetHide( false );
 		g_bWorkerActionPanelOpen = true;
@@ -525,11 +563,34 @@ function UpdateUnitActions( unit )
 			Controls.PromotionAnimation:SetHide(true);
 			Controls.EditButton:SetHide(true);
 		end
-		Controls.WorkerActionPanel:SetSizeVal( stackSize.x, math.floor((numBuildActions-1) / numberOfButtonsPerRow) * buttonSize + buttonPadding + buttonOffsetY + rbOffset + workerPanelSizeOffsetY );
+		--Paz modified below: Controls.WorkerActionPanel:SetSizeVal( stackSize.x, math.floor((numBuildActions-1) / numberOfButtonsPerRow) * buttonSize + buttonPadding + buttonOffsetY + rbOffset + workerPanelSizeOffsetY );
+		buildActionsY = math.floor((numBuildActions-1) / numberOfButtonsPerRow) * buttonSize + buttonPadding + buttonOffsetY + rbOffset + workerPanelSizeOffsetY
+		Controls.WorkerActionPanel:SetSizeVal(stackSize.x, buildActionsY)
+		--end Paz modified
     else
 		Controls.WorkerActionPanel:SetHide( true );
 		g_bWorkerActionPanelOpen = false;
     end
+
+	--Paz add
+    if numSpells > 0 then
+		Controls.SpellPanel:SetHide( false );
+		g_bSpellPanelOpen = true;
+		Controls.SpellPanel:SetOffsetVal(53, 80 + buildActionsY)
+		stackSize = Controls.SpellPanel:GetSize();
+		Controls.SpellPanel:SetSizeVal( stackSize.x, math.floor((numSpells-1) / numberOfButtonsPerRow) * buttonSize + buttonPadding + buttonOffsetY + workerPanelSizeOffsetY );
+		if bProphecy then
+			Controls.SpellsRitualsPropheciesText:LocalizeAndSetText("TXT_KEY_EA_UNIT_PANEL_SPELLS_PROPHECIES")
+		elseif bRitual then
+			Controls.SpellsRitualsPropheciesText:LocalizeAndSetText("TXT_KEY_EA_UNIT_PANEL_SPELLS_RITUALS")
+		else
+			Controls.SpellsRitualsPropheciesText:LocalizeAndSetText("TXT_KEY_EA_UNIT_PANEL_SPELLS")
+		end
+	else
+		Controls.SpellPanel:SetHide( true );
+		g_bSpellPanelOpen = false;
+    end
+	--end Paz add
     
     local buildType = unit:GetBuildType();
     if (buildType ~= -1) then -- this is a worker who is actively building something
@@ -758,6 +819,7 @@ function UpdateCityPortrait(city)
 	Controls.WorkerProgressIconFrame:SetHide( true );
 	Controls.WorkerProgressFrame:SetHide( true );
 	g_bWorkerActionPanelOpen = false;
+	g_bSpellPanelOpen = false;	--Paz add
 	g_PromotionsOpen = false;
 	g_SecondaryOpen = false;
 
@@ -1852,6 +1914,11 @@ function OnEnemyPanelHide( bIsEnemyPanelHide )
     if( g_bWorkerActionPanelOpen ) then
         Controls.WorkerActionPanel:SetHide( not bIsEnemyPanelHide );
     end
+	--Paz add
+    if( g_bSpellPanelOpen ) then
+        Controls.SpellPanel:SetHide( not bIsEnemyPanelHide );
+    end
+	--end Paz add
 end
 LuaEvents.EnemyPanelHide.Add( OnEnemyPanelHide );
 

@@ -38,8 +38,8 @@ PLAYERCOLOR_SHOSHONE
 PLAYERCOLOR_VENICE
 PLAYERCOLOR_ZULU
 
-
-
+, , , , , ,  or 
+Divination, Abjuration, Evocation, Transmutation, Conjuration, Necromancy, Enchantment or Illusion
 
 VictComp, WondComp, MinorComp, Boldness, DiploBal, WarHate, WorkAgnst, WorkWith, Denounce, DoFWill, Loyalty, Neediness, Forgive, Chatty, Meanness, MjWar, MjHstl, MjDcpt, MjGrdd, MjAfrd, MjFdly, MjNtrl, MnIgnr, MnFdly, MnProt, MnConq, MnBlly, FOff, FDef, FCtDf, FMlTn, FRecon, FRngd, FMbl, FNav, FNvRec, FNvGrw, FNvImp, FAir, FExp, FGrw, FImp, FInf, FPrd, FGld, FSci, FClt, FHap, FGP, FWnd, FRlg, FDip, FSShp, FWtCn, FNuk, FUNuk, FEsp, FAntA, FAirC, FArch, FLTr, FSTr, FTrOri, FTrDes, FALift
 ,	5,		  5,		5,		   5,		 5,		   5,		5,		   5,		 5,		   5,		5,		 5,		    5,		 5,		 5,		   5,	  5,	  5,	  5,	  5,	  5,	  5,	  5,	  5,	  5,	  5,	  5,	  5,	5,	  5,	 5,		5,		5,	   5,	 5,	   5,	   5,	   5,	   5,	 5,	   5,	 5,	   5,	 5,	   5,	 5,	   5,	 5,	   5,	5,	  5,	5,	  5,	 5,		5,	  5,	 5,	   5,	  5,	 5,		5,	  5,	5,		5,		5

@@ -1438,8 +1438,6 @@ CREATE TABLE EaCivPlans_BuildModules ('BuildModule' TEXT NOT NULL,
 --Note: if an item is entered in CivPlans instead of a modual, it is interpreted as Instruction = 'Capital'
 INSERT INTO EaCivPlans_BuildModules (BuildModule, Instruction, Item) VALUES
 ('PanStart',		'Capital',			'BUILDING_MONUMENT'		),
---('PanStart',		'CivBlock',			'UNIT_WORKERS*'			),
---('PanStart',		'CivBlock',			'UNIT_SLAVES*'			),
 ('Worker',			'Capital',			'UNIT_WORKERS*'			),
 ('Workboat',		'Capital',			'UNIT_WORKBOAT'			);
 

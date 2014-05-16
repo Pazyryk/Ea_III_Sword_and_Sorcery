@@ -32,6 +32,7 @@ local TERRAIN_GRASS =						GameInfoTypes.TERRAIN_GRASS
 local TERRAIN_PLAINS =						GameInfoTypes.TERRAIN_PLAINS
 local TERRAIN_TUNDRA =						GameInfoTypes.TERRAIN_TUNDRA
 local TERRAIN_SNOW =						GameInfoTypes.TERRAIN_SNOW
+local TERRAIN_DESERT =						GameInfoTypes.TERRAIN_DESERT
 
 local FEATURE_ICE =							GameInfoTypes.FEATURE_ICE
 local FEATURE_FOREST = 						GameInfoTypes.FEATURE_FOREST
@@ -39,10 +40,11 @@ local FEATURE_JUNGLE = 						GameInfoTypes.FEATURE_JUNGLE
 local FEATURE_MARSH =	 					GameInfoTypes.FEATURE_MARSH
 
 local UNIT_WOLVES =							GameInfoTypes.UNIT_WOLVES
+local UNIT_GRIFFONS =						GameInfoTypes.UNIT_GRIFFONS
+local UNIT_KRAKEN =							GameInfoTypes.UNIT_KRAKEN
 
 local POLICY_FERAL_BOND =					GameInfoTypes.POLICY_FERAL_BOND
 local POLICY_ANIMAL_MASTERS =				GameInfoTypes.POLICY_ANIMAL_MASTERS
-
 
 local Players =								Players
 local fullCivs =							MapModData.fullCivs
@@ -77,9 +79,21 @@ end
 -- Local Functions
 --------------------------------------------------------------
 
-local function GetAnimalForPlot(focalPlot)		-- Preferences in EaAnimal_Prefs table (EaAnimals.sql)
+local function GetAnimalForPlot(focalPlot)		-- Preferences set in EaAnimals.sql
 
+	--quick answer if focalPlot limiting
+	local focalPlotTypeID = focalPlot:GetPlotType()
+	if focalPlotTypeID == PLOT_MOUNTAIN then
+		return UNIT_GRIFFONS
+	elseif focalPlotTypeID == PLOT_OCEAN then
+		return UNIT_KRAKEN
+	end
+
+	--local nOcean = 0
+	--local nCoast = 0
+	local nMountain = 0
 	--exclusive grouping 1
+	local nDesert = 0
 	local nColdTerrain = 0
 	local nOpenGrassPlains = 0	--flat, no feature
 	--exclusive grouping 2
@@ -95,26 +109,33 @@ local function GetAnimalForPlot(focalPlot)		-- Preferences in EaAnimal_Prefs tab
 		local terrainID = plot:GetTerrainType()
 		local featureID = plot:GetFeatureType()
 		if plotTypeID == PLOT_MOUNTAIN then
-			--
+			nMountain = nMountain + 1
 		else
-			if terrainID == TERRAIN_TUNDRA or terrainID == TERRAIN_SNOW then
+			if terrainID == TERRAIN_DESERT then
+				nDesert = nDesert + 1
+			elseif terrainID == TERRAIN_TUNDRA or terrainID == TERRAIN_SNOW then
 				nColdTerrain = nColdTerrain + 1
 			elseif plotTypeID == PLOT_LAND and featureID == -1 and (terrainID == TERRAIN_GRASS or terrainID == TERRAIN_PLAINS) then
 				nOpenGrassPlains = nOpenGrassPlains + 1
 			end
+			if featureID == FEATURE_FOREST then
+				nForest = nForest + 1
+			elseif featureID == FEATURE_JUNGLE then
+				nJungle = nJungle + 1
+			end		
 		end
-		if featureID == FEATURE_FOREST then
-			nForest = nForest + 1
-		elseif featureID == FEATURE_JUNGLE then
-			nJungle = nJungle + 1
-		end
+
 	end
 
-	print(" -nColdTerrain, nOpenGrassPlains, nForest, nJungle = ", nColdTerrain, nOpenGrassPlains, nForest, nJungle)
+	--print(" -nColdTerrain, nOpenGrassPlains, nForest, nJungle = ", nColdTerrain, nOpenGrassPlains, nForest, nJungle)
 
 	for unitTypeID, prefs in pairs(animalWeightByUnitByPref) do
 		for pref, weight in pairs(prefs) do
-			if pref == "ColdTerrain" then
+			if pref == "Mountain" then
+				g_prefScoreByAnimal[unitTypeID] = g_prefScoreByAnimal[unitTypeID] + (nMountain * weight)
+			elseif pref == "Desert" then
+				g_prefScoreByAnimal[unitTypeID] = g_prefScoreByAnimal[unitTypeID] + (nDesert * weight)
+			elseif pref == "ColdTerrain" then
 				g_prefScoreByAnimal[unitTypeID] = g_prefScoreByAnimal[unitTypeID] + (nColdTerrain * weight)
 			elseif pref == "OpenGrassPlains" then
 				g_prefScoreByAnimal[unitTypeID] = g_prefScoreByAnimal[unitTypeID] + (nOpenGrassPlains * weight)

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<StyleSheet>
+
+  <MenuTitleCaption Anchor="C,T" Offset="0,20" Font="EaTwCnMT20" ColorSet="MenuTitleColors" FontStyle="SoftShadow" />
+
+  <!-- The bits that go on the left and right outer edge of menu boxes -->
+  <MenuLeftSideTreatment Anchor="L,C" AnchorSide="O.I">
+    <Image Anchor="R,C" Offset="-17,0" Texture="Dec32x64Left.dds" Size="32,64" />
+  </MenuLeftSideTreatment>
+
+  <MenuRightSideTreatment Anchor="R,C" AnchorSide="O.I">
+    <Image Anchor="L,C" Offset="-16,0" Texture="Dec32x64Right.dds" Size="32,64" />
+  </MenuRightSideTreatment>
+
+</StyleSheet>

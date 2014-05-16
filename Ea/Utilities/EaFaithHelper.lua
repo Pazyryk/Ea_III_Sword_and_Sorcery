@@ -35,10 +35,13 @@ function GetTotalFaithPerTurnForUI(iPlayer)
 	local faithFromCities = player:GetFaithPerTurnFromCities()
 	local faithFromGods = player:GetFaithPerTurnFromMinorCivs()	--game engine only sees this from Gods
 	local faithFromReligion = player:GetFaithPerTurnFromReligion()				--for Azz and Anra only since these use base follower counting mechanism
+	local faithFromLeader = player:GetLeaderYieldBoost(GameInfoTypes.YIELD_FAITH) * (faithFromGods + faithFromReligion) / 100
 	local manaForCultOfLeavesFounder = eaPlayer.manaForCultOfLeavesFounder or 0
-	local manaForCultOfEponaFounder = eaPlayer.manaForCultOfEponaFounder or 0
-	local manaForCultOfPureWatersFounder = eaPlayer.manaForCultOfPureWatersFounder or 0
+	local manaForCultOfAbzuFounder = eaPlayer.manaForCultOfAbzuFounder or 0
 	local manaForCultOfAegirFounder = eaPlayer.manaForCultOfAegirFounder or 0
+	local manaForCultOfPloutonFounder = eaPlayer.manaForCultOfPloutonFounder or 0
+	local manaForCultOfCahraFounder = eaPlayer.manaForCultOfCahraFounder or 0
+	local manaForCultOfEponaFounder = eaPlayer.manaForCultOfEponaFounder or 0
 	local manaForCultOfBakkheiaFounder = eaPlayer.manaForCultOfBakkheiaFounder or 0
 	local manaFromWildlands = eaPlayer.cultureManaFromWildlands or 0
 	local faithFromCityStates = MapModData.faithFromCityStates
@@ -46,8 +49,7 @@ function GetTotalFaithPerTurnForUI(iPlayer)
 	local faithFromToAhrimanTribute = MapModData.faithFromToAhrimanTribute
 	local faithFromGPs = MapModData.faithFromGPs
 	local faithFromFinishedPolicyBranches = GetFaithFromPolicyFinisher(player)
-
-	local faithRate = faithFromCities + faithFromGods + faithFromReligion + manaForCultOfLeavesFounder + manaForCultOfEponaFounder + manaForCultOfPureWatersFounder + manaForCultOfAegirFounder + manaForCultOfBakkheiaFounder + manaFromWildlands + faithFromCityStates + faithFromAzzTribute + faithFromGPs + faithFromFinishedPolicyBranches
+	local faithRate = faithFromCities + faithFromGods + faithFromReligion + faithFromLeader + manaForCultOfLeavesFounder + manaForCultOfAbzuFounder + manaForCultOfAegirFounder + manaForCultOfPloutonFounder + manaForCultOfCahraFounder + manaForCultOfEponaFounder + manaForCultOfBakkheiaFounder + manaFromWildlands + faithFromCityStates + faithFromAzzTribute + faithFromGPs + faithFromFinishedPolicyBranches
 
 	return faithRate
 

@@ -51,8 +51,9 @@ local BUILDING_SMOKEHOUSE =					GameInfoTypes.BUILDING_SMOKEHOUSE
 local BUILDING_WINERY =						GameInfoTypes.BUILDING_WINERY
 local BUILDING_BREWERY =					GameInfoTypes.BUILDING_BREWERY
 local BUILDING_DISTILLERY =					GameInfoTypes.BUILDING_DISTILLERY
-
-
+local BUILDING_RIVER_DOCK =					GameInfoTypes.BUILDING_RIVER_DOCK
+local BUILDING_CULT_LEAVES_1F1C =			GameInfoTypes.BUILDING_CULT_LEAVES_1F1C
+local BUILDING_CULT_CAHRA_1F =				GameInfoTypes.BUILDING_CULT_CAHRA_1F
 
 local PROCESS_WORLD_WEAVE =					GameInfoTypes.PROCESS_WORLD_WEAVE
 local PROCESS_WORLD_SALVATION =				GameInfoTypes.PROCESS_WORLD_SALVATION
@@ -68,6 +69,9 @@ local PROCESS_TRAINING_EXERCISES =			GameInfoTypes.PROCESS_TRAINING_EXERCISES
 local PROCESS_THE_ARTS =					GameInfoTypes.PROCESS_THE_ARTS
 local PROCESS_PATRONAGE =					GameInfoTypes.PROCESS_PATRONAGE
 
+local FEATURE_FOREST = 						GameInfoTypes.FEATURE_FOREST
+local FEATURE_JUNGLE = 						GameInfoTypes.FEATURE_JUNGLE
+local FEATURE_MARSH =	 					GameInfoTypes.FEATURE_MARSH
 local RESOURCE_DEER =						GameInfoTypes.RESOURCE_DEER
 local RESOURCE_BOARS =						GameInfoTypes.RESOURCE_BOARS
 local RESOURCE_FUR =						GameInfoTypes.RESOURCE_FUR
@@ -76,9 +80,13 @@ local RESOURCE_FISH =						GameInfoTypes.RESOURCE_FISH
 local RESOURCE_CRAB =						GameInfoTypes.RESOURCE_CRAB
 local RESOURCE_PEARLS =						GameInfoTypes.RESOURCE_PEARLS
 local RESOURCE_WHALE =						GameInfoTypes.RESOURCE_WHALE
+local RESOURCE_HORSE =						GameInfoTypes.RESOURCE_HORSE
+local RESOURCE_WINE =						GameInfoTypes.RESOURCE_WINE
 local IMPROVEMENT_CAMP =					GameInfoTypes.IMPROVEMENT_CAMP
 local IMPROVEMENT_FISHING_BOATS =			GameInfoTypes.IMPROVEMENT_FISHING_BOATS
 local IMPROVEMENT_WHALING_BOATS =			GameInfoTypes.IMPROVEMENT_WHALING_BOATS
+local TERRAIN_GRASS =						GameInfoTypes.TERRAIN_GRASS
+local TERRAIN_PLAINS =						GameInfoTypes.TERRAIN_PLAINS
 
 local UNIT_FISHING_BOATS =					GameInfoTypes.UNIT_FISHING_BOATS
 local UNIT_WHALING_BOATS =					GameInfoTypes.UNIT_WHALING_BOATS
@@ -94,8 +102,12 @@ local UNIT_SLAVES_ORC =						GameInfoTypes.UNIT_SLAVES_ORC
 
 local RELIGION_ANRA =						GameInfoTypes.RELIGION_ANRA
 local RELIGION_THE_WEAVE_OF_EA =			GameInfoTypes.RELIGION_THE_WEAVE_OF_EA
-local RELIGION_CULT_OF_PURE_WATERS =		GameInfoTypes.RELIGION_CULT_OF_PURE_WATERS
+local RELIGION_CULT_OF_LEAVES =				GameInfoTypes.RELIGION_CULT_OF_LEAVES
+local RELIGION_CULT_OF_ABZU =				GameInfoTypes.RELIGION_CULT_OF_ABZU
 local RELIGION_CULT_OF_AEGIR =				GameInfoTypes.RELIGION_CULT_OF_AEGIR
+local RELIGION_CULT_OF_PLOUTON =			GameInfoTypes.RELIGION_CULT_OF_PLOUTON
+local RELIGION_CULT_OF_CAHRA =				GameInfoTypes.RELIGION_CULT_OF_CAHRA
+local RELIGION_CULT_OF_EPONA =				GameInfoTypes.RELIGION_CULT_OF_EPONA
 local RELIGION_CULT_OF_BAKKHEIA =			GameInfoTypes.RELIGION_CULT_OF_BAKKHEIA
 
 
@@ -107,6 +119,8 @@ local TECH_SAILING =						GameInfoTypes.TECH_SAILING
 
 local YIELD_PRODUCTION =					GameInfoTypes.YIELD_PRODUCTION
 
+local PLOT_LAND =							PlotTypes.PLOT_LAND
+local PLOT_OCEAN =							PlotTypes.PLOT_OCEAN
 local PLOT_HILLS =							PlotTypes.PLOT_HILLS
 local PLOT_MOUNTAIN =						PlotTypes.PLOT_MOUNTAIN
 local PROMOTION_SLAVE =						GameInfoTypes.PROMOTION_SLAVE
@@ -148,6 +162,7 @@ local HandleError =			HandleError
 local HandleError21 =		HandleError21
 local HandleError31 =		HandleError31
 local HandleError41 =		HandleError41
+local HandleError61 =		HandleError61
 local Distance =			Map.PlotDistance
 local GetPlotFromXY =		Map.GetPlot
 local GetPlotByIndex =		Map.GetPlotByIndex
@@ -163,6 +178,7 @@ local bInitialized = false
 local g_gameTurn = Game.GetGameTurn()
 local g_handicapAIGrowthBonus = {}
 local g_cacheAIWorkerAlternative = {}
+local g_riverDockByPlotIndex = {}
 local integers = {}
 
 local g_iActivePlayer = Game.GetActivePlayer()
@@ -170,6 +186,7 @@ local g_iActivePlayer = Game.GetActivePlayer()
 --------------------------------------------------------------
 -- Cached Tables
 --------------------------------------------------------------
+
 local buildingOccupationMod = {}
 local prohibitSellBuildings = {}
 local buildingHealthMod = {}
@@ -194,8 +211,15 @@ for religionInfo in GameInfo.Religions() do
 end
 
 --------------------------------------------------------------
+-- Local Functions
+--------------------------------------------------------------
+
+
+
+--------------------------------------------------------------
 -- Init
 --------------------------------------------------------------
+
 function EaCityInit(bNewGame)
 	for iPlayer, eaPlayer in pairs(fullCivs) do
 		local player = Players[iPlayer]
@@ -221,6 +245,14 @@ function EaCityInit(bNewGame)
 			local player = Players[iPlayer]
 			for city in player:Cities() do
 				AddCityToResDistanceMatrixes(iPlayer, city)
+			end
+		end
+		for iPlayer, eaPlayer in pairs(fullCivs) do
+			local player = Players[iPlayer]
+			for city in player:Cities() do
+				if city:GetNumBuilding(BUILDING_RIVER_DOCK) > 0 then
+					g_riverDockByPlotIndex[city:Plot():GetPlotIndex()] = true
+				end
 			end
 		end
 	end
@@ -328,7 +360,7 @@ function AddCityToResDistanceMatrixes(iPlayer, city)
 			gg_cityCampResDistMatrix[iPlayer][iCity][iPlot] = dist
 		end
 	end
-	if city:IsCoastal(5) then
+	if city:IsCoastal(10) then
 		--NEED check for over ocean
 		for i = 1, #gg_fishingBoatResources do
 			local fishingResource = gg_fishingBoatResources[i]
@@ -381,6 +413,7 @@ function AddCityToResDistanceMatrixes(iPlayer, city)
 		end
 	end
 end
+
 --------------------------------------------------------------
 -- Interface
 --------------------------------------------------------------
@@ -544,6 +577,135 @@ function TestNaturalHarborForFreeHarbor(city)	--assumes proper tech
 	end
 end
 
+function TestSetEligibleCityCults(city, eaCity, feedbackCultID)
+	local totalPlots = city:GetNumCityPlots()
+	local totalLand = 0
+	local totalUnimprovedForestJungle = 0
+	local totalFreshWater = 0
+	local totalSea = 0
+	local totalHillsMountains = 0
+	local totalDesert = 0
+	local totalGoodFlatland, totalHorses = 0, 0
+	local totalWine = 0
+
+	for i = 0, totalPlots - 1 do
+		local plot = city:GetCityIndexPlot(i)
+		if plot then
+			local plotyTypeID = plot:GetPlotType()
+			if plotyTypeID == PLOT_OCEAN then
+				totalSea = totalSea + 1
+			else
+				totalLand = totalLand + 1
+				if plotyTypeID == PLOT_MOUNTAIN then
+					totalHillsMountains = totalHillsMountains + 1
+				else
+					if plot:IsLake() then
+						totalPureWater = totalPureWater + 1
+					else
+						if plotyTypeID == PLOT_HILLS then
+							totalHillsMountains = totalHillsMountains + 1
+						end
+						local featureID = plot:GetFeatureType()
+						if featureID == FEATURE_FOREST or featureID == FEATURE_JUNGLE then
+							if plot:GetImprovementType() == -1 then
+								totalUnimprovedForestJungle = totalUnimprovedForestJungle + 1
+							end
+						end
+						if plot:IsFreshWater() then
+							totalFreshWater = totalFreshWater + 1
+						end
+						local resourceID = plot:GetResourceType(-1)
+						if resourceID == RESOURCE_HORSE then
+							totalHorses = totalHorses + 1
+						elseif resourceID == RESOURCE_WINE then
+							totalWine = totalWine + 1
+						end
+						local terrainID = plot:GetTerrainType()
+						if terrainID == TERRAIN_DESERT then
+							totalDesert = totalDesert + 1
+						elseif terrainID == TERRAIN_GRASS or terrainID == TERRAIN_PLAINS then
+							if plotTypeID == PLOT_LAND and featureID == -1 then
+								totalGoodFlatland = totalGoodFlatland + 1
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+	
+	local bSeaCity = totalSea / totalPlots >= 0.6
+	if bSeaCity then
+		if city:IsCoastal(10) then
+			eaCity.eligibleCults[RELIGION_CULT_OF_AEGIR] = true
+		end
+	else
+		if totalUnimprovedForestJungle / totalLand >= 0.6 then
+			eaCity.eligibleCults[RELIGION_CULT_OF_LEAVES] = true
+		end
+		if totalFreshWater / totalLand >= 0.35 then
+			eaCity.eligibleCults[RELIGION_CULT_OF_ABZU] = true
+		end
+		if totalHillsMountains / totalLand >= 0.4 then
+			eaCity.eligibleCults[RELIGION_CULT_OF_PLOUTON] = true
+		end
+		if totalDesert / totalLand >= 0.5 then
+			eaCity.eligibleCults[RELIGION_CULT_OF_CAHRA] = true
+		end
+	end
+	if totalHorses > 2 then
+		eaCity.eligibleCults[RELIGION_CULT_OF_EPONA] = true
+	elseif totalHorses > 1 then
+		if totalGoodFlatland / totalLand >= 0.5 then
+			eaCity.eligibleCults[RELIGION_CULT_OF_EPONA] = true
+		end
+	end
+	local boozeBuildings = 0
+	if totalWine > 1 then
+		eaCity.eligibleCults[RELIGION_CULT_OF_BAKKHEIA] = true
+	else
+		boozeBuildings = city:GetNumBuilding(BUILDING_WINERY) + city:GetNumBuilding(BUILDING_BREWERY) + city:GetNumBuilding(BUILDING_DISTILLERY)
+		if boozeBuildings > 1 then
+			eaCity.eligibleCults[RELIGION_CULT_OF_BAKKHEIA] = true
+		end
+	end
+
+	if feedbackCultID then	--for human UI test, only shows for disallowed cults after generic reasons exhausted (not city, holy city)
+		if feedbackCultID == RELIGION_CULT_OF_EPONA then
+			return "Must have 3 Horses plots, or 2 with 50% qualified flatland (grass or plains without feature); city has " .. totalHorses .. " Horses plots and " .. Floor(100 * totalGoodFlatland / totalLand) .. "% qualified flatland"
+		elseif  feedbackCultID == RELIGION_CULT_OF_BAKKHEIA then
+			return "Must have 2 Wine or 2 spirits buildings (Winery, Brewery or Distillery); city has " .. totalWine .. " Wine and " .. boozeBuildings .. "spirits buildings"
+		end
+
+		if bSeaCity then
+			if feedbackCultID == RELIGION_CULT_OF_LEAVES then
+				return "This city is dominated by the sea (60% surrounding plots)"
+			elseif feedbackCultID == RELIGION_CULT_OF_ABZU then
+				return "This city is dominated by the sea (60% surrounding plots)"
+			elseif feedbackCultID == RELIGION_CULT_OF_PLOUTON then
+				return "This city is dominated by the sea (60% surrounding plots)"
+			elseif feedbackCultID == RELIGION_CULT_OF_CAHRA then
+				return "This city is dominated by the sea (60% surrounding plots)"
+			elseif feedbackCultID == RELIGION_CULT_OF_AEGIR then
+				return "Must be coastal"
+			end
+		else
+			if feedbackCultID == RELIGION_CULT_OF_LEAVES then
+				return "Must have 60% surrounding unimproved forests or jungles; city has " .. Floor(100 * totalUnimprovedForestJungle / totalPlots) .. "%"
+			elseif feedbackCultID == RELIGION_CULT_OF_ABZU then
+				return "Must have 35% surrounding fresh water plots; city has " .. Floor(100 * totalFreshWater / totalPlots) .. "%"
+			elseif feedbackCultID == RELIGION_CULT_OF_PLOUTON then
+				return "Must have 40% surrounding hills or mountains; city has " .. Floor(100 * totalFreshWater / totalPlots) .. "%"
+			elseif feedbackCultID == RELIGION_CULT_OF_CAHRA then
+				return "Must have 50% surrounding desert; city has " .. Floor(100 * totalDesert / totalPlots) .. "%"
+			elseif feedbackCultID == RELIGION_CULT_OF_AEGIR then
+				return "Must have 60% surrounding sea; city has " .. Floor(100 * totalSea / totalPlots) .. "%"
+			end
+		end
+		return "REPORT AS BUG"
+	end
+end
+local TestSetEligibleCityCults = TestSetEligibleCityCults
 
 function CityPerCivTurn(iPlayer)		--Full civ only
 	local Floor = math.floor
@@ -627,6 +789,9 @@ function CityPerCivTurn(iPlayer)		--Full civ only
 				--gCities update
 				eaCity.size = size	--is this used?
 
+				--Cult eligibility (used in TestTarget for cult founding/spreading; calculate once per city here)
+				TestSetEligibleCityCults(city, eaCity, nil)
+
 				--Religion/Cult effects
 				if bAnraFounded then
 					local consumedMana = city:GetNumFollowers(RELIGION_ANRA) * MANA_CONSUMED_PER_ANRA_FOLLOWER_PER_TURN
@@ -636,7 +801,6 @@ function CityPerCivTurn(iPlayer)		--Full civ only
 						city:Plot():AddFloatUpMessage(Locale.Lookup("TXT_KEY_EA_CONSUMED_MANA", consumedMana))	
 					end
 				end
-
 				for religionID, buildingID in pairs(religionFollowerBuildings) do
 					if followerReligion == religionID then
 						city:SetNumRealBuilding(buildingID, 1)
@@ -644,19 +808,23 @@ function CityPerCivTurn(iPlayer)		--Full civ only
 						city:SetNumRealBuilding(buildingID, 0)
 					end
 				end
-				if followerReligion == RELIGION_CULT_OF_PURE_WATERS then
-					if plot:IsRiverSide() then
-						gWorld.riverSideCultOfPureWatersFollowerCities = gWorld.riverSideCultOfPureWatersFollowerCities + 1
+
+				--desertCahraFollower
+				city:SetNumRealBuilding(BUILDING_CULT_LEAVES_1F1C, (followerReligion == RELIGION_CULT_OF_LEAVES) and Floor(eaCity.unimprovedForestJungle / 3) or 0)
+				city:SetNumRealBuilding(BUILDING_CULT_CAHRA_1F, (followerReligion == RELIGION_CULT_OF_CAHRA) and Floor(eaCity.desertCahraFollower / 3) or 0)
+
+				if followerReligion == RELIGION_CULT_OF_ABZU then
+					if plot:IsFreshWater() then
+						gg_counts.freshWaterAbzuFollowerCities = gg_counts.freshWaterAbzuFollowerCities + 1
 					end
 				elseif followerReligion == RELIGION_CULT_OF_AEGIR then
 					if city:IsCoastal(10) then
-						gWorld.coastalCultOfAegirFollowerCities = gWorld.coastalCultOfAegirFollowerCities + 1
+						gg_counts.coastalAegirFollowerCities = gg_counts.coastalAegirFollowerCities + 1
 					end
 				elseif followerReligion == RELIGION_CULT_OF_BAKKHEIA then
-					gWorld.bakkheiaMana = gWorld.bakkheiaMana + city:GetNumBuilding(BUILDING_WINERY) + city:GetNumBuilding(BUILDING_BREWERY) + city:GetNumBuilding(BUILDING_DISTILLERY)
+					gg_counts.grapeAndSpiritsBuildingsBakkheiaFollowerCities = gg_counts.grapeAndSpiritsBuildingsBakkheiaFollowerCities + city:GetNumBuilding(BUILDING_WINERY) + city:GetNumBuilding(BUILDING_BREWERY) + city:GetNumBuilding(BUILDING_DISTILLERY)
 				end
-
-
+			
 				--Processes (not implemented elsewhere)
 				local orderType, orderID = city:GetOrderFromQueue(0)
 				if orderType == ORDER_MAINTAIN then
@@ -710,6 +878,9 @@ function CityPerCivTurn(iPlayer)		--Full civ only
 				end
 				]]
 
+				--River Dock?
+				g_riverDockByPlotIndex[iPlot] = 0 < city:GetNumBuilding(BUILDING_RIVER_DOCK) or nil
+			
 				--Windy?
 				if bCheckWindy and city:GetNumBuilding(BUILDING_WINDMILL) ~= 1 then
 					local countWindBreak = 0
@@ -816,16 +987,16 @@ function CityStateFollowerCityCounting()			--once per turn after plots (takes ca
 			end
 
 			local followerReligion = city:GetReligiousMajority()
-			if followerReligion == RELIGION_CULT_OF_PURE_WATERS then
-				if city:Plot():IsRiverSide() then
-					gWorld.riverSideCultOfPureWatersFollowerCities = gWorld.riverSideCultOfPureWatersFollowerCities + 1
+			if followerReligion == RELIGION_CULT_OF_ABZU then
+				if city:Plot():IsFreshWater() then
+					gg_counts.freshWaterAbzuFollowerCities = gg_counts.freshWaterAbzuFollowerCities + 1
 				end
 			elseif followerReligion == RELIGION_CULT_OF_AEGIR then
 				if city:IsCoastal(10) then
-					gWorld.coastalCultOfAegirFollowerCities = gWorld.coastalCultOfAegirFollowerCities + 1
+					gg_counts.coastalAegirFollowerCities = gg_counts.coastalAegirFollowerCities + 1
 				end
 			elseif followerReligion == RELIGION_CULT_OF_BAKKHEIA then
-				gWorld.bakkheiaMana = gWorld.bakkheiaMana + city:GetNumBuilding(BUILDING_WINERY) + city:GetNumBuilding(BUILDING_BREWERY) + city:GetNumBuilding(BUILDING_DISTILLERY)
+				gg_counts.grapeAndSpiritsBuildingsBakkheiaFollowerCities = gg_counts.grapeAndSpiritsBuildingsBakkheiaFollowerCities + city:GetNumBuilding(BUILDING_WINERY) + city:GetNumBuilding(BUILDING_BREWERY) + city:GetNumBuilding(BUILDING_DISTILLERY)
 			end
 		end
 	end
@@ -864,7 +1035,10 @@ local function OnPlayerCityFounded(iPlayer, x, y)
 					goldBoost = 0,
 					scienceBoost = 0,
 					cultureBoost = 0,
-					culturePercentBoost = 0
+					culturePercentBoost = 0,
+					eligibleCults = {},
+					unimprovedForestJungle = 0,
+					desertCahraFollower = 0
 					}
 
 	gCities[iPlot] = eaCity
@@ -1066,6 +1240,37 @@ function DeadPlayer(iPlayer)
 	cityStates[iPlayer] = nil
 end
 
+--------------------------------------------------------------
+-- River Connections
+--------------------------------------------------------------
+
+GameEvents.CityConnections.Add(function(iPlayer, bDirect) return not bDirect end)	--register testing for "non-direct" routes
+
+local MAP_W, MAP_H = Map.GetGridSize()
+local riverManager = RiverManager:new(function(iPlot) return true end)
+
+function OnCityConnected(iPlayer, iCityX, iCityY, iToCityX, iToCityY, bDirect)
+	--print("OnCityConnected ", iPlayer, iCityX, iCityY, iToCityX, iToCityY, bDirect)
+	if g_riverDockByPlotIndex[iCityY * MAP_W + iCityX] and g_riverDockByPlotIndex[iToCityY * MAP_W + iToCityX] then
+		local fromRivers = riverManager:getRivers(iCityX, iCityY)
+		local toRivers = riverManager:getRivers(iToCityX, iToCityY)
+		for _, iFromRiver in pairs(fromRivers) do
+			for _, iToRiver in pairs(toRivers) do
+				if iFromRiver == iToRiver then
+					return true
+				end
+			end
+		end
+	end
+	return false	
+end
+GameEvents.CityConnected.Add(function(iPlayer, iCityX, iCityY, iToCityX, iToCityY, bDirect) return HandleError61(OnCityConnected, iPlayer, iCityX, iCityY, iToCityX, iToCityY, bDirect) end)
+
+
+--------------------------------------------------------------
+-- City builds
+--------------------------------------------------------------
+
 local function OnPlayerCanConstruct(iPlayer, buildingTypeID)
 	--print("PazDebug OnPlayerCanConstruct ", iPlayer, buildingTypeID)
 	local buildingInfo = GameInfo.Buildings[buildingTypeID]
@@ -1106,9 +1311,6 @@ local function OnPlayerCanMaintain(iPlayer, processTypeID)
 	return false
 end
 GameEvents.PlayerCanMaintain.Add(function(iPlayer, processTypeID) return HandleError21(OnPlayerCanMaintain, iPlayer, processTypeID) end)
-
-
-
 
 local TestCityCanConstruct = {}
 local function OnCityCanConstruct(iPlayer, iCity, buildingTypeID)
@@ -1362,6 +1564,7 @@ TestCityCanTrain[GameInfoTypes.UNIT_HUNTERS] = function(iPlayer, iCity)
 	return false
 end
 
+--[[	May depreciate this; if so, remove g_cacheAIWorkerAlternative above
 TestCityCanTrain[GameInfoTypes.UNIT_WORKERS_MAN] = function(iPlayer, iCity)
 	if playerType[iPlayer] == "CityState" or bFullCivAI[iPlayer] then
 		local alternatives = g_cacheAIWorkerAlternative[iPlayer][iCity]
@@ -1379,7 +1582,7 @@ TestCityCanTrain[GameInfoTypes.UNIT_WORKERS_ORC] = TestCityCanTrain[GameInfoType
 TestCityCanTrain[GameInfoTypes.UNIT_SLAVES_MAN] = TestCityCanTrain[GameInfoTypes.UNIT_WORKERS_MAN]
 TestCityCanTrain[GameInfoTypes.UNIT_SLAVES_SIDHE] = TestCityCanTrain[GameInfoTypes.UNIT_WORKERS_MAN]
 TestCityCanTrain[GameInfoTypes.UNIT_SLAVES_ORC] = TestCityCanTrain[GameInfoTypes.UNIT_WORKERS_MAN]
-
+]]
 
 
 

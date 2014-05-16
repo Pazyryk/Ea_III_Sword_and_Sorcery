@@ -125,19 +125,25 @@
 		</Row>
 
 		<Row Tag="TXT_KEY_EA_TP_FAITH_FROM_CULT_OF_LEAVES_FOUNDER">
-			<Text>[ICON_BULLET][COLOR_POSITIVE_TEXT]+{1_Num}[ENDCOLOR] from Forest & Jungle world-wide (Cult of Leaves Founder).</Text>
+			<Text>[ICON_BULLET][COLOR_POSITIVE_TEXT]+{1_Num}[ENDCOLOR] from follower unimproved Forests & Jungles (Cult of Leaves Founder).</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TP_FAITH_FROM_CULT_OF_ABZU_FOUNDER">
+			<Text>[ICON_BULLET][COLOR_POSITIVE_TEXT]+{1_Num}[ENDCOLOR] from follower fresh water (Cult of Abzu Founder).</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TP_FAITH_FROM_CULT_OF_AEGIR_FOUNDER">
+			<Text>[ICON_BULLET][COLOR_POSITIVE_TEXT]+{1_Num}[ENDCOLOR] from follower coastal cities (Cult of Ægir Founder).</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TP_FAITH_FROM_CULT_OF_PLOUTON_FOUNDER">
+			<Text>[ICON_BULLET][COLOR_POSITIVE_TEXT]+{1_Num}[ENDCOLOR] from follower earth resources (Cult of Ploutōn Founder).</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TP_FAITH_FROM_CULT_OF_CAHRA_FOUNDER">
+			<Text>[ICON_BULLET][COLOR_POSITIVE_TEXT]+{1_Num}[ENDCOLOR] from follower desert (Cult of Çahra Founder).</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_TP_FAITH_FROM_CULT_OF_EPONA_FOUNDER">
 			<Text>[ICON_BULLET][COLOR_POSITIVE_TEXT]+{1_Num}[ENDCOLOR] from Stallions of Epona (Cult of Epona Founder).</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_TP_FAITH_FROM_CULT_OF_PURE_WATERS_FOUNDER">
-			<Text>[ICON_BULLET][COLOR_POSITIVE_TEXT]+{1_Num}[ENDCOLOR] from  (Cult of Pure Waters Founder).</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_TP_FAITH_FROM_CULT_OF_AEGIR_FOUNDER">
-			<Text>[ICON_BULLET][COLOR_POSITIVE_TEXT]+{1_Num}[ENDCOLOR] from  (Cult of Ægir Founder).</Text>
-		</Row>
 		<Row Tag="TXT_KEY_EA_TP_FAITH_FROM_CULT_OF_BAKKHEIA_FOUNDER">
-			<Text>[ICON_BULLET][COLOR_POSITIVE_TEXT]+{1_Num}[ENDCOLOR] from  (Cult of Bakkheia Founder).</Text>
+			<Text>[ICON_BULLET][COLOR_POSITIVE_TEXT]+{1_Num}[ENDCOLOR] from follower Grapes and Spirits Buildings (Cult of Bakkheia Founder).</Text>
 		</Row>
 
 		<Row Tag="TXT_KEY_EA_TP_FAITH_FROM_WILDLANDS">
@@ -167,6 +173,20 @@
 		</Row>
 		<Row Tag="TXT_KEY_EA_TP_GREAT_PEOPLE_POINTS">
 			<Text>The liklihood for a specific Great Person class is proportional to the number of points accumulated below (specific subclasses may be generated depending on civilization factors):</Text>
+		</Row>
+
+		<!-- Unit Panel -->
+		<Row Tag="TXT_KEY_EA_UNIT_PANEL_BUILDS_GREAT_WORKS">
+			<Text>Builds & Great Works</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_PANEL_SPELLS">
+			<Text>Spells</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_PANEL_SPELLS_RITUALS">
+			<Text>Spells & Rituals</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_PANEL_SPELLS_PROPHECIES">
+			<Text>Spells, Rituals & Prophecies</Text>
 		</Row>
 
 		<!-- City View -->

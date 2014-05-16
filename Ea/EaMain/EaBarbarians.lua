@@ -375,7 +375,9 @@ local plotSpecialCounts = {	Cold = 0,
 							Marsh = 0,
 							Hill = 0,
 							Desert = 0,
-							Flatland = 0	}
+							River = 0,
+							Plains = 0,
+							Grass = 0 }
 
 
 local numberResources = {}
@@ -417,10 +419,17 @@ function InitUpgradeEncampment(iPlot, x, y, plot, upgradeTechID)	--called from P
 			plotSpecialCounts.Hill = plotSpecialCounts.Hill + 1
 		elseif terrainID == TERRAIN_DESERT then
 			plotSpecialCounts.Desert = plotSpecialCounts.Desert + 1
+		elseif loopPlot:IsRiverSide() then
+			plotSpecialCounts.River = plotSpecialCounts.River + 1
 		elseif plotTypeID == PLOT_LAND then	--must be plains/grass open flatland at this point
-			plotSpecialCounts.Flatland = plotSpecialCounts.Flatland + 1
+			if terrainID == TERRAIN_GRASS then
+				plotSpecialCounts.Grass = plotSpecialCounts.Grass + 1
+			elseif terrainID == TERRAIN_PLAINS then
+				plotSpecialCounts.Plains = plotSpecialCounts.Plains + 1
+			end
 		end
 	end
+
 
 	--debug
 	--for k, v in pairs(plotSpecialCounts) do

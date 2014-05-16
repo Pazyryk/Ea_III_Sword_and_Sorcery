@@ -21,9 +21,11 @@ local MINOR_TRAIT_ARCANE =						GameInfoTypes.MINOR_TRAIT_ARCANE
 local MINOR_TRAIT_HOLY =						GameInfoTypes.MINOR_TRAIT_HOLY
 local RELIGION_AZZANDARAYASNA =					GameInfoTypes.RELIGION_AZZANDARAYASNA
 local RELIGION_ANRA =							GameInfoTypes.RELIGION_ANRA
-local RELIGION_CULT_OF_EPONA =					GameInfoTypes.RELIGION_CULT_OF_EPONA
-local RELIGION_CULT_OF_PURE_WATERS =			GameInfoTypes.RELIGION_CULT_OF_PURE_WATERS
+local RELIGION_CULT_OF_ABZU =					GameInfoTypes.RELIGION_CULT_OF_ABZU
 local RELIGION_CULT_OF_AEGIR =					GameInfoTypes.RELIGION_CULT_OF_AEGIR
+local RELIGION_CULT_OF_PLOUTON =				GameInfoTypes.RELIGION_CULT_OF_PLOUTON
+local RELIGION_CULT_OF_EPONA =					GameInfoTypes.RELIGION_CULT_OF_EPONA
+local RELIGION_CULT_OF_BAKKHEIA =				GameInfoTypes.RELIGION_CULT_OF_BAKKHEIA
 
 local FEATURE_CRATER =							GameInfoTypes.FEATURE_CRATER
 local FEATURE_SOLOMONS_MINES =					GameInfoTypes.FEATURE_SOLOMONS_MINES
@@ -88,6 +90,16 @@ local csBaselineRelationshipByRace = {
 											[GameInfoTypes.EARACE_SIDHE] = -50,
 											[GameInfoTypes.EARACE_HELDEOFOL] = -20	}	}
 
+local godTempleID = {}	--index by god iPlayer, holds temple wonderID
+for wonderInfo in GameInfo.EaWonders() do
+	if wonderInfo.God then
+		local minorCivTypeID = GameInfoTypes[wonderInfo.God]
+		local iGod = gg_minorPlayerByTypeID[minorCivTypeID]
+		if iGod then
+			godTempleID[iGod] = wonderInfo.ID
+		end
+	end
+end
 
 --------------------------------------------------------------
 -- Init
@@ -351,22 +363,31 @@ function FullCivPerCivTurn(iPlayer)		-- called for full civs only
 	local cultureManaFromWildlands = eaPlayer.cultureManaFromWildlands or 0
 
 	local cultFounderMana = eaPlayer.manaForCultOfLeavesFounder or 0	--calculated in EaPlots.lua
+	cultFounderMana = cultFounderMana + (eaPlayer.manaForCultOfCahraFounder or 0)
 
-
-	if gReligions[RELIGION_CULT_OF_EPONA] and iPlayer == gReligions[RELIGION_CULT_OF_EPONA].founder then
-		eaPlayer.manaForCultOfEponaFounder = gWorld.stallionsOfEpona
-		gWorld.stallionsOfEpona = 0
-		cultFounderMana = cultFounderMana + eaPlayer.manaForCultOfEponaFounder
-	end
-	if gReligions[RELIGION_CULT_OF_PURE_WATERS] and iPlayer == gReligions[RELIGION_CULT_OF_PURE_WATERS].founder then
-		eaPlayer.manaForCultOfPureWatersFounder = eaPlayer.manaForCultOfPureWatersFounder + gWorld.riverSideCultOfPureWatersFollowerCities	--adds to value calculated in EaPlots.lua
-		gWorld.riverSideCultOfPureWatersFollowerCities = 0
-		cultFounderMana = cultFounderMana + eaPlayer.manaForCultOfPureWatersFounder
+	if gReligions[RELIGION_CULT_OF_ABZU] and iPlayer == gReligions[RELIGION_CULT_OF_ABZU].founder then
+		eaPlayer.manaForCultOfAbzuFounder = gg_counts.freshWaterAbzuFollowerCities
+		gg_counts.freshWaterAbzuFollowerCities = 0
+		cultFounderMana = cultFounderMana + eaPlayer.manaForCultOfAbzuFounder
 	end
 	if gReligions[RELIGION_CULT_OF_AEGIR] and iPlayer == gReligions[RELIGION_CULT_OF_AEGIR].founder then
-		eaPlayer.manaForCultOfAegirFounder = gWorld.coastalCultOfAegirFollowerCities
-		gWorld.coastalCultOfAegirFollowerCities = 0
+		eaPlayer.manaForCultOfAegirFounder = 2 * gg_counts.coastalAegirFollowerCities
+		gg_counts.coastalAegirFollowerCities = 0
 		cultFounderMana = cultFounderMana + eaPlayer.manaForCultOfAegirFounder
+	end
+	if gReligions[RELIGION_CULT_OF_PLOUTON] and iPlayer == gReligions[RELIGION_CULT_OF_PLOUTON].founder then
+		eaPlayer.manaForCultOfPloutonFounder = Floor(gg_counts.earthResWorkedByPloutonFollower / 2)
+		cultFounderMana = cultFounderMana + eaPlayer.manaForCultOfPloutonFounder
+	end
+	if gReligions[RELIGION_CULT_OF_EPONA] and iPlayer == gReligions[RELIGION_CULT_OF_EPONA].founder then
+		eaPlayer.manaForCultOfEponaFounder = gg_counts.stallionsOfEpona
+		gg_counts.stallionsOfEpona = 0
+		cultFounderMana = cultFounderMana + eaPlayer.manaForCultOfEponaFounder
+	end
+	if gReligions[RELIGION_CULT_OF_BAKKHEIA] and iPlayer == gReligions[RELIGION_CULT_OF_BAKKHEIA].founder then
+		eaPlayer.manaForCultOfBakkheiaFounder = gg_counts.grapeAndSpiritsBuildingsBakkheiaFollowerCities	--added to in EaCities and EaPlots
+		gg_counts.grapeAndSpiritsBuildingsBakkheiaFollowerCities = 0
+		cultFounderMana = cultFounderMana + eaPlayer.manaForCultOfBakkheiaFounder
 	end
 
 	local totalFaith = faithFromCityStates + faithFromPolicyFinisher + cultureManaFromWildlands + cultFounderMana
@@ -470,10 +491,9 @@ local function OnPlayerMinorFriendshipAnchor(iMajorPlayer, iMinorPlayer)
 		else
 			local eaMajorPlayer = gPlayers[iMajorPlayer]
 			if eaMajorPlayer.eaCivNameID == EACIV_SKOGR then
-				return 15
-			else
-				return 0		
+				return 15		
 			end
+			return 0
 		end
 	end
 end
@@ -484,10 +504,13 @@ local function OnPlayerMinorFriendshipDecayMod(iMajorPlayer, iMinorPlayer)
 	if cityStates[iMinorPlayer] then	--City States
 		if gg_bHasPatronage[iMajorPlayer] then
 			return -50
-		else
-			return 0
 		end
+		return 0
 	else	-- God
+		local templeWonderID = godTempleID[iMinorPlayer]
+		if templeWonderID and gWonders[templeWonderID] and gWonders[templeWonderID].iPlayer == iMajorPlayer then
+			return -50
+		end
 		return 0
 	end
 end
@@ -568,7 +591,7 @@ function GetFaithFromEaCityStates(iPlayer)		--For Arcane, Holy and Unholy CSs; g
 	return faithFromCityStates
 end
 
-
+--[[
 function MeetRandomPantheisticGod(iPlayer, triggerType, id)
 	--compile eligible into integers table
 	local team = Teams[Players[iPlayer]:GetTeam()]
@@ -623,6 +646,7 @@ function MeetRandomPantheisticGod(iPlayer, triggerType, id)
 		team:Meet(Players[iGod]:GetTeam(), true)
 	end
 end
+]]
 
 local function TeemMeetListener(iActiveTeam, iMetTeam)	--player or team?
 	print("TeemMeetListener: ", iActiveTeam, iMetTeam)	--returning true did not prevent meeting (contrary to wiki)

@@ -44,9 +44,9 @@ UPDATE Civilizations SET ShortDescription = Description || '_SHORT', Adjective =
 
 UPDATE Civilizations SET EaCivTrait = 'TRAIT_' || EaCivString, EaRaceTrait = REPLACE(EaRace, 'EARACE_', 'TRAIT_') WHERE Type NOT IN (SELECT Type FROM TempBaseKeepList);
 
-UPDATE Civilizations SET ArtDefineTag = 'BLANKLEADER_Scene', ArtStyleType = 'ARTSTYLE_EUROPEAN', ArtStyleSuffix = '_EURO', ArtStylePrefix = 'EUROPEAN', PortraitIndex = 5, IconAtlas = 'EXPANSION_CIV_COLOR_ATLAS', AlphaIconAtlas = 'EXPANSION_CIV_ALPHA_ATLAS', MapImage = 'EaGameSetupImage.dds', DawnOfManAudio = 'AS2D_DOM_SPEECH_UNITED_STATES', SoundtrackTag = 'India' WHERE EaRace = 'EARACE_MAN';
-UPDATE Civilizations SET ArtDefineTag = 'BLANKLEADER_Scene', ArtStyleType = 'ARTSTYLE_ASIAN', ArtStyleSuffix = '_ASIA', ArtStylePrefix = 'ASIAN', PortraitIndex = 3, IconAtlas = 'EXPANSION_CIV_COLOR_ATLAS', AlphaIconAtlas = 'EXPANSION_CIV_ALPHA_ATLAS', MapImage = 'EaGameSetupImage.dds', DawnOfManAudio = 'AS2D_DOM_SPEECH_UNITED_STATES', SoundtrackTag = 'Iroquois' WHERE EaRace = 'EARACE_SIDHE';
-UPDATE Civilizations SET ArtDefineTag = 'BLANKLEADER_Scene', ArtStyleType = 'ARTSTYLE_ASIAN', ArtStyleSuffix = '_ASIA', ArtStylePrefix = 'ASIAN', PortraitIndex = 3, IconAtlas = 'EXPANSION_CIV_COLOR_ATLAS', AlphaIconAtlas = 'EXPANSION_CIV_ALPHA_ATLAS', MapImage = 'EaGameSetupImage.dds', DawnOfManAudio = 'AS2D_DOM_SPEECH_UNITED_STATES', SoundtrackTag = 'Iroquois' WHERE EaRace = 'EARACE_HELDEOFOL';
+UPDATE Civilizations SET ArtDefineTag = 'BLANKLEADER_Scene', ArtStyleType = 'ARTSTYLE_EUROPEAN', ArtStyleSuffix = '_EURO', ArtStylePrefix = 'EUROPEAN', PortraitIndex = 5, IconAtlas = 'EXPANSION_CIV_COLOR_ATLAS', AlphaIconAtlas = 'EXPANSION_CIV_ALPHA_ATLAS', MapImage = 'EaGameSetupImage.dds', DawnOfManAudio = 'AS2D_DOM_SPEECH_UNITED_STATES', SoundtrackTag = 'MAN' WHERE EaRace = 'EARACE_MAN';
+UPDATE Civilizations SET ArtDefineTag = 'BLANKLEADER_Scene', ArtStyleType = 'ARTSTYLE_ASIAN', ArtStyleSuffix = '_ASIA', ArtStylePrefix = 'ASIAN', PortraitIndex = 3, IconAtlas = 'EXPANSION_CIV_COLOR_ATLAS', AlphaIconAtlas = 'EXPANSION_CIV_ALPHA_ATLAS', MapImage = 'EaGameSetupImage.dds', DawnOfManAudio = 'AS2D_DOM_SPEECH_UNITED_STATES', SoundtrackTag = 'SIDHE' WHERE EaRace = 'EARACE_SIDHE';
+UPDATE Civilizations SET ArtDefineTag = 'BLANKLEADER_Scene', ArtStyleType = 'ARTSTYLE_ASIAN', ArtStyleSuffix = '_ASIA', ArtStylePrefix = 'ASIAN', PortraitIndex = 3, IconAtlas = 'EXPANSION_CIV_COLOR_ATLAS', AlphaIconAtlas = 'EXPANSION_CIV_ALPHA_ATLAS', MapImage = 'EaGameSetupImage.dds', DawnOfManAudio = 'AS2D_DOM_SPEECH_UNITED_STATES', SoundtrackTag = 'SIDHE' WHERE EaRace = 'EARACE_HELDEOFOL';
 
 UPDATE Civilizations SET DawnOfManQuote = 'TXT_KEY_CIV5_DAWN_UNITEDSTATES_TEXT', DawnOfManImage = 'DOM_Washington.dds' WHERE Type NOT IN (SELECT Type FROM TempBaseKeepList);
 
@@ -79,9 +79,9 @@ SELECT DISTINCT Type, EaCivTrait FROM Civilizations WHERE EaCivTrait IS NOT NULL
 DELETE FROM Civilization_Leaders WHERE CivilizationType NOT IN (SELECT Type FROM TempBaseKeepList);
 
 INSERT INTO Civilization_Leaders (CivilizationType, LeaderheadType)
-SELECT Type, 'LEADER_NO_LEADER_MAN' FROM Civilizations WHERE EaRace = 'EARACE_MAN' UNION ALL				--These are only starting leaders. They will change in-game!
-SELECT Type, 'LEADER_NO_LEADER_SIDHE' FROM Civilizations WHERE EaRace = 'EARACE_SIDHE' UNION ALL
-SELECT Type, 'LEADER_NO_LEADER_HELDEOFOL' FROM Civilizations WHERE EaRace = 'EARACE_HELDEOFOL' UNION ALL
+SELECT Type, 'LEADER_NO_LDR_MAN' FROM Civilizations WHERE EaRace = 'EARACE_MAN' UNION ALL				--These are only starting leaders. They will change in-game!
+SELECT Type, 'LEADER_NO_LDR_SIDHE' FROM Civilizations WHERE EaRace = 'EARACE_SIDHE' UNION ALL
+SELECT Type, 'LEADER_NO_LDR_HELDEOFOL' FROM Civilizations WHERE EaRace = 'EARACE_HELDEOFOL' UNION ALL
 SELECT Type, 'LEADER_FAND' FROM Civilizations WHERE EaRace = 'EARACE_FAY' ;
 
 
@@ -467,12 +467,13 @@ INSERT INTO Civilization_Start_Region_Avoid (CivilizationType, RegionType) VALUE
 -- 
 
 ALTER TABLE Leaders ADD COLUMN 'EaPerson' TEXT DEFAULT NULL;
+ALTER TABLE Leaders ADD COLUMN 'EaRace' TEXT DEFAULT NULL;
 
 DELETE FROM Leaders WHERE Type != 'LEADER_BARBARIAN';
 
 
-INSERT INTO Leaders (Type, EaPerson, Description, Civilopedia,	CivilopediaTag,				VictoryCompetitiveness, WonderCompetitiveness, MinorCivCompetitiveness, Boldness, DiploBalance, WarmongerHate, WorkAgainstWillingness, WorkWithWillingness, DenounceWillingness, DoFWillingness, Loyalty, Neediness, Forgiveness, Chattiness, Meanness)
-SELECT LeaderType, Type, Description, Description||'_PEDIA',  Description||'_PEDIA_TAG',	VictComp,				WondComp,			   MinorComp,				Boldness, DiploBal,		WarHate,	   WorkAgnst,			   WorkWith,			Denounce,			 DoFWill,		 Loyalty, Neediness, Forgive,	  Chatty,	  Meanness
+INSERT INTO Leaders (Type, EaPerson, Description, Civilopedia,	CivilopediaTag,				EaRace,	VictoryCompetitiveness, WonderCompetitiveness, MinorCivCompetitiveness, Boldness, DiploBalance, WarmongerHate, WorkAgainstWillingness, WorkWithWillingness, DenounceWillingness, DoFWillingness, Loyalty, Neediness, Forgiveness, Chattiness, Meanness)
+SELECT LeaderType, Type, Description, Description||'_PEDIA',  Description||'_PEDIA_TAG',	Race,	VictComp,				WondComp,			   MinorComp,				Boldness, DiploBal,		WarHate,	   WorkAgnst,			   WorkWith,			Denounce,			 DoFWill,		 Loyalty, Neediness, Forgive,	  Chatty,	  Meanness
 FROM EaPeople;
 
 UPDATE Leaders SET ArtDefineTag = 'BLANKLEADER_Scene.xml', PortraitIndex = 23,	IconAtlas = 'CIV_COLOR_ATLAS';
@@ -546,10 +547,16 @@ SELECT LeaderType, 'FLAVOR_AIRLIFT', FALift FROM EaPeople ;
 
 DELETE FROM Leader_Traits;		--All Traits now attached to Civilizations, but this table will still work if we want a trait for a leader...
 
+--Add sounds for each leader by race (ScriptID hardcoded by LeaderType)
+INSERT INTO Audio_2DSounds (ScriptID, SoundID)
+SELECT REPLACE(Type, 'EAPERSON_', 'AS2D_LEADER_MUSIC_') || '_PEACE', 'SND_LEADER_MUSIC_MAN_PEACE' FROM EaPeople WHERE Race = 'EARACE_MAN' UNION ALL
+SELECT REPLACE(Type, 'EAPERSON_', 'AS2D_LEADER_MUSIC_') || '_WAR', 'SND_LEADER_MUSIC_MAN_WAR' FROM EaPeople WHERE Race = 'EARACE_MAN' UNION ALL
+SELECT REPLACE(Type, 'EAPERSON_', 'AS2D_LEADER_MUSIC_') || '_PEACE', 'SND_LEADER_MUSIC_SIDHE_PEACE' FROM EaPeople WHERE Race IN ('EARACE_SIDHE', 'EARACE_FAY') UNION ALL
+SELECT REPLACE(Type, 'EAPERSON_', 'AS2D_LEADER_MUSIC_') || '_WAR', 'SND_LEADER_MUSIC_SIDHE_WAR' FROM EaPeople WHERE Race IN ('EARACE_SIDHE', 'EARACE_FAY') UNION ALL
+SELECT REPLACE(Type, 'EAPERSON_', 'AS2D_LEADER_MUSIC_') || '_PEACE', 'SND_LEADER_MUSIC_HELDEOFOL_PEACE' FROM EaPeople WHERE Race = 'EARACE_ORC' UNION ALL
+SELECT REPLACE(Type, 'EAPERSON_', 'AS2D_LEADER_MUSIC_') || '_WAR', 'SND_LEADER_MUSIC_HELDEOFOL_WAR' FROM EaPeople WHERE Race = 'EARACE_ORC' ;
 
-
-
-
+UPDATE Audio_2DSounds SET SoundType = 'GAME_MUSIC', MinVolume = 40, MaxVolume = 40, IsMusic = 1 WHERE ScriptID GLOB 'AS2D_LEADER_MUSIC_*';
 
 
 

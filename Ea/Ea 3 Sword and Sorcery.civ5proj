@@ -246,11 +246,6 @@
       <Action>
         <Set>OnModActivated</Set>
         <Type>UpdateDatabase</Type>
-        <FileName>Text/EaText_Pedia.xml</FileName>
-      </Action>
-      <Action>
-        <Set>OnModActivated</Set>
-        <Type>UpdateDatabase</Type>
         <FileName>Text/EaText_Policies.xml</FileName>
       </Action>
       <Action>
@@ -578,6 +573,10 @@
       <SubType>Lua</SubType>
       <ImportIntoVFS>True</ImportIntoVFS>
     </Content>
+    <Content Include="CoreUI_font_mod_only\NewTurn.xml">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
     <Content Include="CoreUI_font_mod_only\NotificationLogPopup.xml">
       <SubType>Lua</SubType>
       <ImportIntoVFS>True</ImportIntoVFS>
@@ -586,11 +585,31 @@
       <SubType>Lua</SubType>
       <ImportIntoVFS>True</ImportIntoVFS>
     </Content>
+    <Content Include="CoreUI_font_mod_only\PlayerChange.xml">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
     <Content Include="CoreUI_font_mod_only\ReplayViewer.xml">
       <SubType>Lua</SubType>
       <ImportIntoVFS>True</ImportIntoVFS>
     </Content>
+    <Content Include="CoreUI_font_mod_only\ResourceList.xml">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
     <Content Include="CoreUI_font_mod_only\SimpleDiploTrade.xml">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="CoreUI_font_mod_only\Styles.xml">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="CoreUI_font_mod_only\Styles_Expansion2.xml">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="CoreUI_font_mod_only\TaskList.xml">
       <SubType>Lua</SubType>
       <ImportIntoVFS>True</ImportIntoVFS>
     </Content>
@@ -602,11 +621,43 @@
       <SubType>Lua</SubType>
       <ImportIntoVFS>True</ImportIntoVFS>
     </Content>
+    <Content Include="CoreUI_font_mod_only\TechPanel_small.xml">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
     <Content Include="CoreUI_font_mod_only\TechPopup_small.xml">
       <SubType>Lua</SubType>
       <ImportIntoVFS>True</ImportIntoVFS>
     </Content>
+    <Content Include="CoreUI_font_mod_only\TerrainPanel.xml">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
     <Content Include="CoreUI_font_mod_only\ToolTips.xml">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="CoreUI_font_mod_only\TouchControlsMenu.xml">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="CoreUI_font_mod_only\TurnProcessing.xml">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="CoreUI_font_mod_only\UnitFlagManager.xml">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="CoreUI_font_mod_only\UnitList.xml">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="CoreUI_font_mod_only\UnitMemberOverlay.xml">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="CoreUI_font_mod_only\YieldIconManager.xml">
       <SubType>Lua</SubType>
       <ImportIntoVFS>True</ImportIntoVFS>
     </Content>
@@ -747,6 +798,10 @@
       <ImportIntoVFS>True</ImportIntoVFS>
     </Content>
     <Content Include="CoreUI_InGame\TradeRouteOverview.xml">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="CoreUI_InGame\TurnProcessing.lua">
       <SubType>Lua</SubType>
       <ImportIntoVFS>True</ImportIntoVFS>
     </Content>
@@ -1166,10 +1221,6 @@
       <SubType>Lua</SubType>
       <ImportIntoVFS>False</ImportIntoVFS>
     </Content>
-    <Content Include="Text\EaText_Pedia.xml">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>False</ImportIntoVFS>
-    </Content>
     <Content Include="Text\EaText_EaPeople.xml">
       <SubType>Lua</SubType>
       <ImportIntoVFS>False</ImportIntoVFS>
@@ -1362,6 +1413,10 @@
       <SubType>Lua</SubType>
       <ImportIntoVFS>True</ImportIntoVFS>
     </Content>
+    <Content Include="Utilities\EaModsHelper.lua">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>False</ImportIntoVFS>
+    </Content>
     <Content Include="Utilities\EaTableUtils.lua">
       <SubType>Lua</SubType>
       <ImportIntoVFS>True</ImportIntoVFS>
@@ -1390,511 +1445,23 @@
       <SubType>Lua</SubType>
       <ImportIntoVFS>True</ImportIntoVFS>
     </Content>
+    <Content Include="Utilities\RiverConnections.lua">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
     <Content Include="Utilities\WhowardPlotIterators.lua">
       <SubType>Lua</SubType>
       <ImportIntoVFS>True</ImportIntoVFS>
     </Content>
-    <Content Include="_MoveToMediaPack\3DTerrain\Blight\Blight.fxsxml">
+    <Content Include="_MoveToMediaPack\IconAtlases\EaSpellsAtlas45.dds">
       <SubType>Lua</SubType>
       <ImportIntoVFS>True</ImportIntoVFS>
     </Content>
-    <Content Include="_MoveToMediaPack\3DTerrain\Blight\Blight.gr2">
+    <Content Include="_MoveToMediaPack\IconAtlases\EaSpellsAtlas48.dds">
       <SubType>Lua</SubType>
       <ImportIntoVFS>True</ImportIntoVFS>
     </Content>
-    <Content Include="_MoveToMediaPack\3DTerrain\Blight\Blight_decal_h.dds">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DTerrain\Blight\Blight_diff.dds">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DTerrain\Blight\Blight_sref.dds">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DTerrain\GreatLighthouse\great_lighthouseTI_B.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DTerrain\GreatLighthouse\great_lighthouseTI_HB.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DTerrain\GreatLighthouse\great_lighthouseTI_pl.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DTerrain\GreatLighthouse\great_lighthouseTI_B.fxsxml">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DTerrain\GreatLighthouse\great_lighthouseTI_HB.fxsxml">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DTerrain\GreatLighthouse\great_lighthouseTI_pl.fxsxml">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DTerrain\Stonehenge\hb_stonehengeTI.fxsxml">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DTerrain\Stonehenge\pl_stonehengeTI.fxsxml">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DTerrain\Stonehenge\stonehengeTI.fxsxml">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DTerrain\Stonehenge\rubble.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DTerrain\Stonehenge\stonehengeTI.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DTerrain\Stonehenge\stonehengeTI_hb.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DTerrain\Stonehenge\stonehengeTI_pl.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DTerrain\ThePyramids\hb_pyramidsTI.fxsxml">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DTerrain\ThePyramids\pyramidsTI.fxsxml">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DTerrain\ThePyramids\pl_pyramidsTI.fxsxml">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DTerrain\ThePyramids\PyramidsTI.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DTerrain\ThePyramids\PyramidsTI_hb.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DTerrain\ThePyramids\PyramidsTI_pl.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DTerrain\WonderCommon\Wonder_grnd_diff.dds">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DTerrain\WonderCommon\wonder_grnd_h.dds">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DTerrain\WonderCommon\wonder_pl.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Angel_Spearman\angel_spearman.fxsxml">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Angel_Spearman\angel_spearman.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Angel_Spearman\angel_spearman_bright.fxsxml">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Angel_Spearman\angel_spearman_bright.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Angel_Spearman\angel_spearman_bright_diff.dds">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Angel_Spearman\angel_spearman_bright_sref.dds">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Angel_Spearman\angel_spearman_diff.dds">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Angel_Spearman\angel_spearman_sref.dds">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Eagle\eagle.fxsxml">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Eagle\eagle.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Eagle\eagle_bomb_anim.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Eagle\eagle_die_anim.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Eagle\eagle_fidget_anim.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Eagle\eagle_idle_anim.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Eagle\eagle_intercept_anim.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Eagle\eagle_run_anim.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Great_Unclean_One\great_unclean_one_dif.dds">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Great_Unclean_One\great_unclean_one_spc.dds">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Great_Unclean_One\guo.fxsxml">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Great_Unclean_One\guo.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Great_Unclean_One\guoAttackA.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Great_Unclean_One\guoAttackB.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Great_Unclean_One\guoDie.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Great_Unclean_One\guoIdleA.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Great_Unclean_One\guoIdleB.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Great_Unclean_One\guoRun.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Hive_tyrant\edited_carnifex_upper_scything_claws_dif.dds">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Hive_tyrant\edited_carnifex_upper_scything_claws_spc.dds">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Hive_tyrant\edited_hive_tyrant_body_dif.dds">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Hive_tyrant\edited_hive_tyrant_body_spc.dds">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Hive_tyrant\edited_hive_tyrant_head_dif.dds">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Hive_tyrant\edited_hive_tyrant_head_spc.dds">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Hive_tyrant\hive_tyrant.fxsxml">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Hive_tyrant\hive_tyrant.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Hive_tyrant\hive_tyrantAttackA.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Hive_tyrant\hive_tyrantAttackB.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Hive_tyrant\hive_tyrantCharge.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Hive_tyrant\hive_tyrantDie.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Hive_tyrant\hive_tyrantIdleA.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Hive_tyrant\hive_tyrantIdleB.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Hive_tyrant\hive_tyrantIdleC.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Hive_tyrant\hive_tyrantRun.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Hormagaunt\edited_hormagaunt_armour_common_dif.dds">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Hormagaunt\edited_hormagaunt_armour_common_spc.dds">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Hormagaunt\hormagaunt.fxsxml">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Hormagaunt\hormagaunt.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Hormagaunt\hormagauntAttackA.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Hormagaunt\hormagauntAttackB.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Hormagaunt\hormagauntDieA.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Hormagaunt\hormagauntDieB.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Hormagaunt\hormagauntIdleA.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Hormagaunt\hormagauntIdleB.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Hormagaunt\hormagauntRun.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Lictor\edited2_lictor_body_df.dds">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Lictor\edited2_lictor_head_df.dds">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Lictor\edited2_lictor_rending_claws_dif.dds">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Lictor\edited2_lictor_scything_talon_dif.dds">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Lictor\edited_lictor_body_spc.dds">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Lictor\edited_lictor_head_spc.dds">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Lictor\edited_lictor_rending_claws_spc.dds">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Lictor\edited_lictor_scything_talon_spc.dds">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Lictor\lictor.fxsxml">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Lictor\lictor.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Lictor\lictorAttackA.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Lictor\lictorAttackB.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Lictor\lictorCharge.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Lictor\lictorDieA.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Lictor\lictorDieB.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Lictor\lictorIdleA.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Lictor\lictorIdleB.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Lictor\lictorRun.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Storm_Drake\storm_drake.fxsxml">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Storm_Drake\storm_drake.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Storm_Drake\storm_drake_die1.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Storm_Drake\storm_drake_fidget1.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Storm_Drake\storm_drake_fort1.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Storm_Drake\storm_drake_fort_idle1.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Storm_Drake\storm_drake_hurt1.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Storm_Drake\storm_drake_idle.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Storm_Drake\storm_drake_run.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Storm_Drake\storm_drake_strike1.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Storm_Drake\storm_drake_strike2.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Tree_Ent\tree.dds">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Tree_Ent\tree.fxsxml">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Tree_Ent\tree.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Tree_Ent\tree_diea_anim.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Tree_Ent\tree_diea_fade_anim.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Tree_Ent\tree_fidget_anim.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Tree_Ent\tree_fortifya_anim.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Tree_Ent\tree_fortifya_idle_anim.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Tree_Ent\tree_hurt_anim.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Tree_Ent\tree_idle_anim.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Tree_Ent\tree_run_anim.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Tree_Ent\tree_strikea_anim.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Tree_Ent\tree_strikeb_anim.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Zombie\black_4x4.dds">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Zombie\zombie.fxsxml">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Zombie\zombie.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\Zombie\ZombieA Kopie.dds">
+    <Content Include="_MoveToMediaPack\IconAtlases\EaSpellsAtlas64.dds">
       <SubType>Lua</SubType>
       <ImportIntoVFS>True</ImportIntoVFS>
     </Content>
@@ -1915,24 +1482,7 @@
     <Folder Include="CoreUI_InGame" />
     <Folder Include="EaMain" />
     <Folder Include="Utilities" />
-    <Folder Include="_MoveToMediaPack\3DTerrain\Blight" />
-    <Folder Include="_MoveToMediaPack\3DTerrain\GreatLighthouse" />
-    <Folder Include="_MoveToMediaPack\3DTerrain\WonderCommon" />
-    <Folder Include="_MoveToMediaPack\3DTerrain\Stonehenge" />
-    <Folder Include="_MoveToMediaPack\3DTerrain\ThePyramids\" />
-    <Folder Include="_MoveToMediaPack\3DUnits\Angel_Spearman\" />
-    <Folder Include="_MoveToMediaPack\3DUnits\Great_Unclean_One\" />
-    <Folder Include="_MoveToMediaPack\3DUnits\Hive_tyrant\" />
-    <Folder Include="_MoveToMediaPack\3DUnits\Hormagaunt\" />
-    <Folder Include="_MoveToMediaPack\3DUnits\Lictor\" />
-    <Folder Include="_MoveToMediaPack\3DUnits\Eagle" />
-    <Folder Include="_MoveToMediaPack\3DUnits\Storm_Drake" />
-    <Folder Include="_MoveToMediaPack\3DUnits\Tree_Ent" />
-    <Folder Include="_MoveToMediaPack\3DUnits\Zombie\" />
-    <Folder Include="_MoveToMediaPack\FontIcons\" />
-    <Folder Include="_MoveToMediaPack\Misc" />
-    <Folder Include="_MoveToMediaPack\3DUnits" />
-    <Folder Include="_MoveToMediaPack\3DTerrain" />
+    <Folder Include="_MoveToMediaPack\IconAtlases" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Firaxis\ModBuddy\Civ5Mod.targets" />
 </Project>

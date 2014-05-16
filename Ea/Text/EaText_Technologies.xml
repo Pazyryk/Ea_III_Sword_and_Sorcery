@@ -341,7 +341,7 @@
 
 		<!-- Technologies Special Texts -->
 
-		<Row Tag="TXT_KEY_EA_TECH_MOUNTED_ELEPHANTS_SPECIAL">
+		<Row Tag="TXT_KEY_EA_TECH_ELEPHANT_TRAINING_SPECIAL">
 			<Text>Can trade Elephants</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_TRACKING_TRAPPING_SPECIAL">
@@ -350,9 +350,6 @@
 
 		<Row Tag="TXT_KEY_EA_TECH_SAILING_SPECIAL">
 			<Text>Cities adjacent to a Natural Harbor (any coastal plot with 3 adjacent land plots) gain ownership of the plot and a free Harbor building</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_TECH_IRRIGATION_SPECIAL">
-			<Text>Can build Farms in Marsh</Text>
 		</Row>
 
 		<Row Tag="TXT_KEY_EA_TECH_MALEFICIUM_SPECIAL">
@@ -363,9 +360,6 @@
 			<Text>Reduces Knowledge Maintenence by 1% per tech known</Text>
 		</Row>
 
-		<Row Tag="TXT_KEY_EA_TECH_BOWYERS_SPECIAL">
-			<Text>Level 6 Bowmen and Bowed Cavalry can upgrade to Marksmen and Sagitarii, respectively</Text>
-		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_SHIP_BUILDING_SPECIAL">
 			<Text>+2 range at which you can establish Fishing and Whailing Boats (i.e., 5 plots from coastal city if no other modifiers)</Text>
 		</Row>

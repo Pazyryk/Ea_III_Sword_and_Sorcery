@@ -184,6 +184,7 @@ MapModData.bHidden = MapModData.bHidden or {}
 local playerType = MapModData.playerType
 local bFullCivAI = MapModData.bFullCivAI
 local bHidden = MapModData.bHidden
+gg_minorPlayerByTypeID = {}
 print("Player Types by ID at game init:")
 for iPlayer = 0, BARB_PLAYER_INDEX do
 	local player = Players[iPlayer]
@@ -207,9 +208,11 @@ for iPlayer = 0, BARB_PLAYER_INDEX do
 			print(iPlayer, ": God")
 			playerType[iPlayer] = "God"
 			bHidden[iPlayer] = true
+			gg_minorPlayerByTypeID[player:GetMinorCivType()] = iPlayer
 		else
 			print(iPlayer, ": CityState")
 			playerType[iPlayer] = "CityState"
+			gg_minorPlayerByTypeID[player:GetMinorCivType()] = iPlayer
 		end
 	end
 end
@@ -265,6 +268,14 @@ gg_teamCanMeetFay = {}
 gg_animalSpawnPlots = {pos = 0}
 gg_animalSpawnInhibitTeams = {}
 
+--misc counts
+gg_counts = {	freshWaterAbzuFollowerCities = 0,
+				coastalAegirFollowerCities = 0,
+				earthResWorkedByPloutonFollower = 0,
+				stallionsOfEpona = 0,
+				grapeAndSpiritsBuildingsBakkheiaFollowerCities = 0
+}
+
 ----------------------------------------------------------------------------------------------------------------------------
 -- gT and referenced tables that are saved/restored through game save/loads
 ----------------------------------------------------------------------------------------------------------------------------
@@ -280,11 +291,7 @@ gWorld = {	sumOfAllMana =				MapModData.STARTING_SUM_OF_ALL_MANA,
 			azzConvertNum =				0,
 			anraConvertNum =			0,
 			weaveConvertNum =			0,
-			livingTerrainConvertStr =	0,
-			stallionsOfEpona =			0,
-			riverSideCultOfPureWatersFollowerCities = 0,
-			coastalCultOfAegirFollowerCities = 0,
-			bakkheiaMana = 0
+			livingTerrainConvertStr =	0
 			}
 
 

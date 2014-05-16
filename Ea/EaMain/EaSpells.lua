@@ -18,6 +18,7 @@ local Dprint = DEBUG_PRINT and print or function() end
 --constants
 local DOMAIN_LAND =							DomainTypes.DOMAIN_LAND
 local DOMAIN_SEA =							DomainTypes.DOMAIN_SEA
+local EAMOD_DEVOTION =						GameInfoTypes.EAMOD_DEVOTION
 local EA_WONDER_ARCANE_TOWER =				GameInfoTypes.EA_WONDER_ARCANE_TOWER
 local FEATURE_BLIGHT =	 					GameInfoTypes.FEATURE_BLIGHT
 local FEATURE_FALLOUT =	 					GameInfoTypes.FEATURE_FALLOUT
@@ -89,6 +90,7 @@ local Finish = {}
 --	All applicable are calculated in TestEaSpell any time we are in this file. Never change anywhere else!
 --  Non-applicable variables will hold value from last call
 local g_eaAction
+local g_eaActionID
 local g_SpellClass				-- nil, "Arcane" or "Devine"
 local g_bAIControl				--for AI control of unit (can be true for human if Autoplay)
 local g_iActivePlayer = Game.GetActivePlayer()
@@ -409,9 +411,10 @@ function TestEaSpell(eaActionID, iPlayer, unit, iPerson, testX, testY, bAINonTar
 	--iPerson must have value if this is a great person
 	--unit must be non-nil EXCEPT if this is a GP not on map
 	g_eaAction = EaActionsInfo[eaActionID]
+	g_eaActionID = g_eaAction.ID
 	g_gameTurn = Game.GetGameTurn()
 
-	print("TestEaSpell", eaActionID, iPlayer, unit, iPerson, testX, testY, bAINonTargetTest)
+	--print("TestEaSpell", eaActionID, iPlayer, unit, iPerson, testX, testY, bAINonTargetTest)
 
 	g_bNonTargetTestsPassed = false
 	g_testTargetSwitch = 0
@@ -496,7 +499,6 @@ end
 function TestEaSpellTarget(eaActionID, testX, testY, bAITargetTest)
 	--This function sets all file locals related to the target plot
 	--AI can call this directly but ONLY after a call to TestEaSpell so that civ/caster file locals are correct
-	--g_eaAction = EaActionsInfo[eaActionID]		--needed here in case function called directly by AI
 	--print("TestEaSpellTarget",eaActionID, testX, testY, bAITargetTest)
 
 	g_testTargetSwitch = 0
@@ -591,15 +593,29 @@ function TestEaSpellTarget(eaActionID, testX, testY, bAITargetTest)
 
 	g_specialEffectsPlot = g_plot	--can be changed in by action specific function
 
-	--set g_modSpell for Tower or Temple
+	--set g_modSpell if caster is in her Tower or Temple
 	if g_eaAction.ConsiderTowerTemple then
-		if gWonders[EA_WONDER_ARCANE_TOWER][g_iPerson] and gWonders[EA_WONDER_ARCANE_TOWER][g_iPerson].iPlot == g_iPlot then	--in tower
-			g_modSpell = g_mod + gWonders[EA_WONDER_ARCANE_TOWER][g_iPerson][GameInfoTypes[g_eaAction.GPModType1] ]		--Assume all spells have exactly one mod
+		if gWonders[EA_WONDER_ARCANE_TOWER][g_iPerson] then
+			if gWonders[EA_WONDER_ARCANE_TOWER][g_iPerson].iPlot == g_iPlot then	--in tower
+				g_bInTowerOrTemple = true
+				g_modSpell = g_mod + gWonders[EA_WONDER_ARCANE_TOWER][g_iPerson][GameInfoTypes[g_eaAction.GPModType1] ]		--Assume all spells have exactly one mod
+			else	--not in tower
+				if g_eaAction.TowerTempleOnly then return false end
+				g_bInTowerOrTemple = false
+				g_modSpell = g_mod
+			end
+		elseif g_eaPerson.templeID and gWonders[g_eaPerson.templeID].iPlot == g_iPlot then
 			g_bInTowerOrTemple = true
-		else		--not in tower
+			local temple = gWonders[g_eaPerson.templeID]
+			if 0 < temple[EAMOD_DEVOTION] then		--Azz temple, no magic schools
+				g_modSpell = g_mod + temple[EAMOD_DEVOTION]
+			else									--all other temples
+				g_modSpell = g_mod + temple[GameInfoTypes[g_eaAction.GPModType1] ]
+			end
+		else	
 			if g_eaAction.TowerTempleOnly then return false end
-			g_modSpell = g_mod
 			g_bInTowerOrTemple = false
+			g_modSpell = g_mod
 		end
 	end
 
@@ -924,7 +940,7 @@ local EA_SPELL_CALL_ANIMALS =				GameInfoTypes.EA_SPELL_CALL_ANIMALS
 local EA_SPELL_CALL_TREE_ENTS =				GameInfoTypes.EA_SPELL_CALL_TREE_ENTS
 
 local monsters = {GameInfoTypes.UNIT_GIANT_SPIDER}
-local undead = {GameInfoTypes.UNIT_ZOMBIES}
+local undead = {GameInfoTypes.UNIT_SKELETON_SWORDSMEN, GameInfoTypes.UNIT_ZOMBIES}
 local abyssalCreatures = {GameInfoTypes.UNIT_HORMAGAUNT}
 local demons = {GameInfoTypes.UNIT_LICTOR, GameInfoTypes.UNIT_HIVE_TYRANT}	--weakest first
 local heavensGuard = {GameInfoTypes.UNIT_ANGEL_SPEARMAN}
@@ -941,32 +957,31 @@ local function ModelSummon_TestTarget()
 
 	local unitTable, numUnits
 	local bLimitOneOnly = false
-	g_int1 = g_eaAction.ID
-	if g_int1 == EA_SPELL_CONJURE_MONSTER then
+	if g_eaActionID == EA_SPELL_CONJURE_MONSTER then
 		unitTable = monsters
 		numUnits = 1
 		bLimitOneOnly = true
-	elseif g_int1 == EA_SPELL_RAISE_DEAD then
+	elseif g_eaActionID == EA_SPELL_RAISE_DEAD then
 		unitTable = undead
 		numUnits = 1
-	elseif g_int1 == EA_SPELL_SUMMON_ABYSSAL_CREATURES then
+	elseif g_eaActionID == EA_SPELL_SUMMON_ABYSSAL_CREATURES then
 		unitTable = abyssalCreatures
 		numUnits = 1
-	elseif g_int1 == EA_SPELL_SUMMON_DEMON then
+	elseif g_eaActionID == EA_SPELL_SUMMON_DEMON then
 		unitTable = demons
 		numUnits = 2
 		bLimitOneOnly = true
-	elseif g_int1 == EA_SPELL_CALL_HEAVENS_GUARD then
+	elseif g_eaActionID == EA_SPELL_CALL_HEAVENS_GUARD then
 		unitTable = heavensGuard
 		numUnits = 1
-	elseif g_int1 == EA_SPELL_CALL_ANGEL then
+	elseif g_eaActionID == EA_SPELL_CALL_ANGEL then
 		unitTable = angels
 		numUnits = 1
 		bLimitOneOnly = true
-	elseif g_int1 == EA_SPELL_CALL_ANIMALS then
+	elseif g_eaActionID == EA_SPELL_CALL_ANIMALS then
 		unitTable = animals
 		numUnits = 2
-	elseif g_int1 == EA_SPELL_CALL_TREE_ENTS then
+	elseif g_eaActionID == EA_SPELL_CALL_TREE_ENTS then
 		unitTable = treeEnts
 		numUnits = 1
 	end
@@ -1023,21 +1038,21 @@ local function ModelSummon_SetUI()
 		MapModData.bShow = true
 		--text for different spells
 		local verb, verbCap, unitStr, unitPlurStr
-		if g_int1 == EA_SPELL_CONJURE_MONSTER then
+		if g_eaActionID == EA_SPELL_CONJURE_MONSTER then
 			verb, verbCap, unitStr, unitPlurStr = "conjure", "Conjure", "monster", "monsters"
-		elseif g_int1 == EA_SPELL_RAISE_DEAD then
+		elseif g_eaActionID == EA_SPELL_RAISE_DEAD then
 			verb, verbCap, unitStr, unitPlurStr = "raise", "Raise", "undead", "undead"
-		elseif g_int1 == EA_SPELL_SUMMON_ABYSSAL_CREATURES then
+		elseif g_eaActionID == EA_SPELL_SUMMON_ABYSSAL_CREATURES then
 			verb, verbCap, unitStr, unitPlurStr = "summon", "Summon", "Abyssal Creatures", "Abyssal Creatures"
-		elseif g_int1 == EA_SPELL_SUMMON_DEMON then
+		elseif g_eaActionID == EA_SPELL_SUMMON_DEMON then
 			verb, verbCap, unitStr, unitPlurStr = "summon", "Summon", "Demon", "Demons"
-		elseif g_int1 == EA_SPELL_CALL_HEAVENS_GUARD then
+		elseif g_eaActionID == EA_SPELL_CALL_HEAVENS_GUARD then
 			verb, verbCap, unitStr, unitPlurStr = "call", "Call", "Heaven's Guard", "Heaven's Guard"
-		elseif g_int1 == EA_SPELL_CALL_ANGEL then
+		elseif g_eaActionID == EA_SPELL_CALL_ANGEL then
 			verb, verbCap, unitStr, unitPlurStr = "call", "Call", "Angel", "Angels"
-		elseif g_int1 == EA_SPELL_CALL_ANIMALS then
+		elseif g_eaActionID == EA_SPELL_CALL_ANIMALS then
 			verb, verbCap, unitStr, unitPlurStr = "call", "Call", "animals", "animals"
-		elseif g_int1 == EA_SPELL_CALL_TREE_ENTS then
+		elseif g_eaActionID == EA_SPELL_CALL_TREE_ENTS then
 			verb, verbCap, unitStr, unitPlurStr = "call", "Call", "Tree-Ent", "Tree-Ents"
 		end
 

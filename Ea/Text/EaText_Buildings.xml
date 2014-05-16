@@ -5,6 +5,569 @@
 
 		<!-- Buildings -->
 
+		<Row Tag="TXT_KEY_EA_BUILDING_MONUMENT">
+			<Text>Monument</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_MONUMENT_HELP">
+			<Text>The Monument increases the [ICON_CULTURE] Culture of a city, speeding the growth of the city's territory and the civilization's acquisition of Social Policies and improving relations with other highly cultured civilizations.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_WARRENS">
+			<Text>Warrens</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_MARKETPLACE">
+			<Text>Marketplace</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_MARKETPLACE_HELP">
+			<Text>+1 [ICON_GOLD] from every resource worked by this city. Increases the likelihood that a Merchant will appear.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_LIBRARY">
+			<Text>Library</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_LIBRARY_HELP">
+			<Text>+1 [ICON_RESEARCH] Research for every 2 [ICON_CITIZEN] Citizens in this City. Increases the likelihood that a Sage will appear.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_AMPHITHEATER">
+			<Text>Amphitheater</Text>
+			<Gender>neuter:an</Gender>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_AMPHITHEATER_HELP">
+			<Text>Increases the likelihood that an Artist will appear.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_WORKSHOP">
+			<Text>Workshop</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_WORKSHOP_HELP">
+			<Text>+10% [ICON_PRODUCTION] Production towards Buildings and Siege units. +2 [ICON_PRODUCTION] Production from Blasting Powder. Increases the likelihood that an Engineer will appear.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_FORGE">
+			<Text>Forge</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_FORGE_HELP">
+			<Text>+10% [ICON_PRODUCTION] Production towards Melee Units. +2 [ICON_PRODUCTION] Production from Copper, Iron and Mithril. Increases the likelihood that an Engineer will appear.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_SHRINE">
+			<Text>Shrine</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_SHRINE_HELP">
+			<Text>Increases the likelihood that a Devout will appear.[NEWLINE][NEWLINE]May only be built if you have opened either the [COLOR_POSITIVE_TEXT]Pantheism[ENDCOLOR] or [COLOR_POSITIVE_TEXT]Theism[ENDCOLOR] Policy Branch.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_MAGE_SCHOOL">
+			<Text>Mage School</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_PHARMAKEIA">
+			<Text>Pharmakeia</Text>
+		</Row>
+		
+		<Row Tag="TXT_KEY_EA_BUILDING_SMOKEHOUSE">
+			<Text>Smokehouse</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_SMOKEHOUSE_HELP">
+			<Text>+1 [ICON_FOOD] Food from [ICON_RES_DEER] Deer, [ICON_RES_TRUFFLES] Boars, [ICON_RES_FUR] Small Game and [ICON_RES_IVORY] Elephants worked by this city.[NEWLINE][NEWLINE]Each camp-improved resource owned by this city that is remote (>3 plots from city) provides +1 Food [ICON_FOOD] through this building.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_TANNERY">
+			<Text>Tannery</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_TANNERY_HELP">
+			<Text>+1 [ICON_PRODUCTION] Production and +1 Leather resource from Boars, Cows, Deer and Horses worked by this city.[NEWLINE][NEWLINE]City must have an improved source of at least one of these resources nearby:</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_IVORYWORKS">
+			<Text>Ivoryworks</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_IVORYWORKS_HELP">
+			<Text>+1 [ICON_CULTURE] Culture and +1 Ivory resource from Elephants and Whales resources worked by this city.[NEWLINE][NEWLINE]City must have an improved source of at least one of these resources nearby:</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_GRANARY">
+			<Text>Granary</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_GRANARY_HELP">
+			<Text>10% of [ICON_FOOD] Food is carried over after growth.[NEWLINE]+2 [ICON_FOOD] Food from Wheat worked by this city.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_SALTWORKS">
+			<Text>Saltworks</Text>
+		</Row>		
+		<Row Tag="TXT_KEY_EA_BUILDING_SALTWORKS_HELP">
+			<Text>10% of [ICON_FOOD] Food is carried over after growth.[NEWLINE]+1 [ICON_FOOD] Food and +1 [ICON_GOLD] Gold from Salt resources worked by this city.[NEWLINE][NEWLINE]City must have an improved source of Salt nearby.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_STABLE">
+			<Text>Stable</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_STABLE_HELP">
+			<Text>+30% [ICON_PRODUCTION] Production towards horse-mounted units.[NEWLINE]+2 [ICON_PRODUCTION] Production from Horses resources worked by this city.[NEWLINE][NEWLINE]City must have an improved source of Horses nearby.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_ELEPHANT_STOCKADE">
+			<Text>Elephant Stockade</Text>
+			<Gender>neuter:an</Gender>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_ELEPHANT_STOCKADE_HELP">
+			<Text>+20% [ICON_PRODUCTION] Production towards elephant-mounted units.[NEWLINE]+2 [ICON_PRODUCTION] Production from Elephants resources worked by this city.[NEWLINE][NEWLINE]City must have an improved source of Elephants nearby.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_HUNTING_LODGE">
+			<Text>Hunting Lodge</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_HUNTING_LODGE_HELP">
+			<Text>+1 [ICON_FOOD] Food and +1 [ICON_GOLD] Gold from [ICON_RES_DEER] Deer, [ICON_RES_TRUFFLES] Boars, [ICON_RES_FUR] Small Game and [ICON_RES_IVORY] Elephants worked by this city.[NEWLINE][NEWLINE]Each camp-improved resource owned by this city that is remote (>3 plots from city) provides +1 Food [ICON_FOOD] and +1 [ICON_GOLD] Gold through this building.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_ABATTOIR">
+			<Text>Abattoir</Text>
+			<Gender>neuter:an</Gender>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_ABATTOIR_HELP">
+			<Text>+2 [ICON_FOOD] Food from Cows, Horse and Sheep resources worked by this city.[NEWLINE][NEWLINE]City must have an improved source of at least one of these resources nearby.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_KNACKERY">
+			<Text>Knackery</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_KNACKERY_HELP">
+			<Text>+2 [ICON_PRODUCTION] PRODUCTION from Cows, Horse and Sheep worked by this city.[NEWLINE][NEWLINE]City must have an improved source of at least one of these resources nearby.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_HARBOR">
+			<Text>Harbor</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_HARBOR_HELP">
+			<Text>Allows the city to form [ICON_CONNECTED] Trade Routes across water.[NEWLINE]+1 [ICON_FOOD] Food from [ICON_RES_FISH] Fish, [ICON_RES_CRAB] Crabs, [ICON_RES_PEARLS] Oysters and [ICON_RES_WHALE] Whales worked by this city.[NEWLINE][NEWLINE]Each sea resource owned by this city that is remote (>3 plots from city) provides +1 Food [ICON_FOOD] through this building.[NEWLINE][NEWLINE]City must be coastal.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_TIMBERYARD">
+			<Text>Timberyard</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_TIMBERYARD_HELP">
+			<Text>+1 Timber resource from Sawmills near this City.[NEWLINE]+1 Timber for every 4 unimproved Forest and Jungle tiles for Pantheistic Civilizations.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_COTTON_GIN">
+			<Text>Cotton Gin</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_COTTON_GIN_HELP">
+			<Text>+1 [ICON_PRODUCTION] Production and +1 [ICON_GOLD] Gold from Cotton worked by this city.[NEWLINE][NEWLINE]City must have an improved source of Cotton nearby.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_WINERY">
+			<Text>Winery</Text>
+		</Row>		
+		<Row Tag="TXT_KEY_EA_BUILDING_WINERY_HELP">
+			<Text>+1 [ICON_FOOD] Food and +1 [ICON_CULTURE] Culture from Wine worked by this city.[NEWLINE][NEWLINE]City must have an improved source of Wine nearby.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_BREWERY">
+			<Text>Brewery</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_BREWERY_HELP">
+			<Text>Provides 1 Ale resource; +1 [ICON_CULTURE] Culture from Wheat worked by this city.[NEWLINE][NEWLINE]City must have an improved source of Wheat nearby.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_FAIR">
+			<Text>Fair</Text>
+		</Row>		
+		<Row Tag="TXT_KEY_EA_BUILDING_FAIR_HELP">
+			<Text>+1 [ICON_CULTURE] Culture from Grapes, Dye, Silk and Spices worked by this city. Increases the likelihood that an Artist will appear.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_MINT">
+			<Text>Mint</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_MINT_HELP">
+			<Text>+2 [ICON_GOLD] Gold from Gold, Silver and Mithril and +1 [ICON_GOLD] from Copper and Iron resources worked by this city.[NEWLINE][NEWLINE]City must have an improved source of at least one of these resources nearby.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_STONE_WORKS">
+			<Text>Stone Works</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_STONE_WORKS_HELP">
+			<Text>+1 [ICON_PRODUCTION] Production and +2 [ICON_CULTURE] from Stone and Marble worked by this city.[NEWLINE][NEWLINE]City must have an improved source of at least one of these resources nearby.</Text>
+		</Row>
+		
+		<Row Tag="TXT_KEY_EA_BUILDING_MOUNDS">
+			<Text>Mounds</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_MOUNDS_HELP">
+			<Text>May only be built if you have taken the Pantheism Social Policy.[NEWLINE][NEWLINE]May only be built by the Sídhe.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_GALLOWS">
+			<Text>Gallows</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_GALLOWS_HELP">
+			<Text>Reduces extra [ICON_HAPPINESS_4] Unhappiness in an [ICON_OCCUPIED] Occupied City by 10%.[NEWLINE][NEWLINE]May only be built if you have taken the [COLOR_POSITIVE_TEXT]Slavery[ENDCOLOR] Social Policy.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_DEBTORS_COURT">
+			<Text>Debtor's Court</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_DEBTORS_COURT_HELP">
+			<Text>Can convert 1 [ICON_CITIZEN] Citizen per turn into a Slaves unit.[NEWLINE][NEWLINE]May only be built if you have taken the [COLOR_POSITIVE_TEXT]Debt Bondage[ENDCOLOR] Social Policy.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_GOVERNORS_COMPOUND">
+			<Text>Governor's Compound</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_GOVERNORS_COMPOUND_HELP">
+			<Text>Reduces extra [ICON_HAPPINESS_4] Unhappiness from an [ICON_OCCUPIED] Occupied City by 40%.[NEWLINE][NEWLINE]May only be built if you have taken the [COLOR_POSITIVE_TEXT]Militarism[ENDCOLOR] Social Policy.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TRIBAL_COUNCIL">
+			<Text>Tribal Council</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_TRIBAL_COUNCIL_HELP">
+			<Text>May only be built in a City of a different race than your Civilization and if you have taken the [COLOR_POSITIVE_TEXT]Tradition[ENDCOLOR] Social Policy.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FOREFATHERS_STATUE">
+			<Text>Forefather's Statue</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_FOREFATHERS_STATUE_HELP">
+			<Text>Eliminates extra [ICON_HAPPINESS_4] Unhappiness from an [ICON_OCCUPIED] Occupied City.[NEWLINE][NEWLINE]May only be built 100 turns after conquest, in a City of the same race as your Civilization and if you have taken the [COLOR_POSITIVE_TEXT]Tradition[ENDCOLOR] Social Policy.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_JEWELLER">
+			<Text>Jeweller</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_JEWELLER_HELP">
+			<Text>+1 Jewelry resource. +1 [ICON_CULTURE] Culture from Gold, Silver, Gems, Jade and Oysters resources worked by this city.</Text>
+		</Row>
+		
+		<Row Tag="TXT_KEY_EA_BUILDING_RIVER_DOCK">
+			<Text>River Dock</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_RIVER_DOCK_HELP">
+			<Text>Forms [ICON_CONNECTED] City Connections with other cities that have a River Dock and share a river. [NEWLINE][NEWLINE]City must be built adjacent to a river.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_LIGHTHOUSE">
+			<Text>Lighthouse</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_LIGHTHOUSE_HELP">
+			<Text>+20% [ICON_CONNECTED] Trade in this City.[NEWLINE][NEWLINE]City must be built on the coast.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_WATERMILL">
+			<Text>Watermill</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_WATERMILL_HELP">
+			<Text>City must be built next to a River.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_WINDMILL">
+			<Text>Windmill</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_WINDMILL_HELP">
+			<Text>City must have at least 5 flat adjacent plots.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_SILOS">
+			<Text>Silos</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_COURTHOUSE">
+			<Text>Courthouse</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_COURTHOUSE_HELP">
+			<Text>Reduces extra [ICON_HAPPINESS_4] Unhappiness from an [ICON_OCCUPIED] Occupied City by 30%.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_WALLS">
+			<Text>Walls</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_WALLS_HELP">
+			<Text>Walls increase a city's Defense Strength, making the city more difficult to capture. Walls are quite useful for cities located along a civilization's frontier.</Text>
+		</Row>
+
+
+		<Row Tag="TXT_KEY_EA_BUILDING_SMITHS_GUILD">
+			<Text>Smiths' Guild</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_SMITHS_GUILD_HELP">
+			<Text>Increases the likelihood that an Engineer will appear.[NEWLINE][NEWLINE]May only be built if you have taken the [COLOR_POSITIVE_TEXT]Guilds[ENDCOLOR] Social Policy.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_TRADERS_GUILD">
+			<Text>Traders' Guild</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_TRADERS_GUILD_HELP">
+			<Text>Increases the likelihood that a Merchant will appear.[NEWLINE][NEWLINE]May only be built if you have taken the [COLOR_POSITIVE_TEXT]Guilds[ENDCOLOR] Social Policy.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_SCRIBES_GUILD">
+			<Text>Scribes' Guild</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_SCRIBES_GUILD_HELP">
+			<Text>Increases the likelihood that a Sage will appear.[NEWLINE][NEWLINE]May only be built if you have taken the [COLOR_POSITIVE_TEXT]Guilds[ENDCOLOR] Social Policy.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_ARTISANS_GUILD">
+			<Text>Artisans' Guild</Text>
+			<Gender>neuter:an</Gender>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_ARTISANS_GUILD_HELP">
+			<Text>Increases the likelihood that an Artist will appear.[NEWLINE][NEWLINE]May only be built if you have taken the [COLOR_POSITIVE_TEXT]Guilds[ENDCOLOR] Social Policy.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_DISCIPLES_GUILD">
+			<Text>Disciples' Guild</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_DISCIPLES_GUILD_HELP">
+			<Text>Increases the likelihood that a Devout will appear.[NEWLINE][NEWLINE]May only be built if you have taken the [COLOR_POSITIVE_TEXT]Guilds[ENDCOLOR] Social Policy.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_ADEPTS_GUILD">
+			<Text>Adepts' Guild</Text>
+			<Gender>neuter:an</Gender>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_ADEPTS_GUILD_HELP">
+			<Text>Increases the likelihood that a Thaumaturge will appear.[NEWLINE][NEWLINE]May only be built if you have taken the [COLOR_POSITIVE_TEXT]Guilds[ENDCOLOR] Social Policy.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_APOTHECARY">
+			<Text>Apothecary</Text>
+			<Gender>neuter:an</Gender>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_APOTHECARY_HELP">
+			<Text>+2 [ICON_RESEARCH] Research from Reagents resources worked by this city.[NEWLINE]+2 Health in this city.[NEWLINE][NEWLINE]City must have an improved source of Reagents nearby.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_FACTORY">
+			<Text>Factory</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_FACTORY_HELP">
+			<Text>Increases the likelihood that an Engineer will appear.[NEWLINE][NEWLINE]City must have a Forge.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_MONASTIC_SCHOOL">
+			<Text>Monastic School</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_MONASTIC_SCHOOL_HELP">
+			<Text>Increases the likelihood that a Sage will appear.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_UNIVERSITY">
+			<Text>University</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_UNIVERSITY_HELP">
+			<Text>Increases the likelihood that a Sage will appear.[NEWLINE][NEWLINE]+15% [ICON_RESEARCH] Research with the [COLOR_POSITIVE_TEXT]Academic Tradition[ENDCOLOR] Social Policy.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_BANK">
+			<Text>Bank</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_BANK_HELP">
+			<Text>Increases the likelihood that a Merchant will appear.[NEWLINE][NEWLINE]+15% [ICON_GOLD] Gold with the [COLOR_POSITIVE_TEXT]Mercantilism[ENDCOLOR] Social Policy.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_LABORATORY">
+			<Text>Laboratory</Text>
+		</Row>		
+		<Row Tag="TXT_KEY_EA_BUILDING_LABORATORY_HELP">
+			<Text>+2 [ICON_RESEARCH] Research from Blasting Powder, Mithril and Reagents resources worked by this city.[NEWLINE][NEWLINE]City must have a Library and an improved source of at least one of these resources nearby.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_THEATRE">
+			<Text>Theatre</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_THEATRE_HELP">
+			<Text>Increases the likelihood that an Artist will appear.[NEWLINE][NEWLINE]City must have an Amphitheater.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_OPERA_HOUSE">
+			<Text>Opera House</Text>
+			<Gender>neuter:an</Gender>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_OPERA_HOUSE_HELP">
+			<Text>Increases the likelihood that an Artist will appear.[NEWLINE][NEWLINE]City must have an Amphitheater.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_MONASTERY">
+			<Text>Monastery</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_MONASTERY_HELP">
+			<Text>+1 [ICON_CULTURE] from Wine and Incense resources worked by this city. Increases the likelihood that a Devout will appear.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_PORT">
+			<Text>Port</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_PORT_HELP">
+			<Text>+1 [ICON_FOOD] Food and +1 [ICON_GOLD] Gold from each [ICON_RES_FISH] Fish, [ICON_RES_CRAB] Crabs, [ICON_RES_PEARLS] Oysters and [ICON_RES_WHALE] Whales worked by this city.[NEWLINE][NEWLINE]Each sea resource owned by this city that is remote (>3 plots from city) provides +1 Food [ICON_FOOD] and +1 [ICON_GOLD] Gold through this building.[NEWLINE][NEWLINE]City must be coastal and have a Harbor.[NEWLINE][NEWLINE]+15% [ICON_GOLD] Gold with the [COLOR_POSITIVE_TEXT]Merchant Navy[ENDCOLOR] Social Policy.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_MUSEUM">
+			<Text>Museum</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_MUSEUM_HELP">
+			<Text>placeholder</Text>
+		</Row>
+
+
+		<Row Tag="TXT_KEY_EA_BUILDING_BREEDING_PEN">
+			<Text>Breeding Pen</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_BOWYER">
+			<Text>Bowyer</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_BOWYER_HELP">
+			<Text>+20% [ICON_PRODUCTION] Production towards Archery units and they receive +5 XP.[NEWLINE]+1 [ICON_PRODUCTION] Production, [ICON_GOLD] Gold and [ICON_CULTURE] Culture from Yew resources worked by this city.[NEWLINE][NEWLINE]City must have an improved source of Yew nearby.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_ROASTING_FURNACE">
+			<Text>Roasting Furnace</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_CHRYSOPOEIA_REACTOR">
+			<Text>Chrysopoeia Reactor</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_ARGENTOPOEIA_REACTOR">
+			<Text>Argentopoeia Reactor</Text>
+			<Gender>neuter:an</Gender>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_DISTILLERY">
+			<Text>Distillery</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_DISTILLERY_HELP">
+			<Text>+1 [ICON_CULTURE] Culture and +1 Spirits resources from Sugar resources worked by this city.[NEWLINE][NEWLINE]City must have an improved source of Yew nearby.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_WHALERY">
+			<Text>Whalery</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_WHALERY_HELP">
+			<Text>+1 [ICON_FOOD] Food and +1 [ICON_PRODUCTION] Production from [ICON_RES_WHALE] Whales worked by this city.[NEWLINE][NEWLINE]Each Whale owned by this city that is remote (>3 plots from city) provides +1 Food [ICON_FOOD] and +1 [ICON_PRODUCTION] Production through this building.[NEWLINE][NEWLINE]City must be coastal and have a Harbor.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_ARMORY">
+			<Text>Armory</Text>
+			<Gender>neuter:an</Gender>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_ARMORY_HELP">
+			<Text>+5% [ICON_PRODUCTION] Production towards Melee units and they receive +5 XP.[NEWLINE]+1 [ICON_PRODUCTION] Production from Copper, Iron, Mithril and Blasting Powder resources worked by this city.[NEWLINE][NEWLINE]City must have a Forge and an improved source of at least one of these resources nearby.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_ARSENAL">
+			<Text>Arsenal</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_ARSENAL_HELP">
+			<Text>+5% [ICON_PRODUCTION] Production towards Melee units and they receive +5 XP.[NEWLINE]+1 [ICON_PRODUCTION] Production from Copper, Iron, Mithril and Blasting Powder resources worked by this city.[NEWLINE][NEWLINE]City must have an Armory and an improved source of at least one of these resources nearby.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_TEXTILE_MILL">
+			<Text>Textile Mill</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_TEXTILE_MILL_HELP">
+			<Text>+2 [ICON_GOLD] GOld and +2 [ICON_CULTURE] Culture from Sheep, Cotton, Silk and Dye resources worked by this city.[NEWLINE][NEWLINE]City an improved source of at least one of these resources nearby.</Text>
+		</Row>
+
+
+		<Row Tag="TXT_KEY_EA_BUILDING_SLAVE_MARKET">
+			<Text>Slave Market</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_SLAVE_MARKET_HELP">
+			<Text>Enables you to sell Slaves for [ICON_GOLD] Gold.[NEWLINE][NEWLINE]May only be built if you have taken the [COLOR_POSITIVE_TEXT]Slave Trade[ENDCOLOR] Social Policy.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_SLAVE_KNACKERY">
+			<Text>Slave Knackery</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_SLAVE_KNACKERY_HELP">
+			<Text>Enables you to render Slaves for [ICON_PRODUCTION] Production.[NEWLINE][NEWLINE]May only be built if you have taken the [COLOR_POSITIVE_TEXT]Slave Castes[ENDCOLOR] Social Policy.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_SLAVE_STOCKADE">
+			<Text>Slave Stockade</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_SLAVE_STOCKADE_HELP">
+			<Text>Has a small chance each turn of spawning a Slaves unit.[NEWLINE][NEWLINE]May only be built if you have taken the [COLOR_POSITIVE_TEXT]Slave Raiders[ENDCOLOR] Social Policy.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_SLAVE_BREEDING_PEN">
+			<Text>Slave Breeding Pen</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_SLAVE_BREEDING_PEN_HELP">
+			<Text>Halves the Growth Penalty when your empire is Unhappy and allows you to train Settlers regardless of unhappines.[NEWLINE][NEWLINE]May only be built if you have taken the [COLOR_POSITIVE_TEXT]Slave Breeding[ENDCOLOR] Social Policy.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_INTERNMENT_CAMP">
+			<Text>Internment Camp</Text>
+			<Gender>neuter:an</Gender>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_INTERNMENT_CAMP_HELP">
+			<Text>Nearby revolting units are eliminated or converted into Slaves.[NEWLINE][NEWLINE]May only be built if you have taken the [COLOR_POSITIVE_TEXT]Servi Aeternam[ENDCOLOR] Social Policy.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_BARRACKS">
+			<Text>Barracks</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_BARRACKS_HELP">
+			<Text>+5 XP for all Land Units.[NEWLINE][NEWLINE]May only be built if you have taken the [COLOR_POSITIVE_TEXT]Discipline[ENDCOLOR] Social Policy.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_PAPERMILL">
+			<Text>Papermill</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_PAPERMILL_HELP">
+			<Text>May only be built if you have taken the [COLOR_POSITIVE_TEXT]Scholasticism[ENDCOLOR] Social Policy.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_KILN">
+			<Text>Kiln</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_KILN_HELP">
+			<Text>+1 Porcelain resource.[NEWLINE][NEWLINE]May only be built if you have taken the [COLOR_POSITIVE_TEXT]Crafting[ENDCOLOR] Social Policy.</Text>
+		</Row>
+
+
+		<Row Tag="TXT_KEY_EA_BUILDING_STRONGHOLD">
+			<Text>Stronghold</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_CASTLE">
+			<Text>Castle</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_CASTLE_HELP">
+			<Text>placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_AQUEDUCT">
+			<Text>Aqueduct</Text>
+			<Gender>neuter:an</Gender>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_AQUEDUCT_HELP">
+			<Text>+4 Health in this city.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_WAREHOUSES">
+			<Text>Warehouses</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_PUBLIC_BATHS">
+			<Text>Public Baths</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_PUBLIC_BATHS_HELP">
+			<Text>+2 Health in this city.[NEWLINE][NEWLINE]City must have an Aqueduct.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_COLOSSEUM">
+			<Text>Colosseum</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_COLOSSEUM_HELP">
+			<Text>+2 Happiness and +1 [ICON_CULTURE] Culture</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_SEWERS">
+			<Text>Sewers</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_SEWERS_HELP">
+			<Text>+6 Health in this city.[NEWLINE][NEWLINE]City must have an Aqueduct.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_PRINTING_PRESS">
+			<Text>Printing Press</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_PRINTING_PRESS_HELP">
+			<Text>placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_OBSERVATORY">
+			<Text>Observatory</Text>
+			<Gender>neuter:an</Gender>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_OBSERVATORY_HELP">
+			<Text>City must be built next to a Mountain.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_SHIPYARD">
+			<Text>Shipyard</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_SHIPYARD_HELP">
+			<Text>+20% [ICON_PRODUCTION] Production towards Naval units and they receive +5 XP.[NEWLINE][NEWLINE]City must have a Harbor.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_HOSPITAL">
+			<Text>Hospital</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_HOSPITAL_HELP">
+			<Text>+6 Health in this city.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_DEEP_FARMS">
+			<Text>Deep Farms</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_DEEP_FARMS_HELP">
+			<Text>+3 [ICON_FOOD] Food from Mine improvements worked by this city.[NEWLINE]+3 [ICON_FOOD] Food and +2 [ICON_PRODUCTION] Production from Mountains worked by this city.</Text>
+		</Row>
+		
+		<Row Tag="TXT_KEY_EA_BUILDING_FOUNDRY">
+			<Text>Foundry</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_FOUNDRY_HELP">
+			<Text>Must be built by an Engineer.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_ACADEMY">
+			<Text>Academy</Text>
+			<Gender>neuter:an</Gender>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_ACADEMY_HELP">
+			<Text>Must be built by a Sage.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_CATHEDRAL">
+			<Text>Cathedral</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_TRADE_HOUSE">
+			<Text>Trade House</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_MILITARY_ACADEMY">
+			<Text>Military Academy</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_NAVAL_ACADEMY">
+			<Text>Naval Academy</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_NATIONAL_TREASURY">
+			<Text>National Treasury</Text>
+		</Row>
+
+
+		<Row Tag="TXT_KEY_EA_BUILDING_PALACE">
+			<Text>Palace</Text>
+		</Row>
+
+		<!-- Wonders -->
 		<Row Tag="TXT_KEY_EA_BUILDING_STANHENCG">
 			<Text>Stânhencg</Text>
 		</Row>
@@ -31,288 +594,6 @@
 		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_GREAT_LIBRARY">
 			<Text>Great Library</Text>
-		</Row>
-
-		<Row Tag="TXT_KEY_EA_BUILDING_SEWERS">
-			<Text>Sewers</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_PUBLIC_BATHS">
-			<Text>Public Baths</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_APOTHECARY">
-			<Text>Apothecary</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_COTTON_GIN">
-			<Text>Cotton Gin</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_TIMBERYARD">
-			<Text>Timberyard</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_BREEDING_PEN">
-			<Text>Breeding Pen</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_WINERY">
-			<Text>Winery</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_SALTWORKS">
-			<Text>Saltworks</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_HUNTING_LODGE">
-			<Text>Hunting Lodge</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_PALACE">
-			<Text>Capital</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_MONUMENT">
-			<Text>Monument</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_WARRENS">
-			<Text>Warrens</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_MARKETPLACE">
-			<Text>Marketplace</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_LIBRARY">
-			<Text>Library</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_FAIR">
-			<Text>Fair</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_FORGE">
-			<Text>Forge</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_SMOKEHOUSE">
-			<Text>Smokehouse</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_TANNERY">
-			<Text>Tannery</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_IVORYWORKS">
-			<Text>Ivoryworks</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_GRANARY">
-			<Text>Granary</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_STABLE">
-			<Text>Stable</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_ELEPHANT_STOCKADE">
-			<Text>Elephant Stockade</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_HARBOR">
-			<Text>Harbor</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_BREWERY">
-			<Text>Brewery</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_MINT">
-			<Text>Mint</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_STONE_WORKS">
-			<Text>Stone Works</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_MONASTERY">
-			<Text>Monastery</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_LIGHTHOUSE">
-			<Text>Lighthouse</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_THEATRE">
-			<Text>Theatre</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_WINDMILL">
-			<Text>Windmill</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_WATERMILL">
-			<Text>Watermill</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_SILOS">
-			<Text>Silos</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_WALLS">
-			<Text>Walls</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_SLAVE_STOCKADE">
-			<Text>Slave Stockade</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_BARRACKS">
-			<Text>Barracks</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_BANK">
-			<Text>Bank</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_UNIVERSITY">
-			<Text>University</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_FACTORY">
-			<Text>Factory</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_LABORATORY">
-			<Text>Laboratory</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_OPERA_HOUSE">
-			<Text>Opera House</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_WORKSHOP">
-			<Text>Workshop</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_PORT">
-			<Text>Port</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_BOWYER">
-			<Text>Bowyer</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_ROASTING_FURNACE">
-			<Text>Roasting Furnace</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_CHRYSOPOEIA_REACTOR">
-			<Text>Chrysopoeia Reactor</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_ARGENTOPOEIA_REACTOR">
-			<Text>Argentopoeia Reactor</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_WHALERY">
-			<Text>Whalery</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_TEXTILE_MILL">
-			<Text>Textile Mill</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_DISTILLERY">
-			<Text>Distillery</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_COLOSSEUM">
-			<Text>Colosseum</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_CASTLE">
-			<Text>Castle</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_STRONGHOLD">
-			<Text>Stronghold</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_AQUEDUCT">
-			<Text>Aqueduct</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_WAREHOUSES">
-			<Text>Warehouses</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_ARMORY">
-			<Text>Armory</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_OBSERVATORY">
-			<Text>Observatory</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_SHIPYARD">
-			<Text>Shipyard</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_HOSPITAL">
-			<Text>Hospital</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_CATHEDRAL">
-			<Text>Cathedral</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_DEEP_FARMS">
-			<Text>Deep Farms</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_SLAVE_FACTORY">
-			<Text>Slave Factory</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_TRADE_HOUSE">
-			<Text>Trade House</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_ACADEMY">
-			<Text>Academy</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_NATIONAL_TREASURY">
-			<Text>National Treasury</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_AMPHITHEATER">
-			<Text>Amphitheater</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_SHRINE">
-			<Text>Shrine</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_MAGE_SCHOOL">
-			<Text>Mage School</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_PHARMAKEIA">
-			<Text>Pharmakeia</Text>
-		</Row>
-
-
-		<Row Tag="TXT_KEY_EA_BUILDING_ABATTOIR">
-			<Text>Abattoir</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_KNACKERY">
-			<Text>Knackery</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_MOUNDS">
-			<Text>Mounds</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_GALLOWS">
-			<Text>Gallows</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_DEBTORS_COURT">
-			<Text>Debtor's Court</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_GOVERNORS_COMPOUND">
-			<Text>Governor's Compound</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_FLOATING_GARDENS">
-			<Text>Floating Gardens</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_COURTHOUSE">
-			<Text>Courthouse</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_SMITHS_GUILD">
-			<Text>Smiths' Guild</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_TRADERS_GUILD">
-			<Text>Traders' Guild</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_SCRIBES_GUILD">
-			<Text>Scribes' Guild</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_ARTISANS_GUILD">
-			<Text>Artisans' Guild</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_DISCIPLES_GUILD">
-			<Text>Disciples' Guild</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_ADEPTS_GUILD">
-			<Text>Adepts' Guild</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_MONASTIC_SCHOOL">
-			<Text>Monastic School</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_ARSENAL">
-			<Text>Arsenal</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_SLAVE_MARKET">
-			<Text>Slave Market</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_SLAVE_KNACKERY">
-			<Text>Slave Knackery</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_SLAVE_BREEDING_PEN">
-			<Text>Breeding Pen</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_INTERNMENT_CAMP">
-			<Text>Internment Camp</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_PAPERMILL">
-			<Text>Papermill</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_JEWELLER">
-			<Text>Jeweller</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_KILN">
-			<Text>Kiln</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_PRINTING_PRESS">
-			<Text>Printing Press</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_MUSEUM">
-			<Text>Museum</Text>
 		</Row>
 
 		<!-- Hidden Buildings (only seen in debug mode) -->

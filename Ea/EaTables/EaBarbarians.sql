@@ -17,12 +17,14 @@ CREATE TABLE EaEncampments ('ID' INTEGER PRIMARY KEY AUTOINCREMENT,
 
 INSERT INTO EaEncampments (Type, Description,							TribeAdjective,						NearbyPlotSpecial1,	NearbyPlotSpecial2,	NearbyPlotSpecial3	) VALUES
 ('EA_ENCAMPMENT_WILDMEN',		'TXT_KEY_EA_ENCAMPMENT_WILDMEN',		'TXT_KEY_EA_ENCAMPMENT_WILDMEN_ADJ','Cold',				'Sea',				NULL				),
-('EA_ENCAMPMENT_HORSETRIBE',	'TXT_KEY_EA_ENCAMPMENT_HORSETRIBE',		NULL,								'Flatland',			NULL,				NULL				),
-('EA_ENCAMPMENT_ELEPHANTTRIBE',	'TXT_KEY_EA_ENCAMPMENT_ELEPHANTTRIBE',	NULL,								'Flatland',			'Forest',			'Jungle'			),	--should get it in most cases near plot resource
+('EA_ENCAMPMENT_HORSETRIBE',	'TXT_KEY_EA_ENCAMPMENT_HORSETRIBE',		NULL,								'Plains',			'Grass',			NULL				),
+('EA_ENCAMPMENT_ELEPHANTTRIBE',	'TXT_KEY_EA_ENCAMPMENT_ELEPHANTTRIBE',	NULL,								'Grass',			'Forest',			'Jungle'			),	--should get it in most cases near plot resource
 ('EA_ENCAMPMENT_PIRATES',		'TXT_KEY_EA_ENCAMPMENT_PIRATES',		'TXT_KEY_EA_ENCAMPMENT_PIRATES_ADJ','Sea',				NULL,				NULL				),	
-('EA_ENCAMPMENT_ORCS',			'TXT_KEY_EA_ENCAMPMENT_ORCS',			NULL,								'Jungle',			'Forest',			NULL				),	
-('EA_ENCAMPMENT_HOBGOBLINS',	'TXT_KEY_EA_ENCAMPMENT_HOBGOBLINS',		NULL,								'Hill',				'Mountain',			NULL				),	
-('EA_ENCAMPMENT_OGRES',			'TXT_KEY_EA_ENCAMPMENT_OGRES',			NULL,								'Desert',			NULL,				NULL				);
+('EA_ENCAMPMENT_ORCS',			'TXT_KEY_EA_ENCAMPMENT_ORCS',			NULL,								'Grass',			'River',			NULL				),	
+('EA_ENCAMPMENT_GOBLINS',		'TXT_KEY_EA_ENCAMPMENT_GOBLINS',		NULL,								'Hill',				'Mountain',			'Forest'			),	
+('EA_ENCAMPMENT_HOBGOBLINS',	'TXT_KEY_EA_ENCAMPMENT_HOBGOBLINS',		NULL,								'Jungle',			NULL,				NULL				),	
+('EA_ENCAMPMENT_OGRES',			'TXT_KEY_EA_ENCAMPMENT_OGRES',			NULL,								'Plains',			'Grass',			NULL				),	
+('EA_ENCAMPMENT_NAGAS',			'TXT_KEY_EA_ENCAMPMENT_NAGAS',			NULL,								'Desert',			NULL,				NULL				);
 
 UPDATE EaEncampments SET RequiresCoastal = 1, UseWorldDensity = 1, PrereqTech = 'TECH_SAILING', AdHocScore = 15 WHERE Type = 'EA_ENCAMPMENT_PIRATES';
 UPDATE EaEncampments SET RequiredResource = 'RESOURCE_HORSE' WHERE Type = 'EA_ENCAMPMENT_HORSETRIBE';
@@ -38,20 +40,22 @@ CREATE TABLE EaEncampments_TechAwardByTurn ('TechType' TEXT NOT NULL, 'Turn' INT
 --This table can force an encampment upgrade (or base or roaming unit upgrade) as if barbs have learned a tech (barbs don't really learn tech but actual barb techs have no effect in mod anyway)
 
 INSERT INTO EaEncampments_TechAwardByTurn (TechType,	Turn) VALUES
-('TECH_ARCHERY',		60),	--WARNING! Due to lazy implementation, Turn values must be unique integers
-('TECH_BRONZE_WORKING',	70),	--Values are for Quick speed and Small/Tiny/Dual map; multipliers are:
-('TECH_SAILING',		80),	--	Speed: Standard 1.5; Epic 2; Marathon 3
-('TECH_MILLING',		90),	--  Size:  Standard 1.1; Large 1.2; Huge 1.3
-('TECH_ALCHEMY',		120),
-('TECH_IRON_WORKING',	130),
-('TECH_CHEMISTRY',		140),
-('TECH_WAR_HORSES',		150),
-('TECH_SHIP_BUILDING',	160),
-('TECH_WAR_ELEPHANTS',	170),
-('TECH_BOWYERS',		180),
-('TECH_NAVIGATION',		190),
-('TECH_MACHINERY',		200),
-('TECH_MUMAKIL_RIDING',	250);
+('TECH_ARCHERY',			60),	--WARNING! Due to lazy coding, Turn values must be unique integers
+('TECH_BRONZE_WORKING',		70),	--Values are for Quick speed and Small/Tiny/Dual map; multipliers are:
+('TECH_SAILING',			80),	--	Speed: Standard 1.5; Epic 2; Marathon 3
+('TECH_TRACKING_TRAPPING',	90),	--  Size:  Standard 1.1; Large 1.2; Huge 1.3
+('TECH_HORSEBACK_RIDING',	100),
+('TECH_MECHANICS',			110),	
+('TECH_ALCHEMY',			120),
+('TECH_IRON_WORKING',		130),
+('TECH_CHEMISTRY',			140),
+('TECH_WAR_HORSES',			150),
+('TECH_SHIP_BUILDING',		160),
+('TECH_WAR_ELEPHANTS',		170),
+('TECH_BOWYERS',			180),
+('TECH_NAVIGATION',			190),
+('TECH_MACHINERY',			200),
+('TECH_MUMAKIL_RIDING',		250);
 
 
 /*
@@ -74,7 +78,8 @@ INSERT INTO EaEncampments_TribeAdjectives (EncampmentType,	Adjective) VALUES
 UPDATE EaEncampments_TribeAdjectives SET EncampmentName = 'TXT_KEY_EA_ENCAMPMENT';	--could use this to replace "Uygur Encampment" with "Uygur Settlement" or whatever
 */
 
---Order matters for the next 3 tables! The 1st and 2nd units encountered (and allowed by known techs) will be used for each given encompement type
+--Order matters for the next 3 tables! The 1st and 2nd units encountered (and allowed by known techs) will be used for each given encompement type,
+--so arange from strongest to weakest
 
 CREATE TABLE EaEncampments_BaseUnits ('EncampmentType' TEXT NOT NULL, 'UnitType' TEXT NOT NULL, 'TechType' TEXT DEFAULT NULL);
 INSERT INTO EaEncampments_BaseUnits (EncampmentType,	UnitType,	TechType) VALUES
@@ -86,17 +91,23 @@ INSERT INTO EaEncampments_BaseUnits (EncampmentType,	UnitType,	TechType) VALUES
 ('EA_ENCAMPMENT_HORSETRIBE',	'UNIT_LIGHT_INFANTRY_MAN',		'TECH_BRONZE_WORKING'	),
 ('EA_ENCAMPMENT_HORSETRIBE',	'UNIT_ARCHERS_MAN',				'TECH_ARCHERY'			),
 ('EA_ENCAMPMENT_HORSETRIBE',	'UNIT_WARRIORS_MAN',			NULL					),
-('EA_ENCAMPMENT_ELEPHANTTRIBE',	'UNIT_LIGHT_INFANTRY_MAN',		'TECH_BRONZE_WORKING'	),
-('EA_ENCAMPMENT_ELEPHANTTRIBE',	'UNIT_ARCHERS_MAN',				'TECH_ARCHERY'			),
-('EA_ENCAMPMENT_ELEPHANTTRIBE',	'UNIT_WARRIORS_MAN',			NULL					),
+('EA_ENCAMPMENT_ELEPHANTTRIBE',	'UNIT_LIGHT_INFANTRY_BARB',		'TECH_BRONZE_WORKING'	),
+('EA_ENCAMPMENT_ELEPHANTTRIBE',	'UNIT_ARCHERS_BARB',			'TECH_ARCHERY'			),
+('EA_ENCAMPMENT_ELEPHANTTRIBE',	'UNIT_WARRIORS_BARB',			NULL					),
 ('EA_ENCAMPMENT_PIRATES',		'UNIT_ARQUEBUSSMEN_MAN',		'TECH_MACHINERY'		),
 ('EA_ENCAMPMENT_PIRATES',		'UNIT_MEDIUM_INFANTRY_BARB',	'TECH_IRON_WORKING'		),
 ('EA_ENCAMPMENT_PIRATES',		'UNIT_CROSSBOWMEN_MAN',			'TECH_MILLING'			),
 ('EA_ENCAMPMENT_PIRATES',		'UNIT_LIGHT_INFANTRY_BARB',		'TECH_BRONZE_WORKING'	),
 ('EA_ENCAMPMENT_PIRATES',		'UNIT_ARCHERS_BARB',			'TECH_SAILING'			),		--looks strange, but barb known tech needed here to trigger base unit update with encampment update
 ('EA_ENCAMPMENT_ORCS',			'UNIT_WARRIORS_ORC',			NULL					),
+('EA_ENCAMPMENT_GOBLINS',		'UNIT_CROSSBOWMEN_GOBLIN',		'TECH_MECHANICS'		),
+('EA_ENCAMPMENT_GOBLINS',		'UNIT_ARCHERS_GOBLIN',			'TECH_ARCHERY'			),
+('EA_ENCAMPMENT_GOBLINS',		'UNIT_TRACKERS_GOBLIN',			'TECH_TRACKING_TRAPPING'),
+('EA_ENCAMPMENT_GOBLINS',		'UNIT_WARRIORS_GOBLIN',			NULL					),
 ('EA_ENCAMPMENT_HOBGOBLINS',	'UNIT_HOBGOBLINS',				NULL					),
-('EA_ENCAMPMENT_OGRES',			'UNIT_OGRES',					NULL					);
+('EA_ENCAMPMENT_OGRES',			'UNIT_OGRES',					NULL					),
+('EA_ENCAMPMENT_NAGAS',			'UNIT_NAGA_BLUE',				'TECH_IRON_WORKING'		),
+('EA_ENCAMPMENT_NAGAS',			'UNIT_NAGA_GREEN',				NULL					);
 
 
 --Lua assumes that roaming and sea units have unique association back to a specific encampmentID (unlike base units and their upgrades)
@@ -116,8 +127,14 @@ INSERT INTO EaEncampments_RoamingUnits (EncampmentType,	UnitType,	TechType) VALU
 ('EA_ENCAMPMENT_ELEPHANTTRIBE',	'UNIT_WAR_ELEPHANTS',			'TECH_WAR_ELEPHANTS'	),
 ('EA_ENCAMPMENT_ELEPHANTTRIBE',	'UNIT_MOUNTED_ELEPHANTS',		NULL					),
 ('EA_ENCAMPMENT_ORCS',			'UNIT_WARRIORS_ORC',			NULL					),
+('EA_ENCAMPMENT_GOBLINS',		'UNIT_WOLF_RIDERS_GOBLIN',		'TECH_HORSEBACK_RIDING'	),
+('EA_ENCAMPMENT_GOBLINS',		'UNIT_ARCHERS_GOBLIN',			'TECH_ARCHERY'			),
+('EA_ENCAMPMENT_GOBLINS',		'UNIT_TRACKERS_GOBLIN',			'TECH_TRACKING_TRAPPING'),
+('EA_ENCAMPMENT_GOBLINS',		'UNIT_WARRIORS_GOBLIN',			NULL					),
 ('EA_ENCAMPMENT_HOBGOBLINS',	'UNIT_HOBGOBLINS',				NULL					),
-('EA_ENCAMPMENT_OGRES',			'UNIT_OGRES',					NULL					);
+('EA_ENCAMPMENT_OGRES',			'UNIT_OGRES',					NULL					),
+('EA_ENCAMPMENT_NAGAS',			'UNIT_NAGA_BLUE',				'TECH_IRON_WORKING'		),
+('EA_ENCAMPMENT_NAGAS',			'UNIT_NAGA_GREEN',				NULL					);
 
 
 CREATE TABLE EaEncampments_SeaUnits ('EncampmentType' TEXT NOT NULL, 'UnitType' TEXT NOT NULL, 'TechType' TEXT DEFAULT NULL);

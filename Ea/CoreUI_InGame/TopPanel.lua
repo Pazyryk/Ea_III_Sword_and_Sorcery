@@ -1182,13 +1182,13 @@ function FaithTipHandler( control )
 		local faithFromCities = pPlayer:GetFaithPerTurnFromCities()
 		local faithFromGods = pPlayer:GetFaithPerTurnFromMinorCivs()	--game engine only sees this from Gods
 		local faithFromReligion = pPlayer:GetFaithPerTurnFromReligion()				--for Azz and Anra only since these use base follower counting mechanism
-		
-		local faithFromLeader = pPlayer:GetLeaderYieldBoost(GameInfoTypes.YIELD_FAITH) * (faithFromGods + faithFromReligion) / 100
-		
+		local faithFromLeader = pPlayer:GetLeaderYieldBoost(GameInfoTypes.YIELD_FAITH) * (faithFromGods + faithFromReligion) / 100	
 		local manaForCultOfLeavesFounder = eaPlayer.manaForCultOfLeavesFounder or 0
-		local manaForCultOfEponaFounder = eaPlayer.manaForCultOfEponaFounder or 0
-		local manaForCultOfPureWatersFounder = eaPlayer.manaForCultOfPureWatersFounder or 0
+		local manaForCultOfAbzuFounder = eaPlayer.manaForCultOfAbzuFounder or 0
 		local manaForCultOfAegirFounder = eaPlayer.manaForCultOfAegirFounder or 0
+		local manaForCultOfPloutonFounder = eaPlayer.manaForCultOfPloutonFounder or 0
+		local manaForCultOfCahraFounder = eaPlayer.manaForCultOfCahraFounder or 0
+		local manaForCultOfEponaFounder = eaPlayer.manaForCultOfEponaFounder or 0
 		local manaForCultOfBakkheiaFounder = eaPlayer.manaForCultOfBakkheiaFounder or 0
 		local manaFromWildlands = eaPlayer.cultureManaFromWildlands or 0
 		local faithFromCityStates = MapModData.faithFromCityStates
@@ -1196,8 +1196,7 @@ function FaithTipHandler( control )
 		local faithFromToAhrimanTribute = MapModData.faithFromToAhrimanTribute
 		local faithFromGPs = MapModData.faithFromGPs
 		local faithFromFinishedPolicyBranches = GetFaithFromPolicyFinisher(pPlayer)
-
-		local faithRate = faithFromCities + faithFromGods + faithFromReligion + faithFromLeader + manaForCultOfLeavesFounder + manaForCultOfEponaFounder + manaForCultOfPureWatersFounder + manaForCultOfAegirFounder + manaForCultOfBakkheiaFounder + manaFromWildlands + faithFromCityStates + faithFromAzzTribute + faithFromGPs + faithFromFinishedPolicyBranches
+		local faithRate = faithFromCities + faithFromGods + faithFromReligion + faithFromLeader + manaForCultOfLeavesFounder + manaForCultOfAbzuFounder + manaForCultOfAegirFounder + manaForCultOfPloutonFounder + manaForCultOfCahraFounder + manaForCultOfEponaFounder + manaForCultOfBakkheiaFounder + manaFromWildlands + faithFromCityStates + faithFromAzzTribute + faithFromGPs + faithFromFinishedPolicyBranches
 
 		if faithRate + faithFromToAhrimanTribute ~= 0 then
 			if eaPlayer.bUsesDivineFavor then
@@ -1227,16 +1226,24 @@ function FaithTipHandler( control )
 			strText = strText .. "[NEWLINE]" .. Locale.ConvertTextKey("TXT_KEY_EA_TP_FAITH_FROM_CULT_OF_LEAVES_FOUNDER", manaForCultOfLeavesFounder)
 		end
 
-		if manaForCultOfEponaFounder ~= 0 then
-			strText = strText .. "[NEWLINE]" .. Locale.ConvertTextKey("TXT_KEY_EA_TP_FAITH_FROM_CULT_OF_EPONA_FOUNDER", manaForCultOfEponaFounder)
-		end
-
-		if manaForCultOfPureWatersFounder ~= 0 then
-			strText = strText .. "[NEWLINE]" .. Locale.ConvertTextKey("TXT_KEY_EA_TP_FAITH_FROM_CULT_OF_PURE_WATERS_FOUNDER", manaForCultOfPureWatersFounder)
+		if manaForCultOfAbzuFounder ~= 0 then
+			strText = strText .. "[NEWLINE]" .. Locale.ConvertTextKey("TXT_KEY_EA_TP_FAITH_FROM_CULT_OF_ABZU_FOUNDER", manaForCultOfAbzuFounder)
 		end
 
 		if manaForCultOfAegirFounder ~= 0 then
 			strText = strText .. "[NEWLINE]" .. Locale.ConvertTextKey("TXT_KEY_EA_TP_FAITH_FROM_CULT_OF_AEGIR_FOUNDER", manaForCultOfAegirFounder)
+		end
+
+		if manaForCultOfPloutonFounder ~= 0 then
+			strText = strText .. "[NEWLINE]" .. Locale.ConvertTextKey("TXT_KEY_EA_TP_FAITH_FROM_CULT_OF_PLOUTON_FOUNDER", manaForCultOfPloutonFounder)
+		end
+
+		if manaForCultOfCahraFounder ~= 0 then
+			strText = strText .. "[NEWLINE]" .. Locale.ConvertTextKey("TXT_KEY_EA_TP_FAITH_FROM_CULT_OF_CAHRA_FOUNDER", manaForCultOfCahraFounder)
+		end
+
+		if manaForCultOfEponaFounder ~= 0 then
+			strText = strText .. "[NEWLINE]" .. Locale.ConvertTextKey("TXT_KEY_EA_TP_FAITH_FROM_CULT_OF_EPONA_FOUNDER", manaForCultOfEponaFounder)
 		end
 
 		if manaForCultOfBakkheiaFounder ~= 0 then

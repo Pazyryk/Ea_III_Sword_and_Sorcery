@@ -3,100 +3,193 @@
 <GameData>
 	<Language_en_US>
 
+		<!-- World Views -->
+		
+		<Row Tag="TXT_KEY_EA_THEISM_PEDIA">
+			<Text>The Theistic worldview holds that there is a Creator outside of Éa that is Himself uncreated. Man's name for the Creator is Azzandara, and many civilizations of this race follow Azzandarayasna (the religion of Azzandara) to one degree or another. Although theists insist that there is only one God, their religious texts describe a second being in eternal opposition: Ahriman. Those who embrace Ahriman are few, and their religion, Aŋra, is greatly feared and reviled by most civilizations.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PANTHEISM_PEDIA">
+			<Text>The Pantheistic worldview holds that all things are part of divine existence. There is no separation between physical and spiritual and no Creator apart from Éa. All things - trees, rivers, and mountains; the Sun, Moon and stars; the elements; even a plague - have divine spirit and are gods in their own right. All pantheistic societies follow The Weave of Éa, which honors all incarnations, though some focus worship on a specific set, forming a cult within The Weave. These cults are narrowly focused and not always harmonious with each other.</Text>
+		</Row>
+		
 		<!-- Religions -->
 
 		<Row Tag="TXT_KEY_EA_RELIGION_AZZANDARAYASNA">
 			<Text>Azzandarayasna</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_RELIGION_AZZANDARAYASNA_PEDIA">
+			<Text>This is the religion of those that worship the Creator, Azzandara, whose followers are generally not tolerant of others that lack faith or hold other views (but reserve a special hatred for any Fallen civilization). Azzandarayasna is itself strengthened when any civilization adopts Theism policies (which add founder, follower and enhancer effects to the religion). Follower civilizations generate Paladins in place of the Warrior Great Person class, which learn and cast Divine spells in addition to acting as generals in war. Divine Liturgy and downstream techs make a variety of divine spells available for Priests and Paladins to learn. This is the only religion whose spellcasters use Divine Favor rather than Mana. Divine Favor is accumulated from a variety of sources, especially religious buildings, and is "tapped" by follower priests to cast spells related to healing, protection or the banishment of Aŋra and Sorcery.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RELIGION_AZZANDARAYASNA_STRATEGY">
+			<Text>Azzandarayasna is founded by the Prophecy of Ahuradhâta, which can be made by any Priest in a civilization that has opened the Theism policy branch (only available to civilizations of Man). It is spread by the Proselytize action available to Priests and Paladins.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_RELIGION_ANRA">
 			<Text>Aŋra</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RELIGION_ANRA_PEDIA">
+			<Text>This is the religion of those that worship the Anti-Creator, Ahriman, and embrace his destructive purpose. Civilizations that follow Aŋra are considered Fallen. Cities that have Aŋra as dominant religion have slowed growth, increased unhappiness and minor boosts to research and mana. The Founder of Aŋra gains significant research and mana based on the number of worldwide followers. Ahriman is said to be the instigator of all Sorcery, though most practitioners deny this link. All spellcasters in a Fallen civilization become, in effect, Sorcerers, with Priests and former Paladins (now Eidolons) consuming Mana in place of Divine Favor. Maleficium and downstream techs make a variety of spells available for these spellcasters that generally focus on destruction and corruption.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RELIGION_ANRA_STRATEGY">
+			<Text>Aŋra can be founded by the Prophecy of Aŋra, which can be made by any Devout in a civilization that has learned Maleficium. Alternatively, the religion may be founded indirectly if any civilization makes the Prophecy of Vâ. It is spread by the Proselytize action available to Priests and Eidolons.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_RELIGION_THE_WEAVE_OF_EA">
 			<Text>The Weave of Éa</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_RELIGION_THE_WEAVE_OF_EA_PEDIA">
+			<Text>This is the overarching religion of all pantheistic societies. It honors all of the spirits and incarnations of Éa and arises spontaneously in civilizations that have adopted Pantheism. It has no founder nor holy city. Bonuses are gained by adopting additional policies in the Pantheism branch, which generally enhance a follower's ability to subsist and thrive on the land and to gain benefit from Éa's wildlands. Although they appear as separate religions, all of the cults below are really sects within The Weave and retain follower effects of the mother religion in addition to cult-specific effects.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_RELIGION_CULT_OF_LEAVES">
 			<Text>Cult of Leaves</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_RELIGION_CULT_OF_EPONA">
-			<Text>Cult of Epona</Text>
+		<Row Tag="TXT_KEY_EA_RELIGION_CULT_OF_LEAVES_PEDIA">
+			<Text>Followers of this cult worship Fagus, Abellio, Buxenus, Robor, Abnoab and other incarnations of the trees, forests and jungles of Éa</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_RELIGION_CULT_OF_PURE_WATERS">
-			<Text>Cult of Pure Waters</Text>
+		<Row Tag="TXT_KEY_EA_RELIGION_CULT_OF_LEAVES_STRATEGY">
+			<Text>The Cult of Leaves is founded or spread by the Ritual of Leaves, which can be conducted by a Druid in any city with 60% unimproved forests or jungles in surrounding land (40% of city radius plots must be land).</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RELIGION_CULT_OF_ABZU">
+			<Text>Cult of Abzu</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RELIGION_CULT_OF_ABZU_PEDIA">
+			<Text>Followers of this cult worship Aveta, Condatis, Abandinus, Adsullata, Icaunus, Belisama, Clota, Sabrina, Sequana, Verbeia, Borvo and other incarnations of rivers, lakes, springs and the deep aquifers.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RELIGION_CULT_OF_ABZU_STRATEGY">
+			<Text>The Cult of Abzu is founded or spread by the Ritual of Cleansing, which can be conducted by a Druid in any city with 35% fresh water in surrounding land (40% of city radius plots must be land).</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_RELIGION_CULT_OF_AEGIR">
 			<Text>Cult of Ægir</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_RELIGION_CULT_OF_AEGIR_PEDIA">
+			<Text>Followers of this cult worship Ægir (the Great Ocean), Barinthus, Lí Ban, Fimafeng, Eldir, Ritona and other incarnations of the seas, coastlands and fjords.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RELIGION_CULT_OF_AEGIR_STRATEGY">
+			<Text>The Cult of Ægir is founded or spread by the Ritual of Ægir, which can be conducted by a Druid in any city that has at least 60% surrounding sea plots.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RELIGION_CULT_OF_PLOUTON">
+			<Text>Cult of Ploutōn</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RELIGION_CULT_OF_PLOUTON_PEDIA">
+			<Text>Followers of this cult worship Erecura, Vosegus, Nantosuelta, Dis Pater and other incarnations of the earth and its riches.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RELIGION_CULT_OF_PLOUTON_STRATEGY">
+			<Text>The Cult of Abzu is founded or spread by the Ritual of Stones, which can be conducted by a Druid in any city with 40% hills or mountains in surrounding land (40% of city radius plots must be land).</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RELIGION_CULT_OF_CAHRA">
+			<Text>Cult of Çahra</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RELIGION_CULT_OF_CAHRA_PEDIA">
+			<Text>Followers of this cult worship Nergal, Wadd, Abgal, Nesr and other incarnations of the deep desert.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RELIGION_CULT_OF_CAHRA_STRATEGY">
+			<Text>The Cult of Ægir is founded or spread by the Ritual of Desiccation, which can be conducted by a Druid in any city with 50% desert in surrounding land (40% of city radius plots must be land).</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RELIGION_CULT_OF_EPONA">
+			<Text>Cult of Epona</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RELIGION_CULT_OF_EPONA_PEDIA">
+			<Text>Followers of this cult worship Epona (the Great Mare), Atepomarus, Sabazios and other incarnations of horses and their kind.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RELIGION_CULT_OF_EPONA_STRATEGY">
+			<Text>The Cult of Epona is founded or spread by the Ritual of Equus, which can be conducted by a Druid in any city that has 3 horse plots (or 2 horse plots and at least 50% flat grassland or plains without forest, jungle or marsh).</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_RELIGION_CULT_OF_BAKKHEIA">
 			<Text>Cult of Bakkheia</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_RELIGION_CULT_OF_BAKKHEIA_PEDIA">
+			<Text>Followers of this cult worship Bakkhos, Pan, Silenus and other incarnations of wine, ale, spirits and drunkenness.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_RELIGION_CULT_OF_BAKKHEIA_STRATEGY">
+			<Text>The Cult of Bakkheia is founded or spread by the Ritual of Bakkheia, which can be conducted by a Druid in any city that has 2 grapes resources or at least 2 spirits buildings (Winery, Brewery or Distillery).</Text>
+		</Row>
 
-		<!-- Beliefs (Note: these are not shown in Ea. Remove?) -->
+		<!-- Beliefs (Descriptions are NULL because they are not used in Ea) -->
 
-		<Row Tag="TXT_KEY_EA_BELIEF_AZZANDARAYASNA_INITIAL">
-			<Text>Azzandarayasna</Text>
+		<Row Tag="TXT_KEY_EA_BELIEF_AZZANDARAYASNA_FOUNDER_SHORT">
+			<Text>+1 Gold and +1 Divine Favor per follower city</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_BELIEF_MONASTIC_TRADITION">
-			<Text>Monastic Tradition</Text>
+		<Row Tag="TXT_KEY_EA_BELIEF_AZZANDARAYASNA_FOLLOWER_SHORT">
+			<Text>+1% Culture per follower in city (35% maxiumum)</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_BELIEF_WAY_OF_THE_WISE">
-			<Text>Way of the Wise</Text>
+		<Row Tag="TXT_KEY_EA_BELIEF_HOLY_ORDER_SHORT">
+			<Text>+30% combat near friendly follower cities</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_BELIEF_HEAVENS_MANDATE">
-			<Text>Heaven's Mandate</Text>
+		<Row Tag="TXT_KEY_EA_BELIEF_WAY_OF_THE_WISE_SHORT">
+			<Text>+30% healing near friendly follower cities</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_BELIEF_PRIESTHOOD">
-			<Text>Priesthood</Text>
+		<Row Tag="TXT_KEY_EA_BELIEF_HEAVENS_MANDATE_SHORT">
+			<Text>+2 Divine Favor per foreign follower city</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_BELIEF_THEOCRACY">
-			<Text>Theocracy</Text>
+		<Row Tag="TXT_KEY_EA_BELIEF_PRIESTHOOD_SHORT">
+			<Text>+33% spread strength</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_BELIEF_ANRA_FOLLOWER">
-			<Text>Aŋra Follower</Text>
+		<Row Tag="TXT_KEY_EA_BELIEF_THEOCRACY_SHORT">
+			<Text>+2 Gold per follower city</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_BELIEF_ANTI_MONASTIC_TRADITION">
-			<Text>Monastic Tradition</Text>
+		<Row Tag="TXT_KEY_EA_BELIEF_ANRA_FOUNDER_SHORT">
+			<Text>+1 Research and +1 Mana per 2 foreign followers</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_BELIEF_ANTI_WAY_OF_THE_WISE">
-			<Text>Way of the Wicked</Text>
+		<Row Tag="TXT_KEY_EA_BELIEF_ANRA_FOLLOWER_SHORT">
+			<Text>+1 Unhappiness per 2 followers in non-founder civilizations, +1 Unhappiness per 1 follower in Azzandarayasna civilizations (does not require city majority!)[NEWLINE][ICON_BULLET]-25% city growth and +1% Research per follower(+80% maxiumum) in follower cities</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_BELIEF_ANTI_HEAVENS_MANDATE">
-			<Text>Hell's Mandate</Text>
+		<Row Tag="TXT_KEY_EA_BELIEF_ANTI_HOLY_ORDER_SHORT">
+			<Text>+40% combat near enemy follower cities</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_BELIEF_ANTI_PRIESTHOOD">
-			<Text>Priesthood</Text>
+		<Row Tag="TXT_KEY_EA_BELIEF_ANTI_WAY_OF_THE_WISE_SHORT">
+			<Text>Gain Mana from kills</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_BELIEF_ANTI_THEOCRACY">
-			<Text>Theocracy</Text>
+		<Row Tag="TXT_KEY_EA_BELIEF_ANTI_HEAVENS_MANDATE_SHORT">
+			<Text>+1 Mana per foreign follower</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_BELIEF_CULT_OF_LEAVES_FOUNDER">
-			<Text>Cult of Leaves</Text>
+		<Row Tag="TXT_KEY_EA_BELIEF_ANTI_PRIESTHOOD_SHORT">
+			<Text>+50% spread distance</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_BELIEF_CULT_OF_EPONA_FOUNDER">
-			<Text>Cult of Epona</Text>
+		<Row Tag="TXT_KEY_EA_BELIEF_ANTI_THEOCRACY_SHORT">
+			<Text>+1 Research per foreign follower</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_BELIEF_CULT_OF_PURE_WATERS_FOUNDER">
-			<Text>Cult of Pure Waters</Text>
+		<Row Tag="TXT_KEY_EA_BELIEF_THE_WEAVE_OF_EA_FOLLOWER_SHORT">
+			<Text>Negates -1 Food [ICON_FOOD] penalty for Forest, Jungle and Marsh</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_BELIEF_CULT_OF_AEGIR_FOUNDER">
-			<Text>Cult of Ægir</Text>
+		<Row Tag="TXT_KEY_EA_BELIEF_CULT_OF_LEAVES_FOUNDER_SHORT">
+			<Text>Receive 1 Mana [ICON_STAR] for every 10 unimproved Forest and Jungle plots owned by follower cities</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_BELIEF_CULT_OF_BAKKHEIA_FOUNDER">
-			<Text>Cult of Bakkheia</Text>
+		<Row Tag="TXT_KEY_EA_BELIEF_CULT_OF_LEAVES_FOLLOWER_SHORT">
+			<Text>+1 Food [ICON_FOOD] and +1 Culture [ICON_CULTURE] for every 3 owned unimproved Forest and Jungle plots</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_BELIEF_THE_WEAVE_OF_EA_FOLLOWER">
-			<Text>The Weave of Éa</Text>
+		<Row Tag="TXT_KEY_EA_BELIEF_CULT_OF_ABZU_FOUNDER_SHORT">
+			<Text>Recieve 2 Mana [ICON_STAR] for every follower city that has fresh water</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_BELIEF_CULT_OF_EPONA_FOLLOWER">
-			<Text>Cult of Epona</Text>
+		<Row Tag="TXT_KEY_EA_BELIEF_CULT_OF_ABZU_FOLLOWER_SHORT">
+			<Text>+1 Food [ICON_FOOD] and +1 Culture [ICON_CULTURE] from Lakes and Oases; +1 Happiness [ICON_HAPPINESS_1] for cities with fresh water</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_BELIEF_CULT_OF_PURE_WATERS_FOLLOWER">
-			<Text>Cult of Pure Waters</Text>
+		<Row Tag="TXT_KEY_EA_BELIEF_CULT_OF_AEGIR_FOUNDER_SHORT">
+			<Text>Receive 2 Mana [ICON_STAR] for every follower city that is coastal</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_BELIEF_CULT_OF_AEGIR_FOLLOWER">
-			<Text>Cult of Ægir</Text>
+		<Row Tag="TXT_KEY_EA_BELIEF_CULT_OF_AEGIR_FOLLOWER_SHORT">
+			<Text>+1 Production [ICON_PRODUCTION], Gold [ICON_GOLD] and Culture [ICON_CULTURE] from all sea resources</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_BELIEF_CULT_OF_BAKKHEIA_FOLLOWER">
-			<Text>Cult of Bakkheia</Text>
+		<Row Tag="TXT_KEY_EA_BELIEF_CULT_OF_PLOUTON_FOUNDER_SHORT">
+			<Text>Receive 1 Mana [ICON_STAR] for every 2 earth resources worked by follower cities</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BELIEF_CULT_OF_PLOUTON_FOLLOWER_SHORT">
+			<Text>+1 Production [ICON_PRODUCTION] and +1 Gold [ICON_GOLD] from all earth resources</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BELIEF_CULT_OF_CAHRA_FOUNDER_SHORT">
+			<Text>Receive 1 Mana [ICON_STAR] for every 10 desert plots owned by follower cities</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BELIEF_CULT_OF_CAHRA_FOLLOWER_SHORT">
+			<Text>Cities gain +1 Food [ICON_FOOD] for every 3 owned desert plots</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BELIEF_CULT_OF_EPONA_FOUNDER_SHORT">
+			<Text>Recieve 1 Mana [ICON_STAR] for every Stallions of Epona unit worldwide</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BELIEF_CULT_OF_EPONA_FOLLOWER_SHORT">
+			<Text>+2 Happiness [ICON_HAPPINESS_1] from Stables[NEWLINE] [ICON_BULLET]+2 Culture [ICON_CULTURE] from Horses [ICON_RES_HORSE][NEWLINE] [ICON_BULLET]Horse-mounted units recieve the Stallions of Epona promotion (+20% flanking attack; +5% healing)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BELIEF_CULT_OF_BAKKHEIA_FOUNDER_SHORT">
+			<Text>Receive 1 Mana [ICON_STAR] for Vineyards worked by follower cities and every Spirits Building (Brewery, Winery, Distillery) in follower cities</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BELIEF_CULT_OF_BAKKHEIA_FOLLOWER_SHORT">
+			<Text>+2 Culture [ICON_CULTURE] from Grapes [ICON_RES_WINE][NEWLINE] [ICON_BULLET]+2 Culture [ICON_CULTURE] and +1 Happiness [ICON_HAPPINESS_1] from each Spirits Building[NEWLINE] [ICON_BULLET]-15% Production[NEWLINE] [ICON_BULLET]Units recieve the Drunkard promotion (+10 morale; -15% attack and defense)</Text>
 		</Row>
 
 	</Language_en_US>

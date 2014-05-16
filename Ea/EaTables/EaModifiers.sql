@@ -20,8 +20,9 @@ INSERT INTO EaModifiers(Type,	Description,			Class,			PromotionPrefix					) VALU
 ('EAMOD_BARDING',				'Barding',				'Artist',		'PROMOTION_BARDING'				),
 ('EAMOD_COMBAT',				'Combat',				'Warrior',		'PROMOTION_COMBAT'				),
 ('EAMOD_PROSELYTISM',			'Proselytism',			'Devout',		'PROMOTION_PROSELYTISM'			),
+
+--Lua expects last 9 to be Devotion followed by 8 magic schools
 ('EAMOD_DEVOTION',				'Devotion',				'Devout',		'PROMOTION_DEVOTION'			),
---Lua expects last 8 to be magic schools
 ('EAMOD_DIVINATION',			'Divination',			'Thaumaturge',	'PROMOTION_DIVINATION'			),
 ('EAMOD_ABJURATION',			'Abjuration',			'Thaumaturge',	'PROMOTION_ABJURATION'			),
 ('EAMOD_EVOCATION',				'Evocation',			'Thaumaturge',	'PROMOTION_EVOCATION'			),

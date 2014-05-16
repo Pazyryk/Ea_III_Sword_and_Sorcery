@@ -108,7 +108,7 @@ INSERT INTO Builds (Type,		PrereqTech,						DisallowTech,			PrereqPolicy,		Disal
 ('BUILD_TEMPLE_ABGAL',			NULL,							NULL,					NULL,				NULL,				2500,	'IMPROVEMENT_TEMPLE_ABGAL',			'TXT_KEY_EA_BUILD_TEMPLE_ABGAL',			NULL,										NULL,										'ENTITY_EVENT_BUILD',		'KB_P',	0,				0,			0,			0,				98,				37,			'BW_ATLAS_1'				),
 ('BUILD_TEMPLE_NESR',			NULL,							NULL,					NULL,				NULL,				2500,	'IMPROVEMENT_TEMPLE_NESR',			'TXT_KEY_EA_BUILD_TEMPLE_NESR',			NULL,										NULL,										'ENTITY_EVENT_BUILD',		'KB_P',	0,				0,			0,			0,				98,				37,			'BW_ATLAS_1'				);
 
---IMPROVEMENT_STANHENCG
+--Note: dll expects railroad to have higher ID than road
 
 /*
 --GP builds (all non-consuming)

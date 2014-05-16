@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Context ColorSet="Beige_Black" Font="EaTwCnMT22" FontStyle="Shadow">
+
+
+    <Box Style="BGBlock" ID="BGBlock" />
+
+    <!-- Listing Button Instance -->
+
+    <Grid Size="960,658" Anchor="C,C" Offset="0,36" Padding="0,0" Style="Grid9DetailFive140" ConsumeMouse="1">
+      <!-- Panel Header Text -->
+      <Label Anchor="C,T" Offset="0,19" Font="EaTwCnMT20" Color0="30.50.80.255" Color1="133.184.186.255" Color2="133.184.186.255" FontStyle="SoftShadow" String="TXT_KEY_TOUCH_CONTROLS" />
+        
+      <!-- Side treatments -->
+      <Image Anchor="L,C" AnchorSide="O.I"  Offset="-19,0" Texture="Dec32x64Left.dds" Size="32.64" />
+      <Image Anchor="R,C" AnchorSide="O.I"  Offset="-19,0" Texture="Dec32x64Right.dds" Size="32.64" />
+      <Image Anchor="C,T" Offset="0,-33" AnchorSide="O.O"  Texture="Assets/UI/Art/Controls/topframe.dds" Size="512,128" />
+      <Image Anchor="C,B" Offset="0,-112" AnchorSide="O.O"  Texture="bottomframe.dds" Size="512,128" />
+
+      <!-- Left Boxed Area -->
+      <Container Offset="0,0" Anchor="L,T">
+        <Box Size="420,567" Anchor="L,T" Offset="25,48" Color="255,255,255,0">
+          <Image ToolTip="TXT_KEY_ZOOM_OUT" Size="128,128" TextureOffset="256.0" Texture="Civ5_TouchIconAtlas_128.dds" />
+          <Image ToolTip="TXT_KEY_ZOOM_IN" Size="128,128" Offset="128,0" TextureOffset="384.0" Texture="Civ5_TouchIconAtlas_128.dds" />
+
+          <Container Anchor="L,T" Size="0,0" Offset="256,25">
+            <Box Color="0,0,0,0" Size="190,100">
+              <Label Anchor="L,T" Offset="0,0" Font="EaTwCnMT22" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" String="TXT_KEY_ZOOM_TITLE" />
+              <Label Anchor="L,T" Offset="0,30"  WrapWidth="190" LeadingOffset="-6" Font="EaTwCnMT18" String="TXT_KEY_ZOOM_DETAILS" />
+            </Box>
+          </Container>
+          
+          <Image Anchor="C,T" Size="340,1" Offset="0,160" Texture="bar340x2.dds" />
+
+          <Container Offset="0,170" Anchor="L,T" >
+            <Image ToolTip="TXT_KEY_TOOL_TIPS_TITLE" Size="128,128" TextureOffset="0.0" Texture="Civ5_TouchIconAtlas_128.dds" />
+
+            <Container Anchor="L,T" Size="0,0" Offset="132,25">
+              <Box Color="0,0,0,0" Size="315,100">
+                <Label Anchor="L,T" Offset="0,0" Font="EaTwCnMT22" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" String="TXT_KEY_TOOL_TIPS_TITLE" />
+                <Label Anchor="L,T" Offset="0,30"  WrapWidth="315" LeadingOffset="-6" Font="EaTwCnMT18" String="TXT_KEY_TOOL_TIPS_DETAILS" />
+              </Box>
+            </Container>
+          </Container>
+          
+          <Image Anchor="C,T" Size="340,1" Offset="0,320" Texture="bar340x2.dds" />
+
+          <Container Offset="0,340" Anchor="L,T" >
+            <Image ToolTip="TXT_KEY_SCROLLING_TITLE" Size="128,128" TextureOffset="128.0" Texture="Civ5_TouchIconAtlas_128.dds" />
+
+            <Container Anchor="L,T" Size="0,0" Offset="132,25">
+              <Box Color="0,0,0,0" Size="315,100">
+                <Label Anchor="L,T" Offset="0,0" Font="EaTwCnMT22" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" String="TXT_KEY_SCROLLING_TITLE" />
+                <Label Anchor="L,T" Offset="0,30"  WrapWidth="315" LeadingOffset="-6" Font="EaTwCnMT18" String="TXT_KEY_SCROLLING_DETAILS" />
+              </Box>
+            </Container>
+          </Container>
+          
+        </Box>
+      </Container>
+
+      
+      <!-- Right Boxed Area -->
+      <Container Offset="0,0" Anchor="R,T">
+        <Box Size="420,567" Anchor="R,T" Offset="55,48" Color="255,255,255,0">
+          <Image ToolTip="TXT_KEY_MOVE_TITLE" Size="128,128" Offset="0,0" TextureOffset="0.128" Texture="Civ5_TouchIconAtlas_128.dds" />
+
+          <Container Anchor="L,T" Size="0,0" Offset="132,25">
+            <Box Color="0,0,0,0" Size="315,100">
+              <Label Anchor="L,T" Offset="0,0" Font="EaTwCnMT22" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" String="TXT_KEY_MOVE_TITLE" />
+              <Label Anchor="L,T" Offset="0,30"  WrapWidth="315" LeadingOffset="-6" Font="EaTwCnMT18" String="TXT_KEY_MOVE_DETAILS" />
+            </Box>
+          </Container>
+
+          <Image Anchor="C,T" Size="340,1" Offset="0,160" Texture="bar340x2.dds" />
+
+          <Container Offset="0,170" Anchor="L,T" >
+            <Image ToolTip="TXT_KEY_EXIT_MOVE_TITLE" Size="128,128" TextureOffset="256.128" Texture="Civ5_TouchIconAtlas_128.dds" />
+
+            <Container Anchor="L,T" Size="0,0" Offset="132,25">
+              <Box Color="0,0,0,0" Size="315,100">
+                <Label Anchor="L,T" Offset="0,0" Font="EaTwCnMT22" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" String="TXT_KEY_EXIT_MOVE_TITLE" />
+                <Label Anchor="L,T" Offset="0,30"  WrapWidth="315" LeadingOffset="-6" Font="EaTwCnMT18" String="TXT_KEY_EXIT_MOVE_DETAILS" />
+              </Box>
+            </Container>
+          </Container>
+
+          <Image Anchor="C,T" Size="340,1" Offset="0,320" Texture="bar340x2.dds" />
+
+          <Container Offset="0,340" Anchor="L,T" >
+            <Image ToolTip="TXT_KEY_ESCAPE_TITLE" Size="128,128" TextureOffset="128.128" Texture="Civ5_TouchIconAtlas_128.dds" />
+
+            <Container Anchor="L,T" Size="0,0" Offset="132,25">
+              <Box Color="0,0,0,0" Size="315,100">
+                <Label Anchor="L,T" Offset="0,0" Font="EaTwCnMT22" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" String="TXT_KEY_ESCAPE_TITLE" />
+                <Label Anchor="L,T" Offset="0,30"  WrapWidth="315" LeadingOffset="-6" Font="EaTwCnMT18" String="TXT_KEY_ESCAPE_DETAILS" />
+              </Box>
+            </Container>
+          </Container>
+
+        </Box>
+      </Container>
+      
+
+        
+
+        <Image Anchor="C,B" Offset="0,100" Texture="HorizontalTrim.dds" Size="924.5" /> 
+
+        <CheckBox String="TXT_KEY_TOUCH_HIDE" Offset="200,54" TextAnchor="R,C" Anchor="L,B" ID="DontShowAgainCheckbox"/>
+        
+        <!-- Close Button -->
+        <Box Anchor="C,B" AnchorSide="I.I" Offset="0,54"   Size="910,56" Color="255,255,255,0" >
+            <GridButton Anchor="L,B"  Style="SmallButton" Size="150,32"  Offset="14,0" StateOffsetIncrement="0,0" ID="CloseButton"  >
+              <Label Anchor="C,C"  Offset="0,0"  String="TXT_KEY_CLOSE" Font="EaTwCnMT18" ColorSet="Beige_Black_Alpha" FontStyle="Shadow"  />
+            </GridButton>
+        </Box>
+   </Grid>
+
+    
+
+    
+
+</Context>

@@ -61,6 +61,7 @@ local gg_bNormalCombatUnit =				gg_bNormalCombatUnit
 local gg_bNormalLivingCombatUnit =			gg_bNormalLivingCombatUnit
 local gg_normalizedUnitPower =				gg_normalizedUnitPower
 local gg_minorPlayerByTypeID =				gg_minorPlayerByTypeID
+local gg_playerPlotActionTargeted =			gg_playerPlotActionTargeted
 
 --localized functions
 local Floor =								math.floor
@@ -172,6 +173,30 @@ for row in GameInfo.EaActions() do
 end
 
 ---------------------------------------------------------------
+-- Init
+---------------------------------------------------------------
+
+function EaActionsInit(bNewGame)
+	for iPlayer, eaPlayer in pairs(fullCivs) do
+		gg_playerPlotActionTargeted[iPlayer] = {}
+	end
+	for iPerson, eaPerson in pairs(gPeople) do
+		if eaPerson.eaActionID > 0 then
+			local player = Players[eaPerson.iPlayer]
+			local unit = player:GetUnitByID(eaPerson.iUnit)
+			local iPlot = unit:GetPlot():GetPlotIndex()
+			print("-setting gg_playerPlotActionTargeted for eaActionID ", iPlayer, iPlot, eaPerson.eaActionID, iPerson)
+			gg_playerPlotActionTargeted[iPlayer][iPlot] = gg_playerPlotActionTargeted[iPlayer][iPlot] or {}
+			gg_playerPlotActionTargeted[iPlayer][iPlot][eaPerson.eaActionID] = iPerson
+		elseif eaPerson.gotoEaActionID > 0 then		--AI going to do something
+			print("-setting gg_playerPlotActionTargeted for gotoEaActionID ", eaPerson.iPlayer, eaPerson.gotoPlotIndex, eaPerson.gotoEaActionID, iPerson)
+			gg_playerPlotActionTargeted[eaPerson.iPlayer][eaPerson.gotoPlotIndex] = gg_playerPlotActionTargeted[eaPerson.iPlayer][eaPerson.gotoPlotIndex] or {}
+			gg_playerPlotActionTargeted[eaPerson.iPlayer][eaPerson.gotoPlotIndex][eaPerson.gotoEaActionID] = iPerson
+		end
+	end
+end
+
+---------------------------------------------------------------
 --Time Discout valuation
 ---------------------------------------------------------------
 --Used in AI devaluation of future gains; see:
@@ -255,7 +280,7 @@ local function FinishEaAction(eaActionID)		--only called from DoEaAction so file
 		g_plot:AddFloatUpMessage(Locale.Lookup(g_eaAction.Description), 1)
 	end
 
-	ClearActionPlotTargetedForPerson(g_eaPlayer, g_iPerson)
+	ClearActionPlotTargetedForPerson(g_iPlayer, g_iPerson)
 	g_eaPerson.eaActionID = -1		--will bring back to map on next turn
 
 	--g_unit:SetInvisibleType(INVISIBLE_SUBMARINE)
@@ -370,10 +395,13 @@ local function FinishEaAction(eaActionID)		--only called from DoEaAction so file
 
 	if g_eaAction.MeetGod then
 		local iGod = gg_minorPlayerByTypeID[GameInfoTypes[g_eaAction.MeetGod] ]
-		local iGodTeam = Players[iGod]:GetTeam()
+		local god = Players[iGod]
+		local iGodTeam = god:GetTeam()
 		if not g_team:IsHasMet(iGodTeam) then
 			g_team:Meet(iGodTeam, true)
 		end
+		--friendship boost for temple
+		god:ChangeMinorCivFriendshipWithMajor(g_iPlayer, 100)
 	end
 
 	print("About to try action-specific Finish function, if any")
@@ -672,16 +700,40 @@ function TestEaActionTarget(eaActionID, testX, testY, bAITargetTest)
 
 	--print("pass i")
 
-	--Action being done here (or GP on way for AI)? 
+	--Action being done here (or GP on way for AI)
 	if not g_eaAction.NoGPNumLimit then
-		local plotTargeted = g_eaPlayer.actionPlotTargeted[eaActionID]
-		if plotTargeted and plotTargeted[g_iPlot] and plotTargeted[g_iPlot] ~= g_iPerson then			--another AI GP is doing this here (or on way for AI)
-			if g_bAIControl then
-				print("TestEaActionTarget returning false for AI becuase someone else has claimed this action at this plot")
-				return false
-			else
-				g_bSomeoneElseDoingHere = true
-				--will return false but delayed until below for human UI
+		--local plotTargeted = g_eaPlayer.actionPlotTargeted[eaActionID]
+		--if plotTargeted and plotTargeted[g_iPlot] and plotTargeted[g_iPlot] ~= g_iPerson then			--another AI GP is doing this here (or on way for AI)
+		--	if g_bAIControl then
+		--		print("TestEaActionTarget returning false for AI becuase someone else has claimed this action at this plot")
+		--		return false
+		--	else
+		--		g_bSomeoneElseDoingHere = true
+		--		--will return false but delayed until below for human UI
+		--	end
+		--end
+
+		local targetPlotActions = gg_playerPlotActionTargeted[g_iPlayer][g_iPlot]
+		if targetPlotActions then
+			local bBlock = false
+			if targetPlotActions[eaActionID] and targetPlotActions[eaActionID] ~= g_iPerson then
+				bBlock = true
+			elseif g_eaAction.ImprovementType then		--any improvement blocks any other improvement
+				for loopEaActionID, loopPersonIndex in pairs(targetPlotActions) do
+					if loopEaActionID < FIRST_SPELL_ID and EaActionsInfo[loopEaActionID].ImprovementType and loopPersonIndex ~= g_iPerson then
+						bBlock = true
+						break
+					end
+				end
+			end
+			if bBlock then			--another AI GP is doing this or building improvement here (or on way for AI)
+				if g_bAIControl then
+					print("TestEaActionTarget returning false for AI becuase someone else has claimed this action at this plot")
+					return false
+				else
+					g_bSomeoneElseDoingHere = true
+					--will return false but delayed until below for human UI
+				end
 			end
 		end
 	end
@@ -942,8 +994,10 @@ function DoEaAction(eaActionID, iPlayer, unit, iPerson, targetX, targetY)
 	
 	--Reserve this action at this plot (will cause TestEaActionTarget fail for other GPs)
 	if 1 < turnsToComplete and not g_eaAction.NoGPNumLimit then
-		g_eaPlayer.actionPlotTargeted[eaActionID] = g_eaPlayer.actionPlotTargeted[eaActionID] or {}
-		g_eaPlayer.actionPlotTargeted[eaActionID][g_iPlot] = g_iPerson
+		--g_eaPlayer.actionPlotTargeted[eaActionID] = g_eaPlayer.actionPlotTargeted[eaActionID] or {}
+		--g_eaPlayer.actionPlotTargeted[eaActionID][g_iPlot] = g_iPerson
+		gg_playerPlotActionTargeted[g_iPlayer][g_iPlot] = gg_playerPlotActionTargeted[g_iPlayer][g_iPlot] or {}
+		gg_playerPlotActionTargeted[g_iPlayer][g_iPlot][eaActionID] = g_iPerson
 	end
 
 	if turnsToComplete == 1000 and g_bAIControl then turnsToComplete = 8 end	--AI will wake up and test other options
@@ -966,7 +1020,7 @@ function DoEaAction(eaActionID, iPlayer, unit, iPerson, targetX, targetY)
 			end
 		end
 		if g_bGreatPerson then
-			ClearActionPlotTargetedForPerson(g_eaPlayer, g_iPerson)
+			ClearActionPlotTargetedForPerson(g_iPlayer, g_iPerson)
 		end
 		SpecialEffects()
 
@@ -1047,7 +1101,7 @@ function InterruptEaAction(iPlayer, iPerson)
 
 	eaPerson.gotoPlotIndex = -1
 	eaPerson.gotoEaActionID = -1
-	ClearActionPlotTargetedForPerson(eaPlayer, iPerson)
+	ClearActionPlotTargetedForPerson(iPlayer, iPerson)
 	if eaActionID == -1 then return end
 
 	eaPerson.eaActionID = -1
@@ -1078,13 +1132,20 @@ end
 --LuaEvents.EaActionsInterruptEaAction.Add(InterruptEaAction)
 LuaEvents.EaActionsInterruptEaAction.Add(function(iPlayer, iPerson) return HandleError21(InterruptEaAction, iPlayer, iPerson) end)
 
-function ClearActionPlotTargetedForPerson(eaPlayer, iPerson)
-	print("Running ClearActionPlotTargetedForPerson")
-	for eaActionID, actionTargets in pairs(eaPlayer.actionPlotTargeted) do
-		for iPlot, iLoopPerson in pairs(actionTargets) do
+function ClearActionPlotTargetedForPerson(iPlayer, iPerson)
+	--print("Running ClearActionPlotTargetedForPerson")
+	--for eaActionID, actionTargets in pairs(eaPlayer.actionPlotTargeted) do
+	--	for iPlot, iLoopPerson in pairs(actionTargets) do
+	--		if iPerson == iLoopPerson then
+	--			actionTargets[iPlot] = nil
+	--		end
+	--	end
+	--end
+	for iPlot, plotTargetActions in pairs(gg_playerPlotActionTargeted[iPlayer]) do
+		for eaActionID, iLoopPerson in pairs(plotTargetActions) do
 			if iPerson == iLoopPerson then
-				actionTargets[iPlot] = nil
-			end
+				plotTargetActions[eaActionID] = nil
+			end			
 		end
 	end
 end
@@ -3249,7 +3310,7 @@ local function ModelCultRitual_SetUI()
 				MapModData.text = "Will found the " .. cultStr .. " in this city"
 			end
 		elseif not g_bIsCity then
-			MapModData.text = cultStr .. "Cult founding/spreading rituals can be performed only in cities"
+			MapModData.text = "Cult founding/spreading rituals can be performed only in cities"
 		elseif g_testTargetSwitch == 2 then
 			MapModData.text = "[COLOR_WARNING_TEXT]You cannot convert any population here (perhaps you need a higher Devotion level)[ENDCOLOR]"
 		elseif g_testTargetSwitch == 3 then
@@ -3292,6 +3353,16 @@ SetAIValues[GameInfoTypes.EA_ACTION_RITUAL_CLEANSING] = ModelCultRitual_SetAIVal
 TestTarget[GameInfoTypes.EA_ACTION_RITUAL_AEGIR] = ModelCultRitual_TestTarget
 SetUI[GameInfoTypes.EA_ACTION_RITUAL_AEGIR] = ModelCultRitual_SetUI
 SetAIValues[GameInfoTypes.EA_ACTION_RITUAL_AEGIR] = ModelCultRitual_SetAIValues
+
+--EA_ACTION_RITUAL_STONES
+TestTarget[GameInfoTypes.EA_ACTION_RITUAL_STONES] = ModelCultRitual_TestTarget
+SetUI[GameInfoTypes.EA_ACTION_RITUAL_STONES] = ModelCultRitual_SetUI
+SetAIValues[GameInfoTypes.EA_ACTION_RITUAL_STONES] = ModelCultRitual_SetAIValues
+
+--EA_ACTION_RITUAL_DESICCATION
+TestTarget[GameInfoTypes.EA_ACTION_RITUAL_DESICCATION] = ModelCultRitual_TestTarget
+SetUI[GameInfoTypes.EA_ACTION_RITUAL_DESICCATION] = ModelCultRitual_SetUI
+SetAIValues[GameInfoTypes.EA_ACTION_RITUAL_DESICCATION] = ModelCultRitual_SetAIValues
 
 --EA_ACTION_RITUAL_EQUUS
 TestTarget[GameInfoTypes.EA_ACTION_RITUAL_EQUUS] = ModelCultRitual_TestTarget

@@ -203,6 +203,10 @@
 		<Row Tag="TXT_KEY_EA_SPHERE_FORESTS">
 			<Text>Forests</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_SPHERE_EARTH">
+			<Text>Earth</Text>
+		</Row>
+
 		<Row Tag="TXT_KEY_EA_SPHERE_BEECH_TREES">
 			<Text>Beech Trees</Text>
 		</Row>

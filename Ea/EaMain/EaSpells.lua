@@ -67,6 +67,7 @@ local gg_bToCheapToHire =					gg_bToCheapToHire
 local gg_bNormalCombatUnit =				gg_bNormalCombatUnit
 local gg_bNormalLivingCombatUnit =			gg_bNormalLivingCombatUnit
 local gg_normalizedUnitPower =				gg_normalizedUnitPower
+local gg_playerPlotActionTargeted =			gg_playerPlotActionTargeted
 
 --localized functions
 local Floor =								math.floor
@@ -270,7 +271,7 @@ function FinishEaSpell(eaActionID)		--only called from DoEaSpell so file locals 
 		g_plot:AddFloatUpMessage(Locale.Lookup(g_eaAction.Description), 1)
 	end
 
-	ClearActionPlotTargetedForPerson(g_eaPlayer, g_iPerson)
+	ClearActionPlotTargetedForPerson(g_iPlayer, g_iPerson)
 	g_eaPerson.eaActionID = -1		--will bring back to map on next turn
 
 	--g_unit:SetInvisibleType(INVISIBLE_SUBMARINE)
@@ -508,16 +509,30 @@ function TestEaSpellTarget(eaActionID, testX, testY, bAITargetTest)
 	g_x, g_y = testX, testY
 	g_iPlot = GetPlotIndexFromXY(testX, testY)
 
-	--Action being done here (or GP on way for AI)? 
+	--Action being done here (or GP on way for AI)
 	if not g_eaAction.NoGPNumLimit then
-		local plotTargeted = g_eaPlayer.actionPlotTargeted[eaActionID]
-		if plotTargeted and plotTargeted[g_iPlot] and plotTargeted[g_iPlot] ~= g_iPerson then			--another AI GP is doing this here (or on way for AI)
-			if g_bAIControl then
-				print("TestEaSpellTarget returning false for AI becuase someone else has claimed this action at this plot")
-				return false
-			else
-				g_bSomeoneElseDoingHere = true
-				--will return false but delayed until below for human UI
+		--local plotTargeted = g_eaPlayer.actionPlotTargeted[eaActionID]
+		--if plotTargeted and plotTargeted[g_iPlot] and plotTargeted[g_iPlot] ~= g_iPerson then			--another AI GP is doing this here (or on way for AI)
+		--	if g_bAIControl then
+		--		print("TestEaActionTarget returning false for AI becuase someone else has claimed this action at this plot")
+		--		return false
+		--	else
+		--		g_bSomeoneElseDoingHere = true
+		--		--will return false but delayed until below for human UI
+		--	end
+		--end
+
+		local targetPlotActions = gg_playerPlotActionTargeted[g_iPlayer][g_iPlot]
+		if targetPlotActions then
+			local bBlock = false
+			if targetPlotActions[eaActionID] and targetPlotActions[eaActionID] ~= g_iPerson then		--another AI GP is doing this or building improvement here (or on way for AI)
+				if g_bAIControl then
+					print("TestEaActionTarget returning false for AI becuase someone else has claimed this action at this plot")
+					return false
+				else
+					g_bSomeoneElseDoingHere = true
+					--will return false but delayed until below for human UI
+				end
 			end
 		end
 	end
@@ -742,8 +757,10 @@ function DoEaSpell(eaActionID, iPlayer, unit, iPerson, targetX, targetY)
 	
 	--Reserve this action at this plot (will cause TestEaSpellTarget fail for other GPs)
 	if 1 < turnsToComplete and not g_eaAction.NoGPNumLimit then
-		g_eaPlayer.actionPlotTargeted[eaActionID] = g_eaPlayer.actionPlotTargeted[eaActionID] or {}
-		g_eaPlayer.actionPlotTargeted[eaActionID][g_iPlot] = g_iPerson
+		--g_eaPlayer.actionPlotTargeted[eaActionID] = g_eaPlayer.actionPlotTargeted[eaActionID] or {}
+		--g_eaPlayer.actionPlotTargeted[eaActionID][g_iPlot] = g_iPerson
+		gg_playerPlotActionTargeted[g_iPlayer][g_iPlot] = gg_playerPlotActionTargeted[g_iPlayer][g_iPlot] or {}
+		gg_playerPlotActionTargeted[g_iPlayer][g_iPlot][eaActionID] = g_iPerson
 	end
 
 	if turnsToComplete == 1000 and g_bAIControl then turnsToComplete = 8 end	--AI will wake up and test other options
@@ -766,7 +783,7 @@ function DoEaSpell(eaActionID, iPlayer, unit, iPerson, targetX, targetY)
 			end
 		end
 		if g_bGreatPerson then
-			ClearActionPlotTargetedForPerson(g_eaPlayer, g_iPerson)
+			ClearActionPlotTargetedForPerson(g_iPlayer, g_iPerson)
 		end
 		SpecialEffects()
 
@@ -842,7 +859,7 @@ function InterruptEaSpell(iPlayer, iPerson)
 
 	eaPerson.gotoPlotIndex = -1
 	eaPerson.gotoEaActionID = -1
-	ClearActionPlotTargetedForPerson(eaPlayer, iPerson)
+	ClearActionPlotTargetedForPerson(iPlayer, iPerson)
 	if eaActionID == -1 then return end
 
 	eaPerson.eaActionID = -1

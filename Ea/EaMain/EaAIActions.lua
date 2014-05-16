@@ -54,6 +54,7 @@ local Players =								Players
 local Teams =								Teams
 local gg_aiOptionValues =					gg_aiOptionValues	--communicates with EaAction.lua
 local gg_unitClusters =						gg_unitClusters	--values set in EaUnitsAI.lua; used here for GP threat assesment if GP has combat role
+local gg_playerPlotActionTargeted =			gg_playerPlotActionTargeted
 
 --localized functions
 local TestEaAction =						TestEaAction
@@ -106,32 +107,35 @@ function MakeAIActionsPlotsDirty(iPlayer)
 	end
 end
 
-local function CitySpiralSearchForWonderPlot(city, bAvoidFarmable, bAvoidHill, bAvoidLivingTerrain, bAvoidImprovement, bAvoidResource)
-	print("CitySpiralSearchForWonderPlot ", city, bAvoidFarmable, bAvoidHill, bAvoidLivingTerrain, bAvoidImprovement, bAvoidResource)
+local function CitySpiralSearchForWonderPlot(iPlayer, city, bAvoidFarmable, bAvoidHill, bAvoidLivingTerrain, bAvoidImprovement, bAvoidResource)
+	print("CitySpiralSearchForWonderPlot ", iPlayer, city, bAvoidFarmable, bAvoidHill, bAvoidLivingTerrain, bAvoidImprovement, bAvoidResource)
 	local sector = Rand(6, "hello") + 1
 	for plot in PlotAreaSpiralIterator(city:Plot(), 3, sector, false, false, false) do
-		if not plot:IsWater() and not plot:IsImpassable() and not plot:IsCity() then
-			--print("a")
-			local iOwner = plot:GetOwner()
-			if iOwner == -1 or iOwner == g_iPlayer then
-				--print("b")
-				local plotTypeID = plot:GetPlotType()
-				if plotTypeID ~= PLOT_MOUNTAIN then
-					--print("c")
-					if not bAvoidHill or plotTypeID ~= PLOT_HILLS then
-						--print("d")
-						local terrainID = plot:GetTerrainType()
-						if not bAvoidFarmable or not ((terrainID == TERRAIN_GRASS and (plotTypeID == PLOT_LAND or plot:IsFreshWater())) or (terrainID == TERRAIN_PLAINS and plot:IsFreshWater())) then
-							--print("e")
-							local featureID = plot:GetFeatureType()
-							if not bAvoidLivingTerrain or (featureID ~= FEATURE_FOREST and featureID ~= FEATURE_JUNGLE and featureID ~= FEATURE_MARSH) then
-								--print("f")
-								if not bAvoidResource or plot:GetResourceType(-1) == -1 then
-									--print("g")
-									local improvementID = plot:GetImprovementType()
-									if improvementID == -1 or (not bAvoidImprovement and not GameInfo.Improvements[improvementID].Permanent) then
-										print(" * Returning ", plot:GetPlotIndex())
-										return plot:GetPlotIndex()
+		local iPlot = plot:GetPlotIndex()
+		if not gg_playerPlotActionTargeted[iPlayer][iPlot] then		--not targeted by any other GPs (for anything)
+			if not plot:IsWater() and not plot:IsImpassable() and not plot:IsCity() then
+				--print("a")
+				local iOwner = plot:GetOwner()
+				if iOwner == -1 or iOwner == g_iPlayer then
+					--print("b")
+					local plotTypeID = plot:GetPlotType()
+					if plotTypeID ~= PLOT_MOUNTAIN then
+						--print("c")
+						if not bAvoidHill or plotTypeID ~= PLOT_HILLS then
+							--print("d")
+							local terrainID = plot:GetTerrainType()
+							if not bAvoidFarmable or not ((terrainID == TERRAIN_GRASS and (plotTypeID == PLOT_LAND or plot:IsFreshWater())) or (terrainID == TERRAIN_PLAINS and plot:IsFreshWater())) then
+								--print("e")
+								local featureID = plot:GetFeatureType()
+								if not bAvoidLivingTerrain or (featureID ~= FEATURE_FOREST and featureID ~= FEATURE_JUNGLE and featureID ~= FEATURE_MARSH) then
+									--print("f")
+									if not bAvoidResource or plot:GetResourceType(-1) == -1 then
+										--print("g")
+										local improvementID = plot:GetImprovementType()
+										if improvementID == -1 or (not bAvoidImprovement and not GameInfo.Improvements[improvementID].Permanent) then
+											print(" * Returning ", plot:GetPlotIndex())
+											return iPlot
+										end
 									end
 								end
 							end
@@ -145,7 +149,7 @@ end
 
 local function CalculateAIActionsPlots(iPlayer)	--cache turn so we don't do this more than needed
 	print("CalculateAIActionsPlots ", iPlayer, g_gameTurn)
-	if not g_wonderPlotsCacheTurn[iPlayer] then
+	if not g_wonderPlotsCacheTurn[iPlayer] then		--init
 		g_wonderWorkPlots[iPlayer] = {}
 		g_wonderNoWorkPlots[iPlayer] = {}
 	end
@@ -172,7 +176,7 @@ local function CalculateAIActionsPlots(iPlayer)	--cache turn so we don't do this
 			--spiral out until satisfactory plot found
 			--TO DO: Make g_wonderWorkPlots really strongly prefer cities with unemployed (meaning there is a food surplus relative to workable plots)	--city:GetSpecialistCount(SPECIALIST_CITIZEN)
 			--TO DO: make more interersting with remote wonders?
-			local iPlot = CitySpiralSearchForWonderPlot(city, bAvoidFarmable, bAvoidHill, bAvoidLivingTerrain, bAvoidImprovement, bAvoidResource)
+			local iPlot = CitySpiralSearchForWonderPlot(iPlayer, city, bAvoidFarmable, bAvoidHill, bAvoidLivingTerrain, bAvoidImprovement, bAvoidResource)
 			if iPlot then
 				if not bHaveWorkPlots then
 					wonderWorkPlots.pos = wonderWorkPlots.pos + 1
@@ -778,7 +782,7 @@ end
 local function DoOrGotoBestOption(bestVoption)
 	print("Running DoOrGotoBestOption ", bestVoption)
 	--DebugFunctionExitTest("DoOrGotoBestOption", true)
-	--ClearActionPlotTargetedForPerson(g_eaPlayer, iPerson)
+	--ClearActionPlotTargetedForPerson(g_iPlayer, iPerson)
 
 	local option = g_options[bestVoption]
 	local targetPlotIndex = option.iPlot
@@ -808,8 +812,11 @@ local function DoOrGotoBestOption(bestVoption)
 					g_eaPlayer.aiUniqueTargeted[gotoEaActionID] = g_iPerson		--other GPs won't consider while this GP in transit 
 				end
 				if not eaAction.NoGPNumLimit then
-					g_eaPlayer.actionPlotTargeted[gotoEaActionID] = g_eaPlayer.actionPlotTargeted[gotoEaActionID] or {}
-					g_eaPlayer.actionPlotTargeted[gotoEaActionID][targetPlotIndex] = g_iPerson
+					--g_eaPlayer.actionPlotTargeted[gotoEaActionID] = g_eaPlayer.actionPlotTargeted[gotoEaActionID] or {}
+					--g_eaPlayer.actionPlotTargeted[gotoEaActionID][targetPlotIndex] = g_iPerson
+
+					gg_playerPlotActionTargeted[g_iPlayer][targetPlotIndex] = gg_playerPlotActionTargeted[g_iPlayer][targetPlotIndex] or {}
+					gg_playerPlotActionTargeted[g_iPlayer][targetPlotIndex][gotoEaActionID] = g_iPerson
 				end
 				print("g_eaPerson.gotoPlotIndex, .gotoEaActionID = ", g_eaPerson.gotoPlotIndex, g_eaPerson.gotoEaActionID)
 			else		--if we didn't move, then we need to blacklist this targetPlot for a while	
@@ -850,7 +857,7 @@ function AIGPDoSomething(iPlayer, iPerson, unit)		--unit cannot be nil
 		print("!!!! Warning: GP has eaActionID but calling AIGPDoSomething")
 	end
 
-	--ClearActionPlotTargetedForPerson(g_eaPlayer, iPerson)
+	--ClearActionPlotTargetedForPerson(iPlayer, iPerson)
 
 	--Are we at our destination?
 	if g_gpPlotIndex == g_eaPerson.gotoPlotIndex then
@@ -1063,7 +1070,7 @@ function AIGPTestCombatInterrupt(iPlayer, iPerson, unit)		--called each turn (un
 	--No combat action was done so move toward rallyPlot
 	if 4 < Distance(gpX, gpY, rallyX, rallyY) then
 		print("GP is >3 plots from rally plot; will now attempt to move to it")
-		--ClearActionPlotTargetedForPerson(g_eaPlayer, iPerson)
+		--ClearActionPlotTargetedForPerson(iPlayer, iPerson)
 		DoEaAction(EA_ACTION_GO_TO_PLOT, iPlayer, unit, iPerson, rallyX, rallyY) 	--will interrupt whatever GP was doing before
 		return true
 	end

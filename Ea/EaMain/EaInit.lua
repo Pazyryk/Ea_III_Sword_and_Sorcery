@@ -83,7 +83,7 @@ function OnLoadEaMain()   --Called from the bottom of EaMain after all included 
 	EaUnitsInit(bNewGame)
 	AIMercInit(bNewGame)
 	EaWondersInit(bNewGame)
-
+	EaActionsInit(bNewGame)
 end
 
 function OnEnterGame()   --Runs when Begin or Countinue Your Journey pressed
@@ -176,7 +176,7 @@ function InitPlayerVariables()
 			eaPlayer.tradeTotals = {}	--index by other iPlayer; holds only base trade so we can calculate Trade Mission value
 			eaPlayer.tradeMissions = {}	--index by other iPlayer, holds GP mod
 			eaPlayer.aiUniqueTargeted = {}	--some AI values here so we don't have to nil check
-			eaPlayer.actionPlotTargeted = {}
+			--eaPlayer.actionPlotTargeted = {}	DEPRECIATED
 			eaPlayer.aiMerchantTooSmallToConsider = 0
 			eaPlayer.mercenaries = {}
 			eaPlayer.revealedNWs = {}

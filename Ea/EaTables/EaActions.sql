@@ -101,7 +101,7 @@ CREATE TABLE EaActions ('ID' INTEGER PRIMARY KEY AUTOINCREMENT,
 						--Do effect (only works when TurnsToComplete = 1)
 						'UnitUpgradeTypePrefix' TEXT DEFAULT NULL,	--don't use for Spell!
 						--Finish effect (only works when TurnsToComplete > 1)
-						'ImprovementType' TEXT DEFAULT NULL,		--must be set with BuildType	
+						'ImprovementType' TEXT DEFAULT NULL,		--must be set with BuildType; Don't use for Spells!
 						'ClaimsPlot' BOOLEAN DEFAULT NULL,			--works to radius 10 for now
 						'FoundsSpreadsCult' TEXT DEFAULT NULL,
 						'Building' TEXT DEFAULT NULL,		--this building already present acts as target disallow
@@ -323,16 +323,16 @@ UPDATE EaActions SET CapitalOnly = 1 WHERE Type = 'EA_ACTION_TRADE_MISSION';
 
 
 --Religious conversion and cult founding
-INSERT INTO EaActions (Type,			Description,							GPOnly,	UIType,		TechReq,				PolicyReq,				ReligionFounded,			FinishXP,	AITarget,			GPClass,	GPSubclass,		FoundsSpreadsCult,				City,		GPModType1,				TurnsToComplete,	ProgressHolder,	HumanOnlySound,			PlayAnywhereSound,					IconIndex,	IconAtlas) VALUES
-('EA_ACTION_PROSELYTIZE',				'TXT_KEY_EA_ACTION_PROSELYTIZE',		1,		'Action',	NULL,					NULL,					'RELIGION_AZZANDARAYASNA',	25,			'AzzandaraSpread',	'Devout',	'Priest',		NULL,							'Any',		'EAMOD_PROSELYTISM',	8,					'City',			NULL,					'AS2D_EVENT_NOTIFICATION_GOOD',		1,			'EXPANSION_UNIT_ACTION_ATLAS'	),
-('EA_ACTION_ANTIPROSELYTIZE',			'TXT_KEY_EA_ACTION_PROSELYTIZE',		1,		'Action',	NULL,					NULL,					'RELIGION_ANRA',			25,			'AnraSpread',		'Devout',	'FallenPriest',	NULL,							'Any',		'EAMOD_PROSELYTISM',	8,					'City',			NULL,					'AS2D_EVENT_NOTIFICATION_VERY_BAD',	1,			'EXPANSION_UNIT_ACTION_ATLAS'	),
-('EA_ACTION_RITUAL_LEAVES',				'TXT_KEY_EA_ACTION_RITUAL_LEAVES',		1,		'Spell',	NULL,					NULL,					'RELIGION_THE_WEAVE_OF_EA',	25,			'AllCities',		'Devout',	'Druid',		'RELIGION_CULT_OF_LEAVES',		'Any',		'EAMOD_DEVOTION',		8,					'City',			NULL,					'AS2D_EVENT_NOTIFICATION_GOOD',		3,			'EA_RELIGION_ATLAS'				),
-('EA_ACTION_RITUAL_CLEANSING',			'TXT_KEY_EA_ACTION_RITUAL_CLEANSING',	1,		'Spell',	NULL,					NULL,					'RELIGION_THE_WEAVE_OF_EA',	25,			'AllCities',		'Devout',	'Druid',		'RELIGION_CULT_OF_ABZU',		'Any',		'EAMOD_DEVOTION',		8,					'City',			NULL,					'AS2D_EVENT_NOTIFICATION_GOOD',		6,			'EA_RELIGION_ATLAS'				),
-('EA_ACTION_RITUAL_AEGIR',				'TXT_KEY_EA_ACTION_RITUAL_AEGIR',		1,		'Spell',	NULL,					NULL,					'RELIGION_THE_WEAVE_OF_EA',	25,			'AllCities',		'Devout',	'Druid',		'RELIGION_CULT_OF_AEGIR',		'Any',		'EAMOD_DEVOTION',		8,					'City',			NULL,					'AS2D_EVENT_NOTIFICATION_GOOD',		7,			'EA_RELIGION_ATLAS'				),
-('EA_ACTION_RITUAL_STONES',				'TXT_KEY_EA_ACTION_RITUAL_STONES',		1,		'Spell',	NULL,					NULL,					'RELIGION_CULT_OF_PLOUTON',	25,			'AllCities',		'Devout',	'Druid',		'RELIGION_CULT_OF_PLOUTON',		'Any',		'EAMOD_DEVOTION',		8,					'City',			NULL,					'AS2D_EVENT_NOTIFICATION_GOOD',		8,			'EA_RELIGION_ATLAS'				),
-('EA_ACTION_RITUAL_DESICCATION',		'TXT_KEY_EA_ACTION_RITUAL_DESICCATION',	1,		'Spell',	NULL,					NULL,					'RELIGION_CULT_OF_CAHRA',	25,			'AllCities',		'Devout',	'Druid',		'RELIGION_CULT_OF_CAHRA',		'Any',		'EAMOD_DEVOTION',		8,					'City',			NULL,					'AS2D_EVENT_NOTIFICATION_GOOD',		9,			'EA_RELIGION_ATLAS'				),
-('EA_ACTION_RITUAL_EQUUS',				'TXT_KEY_EA_ACTION_RITUAL_EQUUS',		1,		'Spell',	NULL,					NULL,					'RELIGION_THE_WEAVE_OF_EA',	25,			'AllCities',		'Devout',	'Druid',		'RELIGION_CULT_OF_EPONA',		'Any',		'EAMOD_DEVOTION',		8,					'City',			NULL,					'AS2D_EVENT_NOTIFICATION_GOOD',		5,			'EA_RELIGION_ATLAS'				),
-('EA_ACTION_RITUAL_BAKKHEIA',			'TXT_KEY_EA_ACTION_RITUAL_BAKKHEIA',	1,		'Spell',	NULL,					NULL,					'RELIGION_THE_WEAVE_OF_EA',	25,			'AllCities',		'Devout',	'Druid',		'RELIGION_CULT_OF_BAKKHEIA',	'Any',		'EAMOD_DEVOTION',		8,					'City',			NULL,					'AS2D_EVENT_NOTIFICATION_GOOD',		4,			'EA_RELIGION_ATLAS'				);
+INSERT INTO EaActions (Type,			Description,							GPOnly,	UIType,		ReligionFounded,			FinishXP,	AITarget,			GPClass,	GPSubclass,		FoundsSpreadsCult,				City,		GPModType1,				TurnsToComplete,	ProgressHolder,	HumanOnlySound,			PlayAnywhereSound,					IconIndex,	IconAtlas) VALUES
+('EA_ACTION_PROSELYTIZE',				'TXT_KEY_EA_ACTION_PROSELYTIZE',		1,		'Action',	'RELIGION_AZZANDARAYASNA',	25,			'AzzandaraSpread',	'Devout',	'Priest',		NULL,							'Any',		'EAMOD_PROSELYTISM',	8,					'City',			NULL,					'AS2D_EVENT_NOTIFICATION_GOOD',		1,			'EXPANSION_UNIT_ACTION_ATLAS'	),
+('EA_ACTION_ANTIPROSELYTIZE',			'TXT_KEY_EA_ACTION_PROSELYTIZE',		1,		'Action',	'RELIGION_ANRA',			25,			'AnraSpread',		'Devout',	'FallenPriest',	NULL,							'Any',		'EAMOD_PROSELYTISM',	8,					'City',			NULL,					'AS2D_EVENT_NOTIFICATION_VERY_BAD',	1,			'EXPANSION_UNIT_ACTION_ATLAS'	),
+('EA_ACTION_RITUAL_LEAVES',				'TXT_KEY_EA_ACTION_RITUAL_LEAVES',		1,		'Spell',	'RELIGION_THE_WEAVE_OF_EA',	25,			'AllCities',		'Devout',	'Druid',		'RELIGION_CULT_OF_LEAVES',		'Any',		'EAMOD_DEVOTION',		8,					'City',			NULL,					'AS2D_EVENT_NOTIFICATION_GOOD',		3,			'EA_RELIGION_ATLAS'				),
+('EA_ACTION_RITUAL_CLEANSING',			'TXT_KEY_EA_ACTION_RITUAL_CLEANSING',	1,		'Spell',	'RELIGION_THE_WEAVE_OF_EA',	25,			'AllCities',		'Devout',	'Druid',		'RELIGION_CULT_OF_ABZU',		'Any',		'EAMOD_DEVOTION',		8,					'City',			NULL,					'AS2D_EVENT_NOTIFICATION_GOOD',		6,			'EA_RELIGION_ATLAS'				),
+('EA_ACTION_RITUAL_AEGIR',				'TXT_KEY_EA_ACTION_RITUAL_AEGIR',		1,		'Spell',	'RELIGION_THE_WEAVE_OF_EA',	25,			'AllCities',		'Devout',	'Druid',		'RELIGION_CULT_OF_AEGIR',		'Any',		'EAMOD_DEVOTION',		8,					'City',			NULL,					'AS2D_EVENT_NOTIFICATION_GOOD',		7,			'EA_RELIGION_ATLAS'				),
+('EA_ACTION_RITUAL_STONES',				'TXT_KEY_EA_ACTION_RITUAL_STONES',		1,		'Spell',	'RELIGION_THE_WEAVE_OF_EA',	25,			'AllCities',		'Devout',	'Druid',		'RELIGION_CULT_OF_PLOUTON',		'Any',		'EAMOD_DEVOTION',		8,					'City',			NULL,					'AS2D_EVENT_NOTIFICATION_GOOD',		8,			'EA_RELIGION_ATLAS'				),
+('EA_ACTION_RITUAL_DESICCATION',		'TXT_KEY_EA_ACTION_RITUAL_DESICCATION',	1,		'Spell',	'RELIGION_THE_WEAVE_OF_EA',	25,			'AllCities',		'Devout',	'Druid',		'RELIGION_CULT_OF_CAHRA',		'Any',		'EAMOD_DEVOTION',		8,					'City',			NULL,					'AS2D_EVENT_NOTIFICATION_GOOD',		9,			'EA_RELIGION_ATLAS'				),
+('EA_ACTION_RITUAL_EQUUS',				'TXT_KEY_EA_ACTION_RITUAL_EQUUS',		1,		'Spell',	'RELIGION_THE_WEAVE_OF_EA',	25,			'AllCities',		'Devout',	'Druid',		'RELIGION_CULT_OF_EPONA',		'Any',		'EAMOD_DEVOTION',		8,					'City',			NULL,					'AS2D_EVENT_NOTIFICATION_GOOD',		5,			'EA_RELIGION_ATLAS'				),
+('EA_ACTION_RITUAL_BAKKHEIA',			'TXT_KEY_EA_ACTION_RITUAL_BAKKHEIA',	1,		'Spell',	'RELIGION_THE_WEAVE_OF_EA',	25,			'AllCities',		'Devout',	'Druid',		'RELIGION_CULT_OF_BAKKHEIA',	'Any',		'EAMOD_DEVOTION',		8,					'City',			NULL,					'AS2D_EVENT_NOTIFICATION_GOOD',		4,			'EA_RELIGION_ATLAS'				);
 
 UPDATE EaActions SET OrGPSubclass = 'Paladin' WHERE Type = 'EA_ACTION_PROSELYTIZE';
 UPDATE EaActions SET OrGPSubclass = 'Eidolon' WHERE Type = 'EA_ACTION_ANTIPROSELYTIZE';

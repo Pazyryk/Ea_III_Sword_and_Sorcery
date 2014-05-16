@@ -208,6 +208,8 @@ function EaPeopleInit(bNewGame)
 						name = "TXT_KEY_EAPERSON_FAND",
 						title = "TXT_KEY_EA_QUEEN",
 						portrait = "Fand_SueMarino_0.70_636x944.dds",
+						eaActionID = -1,
+						gotoEaActionID = -1
 						}
 	end
 
@@ -1188,7 +1190,7 @@ function KillPerson(iPlayer, iPerson, unit, iKillerPlayer, deathType)
 	if eaPerson.gotoEaActionID ~= -1 then
 		eaPlayer.aiUniqueTargeted[eaPerson.gotoEaActionID] = nil
 	end
-	ClearActionPlotTargetedForPerson(eaPlayer, iPerson)	--just to be safe
+	ClearActionPlotTargetedForPerson(iPlayer, iPerson)	--just to be safe
 	if eaPerson.eaActionID ~= -1 then
 		InterruptEaAction(iPlayer, iPerson)
 	end

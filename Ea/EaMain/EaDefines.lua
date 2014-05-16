@@ -267,6 +267,7 @@ gg_teamCanMeetGods = {}
 gg_teamCanMeetFay = {}
 gg_animalSpawnPlots = {pos = 0}
 gg_animalSpawnInhibitTeams = {}
+gg_playerPlotActionTargeted = {}	--index by iPlayer, iPlot, eaActionID, =iPerson
 
 --misc counts
 gg_counts = {	freshWaterAbzuFollowerCities = 0,

@@ -44,6 +44,9 @@
 		<Row Tag="TXT_KEY_EA_ACTION_WORSHIP">
 			<Text>Worship</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_CHANNEL">
+			<Text>Channel</Text>
+		</Row>
 
 		<Row Tag="TXT_KEY_EA_ACTION_LEAD_CHARGE">
 			<Text>Lead Charge</Text>

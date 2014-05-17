@@ -181,17 +181,19 @@ function EaActionsInit(bNewGame)
 		gg_playerPlotActionTargeted[iPlayer] = {}
 	end
 	for iPerson, eaPerson in pairs(gPeople) do
-		if eaPerson.eaActionID > 0 then
-			local player = Players[eaPerson.iPlayer]
+		local iPlayer = eaPerson.iPlayer
+		if eaPerson.eaActionID > 0 then	
+			local player = Players[iPlayer]
 			local unit = player:GetUnitByID(eaPerson.iUnit)
 			local iPlot = unit:GetPlot():GetPlotIndex()
 			print("-setting gg_playerPlotActionTargeted for eaActionID ", iPlayer, iPlot, eaPerson.eaActionID, iPerson)
 			gg_playerPlotActionTargeted[iPlayer][iPlot] = gg_playerPlotActionTargeted[iPlayer][iPlot] or {}
 			gg_playerPlotActionTargeted[iPlayer][iPlot][eaPerson.eaActionID] = iPerson
 		elseif eaPerson.gotoEaActionID > 0 then		--AI going to do something
-			print("-setting gg_playerPlotActionTargeted for gotoEaActionID ", eaPerson.iPlayer, eaPerson.gotoPlotIndex, eaPerson.gotoEaActionID, iPerson)
-			gg_playerPlotActionTargeted[eaPerson.iPlayer][eaPerson.gotoPlotIndex] = gg_playerPlotActionTargeted[eaPerson.iPlayer][eaPerson.gotoPlotIndex] or {}
-			gg_playerPlotActionTargeted[eaPerson.iPlayer][eaPerson.gotoPlotIndex][eaPerson.gotoEaActionID] = iPerson
+			local gotoPlotIndex = eaPerson.gotoPlotIndex
+			print("-setting gg_playerPlotActionTargeted for gotoEaActionID ", iPlayer, gotoPlotIndex, eaPerson.gotoEaActionID, iPerson)
+			gg_playerPlotActionTargeted[iPlayer][gotoPlotIndex] = gg_playerPlotActionTargeted[iPlayer][gotoPlotIndex] or {}
+			gg_playerPlotActionTargeted[iPlayer][gotoPlotIndex][eaPerson.gotoEaActionID] = iPerson
 		end
 	end
 end
@@ -737,6 +739,8 @@ function TestEaActionTarget(eaActionID, testX, testY, bAITargetTest)
 			end
 		end
 	end
+
+	--TO DO: if g_eaAction.ImprovementType then make sure no one else is building anything here
 
 	--print("pass j")
 

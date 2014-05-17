@@ -771,6 +771,13 @@ function UnlockReservedGPs()
 	reservedGPs = nil		--garbage collect cached table
 end
 
+function RegisterPersonActions(iPerson)
+	local eaPerson = gPeople[iPerson]
+
+end
+
+
+
 
 --------------------------------------------------------------
 -- Leader Functions

@@ -146,6 +146,7 @@ local g_bNonTargetTestsPassed = false
 local g_bAllTestsPassed = false
 local g_bSufficientFaith = true
 local g_bSetDelayedFailForUI = false
+local g_bHasSpell = false
 
 --communicate from TestTarget to SetUI or SetAIValues when needed
 local g_testTargetSwitch = 0
@@ -178,6 +179,7 @@ for row in GameInfo.EaActions() do
 end
 
 local gpTempTypeUnits = {}	--index by role, originalTypeID; holds tempTypeID
+local firstArchdemonID, firstArchangelID
 for unitInfo in GameInfo.Units() do
 	if unitInfo.EaGPTempRole then
 		local role = unitInfo.EaGPTempRole
@@ -189,6 +191,13 @@ for unitInfo in GameInfo.Units() do
 				gpTempTypeUnits[role] = gpTempTypeUnits[role] or {}
 				gpTempTypeUnits[role][originalTypeID] = tempTypeID
 			end
+		end
+	end
+	if unitInfo.EaSpecial then
+		if unitInfo.EaSpecial == "Archdemon" then
+			firstArchdemonID = firstArchdemonID or unitInfo.ID
+		elseif unitInfo.EaSpecial == "Archangel" then
+			firstArchdemonID = firstArchdemonID or unitInfo.ID
 		end
 	end
 end
@@ -341,7 +350,7 @@ function TestEaSpellForHumanUI(eaActionID, iPlayer, unit, iPerson, testX, testY)
 	
 	g_bAllTestsPassed = TestEaSpell(eaActionID, iPlayer, unit, iPerson, testX, testY, false)
 	MapModData.bAllow = g_bAllTestsPassed and not g_bSetDelayedFailForUI
-	MapModData.bShow = g_bAllTestsPassed	--may change below
+	MapModData.bShow = g_bHasSpell			--this should always be the case for spells (search and destroy all other MapModData.bShow changes in this file!)
 	MapModData.text = "no help text"		--will change below or take eaAction.Help value (if bShow)
 
 	--By default, bShow follows bAllow and text will be from eaAction.Help. If we want bShow=true when bAllow=false,
@@ -352,7 +361,6 @@ function TestEaSpellForHumanUI(eaActionID, iPlayer, unit, iPerson, testX, testY)
 		if g_eaAction.UniqueType == "World" then
 			if gWorldUniqueAction[eaActionID] then
 				if gWorldUniqueAction[eaActionID] ~= -1 then	--being built
-					MapModData.bShow = true
 					local bMyCiv = false
 					for iPerson, eaPerson in pairs(gPeople) do
 						if eaPerson.iPlayer == iPlayer and gWorldUniqueAction[eaActionID] == iPerson then
@@ -370,18 +378,15 @@ function TestEaSpellForHumanUI(eaActionID, iPlayer, unit, iPerson, testX, testY)
 		elseif g_eaAction.UniqueType == "National" then
 			if g_eaPlayer.nationalUniqueAction[eaActionID] then
 				if g_eaPlayer.nationalUniqueAction[eaActionID] ~= -1 then	--being built
-					MapModData.bShow = true
 					MapModData.text = "[COLOR_WARNING_TEXT]Another Great Person from your civilization is working on this...[ENDCOLOR]"
 				end
 			end
 		end
 	elseif g_bSomeoneElseDoingHere then		--true only if all other tests passed
-		MapModData.bShow = true
 		MapModData.text = "[COLOR_WARNING_TEXT]You cannot do this in the same place as another great person from your civilization[ENDCOLOR]"	
 	end
 
 	if g_eaPerson.spells and g_eaPerson.spells[eaActionID] then
-		MapModData.bShow = true
 		if not g_bSufficientFaith then
 			if g_faith < 1 then
 				MapModData.text = "[COLOR_WARNING_TEXT]You do not have any mana or divine favor[ENDCOLOR]"
@@ -392,7 +397,7 @@ function TestEaSpellForHumanUI(eaActionID, iPlayer, unit, iPerson, testX, testY)
 	end
 
 	if SetUI[eaActionID] then
-		SetUI[eaActionID]()	--always set MapModData.bShow and MapModData.text together (need specific function if we want to show disabled button)
+		SetUI[eaActionID]()
 	end
 
 	if MapModData.bShow and MapModData.text == "no help text" and g_eaAction.Help then
@@ -428,7 +433,11 @@ function TestEaSpell(eaActionID, iPlayer, unit, iPerson, testX, testY, bAINonTar
 	--skip all world and civ-level reqs (for spells, these only apply to learning not casting) except for FixedFaith
 	if not iPerson then return false end	--we'll handle non-GP spellcasting later
 	g_eaPerson = gPeople[iPerson]
-	if not g_eaPerson.spells or not g_eaPerson.spells[eaActionID] then return false end		--don't have spells or this spell (most common exclude)
+	if not g_eaPerson.spells or not g_eaPerson.spells[eaActionID] then	--don't have spells or this spell (most common exclude)
+		g_bHasSpell = false
+		return false
+	end	
+	g_bHasSpell = true
 	g_iPlayer = iPlayer
 	g_eaPlayer = gPlayers[iPlayer]
 	g_player = Players[iPlayer]
@@ -942,7 +951,7 @@ end
 ------------------------------------------------------------------------------------------------------------------------------
 -- Spells go here...!
 ------------------------------------------------------------------------------------------------------------------------------
---Note: spells skip over generic civ and caster prereqs: Test function won't be called
+--Note: spells skip over generic civ and caster prereqs; Test function is rarely used
 --Use TestTarget, SetUI, SetAIValues, Do (for 1 turn completion) and Finish (for >1 turn completion)
 
 -- Model "Summon" spell
@@ -951,29 +960,32 @@ local EA_SPELL_CONJURE_MONSTER =			GameInfoTypes.EA_SPELL_CONJURE_MONSTER
 local EA_SPELL_RAISE_DEAD =					GameInfoTypes.EA_SPELL_RAISE_DEAD
 local EA_SPELL_SUMMON_ABYSSAL_CREATURES =	GameInfoTypes.EA_SPELL_SUMMON_ABYSSAL_CREATURES
 local EA_SPELL_SUMMON_DEMON =				GameInfoTypes.EA_SPELL_SUMMON_DEMON
+local EA_SPELL_SUMMON_ARCHDEMON =			GameInfoTypes.EA_SPELL_SUMMON_ARCHDEMON
 local EA_SPELL_CALL_HEAVENS_GUARD =			GameInfoTypes.EA_SPELL_CALL_HEAVENS_GUARD
 local EA_SPELL_CALL_ANGEL =					GameInfoTypes.EA_SPELL_CALL_ANGEL
+local EA_SPELL_CALL_ARCHANGEL =				GameInfoTypes.EA_SPELL_CALL_ARCHANGEL
 local EA_SPELL_CALL_ANIMALS =				GameInfoTypes.EA_SPELL_CALL_ANIMALS
 local EA_SPELL_CALL_TREE_ENTS =				GameInfoTypes.EA_SPELL_CALL_TREE_ENTS
 
-local monsters = {GameInfoTypes.UNIT_GIANT_SPIDER}
+local monsters = {GameInfoTypes.UNIT_GIANT_SPIDER, GameInfoTypes.UNIT_DRAKE_GREEN, GameInfoTypes.UNIT_DRAKE_BLUE, GameInfoTypes.UNIT_DRAKE_RED}
 local undead = {GameInfoTypes.UNIT_SKELETON_SWORDSMEN, GameInfoTypes.UNIT_ZOMBIES}
 local abyssalCreatures = {GameInfoTypes.UNIT_HORMAGAUNT}
-local demons = {GameInfoTypes.UNIT_LICTOR, GameInfoTypes.UNIT_HIVE_TYRANT}	--weakest first
+local demons = {GameInfoTypes.UNIT_LICTOR, GameInfoTypes.UNIT_HIVE_TYRANT}	--weakest to strongest
 local heavensGuard = {GameInfoTypes.UNIT_ANGEL_SPEARMAN}
 local angels = {GameInfoTypes.UNIT_ANGEL}
-local animals = {GameInfoTypes.UNIT_WOLVES, GameInfoTypes.UNIT_LIONS}	--weakest first
+local animals = {GameInfoTypes.UNIT_WOLVES, GameInfoTypes.UNIT_LIONS}
 local treeEnts = {GameInfoTypes.UNIT_TREE_ENT}
 
 
 local function ModelSummon_TestTarget()
-	if g_faith < g_modSpell then
+	if g_faith < g_modSpell then		--bare minimum
 		g_testTargetSwitch = 1
 		return false
 	end
 
 	local unitTable, numUnits
 	local bLimitOneOnly = false
+	local archType = false
 	if g_eaActionID == EA_SPELL_CONJURE_MONSTER then
 		unitTable = monsters
 		numUnits = 1
@@ -1001,60 +1013,112 @@ local function ModelSummon_TestTarget()
 	elseif g_eaActionID == EA_SPELL_CALL_TREE_ENTS then
 		unitTable = treeEnts
 		numUnits = 1
+	elseif g_eaActionID == EA_SPELL_SUMMON_ARCHDEMON or g_eaActionID == EA_SPELL_CALL_ARCHANGEL then
+		archType = true
 	end
 
-	--make our unit list here so we can share it with UI and AI
-	g_count = 0		--number units can summon
-	g_value = 0		--cumulative power of newly summoned units
-	local remainingMod = g_modSpell
-	local summonedUnits = g_eaPerson.summonedUnits
-	local bHasSummonedUnit = false
-	if summonedUnits then
-		for iUnit, unitTypeID in pairs(summonedUnits) do
-			for i = 1, numUnits do
-				if unitTypeID == unitTable[i] then
-					if bLimitOneOnly then
-						g_testTargetSwitch = 2
-						return false
+	if archType then
+		local power = gg_normalizedUnitPower[g_int1]		--g_int1 was set to unitTypeID in specific Test function below
+		g_value = power * 15
+		if g_faith < g_value then
+			g_testTargetSwitch = 5			--need buckets of mana for this
+			return false
+		end
+		return true
+	else
+		--make our unit list here so we can share it with UI and AI
+		g_count = 0		--number units can summon
+		g_value = 0		--cumulative power of newly summoned units
+		local remainingMod = g_modSpell
+		local summonedUnits = g_eaPerson.summonedUnits
+		local bHasSummonedUnit = false
+		if summonedUnits then
+			for iUnit, unitTypeID in pairs(summonedUnits) do
+				for i = 1, numUnits do
+					if unitTypeID == unitTable[i] then
+						if bLimitOneOnly then
+							g_testTargetSwitch = 2
+							return false
+						end
+						bHasSummonedUnit = true		--if can't now, it's because there are already summoned units
+						remainingMod = remainingMod - gg_normalizedUnitPower[unitTypeID]
 					end
-					bHasSummonedUnit = true		--if can't now, it's because there are already summoned units
-					remainingMod = remainingMod - gg_normalizedUnitPower[unitTypeID]
 				end
 			end
 		end
-	end
-	local weakestUnitPower = gg_normalizedUnitPower[unitTable[1] ]
-	local i = numUnits		--start at strongest unit and work through backwards
-	while weakestUnitPower < remainingMod do
-		local unitTypeID = unitTable[i]
-		local power = gg_normalizedUnitPower[unitTypeID]
-		if power < remainingMod then	--add to list
-			g_count = g_count + 1
-			g_integers[g_count] = unitTypeID
-			g_value = g_value + power
-			if bLimitOneOnly then return true end	--done!
-			remainingMod = remainingMod - power
+		local weakestUnitPower = gg_normalizedUnitPower[unitTable[1] ]
+		local i = numUnits		--start at strongest unit and work through backwards
+		while weakestUnitPower < remainingMod do
+			local unitTypeID = unitTable[i]
+			local power = gg_normalizedUnitPower[unitTypeID]
+			if power < remainingMod then	--add to list
+				g_count = g_count + 1
+				g_integers[g_count] = unitTypeID
+				g_value = g_value + power
+				if bLimitOneOnly then return true end	--done!
+				remainingMod = remainingMod - power
+			end
+			i = i < 2 and i + numUnits - 1 or i - 1
 		end
-		i = i < 2 and i + numUnits - 1 or i - 1
-	end
-	if g_count == 0 then
-		if bHasSummonedUnit then
-			g_testTargetSwitch = 3
-			return false
-		else
-			g_testTargetSwitch = 4
-			g_int2 = weakestUnitPower
-			return false
+		if g_count == 0 then
+			if bHasSummonedUnit then
+				g_testTargetSwitch = 3
+				return false
+			else
+				g_testTargetSwitch = 4
+				g_int2 = weakestUnitPower
+				return false
+			end
 		end
+		return true
 	end
-	return true
 end
 
 local function ModelSummon_SetUI()
-	if g_bNonTargetTestsPassed then		--has spell so show it
-		MapModData.bShow = true
+	if g_bNonTargetTestsPassed then
 		--text for different spells
-		local verb, verbCap, unitStr, unitPlurStr
+
+		if g_eaActionID == EA_SPELL_SUMMON_ARCHDEMON then
+			if g_bAllTestsPassed then
+				local name = Locale.Lookup(GameInfo.Units[g_int1].Description)
+				MapModData.text = "Summon " .. name
+			else
+				if g_testTargetSwitch == 1 then
+					MapModData.text = "Not enough mana to cast this spell"
+				elseif g_testTargetSwitch == 5 then
+					local name = Locale.Lookup(GameInfo.Units[g_int1].Description)
+					MapModData.text = "You need " .. g_value .. " mana to summon " .. name
+				elseif g_testTargetSwitch == 10 then
+					local currentName = Locale.Lookup(GameInfo.Units[gg_summonedArchdemon[g_iPlayer] ].Description)
+					MapModData.text = "You cannot summon another archdemon while " .. currentName .. " walks this world"
+				elseif g_testTargetSwitch == 11 then
+					MapModData.text = "All eight archdemons have been summoned; isn't it time to wrap this up...?"
+				end
+			end
+			return
+		
+		elseif g_eaActionID == EA_SPELL_CALL_ARCHANGEL then
+			if g_bAllTestsPassed then
+				local name = Locale.Lookup(GameInfo.Units[g_int1].Description)
+				MapModData.text = "Call " .. name
+			else
+				if g_testTargetSwitch == 1 then
+					MapModData.text = "Not enough mana to cast this spell"
+				elseif g_testTargetSwitch == 5 then
+					local name = Locale.Lookup(GameInfo.Units[g_int1].Description)
+					MapModData.text = "You need " .. g_value .. " mana to call " .. name
+				elseif g_testTargetSwitch == 10 then
+					local currentName = Locale.Lookup(GameInfo.Units[gg_summonedArchdemon[g_iPlayer] ].Description)
+					MapModData.text = "You cannot call another archangel while " .. currentName .. " walks this world"
+				elseif g_testTargetSwitch == 11 then
+					MapModData.text = "All twelve archangels have been summoned..."
+				end
+			end
+			return
+		end
+
+		--all the rest
+		local verb, verbCap, unitStr, unitPlurStr				--this is terrible; my apologies to who ever tries to localize this... 
 		if g_eaActionID == EA_SPELL_CONJURE_MONSTER then
 			verb, verbCap, unitStr, unitPlurStr = "conjure", "Conjure", "monster", "monsters"
 		elseif g_eaActionID == EA_SPELL_RAISE_DEAD then
@@ -1074,7 +1138,6 @@ local function ModelSummon_SetUI()
 		end
 
 		if g_bAllTestsPassed then
-			--count demon types for UI
 			local unitCounts = {}	--index by unitTypeID
 			for i = 1, g_count do
 				local unitTypeID = g_integers[i]
@@ -1098,6 +1161,7 @@ local function ModelSummon_SetUI()
 		else
 			MapModData.text = "You cannot cast this spell currently"	--why not?
 		end
+
 	end
 end
 
@@ -1106,6 +1170,18 @@ local function ModelSummon_SetAIValues()
 end
 
 local function ModelSummon_Finish()
+	if g_eaActionID == EA_SPELL_SUMMON_ARCHDEMON then
+		gWorld.archdemonID = g_int1
+		gg_summonedArchdemon[g_iPlayer] = g_int1
+		g_count = 1
+		g_integers[1] = g_int1		--ugly; just stuffing unit here so I can use generic summon code below
+	elseif g_eaActionID == EA_SPELL_CALL_ARCHANGEL then
+		gWorld.archangelID = g_int1
+		gg_calledArchangel[g_iPlayer] = g_int1
+		g_count = 1
+		g_integers[1] = g_int1	
+	end
+
 	g_eaPerson.summonedUnits = g_eaPerson.summonedUnits or {}
 	local summonedUnits = g_eaPerson.summonedUnits
 	local bOverStacked = false
@@ -1173,6 +1249,50 @@ SetUI[GameInfoTypes.EA_SPELL_CALL_TREE_ENTS] = ModelSummon_SetUI
 SetAIValues[GameInfoTypes.EA_SPELL_CALL_TREE_ENTS] = ModelSummon_SetAIValues
 Finish[GameInfoTypes.EA_SPELL_CALL_TREE_ENTS] = ModelSummon_Finish
 
+--EA_SPELL_SUMMON_ARCHDEMON
+Test[GameInfoTypes.EA_SPELL_SUMMON_ARCHDEMON] = function()
+	if gg_summonedArchdemon[g_iPlayer] then
+		g_testTargetSwitch = 10						--player can have only 1 at a time
+		return false
+	end
+	if gWorld.archdemonID then
+		if gWorld.archdemonID < firstArchdemonID + 7 then
+			g_int1 = gWorld.archdemonID + 1
+		else
+			g_testTargetSwitch = 11						--all 8 have been summoned
+			return false
+		end
+	else
+		g_int1 = firstArchdemonID
+	end
+end
+TestTarget[GameInfoTypes.EA_SPELL_SUMMON_ARCHDEMON] = ModelSummon_TestTarget
+SetUI[GameInfoTypes.EA_SPELL_SUMMON_ARCHDEMON] = ModelSummon_SetUI
+SetAIValues[GameInfoTypes.EA_SPELL_SUMMON_ARCHDEMON] = ModelSummon_SetAIValues
+Finish[GameInfoTypes.EA_SPELL_SUMMON_ARCHDEMON] = ModelSummon_Finish
+
+--EA_SPELL_CALL_ARCHANGEL
+Test[GameInfoTypes.EA_SPELL_CALL_ARCHANGEL] = function()
+	if gg_calledArchangel[g_iPlayer] then
+		g_testTargetSwitch = 10						--player can have only 1 at a time
+		return false
+	end
+	if gWorld.archangelID then
+		if gWorld.archangelID < firstArchangelID + 11 then
+			g_int1 = gWorld.archangelID + 1
+		else
+			g_testTargetSwitch = 11						--all 12 have been summoned
+			return false
+		end
+	else
+		g_int1 = firstArchangelID
+	end
+end
+TestTarget[GameInfoTypes.EA_SPELL_CALL_ARCHANGEL] = ModelSummon_TestTarget
+SetUI[GameInfoTypes.EA_SPELL_CALL_ARCHANGEL] = ModelSummon_SetUI
+SetAIValues[GameInfoTypes.EA_SPELL_CALL_ARCHANGEL] = ModelSummon_SetAIValues
+Finish[GameInfoTypes.EA_SPELL_CALL_ARCHANGEL] = ModelSummon_Finish
+
 
 --EA_SPELL_SCRYING
 --EA_SPELL_SEEING_EYE_GLYPH
@@ -1225,8 +1345,7 @@ TestTarget[GameInfoTypes.EA_SPELL_MAGIC_MISSILE] = function()	--TO DO: need bett
 end
 
 SetUI[GameInfoTypes.EA_SPELL_MAGIC_MISSILE] = function()
-	if g_bNonTargetTestsPassed then		--has spell so show it
-		MapModData.bShow = true
+	if g_bNonTargetTestsPassed then
 		if g_bAllTestsPassed then
 			MapModData.text = "Magic Missile attack (ranged strength " .. g_modSpell .. ")"
 		else
@@ -1294,8 +1413,7 @@ TestTarget[GameInfoTypes.EA_SPELL_EXPLOSIVE_RUNE] = function()
 end
 
 SetUI[GameInfoTypes.EA_SPELL_EXPLOSIVE_RUNE] = function()
-	if g_bNonTargetTestsPassed then		--has spell so show it
-		MapModData.bShow = true
+	if g_bNonTargetTestsPassed then
 		if g_bAllTestsPassed then
 			MapModData.text = "Place Explosive Runes on this plot"
 		elseif g_testTargetSwitch == 1 then
@@ -1469,8 +1587,7 @@ TestTarget[GameInfoTypes.EA_SPELL_HEX] = function()
 end
 
 SetUI[GameInfoTypes.EA_SPELL_HEX] = function()
-	if g_bNonTargetTestsPassed then		--has spell so show it
-		MapModData.bShow = true
+	if g_bNonTargetTestsPassed then
 		if g_bAllTestsPassed then
 			local unitTypeInfo = GameInfo.Units[g_obj1:GetUnitType()]
 			local unitText = Locale.ConvertTextKey(unitTypeInfo.Description)
@@ -1521,8 +1638,7 @@ TestTarget[GameInfoTypes.EA_SPELL_DEATH_RUNE] = function()
 end
 
 SetUI[GameInfoTypes.EA_SPELL_DEATH_RUNE] = function()
-	if g_bNonTargetTestsPassed then		--has spell so show it
-		MapModData.bShow = true
+	if g_bNonTargetTestsPassed then
 		if g_bAllTestsPassed then
 			MapModData.text = "Place Explosive Runes on this plot"
 		elseif g_testTargetSwitch == 1 then
@@ -1627,8 +1743,7 @@ TestTarget[GameInfoTypes.EA_SPELL_HEAL] = function()
 end
 
 SetUI[GameInfoTypes.EA_SPELL_HEAL] = function()
-	if g_bNonTargetTestsPassed then		--has spell so show it
-		MapModData.bShow = true
+	if g_bNonTargetTestsPassed then
 		if g_testTargetSwitch == 0 then
 			local pts = g_modSpell < g_faith and g_modSpell or g_faith
 			if pts == 0 then
@@ -1693,8 +1808,7 @@ TestTarget[GameInfoTypes.EA_SPELL_BLESS] = function()
 end
 
 SetUI[GameInfoTypes.EA_SPELL_BLESS] = function()
-	if g_bNonTargetTestsPassed then		--has spell so show it
-		MapModData.bShow = true
+	if g_bNonTargetTestsPassed then
 		if g_bAllTestsPassed then
 			local unitTypeInfo = GameInfo.Units[g_obj1:GetUnitType()]
 			local unitText = Locale.ConvertTextKey(unitTypeInfo.Description)
@@ -1751,8 +1865,7 @@ TestTarget[GameInfoTypes.EA_SPELL_PROTECTION_FROM_EVIL] = function()
 end
 
 SetUI[GameInfoTypes.EA_SPELL_PROTECTION_FROM_EVIL] = function()
-	if g_bNonTargetTestsPassed then		--has spell so show it
-		MapModData.bShow = true
+	if g_bNonTargetTestsPassed then
 		if g_bAllTestsPassed then
 			local unitTypeInfo = GameInfo.Units[g_obj1:GetUnitType()]
 			local unitText = Locale.ConvertTextKey(unitTypeInfo.Description)
@@ -1838,8 +1951,7 @@ TestTarget[GameInfoTypes.EA_SPELL_HURT] = function()
 end
 
 SetUI[GameInfoTypes.EA_SPELL_HURT] = function()
-	if g_bNonTargetTestsPassed then		--has spell so show it
-		MapModData.bShow = true
+	if g_bNonTargetTestsPassed then
 		if g_testTargetSwitch == 0 then
 			local pts = g_modSpell < g_faith and g_modSpell or g_faith
 			if pts == 0 then
@@ -1905,8 +2017,7 @@ TestTarget[GameInfoTypes.EA_SPELL_CURSE] = function()
 end
 
 SetUI[GameInfoTypes.EA_SPELL_CURSE] = function()
-	if g_bNonTargetTestsPassed then		--has spell so show it
-		MapModData.bShow = true
+	if g_bNonTargetTestsPassed then
 		if g_bAllTestsPassed then
 			local unitTypeInfo = GameInfo.Units[g_obj1:GetUnitType()]
 			local unitText = Locale.ConvertTextKey(unitTypeInfo.Description)
@@ -1963,8 +2074,7 @@ TestTarget[GameInfoTypes.EA_SPELL_EVIL_EYE] = function()
 end
 
 SetUI[GameInfoTypes.EA_SPELL_EVIL_EYE] = function()
-	if g_bNonTargetTestsPassed then		--has spell so show it
-		MapModData.bShow = true
+	if g_bNonTargetTestsPassed then
 		if g_bAllTestsPassed then
 			local unitTypeInfo = GameInfo.Units[g_obj1:GetUnitType()]
 			local unitText = Locale.ConvertTextKey(unitTypeInfo.Description)
@@ -2168,8 +2278,7 @@ TestTarget[GameInfoTypes.EA_SPELL_RIDE_LIKE_THE_WIND] = function()
 end
 
 SetUI[GameInfoTypes.EA_SPELL_RIDE_LIKE_THE_WIND] = function()
-	if g_bNonTargetTestsPassed then		--has spell so show it
-		MapModData.bShow = true
+	if g_bNonTargetTestsPassed then
 		if g_bAllTestsPassed then
 			MapModData.text = "Increase movement of " .. g_int1 .. " nearby horse-mounted unit(s) by 2"
 		else
@@ -2239,8 +2348,7 @@ TestTarget[GameInfoTypes.EA_SPELL_PURIFY] = function()
 end
 
 SetUI[GameInfoTypes.EA_SPELL_PURIFY] = function()
-	if g_bNonTargetTestsPassed then		--has spell so show it
-		MapModData.bShow = true
+	if g_bNonTargetTestsPassed then
 		if g_bAllTestsPassed then
 			local unitTypeInfo = GameInfo.Units[g_obj1:GetUnitType()]
 			local unitText = Locale.ConvertTextKey(unitTypeInfo.Description)
@@ -2339,8 +2447,7 @@ TestTarget[GameInfoTypes.EA_SPELL_FAIR_WINDS] = function()
 end
 
 SetUI[GameInfoTypes.EA_SPELL_FAIR_WINDS] = function()
-	if g_bNonTargetTestsPassed then		--has spell so show it
-		MapModData.bShow = true
+	if g_bNonTargetTestsPassed then
 		if g_bAllTestsPassed then
 			local unitTypeInfo = GameInfo.Units[g_obj1:GetUnitType()]
 			local unitText = Locale.ConvertTextKey(unitTypeInfo.Description)
@@ -2370,8 +2477,7 @@ TestTarget[GameInfoTypes.EA_SPELL_REVELRY] = function()
 end
 
 SetUI[GameInfoTypes.EA_SPELL_REVELRY] = function()
-	if g_bNonTargetTestsPassed then		--has spell so show it
-		MapModData.bShow = true
+	if g_bNonTargetTestsPassed then
 		if g_bAllTestsPassed then
 			local pts = Floor(g_modSpell / 2)
 			pts = pts < g_int1 and pts or g_int1

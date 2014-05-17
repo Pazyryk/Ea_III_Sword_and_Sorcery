@@ -512,6 +512,186 @@
 		<Row Tag="TXT_KEY_EAPERSON_BRIMIR_CAPITAL">
 			<Text>Brimir</Text>
 		</Row>
+
+		<!-- Archangels -->
+
+		<Row Tag="TXT_KEY_EA_ARCHANGEL_ZAM">
+			<Text>Zam</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ARCHANGEL_DRVASPA">
+			<Text>Drvaspa</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ARCHANGEL_TISHTRYA">
+			<Text>Tishtrya</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ARCHANGEL_ASHI">
+			<Text>Ashi</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ARCHANGEL_ANAHITA">
+			<Text>Anahita</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ARCHANGEL_TUSHNAMAITI">
+			<Text>Tushnamaiti</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ARCHANGEL_IZA">
+			<Text>Iža</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ARCHANGEL_ATAR">
+			<Text>Ātar</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ARCHANGEL_VERATHRAGNA">
+			<Text>Verethragna</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ARCHANGEL_RASHNU">
+			<Text>Rashnu</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ARCHANGEL_SRAOSHA">
+			<Text>Sraosha</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ARCHANGEL_MITHRA">
+			<Text>Mithra</Text>
+		</Row>
+
+		<!-- Archdemons -->
+
+		<Row Tag="TXT_KEY_EA_ARCHDEMON_ZAURI">
+			<Text>Zauri</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ARCHDEMON_GANNAG_MENOG">
+			<Text>Gannag Menog</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ARCHDEMON_AKA_MANAH">
+			<Text>Aka Manah</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ARCHDEMON_TAURVI">
+			<Text>Taurvi</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ARCHDEMON_NAONGHAITHYA">
+			<Text>Naonghaithya</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ARCHDEMON_INDAR">
+			<Text>Indar</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ARCHDEMON_SAURVA">
+			<Text>Saurva</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ARCHDEMON_AESHMA">
+			<Text>Aeshma</Text>
+		</Row>
+		
+		<!-- Gods -->
+
+		<Row Tag="TXT_KEY_EA_GOD_FAGUS">
+			<Text>Fagus</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_ABELLIO">
+			<Text>Abellio</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_BUXENUS">
+			<Text>Buxenus</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_ROBOR">
+			<Text>Robor</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_ABNOAB">
+			<Text>Abnoab</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_EPONA">
+			<Text>Epona</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_ATEPOMARUS">
+			<Text>Atepomarus</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_SABAZIOS">
+			<Text>Sabazios</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_AVETA">
+			<Text>Aveta</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_CONDATIS">
+			<Text>Condatis</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_ABANDINUS">
+			<Text>Abandinus</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_ADSULLATA">
+			<Text>Adsullata</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_ICAUNUS">
+			<Text>Icaunus</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_BELISAMA">
+			<Text>Belisama</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_CLOTA">
+			<Text>Clota</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_SABRINA">
+			<Text>Sabrina</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_SEQUANA">
+			<Text>Sequana</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_VERBEIA">
+			<Text>Verbeia</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_BORVO">
+			<Text>Borvo</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_AEGIR">
+			<Text>Ægir</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_BARINTHUS">
+			<Text>Barinthus</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_LIBAN">
+			<Text>Lí Ban</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_FIMAFENG">
+			<Text>Fimafeng</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_ELDIR">
+			<Text>Eldir</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_RITONA">
+			<Text>Ritona</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_BAKKHOS">
+			<Text>Bakkhos</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_PAN">
+			<Text>Pan</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_SILENUS">
+			<Text>Silenus</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_ERECURA">
+			<Text>Erecura</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_VOSEGUS">
+			<Text>Vosegus</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_NANTOSUELTA">
+			<Text>Nantosuelta</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_DIS_PATER">
+			<Text>Dis Pater</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_NERGAL">
+			<Text>Nergal</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_WADD">
+			<Text>Wadd</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_ABGAL">
+			<Text>Abgal</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_NESR">
+			<Text>Nesr</Text>
+		</Row>		
+		
+		
+		
 	</Language_en_US>
 
 	<EaDebugTableCheck>

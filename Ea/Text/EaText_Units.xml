@@ -212,6 +212,9 @@
 		<Row Tag="TXT_KEY_EA_UNIT_LIONS">
 			<Text>Lions</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_GRIFFONS">
+			<Text>Griffons</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_SCORPIONS_SAND">
 			<Text>Sand Scorpions</Text>
 		</Row>
@@ -221,18 +224,30 @@
 		<Row Tag="TXT_KEY_EA_UNIT_SCORPIONS_WHITE">
 			<Text>Snow Scorpions</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_KRAKEN">
+			<Text>Kraken</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_GIANT_SPIDER">
 			<Text>Giant Spider</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_DRAKE_GREEN">
+			<Text>Green Drake</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_DRAKE_BLUE">
+			<Text>Blue Drake</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_DRAKE_RED">
+			<Text>Red Drake</Text>
+		</Row>
 
+		<Row Tag="TXT_KEY_EA_UNIT_TREE_ENT">
+			<Text>Tree-Ent</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_SKELETON_SWORDSMEN">
 			<Text>Skeletons</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_ZOMBIES">
 			<Text>Zombies</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_UNIT_GREAT_UNCLEAN_ONE">
-			<Text>Aeshema</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_HIVE_TYRANT">
 			<Text>Demon, Type II</Text>

@@ -178,7 +178,7 @@ function DrainExperience(unit, xp)
 			end
 		end
 	end
-	return xpDrained, levelsDrained
+	return xpDrained, oldLevel - newLevel
 end
 
 --magic plot attack

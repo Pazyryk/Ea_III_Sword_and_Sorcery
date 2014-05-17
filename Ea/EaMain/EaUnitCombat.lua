@@ -78,10 +78,13 @@ for promoInfo in GameInfo.UnitPromotions() do
 end
 
 local dummyUnit = {}
+local eaSpecialUnit = {}
 for unitInfo in GameInfo.Units() do
-	local unitID = unitInfo.ID
 	if string.find(unitInfo.Type, "UNIT_DUMMY_") == 1 then
-		dummyUnit[unitID] = true
+		dummyUnit[unitInfo.ID] = true
+	end
+	if unitInfo.EaSpecial then
+		eaSpecialUnit[unitInfo.ID] = unitInfo.EaSpecial
 	end
 end
 
@@ -509,12 +512,31 @@ local function OnCanSaveUnit(iPlayer, iUnit, bDelay)	--fires for combat and non-
 	if fullCivs[iPlayer] then
 		player = Players[iPlayer]
 		unit = player:GetUnitByID(iUnit)
+		
 		local iSummoner = unit:GetSummonerIndex()
 		if iSummoner ~= -1 then
 			local eaSummoner = gPeople[iSummoner]
-			local summonedUnits = eaSummoner.summonedUnits
-			if summonedUnits then
-				summonedUnits[iUnit] = nil
+			if eaSummoner then			--could be dead
+				local summonedUnits = eaSummoner.summonedUnits
+				if summonedUnits then
+					summonedUnits[iUnit] = nil
+				end
+			end
+			local unitTypeID = unit:GetUnitType()
+			if eaSpecialUnit[unitTypeID] then
+				if eaSpecialUnit[unitTypeID] == "Archdemon" then
+					if gg_summonedArchdemon[iPlayer] == unitTypeID then
+						gg_summonedArchdemon[iPlayer] = nil			--opens it up so they can summon another
+					end
+				elseif eaSpecialUnit[unitTypeID] == "Archangel" then
+					if gg_calledArchangel[iPlayer] == unitTypeID then
+						gg_calledArchangel[iPlayer] = nil
+					end
+				elseif eaSpecialUnit[unitTypeID] == "MajorSpirit" then
+					if gg_calledMajorSpirit[iPlayer] == unitTypeID then
+						gg_calledMajorSpirit[iPlayer] = nil
+					end
+				end
 			end
 		end
 	end

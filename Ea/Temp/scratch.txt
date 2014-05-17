@@ -38,6 +38,8 @@ PLAYERCOLOR_SHOSHONE
 PLAYERCOLOR_VENICE
 PLAYERCOLOR_ZULU
 
+
+
 , , , , , ,  or 
 Divination, Abjuration, Evocation, Transmutation, Conjuration, Necromancy, Enchantment or Illusion
 

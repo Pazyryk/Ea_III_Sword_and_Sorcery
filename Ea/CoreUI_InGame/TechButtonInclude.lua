@@ -635,7 +635,9 @@ end
 
 function AdjustArtOnGrantedResourceButton( thisButton, thisResourceInfo, textureSize )
 	if thisButton then
-		thisButton:SetToolTipString( Locale.ConvertTextKey("TXT_KEY_REVEALS_RESOURCE_ON_MAP", thisResourceInfo.Description)); 
+		--Paz modified below: thisButton:SetToolTipString( Locale.ConvertTextKey("TXT_KEY_REVEALS_RESOURCE_ON_MAP", thisResourceInfo.Description)); 
+		thisButton:SetToolTipString( Locale.ConvertTextKey("TXT_KEY_REVEALS_RESOURCE_ON_MAP", thisResourceInfo.EaMapName or thisResourceInfo.Description)); 
+		--end Paz modified
 
 		local textureOffset, textureSheet = IconLookup( thisResourceInfo.PortraitIndex, textureSize, thisResourceInfo.IconAtlas );				
 		if textureOffset == nil then

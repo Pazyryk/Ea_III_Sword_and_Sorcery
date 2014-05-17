@@ -396,7 +396,8 @@ INSERT INTO EaActions (Type,			SpellClass,	GPModType1,				TechReq,						City,	AI
 --Both Arcane and Divine
 INSERT INTO EaActions (Type,			SpellClass,	GPModType1,				TechReq,						City,	AITarget,			AICombatRole,	FallenAltSpell,					TurnsToComplete,	FixedFaith,	HumanVisibleFX,	IconIndex,	IconAtlas			) VALUES
 ('EA_SPELL_SUMMON_ABYSSAL_CREATURES',	'Both',		'EAMOD_CONJURATION',	'TECH_SORCERY',					NULL,	'SelfAndTower',		NULL,			'IsFallen',						3,					0,			1,				1,			'EA_SPELLS_ATLAS'	),
-('EA_SPELL_SUMMON_DEMON',				'Both',		'EAMOD_CONJURATION',	'TECH_SUMMONING',				NULL,	'SelfAndTower',		NULL,			'IsFallen',						3,					0,			1,				1,			'EA_SPELLS_ATLAS'	);
+('EA_SPELL_SUMMON_DEMON',				'Both',		'EAMOD_CONJURATION',	'TECH_SUMMONING',				NULL,	'SelfAndTower',		NULL,			'IsFallen',						3,					0,			1,				1,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_SUMMON_ARCHDEMON',			'Both',		'EAMOD_CONJURATION',	'TECH_BREACH',					NULL,	'SelfAndTower',		NULL,			'IsFallen',						15,					0,			1,				1,			'EA_SPELLS_ATLAS'	);
 
 
 --Divine
@@ -413,6 +414,7 @@ INSERT INTO EaActions (Type,			SpellClass,	GPModType1,				TechReq,						City,	AI
 ('EA_SPELL_CONSECRATE',					'Divine',	'EAMOD_EVOCATION',		'TECH_HEAVENLY_CYCLES',			NULL,	NULL,				NULL,			'EA_SPELL_DESECRATE',			1,					0,			1,				2,			'EA_SPELLS_ATLAS'	),
 ('EA_SPELL_CALL_HEAVENS_GUARD',			'Divine',	'EAMOD_CONJURATION',	'TECH_HEAVENLY_CYCLES',			NULL,	'SelfAndTower',		NULL,			'EA_SPELL_SUMMON_ABYSSAL_CREATURES', 3,				0,			1,				2,			'EA_SPELLS_ATLAS'	),
 ('EA_SPELL_CALL_ANGEL',					'Divine',	'EAMOD_CONJURATION',	'TECH_CELESTIAL_KNOWLEDGE',		NULL,	'SelfAndTower',		NULL,			'EA_SPELL_SUMMON_DEMON',		3,					0,			1,				2,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_CALL_ARCHANGEL',				'Divine',	'EAMOD_CONJURATION',	'TECH_DIVINE_INTERVENTION',		NULL,	'SelfAndTower',		NULL,			'EA_SPELL_SUMMON_ARCHDEMON',	15,					0,			1,				2,			'EA_SPELLS_ATLAS'	),
 ('EA_SPELL_RESURRECTION',				'Divine',	'EAMOD_NECROMANCY',		'TECH_DIVINE_INTERVENTION',		NULL,	NULL,				NULL,			'EA_SPELL_GREATER_REANIMATION',	1,					0,			1,				2,			'EA_SPELLS_ATLAS'	),
 
 --fallen
@@ -437,7 +439,7 @@ INSERT INTO EaActions (Type,			SpellClass,	GPModType1,				PolicyReq,						City,	
 INSERT INTO EaActions (Type,			SpellClass,	GPModType1,				PantheismCult,					City,	AITarget,			AICombatRole,		TurnsToComplete,	FixedFaith,	HumanVisibleFX,	IconIndex,	IconAtlas			) VALUES
 ('EA_SPELL_BLOOM',						'Divine',	'EAMOD_TRANSMUTATION',	'RELIGION_CULT_OF_LEAVES',		'Not',	'NearbyNonFeature',	NULL,				5,					0,			1,				2,			'EA_SPELLS_ATLAS'	),
 ('EA_SPELL_RIDE_LIKE_THE_WIND',			'Divine',	'EAMOD_CONJURATION',	'RELIGION_CULT_OF_EPONA',		NULL,	NULL,				'Any',				1,					0,			1,				2,			'EA_SPELLS_ATLAS'	),
-('EA_SPELL_PURIFY',						'Divine',	'EAMOD_CONJURATION',	'RELIGION_CULT_OF_ABZU',	NULL,	NULL,				'Any',				1,					0,			1,				2,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_PURIFY',						'Divine',	'EAMOD_CONJURATION',	'RELIGION_CULT_OF_ABZU',		NULL,	NULL,				'Any',				1,					0,			1,				2,			'EA_SPELLS_ATLAS'	),
 ('EA_SPELL_FAIR_WINDS',					'Divine',	'EAMOD_CONJURATION',	'RELIGION_CULT_OF_AEGIR',		NULL,	'OwnNavalUnits',	NULL,				1,					0,			1,				2,			'EA_SPELLS_ATLAS'	),
 ('EA_SPELL_REVELRY',					'Divine',	'EAMOD_CONJURATION',	'RELIGION_CULT_OF_BAKKHEIA',	'Own',	'OwnClosestCity',	NULL,				1000,				0,			1,				2,			'EA_SPELLS_ATLAS'	);
 

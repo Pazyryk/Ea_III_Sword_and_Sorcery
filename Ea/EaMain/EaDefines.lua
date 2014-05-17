@@ -251,6 +251,7 @@ gg_campRange = {}
 gg_slaveryPlayer = {[BARB_PLAYER_INDEX] = true}
 gg_playerArcaneMod = {}
 
+
 --other tables using iPlayer
 gg_eaNamePlayerTable = {}
 
@@ -268,6 +269,9 @@ gg_teamCanMeetFay = {}
 gg_animalSpawnPlots = {pos = 0}
 gg_animalSpawnInhibitTeams = {}
 gg_playerPlotActionTargeted = {}	--index by iPlayer, iPlot, eaActionID, =iPerson
+gg_summonedArchdemon = {}			--index by iPlayer but nil if none (= unitTypeID; can only have one at any time)
+gg_calledArchangel = {}				--as above
+gg_calledMajorSpirit = {}			--as above
 
 --misc counts
 gg_counts = {	freshWaterAbzuFollowerCities = 0,

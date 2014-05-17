@@ -22,7 +22,7 @@ CREATE TABLE EaActions ('ID' INTEGER PRIMARY KEY AUTOINCREMENT,
 						'IconAtlas' TEXT DEFAULT NULL,
 						'NoFloatUpText' BOOLEAN DEFAULT NULL,
 						--AI
-						'AICombatRole' TEXT DEFAULT NULL,	-- =NULL,  "CityCapture", "CrowdControl", "Any"
+						'AICombatRole' TEXT DEFAULT NULL,	-- =NULL,  "CityCapture", "CrowdControl", "Any"; Note: types don't matter now, so any non-NULL understood as having combat role
 						'AIDontCombatOverride' BOOLEAN DEFAULT NULL,	-- =NULL or 1 (eg, Citadel) Otherwise, GP with combat role will drop what they are doing (if <1/2 done) and go to a combat zone
 						'AITarget'  TEXT DEFAULT NULL,		-- Search heuristic. See AITarget methods in EaAIActions.lua
 						'AISimpleYield' INTEGER DEFAULT 0,	-- Sets the "per turn payoff" value (p); not needed if AI values set in specific SetAIValues function in EaAction.lua

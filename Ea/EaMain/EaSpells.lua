@@ -146,7 +146,7 @@ local g_bNonTargetTestsPassed = false
 local g_bAllTestsPassed = false
 local g_bSufficientFaith = true
 local g_bSetDelayedFailForUI = false
-local g_bHasSpell = false
+--local g_bHasSpell = false
 
 --communicate from TestTarget to SetUI or SetAIValues when needed
 local g_testTargetSwitch = 0
@@ -350,8 +350,8 @@ function TestEaSpellForHumanUI(eaActionID, iPlayer, unit, iPerson, testX, testY)
 	
 	g_bAllTestsPassed = TestEaSpell(eaActionID, iPlayer, unit, iPerson, testX, testY, false)
 	MapModData.bAllow = g_bAllTestsPassed and not g_bSetDelayedFailForUI
-	MapModData.bShow = g_bHasSpell			--this should always be the case for spells (search and destroy all other MapModData.bShow changes in this file!)
-	MapModData.text = "no help text"		--will change below or take eaAction.Help value (if bShow)
+	MapModData.bShow = true				--this should always be the case for spells (search and destroy all other MapModData.bShow changes in this file!)
+	MapModData.text = "no help text"	--will change below or take eaAction.Help value (if bShow)
 
 	--By default, bShow follows bAllow and text will be from eaAction.Help. If we want bShow=true when bAllow=false,
 	--then we must change below in g_bUniqueBlocked code or in action-specific SetUI function.
@@ -386,15 +386,15 @@ function TestEaSpellForHumanUI(eaActionID, iPlayer, unit, iPerson, testX, testY)
 		MapModData.text = "[COLOR_WARNING_TEXT]You cannot do this in the same place as another great person from your civilization[ENDCOLOR]"	
 	end
 
-	if g_eaPerson.spells and g_eaPerson.spells[eaActionID] then
-		if not g_bSufficientFaith then
-			if g_faith < 1 then
-				MapModData.text = "[COLOR_WARNING_TEXT]You do not have any mana or divine favor[ENDCOLOR]"
-			else
-				MapModData.text = "[COLOR_WARNING_TEXT]You do not have sufficient mana or divine favor to cast this spell (" .. g_eaAction.FixedFaith .. " needed)[ENDCOLOR]"
-			end
+	--if g_eaPerson.spells and g_eaPerson.spells[eaActionID] then
+	if not g_bSufficientFaith then
+		if g_faith < 1 then
+			MapModData.text = "[COLOR_WARNING_TEXT]You do not have any mana or divine favor[ENDCOLOR]"
+		else
+			MapModData.text = "[COLOR_WARNING_TEXT]You do not have sufficient mana or divine favor to cast this spell (" .. g_eaAction.FixedFaith .. " needed)[ENDCOLOR]"
 		end
 	end
+	--end
 
 	if SetUI[eaActionID] then
 		SetUI[eaActionID]()
@@ -433,11 +433,11 @@ function TestEaSpell(eaActionID, iPlayer, unit, iPerson, testX, testY, bAINonTar
 	--skip all world and civ-level reqs (for spells, these only apply to learning not casting) except for FixedFaith
 	if not iPerson then return false end	--we'll handle non-GP spellcasting later
 	g_eaPerson = gPeople[iPerson]
-	if not g_eaPerson.spells or not g_eaPerson.spells[eaActionID] then	--don't have spells or this spell (most common exclude)
-		g_bHasSpell = false
-		return false
-	end	
-	g_bHasSpell = true
+	--if not g_eaPerson.spells or not g_eaPerson.spells[eaActionID] then	--don't have spells or this spell (most common exclude)
+	--	g_bHasSpell = false
+	--	return false
+	--end	
+	--g_bHasSpell = true
 	g_iPlayer = iPlayer
 	g_eaPlayer = gPlayers[iPlayer]
 	g_player = Players[iPlayer]
@@ -910,8 +910,11 @@ function TestSpellLearnable(iPlayer, iPerson, spellID, spellClass)		--iPerson = 
 		elseif spellInfo.SpellClass == "Divine" then
 			if eaPerson.class1 ~= "Devout" and eaPerson.class2 ~= "Devout" then return false end
 		end
-		if spellInfo.PantheismCult then return false end		--TO DO: Reactivate these!
-		if eaPerson.spells[spellID] then return false end	--already known
+		if spellInfo.PantheismCult then return false end		--these are never chosen
+		local spells = eaPerson.spells
+		for i = 1, #spells do
+			if spells[i] == spellID then return false end		--already known
+		end
 	end
 	local eaPlayer = gPlayers[iPlayer]
 	if eaPlayer.bIsFallen then
@@ -929,6 +932,8 @@ function TestSpellLearnable(iPlayer, iPerson, spellID, spellClass)		--iPerson = 
 			if spellInfo.AndTechReq and not team:IsHasTech(GameInfoTypes[spellInfo.AndTechReq]) then return false end
 		end
 	end
+	--TO DO: class and subclass checks (not used often but may happen)
+
 	if spellInfo.PantheismCult and not player:HasPolicy(GameInfoTypes.POLICY_PANTHEISM) then return end		--show cult spell only if Pantheistic
 	if spellInfo.ReligionNotFounded and gReligions[GameInfoTypes[spellInfo.ReligionNotFounded] ] then return false end
 	if spellInfo.ReligionFounded and not gReligions[GameInfoTypes[spellInfo.ReligionFounded] ] then return false end

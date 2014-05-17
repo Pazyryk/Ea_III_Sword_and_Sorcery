@@ -524,7 +524,8 @@ function GenerateGreatPerson(iPlayer, class, subclass, eaPersonRowID, bAsLeader,
 			local spellInfo = GameInfo.EaActions[spellID]
 			while spellInfo do
 				if spellInfo.FreeSpellSubclass == subclass then
-					eaPerson.spells[spellID] = true
+					--eaPerson.spells[spellID] = true
+					eaPerson.spells[#eaPerson.spells + 1] = spellID
 					if spellInfo.AICombatRole then
 						eaPerson.aiHasCombatRole = true
 					end
@@ -539,7 +540,6 @@ function GenerateGreatPerson(iPlayer, class, subclass, eaPersonRowID, bAsLeader,
 
 	else
 		error("Failed to init gp unit")
-		
 	end
 
 	if eaPersonRowID or not bFullCivAI[iPlayer] then
@@ -556,6 +556,8 @@ function GenerateGreatPerson(iPlayer, class, subclass, eaPersonRowID, bAsLeader,
 		local personType = bAsLeader and "NewPersonLeader" or "NewPerson"
 		LuaEvents.EaImagePopup({type = personType, id = iPerson, sound = "AS2D_EVENT_NOTIFICATION_GOOD"})
 	end
+
+	RegisterGPActions(iPerson)
 
 	return iPerson
 end
@@ -770,14 +772,6 @@ function UnlockReservedGPs()
 	g_bReservedGPs = false
 	reservedGPs = nil		--garbage collect cached table
 end
-
-function RegisterPersonActions(iPerson)
-	local eaPerson = gPeople[iPerson]
-
-end
-
-
-
 
 --------------------------------------------------------------
 -- Leader Functions

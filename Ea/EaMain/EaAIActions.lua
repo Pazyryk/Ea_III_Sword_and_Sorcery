@@ -48,6 +48,7 @@ local LAST_SPELL_ID =						LAST_SPELL_ID
 --global tables
 local fullCivs =							MapModData.fullCivs
 local realCivs =							MapModData.realCivs
+local gpRegisteredActions =					MapModData.gpRegisteredActions
 local gPlayers =							gPlayers
 local gPeople =								gPeople
 local Players =								Players
@@ -94,12 +95,24 @@ local g_gpX
 local g_gpY
 local g_eaActionID
 
-
 local g_wonderPlotsCacheTurn = {}
 local g_wonderWorkPlots = {}
 local g_wonderNoWorkPlots = {}
 
+---------------------------------------------------------------
+-- Cached table values
+---------------------------------------------------------------
 
+local actionCombatRole = {}
+for eaActionInfo in GameInfo.EaActions() do
+	if eaActionInfo.AICombatRole then
+		actionCombatRole[eaActionInfo.ID] = eaActionInfo.AICombatRole
+	end
+end
+
+---------------------------------------------------------------
+-- Actions AI functions
+---------------------------------------------------------------
 
 function MakeAIActionsPlotsDirty(iPlayer)
 	if g_wonderPlotsCacheTurn[iPlayer] then
@@ -312,10 +325,13 @@ local function AddCombatOptions(rallyX, rallyY)
 	local GetPlotFromXY = Map.GetPlot
 	local TestAddOption = TestAddOption
 
-	g_eaActionID = FIRST_COMBAT_ACTION_ID		--before this are actions we don't want to test
-	local eaAction = GameInfo.EaActions[g_eaActionID]
-	while eaAction do
-		if eaAction.AICombatRole then	--this will set player/person file locals
+	--cycle through all registered actions and then spells (if any)
+	local testActions = gpRegisteredActions[g_iPerson]
+	local lastAction = #testActions
+	local i = 1
+	g_eaActionID = testActions[1]
+	while g_eaActionID do
+		if actionCombatRole[g_eaActionID] then
 			local bTest
 			if g_eaActionID < FIRST_SPELL_ID then
 				bTest = TestEaAction(g_eaActionID, g_iPlayer, g_unit, g_iPerson, nil, nil, true)
@@ -323,7 +339,7 @@ local function AddCombatOptions(rallyX, rallyY)
 				bTest = TestEaSpell(g_eaActionID, g_iPlayer, g_unit, g_iPerson, nil, nil, true)
 			end
 			if bTest then
-				print("AI: Non-target tests passed for ", eaAction.Type)
+				print("AI: Non-target tests passed for ", GameInfo.EaActions[g_eaActionID].Type)
 				for x, y in PlotToRadiusIterator(g_gpX, g_gpY, 5) do
 					local tieBreaker = rallyX and 5 / Distance(x, y, rallyX, rallyY) or 0
 					local iPlot = GetPlotIndexFromXY(x, y)
@@ -332,9 +348,17 @@ local function AddCombatOptions(rallyX, rallyY)
 				end
 			end
 		end
-		g_eaActionID = g_eaActionID + 1
-		--if eaActionID == FIRST_SPELL_ID and not g_eaPerson.spells then break end		--no need to run through spells (always last in EaActions)
-		eaAction = GameInfo.EaActions[g_eaActionID]
+		i = i + 1
+		if lastAction < i then
+			if not g_eaPerson.spells or g_eaPerson.spells == testActions then		--done
+				break
+			else
+				testActions = g_eaPerson.spells										--swap to spells and start from begining
+				lastAction = #testActions
+				i = 1
+			end
+		end
+		g_eaActionID = testActions[i]
 	end
 	print("Finished with AddCombatOptions")
 end
@@ -639,13 +663,16 @@ end
 
 local function AddNonCombatOptions()
 	g_nonCombatCallCount = g_nonCombatCallCount + 1
-	
 	print("Running AddNonCombatOptions", bSpellCaster)
+	local TestAddOption = TestAddOption
 
-	g_eaActionID = FIRST_GP_ACTION		--before this are actions we don't want to test
-	local eaAction = GameInfo.EaActions[g_eaActionID]
-	while eaAction do
-		if not eaAction.AICombatRole then
+	--cycle through all registered actions and then spells (if any)
+	local testActions = gpRegisteredActions[g_iPerson]
+	local lastAction = #testActions
+	local i = 1
+	g_eaActionID = testActions[1]
+	while g_eaActionID do
+		if not actionCombatRole[g_eaActionID] then
 			local bTest
 			if g_eaActionID < FIRST_SPELL_ID then
 				bTest = TestEaAction(g_eaActionID, g_iPlayer, g_unit, g_iPerson, nil, nil, true)	--this will set player/person file locals
@@ -653,6 +680,7 @@ local function AddNonCombatOptions()
 				bTest = TestEaSpell(g_eaActionID, g_iPlayer, g_unit, g_iPerson, nil, nil, true)
 			end
 			if bTest then
+				local eaAction = GameInfo.EaActions[g_eaActionID]
 				print("AI: Non-target tests passed for ", eaAction.Type)
 				local AITargetFunction = AITarget[eaAction.AITarget]
 				if AITargetFunction then
@@ -660,9 +688,17 @@ local function AddNonCombatOptions()
 				end
 			end
 		end
-		g_eaActionID = g_eaActionID + 1
-		--if eaActionID == FIRST_SPELL_ID and not g_eaPerson.spells then break end		--no need to run through spells (always last in EaActions)
-		eaAction = GameInfo.EaActions[g_eaActionID]
+		i = i + 1
+		if lastAction < i then
+			if not g_eaPerson.spells or g_eaPerson.spells == testActions then		--done
+				break
+			else
+				testActions = g_eaPerson.spells										--swap to spells and start from begining
+				lastAction = #testActions
+				i = 1
+			end
+		end
+		g_eaActionID = testActions[i]
 	end
 end
 

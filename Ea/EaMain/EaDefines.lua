@@ -222,6 +222,8 @@ MapModData.fullCivs = MapModData.fullCivs or {}
 MapModData.cityStates = MapModData.cityStates or {}				
 MapModData.realCivs = MapModData.realCivs or {}		
 
+--Other shared tables
+MapModData.gpRegisteredActions = MapModData.gpRegisteredActions or {}
 
 --yields for human UI
 MapModData.mercenaryNet = 0

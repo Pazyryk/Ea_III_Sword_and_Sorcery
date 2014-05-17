@@ -48,6 +48,7 @@ local GameInfoTypes =						GameInfoTypes
 local MapModData =							MapModData
 local fullCivs =							MapModData.fullCivs
 local bFullCivAI =							MapModData.bFullCivAI
+local gpRegisteredActions =					MapModData.gpRegisteredActions
 local gWorld =								gWorld
 local gCities =								gCities
 local gPlayers =							gPlayers
@@ -195,8 +196,47 @@ function EaActionsInit(bNewGame)
 			gg_playerPlotActionTargeted[iPlayer][gotoPlotIndex] = gg_playerPlotActionTargeted[iPlayer][gotoPlotIndex] or {}
 			gg_playerPlotActionTargeted[iPlayer][gotoPlotIndex][eaPerson.gotoEaActionID] = iPerson
 		end
+		if iPerson > 0 then
+			RegisterGPActions(iPerson)
+		end
 	end
 end
+
+---------------------------------------------------------------
+-- Register GP actions (for classes, subclass or other things that don't usually change)
+---------------------------------------------------------------
+
+function RegisterGPActions(iPerson)
+	print("RegisterGPActions ", iPerson)
+	local eaPerson = gPeople[iPerson]
+	local class1 = eaPerson.class1
+	local class2 = eaPerson.class2
+	local subclass = eaPerson.subclass
+	print(class1, class2, subclass)
+	gpRegisteredActions[iPerson] = {}
+	local actions = gpRegisteredActions[iPerson]
+	local number = 1
+	for id = FIRST_GP_ACTION, FIRST_SPELL_ID - 1 do
+		local eaAction = EaActionsInfo[id]
+		--print(eaAction.Type)
+		if not eaAction.GPSubclass or eaAction.GPSubclass == subclass then
+			--print("-pass subclass")
+			if not eaAction.GPClass or eaAction.GPClass == class1 or eaAction.GPClass == class2 then
+				--print("-pass class")
+				if not eaAction.ExcludeGPSubclass or eaAction.ExcludeGPSubclass ~= subclass then
+					--print("-pass subclass exclude")
+					if not eaAction.NotGPClass or (eaAction.NotGPClass ~= class1 and eaAction.NotGPClass ~= class1) then
+						--print("-pass class exclude")
+						actions[number] = id
+						number = number + 1
+					end
+				end
+			end
+		end
+	end
+	print(#gpRegisteredActions[iPerson])
+end
+
 
 ---------------------------------------------------------------
 --Time Discout valuation
@@ -307,7 +347,8 @@ local function FinishEaAction(eaActionID)		--only called from DoEaAction so file
 		--	g_eaPerson.cult = cultID
 			local freeSpellType = GameInfo.Religions[cultID].EaFreeCultSpell
 			if freeSpellType then
-				g_eaPerson.spells[GameInfoTypes[freeSpellType] ] = true
+				--g_eaPerson.spells[GameInfoTypes[freeSpellType] ] = true
+				g_eaPerson.spells[#g_eaPerson.spells + 1] = GameInfoTypes[freeSpellType]
 			end
 		--end
 		if gReligions[cultID] then		--already founded
@@ -639,13 +680,14 @@ function TestEaAction(eaActionID, iPlayer, unit, iPerson, testX, testY, bAINonTa
 
 	--GP only
 	if g_bGreatPerson then
+		--all tests here are now in RegisterGPActions 
 		g_subclass = g_eaPerson.subclass
-		if g_eaAction.GPSubclass and g_eaAction.GPSubclass ~= g_subclass and g_eaAction.OrGPSubclass ~= g_subclass then return false end
-		if g_eaAction.ExcludeGPSubclass and g_eaAction.ExcludeGPSubclass == g_subclass then return false end
+		--if g_eaAction.GPSubclass and g_eaAction.GPSubclass ~= g_subclass and g_eaAction.OrGPSubclass ~= g_subclass then return false end
+		--if g_eaAction.ExcludeGPSubclass and g_eaAction.ExcludeGPSubclass == g_subclass then return false end
 		g_class1 = g_eaPerson.class1
 		g_class2 = g_eaPerson.class2	--nil unless dual-class GP
-		if g_eaAction.GPClass and g_eaAction.GPClass ~= g_class1 and g_eaAction.GPClass ~= g_class2 then return false end
-		if g_eaAction.NotGPClass and (g_eaAction.NotGPClass == g_class1 or g_eaAction.NotGPClass == g_class2) then return false end
+		--if g_eaAction.GPClass and g_eaAction.GPClass ~= g_class1 and g_eaAction.GPClass ~= g_class2 then return false end
+		--if g_eaAction.NotGPClass and (g_eaAction.NotGPClass == g_class1 or g_eaAction.NotGPClass == g_class2) then return false end
 	elseif g_eaAction.GPOnly then
 		return false
 	end
@@ -3314,7 +3356,7 @@ local function ModelCultRitual_SetUI()
 				MapModData.text = "Will found the " .. cultStr .. " in this city"
 			end
 		elseif not g_bIsCity then
-			MapModData.text = "Cult founding/spreading rituals can be performed only in cities"
+			MapModData.text = "[COLOR_WARNING_TEXT]Cult founding/spreading rituals can be performed only in cities[ENDCOLOR]"
 		elseif g_testTargetSwitch == 2 then
 			MapModData.text = "[COLOR_WARNING_TEXT]You cannot convert any population here (perhaps you need a higher Devotion level)[ENDCOLOR]"
 		elseif g_testTargetSwitch == 3 then

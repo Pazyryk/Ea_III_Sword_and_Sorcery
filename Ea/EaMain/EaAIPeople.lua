@@ -45,7 +45,8 @@ function AIPickGPPromotion(iPlayer, iPerson, unit)
 		end
 		if numSpells > 0 then
 			local spellID = spellList[Rand(numSpells, "hello") + 1]
-			eaPerson.spells[spellID] = true
+			--eaPerson.spells[spellID] = true
+			eaPerson.spells[#eaPerson.spells + 1] = spellID
 			print("AI learned a spell: ", GameInfo.EaActions[spellID].Type)
 			return
 		end

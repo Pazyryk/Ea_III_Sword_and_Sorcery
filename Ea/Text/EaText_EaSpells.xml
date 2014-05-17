@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Created by ModBuddy on 5/17/2014 2:24:16 PM -->
+<GameData>
+	<Language_en_US>
+		<!-- Spells -->
+		<Row Tag="TXT_KEY_EA_SPELL_SCRYING">
+			<Text>Scrying</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_SEEING_EYE_GLYPH">
+			<Text>Inscribe Seeing Eye Glyph</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_DETECT_GLYPHS_RUNES_WARDS">
+			<Text>Detect Glyphs, Runes & Wards</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_KNOW_WORLD">
+			<Text>Know World</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_DISPEL_HEXES">
+			<Text>Dispel Hexes</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_DISPEL_GLYPHS_RUNES_WARDS">
+			<Text>Dispel Glyphs, Runes & Wards</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_DISPEL_ILLUSIONS">
+			<Text>Dispel Illusions</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_BANISHMENT">
+			<Text>Banishment</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_PROTECTIVE_WARD">
+			<Text>Protective Ward</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_DISPEL_MAGIC">
+			<Text>Dispel Magic</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_TIME_STOP">
+			<Text>Time Stop</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_MAGIC_MISSILE">
+			<Text>Magic Missile</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_EXPLOSIVE_RUNE">
+			<Text>Explosive Rune</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_MAGE_SWORD">
+			<Text>Mage Sword</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_BREACH">
+			<Text>Breach</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_WISH">
+			<Text>Wish</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_SLOW">
+			<Text>Slow</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_HASTE">
+			<Text>Haste</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_ENCHANT_WEAPONS">
+			<Text>Enchant Weapons</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_POLYMORPH">
+			<Text>Polymorph</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_BLIGHT">
+			<Text>Blight</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_HEX">
+			<Text>Hex</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_SUMMON_ABYSSAL_CREATURES">
+			<Text>Summon Abyssal Creatures</Text>
+		</Row>
+
+		<Row Tag="TXT_KEY_EA_SPELL_CONJURE_MONSTER">
+			<Text>Conjure Monster</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_TELEPORT">
+			<Text>Teleport</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_SUMMON_DEMON">
+			<Text>Summon Demon</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_PHASE_DOOR">
+			<Text>Phase Door</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_REANIMATE_DEAD">
+			<Text>Reanimate Dead</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_RAISE_DEAD">
+			<Text>Raise Dead</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_DEATH_RUNE">
+			<Text>Inscribe Death Rune</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_VAMPIRIC_TOUCH">
+			<Text>Vampiric Touch</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_DEATH_STAY">
+			<Text>Death Stay</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_BECOME_LICH">
+			<Text>Become Lich</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_FINGER_OF_DEATH">
+			<Text>Finger of Death</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_CHARM_MONSTER">
+			<Text>Charm Monster</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_CAUSE_FEAR">
+			<Text>Cause Fear</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_CAUSE_DISPAIR">
+			<Text>Cause Dispair</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_SLEEP">
+			<Text>Sleep</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_DREAM">
+			<Text>Dream</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_NIGHTMARE">
+			<Text>Nightmare</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_LESSER_GEAS">
+			<Text>Lesser Geas</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_GREATER_GEAS">
+			<Text>Greater Geas</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_PRESTIDIGITATION">
+			<Text>Prestidigitation</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_OBSCURE_TERRAIN">
+			<Text>Obscure Terrain</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_FOG_OF_WAR">
+			<Text>Fog of War</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_SIMULACRUM">
+			<Text>Simulacrum</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_PHANTASMAGORIA">
+			<Text>Phantasmagoria</Text>
+		</Row>
+
+		<Row Tag="TXT_KEY_EA_SPELL_HEAL">
+			<Text>Heal</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_BLESS">
+			<Text>Bless</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_PROTECTION_FROM_EVIL">
+			<Text>Protection from Evil</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_SANCTIFY">
+			<Text>Sanctify</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_MASS_HEAL">
+			<Text>Mass Heal</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_CURE_DISEASE">
+			<Text>Cure Disease</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_CURE_PLAGUE">
+			<Text>Cure Plague</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_COMMAND">
+			<Text>Command</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_BANISH_UNDEAD">
+			<Text>Banish Undead</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_CONSECRATE">
+			<Text>Consecrate</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_CALL_HEAVENS_GUARD">
+			<Text>Call Heaven's Guard</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_RESURRECTION">
+			<Text>Resurrection</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_HURT">
+			<Text>Hurt</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_CURSE">
+			<Text>Curse</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_EVIL_EYE">
+			<Text>Evil-Eye</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_DEFILE">
+			<Text>Defile</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_MASS_HURT">
+			<Text>Mass Hurt</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_CAUSE_DISEASE">
+			<Text>Cause Disease</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_CAUSE_PLAGUE">
+			<Text>Cause Plague</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_TURN_UNDEAD">
+			<Text>Turn Undead</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_DESECRATE">
+			<Text>Desecrate</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_GREATER_REANIMATION">
+			<Text>Greater Reanimation</Text>
+		</Row>
+
+		<Row Tag="TXT_KEY_EA_SPELL_EAS_BLESSING">
+			<Text>Éa's Blessing</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_CALL_ANIMALS">
+			<Text>Call Animals</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_CALL_TREE_ENTS">
+			<Text>Call Tree-Ents</Text>
+		</Row>
+
+		<Row Tag="TXT_KEY_EA_SPELL_BLOOM">
+			<Text>Bloom</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_RIDE_LIKE_THE_WIND">
+			<Text>Ride Like the Wind</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_PURIFY">
+			<Text>Purify</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_FAIR_WINDS">
+			<Text>Fair Winds</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_REVELRY">
+			<Text>Revelry</Text>
+		</Row>
+
+
+	</Language_en_US>
+
+	<EaDebugTableCheck>
+		<Row FileName="EaText_EaSpells.xml"/>
+	</EaDebugTableCheck>
+</GameData>

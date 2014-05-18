@@ -367,12 +367,12 @@ INSERT INTO EaActions (Type,			SpellClass,	GPModType1,				TechReq,						City,	AI
 ('EA_SPELL_HASTE',						'Arcane',	'EAMOD_TRANSMUTATION',	'TECH_TRANSMUTATION',			NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
 ('EA_SPELL_ENCHANT_WEAPONS',			'Arcane',	'EAMOD_TRANSMUTATION',	'TECH_TRANSMUTATION',			NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
 ('EA_SPELL_POLYMORPH',					'Arcane',	'EAMOD_TRANSMUTATION',	'TECH_TRANSMUTATION',			NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
-('EA_SPELL_BLIGHT',						'Arcane',	'EAMOD_TRANSMUTATION',	'TECH_SORCERY',					'Not',	'NIMBY',			NULL,			5,					0,			1,				9,			'EA_SPELLS_ATLAS'	),
-('EA_SPELL_HEX',						'Arcane',	'EAMOD_CONJURATION',	'TECH_MALEFICIUM',				NULL,	NULL,				'Any',			1,					0,			1,				9,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_BLIGHT',						'Arcane',	'EAMOD_TRANSMUTATION',	'TECH_SORCERY',					'Not',	'NIMBY',			NULL,			3,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_HEX',						'Arcane',	'EAMOD_CONJURATION',	'TECH_MALEFICIUM',				NULL,	NULL,				'Any',			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
 ('EA_SPELL_CONJURE_MONSTER',			'Arcane',	'EAMOD_CONJURATION',	'TECH_CONJURATION',				NULL,	'SelfAndTower',		NULL,			3,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
 ('EA_SPELL_TELEPORT',					'Arcane',	'EAMOD_CONJURATION',	'TECH_CONJURATION',				NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
 ('EA_SPELL_PHASE_DOOR',					'Arcane',	'EAMOD_CONJURATION',	'TECH_INVOCATION',				NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
-('EA_SPELL_REANIMATE_DEAD',				'Arcane',	'EAMOD_NECROMANCY',		'TECH_REANIMATION',				NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_REANIMATE_DEAD',				'Arcane',	'EAMOD_NECROMANCY',		'TECH_REANIMATION',				NULL,	'SelfAndTower',		NULL,			2,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
 ('EA_SPELL_RAISE_DEAD',					'Arcane',	'EAMOD_NECROMANCY',		'TECH_NECROMANCY',				NULL,	'SelfAndTower',		NULL,			3,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
 ('EA_SPELL_DEATH_RUNE',					'Arcane',	'EAMOD_NECROMANCY',		'TECH_NECROMANCY',				'Not',	'BoobyTrap',		NULL,			3,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
 ('EA_SPELL_VAMPIRIC_TOUCH',				'Arcane',	'EAMOD_NECROMANCY',		'TECH_NECROMANCY',				NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
@@ -433,7 +433,8 @@ INSERT INTO EaActions (Type,			SpellClass,	GPModType1,				TechReq,						City,	AI
 INSERT INTO EaActions (Type,			SpellClass,	GPModType1,				PolicyReq,						City,	AITarget,			AICombatRole,	FallenAltSpell,					TurnsToComplete,	FixedFaith,	HumanVisibleFX,	IconIndex,	IconAtlas			) VALUES
 ('EA_SPELL_EAS_BLESSING',				'Divine',	'EAMOD_TRANSMUTATION',	'POLICY_WOODS_LORE',			'Not',	'NearbyLivTerrain',	NULL,			NULL,							3,					0,			1,				2,			'EA_SPELLS_ATLAS'	),
 ('EA_SPELL_CALL_ANIMALS',				'Divine',	'EAMOD_CONJURATION',	'POLICY_FERAL_BOND',			'Not',	'SelfAndTower',		NULL,			NULL,							3,					0,			1,				2,			'EA_SPELLS_ATLAS'	),
-('EA_SPELL_CALL_TREE_ENTS',				'Divine',	'EAMOD_CONJURATION',	'POLICY_FOREST_DOMINION',		'Not',	'SelfAndTower',		NULL,			NULL,							3,					0,			1,				2,			'EA_SPELLS_ATLAS'	);
+('EA_SPELL_CALL_TREE_ENTS',				'Divine',	'EAMOD_CONJURATION',	'POLICY_FOREST_DOMINION',		'Not',	'SelfAndTower',		NULL,			NULL,							3,					0,			1,				2,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_CALL_MAJOR_SPIRIT',			'Divine',	'EAMOD_CONJURATION',	'POLICY_PANTHEISM_FINISHER',	'Not',	'SelfAndTower',		NULL,			NULL,							15,					0,			1,				2,			'EA_SPELLS_ATLAS'	);
 
 --druid cult spells (learned from ritual)
 INSERT INTO EaActions (Type,			SpellClass,	GPModType1,				PantheismCult,					City,	AITarget,			AICombatRole,		TurnsToComplete,	FixedFaith,	HumanVisibleFX,	IconIndex,	IconAtlas			) VALUES

@@ -8,7 +8,7 @@ local playerType =	MapModData.playerType
 local fullCivs =	MapModData.fullCivs
 local cityStates =	MapModData.cityStates
 local realCivs =	MapModData.realCivs
-
+local gods =		MapModData.gods
 
 
 function OnLoadEaMain()   --Called from the bottom of EaMain after all included files have been processed
@@ -226,6 +226,7 @@ function InitPlayerVariables()
 		elseif playerType[iPlayer] == "God" then
 			local eaPlayer = {}
 			gPlayers[iPlayer] = eaPlayer
+			gods[iPlayer] = eaPlayer
 			gg_playerValues[iPlayer] = {}
 			eaPlayer.blockedBuildingsByID = {}
 			eaPlayer.religionID = GameInfoTypes.RELIGION_THE_WEAVE_OF_EA

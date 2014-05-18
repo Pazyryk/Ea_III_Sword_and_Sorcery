@@ -112,7 +112,7 @@ INSERT INTO ArtDefine_StrategicView(StrategicViewType, TileType, Asset) VALUES
 ('ART_DEF_UNIT_KRAKEN',				'Unit',	'SV_Jaguar.dds'		),
 ('ART_DEF_UNIT_GIANT_SPIDER',		'Unit',	'SV_Jaguar.dds'		),
 ('ART_DEF_UNIT_DRAKE_GREEN',		'Unit',	'SV_Jaguar.dds'		),
-('ART_DEF_UNIT_DRAKE_BLUE',		'Unit',	'SV_Jaguar.dds'		),
+('ART_DEF_UNIT_DRAKE_BLUE',			'Unit',	'SV_Jaguar.dds'		),
 ('ART_DEF_UNIT_DRAKE_RED',			'Unit',	'SV_Jaguar.dds'		),
 --barbs
 ('ART_DEF_UNIT_OGRE',				'Unit',	'SV_Maori.dds'		),
@@ -163,7 +163,7 @@ INSERT INTO ArtDefine_UnitInfos (Type,	DamageStates,	Formation) VALUES
 ('ART_DEF_UNIT_KRAKEN',					1,				''					),
 ('ART_DEF_UNIT_GIANT_SPIDER',			1,				''					),
 ('ART_DEF_UNIT_DRAKE_GREEN',			1,				''					),
-('ART_DEF_UNIT_DRAKE_BLUE',			1,				''					),
+('ART_DEF_UNIT_DRAKE_BLUE',				1,				''					),
 ('ART_DEF_UNIT_DRAKE_RED',				1,				''					),
 --barbs
 ('ART_DEF_UNIT_OGRE',					1,				'UnFormed'			),	--Hobgoblins
@@ -225,7 +225,7 @@ INSERT INTO ArtDefine_UnitInfoMemberInfos (UnitInfoType,	UnitMemberInfoType,		Nu
 ('ART_DEF_UNIT_KRAKEN',					'ART_DEF_UNIT_MEMBER_KRAKEN',				1		),
 ('ART_DEF_UNIT_GIANT_SPIDER',			'ART_DEF_UNIT_MEMBER_GIANT_SPIDER',			1		),
 ('ART_DEF_UNIT_DRAKE_GREEN',			'ART_DEF_UNIT_MEMBER_DRAKE_GREEN',			1		),
-('ART_DEF_UNIT_DRAKE_BLUE',			'ART_DEF_UNIT_MEMBER_DRAKE_BLUE',			1		),
+('ART_DEF_UNIT_DRAKE_BLUE',				'ART_DEF_UNIT_MEMBER_DRAKE_BLUE',			1		),
 ('ART_DEF_UNIT_DRAKE_RED',				'ART_DEF_UNIT_MEMBER_DRAKE_RED',			1		),
 --barbs
 ('ART_DEF_UNIT_OGRE',					'ART_DEF_UNIT_MEMBER_OGRE',					10		),
@@ -502,7 +502,7 @@ UPDATE ArtDefine_UnitMemberInfos_Temp SET Type = 'ART_DEF_UNIT_MEMBER_EA_WARRIOR
 UPDATE ArtDefine_UnitMemberInfos_Temp SET Type = 'ART_DEF_UNIT_MEMBER_EA_PALADIN', Scale = Scale * 1.4 WHERE Type = 'ART_DEF_UNIT_MEMBER_LONGSWORDSMAN';
 UPDATE ArtDefine_UnitMemberInfos_Temp SET Type = 'ART_DEF_UNIT_MEMBER_EA_DRUID', Scale = Scale * 1.4 WHERE Type = 'ART_DEF_UNIT_MEMBER_BARBARIAN_EURO_ALPHA';
 UPDATE ArtDefine_UnitMemberInfos_Temp SET Type = 'ART_DEF_UNIT_MEMBER_EA_PRIEST', Scale = Scale * 1.4 WHERE Type = 'ART_DEF_UNIT_MEMBER_MISSIONARY_01';
-UPDATE ArtDefine_UnitMemberInfos_Temp SET Type = 'ART_DEF_UNIT_MEMBER_EA_MAGIC_MISSILE',  Model = 'rocketartillery2.fxsxml', Scale = 0.06 WHERE Type = 'ART_DEF_UNIT_MEMBER_ROCKETARTILLERY';
+UPDATE ArtDefine_UnitMemberInfos_Temp SET Type = 'ART_DEF_UNIT_MEMBER_EA_MAGIC_MISSILE',  Model = 'magic_missile.fxsxml', Scale = 0.06 WHERE Type = 'ART_DEF_UNIT_MEMBER_ROCKETARTILLERY';
 INSERT INTO ArtDefine_UnitMemberInfos SELECT * FROM ArtDefine_UnitMemberInfos_Temp;
 
 

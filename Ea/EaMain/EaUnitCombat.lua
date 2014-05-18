@@ -228,6 +228,8 @@ local function ResetForcedSelectionUnit()		--active player only
 			local restoredUnit = player:InitUnit(restoredUnitTypeID, unit:GetX(), unit:GetY(), nil, unit:GetFacingDirection())
 			MapModData.bBypassOnCanSaveUnit = true
 			restoredUnit:Convert(unit, false)
+			--UI.SelectUnit(restoredUnit)
+			--UI.LookAtSelectionPlot(0)
 			restoredUnit:SetPersonIndex(iPerson)
 			local iRestoredUnit = restoredUnit:GetID()
 			eaPerson.iUnit = iRestoredUnit
@@ -442,6 +444,8 @@ local function OnCombatEnded(iAttackingPlayer, iAttackingUnit, attackerDamage, a
 				local restoredUnit = attackingPlayer:InitUnit(restoredUnitTypeID, attackingUnit:GetX(), attackingUnit:GetY(), nil, attackingUnit:GetFacingDirection())
 				MapModData.bBypassOnCanSaveUnit = true		--yikes!!! Check that this is OK if combat kill happens
 				restoredUnit:Convert(attackingUnit, false)
+				UI.SelectUnit(restoredUnit)
+				--UI.LookAtSelectionPlot(0)
 				restoredUnit:SetPersonIndex(iPerson)
 				--restoredUnit:FinishMoves()
 				local iRestoredUnit = restoredUnit:GetID()
@@ -516,7 +520,7 @@ local function OnCanSaveUnit(iPlayer, iUnit, bDelay)	--fires for combat and non-
 		local iSummoner = unit:GetSummonerIndex()
 		if iSummoner ~= -1 then
 			local eaSummoner = gPeople[iSummoner]
-			if eaSummoner then			--could be dead
+			if eaSummoner then			--nil if dead or this is an unbound summoned (-99)
 				local summonedUnits = eaSummoner.summonedUnits
 				if summonedUnits then
 					summonedUnits[iUnit] = nil

@@ -301,19 +301,13 @@ local function TestAddOption(targetType, index1, index2, tieBreaker, g)
 end
 
 local function Blacklist(eaActionID, iPlot)
-	--For some reason GP AI thinks we can do it, but move or other action failed. Could result from a unit traffic jam (for move) or a coding error for AI options below.
+	--For some reason GP AI thinks we can do it, but move or other action failed.
 	--This function puts off limits for this particular GP. The option is added but then rejected (above) with a print statement.
 	local eaAction = GameInfo.EaActions[eaActionID]
-	print("Blacklisting action for this GP at this target", g_eaPerson, eaActionID, iPlot)
-	if g_eaPerson.aiBlacklist then
-		if g_eaPerson.aiBlacklist[eaActionID] then
-			g_eaPerson.aiBlacklist[eaActionID][iPlot] = Game.GetGameTurn()	--we could reassess later, maybe
-		else
-			g_eaPerson.aiBlacklist[eaActionID] = {[iPlot] = Game.GetGameTurn()}
-		end
-	else
-		g_eaPerson.aiBlacklist = {[eaActionID] = {[iPlot] = Game.GetGameTurn()}}
-	end
+	print("Blacklisting action for this GP at this target", g_iPerson, eaActionID, iPlot)
+	g_eaPerson.aiBlacklist = g_eaPerson.aiBlacklist or {}
+	g_eaPerson.aiBlacklist[eaActionID] = g_eaPerson.aiBlacklist[eaActionID] or {}
+	g_eaPerson.aiBlacklist[eaActionID][iPlot] = Game.GetGameTurn()	--we could reassess later, maybe
 end
 
 local function AddCombatOptions(rallyX, rallyY)
@@ -711,15 +705,16 @@ local vPP4 = {index = 0, value = 0}
 local vPP5 = {index = 0, value = 0}
 local vPPX = {index = 0, value = 0}
 
-local formatOptionStr = "OPTION %4d %35.35s %9d %5d %3d %3d %10.4f %10.4f %10.4f %10.4f %10.4f %10.4f %10.4f"
+local formatOptionStr = "OPTION    %4d %35.35s %9d %5d %3d %3d %10.4f %10.4f %10.4f %10.4f %10.4f %10.4f %10.4f"
+local formatBlkLstStr = "BLACKLIST %4d %35.35s %9d %5d %3d %3d %10.4f %10.4f %10.4f %10.4f %10.4f %10.4f %10.4f"
 
 local function CompareOptions()
-	print("Running CompareOptions")
+	print("Running CompareOptions; iPerson, iPlot = ", g_iPerson, g_gpPlotIndex)
 	print("          #                       Option          iArea   iPlot   g   t      i          p          b      numerator denominator    vPP         vP")
 	--    "OPTION dddd ttttttttttttt 35 tttttttttttttttttt ddddddddd ddddd ddd ddd 00000.0000 00000.0000 00000.0000 00000.0000 00000.0000 00000.0000 00000.0000"
 	--Setup blacklists (goto's or other actions that didn't work for some reason)
-	local blacklistGoto = g_eaPerson.aiBlacklist and g_eaPerson.aiBlacklist[EA_ACTION_GO_TO_PLOT]
 	local blacklist = g_eaPerson.aiBlacklist
+	local blacklistGoto = blacklist and blacklist[EA_ACTION_GO_TO_PLOT]
 
 	--Calculate area boosts and find best v
 	local bestV = 0
@@ -741,12 +736,13 @@ local function CompareOptions()
 				local index = thisAreaOptions[j]
 				local option = g_options[index]
 				local eaActionType = GameInfo.EaActions[option.eaActionID].Type
-
-				if (blacklistGoto and blacklistGoto[option.iPlot] and option.travelTurns > 0 and Game.GetGameTurn() < blacklistGoto[option.iPlot] + 30)	--target blacklised < 30 turns ago
-					or (blacklist and blacklist[option.eaActionID] and blacklist[option.eaActionID][option.iPlot]) then									--action blacklisted here ever
-					print("*BLACKLISTED:", index, eaActionType, "iArea:", iArea, "iPlot:", option.iPlot, "g:", option.travelTurns, "t:", option.actionTurns, "num:", option.numerator, "den:", option.denominator, "vP:", option.vP, "vPP:", option.vPP)
+				local blacklistGotoTurn = blacklistGoto and blacklistGoto[option.iPlot]
+				local blacklistActionTurn = blacklist and blacklist[option.eaActionID] and blacklist[option.eaActionID][option.iPlot]
+				if blacklistGotoTurn and Game.GetGameTurn() < blacklistGotoTurn + 30 then
+					print(Format(formatBlkLstStr, index, eaActionType, iArea, option.iPlot, option.travelTurns, option.actionTurns, option.i, option.p, option.b, option.numerator, option.denominator, option.vPP, option.vP), "Blacklist goto turn = ", blacklistGotoTurn)
+				elseif blacklistActionTurn then
+					print(Format(formatBlkLstStr, index, eaActionType, iArea, option.iPlot, option.travelTurns, option.actionTurns, option.i, option.p, option.b, option.numerator, option.denominator, option.vPP, option.vP), "Blacklist action turn = ", blacklistGotoTurn)
 				else
-					--print("*OPTION     :", index, eaActionType, "iArea:", iArea, "iPlot:", option.iPlot, "g:", option.travelTurns, "t:", option.actionTurns, "num:", option.numerator, "den:", option.denominator, "vP:", option.vP, "vPP:", option.vPP)
 					print(Format(formatOptionStr, index, eaActionType, iArea, option.iPlot, option.travelTurns, option.actionTurns, option.i, option.p, option.b, option.numerator, option.denominator, option.vPP, option.vP))
 
 					--find best vP
@@ -836,7 +832,7 @@ local function DoOrGotoBestOption(bestVoption)
 				Blacklist(option.eaActionID, targetPlotIndex)			--don't try this again
 			end
 		else								--GP needs to move to plot
-			print("AI GP attempting to go to target for option:", bestVoption, bestV, option.travelTurns)
+			print("AI GP attempting to go to target for option:", bestVoption, option.travelTurns)
 			local targetX, targetY = GetXYFromPlotIndex(targetPlotIndex)
 			
 			if DoEaAction(EA_ACTION_GO_TO_PLOT, g_iPlayer, g_unit, g_iPerson, targetX, targetY) then	--true if unit moved (will set gotoPlotIndex since we supplied targetX, Y here)

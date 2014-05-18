@@ -218,9 +218,10 @@ for iPlayer = 0, BARB_PLAYER_INDEX do
 end
 
 --These are set in Init
+MapModData.realCivs = MapModData.realCivs or {}		--full plus CSs
 MapModData.fullCivs = MapModData.fullCivs or {}	
-MapModData.cityStates = MapModData.cityStates or {}				
-MapModData.realCivs = MapModData.realCivs or {}		
+MapModData.cityStates = MapModData.cityStates or {}
+MapModData.gods = MapModData.gods or {}
 
 --Other shared tables
 MapModData.gpRegisteredActions = MapModData.gpRegisteredActions or {}
@@ -298,7 +299,8 @@ gWorld = {	sumOfAllMana =				MapModData.STARTING_SUM_OF_ALL_MANA,
 			azzConvertNum =				0,
 			anraConvertNum =			0,
 			weaveConvertNum =			0,
-			livingTerrainConvertStr =	0
+			livingTerrainConvertStr =	0,
+			calledMajorSpirits =		{}
 			}
 
 

@@ -548,6 +548,8 @@ function GenerateGreatPerson(iPlayer, class, subclass, eaPersonRowID, bAsLeader,
 		ResetAgeOfDeath(iPerson)
 	end
 
+	unit:ChangeExperience(15 + Rand(10, "hello"))	
+
 	if bAsLeader then
 		MakeLeader(iPlayer, iPerson)
 	end

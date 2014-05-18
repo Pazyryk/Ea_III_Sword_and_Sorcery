@@ -308,18 +308,18 @@ UPDATE Units SET Cost = -1, AdvancedStartCost = -1, Domain = 'DOMAIN_LAND', Move
 -- People temp type units
 ----------------------------------------------------------------------------------------
 
-INSERT INTO Units (Type,		Description,			EaGPTempRole,	Combat,	RangedCombat,	Range,	Moves,	Immobile,	CombatClass,			DefaultUnitAI,			UnitArtInfo,							IconAtlas,					PortraitIndex,	UnitFlagIconOffset,	Special					) VALUES
-('UNIT_DRUID_MAGIC_MISSLE',		'TXT_KEY_UNIT_DRUID',	'MagicMissle',	5,		10,				2,		2,		1,			'UNITCOMBAT_ARCHER',	'UNITAI_RANGED',		'ART_DEF_UNIT_EA_DRUID_MAGIC_MISSLE',	'EXPANSION_UNIT_ATLAS_1',	17,				17,					'SPECIALUNIT_PEOPLE'	),
-('UNIT_PRIEST_MAGIC_MISSLE',	'TXT_KEY_UNIT_DRUID',	'MagicMissle',	5,		10,				2,		2,		1,			'UNITCOMBAT_ARCHER',	'UNITAI_RANGED',		'ART_DEF_UNIT_EA_PRIEST_MAGIC_MISSLE',	'EXPANSION_UNIT_ATLAS_1',	20,				20,					'SPECIALUNIT_PEOPLE'	);
+INSERT INTO Units (Type,		Description,				EaGPTempRole,	Combat,	RangedCombat,	Range,	Moves,	Immobile,	CombatClass,			DefaultUnitAI,			UnitArtInfo,							IconAtlas,					PortraitIndex,	UnitFlagIconOffset,	Special					) VALUES
+('UNIT_DRUID_MAGIC_MISSLE',		'TXT_KEY_EA_UNIT_DRUID',	'MagicMissle',	5,		10,				2,		2,		1,			'UNITCOMBAT_ARCHER',	'UNITAI_RANGED',		'ART_DEF_UNIT_EA_DRUID_MAGIC_MISSLE',	'EXPANSION_UNIT_ATLAS_1',	17,				17,					'SPECIALUNIT_PEOPLE'	),
+('UNIT_PRIEST_MAGIC_MISSLE',	'TXT_KEY_EA_UNIT_DRUID',	'MagicMissle',	5,		10,				2,		2,		1,			'UNITCOMBAT_ARCHER',	'UNITAI_RANGED',		'ART_DEF_UNIT_EA_PRIEST_MAGIC_MISSLE',	'EXPANSION_UNIT_ATLAS_1',	20,				20,					'SPECIALUNIT_PEOPLE'	);
 
 UPDATE Units SET Cost = -1, AdvancedStartCost = -1, Domain = 'DOMAIN_LAND', Moves = 2, MoveRate = 'GREAT_PERSON', CombatLimit = 100, RivalTerritory = 1, NoMaintenance = 1, XPValueAttack = 3, XPValueDefense = 3 WHERE EaGPTempRole IS NOT NULL;
 
 
 --Build out the Units table for dependent strings
 
-UPDATE Units SET Description = 'TXT_KEY_EA_ARCHANGEL_' || REPLACE(Type, 'UNIT_', '') WHERE EaSpecial = 'Archangel';
-UPDATE Units SET Description = 'TXT_KEY_EA_ARCHDEMON_' || REPLACE(Type, 'UNIT_', '') WHERE EaSpecial = 'Archdemon';
-UPDATE Units SET Description = 'TXT_KEY_EA_GOD_' || REPLACE(Type, 'UNIT_', '') WHERE EaSpecial = 'MajorSpirit';
+UPDATE Units SET Description = 'TXT_KEY_EA_' || REPLACE(Type, 'UNIT_', '') WHERE EaSpecial = 'Archangel';
+UPDATE Units SET Description = 'TXT_KEY_EA_' || REPLACE(Type, 'UNIT_', '') WHERE EaSpecial = 'Archdemon';
+UPDATE Units SET Description = 'TXT_KEY_EA_' || REPLACE(Type, 'UNIT_', '') WHERE EaSpecial = 'MajorSpirit';
 UPDATE Units SET Description = 'TXT_KEY_EA_' || Type WHERE Description IS NULL;
 UPDATE Units SET Description = REPLACE(Description, '_MAN', '');
 UPDATE Units SET Description = REPLACE(Description, '_SIDHE', '');

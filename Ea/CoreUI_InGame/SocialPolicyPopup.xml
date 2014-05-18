@@ -191,10 +191,10 @@
 					<Image Anchor="R,T" Offset="0,0" Texture="VerticalTrim.dds" Size="5,290"/>
 					<!-- PIETY BOX / Paz: ARCANA  -->
 					<Box Size="190,290 " Anchor="C,T" Color="0,0,0,0">
-						<Image Anchor="C,T" TextureOffset="0,0" Offset="0,0" Size="190,290" Color="255,255,255,255" Texture="SocialPoliciesRationalism.dds" ToolTip="TXT_KEY_POLICY_BRANCH_ARCANA_HELP"/>
+						<Image Anchor="C,T" TextureOffset="0,0" Offset="0,0" Size="190,290" Color="255,255,255,255" Texture="SocialPoliciesRationalism.dds" ToolTip="TXT_KEY_EA_POLICY_BRANCH_ARCANA_HELP"/>
 						
 						<!-- Policy Branch Image -->
-						<Image Anchor="C,T" Offset="0,0" Size="190,90" Texture="SocialPoliciesRationalism.dds" ID="BranchBack3" ToolTip="TXT_KEY_POLICY_BRANCH_ARCANA_HELP"/>
+						<Image Anchor="C,T" Offset="0,0" Size="190,90" Texture="SocialPoliciesRationalism.dds" ID="BranchBack3" ToolTip="TXT_KEY_EA_POLICY_BRANCH_ARCANA_HELP"/>
 						<Image ID="ImageMask3" Anchor="C,T" Offset="0,0" Size="190,290" Color="255,255,255,200" Texture="Assets/UI/Art/Icons/SocialPoliciesBranchBlackMask.dds"/>
 						<Box ID="DisabledMask3" Size="190,290" Offset="0,0" Anchor="C,T" Color="0,0,0,200"/>
 						<Image Anchor="C,T" Offset="0,0" Size="190,290" Texture="Assets/UI/Art/Icons/SocialPoliciesTrim.dds">
@@ -212,7 +212,7 @@
 							</HideOnMouseOver>
 						</Box>
 						<!-- adopt button -->
-						<GridButton Size="170,36" Anchor="C,T" Font="EaTwCnMT18" Color="255,255,255,200" String="" FontStyle="Shadow" Color0="Beige.255" Color1="Black.128" Offset="0,46" Style="BaseButton" ToolTip="TXT_KEY_POLICY_BRANCH_ARCANA_HELP" Hidden="0" ID="BranchButton3">
+						<GridButton Size="170,36" Anchor="C,T" Font="EaTwCnMT18" Color="255,255,255,200" String="" FontStyle="Shadow" Color0="Beige.255" Color1="Black.128" Offset="0,46" Style="BaseButton" ToolTip="TXT_KEY_EA_POLICY_BRANCH_ARCANA_HELP" Hidden="0" ID="BranchButton3">
 							<Image Anchor="R,C" Offset="0,0" Size="48,48" Texture="48Lock.dds" ID="Lock3"/>
 						</GridButton>
 						<Box ID="DisabledBox3" Size="190,290" Offset="0,0" Anchor="C,T" Color="0,0,0,0">

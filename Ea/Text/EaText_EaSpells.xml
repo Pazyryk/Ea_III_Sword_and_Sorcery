@@ -79,9 +79,6 @@
 		<Row Tag="TXT_KEY_EA_SPELL_TELEPORT">
 			<Text>Teleport</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_SPELL_SUMMON_DEMON">
-			<Text>Summon Demon</Text>
-		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_PHASE_DOOR">
 			<Text>Phase Door</Text>
 		</Row>
@@ -92,7 +89,7 @@
 			<Text>Raise Dead</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_DEATH_RUNE">
-			<Text>Inscribe Death Rune</Text>
+			<Text>Death Rune</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_VAMPIRIC_TOUCH">
 			<Text>Vampiric Touch</Text>
@@ -145,6 +142,15 @@
 		<Row Tag="TXT_KEY_EA_SPELL_PHANTASMAGORIA">
 			<Text>Phantasmagoria</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_ABYSSAL_CREATURES">
+			<Text>Abyssal Creatures</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_SUMMON_DEMON">
+			<Text>Summon Demon</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_SUMMON_ARCHDEMON">
+			<Text>Summon Archdemon</Text>
+		</Row>
 
 		<Row Tag="TXT_KEY_EA_SPELL_HEAL">
 			<Text>Heal</Text>
@@ -179,6 +185,13 @@
 		<Row Tag="TXT_KEY_EA_SPELL_CALL_HEAVENS_GUARD">
 			<Text>Call Heaven's Guard</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_CALL_ANGEL">
+			<Text>Call Angel</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_CALL_ARCHANGEL">
+			<Text>Call Archangel</Text>
+		</Row>
+		
 		<Row Tag="TXT_KEY_EA_SPELL_RESURRECTION">
 			<Text>Resurrection</Text>
 		</Row>
@@ -221,6 +234,9 @@
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_CALL_TREE_ENTS">
 			<Text>Call Tree-Ents</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_CALL_MAJOR_SPIRIT">
+			<Text>Call Major Spirit</Text>
 		</Row>
 
 		<Row Tag="TXT_KEY_EA_SPELL_BLOOM">

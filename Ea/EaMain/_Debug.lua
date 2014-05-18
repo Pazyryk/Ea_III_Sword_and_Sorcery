@@ -5,6 +5,14 @@
 
 local bHidden =			MapModData.bHidden
 
+--function OnCanStartMission(iPlayer, iUnit, missionID)
+--	print("CanStartMission ", iPlayer, iUnit, missionID)
+--	return true
+--end
+--GameEvents.CanStartMission.Add(OnCanStartMission)
+
+
+
 
 local tableByOrderType = {	[OrderTypes.ORDER_TRAIN] = "Units",
 							[OrderTypes.ORDER_CONSTRUCT] = "Buildings",
@@ -48,3 +56,30 @@ local function DebugOnPlayerPreAIUnitUpdate(iPlayer)
 	print("*************************************")
 end
 GameEvents.PlayerPreAIUnitUpdate.Add(function(iPlayer) return HandleError10(DebugOnPlayerPreAIUnitUpdate, iPlayer) end)
+
+
+
+function DebugSpellCaster()
+	local iCaster = GenerateGreatPerson(0, nil, "Druid", nil, false)
+	local spells = gPeople[iCaster].spells
+	for eaActionInfo in GameInfo.EaActions() do
+		if eaActionInfo.SpellClass and (eaActionInfo.AITarget or eaActionInfo.AICombatRole) then
+			spells[#spells + 1] = eaActionInfo.ID
+		end
+	end
+end
+
+
+
+
+
+--[[
+
+GameInfo.Units[Map.GetPlot(53,32):GetUnit(0):GetUnitType()].Type
+
+
+
+
+
+
+]]

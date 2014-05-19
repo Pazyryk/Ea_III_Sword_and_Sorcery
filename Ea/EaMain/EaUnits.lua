@@ -91,6 +91,7 @@ local gg_cityCampResDistMatrix =	gg_cityCampResDistMatrix
 local gg_fishingRange =				gg_fishingRange
 local gg_whalingRange =				gg_whalingRange
 local gg_campRange =				gg_campRange
+local gg_eaSpecial =				gg_eaSpecial
 
 --localized functions
 local Rand = Map.Rand
@@ -408,11 +409,14 @@ function UnitPerCivTurn(iPlayer)	--runs for full civs and city states
 		elseif bBarbs then
 			--
 		else	--Full civs and city states
-			local bSlave = unit:IsHasPromotion(PROMOTION_SLAVE)
-			local bMercenary = unit:IsHasPromotion(PROMOTION_MERCENARY)
+			local bSlave
+			local bMercenary
 
 			if gg_bNormalCombatUnit[unitTypeID] then
 				countCombatUnits = countCombatUnits + 1
+
+				bSlave = unit:IsHasPromotion(PROMOTION_SLAVE)
+				bMercenary = unit:IsHasPromotion(PROMOTION_MERCENARY)
 
 				--Morale decays toward baseline (= civ happiness; -30 for slaves; 0 for mercenary; -20 for merc at war with original owner)
 				local baselineMoral = playerHappiness
@@ -445,7 +449,23 @@ function UnitPerCivTurn(iPlayer)	--runs for full civs and city states
 				if unitTypeID == UNIT_GREAT_BOMBARDE and 4 < unit:GetLevel() then
 					unit:SetHasPromotion(PROMOTION_EXTENDED_RANGE, true)
 				end
+			elseif gg_eaSpecial[unitTypeID] == "Undead" then
+				local iSummoner = unit:GetSummonerIndex()
+				if iSummoner == -99 or not gPeople[iSummoner] then
+					local dice = Rand(6, "hello")
+					if dice == 0 then
+						MapModData.bBypassOnCanSaveUnit = true
+						unit:Kill(true, -1)
+						Players[BARB_PLAYER_INDEX]:InitUnit(unitTypeID, x, y)
+						plot:AddFloatUpMessage("Unbound dead has gone hostile!")
+					elseif dice < 3 then
+						MapModData.bBypassOnCanSaveUnit = true
+						unit:Kill(true, -1)
+						plot:AddFloatUpMessage("Unbound dead has un-animated")
+					end				
+				end
 			end
+
 			--unit type or civ effects
 			local unitDomainTypeID = unit:GetDomainType()
 			if UseUnit[unitTypeID] then							--functions for units that are used up (like caravans, fishing boats, etc)

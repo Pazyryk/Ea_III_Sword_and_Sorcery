@@ -57,7 +57,7 @@
 			<Text>[COLOR_POSITIVE_TEXT]Éa Blessings[ENDCOLOR] converts 10% of the [ICON_PRODUCTION] Production of this City into Living Terrain strength, randomly applied to non-improved forest, jungle or marsh plots worldwide.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROCESS_MAJOR_SPIRITS_TRIBUTE_HELP">
-			<Text>[COLOR_POSITIVE_TEXT]Major Spirits' Tribute[ENDCOLOR] converts 25% of the [ICON_PRODUCTION] Production of this City into [ICON_INFLUENCE] Influence divided among all Major Spirits of Éa that are friends or allies, or all contacted if none are currently friends or allies.</Text>
+			<Text>[COLOR_POSITIVE_TEXT]Major Spirits' Tribute[ENDCOLOR] converts 25% of the [ICON_PRODUCTION] Production of this City into [ICON_INFLUENCE] Influence divided among all Major Spirits of Éa that are friends or allies (or all contacted if none are currently friends or allies).</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROCESS_FAERIES_TRIBUTE_HELP">
 			<Text>[COLOR_POSITIVE_TEXT]Faeries' Tribute[ENDCOLOR] converts [ICON_PRODUCTION] Production of this City into boosted relationship with The Fay (boost equals moving average of production contributed over the last 100 turns divided by 10).</Text>

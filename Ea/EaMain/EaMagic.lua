@@ -178,11 +178,12 @@ function DrainExperience(unit, xp)
 			end
 		end
 	end
-	return xpDrained, levelsDrained
+	return xpDrained, oldLevel - newLevel
 end
 
 --magic plot attack
 function DoDummyUnitRangedAttack(iPlayer, x, y, mod, dummyUnitID)
+	print("DoDummyUnitRangedAttack ", iPlayer, x, y, mod, dummyUnitID)
 	--Inits a suidide air unit that attacks x, y coordinates; assumes that there is an enemy of iPlayer there
 	--roughly speaking, mod integer represents adjusted range strength for UNIT_DUMMY_EXPLODER
 	--iPlayer for Animals or Barbarians doesn't work for some reason (barbs can't air attack?) 
@@ -197,7 +198,10 @@ function DoDummyUnitRangedAttack(iPlayer, x, y, mod, dummyUnitID)
 			if mod then
 				dummyUnit:SetMorale(mod * 10 - 100)
 			end
-			dummyUnit:PushMission(MISSION_RANGE_ATTACK, x, y, 0, 0, 1)
+			print("iUnit, CanRangeStrikeAt = ", dummyUnit:GetID(), dummyUnit:CanRangeStrikeAt(x, y))
+			dummyUnit:RangeStrike(x, y)
+			
+			print("IsDead, IsDelayedDeath = ", dummyUnit:IsDead(), dummyUnit:IsDelayedDeath())
 			return true
 		end
 	end
@@ -208,7 +212,7 @@ function DoDummyUnitRangedAttack(iPlayer, x, y, mod, dummyUnitID)
 	-- UNIT_DUMMY_EXPLODER works great for iPlayer = 0, but not 1 (PushMission doesn't do anything)
 	-- UNIT_DUMMY_NUKE caused CTD when I tried GameInfoTypes.MISSION_NUKE
 
-
+	--Try GameInfoTypes.MISSION_NUKE with x, y only (as per dll call); then try it with nuke from city
 
 
 

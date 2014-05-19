@@ -208,6 +208,8 @@ function EaPeopleInit(bNewGame)
 						name = "TXT_KEY_EAPERSON_FAND",
 						title = "TXT_KEY_EA_QUEEN",
 						portrait = "Fand_SueMarino_0.70_636x944.dds",
+						eaActionID = -1,
+						gotoEaActionID = -1
 						}
 	end
 
@@ -522,7 +524,8 @@ function GenerateGreatPerson(iPlayer, class, subclass, eaPersonRowID, bAsLeader,
 			local spellInfo = GameInfo.EaActions[spellID]
 			while spellInfo do
 				if spellInfo.FreeSpellSubclass == subclass then
-					eaPerson.spells[spellID] = true
+					--eaPerson.spells[spellID] = true
+					eaPerson.spells[#eaPerson.spells + 1] = spellID
 					if spellInfo.AICombatRole then
 						eaPerson.aiHasCombatRole = true
 					end
@@ -537,7 +540,6 @@ function GenerateGreatPerson(iPlayer, class, subclass, eaPersonRowID, bAsLeader,
 
 	else
 		error("Failed to init gp unit")
-		
 	end
 
 	if eaPersonRowID or not bFullCivAI[iPlayer] then
@@ -545,6 +547,8 @@ function GenerateGreatPerson(iPlayer, class, subclass, eaPersonRowID, bAsLeader,
 	else
 		ResetAgeOfDeath(iPerson)
 	end
+
+	unit:ChangeExperience(15 + Rand(10, "hello"))	
 
 	if bAsLeader then
 		MakeLeader(iPlayer, iPerson)
@@ -554,6 +558,8 @@ function GenerateGreatPerson(iPlayer, class, subclass, eaPersonRowID, bAsLeader,
 		local personType = bAsLeader and "NewPersonLeader" or "NewPerson"
 		LuaEvents.EaImagePopup({type = personType, id = iPerson, sound = "AS2D_EVENT_NOTIFICATION_GOOD"})
 	end
+
+	RegisterGPActions(iPerson)
 
 	return iPerson
 end
@@ -768,7 +774,6 @@ function UnlockReservedGPs()
 	g_bReservedGPs = false
 	reservedGPs = nil		--garbage collect cached table
 end
-
 
 --------------------------------------------------------------
 -- Leader Functions
@@ -1188,7 +1193,7 @@ function KillPerson(iPlayer, iPerson, unit, iKillerPlayer, deathType)
 	if eaPerson.gotoEaActionID ~= -1 then
 		eaPlayer.aiUniqueTargeted[eaPerson.gotoEaActionID] = nil
 	end
-	ClearActionPlotTargetedForPerson(eaPlayer, iPerson)	--just to be safe
+	ClearActionPlotTargetedForPerson(iPlayer, iPerson)	--just to be safe
 	if eaPerson.eaActionID ~= -1 then
 		InterruptEaAction(iPlayer, iPerson)
 	end

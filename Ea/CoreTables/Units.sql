@@ -145,44 +145,104 @@ INSERT INTO Units (Type,		PrereqTech,					Cost,	Combat,	RangedCombat,	Range,	Mov
 ('UNIT_ARQUEBUSSMEN_GOBLIN',	'TECH_MACHINERY',			320,	15,		15,				1,		2,		'UNITCOMBAT_ARCHER',		'DOMAIN_LAND',	'UNITAI_RANGED',		1,			1,					1,					NULL,				0,			'ART_DEF_UNIT_GOBLIN_CROSSBOWMAN',		'UNIT_ATLAS_1',				38,				'UNIT_FLAG_ATLAS',				37,					'BIPED'			);
 
 --Barb Only
-INSERT INTO Units (Type,		PrereqTech,					Cost,	Combat,	RangedCombat,	Range,	Moves,	CombatClass,				Domain,			DefaultUnitAI,			Pillage,	MilitarySupport,	MilitaryProduction,	ObsoleteTech,		Mechanized,	UnitArtInfo,							IconAtlas,					PortraitIndex,	UnitFlagAtlas,					UnitFlagIconOffset,	MoveRate,		EaNoTrain	) VALUES
-('UNIT_GALLEYS_PIRATES',		NULL,						-1,		9,		0,				0,		3,		'UNITCOMBAT_NAVALMELEE',	'DOMAIN_SEA',	'UNITAI_ATTACK_SEA',	1,			1,					1,					NULL,				1,			'ART_DEF_UNIT_BARBARIAN_GALLEY',		'UNIT_ATLAS_1',				23,				'UNIT_FLAG_ATLAS',				23,					'WOODEN_BOAT',	1			),
-('UNIT_WARRIORS_BARB',			NULL,						-1,		7,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			1,					1,					NULL,				0,			'ART_DEF_UNIT_BARBARIAN_EURO',			'UNIT_ATLAS_1',				25,				'UNIT_FLAG_ATLAS',				3,					'BIPED',		1			),
-('UNIT_LIGHT_INFANTRY_BARB',	NULL,						-1,		9,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			1,					1,					NULL,				0,			'ART_DEF_UNIT_BARBARIAN_SPEARMAN',		'UNIT_ATLAS_1',				9,				'UNIT_FLAG_ATLAS',				9,					'BIPED',		1			),
-('UNIT_MEDIUM_INFANTRY_BARB',	NULL,						-1,		12,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			1,					1,					NULL,				0,			'ART_DEF_UNIT_BARBARIAN_SWORDSMAN',		'UNIT_ATLAS_1',				14,				'UNIT_FLAG_ATLAS',				14,					'HEAVY_BIPED',	1			),
-('UNIT_ARCHERS_BARB',			NULL,						-1,		8,		8,				1,		2,		'UNITCOMBAT_ARCHER',		'DOMAIN_LAND',	'UNITAI_RANGED',		1,			1,					1,					NULL,				0,			'ART_DEF_UNIT_BARBARIAN_ARCHER',		'UNIT_ATLAS_1',				6,				'UNIT_FLAG_ATLAS',				6,					'BIPED',		1			),
-('UNIT_AXMAN_BARB',				NULL,						-1,		8,		8,				1,		2,		'UNITCOMBAT_ARCHER',		'DOMAIN_LAND',	'UNITAI_RANGED',		1,			1,					1,					NULL,				0,			'ART_DEF_UNIT_HAND_AXE_BARBARIAN',		'EXPANSION2_UNIT_ATLAS',	9,				'EXPANSION2_UNIT_FLAG_ATLAS',	9,					'BIPED',		1			),
-
-('UNIT_WARRIORS_GOBLIN',		'TECH_NEVER',				-1,		5,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			1,					1,					NULL,				0,			'ART_DEF_UNIT_GOBLIN_WARRIOR',			'UNIT_ATLAS_1',				25,				'UNIT_FLAG_ATLAS',				3,					'BIPED',		1			),
-
-('UNIT_NAGA_GREEN',				NULL,						-1,		9,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			1,					1,					NULL,				0,			'ART_DEF_UNIT_NAGA_GREEN',				'UNIT_ATLAS_1',				9,				'UNIT_FLAG_ATLAS',				9,					'BIPED',		1			),
-('UNIT_NAGA_BLUE',				NULL,						-1,		11,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			1,					1,					NULL,				0,			'ART_DEF_UNIT_NAGA_BLUE',				'UNIT_ATLAS_1',				9,				'UNIT_FLAG_ATLAS',				9,					'BIPED',		1			),
-('UNIT_OGRES',					NULL,						-1,		15,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			1,					1,					NULL,				0,			'ART_DEF_UNIT_STONESKIN_OGRE',			'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1			),
-('UNIT_HOBGOBLINS',				NULL,						-1,		12,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			1,					1,					NULL,				0,			'ART_DEF_UNIT_OGRE',					'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1			);
+INSERT INTO Units (Type,		Cost,	Combat,	RangedCombat,	Range,	Moves,	CombatClass,				Domain,			DefaultUnitAI,			Pillage,	MilitarySupport,	MilitaryProduction,	ObsoleteTech,		Mechanized,	UnitArtInfo,							IconAtlas,					PortraitIndex,	UnitFlagAtlas,					UnitFlagIconOffset,	MoveRate,		EaNoTrain	) VALUES
+('UNIT_GALLEYS_PIRATES',		-1,		9,		0,				0,		3,		'UNITCOMBAT_NAVALMELEE',	'DOMAIN_SEA',	'UNITAI_ATTACK_SEA',	1,			1,					1,					NULL,				1,			'ART_DEF_UNIT_BARBARIAN_GALLEY',		'UNIT_ATLAS_1',				23,				'UNIT_FLAG_ATLAS',				23,					'WOODEN_BOAT',	1			),
+('UNIT_WARRIORS_BARB',			-1,		7,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			1,					1,					NULL,				0,			'ART_DEF_UNIT_BARBARIAN_EURO',			'UNIT_ATLAS_1',				25,				'UNIT_FLAG_ATLAS',				3,					'BIPED',		1			),
+('UNIT_LIGHT_INFANTRY_BARB',	-1,		9,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			1,					1,					NULL,				0,			'ART_DEF_UNIT_BARBARIAN_SPEARMAN',		'UNIT_ATLAS_1',				9,				'UNIT_FLAG_ATLAS',				9,					'BIPED',		1			),
+('UNIT_MEDIUM_INFANTRY_BARB',	-1,		12,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			1,					1,					NULL,				0,			'ART_DEF_UNIT_BARBARIAN_SWORDSMAN',		'UNIT_ATLAS_1',				14,				'UNIT_FLAG_ATLAS',				14,					'HEAVY_BIPED',	1			),
+('UNIT_ARCHERS_BARB',			-1,		8,		8,				1,		2,		'UNITCOMBAT_ARCHER',		'DOMAIN_LAND',	'UNITAI_RANGED',		1,			1,					1,					NULL,				0,			'ART_DEF_UNIT_BARBARIAN_ARCHER',		'UNIT_ATLAS_1',				6,				'UNIT_FLAG_ATLAS',				6,					'BIPED',		1			),
+('UNIT_AXMAN_BARB',				-1,		8,		8,				1,		2,		'UNITCOMBAT_ARCHER',		'DOMAIN_LAND',	'UNITAI_RANGED',		1,			1,					1,					NULL,				0,			'ART_DEF_UNIT_HAND_AXE_BARBARIAN',		'EXPANSION2_UNIT_ATLAS',	9,				'EXPANSION2_UNIT_FLAG_ATLAS',	9,					'BIPED',		1			),
+('UNIT_WARRIORS_GOBLIN',		-1,		5,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			1,					1,					NULL,				0,			'ART_DEF_UNIT_GOBLIN_WARRIOR',			'UNIT_ATLAS_1',				25,				'UNIT_FLAG_ATLAS',				3,					'BIPED',		1			),
+('UNIT_NAGA_GREEN',				-1,		9,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			1,					1,					NULL,				0,			'ART_DEF_UNIT_NAGA_GREEN',				'UNIT_ATLAS_1',				9,				'UNIT_FLAG_ATLAS',				9,					'BIPED',		1			),
+('UNIT_NAGA_BLUE',				-1,		11,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			1,					1,					NULL,				0,			'ART_DEF_UNIT_NAGA_BLUE',				'UNIT_ATLAS_1',				9,				'UNIT_FLAG_ATLAS',				9,					'BIPED',		1			),
+('UNIT_OGRES',					-1,		15,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			1,					1,					NULL,				0,			'ART_DEF_UNIT_STONESKIN_OGRE',			'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1			),
+('UNIT_HOBGOBLINS',				-1,		12,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			1,					1,					NULL,				0,			'ART_DEF_UNIT_OGRE',					'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1			);
 
 --Animals and Beasts
-INSERT INTO Units (Type,		PrereqTech,					Cost,	Combat,	RangedCombat,	Range,	Moves,	CombatClass,				Domain,			DefaultUnitAI,			Pillage,	MilitarySupport,	MilitaryProduction,	ObsoleteTech,		Mechanized,	UnitArtInfo,							IconAtlas,					PortraitIndex,	UnitFlagAtlas,					UnitFlagIconOffset,	MoveRate,		EaNoTrain,	EaSpecial	) VALUES
-('UNIT_WOLVES',					NULL,						-1,		6,		0,				0,		4,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		0,			0,					1,					NULL,				0,			'ART_DEF_UNIT_WOLVES',					'UNIT_ATLAS_1',				4,				'UNIT_FLAG_ATLAS',				4,					'BIPED',		1,			'Animal'	),
-('UNIT_LIONS',					NULL,						-1,		9,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		0,			0,					1,					NULL,				0,			'ART_DEF_UNIT_LIONS',					'UNIT_ATLAS_1',				4,				'UNIT_FLAG_ATLAS',				4,					'BIPED',		1,			'Animal'	),
-('UNIT_GRIFFONS',				NULL,						-1,		8,		0,				0,		4,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		0,			0,					1,					NULL,				0,			'ART_DEF_UNIT_GRIFFONS',				'UNIT_ATLAS_1',				4,				'UNIT_FLAG_ATLAS',				4,					'BIPED',		1,			'Animal'	),
-('UNIT_SCORPIONS_SAND',			NULL,						-1,		8,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		0,			0,					1,					NULL,				0,			'ART_DEF_UNIT_SCORPIONS_SAND',			'UNIT_ATLAS_1',				4,				'UNIT_FLAG_ATLAS',				4,					'BIPED',		1,			'Animal'	),
-('UNIT_SCORPIONS_BLACK',		NULL,						-1,		8,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		0,			0,					1,					NULL,				0,			'ART_DEF_UNIT_SCORPIONS_BLACK',			'UNIT_ATLAS_1',				4,				'UNIT_FLAG_ATLAS',				4,					'BIPED',		1,			'Animal'	),
-('UNIT_SCORPIONS_WHITE',		NULL,						-1,		8,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		0,			0,					1,					NULL,				0,			'ART_DEF_UNIT_SCORPIONS_WHITE',			'UNIT_ATLAS_1',				4,				'UNIT_FLAG_ATLAS',				4,					'BIPED',		1,			'Animal'	),
-('UNIT_KRAKEN',					NULL,						-1,		15,		0,				0,		2,		'UNITCOMBAT_NAVALMELEE',	'DOMAIN_SEA',	'UNITAI_ATTACK',		0,			0,					1,					NULL,				0,			'ART_DEF_UNIT_KRAKEN',					'UNIT_ATLAS_1',				4,				'UNIT_FLAG_ATLAS',				4,					'BIPED',		1,			'Beast'		),
-('UNIT_GIANT_SPIDER',			NULL,						-1,		9,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		0,			0,					1,					NULL,				0,			'ART_DEF_UNIT_GIANT_SPIDER',			'UNIT_ATLAS_1',				4,				'UNIT_FLAG_ATLAS',				4,					'BIPED',		1,			'Beast'		);
+INSERT INTO Units (Type,		Cost,	Combat,	RangedCombat,	Range,	Moves,	CombatClass,				Domain,			DefaultUnitAI,			Pillage,	MilitarySupport,	MilitaryProduction,	ObsoleteTech,		Mechanized,	UnitArtInfo,							IconAtlas,					PortraitIndex,	UnitFlagAtlas,					UnitFlagIconOffset,	MoveRate,		EaNoTrain,	EaSpecial	) VALUES
+('UNIT_WOLVES',					-1,		6,		0,				0,		4,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		0,			0,					1,					NULL,				0,			'ART_DEF_UNIT_WOLVES',					'UNIT_ATLAS_1',				4,				'UNIT_FLAG_ATLAS',				4,					'BIPED',		1,			'Animal'	),
+('UNIT_LIONS',					-1,		9,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		0,			0,					1,					NULL,				0,			'ART_DEF_UNIT_LIONS',					'UNIT_ATLAS_1',				4,				'UNIT_FLAG_ATLAS',				4,					'BIPED',		1,			'Animal'	),
+('UNIT_GRIFFONS',				-1,		8,		0,				0,		4,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		0,			0,					1,					NULL,				0,			'ART_DEF_UNIT_GRIFFONS',				'UNIT_ATLAS_1',				4,				'UNIT_FLAG_ATLAS',				4,					'BIPED',		1,			'Animal'	),
+('UNIT_SCORPIONS_SAND',			-1,		8,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		0,			0,					1,					NULL,				0,			'ART_DEF_UNIT_SCORPIONS_SAND',			'UNIT_ATLAS_1',				4,				'UNIT_FLAG_ATLAS',				4,					'BIPED',		1,			'Animal'	),
+('UNIT_SCORPIONS_BLACK',		-1,		8,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		0,			0,					1,					NULL,				0,			'ART_DEF_UNIT_SCORPIONS_BLACK',			'UNIT_ATLAS_1',				4,				'UNIT_FLAG_ATLAS',				4,					'BIPED',		1,			'Animal'	),
+('UNIT_SCORPIONS_WHITE',		-1,		8,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		0,			0,					1,					NULL,				0,			'ART_DEF_UNIT_SCORPIONS_WHITE',			'UNIT_ATLAS_1',				4,				'UNIT_FLAG_ATLAS',				4,					'BIPED',		1,			'Animal'	),
+('UNIT_KRAKEN',					-1,		15,		0,				0,		2,		'UNITCOMBAT_NAVALMELEE',	'DOMAIN_SEA',	'UNITAI_ATTACK',		0,			0,					1,					NULL,				0,			'ART_DEF_UNIT_KRAKEN',					'UNIT_ATLAS_1',				4,				'UNIT_FLAG_ATLAS',				4,					'BIPED',		1,			'Beast'		),
+('UNIT_GIANT_SPIDER',			-1,		9,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		0,			0,					1,					NULL,				0,			'ART_DEF_UNIT_GIANT_SPIDER',			'UNIT_ATLAS_1',				4,				'UNIT_FLAG_ATLAS',				4,					'BIPED',		1,			'Beast'		),
+('UNIT_DRAKE_GREEN',			-1,		11,		0,				0,		4,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		0,			0,					1,					NULL,				0,			'ART_DEF_UNIT_DRAKE_GREEN',				'UNIT_ATLAS_1',				4,				'UNIT_FLAG_ATLAS',				4,					'BIPED',		1,			'Beast'		),
+('UNIT_DRAKE_BLUE',				-1,		13,		0,				0,		4,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		0,			0,					1,					NULL,				0,			'ART_DEF_UNIT_DRAKE_BLUE',				'UNIT_ATLAS_1',				4,				'UNIT_FLAG_ATLAS',				4,					'BIPED',		1,			'Beast'		),
+('UNIT_DRAKE_RED',				-1,		15,		0,				0,		4,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		0,			0,					1,					NULL,				0,			'ART_DEF_UNIT_DRAKE_RED',				'UNIT_ATLAS_1',				4,				'UNIT_FLAG_ATLAS',				4,					'BIPED',		1,			'Beast'		);
 
 --Summoned, called or raised
-INSERT INTO Units (Type,		PrereqTech,					Cost,	Combat,	RangedCombat,	Range,	Moves,	CombatClass,				Domain,			DefaultUnitAI,			Pillage,	MilitarySupport,	MilitaryProduction,	ObsoleteTech,		Mechanized,	UnitArtInfo,							IconAtlas,					PortraitIndex,	UnitFlagAtlas,					UnitFlagIconOffset,	MoveRate,		EaNoTrain,	EaSpecial	) VALUES
-('UNIT_TREE_ENT',				NULL,						-1,		15,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_TREE_ENT',				'UNIT_ATLAS_1',				4,				'UNIT_FLAG_ATLAS',				4,					'BIPED',		1,			'Tree'		),
-('UNIT_SKELETON_SWORDSMEN',		NULL,						-1,		6,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_SKELETON_SWORDSMAN',		'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'Undead'	),
-('UNIT_ZOMBIES',				NULL,						-1,		9,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_ZOMBIE',					'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'Undead'	),
-('UNIT_GREAT_UNCLEAN_ONE',		NULL,						-1,		24,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_GREAT_UNCLEAN_ONE',		'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'Demon'		),
-('UNIT_HIVE_TYRANT',			NULL,						-1,		15,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_HIVE_TYRANT',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'Demon'		),
-('UNIT_LICTOR',					NULL,						-1,		12,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_LICTOR',					'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'Demon'		),
-('UNIT_HORMAGAUNT',				NULL,						-1,		8,		0,				0,		3,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_HORMAGAUNT',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'Demon'		),
---('UNIT_CARNIFEX',				NULL,						-1,		12,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_CARNIFEX',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'Demon'		),
-('UNIT_ANGEL_SPEARMAN',			NULL,						-1,		12,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_ANGEL_SPEARMAN',			'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'Angel'		),
-('UNIT_ANGEL',					NULL,						-1,		18,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_ANGEL',					'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'Angel'		);
+INSERT INTO Units (Type,		Cost,	Combat,	RangedCombat,	Range,	Moves,	CombatClass,				Domain,			DefaultUnitAI,			Pillage,	MilitarySupport,	MilitaryProduction,	ObsoleteTech,		Mechanized,	UnitArtInfo,							IconAtlas,					PortraitIndex,	UnitFlagAtlas,					UnitFlagIconOffset,	MoveRate,		EaNoTrain,	EaSpecial	) VALUES
+('UNIT_TREE_ENT',				-1,		15,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_TREE_ENT',				'UNIT_ATLAS_1',				4,				'UNIT_FLAG_ATLAS',				4,					'BIPED',		1,			'Spirit'	),
+('UNIT_SKELETON_SWORDSMEN',		-1,		6,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_SKELETON_SWORDSMAN',		'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'Undead'	),
+('UNIT_ZOMBIES',				-1,		9,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_ZOMBIE',					'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'Undead'	),
+('UNIT_HIVE_TYRANT',			-1,		15,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_HIVE_TYRANT',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'Demon'		),
+('UNIT_LICTOR',					-1,		12,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_LICTOR',					'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'Demon'		),
+('UNIT_HORMAGAUNT',				-1,		8,		0,				0,		3,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_HORMAGAUNT',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'Demon'		),
+--('UNIT_CARNIFEX',				-1,		12,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_CARNIFEX',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'Demon'		),
+('UNIT_ANGEL_SPEARMAN',			-1,		12,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_ANGEL_SPEARMAN',			'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'Angel'		),
+('UNIT_ANGEL',					-1,		18,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_ANGEL',					'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'Angel'		),
+
+--Don't mess with these guys
+('UNIT_ARCHDEMON_ZAURI',		-1,		23,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_GREAT_UNCLEAN_ONE',		'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'Archdemon'	),
+('UNIT_ARCHDEMON_GANNAG_MENOG',	-1,		25,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_GREAT_UNCLEAN_ONE',		'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'Archdemon'	),
+('UNIT_ARCHDEMON_AKA_MANAH',	-1,		27,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_GREAT_UNCLEAN_ONE',		'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'Archdemon'	),
+('UNIT_ARCHDEMON_TAURVI',		-1,		29,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_GREAT_UNCLEAN_ONE',		'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'Archdemon'	),
+('UNIT_ARCHDEMON_NAONGHAITHYA',	-1,		31,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_GREAT_UNCLEAN_ONE',		'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'Archdemon'	),
+('UNIT_ARCHDEMON_INDAR',		-1,		33,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_GREAT_UNCLEAN_ONE',		'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'Archdemon'	),
+('UNIT_ARCHDEMON_SAURVA',		-1,		35,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_GREAT_UNCLEAN_ONE',		'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'Archdemon'	),
+('UNIT_ARCHDEMON_AESHMA',		-1,		37,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_GREAT_UNCLEAN_ONE',		'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'Archdemon'	),
+
+('UNIT_ARCHANGEL_ZAM',			-1,		24,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_ARCHANGEL',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'Archangel'	),
+('UNIT_ARCHANGEL_DRVASPA',		-1,		25,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_ARCHANGEL',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'Archangel'	),
+('UNIT_ARCHANGEL_TISHTRYA',		-1,		27,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_ARCHANGEL',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'Archangel'	),
+('UNIT_ARCHANGEL_ASHI',			-1,		29,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_ARCHANGEL',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'Archangel'	),
+('UNIT_ARCHANGEL_ANAHITA',		-1,		31,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_ARCHANGEL',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'Archangel'	),
+('UNIT_ARCHANGEL_TUSHNAMAITI',	-1,		32,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_ARCHANGEL',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'Archangel'	),
+('UNIT_ARCHANGEL_IZA',			-1,		33,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_ARCHANGEL',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'Archangel'	),
+('UNIT_ARCHANGEL_ATAR',			-1,		34,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_ARCHANGEL',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'Archangel'	),
+('UNIT_ARCHANGEL_VERATHRAGNA',	-1,		35,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_ARCHANGEL',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'Archangel'	),
+('UNIT_ARCHANGEL_RASHNU',		-1,		36,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_ARCHANGEL',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'Archangel'	),
+('UNIT_ARCHANGEL_SRAOSHA',		-1,		38,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_ARCHANGEL',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'Archangel'	),
+('UNIT_ARCHANGEL_MITHRA',		-1,		40,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_ARCHANGEL',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'Archangel'	),
+
+('UNIT_GOD_FAGUS',				-1,		28,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_STORM_GIANT',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'MajorSpirit'),
+('UNIT_GOD_ABELLIO',			-1,		28,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_STORM_GIANT',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'MajorSpirit'),
+('UNIT_GOD_BUXENUS',			-1,		28,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_STORM_GIANT',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'MajorSpirit'),
+('UNIT_GOD_ROBOR',				-1,		28,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_STORM_GIANT',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'MajorSpirit'),
+('UNIT_GOD_ABNOAB',				-1,		28,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_STORM_GIANT',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'MajorSpirit'),
+('UNIT_GOD_AVETA',				-1,		28,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_STORM_GIANT',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'MajorSpirit'),
+('UNIT_GOD_CONDATIS',			-1,		28,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_STORM_GIANT',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'MajorSpirit'),
+('UNIT_GOD_ABANDINUS',			-1,		28,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_STORM_GIANT',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'MajorSpirit'),
+('UNIT_GOD_ADSULLATA',			-1,		28,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_STORM_GIANT',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'MajorSpirit'),
+('UNIT_GOD_ICAUNUS',			-1,		28,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_STORM_GIANT',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'MajorSpirit'),
+('UNIT_GOD_BELISAMA',			-1,		28,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_STORM_GIANT',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'MajorSpirit'),
+('UNIT_GOD_CLOTA',				-1,		28,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_STORM_GIANT',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'MajorSpirit'),
+('UNIT_GOD_SABRINA',			-1,		28,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_STORM_GIANT',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'MajorSpirit'),
+('UNIT_GOD_SEQUANA',			-1,		28,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_STORM_GIANT',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'MajorSpirit'),
+('UNIT_GOD_VERBEIA',			-1,		28,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_STORM_GIANT',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'MajorSpirit'),
+('UNIT_GOD_BORVO',				-1,		28,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_STORM_GIANT',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'MajorSpirit'),
+('UNIT_GOD_AEGIR',				-1,		28,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_STORM_GIANT',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'MajorSpirit'),
+('UNIT_GOD_BARINTHUS',			-1,		28,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_STORM_GIANT',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'MajorSpirit'),
+('UNIT_GOD_LIBAN',				-1,		28,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_STORM_GIANT',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'MajorSpirit'),
+('UNIT_GOD_FIMAFENG',			-1,		28,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_STORM_GIANT',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'MajorSpirit'),
+('UNIT_GOD_ELDIR',				-1,		28,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_STORM_GIANT',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'MajorSpirit'),
+('UNIT_GOD_RITONA',				-1,		28,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_STORM_GIANT',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'MajorSpirit'),
+('UNIT_GOD_ERECURA',			-1,		28,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_STORM_GIANT',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'MajorSpirit'),
+('UNIT_GOD_VOSEGUS',			-1,		28,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_STORM_GIANT',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'MajorSpirit'),
+('UNIT_GOD_NANTOSUELTA',		-1,		28,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_STORM_GIANT',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'MajorSpirit'),
+('UNIT_GOD_DIS_PATER',			-1,		28,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_STORM_GIANT',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'MajorSpirit'),
+('UNIT_GOD_NERGAL',				-1,		28,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_STORM_GIANT',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'MajorSpirit'),
+('UNIT_GOD_WADD',				-1,		28,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_STORM_GIANT',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'MajorSpirit'),
+('UNIT_GOD_ABGAL',				-1,		28,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_STORM_GIANT',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'MajorSpirit'),
+('UNIT_GOD_NESR',				-1,		28,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_STORM_GIANT',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'MajorSpirit'),
+('UNIT_GOD_EPONA',				-1,		28,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_STORM_GIANT',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'MajorSpirit'),
+('UNIT_GOD_ATEPOMARUS',			-1,		28,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_STORM_GIANT',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'MajorSpirit'),
+('UNIT_GOD_SABAZIOS',			-1,		28,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_STORM_GIANT',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'MajorSpirit'),
+('UNIT_GOD_BAKKHOS',			-1,		28,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_STORM_GIANT',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'MajorSpirit'),
+('UNIT_GOD_PAN',				-1,		28,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_STORM_GIANT',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'MajorSpirit'),
+('UNIT_GOD_SILENUS',			-1,		28,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_STORM_GIANT',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'MajorSpirit');
 
 --ART_DEF_UNIT_SKELETON_SWORDSMAN
 
@@ -245,8 +305,22 @@ INSERT INTO Units (Type, UnitArtInfo,				IconAtlas,					PortraitIndex,	UnitFlagA
 UPDATE Units SET Cost = -1, AdvancedStartCost = -1, Domain = 'DOMAIN_LAND', Moves = 2, MoveRate = 'GREAT_PERSON', WorkRate = 100, Combat = 5, CombatLimit = 100, CombatClass = 'UNITCOMBAT_MELEE', RivalTerritory = 1, NoMaintenance = 1, XPValueAttack = 3, XPValueDefense = 3 WHERE Special = 'SPECIALUNIT_PEOPLE';
 
 ----------------------------------------------------------------------------------------
---Build out the Units table for dependent strings (more below)
-UPDATE Units SET Description = 'TXT_KEY_EA_' || Type;
+-- People temp type units
+----------------------------------------------------------------------------------------
+
+INSERT INTO Units (Type,		Description,				EaGPTempRole,	Combat,	RangedCombat,	Range,	Moves,	Immobile,	CombatClass,			DefaultUnitAI,			UnitArtInfo,							IconAtlas,					PortraitIndex,	UnitFlagIconOffset,	Special					) VALUES
+('UNIT_DRUID_MAGIC_MISSLE',		'TXT_KEY_EA_UNIT_DRUID',	'MagicMissle',	5,		10,				2,		2,		1,			'UNITCOMBAT_ARCHER',	'UNITAI_RANGED',		'ART_DEF_UNIT_EA_DRUID_MAGIC_MISSLE',	'EXPANSION_UNIT_ATLAS_1',	17,				17,					'SPECIALUNIT_PEOPLE'	),
+('UNIT_PRIEST_MAGIC_MISSLE',	'TXT_KEY_EA_UNIT_DRUID',	'MagicMissle',	5,		10,				2,		2,		1,			'UNITCOMBAT_ARCHER',	'UNITAI_RANGED',		'ART_DEF_UNIT_EA_PRIEST_MAGIC_MISSLE',	'EXPANSION_UNIT_ATLAS_1',	20,				20,					'SPECIALUNIT_PEOPLE'	);
+
+UPDATE Units SET Cost = -1, AdvancedStartCost = -1, Domain = 'DOMAIN_LAND', Moves = 2, MoveRate = 'GREAT_PERSON', CombatLimit = 100, RivalTerritory = 1, NoMaintenance = 1, XPValueAttack = 3, XPValueDefense = 3 WHERE EaGPTempRole IS NOT NULL;
+
+
+--Build out the Units table for dependent strings
+
+UPDATE Units SET Description = 'TXT_KEY_EA_' || REPLACE(Type, 'UNIT_', '') WHERE EaSpecial = 'Archangel';
+UPDATE Units SET Description = 'TXT_KEY_EA_' || REPLACE(Type, 'UNIT_', '') WHERE EaSpecial = 'Archdemon';
+UPDATE Units SET Description = 'TXT_KEY_EA_' || REPLACE(Type, 'UNIT_', '') WHERE EaSpecial = 'MajorSpirit';
+UPDATE Units SET Description = 'TXT_KEY_EA_' || Type WHERE Description IS NULL;
 UPDATE Units SET Description = REPLACE(Description, '_MAN', '');
 UPDATE Units SET Description = REPLACE(Description, '_SIDHE', '');
 UPDATE Units SET Description = REPLACE(Description, '_ORC', '');
@@ -254,15 +328,6 @@ UPDATE Units SET Description = REPLACE(Description, '_GOBLIN', '');
 UPDATE Units SET Civilopedia = Description || '_PEDIA', Strategy = Description || '_STRATEGY', Help = Description || '_HELP';
 
 
-----------------------------------------------------------------------------------------
--- People temp type units
-----------------------------------------------------------------------------------------
-
-INSERT INTO Units (Type,		Description,			EaGPTempRole,	Combat,	RangedCombat,	Range,	Moves,	Immobile,	CombatClass,			DefaultUnitAI,			UnitArtInfo,							IconAtlas,					PortraitIndex,	UnitFlagIconOffset,	Special					) VALUES
-('UNIT_DRUID_MAGIC_MISSLE',		'TXT_KEY_UNIT_DRUID',	'MagicMissle',	5,		10,				2,		2,		1,			'UNITCOMBAT_ARCHER',	'UNITAI_RANGED',		'ART_DEF_UNIT_EA_DRUID_MAGIC_MISSLE',	'EXPANSION_UNIT_ATLAS_1',	17,				17,					'SPECIALUNIT_PEOPLE'	),
-('UNIT_PRIEST_MAGIC_MISSLE',	'TXT_KEY_UNIT_DRUID',	'MagicMissle',	5,		10,				2,		2,		1,			'UNITCOMBAT_ARCHER',	'UNITAI_RANGED',		'ART_DEF_UNIT_EA_PRIEST_MAGIC_MISSLE',	'EXPANSION_UNIT_ATLAS_1',	20,				20,					'SPECIALUNIT_PEOPLE'	);
-
-UPDATE Units SET Cost = -1, AdvancedStartCost = -1, Domain = 'DOMAIN_LAND', Moves = 2, MoveRate = 'GREAT_PERSON', CombatLimit = 100, RivalTerritory = 1, NoMaintenance = 1, XPValueAttack = 3, XPValueDefense = 3 WHERE EaGPTempRole IS NOT NULL;
 
 CREATE TABLE Unit_EaGPTempTypes (UnitType, TempUnitType);
 INSERT INTO Unit_EaGPTempTypes (UnitType, TempUnitType) VALUES
@@ -395,9 +460,9 @@ SELECT Type, 'UNITAI_EXPLORE_SEA' FROM Units WHERE CombatClass = 'UNITCOMBAT_NAV
 
 DELETE FROM Unit_BuildingClassRequireds;
 INSERT INTO Unit_BuildingClassRequireds (UnitType, BuildingClassType)
-SELECT Type, 'BUILDINGCLASS_MAN' FROM Units WHERE Type GLOB '*_MAN' UNION ALL
-SELECT Type, 'BUILDINGCLASS_SIDHE' FROM Units WHERE Type GLOB '*_SIDHE' UNION ALL
-SELECT Type, 'BUILDINGCLASS_HELDEOFOL' FROM Units WHERE Type GLOB '*_ORC' ;
+SELECT Type, 'BUILDINGCLASS_MAN' FROM Units WHERE EaCityTrainRace = 'EARACE_MAN' UNION ALL
+SELECT Type, 'BUILDINGCLASS_SIDHE' FROM Units WHERE EaCityTrainRace = 'EARACE_SIDHE' UNION ALL
+SELECT Type, 'BUILDINGCLASS_HELDEOFOL' FROM Units WHERE EaCityTrainRace = 'EARACE_HELDEOFOL' ;
 
 
 DELETE FROM Unit_Builds;	
@@ -838,6 +903,15 @@ INSERT INTO Unit_FreePromotions (UnitType, PromotionType) VALUES
 ('UNIT_SCORPIONS_WHITE', 'PROMOTION_ANIMAL'),
 ('UNIT_KRAKEN', 'PROMOTION_ANIMAL'),
 ('UNIT_GIANT_SPIDER', 'PROMOTION_ANIMAL'),
+('UNIT_DRAKE_GREEN', 'PROMOTION_ANIMAL'),
+('UNIT_DRAKE_GREEN', 'PROMOTION_HOVERING_UNIT'),
+('UNIT_DRAKE_GREEN', 'PROMOTION_IGNORE_TERRAIN_COST'),
+('UNIT_DRAKE_BLUE', 'PROMOTION_ANIMAL'),
+('UNIT_DRAKE_BLUE', 'PROMOTION_HOVERING_UNIT'),
+('UNIT_DRAKE_BLUE', 'PROMOTION_IGNORE_TERRAIN_COST'),
+('UNIT_DRAKE_RED', 'PROMOTION_ANIMAL'),
+('UNIT_DRAKE_RED', 'PROMOTION_HOVERING_UNIT'),
+('UNIT_DRAKE_RED', 'PROMOTION_IGNORE_TERRAIN_COST'),
 
 -- all GPs can move rival terrain
 ('UNIT_ENGINEER', 'PROMOTION_ENGINEER'),

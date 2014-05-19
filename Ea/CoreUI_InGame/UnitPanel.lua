@@ -10,6 +10,8 @@ include ("EaPlotUtils.lua")
 local MapModData = MapModData
 MapModData.gT = MapModData.gT or {}
 local gT = MapModData.gT
+MapModData.gpRegisteredActions = MapModData.gpRegisteredActions or {}
+local gpRegisteredActions = MapModData.gpRegisteredActions
 
 
 local cachedNonGPActions = {}
@@ -251,9 +253,14 @@ function UpdateUnitActions( unit )
 		--loop over all EaActions for Great People (these don't overlap with GameInfoActions, but use same UI)
 		if bUnitHasMovesLeft then
 			local x, y = plot:GetX(), plot:GetY()
-			local eaActionID = 1
-			local eaAction = GameInfo.EaActions[1]
-			while eaAction do
+
+			--This is done the same as EaAIActions.lua: loop through all registered actions, then swap in spell list
+			local testActions = gpRegisteredActions[iPerson]
+			local lastAction = #testActions
+			local i = 1
+			eaActionID = testActions[1]
+			while eaActionID do
+				local eaAction = GameInfo.EaActions[eaActionID]
 				if eaActionID < MapModData.FIRST_SPELL_ID then
 					LuaEvents.EaActionsTestEaActionForHumanUI(eaActionID, iPlayer, unit, iPerson, x, y)
 				else
@@ -326,8 +333,17 @@ function UpdateUnitActions( unit )
 						spellInstance.SpellButton:SetToolTipCallback( EaTipHandler )					
 					end
 				end
-				eaActionID = eaActionID + 1
-				eaAction = GameInfo.EaActions[eaActionID]
+				i = i + 1
+				if lastAction < i then
+					if not eaPerson.spells or eaPerson.spells == testActions then		--done
+						break
+					else
+						testActions = eaPerson.spells									--swap to spells and start from begining
+						lastAction = #testActions
+						i = 1
+					end
+				end
+				eaActionID = testActions[i]
 			end
 		end
 	elseif bUnitHasMovesLeft then

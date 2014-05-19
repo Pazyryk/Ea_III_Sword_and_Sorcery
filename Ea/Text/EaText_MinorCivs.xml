@@ -86,123 +86,18 @@
 		<Row Tag="TXT_KEY_EA_CITYSTATE_BIBRACTE">
 			<Text>Bibracte</Text>
 		</Row>
-		
-		<!-- MinorCivilizations (gods) -->
-		
-		<Row Tag="TXT_KEY_EA_GOD_FAGUS">
-			<Text>Fagus</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_GOD_ABELLIO">
-			<Text>Abellio</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_GOD_BUXENUS">
-			<Text>Buxenus</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_GOD_ROBOR">
-			<Text>Robor</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_GOD_ABNOAB">
-			<Text>Abnoab</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_GOD_EPONA">
-			<Text>Epona</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_GOD_ATEPOMARUS">
-			<Text>Atepomarus</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_GOD_SABAZIOS">
-			<Text>Sabazios</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_GOD_AVETA">
-			<Text>Aveta</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_GOD_CONDATIS">
-			<Text>Condatis</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_GOD_ABANDINUS">
-			<Text>Abandinus</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_GOD_ADSULLATA">
-			<Text>Adsullata</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_GOD_ICAUNUS">
-			<Text>Icaunus</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_GOD_BELISAMA">
-			<Text>Belisama</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_GOD_CLOTA">
-			<Text>Clota</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_GOD_SABRINA">
-			<Text>Sabrina</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_GOD_SEQUANA">
-			<Text>Sequana</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_GOD_VERBEIA">
-			<Text>Verbeia</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_GOD_BORVO">
-			<Text>Borvo</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_GOD_AEGIR">
-			<Text>Ægir</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_GOD_BARINTHUS">
-			<Text>Barinthus</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_GOD_LIBAN">
-			<Text>Lí Ban</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_GOD_FIMAFENG">
-			<Text>Fimafeng</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_GOD_ELDIR">
-			<Text>Eldir</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_GOD_RITONA">
-			<Text>Ritona</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_GOD_BAKKHOS">
-			<Text>Bakkhos</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_GOD_PAN">
-			<Text>Pan</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_GOD_SILENUS">
-			<Text>Silenus</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_GOD_ERECURA">
-			<Text>Erecura</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_GOD_VOSEGUS">
-			<Text>Vosegus</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_GOD_NANTOSUELTA">
-			<Text>Nantosuelta</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_GOD_DIS_PATER">
-			<Text>Dis Pater</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_GOD_NERGAL">
-			<Text>Nergal</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_GOD_WADD">
-			<Text>Wadd</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_GOD_ABGAL">
-			<Text>Abgal</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_GOD_NESR">
-			<Text>Nesr</Text>
-		</Row>
+
+		<!-- Find gods in EaText_EaPeople (hmmm... wonder why that is?) -->
 
 		<!-- MinorCivilization_GodSpheres -->
 
 		<Row Tag="TXT_KEY_EA_SPHERE_FORESTS">
 			<Text>Forests</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_SPHERE_EARTH">
+			<Text>Earth</Text>
+		</Row>
+
 		<Row Tag="TXT_KEY_EA_SPHERE_BEECH_TREES">
 			<Text>Beech Trees</Text>
 		</Row>

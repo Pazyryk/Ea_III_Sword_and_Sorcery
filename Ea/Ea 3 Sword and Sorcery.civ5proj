@@ -231,6 +231,11 @@
       <Action>
         <Set>OnModActivated</Set>
         <Type>UpdateDatabase</Type>
+        <FileName>Text/EaText_EaSpells.xml</FileName>
+      </Action>
+      <Action>
+        <Set>OnModActivated</Set>
+        <Type>UpdateDatabase</Type>
         <FileName>Text/EaText_GameInfo.xml</FileName>
       </Action>
       <Action>
@@ -1109,33 +1114,17 @@
       <SubType>Lua</SubType>
       <ImportIntoVFS>False</ImportIntoVFS>
     </Content>
-    <Content Include="Temp\notes.txt">
+    <Content Include="Scratch\notes.txt">
       <SubType>Lua</SubType>
       <ImportIntoVFS>False</ImportIntoVFS>
     </Content>
-    <Content Include="Temp\scratch.lua">
+    <Content Include="Scratch\scratch.lua">
       <SubType>Lua</SubType>
       <ImportIntoVFS>False</ImportIntoVFS>
     </Content>
-    <Content Include="Temp\scratch.txt">
+    <Content Include="Scratch\scratch.txt">
       <SubType>Lua</SubType>
       <ImportIntoVFS>False</ImportIntoVFS>
-    </Content>
-    <Content Include="Temp\Temp_Magic_Missile\rocketartillery2.fxsxml">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="Temp\Temp_Magic_Missile\rocketartillery2.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="Temp\Temp_Magic_Missile\rocketartillery2_diff.dds">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="Temp\Temp_Magic_Missile\rocketartillery2_sref.dds">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
     </Content>
     <Content Include="Text\EaText_Buildings.xml">
       <SubType>Lua</SubType>
@@ -1178,6 +1167,10 @@
       <ImportIntoVFS>False</ImportIntoVFS>
     </Content>
     <Content Include="Text\EaText_Religions.xml">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>False</ImportIntoVFS>
+    </Content>
+    <Content Include="Text\EaText_EaSpells.xml">
       <SubType>Lua</SubType>
       <ImportIntoVFS>False</ImportIntoVFS>
     </Content>
@@ -1453,6 +1446,18 @@
       <SubType>Lua</SubType>
       <ImportIntoVFS>True</ImportIntoVFS>
     </Content>
+    <Content Include="_MoveToMediaPack\3DUnits\blank_texture.dds">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="_MoveToMediaPack\3DUnits\magic_missile.fxsxml">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="_MoveToMediaPack\3DUnits\magic_missile.gr2">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
     <Content Include="_MoveToMediaPack\IconAtlases\EaSpellsAtlas45.dds">
       <SubType>Lua</SubType>
       <ImportIntoVFS>True</ImportIntoVFS>
@@ -1471,8 +1476,7 @@
     <Folder Include="CoreUI_FrontEnd" />
     <Folder Include="Misc" />
     <Folder Include="CoreUI_font_mod_only" />
-    <Folder Include="Temp" />
-    <Folder Include="Temp\Temp_Magic_Missile" />
+    <Folder Include="Scratch" />
     <Folder Include="_MoveToMediaPack" />
     <Folder Include="Pregame" />
     <Folder Include="Text" />
@@ -1483,6 +1487,7 @@
     <Folder Include="EaMain" />
     <Folder Include="Utilities" />
     <Folder Include="_MoveToMediaPack\IconAtlases" />
+    <Folder Include="_MoveToMediaPack\3DUnits" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Firaxis\ModBuddy\Civ5Mod.targets" />
 </Project>

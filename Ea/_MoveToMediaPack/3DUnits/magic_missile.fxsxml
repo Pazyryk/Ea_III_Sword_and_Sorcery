@@ -1,5 +1,5 @@
 <Asset>
-	<Mesh file="RocketArtillery2.gr2"/>
+	<Mesh file="magic_missile.gr2"/>
 	<Animation file="RocketArtillery_IdleA.gr2" ec="1000"/>
 	<Animation file="RocketArtillery_FidgetA.gr2" ec="1040"/>
 	<Animation file="RocketArtillery_IdleA_Trans_IdleB.gr2" ec="1020"/>
@@ -32,8 +32,7 @@
 	<Texture file="Unit_Environment_Dull.dds"/>
 	<Texture file="Unit_Environment_Sharp.dds"/>
 	<Texture file="Unit_Irradiance.dds"/>
-	<Texture file="RocketArtillery2_DIFF.dds"/>
-	<Texture file="RocketArtillery2_SREF.dds"/>
+	<Texture file="blank_texture.dds"/>
 	<BoneUsage>
 		<Bone name="tank_bone_main"/>
 		<Bone name="Point_PROJECTILE03"/>

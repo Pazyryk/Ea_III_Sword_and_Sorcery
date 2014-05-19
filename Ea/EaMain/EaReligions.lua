@@ -455,17 +455,28 @@ function BecomeFallen(iPlayer)		--this could happen before, during or after the 
 				local unit = player:GetUnitByID(eaPerson.iUnit)
 				unit:SetHasPromotion(PROMOTION_SORCERER, true)
 				--convert spells
-				local numConvert = 0
-				for spellID in pairs(eaPerson.spells) do
+				--local numConvert = 0
+				--for spellID in pairs(eaPerson.spells) do
+				--	local alt = GameInfo.EaActions[spellID].FallenAltSpell
+				--	if alt and alt ~= "IsFallen" then
+				--		numConvert = numConvert + 1
+				--		integers[numConvert] = spellID
+				--		eaPerson.spells[GameInfoTypes[alt] ] = true
+				--	end
+				--end
+				--for j = 1, numConvert do
+				--	eaPerson.spells[integers[j] ] = nil
+				--end
+
+				--convert spells "in-place"
+				local spells = eaPerson.spells
+				for i = 1, #spells do
+					local spellID = spells[i]
 					local alt = GameInfo.EaActions[spellID].FallenAltSpell
 					if alt and alt ~= "IsFallen" then
-						numConvert = numConvert + 1
-						integers[numConvert] = spellID
-						eaPerson.spells[GameInfoTypes[alt] ] = true
+						local altSpellID = GameInfoTypes[alt]
+						spells[i] = altSpellID
 					end
-				end
-				for j = 1, numConvert do
-					eaPerson.spells[integers[j] ] = nil
 				end
 
 				--convert subclass

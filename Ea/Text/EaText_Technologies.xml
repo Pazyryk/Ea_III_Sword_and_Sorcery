@@ -372,6 +372,9 @@
 		<Row Tag="TXT_KEY_EA_TECH_ASTRONOMY_SPECIAL">
 			<Text>Can improve sea resources across oceans - !! OCEAN BLOCK FOR RESOURCES HAS NOT BEEN IMPLEMENTED YET !!</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_ALCHEMY_SPECIAL">
+			<Text>Can trade Quicksilver (from mined Cinnabar)</Text>
+		</Row>
 
 		<Row Tag="TXT_KEY_EA_TECH_CHEMISTRY_SPECIAL">
 			<Text>Required for all gunpowder units: Arquebussmen, Great Bombarde, Cannons, Carracks, Galleons & Ironclads</Text>

@@ -44,6 +44,7 @@ INSERT INTO Ea_ExpectedTableFiles (FileName) VALUES
 	('EaText_EaPeople.xml'),
 	('EaText_EaPlotEffects.xml'),
 	('EaText_EaRaces.xml'),
+	('EaText_EaSpells.xml'),
 	('EaText_GameInfo.xml'),
 	('EaText_MinorCivs.xml'),
 	('EaText_Policies.xml'),

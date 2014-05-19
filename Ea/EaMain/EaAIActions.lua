@@ -48,12 +48,14 @@ local LAST_SPELL_ID =						LAST_SPELL_ID
 --global tables
 local fullCivs =							MapModData.fullCivs
 local realCivs =							MapModData.realCivs
+local gpRegisteredActions =					MapModData.gpRegisteredActions
 local gPlayers =							gPlayers
 local gPeople =								gPeople
 local Players =								Players
 local Teams =								Teams
 local gg_aiOptionValues =					gg_aiOptionValues	--communicates with EaAction.lua
 local gg_unitClusters =						gg_unitClusters	--values set in EaUnitsAI.lua; used here for GP threat assesment if GP has combat role
+local gg_playerPlotActionTargeted =			gg_playerPlotActionTargeted
 
 --localized functions
 local TestEaAction =						TestEaAction
@@ -93,12 +95,24 @@ local g_gpX
 local g_gpY
 local g_eaActionID
 
-
 local g_wonderPlotsCacheTurn = {}
 local g_wonderWorkPlots = {}
 local g_wonderNoWorkPlots = {}
 
+---------------------------------------------------------------
+-- Cached table values
+---------------------------------------------------------------
 
+local actionCombatRole = {}
+for eaActionInfo in GameInfo.EaActions() do
+	if eaActionInfo.AICombatRole then
+		actionCombatRole[eaActionInfo.ID] = eaActionInfo.AICombatRole
+	end
+end
+
+---------------------------------------------------------------
+-- Actions AI functions
+---------------------------------------------------------------
 
 function MakeAIActionsPlotsDirty(iPlayer)
 	if g_wonderPlotsCacheTurn[iPlayer] then
@@ -106,32 +120,35 @@ function MakeAIActionsPlotsDirty(iPlayer)
 	end
 end
 
-local function CitySpiralSearchForWonderPlot(city, bAvoidFarmable, bAvoidHill, bAvoidLivingTerrain, bAvoidImprovement, bAvoidResource)
-	print("CitySpiralSearchForWonderPlot ", city, bAvoidFarmable, bAvoidHill, bAvoidLivingTerrain, bAvoidImprovement, bAvoidResource)
+local function CitySpiralSearchForWonderPlot(iPlayer, city, bAvoidFarmable, bAvoidHill, bAvoidLivingTerrain, bAvoidImprovement, bAvoidResource)
+	print("CitySpiralSearchForWonderPlot ", iPlayer, city, bAvoidFarmable, bAvoidHill, bAvoidLivingTerrain, bAvoidImprovement, bAvoidResource)
 	local sector = Rand(6, "hello") + 1
 	for plot in PlotAreaSpiralIterator(city:Plot(), 3, sector, false, false, false) do
-		if not plot:IsWater() and not plot:IsImpassable() and not plot:IsCity() then
-			--print("a")
-			local iOwner = plot:GetOwner()
-			if iOwner == -1 or iOwner == g_iPlayer then
-				--print("b")
-				local plotTypeID = plot:GetPlotType()
-				if plotTypeID ~= PLOT_MOUNTAIN then
-					--print("c")
-					if not bAvoidHill or plotTypeID ~= PLOT_HILLS then
-						--print("d")
-						local terrainID = plot:GetTerrainType()
-						if not bAvoidFarmable or not ((terrainID == TERRAIN_GRASS and (plotTypeID == PLOT_LAND or plot:IsFreshWater())) or (terrainID == TERRAIN_PLAINS and plot:IsFreshWater())) then
-							--print("e")
-							local featureID = plot:GetFeatureType()
-							if not bAvoidLivingTerrain or (featureID ~= FEATURE_FOREST and featureID ~= FEATURE_JUNGLE and featureID ~= FEATURE_MARSH) then
-								--print("f")
-								if not bAvoidResource or plot:GetResourceType(-1) == -1 then
-									--print("g")
-									local improvementID = plot:GetImprovementType()
-									if improvementID == -1 or (not bAvoidImprovement and not GameInfo.Improvements[improvementID].Permanent) then
-										print(" * Returning ", plot:GetPlotIndex())
-										return plot:GetPlotIndex()
+		local iPlot = plot:GetPlotIndex()
+		if not gg_playerPlotActionTargeted[iPlayer][iPlot] then		--not targeted by any other GPs (for anything)
+			if not plot:IsWater() and not plot:IsImpassable() and not plot:IsCity() then
+				--print("a")
+				local iOwner = plot:GetOwner()
+				if iOwner == -1 or iOwner == g_iPlayer then
+					--print("b")
+					local plotTypeID = plot:GetPlotType()
+					if plotTypeID ~= PLOT_MOUNTAIN then
+						--print("c")
+						if not bAvoidHill or plotTypeID ~= PLOT_HILLS then
+							--print("d")
+							local terrainID = plot:GetTerrainType()
+							if not bAvoidFarmable or not ((terrainID == TERRAIN_GRASS and (plotTypeID == PLOT_LAND or plot:IsFreshWater())) or (terrainID == TERRAIN_PLAINS and plot:IsFreshWater())) then
+								--print("e")
+								local featureID = plot:GetFeatureType()
+								if not bAvoidLivingTerrain or (featureID ~= FEATURE_FOREST and featureID ~= FEATURE_JUNGLE and featureID ~= FEATURE_MARSH) then
+									--print("f")
+									if not bAvoidResource or plot:GetResourceType(-1) == -1 then
+										--print("g")
+										local improvementID = plot:GetImprovementType()
+										if improvementID == -1 or (not bAvoidImprovement and not GameInfo.Improvements[improvementID].Permanent) then
+											print(" * Returning ", plot:GetPlotIndex())
+											return iPlot
+										end
 									end
 								end
 							end
@@ -145,7 +162,7 @@ end
 
 local function CalculateAIActionsPlots(iPlayer)	--cache turn so we don't do this more than needed
 	print("CalculateAIActionsPlots ", iPlayer, g_gameTurn)
-	if not g_wonderPlotsCacheTurn[iPlayer] then
+	if not g_wonderPlotsCacheTurn[iPlayer] then		--init
 		g_wonderWorkPlots[iPlayer] = {}
 		g_wonderNoWorkPlots[iPlayer] = {}
 	end
@@ -172,7 +189,7 @@ local function CalculateAIActionsPlots(iPlayer)	--cache turn so we don't do this
 			--spiral out until satisfactory plot found
 			--TO DO: Make g_wonderWorkPlots really strongly prefer cities with unemployed (meaning there is a food surplus relative to workable plots)	--city:GetSpecialistCount(SPECIALIST_CITIZEN)
 			--TO DO: make more interersting with remote wonders?
-			local iPlot = CitySpiralSearchForWonderPlot(city, bAvoidFarmable, bAvoidHill, bAvoidLivingTerrain, bAvoidImprovement, bAvoidResource)
+			local iPlot = CitySpiralSearchForWonderPlot(iPlayer, city, bAvoidFarmable, bAvoidHill, bAvoidLivingTerrain, bAvoidImprovement, bAvoidResource)
 			if iPlot then
 				if not bHaveWorkPlots then
 					wonderWorkPlots.pos = wonderWorkPlots.pos + 1
@@ -284,19 +301,13 @@ local function TestAddOption(targetType, index1, index2, tieBreaker, g)
 end
 
 local function Blacklist(eaActionID, iPlot)
-	--For some reason GP AI thinks we can do it, but move or other action failed. Could result from a unit traffic jam (for move) or a coding error for AI options below.
+	--For some reason GP AI thinks we can do it, but move or other action failed.
 	--This function puts off limits for this particular GP. The option is added but then rejected (above) with a print statement.
 	local eaAction = GameInfo.EaActions[eaActionID]
-	print("Blacklisting action for this GP at this target", g_eaPerson, eaActionID, iPlot)
-	if g_eaPerson.aiBlacklist then
-		if g_eaPerson.aiBlacklist[eaActionID] then
-			g_eaPerson.aiBlacklist[eaActionID][iPlot] = Game.GetGameTurn()	--we could reassess later, maybe
-		else
-			g_eaPerson.aiBlacklist[eaActionID] = {[iPlot] = Game.GetGameTurn()}
-		end
-	else
-		g_eaPerson.aiBlacklist = {[eaActionID] = {[iPlot] = Game.GetGameTurn()}}
-	end
+	print("Blacklisting action for this GP at this target", g_iPerson, eaActionID, iPlot)
+	g_eaPerson.aiBlacklist = g_eaPerson.aiBlacklist or {}
+	g_eaPerson.aiBlacklist[eaActionID] = g_eaPerson.aiBlacklist[eaActionID] or {}
+	g_eaPerson.aiBlacklist[eaActionID][iPlot] = Game.GetGameTurn()	--we could reassess later, maybe
 end
 
 local function AddCombatOptions(rallyX, rallyY)
@@ -308,10 +319,13 @@ local function AddCombatOptions(rallyX, rallyY)
 	local GetPlotFromXY = Map.GetPlot
 	local TestAddOption = TestAddOption
 
-	g_eaActionID = FIRST_COMBAT_ACTION_ID		--before this are actions we don't want to test
-	local eaAction = GameInfo.EaActions[g_eaActionID]
-	while eaAction do
-		if eaAction.AICombatRole then	--this will set player/person file locals
+	--cycle through all registered actions and then spells (if any)
+	local testActions = gpRegisteredActions[g_iPerson]
+	local lastAction = #testActions
+	local i = 1
+	g_eaActionID = testActions[1]
+	while g_eaActionID do
+		if actionCombatRole[g_eaActionID] then
 			local bTest
 			if g_eaActionID < FIRST_SPELL_ID then
 				bTest = TestEaAction(g_eaActionID, g_iPlayer, g_unit, g_iPerson, nil, nil, true)
@@ -319,7 +333,7 @@ local function AddCombatOptions(rallyX, rallyY)
 				bTest = TestEaSpell(g_eaActionID, g_iPlayer, g_unit, g_iPerson, nil, nil, true)
 			end
 			if bTest then
-				print("AI: Non-target tests passed for ", eaAction.Type)
+				print("AI: Non-target tests passed for ", GameInfo.EaActions[g_eaActionID].Type)
 				for x, y in PlotToRadiusIterator(g_gpX, g_gpY, 5) do
 					local tieBreaker = rallyX and 5 / Distance(x, y, rallyX, rallyY) or 0
 					local iPlot = GetPlotIndexFromXY(x, y)
@@ -328,9 +342,17 @@ local function AddCombatOptions(rallyX, rallyY)
 				end
 			end
 		end
-		g_eaActionID = g_eaActionID + 1
-		--if eaActionID == FIRST_SPELL_ID and not g_eaPerson.spells then break end		--no need to run through spells (always last in EaActions)
-		eaAction = GameInfo.EaActions[g_eaActionID]
+		i = i + 1
+		if lastAction < i then
+			if not g_eaPerson.spells or g_eaPerson.spells == testActions then		--done
+				break
+			else
+				testActions = g_eaPerson.spells										--swap to spells and start from begining
+				lastAction = #testActions
+				i = 1
+			end
+		end
+		g_eaActionID = testActions[i]
 	end
 	print("Finished with AddCombatOptions")
 end
@@ -635,13 +657,16 @@ end
 
 local function AddNonCombatOptions()
 	g_nonCombatCallCount = g_nonCombatCallCount + 1
-	
 	print("Running AddNonCombatOptions", bSpellCaster)
+	local TestAddOption = TestAddOption
 
-	g_eaActionID = FIRST_GP_ACTION		--before this are actions we don't want to test
-	local eaAction = GameInfo.EaActions[g_eaActionID]
-	while eaAction do
-		if not eaAction.AICombatRole then
+	--cycle through all registered actions and then spells (if any)
+	local testActions = gpRegisteredActions[g_iPerson]
+	local lastAction = #testActions
+	local i = 1
+	g_eaActionID = testActions[1]
+	while g_eaActionID do
+		if not actionCombatRole[g_eaActionID] then
 			local bTest
 			if g_eaActionID < FIRST_SPELL_ID then
 				bTest = TestEaAction(g_eaActionID, g_iPlayer, g_unit, g_iPerson, nil, nil, true)	--this will set player/person file locals
@@ -649,6 +674,7 @@ local function AddNonCombatOptions()
 				bTest = TestEaSpell(g_eaActionID, g_iPlayer, g_unit, g_iPerson, nil, nil, true)
 			end
 			if bTest then
+				local eaAction = GameInfo.EaActions[g_eaActionID]
 				print("AI: Non-target tests passed for ", eaAction.Type)
 				local AITargetFunction = AITarget[eaAction.AITarget]
 				if AITargetFunction then
@@ -656,9 +682,17 @@ local function AddNonCombatOptions()
 				end
 			end
 		end
-		g_eaActionID = g_eaActionID + 1
-		--if eaActionID == FIRST_SPELL_ID and not g_eaPerson.spells then break end		--no need to run through spells (always last in EaActions)
-		eaAction = GameInfo.EaActions[g_eaActionID]
+		i = i + 1
+		if lastAction < i then
+			if not g_eaPerson.spells or g_eaPerson.spells == testActions then		--done
+				break
+			else
+				testActions = g_eaPerson.spells										--swap to spells and start from begining
+				lastAction = #testActions
+				i = 1
+			end
+		end
+		g_eaActionID = testActions[i]
 	end
 end
 
@@ -671,15 +705,16 @@ local vPP4 = {index = 0, value = 0}
 local vPP5 = {index = 0, value = 0}
 local vPPX = {index = 0, value = 0}
 
-local formatOptionStr = "OPTION %4d %35.35s %9d %5d %3d %3d %10.4f %10.4f %10.4f %10.4f %10.4f %10.4f %10.4f"
+local formatOptionStr = "OPTION    %4d %35.35s %9d %5d %3d %3d %10.4f %10.4f %10.4f %10.4f %10.4f %10.4f %10.4f"
+local formatBlkLstStr = "BLACKLIST %4d %35.35s %9d %5d %3d %3d %10.4f %10.4f %10.4f %10.4f %10.4f %10.4f %10.4f"
 
 local function CompareOptions()
-	print("Running CompareOptions")
+	print("Running CompareOptions; iPerson, iPlot = ", g_iPerson, g_gpPlotIndex)
 	print("          #                       Option          iArea   iPlot   g   t      i          p          b      numerator denominator    vPP         vP")
 	--    "OPTION dddd ttttttttttttt 35 tttttttttttttttttt ddddddddd ddddd ddd ddd 00000.0000 00000.0000 00000.0000 00000.0000 00000.0000 00000.0000 00000.0000"
 	--Setup blacklists (goto's or other actions that didn't work for some reason)
-	local blacklistGoto = g_eaPerson.aiBlacklist and g_eaPerson.aiBlacklist[EA_ACTION_GO_TO_PLOT]
 	local blacklist = g_eaPerson.aiBlacklist
+	local blacklistGoto = blacklist and blacklist[EA_ACTION_GO_TO_PLOT]
 
 	--Calculate area boosts and find best v
 	local bestV = 0
@@ -701,12 +736,13 @@ local function CompareOptions()
 				local index = thisAreaOptions[j]
 				local option = g_options[index]
 				local eaActionType = GameInfo.EaActions[option.eaActionID].Type
-
-				if (blacklistGoto and blacklistGoto[option.iPlot] and option.travelTurns > 0 and Game.GetGameTurn() < blacklistGoto[option.iPlot] + 30)	--target blacklised < 30 turns ago
-					or (blacklist and blacklist[option.eaActionID] and blacklist[option.eaActionID][option.iPlot]) then									--action blacklisted here ever
-					print("*BLACKLISTED:", index, eaActionType, "iArea:", iArea, "iPlot:", option.iPlot, "g:", option.travelTurns, "t:", option.actionTurns, "num:", option.numerator, "den:", option.denominator, "vP:", option.vP, "vPP:", option.vPP)
+				local blacklistGotoTurn = blacklistGoto and blacklistGoto[option.iPlot]
+				local blacklistActionTurn = blacklist and blacklist[option.eaActionID] and blacklist[option.eaActionID][option.iPlot]
+				if blacklistGotoTurn and Game.GetGameTurn() < blacklistGotoTurn + 30 then
+					print(Format(formatBlkLstStr, index, eaActionType, iArea, option.iPlot, option.travelTurns, option.actionTurns, option.i, option.p, option.b, option.numerator, option.denominator, option.vPP, option.vP), "Blacklist goto turn = ", blacklistGotoTurn)
+				elseif blacklistActionTurn then
+					print(Format(formatBlkLstStr, index, eaActionType, iArea, option.iPlot, option.travelTurns, option.actionTurns, option.i, option.p, option.b, option.numerator, option.denominator, option.vPP, option.vP), "Blacklist action turn = ", blacklistGotoTurn)
 				else
-					--print("*OPTION     :", index, eaActionType, "iArea:", iArea, "iPlot:", option.iPlot, "g:", option.travelTurns, "t:", option.actionTurns, "num:", option.numerator, "den:", option.denominator, "vP:", option.vP, "vPP:", option.vPP)
 					print(Format(formatOptionStr, index, eaActionType, iArea, option.iPlot, option.travelTurns, option.actionTurns, option.i, option.p, option.b, option.numerator, option.denominator, option.vPP, option.vP))
 
 					--find best vP
@@ -778,7 +814,7 @@ end
 local function DoOrGotoBestOption(bestVoption)
 	print("Running DoOrGotoBestOption ", bestVoption)
 	--DebugFunctionExitTest("DoOrGotoBestOption", true)
-	--ClearActionPlotTargetedForPerson(g_eaPlayer, iPerson)
+	--ClearActionPlotTargetedForPerson(g_iPlayer, iPerson)
 
 	local option = g_options[bestVoption]
 	local targetPlotIndex = option.iPlot
@@ -796,7 +832,7 @@ local function DoOrGotoBestOption(bestVoption)
 				Blacklist(option.eaActionID, targetPlotIndex)			--don't try this again
 			end
 		else								--GP needs to move to plot
-			print("AI GP attempting to go to target for option:", bestVoption, bestV, option.travelTurns)
+			print("AI GP attempting to go to target for option:", bestVoption, option.travelTurns)
 			local targetX, targetY = GetXYFromPlotIndex(targetPlotIndex)
 			
 			if DoEaAction(EA_ACTION_GO_TO_PLOT, g_iPlayer, g_unit, g_iPerson, targetX, targetY) then	--true if unit moved (will set gotoPlotIndex since we supplied targetX, Y here)
@@ -808,8 +844,11 @@ local function DoOrGotoBestOption(bestVoption)
 					g_eaPlayer.aiUniqueTargeted[gotoEaActionID] = g_iPerson		--other GPs won't consider while this GP in transit 
 				end
 				if not eaAction.NoGPNumLimit then
-					g_eaPlayer.actionPlotTargeted[gotoEaActionID] = g_eaPlayer.actionPlotTargeted[gotoEaActionID] or {}
-					g_eaPlayer.actionPlotTargeted[gotoEaActionID][targetPlotIndex] = g_iPerson
+					--g_eaPlayer.actionPlotTargeted[gotoEaActionID] = g_eaPlayer.actionPlotTargeted[gotoEaActionID] or {}
+					--g_eaPlayer.actionPlotTargeted[gotoEaActionID][targetPlotIndex] = g_iPerson
+
+					gg_playerPlotActionTargeted[g_iPlayer][targetPlotIndex] = gg_playerPlotActionTargeted[g_iPlayer][targetPlotIndex] or {}
+					gg_playerPlotActionTargeted[g_iPlayer][targetPlotIndex][gotoEaActionID] = g_iPerson
 				end
 				print("g_eaPerson.gotoPlotIndex, .gotoEaActionID = ", g_eaPerson.gotoPlotIndex, g_eaPerson.gotoEaActionID)
 			else		--if we didn't move, then we need to blacklist this targetPlot for a while	
@@ -850,7 +889,7 @@ function AIGPDoSomething(iPlayer, iPerson, unit)		--unit cannot be nil
 		print("!!!! Warning: GP has eaActionID but calling AIGPDoSomething")
 	end
 
-	--ClearActionPlotTargetedForPerson(g_eaPlayer, iPerson)
+	--ClearActionPlotTargetedForPerson(iPlayer, iPerson)
 
 	--Are we at our destination?
 	if g_gpPlotIndex == g_eaPerson.gotoPlotIndex then
@@ -1063,7 +1102,7 @@ function AIGPTestCombatInterrupt(iPlayer, iPerson, unit)		--called each turn (un
 	--No combat action was done so move toward rallyPlot
 	if 4 < Distance(gpX, gpY, rallyX, rallyY) then
 		print("GP is >3 plots from rally plot; will now attempt to move to it")
-		--ClearActionPlotTargetedForPerson(g_eaPlayer, iPerson)
+		--ClearActionPlotTargetedForPerson(iPlayer, iPerson)
 		DoEaAction(EA_ACTION_GO_TO_PLOT, iPlayer, unit, iPerson, rallyX, rallyY) 	--will interrupt whatever GP was doing before
 		return true
 	end

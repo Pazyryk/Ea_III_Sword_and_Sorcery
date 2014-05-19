@@ -125,7 +125,8 @@ function OnYes()
 	Controls.SpellSelectConfirm:SetHide(true)
     ContextPtr:SetHide(true)
 	local eaPerson = gT.gPeople[g_iPerson]
-	eaPerson.spells[g_spellID] = true									--gives spell
+	--eaPerson.spells[g_spellID] = true
+	eaPerson.spells[#eaPerson.spells + 1] = g_spellID									--gives spell
 	Events.SerialEventUnitInfoDirty()
 end
 Controls.Yes:RegisterCallback( Mouse.eLClick, OnYes )

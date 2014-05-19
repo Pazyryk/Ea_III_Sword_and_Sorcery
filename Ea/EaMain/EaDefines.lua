@@ -218,10 +218,13 @@ for iPlayer = 0, BARB_PLAYER_INDEX do
 end
 
 --These are set in Init
+MapModData.realCivs = MapModData.realCivs or {}		--full plus CSs
 MapModData.fullCivs = MapModData.fullCivs or {}	
-MapModData.cityStates = MapModData.cityStates or {}				
-MapModData.realCivs = MapModData.realCivs or {}		
+MapModData.cityStates = MapModData.cityStates or {}
+MapModData.gods = MapModData.gods or {}
 
+--Other shared tables
+MapModData.gpRegisteredActions = MapModData.gpRegisteredActions or {}
 
 --yields for human UI
 MapModData.mercenaryNet = 0
@@ -251,6 +254,7 @@ gg_campRange = {}
 gg_slaveryPlayer = {[BARB_PLAYER_INDEX] = true}
 gg_playerArcaneMod = {}
 
+
 --other tables using iPlayer
 gg_eaNamePlayerTable = {}
 
@@ -267,6 +271,10 @@ gg_teamCanMeetGods = {}
 gg_teamCanMeetFay = {}
 gg_animalSpawnPlots = {pos = 0}
 gg_animalSpawnInhibitTeams = {}
+gg_playerPlotActionTargeted = {}	--index by iPlayer, iPlot, eaActionID, =iPerson
+gg_summonedArchdemon = {}			--index by iPlayer but nil if none (= unitTypeID; can only have one at any time)
+gg_calledArchangel = {}				--as above
+gg_calledMajorSpirit = {}			--as above
 
 --misc counts
 gg_counts = {	freshWaterAbzuFollowerCities = 0,
@@ -291,7 +299,8 @@ gWorld = {	sumOfAllMana =				MapModData.STARTING_SUM_OF_ALL_MANA,
 			azzConvertNum =				0,
 			anraConvertNum =			0,
 			weaveConvertNum =			0,
-			livingTerrainConvertStr =	0
+			livingTerrainConvertStr =	0,
+			calledMajorSpirits =		{}
 			}
 
 

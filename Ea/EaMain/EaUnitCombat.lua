@@ -78,10 +78,13 @@ for promoInfo in GameInfo.UnitPromotions() do
 end
 
 local dummyUnit = {}
+local eaSpecialUnit = {}
 for unitInfo in GameInfo.Units() do
-	local unitID = unitInfo.ID
 	if string.find(unitInfo.Type, "UNIT_DUMMY_") == 1 then
-		dummyUnit[unitID] = true
+		dummyUnit[unitInfo.ID] = true
+	end
+	if unitInfo.EaSpecial then
+		eaSpecialUnit[unitInfo.ID] = unitInfo.EaSpecial
 	end
 end
 
@@ -225,6 +228,8 @@ local function ResetForcedSelectionUnit()		--active player only
 			local restoredUnit = player:InitUnit(restoredUnitTypeID, unit:GetX(), unit:GetY(), nil, unit:GetFacingDirection())
 			MapModData.bBypassOnCanSaveUnit = true
 			restoredUnit:Convert(unit, false)
+			--UI.SelectUnit(restoredUnit)
+			--UI.LookAtSelectionPlot(0)
 			restoredUnit:SetPersonIndex(iPerson)
 			local iRestoredUnit = restoredUnit:GetID()
 			eaPerson.iUnit = iRestoredUnit
@@ -439,6 +444,8 @@ local function OnCombatEnded(iAttackingPlayer, iAttackingUnit, attackerDamage, a
 				local restoredUnit = attackingPlayer:InitUnit(restoredUnitTypeID, attackingUnit:GetX(), attackingUnit:GetY(), nil, attackingUnit:GetFacingDirection())
 				MapModData.bBypassOnCanSaveUnit = true		--yikes!!! Check that this is OK if combat kill happens
 				restoredUnit:Convert(attackingUnit, false)
+				UI.SelectUnit(restoredUnit)
+				--UI.LookAtSelectionPlot(0)
 				restoredUnit:SetPersonIndex(iPerson)
 				--restoredUnit:FinishMoves()
 				local iRestoredUnit = restoredUnit:GetID()
@@ -509,12 +516,31 @@ local function OnCanSaveUnit(iPlayer, iUnit, bDelay)	--fires for combat and non-
 	if fullCivs[iPlayer] then
 		player = Players[iPlayer]
 		unit = player:GetUnitByID(iUnit)
+		
 		local iSummoner = unit:GetSummonerIndex()
 		if iSummoner ~= -1 then
 			local eaSummoner = gPeople[iSummoner]
-			local summonedUnits = eaSummoner.summonedUnits
-			if summonedUnits then
-				summonedUnits[iUnit] = nil
+			if eaSummoner then			--nil if dead or this is an unbound summoned (-99)
+				local summonedUnits = eaSummoner.summonedUnits
+				if summonedUnits then
+					summonedUnits[iUnit] = nil
+				end
+			end
+			local unitTypeID = unit:GetUnitType()
+			if eaSpecialUnit[unitTypeID] then
+				if eaSpecialUnit[unitTypeID] == "Archdemon" then
+					if gg_summonedArchdemon[iPlayer] == unitTypeID then
+						gg_summonedArchdemon[iPlayer] = nil			--opens it up so they can summon another
+					end
+				elseif eaSpecialUnit[unitTypeID] == "Archangel" then
+					if gg_calledArchangel[iPlayer] == unitTypeID then
+						gg_calledArchangel[iPlayer] = nil
+					end
+				elseif eaSpecialUnit[unitTypeID] == "MajorSpirit" then
+					if gg_calledMajorSpirit[iPlayer] == unitTypeID then
+						gg_calledMajorSpirit[iPlayer] = nil
+					end
+				end
 			end
 		end
 	end

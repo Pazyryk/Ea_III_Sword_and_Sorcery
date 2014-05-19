@@ -446,7 +446,7 @@ end
 
 function BlightPlot(plot, iPlayer, iPerson, iMaxMana)		--last 3 are optional
 
-	local manaConsumed = plot:GetLivingTerrainStrength() + 10
+	local manaConsumed = plot:GetLivingTerrainStrength() + 20
 	if iMaxMana and iMaxMana < manaConsumed then return false end
 
 	local improvementID = plot:GetImprovementType()
@@ -465,7 +465,7 @@ function BlightPlot(plot, iPlayer, iPerson, iMaxMana)		--last 3 are optional
 
 	local player = iPlayer and Players[iPlayer]
 	if player and player:IsAlive() then		
-		UseManaOrDivineFavor(iPlayer, iPerson, manaConsumed, true)		--used but not drained from player stores
+		UseManaOrDivineFavor(iPlayer, iPerson, manaConsumed, false)
 	else
 		gWorld.sumOfAllMana = gWorld.sumOfAllMana - manaConsumed
 		plot:AddFloatUpMessage(Locale.Lookup("TXT_KEY_EA_CONSUMED_MANA", manaConsumed), 1)

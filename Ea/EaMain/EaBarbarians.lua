@@ -66,6 +66,9 @@ local FEATURE_MARSH =	 					GameInfoTypes.FEATURE_MARSH
 local Players =		Players
 local gWorld =		gWorld
 
+local gg_undeadSpawnPlots =			gg_undeadSpawnPlots
+local gg_demonSpawnPlots =			gg_demonSpawnPlots
+
 local Rand =					Map.Rand
 local Floor =					math.floor
 local GetPlotFromXY =			Map.GetPlot
@@ -80,7 +83,7 @@ local g_barbTechs = {}					--index by techID; nil means not relevant for barbs, 
 local g_encampmentsByArea = {}			--index by encampmentID, iArea; holds encampment number in area from that encampment type
 --local g_barbsByArea = {}
 
-local g_barbsByEncampmentTypeByArea = {}		--index by encampmentID, iArea; holds barb number in area from that encampment type
+local g_barbsByEncampmentTypeByArea = {}		--index by encampmentID, iArea; holds barb number in area from that encampment type (non-encampment barbs like demons use -1)
 
 local g_currentBaseUnit1 = {}			--index by encampmentID; holds unitTypeID
 local g_currentBaseUnit2 = {}
@@ -99,7 +102,7 @@ local numEncampmentTypes = 0
 local encampmentTech = {}
 local techUpgradeFromEncampments = {}	--index by techID, fromEncampmentID
 local useWorldDensity = {}
-local barbUnitPower = {}	--use cost as proxy for unit power
+local barbUnitPower = {}
 --local unitEncampment = {}	--used to associate unitID back to encampmentID for density calculation (only need roaming and sea units here, which should have unique association)
 --MapModData.unitEncampment = unitEncampment	--for UI
 
@@ -122,6 +125,7 @@ for encampmentInfo in GameInfo.EaEncampments() do
 	g_barbsByEncampmentTypeByArea[id] = {}
 	useWorldDensity[id] = encampmentInfo.UseWorldDensity
 end
+g_barbsByEncampmentTypeByArea[-1] = {}	--keeps track of demon/undead numbers
 for row in GameInfo.EaEncampments_BaseUnits() do
 	if row.TechType then
 		g_barbTechs[GameInfoTypes[row.TechType] ] = false
@@ -145,6 +149,13 @@ for row in GameInfo.EaEncampments_SeaUnits() do
 	barbUnitPower[unitTypeID] = 1
 	--unitEncampment[unitTypeID] = GameInfoTypes[row.EncampmentType]
 end
+for unitInfo in GameInfo.Units() do
+	if unitInfo.EaSpecial == "Undead" or  unitInfo.EaSpecial == "Demon" then
+		barbUnitPower[unitInfo.ID] = 1
+	end
+end
+
+--barbUnitPower now has 1 for all barbs we need to count
 
 local numUnits, sumPower = 0, 0
 for unitTypeID in pairs(barbUnitPower) do
@@ -554,8 +565,8 @@ function InitUpgradeEncampment(iPlot, x, y, plot, upgradeTechID)	--called from P
 	end
 end
 
-function EncampmentsPerTurn()		--called right after PlotsPerTurn()
-	print("Running EncampmentsPerTurn")
+function BarbSpawnPerTurn()		--called right after PlotsPerTurn()
+	print("Running BarbSpawnPerTurn")
 	local player = Players[BARB_PLAYER_INDEX]
 	local encampments = gWorld.encampments
 	local adjGameTurn = Game.GetGameTurn()
@@ -582,6 +593,11 @@ function EncampmentsPerTurn()		--called right after PlotsPerTurn()
 			barbsByArea[iArea] = 0
 		end
 	end
+	local barbsByArea = g_barbsByEncampmentTypeByArea[-1]
+	for iArea in pairs(barbsByArea) do
+		barbsByArea[iArea] = 0
+	end
+
 	--encampment counting
 	for iPlot, encampmentID in pairs(encampments) do
 		local iArea = useWorldDensity[encampmentID] and -1 or GetPlotByIndex(iPlot):GetArea()
@@ -600,14 +616,12 @@ function EncampmentsPerTurn()		--called right after PlotsPerTurn()
 					unit:ChangeDamage(-damage, -1)
 				end
 			else
-			
 				local encampmentID = unit:GetScenarioData() --unitEncampment[unitTypeID]
-				if encampmentID ~= 0 then				--must be a roaming or sea unit	
+				if encampmentID ~= 0 then
 					local iArea = plot:IsWater() and -1 or plot:GetArea()	-- plot:GetNearestLandArea()
 					local barbsByArea = g_barbsByEncampmentTypeByArea[encampmentID]
-					barbsByArea[iArea] = (barbsByArea[iArea] or 0) + 1
+					barbsByArea[iArea] = (barbsByArea[iArea] or 0) + 1				
 				end
-				
 			end
 		end
 	end
@@ -631,7 +645,7 @@ function EncampmentsPerTurn()		--called right after PlotsPerTurn()
 	end
 	
 	for encampmentID, byArea in pairs(g_barbsByEncampmentTypeByArea) do
-		local encampmentType = GameInfo.EaEncampments[encampmentID].Type
+		local encampmentType = encampmentID ~= -1 and GameInfo.EaEncampments[encampmentID].Type or "Undead/Demons"
 		for iArea, number in pairs(byArea) do
 			print("Roaming/sea count (number/source/iArea: ", byArea[iArea], encampmentType, iArea)
 		end
@@ -700,6 +714,75 @@ function EncampmentsPerTurn()		--called right after PlotsPerTurn()
 				end
 				print("PazDebug Trying to add sea unit ", iPlot, GameInfo.EaEncampments[encampmentID].Type, GameInfo.Units[unitTypeID].Type)
 				SpawnSeaUnit(iPlot, unitTypeID, encampmentID)
+			end
+		end
+	end
+
+	--Undead / Demons
+	--undead/demon spawning and breach/blight spread
+	local armageddonStage = gWorld.armageddonStage
+	local manaDepletion = 1 - (gWorld.sumOfAllMana / MapModData.STARTING_SUM_OF_ALL_MANA)
+	local demonUndeadSpawn = 0
+	if 10 < armageddonStage then
+		demonUndeadSpawn = 33 * manaDepletion
+	elseif 1 < armageddonStage then
+		demonUndeadSpawn = 10 * manaDepletion
+	end
+	print("demonUndeadSpawn = ", demonUndeadSpawn)
+
+	for i = 1, gg_undeadSpawnPlots.pos do
+		local iPlot = gg_undeadSpawnPlots[i]
+		local plot = GetPlotByIndex(iPlot)		
+		local iArea = plot:GetArea()
+		local numberByArea = g_barbsByEncampmentTypeByArea[-1][iArea] or 0
+		local adjSpawn = demonUndeadSpawn / (numberByArea + 1)
+
+		--temp increase since we don't have old battlefield spawns yet (only using city graveyards)
+		adjSpawn = adjSpawn * 3
+
+		print("Undead spawn plot; iPlot, iArea, numberByArea, adjSpawn = ", iPlot, iArea, numberByArea, adjSpawn)
+		if 0 < adjSpawn and Rand(100, "hello") < adjSpawn then
+			local undeadUnitID
+			local dice = Rand(2, "hello")
+			if dice == 0 then
+				undeadUnitID = GameInfoTypes.UNIT_SKELETON_SWORDSMEN
+			else
+				undeadUnitID = GameInfoTypes.UNIT_ZOMBIES
+			end
+			local spawnPlot = GetRandomAdjacentPlot(plot)		--plot is really city plot so we need an adjacent
+			if spawnPlot then
+				local newUnit = Players[BARB_PLAYER_INDEX]:InitUnit(undeadUnitID, spawnPlot:GetX(), spawnPlot:GetY())
+				spawnPlot:AddFloatUpMessage(Locale.Lookup("TXT_KEY_EA_UNDEAD_SPAWN"))
+				newUnit:SetScenarioData(-1)
+				if spawnPlot:GetNumFriendlyUnitsOfType(newUnit) > 1 then
+					newUnit:JumpToNearestValidPlot()
+				end
+			end
+		end
+	end
+
+	for i = 1, gg_demonSpawnPlots.pos do
+		local iPlot = gg_demonSpawnPlots[i]
+		local plot = GetPlotByIndex(iPlot)
+		local iArea = plot:GetArea()
+		local numberByArea = g_barbsByEncampmentTypeByArea[-1][iArea] or 0
+		local adjSpawn = demonUndeadSpawn / (numberByArea + 1)
+		print("Demon spawn plot; iPlot, iArea, numberByArea, adjSpawn = ", iPlot, iArea, numberByArea, adjSpawn)
+		if 0 < adjSpawn and Rand(100, "hello") < adjSpawn then
+			local demonUnitID
+			local dice = Rand(3, "hello")
+			if dice == 0 then
+				demonUnitID = GameInfoTypes.UNIT_HORMAGAUNT
+			elseif dice == 1 then
+				demonUnitID = GameInfoTypes.UNIT_DEMON_I
+			else
+				demonUnitID = GameInfoTypes.UNIT_UNIT_DEMON_II
+			end
+			local newUnit = Players[BARB_PLAYER_INDEX]:InitUnit(demonUnitID, plot:GetX(), plot:GetY())
+			plot:AddFloatUpMessage(Locale.Lookup("TXT_KEY_EA_DEMON_SPAWN"))
+			newUnit:SetScenarioData(-1)
+			if plot:GetNumFriendlyUnitsOfType(newUnit) > 1 then
+				newUnit:JumpToNearestValidPlot()
 			end
 		end
 	end

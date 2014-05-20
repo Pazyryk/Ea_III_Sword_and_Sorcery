@@ -52,14 +52,14 @@ function EaArmageddonPerTurn()
 	-- effect added in EaPlots.lua
 
 	-- Begins to sap happiness and health from all civilizations. -2 for both increasing
-	-- to -40 as the Sum of All Mana approaches zero.
+	-- to -20 as the Sum of All Mana approaches zero.
 	if 80 < manaPercent then return end
 	if armageddonStage < 3 then
 		gWorld.armageddonStage = 3
 		print("Armageddon stage 3")
 		LuaEvents.EaImagePopup({type = "Generic", textKey = "TXT_KEY_EA_ARMAGEDDON_3", imageInfo = ARMAGEDDON_IMAGE_INFO, sound = ARMAGEDDON_SOUND})
 	end
-	gWorld.armageddonSap = Floor(0.475 * (80 - manaPercent) + 2)		--TO DO: Implement effect!
+	gWorld.armageddonSap = Floor(0.225 * (80 - manaPercent) + 2)
 
 	-- Blight begins to spread from already blighted plots, and breach from already breached
 	-- plots. Blight spreads outward from existing blight (inhibited to some extent by living

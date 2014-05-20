@@ -6,6 +6,8 @@
 -- this file can be included from multiple states, avoid any Context references
 
 local iW, iH = Map.GetGridSize()
+local GetPlotByXY = Map.GetPlot
+local Rand = Map.Rand
 
 function GetPlotIndexFromXY(x, y)
 	return y * iW + x
@@ -16,7 +18,56 @@ function GetXYFromPlotIndex(iPlot)
 	return iPlot % iW, Floor(iPlot / iW)
 end
 
-local bWrapX, bWrapY = Map.IsWrapX(), Map.IsWrapY()
+local bWrapX, bWrapY = Map.IsWrapX(), false			--sorry, no donought worlds
+
+local yIsOddAdjOffsets = {{0, 1},{1, 1},{1, 0},{1, -1},{0, -1},{-1, 0}}
+local yIsEvenAdjOffsets = {{-1, 1},{0, 1},{1, 0},{0, -1},{-1, -1},{-1, 0}}
+
+function AdjacentPlotIterator(plot)		--this is so common I give it a special function for speed
+	local x, y = plot:GetXY()
+	local offsets = (y % 2 == 0) and yIsEvenAdjOffsets or yIsOddAdjOffsets
+	local i = 0
+	return function()
+		while i < 6 do
+			i = i + 1
+			local adjY = y + offsets[i][2]
+			if 0 <= adjY and adjY < iH then
+				local adjX = x + offsets[i][1]
+				if bXWrap then						--skip bWrapY, not gonna happen
+					if adjX < 0 then
+						adjX = adjX + iW
+					elseif iW <= adjX then
+						adjX = adjX - iW
+					end
+					return GetPlotByXY(adjX, adjY)
+				elseif 0 <= adjX and adjX < iW then
+					return GetPlotByXY(adjX, adjY)
+				end
+			end
+		end
+	end
+end
+
+function GetRandomAdjacentPlot(plot)	--will return nil rather than invalid off-map plot
+	local x, y = plot:GetXY()
+	local offsets = (y % 2 == 0) and yIsEvenAdjOffsets or yIsOddAdjOffsets
+	local offset = offsets[Rand(6, "hello") + 1]
+	local adjY = y + offset[2]
+	if 0 <= adjY and adjY < iH then
+		local adjX = x + offset[1]
+		if bXWrap then						--skip bWrapY, not gonna happen
+			if adjX < 0 then
+				adjX = adjX + iW
+			elseif iW <= adjX then
+				adjX = adjX - iW
+			end
+			return GetPlotByXY(adjX, adjY)
+		elseif 0 <= adjX and adjX < iW then
+			return GetPlotByXY(adjX, adjY)
+		end
+	end
+end
+
 local yOffsets, xOffsetsEvenY, xOffsetsOddY = {}, {}, {}	--contain tables indexed by radius; created and kept as needed
 local tempIdx, sortedOffsetsX, sortedOffsetsY = {}, {}, {}	--used for sorting when approach plot given (indexed by radius; created and kept as needed)
 

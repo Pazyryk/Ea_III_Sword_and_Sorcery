@@ -241,7 +241,7 @@ local function OnPlayerDoTurn(iPlayer)	-- Runs at begining of turn for all livin
 		local startPlotsPerTurn = Clock()
 		PlotsPerTurn()
 		timerPlotsPerTurn = Clock() - startPlotsPerTurn
-		EncampmentsPerTurn()
+		BarbSpawnPerTurn()
 		AnimalsPerTurn()
 		ReligionPerGameTurn()
 		CityStateFollowerCityCounting()

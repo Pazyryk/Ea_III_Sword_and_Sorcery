@@ -35,6 +35,21 @@
 		<Row Tag="TXT_KEY_EA_CONSUMED_MANA">
 			<Text>[COLOR_LIGHT_GREY]Consumed {1_Num} mana[ENDCOLOR]</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_PLOT_PROTECTED_BY_WARD">
+			<Text>[COLOR_BLUE]Plot protected from Blight by Ward of Protection[ENDCOLOR]</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PLOT_PROTECTED_BY_LIVING_TERRAIN">
+			<Text>[COLOR_GREEN]Plot protected from Blight by Living Terrrain[ENDCOLOR]</Text>
+		</Row>
+
+		<Row Tag="TXT_KEY_EA_UNDEAD_SPAWN">
+			<Text>[COLOR_LIGHT_GREY]Undead spawn from an old graveyard[ENDCOLOR]</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_DEMON_SPAWN">
+			<Text>[COLOR_LIGHT_GREY]Demons spawn from Breach[ENDCOLOR]</Text>
+		</Row>
+
+		
 
 		<!-- Notifications -->
 		<Row Tag="TXT_KEY_EA_RELIGIOUS_CONVERSION">
@@ -94,6 +109,11 @@
 		<Row Tag="TXT_KEY_EA_TP_UNHAPPINESS_FROM_NATURAL_WONDERS">
 			<Text>{1_Num} from Natural Wonders.</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_TP_UNHAPPINESS_FROM_ARMAGEDDON">
+			<Text>{1_Num} from mana depletion by the Fallen.</Text>
+		</Row>
+
+		
 
 		<Row Tag="TXT_KEY_EA_TP_DIVINE_FAVOR">
 			<Text>You have accumulated [COLOR_POSITIVE_TEXT]{1_Num}[ENDCOLOR] [ICON_PEACE] Divine Favor. Only those pursuing the worship of Azzandara accumulate [ICON_PEACE] Divine Favor.</Text>
@@ -246,7 +266,7 @@
 			<Text>The Sum of All Mana has been depleted to 90%. Undead begin to spawn from old battlefields and city graveyards, and demons from breach plots (1% chance per plot per turn increasing to 10% as the Sum of All Mana depletes to zero).</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ARMAGEDDON_3">
-			<Text>The Sum of All Mana has been depleted to 80%. The effect begins to sap the happiness and health of from all civilizations (+2 unhappiness and unhealth increasing to 40 as the Sum of All Mana approaches zero).</Text>
+			<Text>The Sum of All Mana has been depleted to 80%. The effect begins to sap the happiness and health of from all civilizations (2 unhappiness and unhealth increasing to 20 as the Sum of All Mana approaches zero).</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ARMAGEDDON_4">
 			<Text>The Sum of All Mana has been depleted to 66%. Blight begins to spread from already blighted plots, and breach from already breached plots. The rate of spread increases as the Sum of All Mana depletes to zero.</Text>

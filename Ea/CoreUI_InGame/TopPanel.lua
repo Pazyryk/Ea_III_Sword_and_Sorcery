@@ -720,7 +720,7 @@ function HappinessTipHandler( control )
 		
 		
 		--these don't change totals, but are used to move particular sources around (e.g., from hidden buildings to proper mod cause)
-		local iRacialHarmony = 2 * pPlayer:CountNumBuildings(GameInfoTypes.BUILDING_RACIAL_HARMONY)
+		local iRacialDisharmony = 2 * pPlayer:CountNumBuildings(GameInfoTypes.BUILDING_RACIAL_DISHARMONY)
 		local iAhrimansVaultUnhappiness = (eaPlayer and eaPlayer.bHasDiscoveredAhrimansVault) and 2 or 0
 		--end Paz add
 	
@@ -728,7 +728,7 @@ function HappinessTipHandler( control )
 		local iResourcesHappiness = pPlayer:GetHappinessFromResources();
 		local iExtraLuxuryHappiness = pPlayer:GetExtraHappinessPerLuxury();
 		local iCityHappiness = pPlayer:GetHappinessFromCities();
-		local iBuildingHappiness = pPlayer:GetHappinessFromBuildings() - iRacialHarmony;	--Paz: iRacialHarmony
+		local iBuildingHappiness = pPlayer:GetHappinessFromBuildings() + iRacialDisharmony;	--Paz: iRacialDisharmony
 		local iTradeRouteHappiness = pPlayer:GetHappinessFromTradeRoutes();
 		local iReligionHappiness = pPlayer:GetHappinessFromReligion();
 		local iNaturalWonderHappiness = pPlayer:GetHappinessFromNaturalWonders() + iAhrimansVaultUnhappiness;		--Paz: iAhrimansVaultUnhappiness
@@ -738,7 +738,7 @@ function HappinessTipHandler( control )
 	
 		local iHandicapHappiness = pPlayer:GetHappiness() - iPoliciesHappiness - iResourcesHappiness - iCityHappiness - iBuildingHappiness - iTradeRouteHappiness - iReligionHappiness - iNaturalWonderHappiness - iMinorCivHappiness - iExtraHappinessPerCity;
 		--Paz add
-		iHandicapHappiness = iHandicapHappiness - iRacialHarmony + iAhrimansVaultUnhappiness
+		iHandicapHappiness = iHandicapHappiness + iRacialDisharmony + iAhrimansVaultUnhappiness
 		--end Paz add
 
 		if (pPlayer:IsEmpireVeryUnhappy()) then
@@ -834,9 +834,9 @@ function HappinessTipHandler( control )
 		strText = strText .. "[/COLOR]";
 	
 		-- Unhappiness
-		local iTotalUnhappiness = pPlayer:GetUnhappiness()  - iRacialHarmony + iAhrimansVaultUnhappiness;	--Paz added modifiers
+		local iTotalUnhappiness = pPlayer:GetUnhappiness()  + iRacialDisharmony + iAhrimansVaultUnhappiness;	--Paz added modifiers
 		local iUnhappinessFromUnits = Locale.ToNumber( pPlayer:GetUnhappinessFromUnits() / 100, "#.##" );
-		local iUnhappinessFromCityCount = Locale.ToNumber(pPlayer:GetUnhappinessFromCityCount() / 100 - iRacialHarmony, "#.##" );	--Paz:  - iRacialHarmony
+		local iUnhappinessFromCityCount = Locale.ToNumber(pPlayer:GetUnhappinessFromCityCount() / 100 + iRacialDisharmony, "#.##" );	--Paz:  - iRacialDisharmony
 		local iUnhappinessFromCapturedCityCount = Locale.ToNumber( pPlayer:GetUnhappinessFromCapturedCityCount() / 100, "#.##" );
 		
 		local iUnhappinessFromPupetCities = pPlayer:GetUnhappinessFromPuppetCityPopulation();
@@ -845,6 +845,9 @@ function HappinessTipHandler( control )
 			
 		local iUnhappinessFromPop = Locale.ToNumber( unhappinessFromPop / 100, "#.##" );
 		local iUnhappinessFromOccupiedCities = Locale.ToNumber( pPlayer:GetUnhappinessFromOccupiedCities() / 100, "#.##" );
+		--Paz add
+		local iUnhappinessFromArmageddon = (gT.gWorld.armageddonStage < 3) and 0 or gT.gWorld.armageddonSap
+		--end Paz add
 
 		strText = strText .. "[NEWLINE][NEWLINE]";
 		strText = strText .. "[COLOR:255:150:150:255]";
@@ -880,7 +883,11 @@ function HappinessTipHandler( control )
 		--Paz add: Ahrimans Vault is the only NW that gives Unhappiness; we show here as negative so that we can show all positives above
 		if(iAhrimansVaultUnhappiness > 0) then
 			strText = strText .. "[NEWLINE]  [ICON_BULLET]" .. Locale.ConvertTextKey("TXT_KEY_EA_TP_UNHAPPINESS_FROM_NATURAL_WONDERS", iAhrimansVaultUnhappiness);
-		end		
+		end	
+		if(iUnhappinessFromArmageddon > 0) then
+			strText = strText .. "[NEWLINE]  [ICON_BULLET]" .. Locale.ConvertTextKey("TXT_KEY_EA_TP_UNHAPPINESS_FROM_ARMAGEDDON", iUnhappinessFromArmageddon);
+		end	
+		
 		--end Paz add
 
 		if (iUnhappinessFromUnits ~= "0") then

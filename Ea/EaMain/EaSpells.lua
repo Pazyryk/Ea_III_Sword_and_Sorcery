@@ -19,8 +19,10 @@ local Dprint = DEBUG_PRINT and print or function() end
 local DOMAIN_LAND =							DomainTypes.DOMAIN_LAND
 local DOMAIN_SEA =							DomainTypes.DOMAIN_SEA
 local EAMOD_DEVOTION =						GameInfoTypes.EAMOD_DEVOTION
+local EA_PLOTEFFECT_PROTECTIVE_WARD =		GameInfoTypes.EA_PLOTEFFECT_PROTECTIVE_WARD
 local EA_WONDER_ARCANE_TOWER =				GameInfoTypes.EA_WONDER_ARCANE_TOWER
 local FEATURE_BLIGHT =	 					GameInfoTypes.FEATURE_BLIGHT
+local FEATURE_CRATER =	 					GameInfoTypes.FEATURE_CRATER
 local FEATURE_FALLOUT =	 					GameInfoTypes.FEATURE_FALLOUT
 local FEATURE_FOREST = 						GameInfoTypes.FEATURE_FOREST
 local FEATURE_JUNGLE = 						GameInfoTypes.FEATURE_JUNGLE
@@ -497,6 +499,7 @@ function TestEaSpell(eaActionID, iPlayer, unit, iPerson, testX, testY, bAINonTar
 		g_modSpellTimesTurns = g_mod * turnsToComplete		--this will get set again in TestTargetEaSpell, just need quick value here for early faith bailout
 		if g_faith < g_modSpellTimesTurns then
 			g_bSufficientFaith = false
+			g_value = g_modSpellTimesTurns
 			return false
 		else
 			g_bSufficientFaith = true
@@ -998,7 +1001,7 @@ local EA_SPELL_CALL_MAJOR_SPIRIT =			GameInfoTypes.EA_SPELL_CALL_MAJOR_SPIRIT
 local monsters = {GameInfoTypes.UNIT_GIANT_SPIDER, GameInfoTypes.UNIT_DRAKE_GREEN, GameInfoTypes.UNIT_DRAKE_BLUE, GameInfoTypes.UNIT_DRAKE_RED}	--weakest to strongest
 local undead = {GameInfoTypes.UNIT_SKELETON_SWORDSMEN, GameInfoTypes.UNIT_ZOMBIES}
 local abyssalCreatures = {GameInfoTypes.UNIT_HORMAGAUNT}
-local demons = {GameInfoTypes.UNIT_LICTOR, GameInfoTypes.UNIT_HIVE_TYRANT}
+local demons = {GameInfoTypes.UNIT_DEMON_I, GameInfoTypes.UNIT_UNIT_DEMON_II}
 local heavensGuard = {GameInfoTypes.UNIT_ANGEL_SPEARMAN}
 local angels = {GameInfoTypes.UNIT_ANGEL}
 local animals = {GameInfoTypes.UNIT_WOLVES, GameInfoTypes.UNIT_LIONS}
@@ -1444,10 +1447,12 @@ TestTarget[GameInfoTypes.EA_SPELL_MAGIC_MISSILE] = function()	--TO DO: need bett
 end
 
 SetUI[GameInfoTypes.EA_SPELL_MAGIC_MISSILE] = function()
-	if g_bAllTestsPassed then
-		MapModData.text = "Magic Missile attack (ranged strength " .. g_modSpell .. ")"
-	else
-		MapModData.text = "[COLOR_WARNING_TEXT]No valid target in range[ENDCOLOR]"
+	if g_bNonTargetTestsPassed then
+		if g_bAllTestsPassed then
+			MapModData.text = "Magic Missile attack (ranged strength " .. g_modSpell .. ")"
+		else
+			MapModData.text = "[COLOR_WARNING_TEXT]No valid target in range[ENDCOLOR]"
+		end
 	end
 end
 
@@ -1556,27 +1561,15 @@ TestTarget[GameInfoTypes.EA_SPELL_BLIGHT] = function()
 			g_obj1 = nil
 			local ownPlotsInDanger, totalPlotsInDanger = 0, 0
 			for plot in PlotRingIterator(g_plot, radius, sector, anticlock) do	
-				if not (plot:IsWater() or plot:IsMountain() or plot:IsImpassable()) then
+				if not (plot:IsWater() or plot:IsMountain() or plot:IsImpassable() or g_plot:IsCity()) then
 					local featureID = plot:GetFeatureType()
-					if not (featureID == FEATURE_BLIGHT or featureID == FEATURE_FALLOUT) then
-						if featureID == FEATURE_FOREST or featureID == FEATURE_JUNGLE or featureID == FEATURE_MARSH then	--Must overpower any living terrain here (subtract range from mod)
-							local terrainStrength = plot:GetLivingTerrainStrength()
-							if g_modSpell - radius > terrainStrength then
-								totalPlotsInDanger = totalPlotsInDanger + 1
-								if plot:IsPlayerCityRadius(g_iPlayer) then
-									ownPlotsInDanger = ownPlotsInDanger + 1
-								end		
-								g_int2 = terrainStrength		
-								g_obj1 = plot
-							end
-						else
-							totalPlotsInDanger = totalPlotsInDanger + 1
-							if plot:IsPlayerCityRadius(g_iPlayer) then
-								ownPlotsInDanger = ownPlotsInDanger + 1
-							end	
-							g_int2 = 0
-							g_obj1 = plot
-						end
+					if not (featureID == FEATURE_BLIGHT or featureID == FEATURE_FALLOUT or featureID >= FEATURE_CRATER) then
+						totalPlotsInDanger = totalPlotsInDanger + 1
+						if plot:IsPlayerCityRadius(g_iPlayer) then
+							ownPlotsInDanger = ownPlotsInDanger + 1
+						end	
+						g_int2 = 0
+						g_obj1 = plot
 					end
 				end
 			end
@@ -1585,22 +1578,35 @@ TestTarget[GameInfoTypes.EA_SPELL_BLIGHT] = function()
 				g_int4 = ownPlotsInDanger
 				g_int5 = totalPlotsInDanger
 				return true
-			else
-				return false
 			end
 		end
-	else	--Can this plot be blighted?
-		if g_plot:IsWater() or g_plot:IsMountain() or g_plot:IsImpassable() then return false end	--IsImpassable protects Natural Wonders (unless they become passible) 
+		return false
+	else	--Can this plot be blighted (or at least weakened)?
+		if g_plot:IsWater() or g_plot:IsMountain() or g_plot:IsImpassable() or g_plot:IsCity() then return false end 
 		local featureID = g_plot:GetFeatureType()
-		if featureID == FEATURE_BLIGHT or featureID == FEATURE_FALLOUT then return false end
+		if featureID == FEATURE_BLIGHT or featureID == FEATURE_FALLOUT or featureID >= FEATURE_CRATER then return false end
+
+		--spell can "work" even if blocked, but only to weaken; best AI value is to blight AND weaken
+		local strengthNeeded = 0
 		if featureID == FEATURE_FOREST or featureID == FEATURE_JUNGLE or featureID == FEATURE_MARSH then	--Must overpower any living terrain here
-			g_int2 = g_plot:GetLivingTerrainStrength()
-			if g_modSpell < g_int2 then
-				return false
-			end
-		else
-			g_int2 = 0	
+			strengthNeeded = strengthNeeded + g_plot:GetLivingTerrainStrength()
 		end
+		local effectID, effectStength, iPlayer, iCaster = plot:GetPlotEffectData()
+		if effectID == EA_PLOTEFFECT_PROTECTIVE_WARD then
+			strengthNeeded = strengthNeeded + effectStength
+		end
+		if g_modSpell < strengthNeeded then
+			g_value = g_modSpell
+			g_int1 = strengthNeeded
+			g_testTargetSwitch = 1
+		elseif strengthNeeded > 0 then
+			g_value = g_modSpell + 20
+			g_int1 = strengthNeeded
+			g_testTargetSwitch = 2
+		else
+			g_value = 20
+		end
+
 		g_obj1 = g_plot
 		return true
 	end
@@ -1611,21 +1617,19 @@ SetUI[GameInfoTypes.EA_SPELL_BLIGHT] = function()
 		if g_bInTowerOrTemple then
 			MapModData.text = "Blight land at range " .. g_int3
 		else
-			if g_int2 > 0 then
-				MapModData.text = "Blight this land (overcome terrain strength " .. g_int2 .. ")"
+			if g_testTargetSwitch == 1 then
+				MapModData.text = "You cannot overcome terrain and/or ward strength at this plot (" .. g_int1 .. "); however, the spell will weaken this protection by " .. g_modSpell
+			elseif g_testTargetSwitch == 2 then
+				MapModData.text = "Blight this land (overcome terrain and/or ward strength " .. g_int1 .. ")"
 			else
 				MapModData.text = "Blight this land"
 			end
 		end			
-	else
+	elseif g_bNonTargetTestsPassed then
 		if g_bInTowerOrTemple then
 			MapModData.text = "[COLOR_WARNING_TEXT]No land within the caster's " .. g_modSpell .. "-plot range can be blighted[ENDCOLOR]"
 		else
-			if g_testTargetSwitch == 1 then
-				MapModData.text = "[COLOR_WARNING_TEXT]You cannot overcome this land's strength (" .. g_int2 .. ")[ENDCOLOR]"
-			else
-				MapModData.text = "[COLOR_WARNING_TEXT]This plot cannot be blighted[ENDCOLOR]"
-			end
+			MapModData.text = "[COLOR_WARNING_TEXT]This plot cannot be blighted[ENDCOLOR]"
 		end
 	end
 end
@@ -1633,14 +1637,18 @@ end
 SetAIValues[GameInfoTypes.EA_SPELL_BLIGHT] = function()
 	if g_bInTowerOrTemple then
 		gg_aiOptionValues.i = g_modSpell * (1 - g_int4 / g_int5)	-- deduct for proportion of possibly affected plots in own city's 3-plot radius
-	elseif not g_plot:IsPlayerCityRadius(g_iPlayer) then
-		gg_aiOptionValues.i = g_modSpell + g_int2	--prefer to kill strongest living terrain possible
-	end		--no value if in our city's 3-plot radius
+	elseif not g_plot:IsPlayerCityRadius(g_iPlayer) then	--no value if in our city's 3-plot radius (really should check distance to any of our cities)
+		gg_aiOptionValues.i = g_value
+	end	
 end
 
 Finish[GameInfoTypes.EA_SPELL_BLIGHT] = function()
 	g_specialEffectsPlot = g_obj1
-	BlightPlot(g_obj1, g_iPlayer, g_iPerson)	--this will give xp and use mana
+	local bSuccess = BlightPlot(g_obj1, g_iPlayer, g_iPerson, g_modSpell)	--this will give xp and use mana if success (more than if failure below)
+	if not bSuccess then
+		UseManaOrDivineFavor(g_iPlayer, g_iPerson, g_modSpell, false)
+	end
+	return true
 end
 
 
@@ -2193,12 +2201,14 @@ TestTarget[GameInfoTypes.EA_SPELL_EAS_BLESSING] = function()
 end
 
 SetUI[GameInfoTypes.EA_SPELL_EAS_BLESSING] = function()
-	if g_bAllTestsPassed then
-		local featureInfo = GameInfo.Features[g_int2]
-		local featureName = Locale.ConvertTextKey(featureInfo.Description)
-		MapModData.text = "Increase spreading and regeneration strength of " .. featureName .. " by " .. g_modSpell
-	else
-		MapModData.text = "[COLOR_WARNING_TEXT]Plot must be Living Terrain (Forest, Jungle or Marsh)[ENDCOLOR]"
+	if g_bNonTargetTestsPassed then
+		if g_bAllTestsPassed then
+			local featureInfo = GameInfo.Features[g_int2]
+			local featureName = Locale.ConvertTextKey(featureInfo.Description)
+			MapModData.text = "Increase spreading and regeneration strength of " .. featureName .. " by " .. g_modSpell
+		else
+			MapModData.text = "[COLOR_WARNING_TEXT]Plot must be Living Terrain (Forest, Jungle or Marsh)[ENDCOLOR]"
+		end
 	end
 end
 

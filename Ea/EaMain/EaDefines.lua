@@ -275,6 +275,8 @@ gg_playerPlotActionTargeted = {}	--index by iPlayer, iPlot, eaActionID, =iPerson
 gg_summonedArchdemon = {}			--index by iPlayer but nil if none (= unitTypeID; can only have one at any time)
 gg_calledArchangel = {}				--as above
 gg_calledMajorSpirit = {}			--as above
+gg_undeadSpawnPlots = {pos = 0}
+gg_demonSpawnPlots = {pos = 0}
 
 --misc counts
 gg_counts = {	freshWaterAbzuFollowerCities = 0,

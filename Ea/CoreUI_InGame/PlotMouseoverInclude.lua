@@ -285,6 +285,10 @@ function GetResourceString(plot, bLongForm)
 	
 	if (plot:GetResourceType(iActiveTeam) >= 0) then
 		local resourceType = plot:GetResourceType(iActiveTeam);
+		--Paz add
+		if resourceType == GameInfoTypes.RESOURCE_BLIGHT then return "" end
+		--end Paz add
+
 		local pResource = GameInfo.Resources[resourceType];
 		
 		if (plot:GetNumResource() > 1) then
@@ -333,7 +337,7 @@ function GetImprovementString(plot)
 	end
 	--end Paz add
 
-	if (iImprovementType >= 0) then
+	if (iImprovementType >= 0 and iImprovementType ~= GameInfoTypes.IMPROVEMENT_BLIGHT) then		--Paz added IMPROVEMENT_BLIGHT condition
 		--[[Paz modified below
 		if (improvementStr ~= "") then
 			improvementStr = improvementStr .. ", ";

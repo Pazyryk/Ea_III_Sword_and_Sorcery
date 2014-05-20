@@ -70,8 +70,9 @@ function ShowGeneric(info)
 	local text = info.text or (info.textKey and Locale.Lookup(info.textKey) or "")
 
 	local dds = g_artInfo.File
-			
-	local gridSize, gridOffset, imageFrame, imageSize, imageOffset = ScaleImage("TextBox", dds, 4)
+	
+	local textRows = 4		--need to calculate!
+	local gridSize, gridOffset, imageFrame, imageSize, imageOffset = ScaleImage("TextBox", dds, textRows)
 	print(imageFrame, imageSize.x, imageSize.y, imageOffset.x, imageOffset.y, gridSize.x, gridSize.y, gridOffset.x, gridOffset.y)
 
 	if gridSize then
@@ -85,6 +86,7 @@ function ShowGeneric(info)
 		Controls[imageFrame]:SetSize(imageSize)
 		Controls[imageFrame]:SetOffsetVal(imageOffset.x, imageOffset.y)
 		--Controls[imageFrame]:SetToolTipCallback(ArtCreditToolTip)
+		Controls.DescriptionLabel:SetWrapWidth(imageSize.x - 200)
 		Controls.DescriptionLabel:SetText(text)
 		Controls.QuoteLabel:SetHide(true)
 		g_lastImageFrame = imageFrame

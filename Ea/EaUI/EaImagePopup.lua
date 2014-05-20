@@ -38,7 +38,7 @@ local g_artInfo
 
 
 function ShowEaImagePopup(info)
-	--info different then base popups; fields used: type, id, text, sound (not all required or used for all types)
+	--info different then base popups; fields used: type, id, text, textKey, image, sound (not all required or used for all types)
 	if g_isOpen then
 		g_queuePos = g_queuePos + 1
 		g_popupQueue[g_queuePos] = info
@@ -56,11 +56,40 @@ function ShowEaImagePopup(info)
 		ShowDeath(info)
 	elseif info.type == "CivNaming" then
 		ShowCiv(info)
-	elseif popupType == "EaArtifact" then
-
+	elseif info.type == "Generic" then
+		ShowGeneric(info)
 	end
 end
 LuaEvents.EaImagePopup.Add(function(info) return HandleError10(ShowEaImagePopup, info) end)
+
+function ShowGeneric(info)
+	--provide imageInfo and text or textKey
+	print("running ShowGeneric")
+
+	g_artInfo = info.imageInfo
+	local text = info.text or (info.textKey and Locale.Lookup(info.textKey) or "")
+
+	local dds = g_artInfo.File
+			
+	local gridSize, gridOffset, imageFrame, imageSize, imageOffset = ScaleImage("TextBox", dds, 4)
+	print(imageFrame, imageSize.x, imageSize.y, imageOffset.x, imageOffset.y, gridSize.x, gridSize.y, gridOffset.x, gridOffset.y)
+
+	if gridSize then
+		--Controls.ImageGrid:SetHide(false)
+		Controls.ImageGrid:SetSize(gridSize)
+		Controls.ImageGrid:SetOffsetVal(gridOffset.x, gridOffset.y)
+		Controls.TextBox:SetSize({x = imageSize.x, y = 10 + 24 * textRows})
+		Controls.Trim:SetSize({x = gridSize.x - 20, y = 5})
+		Controls[imageFrame]:SetHide(false)
+		Controls[imageFrame]:SetTexture(dds)
+		Controls[imageFrame]:SetSize(imageSize)
+		Controls[imageFrame]:SetOffsetVal(imageOffset.x, imageOffset.y)
+		--Controls[imageFrame]:SetToolTipCallback(ArtCreditToolTip)
+		Controls.DescriptionLabel:SetText(text)
+		Controls.QuoteLabel:SetHide(true)
+		g_lastImageFrame = imageFrame
+	end
+end
 
 function ShowPortrait(info)
 	print("Running ShowPortrait")

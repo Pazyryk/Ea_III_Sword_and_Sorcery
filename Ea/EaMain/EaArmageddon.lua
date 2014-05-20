@@ -6,29 +6,19 @@ print("Loading EaMagic.lua...")
 local print = ENABLE_PRINT and print or function() end
 local Dprint = DEBUG_PRINT and print or function() end
 
-
--- 90%	Warning (popup will explain the basic idea of mana depletion)
--- 80%	Undead begin to spawn from old battlefields and city graveyards, and demons from any blighted plots (1% chance per plot per turn increasing to 10% as Mana depletes to zero).
--- 66%	Begins to sap happiness and health from all civilizations (-5 for both increasing to -20 as Mana depletes to zero).
--- 50%	Blight now spreads from already blighted plots (1% chance per blight per turn increasing to 10% as Mana depletes to zero)
--- 33%	All mana accumulative processes are reduced by 33% (increasing to 90% as Mana depletes to zero). Does not affect Divine Favor.
--- 25%	Blight begins to appear spontaneously (0.5% chance per unaffected plot per turn increasing to 2% as Mana depletes to zero).
--- 20%	Pestilence, the first of the Four Horsemen, arrives riding a White Horse. He carries the Bow of Pestilence (causing disease in all units hit) and the Crown of Pestilence (causing disease or plague in all nearby cities). 
--- 15%	War arrives riding a Red Horse. He carries a sword called War that causes nearby civilizations and city states to declare war on each other and the cities and units of larger civilizations to revolt and war upon their owners.
--- 10%	Famine arrives riding a Black Horse. He carries the Scales of Want which bring starvation to all nearby units and cities.
--- 5%	Death arrives riding a Pale Horse. He carries no items but kills by sword, famine, plague and the enraged beasts and animals of Éa.
--- 1%	The fabric of Éa unravels and the world ends in fiery armageddon. The primary contributor to this (i.e., the civilization that consumed the most mana) wins the Destroyer Victory.
-
-
-
 --------------------------------------------------------------
 -- File Locals
 --------------------------------------------------------------
 --constants
+local STARTING_SUM_OF_ALL_MANA =		MapModData.STARTING_SUM_OF_ALL_MANA
+local ARMAGEDDON_IMAGE_INFO =			GameInfo.EaPopups.EAPOPUP_DEATH_OTHER
+local ARMAGEDDON_SOUND =				"AS2D_EVENT_NOTIFICATION_VERY_BAD"
 
+--tables
+local gWorld =			gWorld
 
-
-
+--functions
+local Floor =			math.floor
 
 
 --------------------------------------------------------------
@@ -36,64 +26,132 @@ local Dprint = DEBUG_PRINT and print or function() end
 --------------------------------------------------------------
 
 function EaArmageddonPerTurn()
-	local manaPercent = 100 * gWorld.sumOfAllMana / MapModData.STARTING_SUM_OF_ALL_MANA
+	local manaPercent = 100 * gWorld.sumOfAllMana / STARTING_SUM_OF_ALL_MANA
 	local armageddonStage = gWorld.armageddonStage
 
-	if 90 < manaPercent then return end
+	-- Warning popup. Civilizations begin to account for mana depletion in diplo relations.
+	if 95 < manaPercent then return end
 	if armageddonStage < 1 then
 		gWorld.armageddonStage = 1
 		print("Armageddon stage 1")
-		--popup
+		local eaPlayer = gPlayers[Game.GetActivePlayer()]
+		local textKey = eaPlayer.bIsFallen and "TXT_KEY_EA_ARMAGEDDON_1B" or "TXT_KEY_EA_ARMAGEDDON_1A"
+		LuaEvents.EaImagePopup({type = "Generic", textKey = textKey, imageInfo = ARMAGEDDON_IMAGE_INFO, sound = ARMAGEDDON_SOUND})
 	end
-	if 80 < manaPercent then return end
+	-- effect added in EaDiplomacy.lua
+
+	-- Undead begin to spawn from old battlefields and city graveyards, and demons from breach
+	-- plots (if any exist). 1% chance per plot per turn increasing to 10% as the Sum of All
+	-- Mana depletes to zero.
+	if 90 < manaPercent then return end
 	if armageddonStage < 2 then
 		gWorld.armageddonStage = 2
 		print("Armageddon stage 2")
+		LuaEvents.EaImagePopup({type = "Generic", textKey = "TXT_KEY_EA_ARMAGEDDON_2", imageInfo = ARMAGEDDON_IMAGE_INFO, sound = ARMAGEDDON_SOUND})
 	end
-	if 66 < manaPercent then return end
+	-- effect added in EaPlots.lua
+
+	-- Begins to sap happiness and health from all civilizations. -2 for both increasing
+	-- to -40 as the Sum of All Mana approaches zero.
+	if 80 < manaPercent then return end
 	if armageddonStage < 3 then
 		gWorld.armageddonStage = 3
 		print("Armageddon stage 3")
+		LuaEvents.EaImagePopup({type = "Generic", textKey = "TXT_KEY_EA_ARMAGEDDON_3", imageInfo = ARMAGEDDON_IMAGE_INFO, sound = ARMAGEDDON_SOUND})
 	end
-	if 50 < manaPercent then return end
+	gWorld.armageddonSap = Floor(0.475 * (80 - manaPercent) + 2)		--TO DO: Implement effect!
+
+	-- Blight begins to spread from already blighted plots, and breach from already breached
+	-- plots. Blight spreads outward from existing blight (inhibited to some extent by living
+	-- terrain). Breach, if present, spreads in fault-like patterns over land and sea and
+	-- destroys everything in its path. The rate of spread increases as the Sum of All Mana
+	-- depletes to zero.
+	if 66 < manaPercent then return end
 	if armageddonStage < 4 then
 		gWorld.armageddonStage = 4
 		print("Armageddon stage 4")
+		LuaEvents.EaImagePopup({type = "Generic", textKey = "TXT_KEY_EA_ARMAGEDDON_4", imageInfo = ARMAGEDDON_IMAGE_INFO, sound = ARMAGEDDON_SOUND})
 	end
-	if 33 < manaPercent then return end
+	-- effect added in EaPlots.lua
+
+	-- All mana accumulative processes are reduced by 33%, and reduced further toward 90% as
+	-- the Sum of All Mana depletes to zero. (This does not affect divine favor.)
+	if 50 < manaPercent then return end
 	if armageddonStage < 5 then
 		gWorld.armageddonStage = 5
 		print("Armageddon stage 5")
+		LuaEvents.EaImagePopup({type = "Generic", textKey = "TXT_KEY_EA_ARMAGEDDON_5", imageInfo = ARMAGEDDON_IMAGE_INFO, sound = ARMAGEDDON_SOUND})
 	end
-	if 25 < manaPercent then return end
+
+	-- Blight begins to appear spontaneously. 0.5% chance per unaffected plot per turn increasing
+	-- to 2% as the Sum of All Mana depletes to zero.
+	if 33 < manaPercent then return end
 	if armageddonStage < 6 then
 		gWorld.armageddonStage = 6
 		print("Armageddon stage 6")
+		LuaEvents.EaImagePopup({type = "Generic", textKey = "TXT_KEY_EA_ARMAGEDDON_6", imageInfo = ARMAGEDDON_IMAGE_INFO, sound = ARMAGEDDON_SOUND})
 	end
-	if 20 < manaPercent then return end
+	-- effect added in EaPlots.lua
+
+	-- Pestilence, the first of the Four Horsemen, arrives riding a White Horse. He carries the
+	-- Sickening Bow and the Plague Crown which cause (respectively) sickness in all units and
+	-- plague in all cities that he attacks.
+	if 25 < manaPercent then return end
 	if armageddonStage < 7 then
 		gWorld.armageddonStage = 7
 		print("Armageddon stage 7")
+		--LuaEvents.EaImagePopup({type = "Generic", textKey = "TXT_KEY_EA_ARMAGEDDON_7", imageInfo = ARMAGEDDON_IMAGE_INFO, sound = ARMAGEDDON_SOUND})
+		--TO DO
 	end
-	if 15 < manaPercent then return end
+
+	-- War arrives riding a Red Horse. He carries a sword (also called War) that causes nearby
+	-- civilizations to sever relationships and war upon each other, and the cities and units of
+	-- larger civilizations to revolt and war upon their owners.
+	if 20 < manaPercent then return end
 	if armageddonStage < 8 then
 		gWorld.armageddonStage = 8
 		print("Armageddon stage 8")
+		--LuaEvents.EaImagePopup({type = "Generic", textKey = "TXT_KEY_EA_ARMAGEDDON_8", imageInfo = ARMAGEDDON_IMAGE_INFO, sound = ARMAGEDDON_SOUND})
+		--TO DO
 	end
-	if 10 < manaPercent then return end
+
+	-- Famine arrives riding a Black Horse. He carries the Scales of Insolvency which bring
+	-- starvation to all nearby units and cities.
+	if 15 < manaPercent then return end
 	if armageddonStage < 9 then
 		gWorld.armageddonStage = 9
 		print("Armageddon stage 9")
+		--LuaEvents.EaImagePopup({type = "Generic", textKey = "TXT_KEY_EA_ARMAGEDDON_9", imageInfo = ARMAGEDDON_IMAGE_INFO, sound = ARMAGEDDON_SOUND})
+		--TO DO
 	end
-	if 5 < manaPercent then return end
+
+	-- Death arrives riding a Pale Horse. He carries no items but kills by sword, famine, plague
+	-- and the enraged animals and beasts of Ea.
+	if 10 < manaPercent then return end
 	if armageddonStage < 10 then
 		gWorld.armageddonStage = 10
 		print("Armageddon stage 10")
+		--LuaEvents.EaImagePopup({type = "Generic", textKey = "TXT_KEY_EA_ARMAGEDDON_10", imageInfo = ARMAGEDDON_IMAGE_INFO, sound = ARMAGEDDON_SOUND})
+		--TO DO
 	end
-	if 1 < manaPercent then return end
+
+	-- Breach begins to appear spontaneously. Both breach and blight accelerate in their rate of
+	-- spread. The spawning rate of demons (from breach) and undead (from killing fields left by
+	-- the Four Horsemen) accelerates rapidly.
+	if 5 < manaPercent then return end
 	if armageddonStage < 11 then
 		gWorld.armageddonStage = 11
 		print("Armageddon stage 11")
+		LuaEvents.EaImagePopup({type = "Generic", textKey = "TXT_KEY_EA_ARMAGEDDON_11", imageInfo = ARMAGEDDON_IMAGE_INFO, sound = ARMAGEDDON_SOUND})
+	end
+	-- effect added in EaPlots.lua
+
+	-- The fabric of Ea unravels and the world ends in fiery Armageddon.
+	if 1 < manaPercent then return end
+	if armageddonStage < 12 then
+		gWorld.armageddonStage = 12
+		print("Armageddon stage 12")
+		--To Do: EOTW
 	end
 
 end

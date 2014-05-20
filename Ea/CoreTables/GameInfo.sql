@@ -37,7 +37,7 @@ ALTER TABLE HandicapInfos ADD COLUMN 'EaAIFreeTechs' INTEGER DEFAULT 0;		--Repla
 UPDATE HandicapInfos SET EaAIFreeTechs = ID - 3 WHERE Type IN ('HANDICAP_KING', 'HANDICAP_EMPEROR', 'HANDICAP_IMMORTAL', 'HANDICAP_DEITY');	-- 1-4 free techs (for King-Diety) given at turn 50, 100, 150, 200; these are free from KM
 
 
-UPDATE HandicapInfos SET HappinessDefault = HappinessDefault - 4;	--impossible to add unhappiness later, so take it away here so we can give/withdraw extra happiness
+UPDATE HandicapInfos SET HappinessDefault = HappinessDefault - 9;	--impossible to add unhappiness later, so take it away here so we can give/withdraw extra happiness
 
 DELETE FROM HandicapInfo_FreeTechs;		--empty in base
 DELETE FROM HandicapInfo_AIFreeTechs;

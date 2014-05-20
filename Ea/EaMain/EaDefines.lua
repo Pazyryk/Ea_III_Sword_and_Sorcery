@@ -293,6 +293,7 @@ gT = MapModData.gT
 
 gWorld = {	sumOfAllMana =				MapModData.STARTING_SUM_OF_ALL_MANA,
 			armageddonStage =			0,
+			armageddonSap =				0,
 			bAllCivsHaveNames =			false,
 			returnAsPlayer =			Game.GetActivePlayer(),
 			encampments =				{},

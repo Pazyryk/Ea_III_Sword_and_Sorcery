@@ -4,7 +4,8 @@
 	<Image Anchor="L,C" Offset="0,0" Texture="assets\UI\Art\WorldView\1920_LeftSide.DDS" Size="100.1200"/>
 	<Image Anchor="R,C" Offset="0,0" Texture="assets\UI\Art\WorldView\1920_RightSide.DDS" Size="100.1200"/>
 	<!-- City Information -->
-	<Grid Size="240,374" Anchor="L,T" Offset="-16,-9" Style="Grid9DetailSix140" Hidden="0" ID="TopLeft" ConsumeMouse="1">
+	<Grid Size="240,398" Anchor="L,T" Offset="-16,-9" Style="Grid9DetailSix140" Hidden="0" ID="TopLeft" ConsumeMouse="1">
+		<!-- Paz: changed grid size y from 374 to 398 -->
 		<Stack Anchor="L,T" Offset="17,8" Size="0,0" StackGrowth="Bottom" Padding="0">
 			<!-- Population Info -->
 			<Box Offset="0,32" Anchor="L,T" Size="210,64" Color="255,255,255,0" ID="PopulationBox">
@@ -46,6 +47,13 @@
 				<Label ID="SciencePerTurnLabel" Anchor="R,C" String="" Color0="Science.255" Color1="0.0.0.128" Color2="255.255.200.255" Font="EaTwCnMT20" FontStyle="Shadow"/>
 				<Box Anchor="L,B" Color="27.53.64.255" Offset="4,0" Size="196,1"/>
 			</Box>
+			<!-- Culture Info NotificationTileFrame / Paz: moved this one up and swapped CultureTimeTillGrowthLabel for trim box on bottom-->
+			<Box Offset="0,0" Anchor="L,T" Size="196,24" Color="255,255,255,0" ID="CultureBox">
+				<Label Anchor="L,C" Offset="6,0" String="[ICON_CULTURE]"/>
+				<Label Anchor="L,C" Offset="32,0" String="TXT_KEY_CITYVIEW_CULTURE_TEXT" Color0="Culture.255" Color1="0.0.0.128" Color2="255.255.200.255" Font="EaTwCnMT20" FontStyle="Shadow"/>
+				<Label ID="CulturePerTurnLabel" Anchor="R,C" Offset="0,0" String="" Color0="Culture.255" Color1="0.0.0.128" Color2="255.255.200.255" Font="EaTwCnMT20" FontStyle="Shadow"/>
+				<Box Anchor="L,B" Color="27.53.64.255" Offset="4,0" Size="196,1"/>			
+			</Box>
 			<!-- Faith Info -->
 			<Box Offset="0,0" Anchor="L,T" Size="196,24" Color="255,255,255,0" ID="FaithBox">
 				<Label Anchor="L,C" Offset="6,0" String="[ICON_PEACE]"/>
@@ -60,11 +68,18 @@
 				<Label ID="ManaPerTurnLabel" Anchor="R,C" String="" Font="EaTwCnMT20" FontStyle="Shadow"/>
 				<Box Anchor="L,B" Color="27.53.64.255" Offset="4,0" Size="196,1"/>
 			</Box>
-			<!-- Culture Info NotificationTileFrame -->
-			<Box Offset="0,0" Anchor="L,T" Size="196,24" Color="255,255,255,0" ID="CultureBox">
-				<Label Anchor="L,C" Offset="6,0" String="[ICON_CULTURE]"/>
-				<Label Anchor="L,C" Offset="32,0" String="TXT_KEY_CITYVIEW_CULTURE_TEXT" Color0="Culture.255" Color1="0.0.0.128" Color2="255.255.200.255" Font="EaTwCnMT20" FontStyle="Shadow"/>
-				<Label ID="CulturePerTurnLabel" Anchor="R,C" Offset="0,0" String="" Color0="Culture.255" Color1="0.0.0.128" Color2="255.255.200.255" Font="EaTwCnMT20" FontStyle="Shadow"/>
+			<!-- Paz added: City Happy Info -->
+			<!--<Box Offset="0,0" Anchor="L,T" Size="196,24" Color="255,255,255,0" ID="HappyBox">
+				<Label Anchor="L,C" Offset="6,0" String="[ICON_HAPPINESS_1]"/>
+				<Label Anchor="L,C" Offset="32,0" String="TXT_KEY_EA_CITYVIEW_MANA_TEXT" Font="EaTwCnMT20" FontStyle="Shadow"/>
+				<Label ID="ManaPerTurnLabel" Anchor="R,C" String="" Font="EaTwCnMT20" FontStyle="Shadow"/>
+				<Box Anchor="L,B" Color="27.53.64.255" Offset="4,0" Size="196,1"/>
+			</Box> -->
+			<!-- Paz added: Health Info -->
+			<Box Offset="0,0" Anchor="L,T" Size="196,24" Color="255,255,255,0" ID="HealthBox">
+				<Label ID="HealthIcon" Anchor="L,C" Offset="6,0" String="[ICON_HEALTH]"/>
+				<Label Anchor="L,C" Offset="32,0" String="TXT_KEY_EA_CITYVIEW_HEALTH_TEXT" Font="EaTwCnMT20" FontStyle="Shadow"/>
+				<Label ID="HealthLabel" Anchor="R,C" String="" Font="EaTwCnMT20" FontStyle="Shadow"/>
 				<Label ID="CultureTimeTillGrowthLabel" LeadingOffset="-4" WrapWidth="132" Anchor="L,T" Offset="72,44" String="" Color0="Culture.255" Color1="0.0.0.128" Font="EaTwCnMT14" FontStyle="Shadow"/>
 			</Box>
 			<Image Anchor="L,C" Offset="0,-4" Size="80,80" Texture="assets\UI\Art\Notification\NotificationTileFrame.dds">

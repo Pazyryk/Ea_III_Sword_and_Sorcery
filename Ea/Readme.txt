@@ -42,6 +42,8 @@ CanCreateTradeRoute(iOriginPlot, iDestPlot, iDestPlayer, eDomain, eConnectionTyp
 PlayerTechCostMod(iPlayer, techID)
 PlayerMinorFriendshipAnchor(eMajor, eMinor)
 
+
+
 --Added but currently disabled:
 //CityCanRangeStrikeAt(iAttacker, iCity, x, y)	CallTestAll
 

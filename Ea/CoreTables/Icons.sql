@@ -11,8 +11,8 @@ INSERT INTO IconTextureAtlases(Atlas,	IconSize,	Filename,					IconsPerRow,	Icons
 ('EA_RELIGION_ATLAS',					48,			'EaReligionAtlas48.dds',	8,				4			),
 ('EA_RELIGION_ATLAS',					45,			'EaReligionAtlas45.dds',	8,				4			),
 ('EA_RELIGION_ATLAS',					32,			'EaReligionAtlas32.dds',	8,				4			),
-('EA_RELIGION_STAR_ATLAS',				80,			'EaReligionStarAtlas32.dds',8,				4			),
-('EA_RELIGION_STAR_ATLAS',				48,			'EaReligionStarAtlas32.dds',8,				4			),
+('EA_RELIGION_STAR_ATLAS',				80,			'EaReligionStarAtlas80.dds',8,				4			),
+('EA_RELIGION_STAR_ATLAS',				48,			'EaReligionStarAtlas48.dds',8,				4			),
 ('EA_RELIGION_STAR_ATLAS',				32,			'EaReligionStarAtlas32.dds',8,				4			),
 ('EA_SPELLS_ATLAS',						64,			'EaSpellsAtlas64.dds',		8,				4			),
 ('EA_SPELLS_ATLAS',						48,			'EaSpellsAtlas48.dds',		8,				4			),
@@ -48,7 +48,9 @@ INSERT INTO  IconFontMapping(IconName,	IconMapping,	IconFontTexture) VALUES
 ('ICON_CULT_OF_PLOUTON',				17,				'EA_FONT_ICONS'	),
 ('ICON_CULT_OF_CAHRA',					18,				'EA_FONT_ICONS'	),
 ('ICON_CULT_OF_PLOUTON_HC',				25,				'EA_FONT_ICONS'	),
-('ICON_CULT_OF_CAHRA_HC',				26,				'EA_FONT_ICONS'	);
+('ICON_CULT_OF_CAHRA_HC',				26,				'EA_FONT_ICONS'	),
+('ICON_HEALTH',							33,				'EA_FONT_ICONS'	),
+('ICON_UNHEALTH',						34,				'EA_FONT_ICONS'	);
 
 
 INSERT INTO EaDebugTableCheck(FileName) SELECT 'Icons.sql';

@@ -1438,6 +1438,10 @@
       <SubType>Lua</SubType>
       <ImportIntoVFS>True</ImportIntoVFS>
     </Content>
+    <Content Include="Utilities\EaHealthHelper.lua">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
     <Content Include="Utilities\RiverConnections.lua">
       <SubType>Lua</SubType>
       <ImportIntoVFS>True</ImportIntoVFS>
@@ -1455,6 +1459,14 @@
       <ImportIntoVFS>True</ImportIntoVFS>
     </Content>
     <Content Include="_MoveToMediaPack\3DUnits\magic_missile.gr2">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="_MoveToMediaPack\FontIcons\EaFontIcons.dds">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="_MoveToMediaPack\FontIcons\EaFontIcons.ggxml">
       <SubType>Lua</SubType>
       <ImportIntoVFS>True</ImportIntoVFS>
     </Content>
@@ -1488,6 +1500,7 @@
     <Folder Include="Utilities" />
     <Folder Include="_MoveToMediaPack\IconAtlases" />
     <Folder Include="_MoveToMediaPack\3DUnits" />
+    <Folder Include="_MoveToMediaPack\FontIcons" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Firaxis\ModBuddy\Civ5Mod.targets" />
 </Project>

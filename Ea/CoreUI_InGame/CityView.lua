@@ -8,6 +8,7 @@ include( "TutorialPopupScreen" );
 include( "InfoTooltipInclude" );
 
 --Paz add
+include("EaHealthHelper.lua")
 local MapModData = MapModData
 MapModData.gT = MapModData.gT or {}
 local gT = MapModData.gT
@@ -1512,10 +1513,21 @@ function OnCityViewUpdate()
 			Controls.ManaBox:SetHide(false)
 			local iManaPerTurn = pCity:GetFaithPerTurn() + pCity:GetBaseYieldRateFromMisc(YieldTypes.YIELD_FAITH)
 			Controls.ManaPerTurnLabel:SetText( Locale.ConvertTextKey("TXT_KEY_CITYVIEW_PERTURN_TEXT", iManaPerTurn) )
+		
+		--TO DO: hide both for non magic civ
+		
 		end
-
-
 		--end Paz modify
+		--Paz add
+		local health = GetCityHealthForUI(pCity, false)
+		if health < 0 then
+			Controls.HealthIcon:SetText("[ICON_UNHEALTH]")
+			Controls.HealthLabel:LocalizeAndSetText("TXT_KEY_CITYVIEW_PERTURN_TEXT_NEGATIVE", health)
+		else
+			Controls.HealthIcon:SetText("[ICON_HEALTH]")
+			Controls.HealthLabel:LocalizeAndSetText("TXT_KEY_CITYVIEW_PERTURN_TEXT", health)
+		end
+		--end Paz add
 
 		local cityGrowth = pCity:GetFoodTurnsLeft();			
 		if (pCity:IsFoodProduction() or pCity:FoodDifferenceTimes100() == 0) then
@@ -1810,8 +1822,11 @@ function DoUpdateUpperLeftTooltips()
 	Controls.FaithBox:SetToolTipString(strFaithToolTip);
 
 	--Paz add
-	local strManaToolTip = GetManaTooltip(pCity);
-	Controls.ManaBox:SetToolTipString(strManaToolTip);
+	local strManaToolTip = GetManaTooltip(pCity)
+	Controls.ManaBox:SetToolTipString(strManaToolTip)
+
+	local strHealthToolTip = GetCityHealthForUI(pCity, true)	--in EaHealthHelper.lua
+	Controls.HealthBox:SetToolTipString(strHealthToolTip)
 	-- end Paz add
 
 end

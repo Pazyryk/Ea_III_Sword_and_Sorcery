@@ -39,6 +39,12 @@ local playerType = MapModData.playerType
 local Floor = math.floor
 local Rand = Map.Rand
 
+--localized tables
+local Players =		Players
+local Teams =		Teams
+local gPlayers =	gPlayers
+local gWorld =		gWorld
+
 --shared
 local gg_bHasPatronage = gg_bHasPatronage
 local gg_teamCanMeetGods = gg_teamCanMeetGods
@@ -470,6 +476,10 @@ function FullCivPerCivTurn(iPlayer)		-- called for full civs only
 	end
 end
 
+--------------------------------------------------------------
+-- GameEvents
+--------------------------------------------------------------
+
 local function OnPlayerMinorFriendshipAnchor(iMajorPlayer, iMinorPlayer)
 	--print("OnPlayerMinorFriendshipAnchor ", iMajorPlayer, iMinorPlayer)
 
@@ -509,7 +519,7 @@ local function OnPlayerMinorFriendshipDecayMod(iMajorPlayer, iMinorPlayer)
 	else	-- God
 		local templeWonderID = godTempleID[iMinorPlayer]
 		if templeWonderID and gWonders[templeWonderID] and gWonders[templeWonderID].iPlayer == iMajorPlayer then
-			return -50
+			return -33
 		end
 		return 0
 	end

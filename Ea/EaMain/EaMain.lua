@@ -42,6 +42,7 @@ include("EaMiscUtils.lua")
 include("EaCultureLevelHelper.lua")
 include("EaGPSpawnHelper.lua")
 include("EaFaithHelper.lua")
+include("EaHealthHelper.lua")
 include("EaVictoriesHelper.lua")
 include("RiverConnections.lua")
 

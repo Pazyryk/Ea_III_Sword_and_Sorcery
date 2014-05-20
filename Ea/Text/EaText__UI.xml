@@ -199,6 +199,9 @@
 		<Row Tag="TXT_KEY_EA_CITYVIEW_MANA_TEXT">
 			<Text>Mana</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_CITYVIEW_HEALTH_TEXT">
+			<Text>Health</Text>
+		</Row>
 
 		<!-- Info Tooltip -->
 		<Row Tag="TXT_KEY_EA_FAVOR_HELP_INFO">
@@ -232,7 +235,63 @@
 		</Row>
 		
 		<!-- POPUPS -->
-
+		<!-- Armageddon Popup -->
+		<Row Tag="TXT_KEY_EA_ARMAGEDDON_1A">
+			<Text>The Fallen (followers of Aŋra and those that know Maleficium) have begun to consume mana at a dangerous rate. Mana is the material fabric of Éa and all things in it, and it cannot be replenished. If this process goes unchecked, the weave of the world will begin to fray. It will eventually come apart at the seams.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ARMAGEDDON_1B">
+			<Text>Other civilizations have begun to take note of your use of mana. They feel that its consumption may damage the world. But it is a silly concern: the Sum of All Mana is quite large. Perhaps they will move on to more immediate problems.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ARMAGEDDON_2">
+			<Text>The Sum of All Mana has been depleted to 90%. Undead begin to spawn from old battlefields and city graveyards, and demons from breach plots (1% chance per plot per turn increasing to 10% as the Sum of All Mana depletes to zero).</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ARMAGEDDON_3">
+			<Text>The Sum of All Mana has been depleted to 80%. The effect begins to sap the happiness and health of from all civilizations (+2 unhappiness and unhealth increasing to 40 as the Sum of All Mana approaches zero).</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ARMAGEDDON_4">
+			<Text>The Sum of All Mana has been depleted to 66%. Blight begins to spread from already blighted plots, and breach from already breached plots. The rate of spread increases as the Sum of All Mana depletes to zero.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ARMAGEDDON_5">
+			<Text>The Sum of All Mana has been depleted to 50%. All mana accumulative processes are reduced by 33% (and reduced further toward 90% as the Sum of All Mana depletes to zero). This does not affect divine favor.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ARMAGEDDON_6">
+			<Text>The Sum of All Mana has been depleted to 33%. Blight begins to appear spontaneously (0.5% chance per unaffected plot per turn increasing to 2% as the Sum of All Mana depletes to zero).</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ARMAGEDDON_7">
+			<Text>The Sum of All Mana has been depleted to 25%. Pestilence, the first of the Four Horsemen, arrives riding a White Horse. He carries the Sickening Bow and the Plague Crown which cause (respectively) sickness in all units and plague in all cities that he attacks.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ARMAGEDDON_8">
+			<Text>The Sum of All Mana has been depleted to 20%. War arrives riding a Red Horse. He carries a sword (also called War) that causes nearby civilizations to sever relationships and war upon each other, and the cities and units of larger civilizations to revolt and war upon their owners.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ARMAGEDDON_9">
+			<Text>The Sum of All Mana has been depleted to 15%. Famine arrives riding a Black Horse. He carries the Scales of Insolvency which bring starvation to all nearby units and cities.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ARMAGEDDON_10">
+			<Text>The Sum of All Mana has been depleted to 10%. Death arrives riding a Pale Horse. He carries no items but kills by sword, famine, plague and the enraged animals and beasts of Ea.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ARMAGEDDON_11">
+			<Text>The Sum of All Mana has been depleted to 5%. Breach begins to appear spontaneously. Both breach and blight accelerate in their rate of spread. The spawning rate of demons (from breach) and undead (from killing fields left by the Four Horsemen) accelerates rapidly.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_HEALTH_FROM_HANDICAP">
+			<Text>from Difficulty Level</Text>
+		</Row>
+		<Row Tag="TXT_KEY_HEALTH_FROM_AI_HANDICAP">
+			<Text>from AI Growth Handicap</Text>
+		</Row>
+		<Row Tag="TXT_KEY_HEALTH_FROM_BUILDINGS">
+			<Text>from Buildings</Text>
+		</Row>
+		<Row Tag="TXT_KEY_HEALTH_FROM_ANRA">
+			<Text>from Followers of Aŋra in this City</Text>
+		</Row>
+		<Row Tag="TXT_KEY_HEALTH_FROM_ARMAGEDDON">
+			<Text>from Consumption of Mana by the Fallen</Text>
+		</Row>
+		<Row Tag="TXT_KEY_HEALTH_FROM_POPULATION">
+			<Text>from Population</Text>
+		</Row>
+		
+		
 		<!-- City State (and Gods) Popup -->
 		<Row Tag="TXT_KEY_EA_GODS_CAPITALS">
 			<Text>GODS</Text>

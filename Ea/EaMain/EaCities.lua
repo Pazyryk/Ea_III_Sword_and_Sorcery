@@ -189,16 +189,12 @@ local g_iActivePlayer = Game.GetActivePlayer()
 
 local buildingOccupationMod = {}
 local prohibitSellBuildings = {}
-local buildingHealthMod = {}
 for buildingInfo in GameInfo.Buildings() do
 	if buildingInfo.EaOccupationUnhapReduction > 0 then
 		buildingOccupationMod[buildingInfo.ID] = buildingInfo.EaOccupationUnhapReduction
 	end
 	if buildingInfo.EaProhibitSell then
 		prohibitSellBuildings[buildingInfo.ID] = true
-	end
-	if buildingInfo.EaHealth > 0 then
-		buildingHealthMod[buildingInfo.ID] = buildingInfo.EaHealth
 	end
 end
 
@@ -711,7 +707,6 @@ function CityPerCivTurn(iPlayer)		--Full civ only
 	local Floor = math.floor
 	print("CityPerCivTurn; City info (Name/Size/BuildQueue):")
 
-
 	local gameTurn = Game.GetGameTurn()
 	local eaPlayer = gPlayers[iPlayer]
 	local player = Players[iPlayer]
@@ -721,10 +716,9 @@ function CityPerCivTurn(iPlayer)		--Full civ only
 	local bAI = bFullCivAI[iPlayer]
 	local bAnraFounded = gReligions[RELIGION_ANRA] ~= nil
 	local bCheckWindy = team:IsHasTech(TECH_MILLING)
-	--
+	local aiGrowthPercent = g_handicapAIGrowthBonus[iPlayer]
 
 	local cityCount = 0
-
 	--cycle through gCities
 	for iPlot, eaCity in pairs(gCities) do
 		if eaCity.iOwner == iPlayer then
@@ -744,24 +738,11 @@ function CityPerCivTurn(iPlayer)		--Full civ only
 
 				--Disease/Plague: +values represent turns remaining for disease, -values represents turns remaining for plague
 				if eaCity.disease == 0 then
-					local totalHealth = 12
-					for buildingID, healthMod in pairs(buildingHealthMod) do
-						if city:GetNumBuilding(buildingID) == 1 then
-							totalHealth = totalHealth + healthMod
-						end
-					end
-					if bAI then
-						totalHealth = Floor(totalHealth * g_handicapAIGrowthBonus[iPlayer] / 100)
-					end
-					--print("totalHealth = ", totalHealth)
-					local plagueChance = size - totalHealth
+					local health, diseaseChance, plagueChance = GetCityHealthInfo(city, eaCity, size, followerReligion, aiGrowthPercent, false)
 					if 0 < plagueChance and Rand(100, "plague role") < plagueChance then
 						eaCity.disease = -Rand(Floor(0.66 * size), "hello") - 1
-					else
-						local diseaseChance = plagueChance + 5
-						if 0 < diseaseChance and Rand(100, "disease role") < diseaseChance then
-							eaCity.disease = Rand(Floor(0.33 * size), "hello") + 1
-						end
+					elseif 0 < diseaseChance and Rand(100, "disease role") < diseaseChance then
+						eaCity.disease = Rand(Floor(0.33 * size), "hello") + 1
 					end
 				end
 				if eaCity.disease ~= 0 then

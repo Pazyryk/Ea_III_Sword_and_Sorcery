@@ -455,7 +455,7 @@ end
 --------------------------------------------------------------
 
 function BlightPlot(plot, iPlayer, iPerson, strength, bTestCanCast)		--last 4 are optional
-	print("BlightPlot ", plot, iPlayer, iPerson, strength)
+	print("BlightPlot ", plot, iPlayer, iPerson, strength, bTestCanCast)
 	local featureID = plot:GetFeatureType()
 	if featureID == FEATURE_BLIGHT or featureID == FEATURE_FALLOUT or featureID >= FEATURE_CRATER or plot:IsCity() then return false end
 
@@ -481,10 +481,10 @@ function BlightPlot(plot, iPlayer, iPerson, strength, bTestCanCast)		--last 4 ar
 	end
 
 	--protected by ward?
-	local effectID, effectStength, iPlayer, iCaster = plot:GetPlotEffectData()
+	local effectID, effectStength, iEffectPlayer, iEffectCaster = plot:GetPlotEffectData()
 	if effectID == EA_PLOTEFFECT_PROTECTIVE_WARD then
 		if strength < effectStength then
-			plot:SetPlotEffectData(effectID, effectStength - strength, iPlayer, iCaster)
+			plot:SetPlotEffectData(effectID, effectStength - strength, iEffectPlayer, iEffectCaster)
 			plot:AddFloatUpMessage(Locale.Lookup("TXT_KEY_EA_PLOT_PROTECTED_BY_WARD"))
 			return false
 		else
@@ -521,8 +521,8 @@ function BlightPlot(plot, iPlayer, iPerson, strength, bTestCanCast)		--last 4 ar
 	return true
 end
 
-function BreachPlot(plot, iPlayer, iPerson, strength, bTestCanBlight)		--last 4 are optional
-	print("BreachPlot ", plot, iPlayer, iPerson)
+function BreachPlot(plot, iPlayer, iPerson, strength, bTestCanBreach)		--last 4 are optional
+	print("BreachPlot ", plot, iPlayer, iPerson, strength, bTestCanBreach)
 	if plot:IsWater() or plot:IsMountain() or plot:IsCity() then return false end
 	local featureID = plot:GetFeatureType()
 	if featureID == FEATURE_FALLOUT or featureID >= FEATURE_CRATER then return false end
@@ -547,31 +547,39 @@ function BreachPlot(plot, iPlayer, iPerson, strength, bTestCanBlight)		--last 4 
 	local livingTerrainStrength = plot:GetLivingTerrainStrength()
 	if livingTerrainStrength > 0 then
 		if strength < livingTerrainStrength then
-			plot:SetLivingTerrainStrength(livingTerrainStrength - strength)
-			plot:AddFloatUpMessage(Locale.Lookup("TXT_KEY_EA_PLOT_PROTECTED_BY_LIVING_TERRAIN"))
+			if not bTestCanBreach then
+				plot:SetLivingTerrainStrength(livingTerrainStrength - strength)
+				plot:AddFloatUpMessage(Locale.Lookup("TXT_KEY_EA_PLOT_PROTECTED_BY_LIVING_TERRAIN"))
+			end
 			return false
 		else
-			plot:SetLivingTerrainStrength(0)
+			if not bTestCanBreach then
+				plot:SetLivingTerrainStrength(0)
+			end
 			strength = strength - livingTerrainStrength
 			manaConsumed = manaConsumed + livingTerrainStrength
 		end
 	end
 
 	--protected by ward?
-	local effectID, effectStength, iPlayer, iCaster = plot:GetPlotEffectData()
+	local effectID, effectStength, iEffectPlayer, iEffectCaster = plot:GetPlotEffectData()
 	if effectID == EA_PLOTEFFECT_PROTECTIVE_WARD then
 		if strength < effectStength then
-			plot:SetPlotEffectData(effectID, effectStength - strength, iPlayer, iCaster)
-			plot:AddFloatUpMessage(Locale.Lookup("TXT_KEY_EA_PLOT_PROTECTED_BY_WARD"))
+			if not bTestCanBreach then
+				plot:SetPlotEffectData(effectID, effectStength - strength, iEffectPlayer, iEffectCaster)
+				plot:AddFloatUpMessage(Locale.Lookup("TXT_KEY_EA_PLOT_PROTECTED_BY_WARD"))
+			end
 			return false
 		else
-			plot:SetPlotEffectData(-1,-1,-1,-1)
-			strength = strength - effectStength
-			manaConsumed = manaConsumed + effectStength
+			if not bTestCanBreach then
+				plot:SetPlotEffectData(-1,-1,-1,-1)
+				strength = strength - effectStength
+				manaConsumed = manaConsumed + effectStength
+			end
 		end
 	end
 
-	if bTestCanBlight then return true end
+	if bTestCanBreach then return true end
 
 	--OK to Breach!
 	plot:SetImprovementType(-1)
@@ -582,6 +590,7 @@ function BreachPlot(plot, iPlayer, iPerson, strength, bTestCanBlight)		--last 4 
 	end
 
 	local player = iPlayer and Players[iPlayer]
+
 	if player and player:IsAlive() then
 		UseManaOrDivineFavor(iPlayer, iPerson, manaConsumed, false)
 	else

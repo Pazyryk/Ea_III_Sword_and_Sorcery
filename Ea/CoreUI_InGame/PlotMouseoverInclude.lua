@@ -117,7 +117,7 @@ function GetCivStateQuestString(plot, bShortVersion)
 		if (resultStr ~= "") then
 			resultStr = resultStr .. "[NEWLINE]"
 		end
-		resultStr = resultStr .. txtColorTag .. effectStr .. " (" .. ownerStr .. ")[ENDCOLOR]"
+		resultStr = resultStr .. txtColorTag .. effectStr .. " (" .. ownerStr .. "; " .. effectStength .. ")[ENDCOLOR]"
 	end
 	--end Paz add
 	

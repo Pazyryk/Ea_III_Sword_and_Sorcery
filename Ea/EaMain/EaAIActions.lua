@@ -454,13 +454,15 @@ AITarget.VacantTower = function()
 	end
 end
 
-AITarget.TowerToWide = function()			-- Test in caster's tower and even rings out to distance 10 (exclude water)
+local wideSearchRings = {2,4,6,9,12,15}
+
+AITarget.TowerToWide = function()			-- Test in caster's tower and spaced out rings to distance 15 (exclude water)
 	local tower = gWonders[EA_WONDER_ARCANE_TOWER][g_iPerson]
 	if tower then
 		local x, y = GetXYFromPlotIndex(tower.iPlot)
 		TestAddOption("Plot", x, y, 0, nil)
 	end
-	for radius = 2, 10, 2 do
+	for _, radius in pairs(wideSearchRings) do
 		for plot in PlotRingIterator(g_gpPlot, radius, 1, false) do
 			if not plot:IsWater() then
 				local x, y = plot:GetXY()
@@ -645,7 +647,7 @@ AITarget.WonderWorkPlot = function()			--Ideally, 1 plot per city that is good t
 	end
 end
 
-AITarget.BoobyTrap = function()		--heuristic for testing Explosive Rune and Death Rune
+AITarget.HomelandProtection = function()		--heuristic for testing Explosive Rune and Death Rune
 	for city in g_player:Cities() do
 		if city:IsCapital() then
 			for x, y in PlotToRadiusIterator(city:GetX(), city:GetY(), 3, nil, nil, false) do
@@ -658,6 +660,14 @@ AITarget.BoobyTrap = function()		--heuristic for testing Explosive Rune and Deat
 		end
 	end
 end
+
+AITarget.RevealedGRWs = function()		--for Dispel Glyphs, Runes and Wards
+	for iPlot in pairs(g_eaPlayer.revealedPlotEffects) do
+		local x, y = GetXYFromPlotIndex(iPlot)
+		TestAddOption("Plot", x, y, 0, nil)
+	end
+end
+
 
 -------------------------------------------------------------------------------
 

@@ -89,6 +89,7 @@ LuaEvents.EaMagicGenerateLearnableSpellList.Add(function(iPlayer, iPerson, spell
 
 
 function UseManaOrDivineFavor(iPlayer, iPerson, pts, bNoDrain, consumedFloatUpPlot)
+	print("UseManaOrDivineFavor ", iPlayer, iPerson, pts, bNoDrain, consumedFloatUpPlot)
 	--All mana or divine favor use should go through here!
 
 	--Reduces player faith, adds GP xp and depletes Ea's mana if appropriate
@@ -231,7 +232,8 @@ function UpdatePlotEffectHighlight(iPlot, newShowState, bForceFullUpdate)	--all 
 		Events.ClearHexHighlightStyle("")
 	else
 		if g_plotEffectsShowState == 0 and newShowState == nil and not bForceFullUpdate then return end
-		if newShowState then
+		if newShowState and newShowState ~= g_plotEffectsShowState then
+			bForceFullUpdate = true
 			g_plotEffectsShowState = newShowState
 		end
 

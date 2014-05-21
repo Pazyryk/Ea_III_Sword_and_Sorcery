@@ -454,7 +454,7 @@
     <DeployMod>true</DeployMod>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="EaMain\EaNIMBY.lua">
+    <Content Include="Utilities\EaNIMBY.lua">
       <SubType>Lua</SubType>
       <ImportIntoVFS>True</ImportIntoVFS>
     </Content>

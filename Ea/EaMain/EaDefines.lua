@@ -12,7 +12,7 @@ print("Loading EaDefines.lua...")
 ENABLE_PRINT = true
 DEBUG_PRINT = false
 MapModData.DEBUG_PRINT = DEBUG_PRINT
-MapModData.bDebugShowHiddenBuildings = true
+MapModData.bDebugShowHiddenBuildings = false
 
 MapModData.bDisableEnabledPolicies = true
 
@@ -20,15 +20,15 @@ MapModData.bDisableEnabledPolicies = true
 -- Settings
 --------------------------------------------------------------
 
-MapModData.STARTING_SUM_OF_ALL_MANA = 1000000
-MOD_MEMORY_HALFLIFE = 50	--What AI is doing now is twice as important as this many turns ago
+MapModData.STARTING_SUM_OF_ALL_MANA = 100000
+MOD_MEMORY_HALFLIFE = 30	--What AI is doing now is twice as important as this many turns ago
 
 --------------------------------------------------------------
 -- Global Constants
 --------------------------------------------------------------
 
 WeakKeyMetatable = {__mode = "k"}
-
+OutOfRangeReturnZeroMetaTable = {__index = function() return 0 end}	--return 0 rather than nil for out of range index
 
 local gameSpeedMultipliers = {	[GameInfoTypes.GAMESPEED_QUICK] = 1,
 								[GameInfoTypes.GAMESPEED_STANDARD] = 1.5,

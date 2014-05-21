@@ -35,8 +35,10 @@ function EaArmageddonPerTurn()
 		gWorld.armageddonStage = 1
 		print("Armageddon stage 1")
 		local eaPlayer = gPlayers[Game.GetActivePlayer()]
-		local textKey = eaPlayer.bIsFallen and "TXT_KEY_EA_ARMAGEDDON_1B" or "TXT_KEY_EA_ARMAGEDDON_1A"
-		LuaEvents.EaImagePopup({type = "Generic", textKey = textKey, imageInfo = ARMAGEDDON_IMAGE_INFO, sound = ARMAGEDDON_SOUND})
+		if eaPlayer then			--will skip if autoplay
+			local textKey = eaPlayer.bIsFallen and "TXT_KEY_EA_ARMAGEDDON_1B" or "TXT_KEY_EA_ARMAGEDDON_1A"
+			LuaEvents.EaImagePopup({type = "Generic", textKey = textKey, imageInfo = ARMAGEDDON_IMAGE_INFO, sound = ARMAGEDDON_SOUND})
+		end
 	end
 	-- effect added in EaDiplomacy.lua
 
@@ -47,9 +49,12 @@ function EaArmageddonPerTurn()
 	if armageddonStage < 2 then
 		gWorld.armageddonStage = 2
 		print("Armageddon stage 2")
-		LuaEvents.EaImagePopup({type = "Generic", textKey = "TXT_KEY_EA_ARMAGEDDON_2", imageInfo = ARMAGEDDON_IMAGE_INFO, sound = ARMAGEDDON_SOUND})
+		local eaPlayer = gPlayers[Game.GetActivePlayer()]
+		if eaPlayer then			--will skip if autoplay
+			LuaEvents.EaImagePopup({type = "Generic", textKey = "TXT_KEY_EA_ARMAGEDDON_2", imageInfo = ARMAGEDDON_IMAGE_INFO, sound = ARMAGEDDON_SOUND})
+		end
 	end
-	-- effect added in EaPlots.lua
+	-- effect added in EaBarbarians.lua
 
 	-- Begins to sap happiness and health from all civilizations. -2 for both increasing
 	-- to -20 as the Sum of All Mana approaches zero.
@@ -57,9 +62,12 @@ function EaArmageddonPerTurn()
 	if armageddonStage < 3 then
 		gWorld.armageddonStage = 3
 		print("Armageddon stage 3")
-		LuaEvents.EaImagePopup({type = "Generic", textKey = "TXT_KEY_EA_ARMAGEDDON_3", imageInfo = ARMAGEDDON_IMAGE_INFO, sound = ARMAGEDDON_SOUND})
+		local eaPlayer = gPlayers[Game.GetActivePlayer()]
+		if eaPlayer then			--will skip if autoplay
+			LuaEvents.EaImagePopup({type = "Generic", textKey = "TXT_KEY_EA_ARMAGEDDON_3", imageInfo = ARMAGEDDON_IMAGE_INFO, sound = ARMAGEDDON_SOUND})
+		end
 	end
-	gWorld.armageddonSap = Floor(0.225 * (80 - manaPercent) + 2)
+	gWorld.armageddonSap = Floor(0.225 * (80 - manaPercent) + 2)	--health sap applied in EaCities.lua and happiness sap in EaCivs.lua
 
 	-- Blight begins to spread from already blighted plots, and breach from already breached
 	-- plots. Blight spreads outward from existing blight (inhibited to some extent by living
@@ -70,7 +78,10 @@ function EaArmageddonPerTurn()
 	if armageddonStage < 4 then
 		gWorld.armageddonStage = 4
 		print("Armageddon stage 4")
-		LuaEvents.EaImagePopup({type = "Generic", textKey = "TXT_KEY_EA_ARMAGEDDON_4", imageInfo = ARMAGEDDON_IMAGE_INFO, sound = ARMAGEDDON_SOUND})
+		local eaPlayer = gPlayers[Game.GetActivePlayer()]
+		if eaPlayer then			--will skip if autoplay
+			LuaEvents.EaImagePopup({type = "Generic", textKey = "TXT_KEY_EA_ARMAGEDDON_4", imageInfo = ARMAGEDDON_IMAGE_INFO, sound = ARMAGEDDON_SOUND})
+		end
 	end
 	-- effect added in EaPlots.lua
 
@@ -80,8 +91,12 @@ function EaArmageddonPerTurn()
 	if armageddonStage < 5 then
 		gWorld.armageddonStage = 5
 		print("Armageddon stage 5")
-		LuaEvents.EaImagePopup({type = "Generic", textKey = "TXT_KEY_EA_ARMAGEDDON_5", imageInfo = ARMAGEDDON_IMAGE_INFO, sound = ARMAGEDDON_SOUND})
+		local eaPlayer = gPlayers[Game.GetActivePlayer()]
+		if eaPlayer then			--will skip if autoplay
+			LuaEvents.EaImagePopup({type = "Generic", textKey = "TXT_KEY_EA_ARMAGEDDON_5", imageInfo = ARMAGEDDON_IMAGE_INFO, sound = ARMAGEDDON_SOUND})
+		end
 	end
+	-- TO DO: Implement!
 
 	-- Blight begins to appear spontaneously. 0.5% chance per unaffected plot per turn increasing
 	-- to 2% as the Sum of All Mana depletes to zero.
@@ -89,7 +104,10 @@ function EaArmageddonPerTurn()
 	if armageddonStage < 6 then
 		gWorld.armageddonStage = 6
 		print("Armageddon stage 6")
-		LuaEvents.EaImagePopup({type = "Generic", textKey = "TXT_KEY_EA_ARMAGEDDON_6", imageInfo = ARMAGEDDON_IMAGE_INFO, sound = ARMAGEDDON_SOUND})
+		local eaPlayer = gPlayers[Game.GetActivePlayer()]
+		if eaPlayer then			--will skip if autoplay
+			LuaEvents.EaImagePopup({type = "Generic", textKey = "TXT_KEY_EA_ARMAGEDDON_6", imageInfo = ARMAGEDDON_IMAGE_INFO, sound = ARMAGEDDON_SOUND})
+		end
 	end
 	-- effect added in EaPlots.lua
 
@@ -100,7 +118,10 @@ function EaArmageddonPerTurn()
 	if armageddonStage < 7 then
 		gWorld.armageddonStage = 7
 		print("Armageddon stage 7")
-		--LuaEvents.EaImagePopup({type = "Generic", textKey = "TXT_KEY_EA_ARMAGEDDON_7", imageInfo = ARMAGEDDON_IMAGE_INFO, sound = ARMAGEDDON_SOUND})
+		local eaPlayer = gPlayers[Game.GetActivePlayer()]
+		if eaPlayer then			--will skip if autoplay
+			--LuaEvents.EaImagePopup({type = "Generic", textKey = "TXT_KEY_EA_ARMAGEDDON_7", imageInfo = ARMAGEDDON_IMAGE_INFO, sound = ARMAGEDDON_SOUND})
+		end
 		--TO DO
 	end
 
@@ -111,7 +132,10 @@ function EaArmageddonPerTurn()
 	if armageddonStage < 8 then
 		gWorld.armageddonStage = 8
 		print("Armageddon stage 8")
-		--LuaEvents.EaImagePopup({type = "Generic", textKey = "TXT_KEY_EA_ARMAGEDDON_8", imageInfo = ARMAGEDDON_IMAGE_INFO, sound = ARMAGEDDON_SOUND})
+		local eaPlayer = gPlayers[Game.GetActivePlayer()]
+		if eaPlayer then			--will skip if autoplay
+			--LuaEvents.EaImagePopup({type = "Generic", textKey = "TXT_KEY_EA_ARMAGEDDON_8", imageInfo = ARMAGEDDON_IMAGE_INFO, sound = ARMAGEDDON_SOUND})
+		end
 		--TO DO
 	end
 
@@ -121,7 +145,10 @@ function EaArmageddonPerTurn()
 	if armageddonStage < 9 then
 		gWorld.armageddonStage = 9
 		print("Armageddon stage 9")
-		--LuaEvents.EaImagePopup({type = "Generic", textKey = "TXT_KEY_EA_ARMAGEDDON_9", imageInfo = ARMAGEDDON_IMAGE_INFO, sound = ARMAGEDDON_SOUND})
+		local eaPlayer = gPlayers[Game.GetActivePlayer()]
+		if eaPlayer then			--will skip if autoplay
+			--LuaEvents.EaImagePopup({type = "Generic", textKey = "TXT_KEY_EA_ARMAGEDDON_9", imageInfo = ARMAGEDDON_IMAGE_INFO, sound = ARMAGEDDON_SOUND})
+		end
 		--TO DO
 	end
 
@@ -131,7 +158,10 @@ function EaArmageddonPerTurn()
 	if armageddonStage < 10 then
 		gWorld.armageddonStage = 10
 		print("Armageddon stage 10")
-		--LuaEvents.EaImagePopup({type = "Generic", textKey = "TXT_KEY_EA_ARMAGEDDON_10", imageInfo = ARMAGEDDON_IMAGE_INFO, sound = ARMAGEDDON_SOUND})
+		local eaPlayer = gPlayers[Game.GetActivePlayer()]
+		if eaPlayer then			--will skip if autoplay
+			--LuaEvents.EaImagePopup({type = "Generic", textKey = "TXT_KEY_EA_ARMAGEDDON_10", imageInfo = ARMAGEDDON_IMAGE_INFO, sound = ARMAGEDDON_SOUND})
+		end
 		--TO DO
 	end
 
@@ -142,7 +172,10 @@ function EaArmageddonPerTurn()
 	if armageddonStage < 11 then
 		gWorld.armageddonStage = 11
 		print("Armageddon stage 11")
-		LuaEvents.EaImagePopup({type = "Generic", textKey = "TXT_KEY_EA_ARMAGEDDON_11", imageInfo = ARMAGEDDON_IMAGE_INFO, sound = ARMAGEDDON_SOUND})
+		local eaPlayer = gPlayers[Game.GetActivePlayer()]
+		if eaPlayer then			--will skip if autoplay
+			LuaEvents.EaImagePopup({type = "Generic", textKey = "TXT_KEY_EA_ARMAGEDDON_11", imageInfo = ARMAGEDDON_IMAGE_INFO, sound = ARMAGEDDON_SOUND})
+		end
 	end
 	-- effect added in EaPlots.lua
 
@@ -151,13 +184,16 @@ function EaArmageddonPerTurn()
 	if armageddonStage < 12 then
 		gWorld.armageddonStage = 12
 		print("Armageddon stage 12")
-		--To Do: EOTW
+		--To Do: EOTW fireworks
+		TestUpdateVictory(Game.GetActivePlayer())		--ends game
 	end
 
 end
 
 
 --EOTW (Emo Open To Wristcutting)
+
+--nothing below works yet
 
 local g_radius = -1
 local g_minRadius = 0

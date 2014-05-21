@@ -261,7 +261,6 @@ for i = 2, 50 do						--pre-calculate rate powers for speed
 	discountCombatRateTable[i] = discountCombatRateTable[i - 1] * TIME_DISCOUNT_RATE_COMBAT
 end
 
-local OutOfRangeReturnZeroMetaTable = {__index = function() return 0 end}	--return 0 rather than nil for out of range index
 setmetatable(discountRateTable, OutOfRangeReturnZeroMetaTable)
 setmetatable(discountCombatRateTable, OutOfRangeReturnZeroMetaTable)
 

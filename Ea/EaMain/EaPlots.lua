@@ -454,10 +454,12 @@ end
 -- Interface
 --------------------------------------------------------------
 
-function BlightPlot(plot, iPlayer, iPerson, strength)		--last 3 are optional
+function BlightPlot(plot, iPlayer, iPerson, strength, bTestCanCast)		--last 4 are optional
 	print("BlightPlot ", plot, iPlayer, iPerson, strength)
 	local featureID = plot:GetFeatureType()
 	if featureID == FEATURE_BLIGHT or featureID == FEATURE_FALLOUT or featureID >= FEATURE_CRATER or plot:IsCity() then return false end
+
+	if bTestCanCast then return true end
 
 	--if no strength supplied then this is a spread; give it a random strength
 	strength = strength or Rand(20, "hello") + 1
@@ -519,13 +521,14 @@ function BlightPlot(plot, iPlayer, iPerson, strength)		--last 3 are optional
 	return true
 end
 
-function BreachPlot(plot, iPlayer, iPerson, strength)		--last 3 are optional
+function BreachPlot(plot, iPlayer, iPerson, strength, bTestCanBlight)		--last 4 are optional
 	print("BreachPlot ", plot, iPlayer, iPerson)
 	if plot:IsWater() or plot:IsMountain() or plot:IsCity() then return false end
 	local featureID = plot:GetFeatureType()
 	if featureID == FEATURE_FALLOUT or featureID >= FEATURE_CRATER then return false end
 	local improvementID = plot:GetImprovementType()
 	if blightSafeImprovement[improvementID] then return false end		--saves us trouble for now
+
 	--breach spreads in fault-like pattern; doesn't want 2 adjacent
 	local bOneAdj = false
 	for testPlot in AdjacentPlotIterator(plot) do
@@ -535,8 +538,42 @@ function BreachPlot(plot, iPlayer, iPerson, strength)		--last 3 are optional
 		end
 	end
 
+	--if no strength supplied then this is a spread; give it a random strength
+	strength = strength or Rand(40, "hello") + 1
+
+	local manaConsumed = 100		--minimum
+
+	--protected by living terrain?
+	local livingTerrainStrength = plot:GetLivingTerrainStrength()
+	if livingTerrainStrength > 0 then
+		if strength < livingTerrainStrength then
+			plot:SetLivingTerrainStrength(livingTerrainStrength - strength)
+			plot:AddFloatUpMessage(Locale.Lookup("TXT_KEY_EA_PLOT_PROTECTED_BY_LIVING_TERRAIN"))
+			return false
+		else
+			plot:SetLivingTerrainStrength(0)
+			strength = strength - livingTerrainStrength
+			manaConsumed = manaConsumed + livingTerrainStrength
+		end
+	end
+
+	--protected by ward?
+	local effectID, effectStength, iPlayer, iCaster = plot:GetPlotEffectData()
+	if effectID == EA_PLOTEFFECT_PROTECTIVE_WARD then
+		if strength < effectStength then
+			plot:SetPlotEffectData(effectID, effectStength - strength, iPlayer, iCaster)
+			plot:AddFloatUpMessage(Locale.Lookup("TXT_KEY_EA_PLOT_PROTECTED_BY_WARD"))
+			return false
+		else
+			plot:SetPlotEffectData(-1,-1,-1,-1)
+			strength = strength - effectStength
+			manaConsumed = manaConsumed + effectStength
+		end
+	end
+
+	if bTestCanBlight then return true end
+
 	--OK to Breach!
-	local manaConsumed = plot:GetLivingTerrainStrength() + 100
 	plot:SetImprovementType(-1)
 
 	local resourceID = plot:GetResourceType(-1)

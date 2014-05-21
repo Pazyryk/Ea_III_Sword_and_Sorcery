@@ -8,13 +8,13 @@
 local iW, iH = Map.GetGridSize()
 local GetPlotByXY = Map.GetPlot
 local Rand = Map.Rand
+local Floor = math.floor
 
 function GetPlotIndexFromXY(x, y)
 	return y * iW + x
 end
 
 function GetXYFromPlotIndex(iPlot)
-	local Floor = math.floor
 	return iPlot % iW, Floor(iPlot / iW)
 end
 

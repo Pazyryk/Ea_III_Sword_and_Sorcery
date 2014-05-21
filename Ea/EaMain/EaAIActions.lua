@@ -454,16 +454,18 @@ AITarget.VacantTower = function()
 	end
 end
 
-AITarget.NIMBY = function()					-- Not In My BackYard (e.g., Blight spell) - test in caster's tower and outside of own city 3-plot radius
+AITarget.TowerToWide = function()			-- Test in caster's tower and even rings out to distance 10 (exclude water)
 	local tower = gWonders[EA_WONDER_ARCANE_TOWER][g_iPerson]
 	if tower then
 		local x, y = GetXYFromPlotIndex(tower.iPlot)
 		TestAddOption("Plot", x, y, 0, nil)
 	end
-	for x, y in PlotToRadiusIterator(g_gpX, g_gpY, 5) do
-		local plot = GetPlotFromXY(x, y)
-		if not plot:IsPlayerCityRadius(g_iPlayer) then
-			TestAddOption("Plot", x, y, 0, nil)
+	for radius = 2, 10, 2 do
+		for plot in PlotRingIterator(g_gpPlot, radius, 1, false) do
+			if not plot:IsWater() then
+				local x, y = plot:GetXY()
+				TestAddOption("Plot", x, y, 0, nil)
+			end
 		end
 	end
 end
@@ -643,13 +645,17 @@ AITarget.WonderWorkPlot = function()			--Ideally, 1 plot per city that is good t
 	end
 end
 
-AITarget.BoobyTrap = function()
-	--TO DO: AI logic for placing Explosive Rune
-
-	--quick test for now:
-	local capital = g_player:GetCapitalCity()
-	for x, y in PlotToRadiusIterator(capital:GetX(), capital:GetY(), 1, nil, nil, false) do
-		TestAddOption("Plot", x, y, 0, nil)
+AITarget.BoobyTrap = function()		--heuristic for testing Explosive Rune and Death Rune
+	for city in g_player:Cities() do
+		if city:IsCapital() then
+			for x, y in PlotToRadiusIterator(city:GetX(), city:GetY(), 3, nil, nil, false) do
+				TestAddOption("Plot", x, y, 0, nil)
+			end
+		else
+			for x, y in PlotToRadiusIterator(city:GetX(), city:GetY(), 1, nil, nil, false) do
+				TestAddOption("Plot", x, y, 0, nil)
+			end
+		end
 	end
 end
 

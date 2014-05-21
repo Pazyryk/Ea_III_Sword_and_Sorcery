@@ -1533,7 +1533,86 @@ Finish[GameInfoTypes.EA_SPELL_EXPLOSIVE_RUNE] = function()
 end
 
 --EA_SPELL_MAGE_SWORD
+
 --EA_SPELL_BREACH
+TestTarget[GameInfoTypes.EA_SPELL_BREACH] = function()
+	--copied from Blight with one major change: this spell either overcomes protection or not (does not weaken)
+
+	--if true, then:
+	--g_obj1 = affected plot (this plot or distant plot from tower/temple)
+	--g_int2 = terrainStrength
+	--g_int3 = radius (tower/temple only)
+	--g_int4 = ownPlotsInDanger (tower/temple only)
+	--g_int5 = totalPlotsInDanger (tower/temple only)
+
+	if g_bInTowerOrTemple then	--Can distant plot be blighted? (max range = mod)
+		local BreachPlot = BreachPlot
+		--random sector/direction, spiral in until valid plot found
+		local sector = Rand(6, "hello") + 1
+		local anticlock = Rand(2, "hello") == 0
+		local maxRadius = g_modSpell < MAX_RANGE and g_modSpell or MAX_RANGE
+		for radius = maxRadius, 1, -1 do	--test one full ring at a time (we test whole ring so AI can account for own plots in danger)
+			g_obj1 = nil
+			local ownPlotsInDanger, totalPlotsInDanger = 0, 0
+			for plot in PlotRingIterator(g_plot, radius, sector, anticlock) do
+				if BreachPlot(plot, g_iPlayer, g_iPerson, g_modSpell, true) then		--tests whether spell mod can overcome protection
+					totalPlotsInDanger = totalPlotsInDanger + 1
+					if plot:IsPlayerCityRadius(g_iPlayer) then
+						ownPlotsInDanger = ownPlotsInDanger + 1
+					end	
+					g_int2 = 0
+					g_obj1 = plot
+				end
+			end
+			if g_obj1 then
+				g_int3 = radius
+				g_int4 = ownPlotsInDanger
+				g_int5 = totalPlotsInDanger
+				return true
+			end
+		end
+		return false
+	else	--Can this plot be Breached?
+		if not BreachPlot(plot, g_iPlayer, g_iPerson, g_modSpell, true) then return false end	--tests whether spell mod can overcome protection
+
+		g_obj1 = g_plot
+		return true
+	end
+end
+
+SetUI[GameInfoTypes.EA_SPELL_BREACH] = function()
+	if g_bAllTestsPassed then
+		if g_bInTowerOrTemple then
+			MapModData.text = "Breach land at range " .. g_int3
+		else
+			MapModData.text = "Breach this land"
+		end			
+	elseif g_bNonTargetTestsPassed then
+		if g_bInTowerOrTemple then
+			MapModData.text = "[COLOR_WARNING_TEXT]No land within the caster's " .. g_modSpell .. "-plot range can be breached[ENDCOLOR]"
+		else
+			MapModData.text = "[COLOR_WARNING_TEXT]This plot cannot be breached[ENDCOLOR]"
+		end
+	end
+end
+
+SetAIValues[GameInfoTypes.EA_SPELL_BREACH] = function()
+	if g_bInTowerOrTemple then
+		gg_aiOptionValues.i = 200 * g_modSpell * (0.05 - g_int4 / g_int5)		--goes negative if 5% of plots our ours
+	elseif not g_plot:IsPlayerCityRadius(g_iPlayer) then	--no value if in our city's 3-plot radius (really should check distance to any of our cities)
+		gg_aiOptionValues.i = 50 * GetNIMBY(g_iPlayer, g_x, g_y)
+	end	
+end
+
+Finish[GameInfoTypes.EA_SPELL_BREACH] = function()
+	g_specialEffectsPlot = g_obj1
+	local bSuccess = BreachPlot(g_obj1, g_iPlayer, g_iPerson, g_modSpell)	--this will give xp and use mana if success (more than if failure below)
+	if not bSuccess then
+		UseManaOrDivineFavor(g_iPlayer, g_iPerson, g_modSpell, false)
+	end
+	return true
+end
+
 --EA_SPELL_WISH
 --EA_SPELL_SLOW
 --EA_SPELL_HASTE
@@ -1552,7 +1631,7 @@ TestTarget[GameInfoTypes.EA_SPELL_BLIGHT] = function()
 	--g_int5 = totalPlotsInDanger (tower/temple only)
 
 	if g_bInTowerOrTemple then	--Can distant plot be blighted? (max range = mod)
-
+		local BlightPlot = BlightPlot
 		--random sector/direction, spiral in until valid plot found
 		local sector = Rand(6, "hello") + 1
 		local anticlock = Rand(2, "hello") == 0
@@ -1560,17 +1639,14 @@ TestTarget[GameInfoTypes.EA_SPELL_BLIGHT] = function()
 		for radius = maxRadius, 1, -1 do	--test one full ring at a time (we test whole ring so AI can account for own plots in danger)
 			g_obj1 = nil
 			local ownPlotsInDanger, totalPlotsInDanger = 0, 0
-			for plot in PlotRingIterator(g_plot, radius, sector, anticlock) do	
-				if not (plot:IsWater() or plot:IsMountain() or plot:IsImpassable() or g_plot:IsCity()) then
-					local featureID = plot:GetFeatureType()
-					if not (featureID == FEATURE_BLIGHT or featureID == FEATURE_FALLOUT or featureID >= FEATURE_CRATER) then
-						totalPlotsInDanger = totalPlotsInDanger + 1
-						if plot:IsPlayerCityRadius(g_iPlayer) then
-							ownPlotsInDanger = ownPlotsInDanger + 1
-						end	
-						g_int2 = 0
-						g_obj1 = plot
-					end
+			for plot in PlotRingIterator(g_plot, radius, sector, anticlock) do
+				if BlightPlot(plot, g_iPlayer, g_iPerson, 0, true) then		--just a casting test
+					totalPlotsInDanger = totalPlotsInDanger + 1
+					if plot:IsPlayerCityRadius(g_iPlayer) then
+						ownPlotsInDanger = ownPlotsInDanger + 1
+					end	
+					g_int2 = 0
+					g_obj1 = plot
 				end
 			end
 			if g_obj1 then
@@ -1582,16 +1658,14 @@ TestTarget[GameInfoTypes.EA_SPELL_BLIGHT] = function()
 		end
 		return false
 	else	--Can this plot be blighted (or at least weakened)?
-		if g_plot:IsWater() or g_plot:IsMountain() or g_plot:IsImpassable() or g_plot:IsCity() then return false end 
-		local featureID = g_plot:GetFeatureType()
-		if featureID == FEATURE_BLIGHT or featureID == FEATURE_FALLOUT or featureID >= FEATURE_CRATER then return false end
+		if not BlightPlot(plot, g_iPlayer, g_iPerson, 0, true) then return false end	--just a casting test
 
 		--spell can "work" even if blocked, but only to weaken; best AI value is to blight AND weaken
 		local strengthNeeded = 0
 		if featureID == FEATURE_FOREST or featureID == FEATURE_JUNGLE or featureID == FEATURE_MARSH then	--Must overpower any living terrain here
 			strengthNeeded = strengthNeeded + g_plot:GetLivingTerrainStrength()
 		end
-		local effectID, effectStength, iPlayer, iCaster = plot:GetPlotEffectData()
+		local effectID, effectStength, iPlayer, iCaster = g_plot:GetPlotEffectData()
 		if effectID == EA_PLOTEFFECT_PROTECTIVE_WARD then
 			strengthNeeded = strengthNeeded + effectStength
 		end
@@ -1636,9 +1710,9 @@ end
 
 SetAIValues[GameInfoTypes.EA_SPELL_BLIGHT] = function()
 	if g_bInTowerOrTemple then
-		gg_aiOptionValues.i = g_modSpell * (1 - g_int4 / g_int5)	-- deduct for proportion of possibly affected plots in own city's 3-plot radius
+		gg_aiOptionValues.i = 10 * g_modSpell * (0.2 - g_int4 / g_int5)		--goes negative if 20% of plots our ours
 	elseif not g_plot:IsPlayerCityRadius(g_iPlayer) then	--no value if in our city's 3-plot radius (really should check distance to any of our cities)
-		gg_aiOptionValues.i = g_value
+		gg_aiOptionValues.i = g_value * GetNIMBY(g_iPlayer, g_x, g_y)
 	end	
 end
 

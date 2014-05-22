@@ -24,8 +24,8 @@
 		<Row Tag="TXT_KEY_EA_SPELL_DISPEL_ILLUSIONS">
 			<Text>Dispel Illusions</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_SPELL_BANISHMENT">
-			<Text>Banishment</Text>
+		<Row Tag="TXT_KEY_EA_SPELL_BANISH">
+			<Text>Banish</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_PROTECTIVE_WARD">
 			<Text>Protective Ward</Text>
@@ -179,6 +179,9 @@
 		<Row Tag="TXT_KEY_EA_SPELL_BANISH_UNDEAD">
 			<Text>Banish Undead</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_BANISH_DEMONS">
+			<Text>Banish Demons</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_CONSECRATE">
 			<Text>Consecrate</Text>
 		</Row>
@@ -218,6 +221,9 @@
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_TURN_UNDEAD">
 			<Text>Turn Undead</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_BANISH_ANGELS">
+			<Text>Banish Angels</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_DESECRATE">
 			<Text>Desecrate</Text>

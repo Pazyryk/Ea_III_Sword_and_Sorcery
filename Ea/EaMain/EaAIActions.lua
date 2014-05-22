@@ -427,7 +427,7 @@ AITarget.NearbyLivTerrain = function()
 	end
 end
 
-AITarget.OwnTower = function()
+AITarget.Tower = function()
 	local tower = gWonders[EA_WONDER_ARCANE_TOWER][g_iPerson]
 	if tower then
 		local x, y = GetXYFromPlotIndex(tower.iPlot)

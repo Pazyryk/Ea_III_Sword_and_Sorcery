@@ -318,7 +318,7 @@ local function FinishEaAction(eaActionID)		--only called from DoEaAction so file
 
 	--Plot Float Up Text
 	if not g_eaAction.NoFloatUpText or MapModData.bAutoplay then
-		g_plot:AddFloatUpMessage(Locale.Lookup(g_eaAction.Description), 1)
+		g_plot:AddFloatUpMessage(Locale.Lookup(g_eaAction.Description), 2)
 	end
 
 	ClearActionPlotTargetedForPerson(g_iPlayer, g_iPerson)
@@ -1050,7 +1050,7 @@ function DoEaAction(eaActionID, iPlayer, unit, iPerson, targetX, targetY)
 
 		--Plot Float Up Text
 		if not g_eaAction.NoFloatUpText or MapModData.bAutoplay then
-			g_plot:AddFloatUpMessage(Locale.Lookup(g_eaAction.Description), 1)
+			g_plot:AddFloatUpMessage(Locale.Lookup(g_eaAction.Description), 2)
 		end
 
 		if 0 < g_eaAction.FixedFaith then

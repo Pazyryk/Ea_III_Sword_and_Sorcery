@@ -52,6 +52,7 @@ local MOD_MEMORY_HALFLIFE =					MOD_MEMORY_HALFLIFE
 
 local MAX_RANGE =							MAX_RANGE
 local FIRST_SPELL_ID =						FIRST_SPELL_ID
+local MAX_UNIT_HP =							100
 
 --global tables
 local GameInfoTypes =						GameInfoTypes
@@ -72,6 +73,7 @@ local gg_bNormalCombatUnit =				gg_bNormalCombatUnit
 local gg_bNormalLivingCombatUnit =			gg_bNormalLivingCombatUnit
 local gg_baseUnitPower =					gg_baseUnitPower
 local gg_playerPlotActionTargeted =			gg_playerPlotActionTargeted
+local gg_eaSpecial =						gg_eaSpecial
 
 --localized functions
 local Floor =								math.floor
@@ -285,7 +287,7 @@ function FinishEaSpell(eaActionID)		--only called from DoEaSpell so file locals 
 
 	--Plot Float Up Text
 	if not g_eaAction.NoFloatUpText or MapModData.bAutoplay then
-		g_plot:AddFloatUpMessage(Locale.Lookup(g_eaAction.Description), 1)
+		g_plot:AddFloatUpMessage(Locale.Lookup(g_eaAction.Description), 2)
 	end
 
 	ClearActionPlotTargetedForPerson(g_iPlayer, g_iPerson)
@@ -807,7 +809,7 @@ function DoEaSpell(eaActionID, iPlayer, unit, iPerson, targetX, targetY)
 
 		--Plot Float Up Text
 		if not g_eaAction.NoFloatUpText or MapModData.bAutoplay then
-			g_plot:AddFloatUpMessage(Locale.Lookup(g_eaAction.Description), 1)
+			g_plot:AddFloatUpMessage(Locale.Lookup(g_eaAction.Description), 2)
 		end
 
 		if 0 < g_eaAction.FixedFaith then
@@ -1534,10 +1536,6 @@ Finish[GameInfoTypes.EA_SPELL_PROTECTIVE_WARD] = function()
 	return true
 end
 
-
---EA_SPELL_SCRYING
---EA_SPELL_SEEING_EYE_GLYPH
-
 --EA_SPELL_DETECT_GLYPHS_RUNES_WARDS
 TestTarget[GameInfoTypes.EA_SPELL_DETECT_GLYPHS_RUNES_WARDS] = function()
 	local revealedPlotEffects = g_eaPlayer.revealedPlotEffects
@@ -1586,9 +1584,6 @@ Finish[GameInfoTypes.EA_SPELL_DETECT_GLYPHS_RUNES_WARDS] = function()
 	end
 	return true
 end
-
---EA_SPELL_KNOW_WORLD
---EA_SPELL_DISPEL_HEXES
 
 --EA_SPELL_DISPEL_GLYPHS_RUNES_WARDS
 TestTarget[GameInfoTypes.EA_SPELL_DISPEL_GLYPHS_RUNES_WARDS] = function()
@@ -1664,10 +1659,344 @@ Finish[GameInfoTypes.EA_SPELL_DISPEL_GLYPHS_RUNES_WARDS] = function()
 	return true
 end
 
+----------------------------------------------------------------------------
+-- Banish-type and Turn Undead 
+----------------------------------------------------------------------------
 
+--EA_SPELL_BANISH_UNDEAD
+TestTarget[GameInfoTypes.EA_SPELL_BANISH] = function()
+	--are enemy conjured, summoned or called units in 3-plot range?
+	local bCanBanish = false
+	local remainingMod = g_modSpellTimesTurns
+	g_count = 0
+	g_value = 0
+	g_int1 = 99999
+	local sector = Rand(6, "hello")	+ 1	--won't affect test, but randomizes who if >1
+	for plot in PlotAreaSpiralIterator(g_plot, 3, sector, false, false, false) do
+		if plot:IsVisibleEnemyUnit(g_iPlayer) then
+			local unitCount = plot:GetNumUnits()
+			for i = 0, unitCount - 1 do
+				local unit = plot:GetUnit(i)
+				if unit:GetSummonerIndex() ~= -1 then
+					local unitTypeID = unit:GetUnitType()
+					if gg_eaSpecial[unitTypeID] ~= "Undead" then
+						--have qualified unit; are we strong enough?
+						g_testTargetSwitch = 1
+						local power = gg_baseUnitPower[unitTypeID] * unit:GetCurrHitPoints() / MAX_UNIT_HP
+						if remainingMod >= power then
+							bCanBanish = true
+							remainingMod = remainingMod - power
+							g_value = g_value + power
+							g_count = g_count + 1
+							g_table[g_count] = unit
+						else
+							g_int1 = power < g_int1 and power or g_int1 --what we needed if spell fails
+						end
+					end
+				end
+			end
+		end
+	end
+	return bCanBanish
+end
+
+SetUI[GameInfoTypes.EA_SPELL_BANISH] = function()
+	if g_bNonTargetTestsPassed then
+		if g_bAllTestsPassed then
+			MapModData.text = "Banish one or more nearby conjured, summoned or called units"
+		elseif g_testTargetSwitch == 1 then
+			local modNeeded = Floor(g_int1 * g_modSpell / g_modSpellTimesTurns + 0.5)
+			MapModData.text = "[COLOR_WARNING_TEXT]There are conjured, summoned or called units nearby, but you do not have sufficient Abjuration Mod to Banish them (need " .. modNeeded .. ")[ENDCOLOR]"
+		else
+			MapModData.text = "[COLOR_WARNING_TEXT]There are no conjured, summoned or called units nearby[ENDCOLOR]"
+		end
+	end
+end
+
+SetAIValues[GameInfoTypes.EA_SPELL_BANISH] = function()
+	gg_aiOptionValues.i = g_value * 2
+end
+
+Finish[GameInfoTypes.EA_SPELL_BANISH] = function()
+	for i = 1, g_count do
+		local unit = g_table[i]
+		local plot = unit:GetPlot()
+		MapModData.bBypassOnCanSaveUnit = true
+		unit:Kill(true, g_iPlayer)
+		plot:AddFloatUpMessage("Banished!", 2)
+	end
+	UseManaOrDivineFavor(g_iPlayer, g_iPerson, g_value * 2)
+	return true
+end
+
+--EA_SPELL_BANISH_UNDEAD
+TestTarget[GameInfoTypes.EA_SPELL_BANISH_UNDEAD] = function()
+	--are any of these in 3-plot range? Pick first in spiral that we can banish
+	local bCanBanish = false
+	local remainingMod = g_modSpellTimesTurns
+	g_count = 0
+	g_value = 0
+	g_int1 = 99999
+	local sector = Rand(6, "hello")	+ 1	--won't affect test, but randomizes who if >1
+	for plot in PlotAreaSpiralIterator(g_plot, 3, sector, false, false, false) do
+		if plot:IsVisibleEnemyUnit(g_iPlayer) then
+			local unitCount = plot:GetNumUnits()
+			for i = 0, unitCount - 1 do
+				local unit = plot:GetUnit(i)
+				local unitTypeID = unit:GetUnitType()
+				if gg_eaSpecial[unitTypeID] == "Undead" then
+					--have qualified unit; are we strong enough?
+					g_testTargetSwitch = 1
+					local power = gg_baseUnitPower[unitTypeID] * unit:GetCurrHitPoints() / MAX_UNIT_HP
+					if remainingMod >= power then
+						bCanBanish = true
+						remainingMod = remainingMod - power
+						g_value = g_value + power
+						g_count = g_count + 1
+						g_table[g_count] = unit
+					else
+						g_int1 = power < g_int1 and power or g_int1 --what we needed if spell fails
+					end
+				end
+			end
+		end
+	end
+	return bCanBanish
+end
+
+SetUI[GameInfoTypes.EA_SPELL_BANISH_UNDEAD] = function()
+	if g_bNonTargetTestsPassed then
+		if g_bAllTestsPassed then
+			MapModData.text = "Banish one or more nearby undead"
+		elseif g_testTargetSwitch == 1 then
+			local modNeeded = Floor(g_int1 * g_modSpell / g_modSpellTimesTurns + 0.5)
+			MapModData.text = "[COLOR_WARNING_TEXT]There are undead nearby, but you do not have sufficient Spell Modifier to Banish them (need " .. modNeeded .. ")[ENDCOLOR]"
+		else
+			MapModData.text = "[COLOR_WARNING_TEXT]There are no undead units nearby[ENDCOLOR]"
+		end
+	end
+end
+
+SetAIValues[GameInfoTypes.EA_SPELL_BANISH_UNDEAD] = function()
+	gg_aiOptionValues.i = g_value * 2
+end
+
+Finish[GameInfoTypes.EA_SPELL_BANISH_UNDEAD] = function()
+	for i = 1, g_count do
+		local unit = g_table[i]
+		local plot = unit:GetPlot()
+		MapModData.bBypassOnCanSaveUnit = true
+		unit:Kill(true, g_iPlayer)
+		plot:AddFloatUpMessage("Banished!", 2)
+	end
+	UseManaOrDivineFavor(g_iPlayer, g_iPerson, g_value * 2)
+	return true
+end
+
+--EA_SPELL_TURN_UNDEAD
+TestTarget[GameInfoTypes.EA_SPELL_TURN_UNDEAD] = function()
+	--are any of these in 3-plot range? Pick first in spiral that we can banish
+	local bCanTurn = false
+	local remainingMod = g_modSpellTimesTurns
+	g_count = 0
+	g_value = 0
+	g_int1 = 99999
+	local sector = Rand(6, "hello")	+ 1	--won't affect test, but randomizes who if >1
+	for plot in PlotAreaSpiralIterator(g_plot, 3, sector, false, false, false) do
+		if plot:IsVisibleEnemyUnit(g_iPlayer) then
+			local unitCount = plot:GetNumUnits()
+			for i = 0, unitCount - 1 do
+				local unit = plot:GetUnit(i)
+				local unitTypeID = unit:GetUnitType()
+				if gg_eaSpecial[unitTypeID] == "Undead" then
+					--have qualified unit; are we strong enough?
+					g_testTargetSwitch = 1
+					local power = gg_baseUnitPower[unitTypeID] * unit:GetCurrHitPoints() / MAX_UNIT_HP
+					if remainingMod >= power then
+						bCanTurn = true
+						remainingMod = remainingMod - power
+						g_value = g_value + power
+						g_count = g_count + 1
+						g_table[g_count] = unit
+					else
+						g_int1 = power < g_int1 and power or g_int1 --what we needed if spell fails
+					end
+				end
+			end
+		end
+	end
+	return bCanTurn
+end
+
+SetUI[GameInfoTypes.EA_SPELL_TURN_UNDEAD] = function()
+	if g_bNonTargetTestsPassed then
+		if g_bAllTestsPassed then
+			MapModData.text = "Turn one or more nearby undead"
+		elseif g_testTargetSwitch == 1 then
+			local modNeeded = Floor(g_int1 * g_modSpell / g_modSpellTimesTurns + 0.5)
+			MapModData.text = "[COLOR_WARNING_TEXT]There are undead nearby, but you do not have sufficient Spell Modifier to Turn them (need " .. modNeeded .. ")[ENDCOLOR]"
+		else
+			MapModData.text = "[COLOR_WARNING_TEXT]There are no undead units nearby[ENDCOLOR]"
+		end
+	end
+end
+
+SetAIValues[GameInfoTypes.EA_SPELL_TURN_UNDEAD] = function()
+	gg_aiOptionValues.i = g_value * 2
+end
+
+Finish[GameInfoTypes.EA_SPELL_TURN_UNDEAD] = function()
+	for i = 1, g_count do
+		local unit = g_table[i]
+		local plot = unit:GetPlot()
+		local x, y = plot:GetXY()
+		local unitTypeID = unit:GetUnitType()
+		MapModData.bBypassOnCanSaveUnit = true
+		unit:Kill(false, g_iPlayer)
+		g_player:IntiUnit(unitTypeID, x, y)
+		plot:AddFloatUpMessage("Turned Undead!", 2)
+	end
+	UseManaOrDivineFavor(g_iPlayer, g_iPerson, g_value * 2)
+	return true
+end
+
+--EA_SPELL_BANISH_DEMONS
+TestTarget[GameInfoTypes.EA_SPELL_BANISH_DEMONS] = function()
+	--are any of these in 3-plot range? Pick first in spiral that we can banish
+	local bCanBanish = false
+	local remainingMod = g_modSpellTimesTurns
+	g_count = 0
+	g_value = 0
+	g_int1 = 99999
+	local sector = Rand(6, "hello")	+ 1	--won't affect test, but randomizes who if >1
+	for plot in PlotAreaSpiralIterator(g_plot, 3, sector, false, false, false) do
+		if plot:IsVisibleEnemyUnit(g_iPlayer) then
+			local unitCount = plot:GetNumUnits()
+			for i = 0, unitCount - 1 do
+				local unit = plot:GetUnit(i)
+				local unitTypeID = unit:GetUnitType()
+				if gg_eaSpecial[unitTypeID] == "Demon" or gg_eaSpecial[unitTypeID] == "Archdemon" then
+					--have qualified unit; are we strong enough?
+					g_testTargetSwitch = 1
+					local power = gg_baseUnitPower[unitTypeID] * unit:GetCurrHitPoints() / MAX_UNIT_HP
+					if remainingMod >= power then
+						bCanBanish = true
+						remainingMod = remainingMod - power
+						g_value = g_value + power
+						g_count = g_count + 1
+						g_table[g_count] = unit
+					else
+						g_int1 = power < g_int1 and power or g_int1 --what we needed if spell fails
+					end
+				end
+			end
+		end
+	end
+	return bCanBanish
+end
+
+SetUI[GameInfoTypes.EA_SPELL_BANISH_DEMONS] = function()
+	if g_bNonTargetTestsPassed then
+		if g_bAllTestsPassed then
+			MapModData.text = "Banish one or more nearby demons"
+		elseif g_testTargetSwitch == 1 then
+			local modNeeded = Floor(g_int1 * g_modSpell / g_modSpellTimesTurns + 0.5)
+			MapModData.text = "[COLOR_WARNING_TEXT]There are demons nearby, but you do not have sufficient Spell Modifier to Banish them (need " .. modNeeded .. ")[ENDCOLOR]"
+		else
+			MapModData.text = "[COLOR_WARNING_TEXT]There are no demons nearby[ENDCOLOR]"
+		end
+	end
+end
+
+SetAIValues[GameInfoTypes.EA_SPELL_BANISH_DEMONS] = function()
+	gg_aiOptionValues.i = g_value * 2
+end
+
+Finish[GameInfoTypes.EA_SPELL_BANISH_DEMONS] = function()
+	for i = 1, g_count do
+		local unit = g_table[i]
+		local plot = unit:GetPlot()
+		MapModData.bBypassOnCanSaveUnit = true
+		unit:Kill(true, g_iPlayer)
+		plot:AddFloatUpMessage("Banished!", 2)
+	end
+	UseManaOrDivineFavor(g_iPlayer, g_iPerson, g_value * 2)
+	return true
+end
+
+--EA_SPELL_BANISH_ANGELS
+TestTarget[GameInfoTypes.EA_SPELL_BANISH_ANGELS] = function()
+	--are any angels in 3-plot range?
+	local bCanBanish = false
+	local remainingMod = g_modSpellTimesTurns
+	g_count = 0
+	g_value = 0
+	g_int1 = 99999
+	local sector = Rand(6, "hello")	+ 1	--won't affect test, but randomizes who if >1
+	for plot in PlotAreaSpiralIterator(g_plot, 3, sector, false, false, false) do
+		if plot:IsVisibleEnemyUnit(g_iPlayer) then
+			local unitCount = plot:GetNumUnits()
+			for i = 0, unitCount - 1 do
+				local unit = plot:GetUnit(i)
+				local unitTypeID = unit:GetUnitType()
+				if gg_eaSpecial[unitTypeID] == "Angel" or gg_eaSpecial[unitTypeID] == "Archangel" then
+					--have qualified unit; are we strong enough?
+					g_testTargetSwitch = 1
+					local power = gg_baseUnitPower[unitTypeID] * unit:GetCurrHitPoints() / MAX_UNIT_HP
+					if remainingMod >= power then
+						bCanBanish = true
+						remainingMod = remainingMod - power
+						g_value = g_value + power
+						g_count = g_count + 1
+						g_table[g_count] = unit
+					else
+						g_int1 = power < g_int1 and power or g_int1 --what we needed if spell fails
+					end
+				end
+			end
+		end
+	end
+	return bCanBanish
+end
+
+SetUI[GameInfoTypes.EA_SPELL_BANISH_ANGELS] = function()
+	if g_bNonTargetTestsPassed then
+		if g_bAllTestsPassed then
+			MapModData.text = "Banish one or more nearby angels"
+		elseif g_testTargetSwitch == 1 then
+			local modNeeded = Floor(g_int1 * g_modSpell / g_modSpellTimesTurns + 0.5)
+			MapModData.text = "[COLOR_WARNING_TEXT]There are angels nearby, but you do not have sufficient Spell Modifier to Banish them (need " .. modNeeded .. ")[ENDCOLOR]"
+		else
+			MapModData.text = "[COLOR_WARNING_TEXT]There are no angels nearby[ENDCOLOR]"
+		end
+	end
+end
+
+SetAIValues[GameInfoTypes.EA_SPELL_BANISH_ANGELS] = function()
+	gg_aiOptionValues.i = g_value * 2
+end
+
+Finish[GameInfoTypes.EA_SPELL_BANISH_ANGELS] = function()
+	for i = 1, g_count do
+		local unit = g_table[i]
+		local plot = unit:GetPlot()
+		MapModData.bBypassOnCanSaveUnit = true
+		unit:Kill(true, g_iPlayer)
+		plot:AddFloatUpMessage("Banished!", 2)
+	end
+	UseManaOrDivineFavor(g_iPlayer, g_iPerson, g_value * 2)
+	return true
+end
+
+
+
+
+--EA_SPELL_SCRYING
+--EA_SPELL_SEEING_EYE_GLYPH
+--EA_SPELL_KNOW_WORLD
+--EA_SPELL_DISPEL_HEXES
 
 --EA_SPELL_DISPEL_ILLUSIONS
---EA_SPELL_BANISHMENT
 
 --EA_SPELL_DISPEL_MAGIC
 --EA_SPELL_TIME_STOP
@@ -2014,7 +2343,57 @@ end
 
 --EA_SPELL_VAMPIRIC_TOUCH
 --EA_SPELL_DEATH_STAY
+
 --EA_SPELL_BECOME_LICH
+TestTarget[GameInfoTypes.EA_SPELL_BECOME_LICH] = function()
+	if gWonders[EA_WONDER_ARCANE_TOWER][g_iPerson] and gWonders[EA_WONDER_ARCANE_TOWER][g_iPerson].iPlot == g_iPlot then	--only in own tower
+		if g_modSpell < g_unit:GetLevel() then
+			g_testTargetSwitch = 1
+			return false
+		else
+			return true
+		end
+	end
+	return false
+end
+
+SetUI[GameInfoTypes.EA_SPELL_BECOME_LICH] = function()
+	if g_bNonTargetTestsPassed then
+		if g_bAllTestsPassed then
+			MapModData.text = "You will become a Lich, ageless and regenerating in Tower if killed"
+		elseif g_testTargetSwitch == 1 then
+			MapModData.text = "[COLOR_WARNING_TEXT]You do not have sufficient Necromancy Modifier to cast this spell (need " .. g_unit:GetLevel() .. ")[ENDCOLOR]"
+		else
+			MapModData.text = "[COLOR_WARNING_TEXT]This spell can be cast only from your Tower[ENDCOLOR]"
+		end
+	end
+end
+
+SetAIValues[GameInfoTypes.EA_SPELL_BECOME_LICH] = function()
+	gg_aiOptionValues.i = 1000
+end
+
+Finish[GameInfoTypes.EA_SPELL_BECOME_LICH] = function()
+	g_eaPerson.unitTypeID = GameInfoTypes.UNIT_LICH
+	g_eaPerson.predestinedAgeOfDeath = nil
+	local lich = g_player:InitUnit(GameInfoTypes.UNIT_LICH, g_x, g_y)
+	g_eaPerson.iUnit = lich:GetID()
+	lich:SetPersonIndex(g_iPerson)
+	MapModData.bBypassOnCanSaveUnit = true
+	lich:Convert(g_unit, false)
+	UseManaOrDivineFavor(g_iPlayer, g_iPerson, lich:GetLevel() * 100)
+
+
+	--kill bypass!!!!
+
+	return true
+end
+
+
+
+
+
+
 --EA_SPELL_FINGER_OF_DEATH
 --EA_SPELL_CHARM_MONSTER
 --EA_SPELL_CAUSE_FEAR

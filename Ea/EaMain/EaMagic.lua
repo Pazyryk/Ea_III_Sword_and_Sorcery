@@ -121,7 +121,7 @@ function UseManaOrDivineFavor(iPlayer, iPerson, pts, bNoDrain, consumedFloatUpPl
 		gWorld.sumOfAllMana = gWorld.sumOfAllMana - pts
 		eaPlayer.manaConsumed = (eaPlayer.manaConsumed or 0) + pts
 		consumedFloatUpPlot = consumedFloatUpPlot or player:GetCapitalCity():Plot()
-		consumedFloatUpPlot:AddFloatUpMessage(Locale.Lookup("TXT_KEY_EA_CONSUMED_MANA", pts), 2)
+		consumedFloatUpPlot:AddFloatUpMessage(Locale.Lookup("TXT_KEY_EA_CONSUMED_MANA", pts), 3)
 	end
 
 	if bNoDrain then
@@ -352,6 +352,7 @@ OnPlotEffect[GameInfoTypes.EA_PLOTEFFECT_DEATH_RUNE] = function(iPlayer, iUnit, 
 				--xp/mana should be the greater of threashold or the standard attack pts
 				local hp = unit:GetMaxHitPoints() - beforeDamage
 				local unitTypeID = unit:GetUnitType()
+				MapModData.bBypassOnCanSaveUnit = true
 				unit:Kill(true, iPlotEffectPlayer)
 				local stdPts = CalculateXPManaForAttack(unitTypeId, hp, true)
 				local xpMana = threshold < stdPts and stdPts or threshold

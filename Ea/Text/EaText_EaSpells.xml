@@ -6,259 +6,505 @@
 		<Row Tag="TXT_KEY_EA_SPELL_SCRYING">
 			<Text>Scrying</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_SCRYING_HELP">
+			<Text>placeholder</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_SEEING_EYE_GLYPH">
 			<Text>Inscribe Seeing Eye Glyph</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_SEEING_EYE_GLYPH_HELP">
+			<Text>placeholder</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_DETECT_GLYPHS_RUNES_WARDS">
 			<Text>Detect Glyphs, Runes & Wards</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_DETECT_GLYPHS_RUNES_WARDS_HELP">
+			<Text>Reveals nearby plot-based magic effects. Number of plots tested equals the caster's Divination Mod, spiraling out from caster. Once detected, the plot effect will remain visible to the casting player.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_KNOW_WORLD">
 			<Text>Know World</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_KNOW_WORLD_HELP">
+			<Text>placeholder</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_DISPEL_HEXES">
 			<Text>Dispel Hexes</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_DISPEL_HEXES_HELP">
+			<Text>placeholder</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_DISPEL_GLYPHS_RUNES_WARDS">
 			<Text>Dispel Glyphs, Runes & Wards</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_DISPEL_GLYPHS_RUNES_WARDS_HELP">
+			<Text>Removes hostile glyphs, runes and wards from nearby plots. The spell removes strength points from these plot effects until the caster's Abjuration Mod has been used up. The effect spirals out from caster's present location up to a 3-plot range.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_DISPEL_ILLUSIONS">
 			<Text>Dispel Illusions</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_DISPEL_ILLUSIONS_HELP">
+			<Text>placeholder</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_BANISH">
 			<Text>Banish</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_BANISH_HELP">
+			<Text>Destroys one or more conjured, summoned or called units that are hostile to the player. The sum of the unit power will be equal to or less than the caster's Abjuration Mod. Does not work against reanimated or raised undead.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_PROTECTIVE_WARD">
 			<Text>Protective Ward</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_PROTECTIVE_WARD_HELP">
+			<Text>Creates an inscription on the caster's plot that can protect against blight and breach. The strength of the resulting Ward is equal to the caster's Abjuration Mod, which must be overcome by a hostile caster attempting to blight or breach the plot.  Experience is gained and mana used when the Ward is placed and when it is expended to protect the plot.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_DISPEL_MAGIC">
 			<Text>Dispel Magic</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_DISPEL_MAGIC_HELP">
+			<Text>placeholder</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_TIME_STOP">
 			<Text>Time Stop</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_TIME_STOP_HELP">
+			<Text>placeholder</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_MAGIC_MISSILE">
 			<Text>Magic Missile</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_MAGIC_MISSILE_HELP">
+			<Text>Gives the caster a range 2 attack with strength equal to the caster's modifier.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_EXPLOSIVE_RUNE">
 			<Text>Explosive Rune</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_EXPLOSIVE_RUNE_HELP">
+			<Text>Creates an inscription on the caster's plot that will explode when an enemy unit enters the plot. The strength of the rune equals the caster's Evocation Mod. Experience is gained and mana used when the Rune is placed and when it is triggered by an enemy unit.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_MAGE_SWORD">
 			<Text>Mage Sword</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_MAGE_SWORD_HELP">
+			<Text>placeholder</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_BREACH">
 			<Text>Breach</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_BREACH_HELP">
+			<Text>This spell creates a tear in the fabric of Éa, a breach from which blight spreads and demons spawn. The tear appears at the caster's position or, if cast from a Tower, at a distance up to the caster's Evocation Mod. The caster's Evocation Mod must overcome protection from Living Terrain and/or Protective Ward if these are present.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_WISH">
 			<Text>Wish</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_WISH_HELP">
+			<Text>placeholder</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_SLOW">
 			<Text>Slow</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_SLOW_HELP">
+			<Text>placeholder</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_HASTE">
 			<Text>Haste</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_HASTE_HELP">
+			<Text>placeholder</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_ENCHANT_WEAPONS">
 			<Text>Enchant Weapons</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_ENCHANT_WEAPONS_HELP">
+			<Text>placeholder</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_POLYMORPH">
 			<Text>Polymorph</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_POLYMORPH_HELP">
+			<Text>placeholder</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_BLIGHT">
 			<Text>Blight</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_BLIGHT_HELP">
+			<Text>Blights a single plot, either at the caster's current position or, if cast from a Tower, at a distance up to the caster's Transmutation Mod. The caster's Transmutation Mod must overcome protection from Living Terrain and/or Protective Ward if these are present.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_HEX">
 			<Text>Hex</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_SPELL_SUMMON_ABYSSAL_CREATURES">
-			<Text>Summon Abyssal Creatures</Text>
+		<Row Tag="TXT_KEY_EA_SPELL_HEX_HELP">
+			<Text>Adds Hex to an adjacent enemy unit lowering strength by 20%. Chance of wearing off each turn is equal to 1 / caster's Conjuration Modifier.</Text>
 		</Row>
-
 		<Row Tag="TXT_KEY_EA_SPELL_CONJURE_MONSTER">
 			<Text>Conjure Monster</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_CONJURE_MONSTER_HELP">
+			<Text>Conjures a single monster with total power up to the caster's Conjuration Mod x 3. The monster is bound to the caster such that the caster gains experience and uses mana each time the monster engages in combat.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_TELEPORT">
 			<Text>Teleport</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_TELEPORT_HELP">
+			<Text>placeholder</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_PHASE_DOOR">
 			<Text>Phase Door</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_PHASE_DOOR_HELP">
+			<Text>placeholder</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_REANIMATE_DEAD">
 			<Text>Reanimate Dead</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_REANIMATE_DEAD_HELP">
+			<Text>Reanimates a number of Skeletons and/or Zombies with total power up to the caster's Necromancy Mod x 2. Reanimated Dead are not bound to any spellcaster. They have a 1/3 chance of un-animating and a 1/6 chance of becoming hostile each turn.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_RAISE_DEAD">
 			<Text>Raise Dead</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_RAISE_DEAD_HELP">
+			<Text>Raises a number of Skeletons and/or Zombies with total power up to the caster's Necromancy Mod x 3. Raised Dead are bound to the caster such that the caster gains experience and uses mana each time they engage in combat (the Dead are nonsentient and do not, themselves, gain experience).</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_DEATH_RUNE">
 			<Text>Death Rune</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_DEATH_RUNE_HELP">
+			<Text>Places a Death Rune on the caster's current plot with strength equal to the caster's Necromancy Mod. This rune kills or drains life energy from an enemy unit entering the plot. It will kill the unit outright if the rune's strength exceeds the unit's power and experience. Otherwise, this amount is deducted from the unit's experience, which will lose levels and (random) promotions accordingly. Experience is gained and mana used when the Rune is placed and when it is triggered by an enemy unit.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_VAMPIRIC_TOUCH">
 			<Text>Vampiric Touch</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_VAMPIRIC_TOUCH_HELP">
+			<Text>placeholder</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_DEATH_STAY">
 			<Text>Death Stay</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_DEATH_STAY_HELP">
+			<Text>placeholder</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_BECOME_LICH">
 			<Text>Become Lich</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_BECOME_LICH_HELP">
+			<Text>Transforms the caster into a Lich. The Lich is immortal and will regenerate at its Tower if killed. The caster must have Necromancy Mod equal to or greater than her own level. This spell uses mana (and provides xp) equal to 100 times the caster's level. The spell can be cast only in the caster's Tower.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_FINGER_OF_DEATH">
 			<Text>Finger of Death</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_FINGER_OF_DEATH_HELP">
+			<Text>placeholder</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_CHARM_MONSTER">
 			<Text>Charm Monster</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_CHARM_MONSTER_HELP">
+			<Text>placeholder</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_CAUSE_FEAR">
 			<Text>Cause Fear</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_CAUSE_FEAR_HELP">
+			<Text>placeholder</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_CAUSE_DISPAIR">
 			<Text>Cause Dispair</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_CAUSE_DISPAIR_HELP">
+			<Text>placeholder</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_SLEEP">
 			<Text>Sleep</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_SLEEP_HELP">
+			<Text>placeholder</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_DREAM">
 			<Text>Dream</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_DREAM_HELP">
+			<Text>placeholder</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_NIGHTMARE">
 			<Text>Nightmare</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_NIGHTMARE_HELP">
+			<Text>placeholder</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_LESSER_GEAS">
 			<Text>Lesser Geas</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_LESSER_GEAS_HELP">
+			<Text>placeholder</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_GREATER_GEAS">
 			<Text>Greater Geas</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_GREATER_GEAS_HELP">
+			<Text>placeholder</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_PRESTIDIGITATION">
 			<Text>Prestidigitation</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_PRESTIDIGITATION_HELP">
+			<Text>placeholder</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_OBSCURE_TERRAIN">
 			<Text>Obscure Terrain</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_OBSCURE_TERRAIN_HELP">
+			<Text>placeholder</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_FOG_OF_WAR">
 			<Text>Fog of War</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_FOG_OF_WAR_HELP">
+			<Text>placeholder</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_SIMULACRUM">
 			<Text>Simulacrum</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_SIMULACRUM_HELP">
+			<Text>placeholder</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_PHANTASMAGORIA">
 			<Text>Phantasmagoria</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_SPELL_ABYSSAL_CREATURES">
-			<Text>Abyssal Creatures</Text>
+		<Row Tag="TXT_KEY_EA_SPELL_PHANTASMAGORIA_HELP">
+			<Text>placeholder</Text>
+		</Row>
+
+		<Row Tag="TXT_KEY_EA_SPELL_SUMMON_ABYSSAL_CREATURES">
+			<Text>Summon Abyssal Creatures</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_SUMMON_ABYSSAL_CREATURES_HELP">
+			<Text>Summons a number of Abyssal Creatures with total power up to the caster's Conjuration Modifier x 3. The creatures are bound to the caster such that the caster gains experience and uses mana each time the creatures engages in combat. (This spell has both Divine and Arcane forms.)</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_SUMMON_DEMON">
 			<Text>Summon Demon</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_SUMMON_DEMON_HELP">
+			<Text>Summons a single Demon, the type determined by the caster's Conjuration Modifier. The Demon is bound to the caster such that the caster gains experience and uses mana each time the Demon engages in combat. (This spell has both Divine and Arcane forms.)</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_SUMMON_ARCHDEMON">
 			<Text>Summon Archdemon</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_SUMMON_ARCHDEMON_HELP">
+			<Text>Summons an Archdemon. Each of the eight Archdemons can be summoned only once (by anyone), and only one can be summoned by a civilization at a time. They are summoned in succession from least (Zauri) to greatest (Aeshma). The Archdemon is bound to the caster such that the caster gains experience and uses mana each time the Archdemon engages in combat. (This spell has both Divine and Arcane forms.)</Text>
 		</Row>
 
 		<Row Tag="TXT_KEY_EA_SPELL_HEAL">
 			<Text>Heal</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_HEAL_HELP">
+			<Text>Heals up to caster's Spell Modifier in hit points for same-plot or adjacent allied living unit. Priority is for unit that can use up to Modifier in healing and then for the most powerful unit.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_BLESS">
 			<Text>Bless</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_BLESS_HELP">
+			<Text>Adds the Blessed promotion to same plot or adjacent friendly living unit, adding 10 hp per turn to natural healing. Priority is for the strongest living unit. Chance of wearing off each turn is equal to 1 / caster's Spell Modifier.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_PROTECTION_FROM_EVIL">
 			<Text>Protection from Evil</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_PROTECTION_FROM_EVIL_HELP">
+			<Text>Adds the Protection from Evil promotion to one unit giving +5 hp natural healing and protecting the unit from negative spell effects like Hex, Curse and Defile. Chance of wearing off each turn is equal to 1 / caster's Spell Modifier.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_SANCTIFY">
 			<Text>Sanctify</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_SANCTIFY_HELP">
+			<Text>placeholder</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_MASS_HEAL">
 			<Text>Mass Heal</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_MASS_HEAL_HELP">
+			<Text>placeholder</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_CURE_DISEASE">
 			<Text>Cure Disease</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_CURE_DISEASE_HELP">
+			<Text>placeholder</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_CURE_PLAGUE">
 			<Text>Cure Plague</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_CURE_PLAGUE_HELP">
+			<Text>placeholder</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_COMMAND">
 			<Text>Command</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_COMMAND_HELP">
+			<Text>placeholder</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_BANISH_UNDEAD">
 			<Text>Banish Undead</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_BANISH_UNDEAD_HELP">
+			<Text>Destroys one or more Undead with total power up to the caster's Spell Modifier.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_BANISH_DEMONS">
 			<Text>Banish Demons</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_BANISH_DEMONS_HELP">
+			<Text>Destroys one or more Demons or Abyssal Creatures with total power up to the caster's Spell Modifier.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_CONSECRATE">
 			<Text>Consecrate</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_CONSECRATE_HELP">
+			<Text>placeholder</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_CALL_HEAVENS_GUARD">
 			<Text>Call Heaven's Guard</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_CALL_HEAVENS_GUARD_HELP">
+			<Text>Calls a number of Heaven's Guard with total power up to the caster's Spell Modifier x 3. The Guard are bound to the caster such that the caster gains experience and uses mana each time the Guard engages in combat.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_CALL_ANGEL">
 			<Text>Call Angel</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_CALL_ANGEL_HELP">
+			<Text>Calls a single Angel with total power up to the caster's Spell Modifier x 3. The Angel is bound to the caster such that the caster gains experience and uses mana each time the Angel engages in combat.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_CALL_ARCHANGEL">
 			<Text>Call Archangel</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_CALL_ARCHANGEL_HELP">
+			<Text>Calls an Archangel. Each of the twelve Archangels can be called only once (by anyone), and only one can be summoned by a civilization at a time. They are called in succession from least (Zam) to greatest (Mithra). The Angel is bound to the caster such that the caster gains experience and uses mana each time the Angel engages in combat.</Text>
 		</Row>
 		
 		<Row Tag="TXT_KEY_EA_SPELL_RESURRECTION">
 			<Text>Resurrection</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_RESURRECTION_HELP">
+			<Text>placeholder</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_HURT">
 			<Text>Hurt</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_HURT_HELP">
+			<Text>Damages adjacent enemy living unit up to the caster’s Spell Modifier. Priority is for a unit that will be killed by the spell and then for the most powerful unit, but the caster’s Spell Modifier must exceed the unit’s level.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_CURSE">
 			<Text>Curse</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_CURSE_HELP">
+			<Text>Adds the Cursed promotion to an adjacent enemy living unit, preventing all natural healing. Priority is for the strongest living unit, but the caster’s Spell Modifier must exceed the unit’s level. Chance of wearing off each turn is equal to 1 / caster’s Spell Modifier.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_EVIL_EYE">
 			<Text>Evil-Eye</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_EVIL_EYE_HELP">
+			<Text>Adds the Evil-Eye promotion to one unit giving -5 hp natural healing and preventing the unit from gaining beneficial effects from Bless and Protection from Evil. Chance of wearing off each turn is equal to 1 / caster’s Spell Modifier.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_DEFILE">
 			<Text>Defile</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_DEFILE_HELP">
+			<Text>placeholder</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_MASS_HURT">
 			<Text>Mass Hurt</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_MASS_HURT_HELP">
+			<Text>placeholder</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_CAUSE_DISEASE">
 			<Text>Cause Disease</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_CAUSE_DISEASE_HELP">
+			<Text>placeholder</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_CAUSE_PLAGUE">
 			<Text>Cause Plague</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_CAUSE_PLAGUE_HELP">
+			<Text>placeholder</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_TURN_UNDEAD">
 			<Text>Turn Undead</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_TURN_UNDEAD_HELP">
+			<Text>Turns hostile Undead to the caster's control with total power up to the caster's Spell Modifier.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_BANISH_ANGELS">
 			<Text>Banish Angels</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_BANISH_ANGELS_HELP">
+			<Text>Destroys one or more Angels or Heaven's Guard with total power up to the caster's Spell Modifier.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_DESECRATE">
 			<Text>Desecrate</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_DESECRATE_HELP">
+			<Text>placeholder</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_GREATER_REANIMATION">
 			<Text>Greater Reanimation</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_GREATER_REANIMATION_HELP">
+			<Text>placeholder</Text>
 		</Row>
 
 		<Row Tag="TXT_KEY_EA_SPELL_EAS_BLESSING">
 			<Text>Éa's Blessing</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_EAS_BLESSING_HELP">
+			<Text>Increases the spreading and regeneration strength of Living Terrain (forest, jungle or marsh) by the caster’s Spell Modifier.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_CALL_ANIMALS">
 			<Text>Call Animals</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_CALL_ANIMALS_HELP">
+			<Text>Calls a number of animals with total power up to the caster's Spell Modifier. The Animals are bound to the caster such that the caster gains experience and uses mana each time they engage in combat.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_CALL_TREE_ENTS">
 			<Text>Call Tree-Ents</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_CALL_TREE_ENTS_HELP">
+			<Text>Calls a number of Tree-Ents with total power up to the caster's Spell Modifier. The Tree-Ents are bound to the caster such that the caster gains experience and uses mana each time they engage in combat.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_CALL_MAJOR_SPIRIT">
 			<Text>Call Major Spirit</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_CALL_MAJOR_SPIRIT_HELP">
+			<Text>Calls a Major Spirit to fight for the spellcaster's civilization. Each Major Spirit can be called only once (by anyone), and only one can be summoned by a particular civilization at one time. The civilization must be allies with the Major Spirit with relationship of 500. The Major Spirit is bound to the caster such that the caster gains experience and uses mana each time the Major Spirit engages in combat.</Text>
 		</Row>
 
 		<Row Tag="TXT_KEY_EA_SPELL_BLOOM">
 			<Text>Bloom</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_BLOOM_HELP">
+			<Text>Creates a forest or jungle on any valid plot adjacent to an already existing forest or jungle.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_RIDE_LIKE_THE_WIND">
 			<Text>Ride Like the Wind</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_RIDE_LIKE_THE_WIND_HELP">
+			<Text>Adds Ride Like the Wind promotion to all adjacent or same plot horse-mounted units adding +2 movement.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_PURIFY">
 			<Text>Purify</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_PURIFY_HELP">
+			<Text>Removes all bad bad spell effects and provides some healing to one unit.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_FAIR_WINDS">
 			<Text>Fair Winds</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_FAIR_WINDS_HELP">
+			<Text>Permanently adds the Fair Winds promotion to one nearby allied ship adding +1 movement.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_REVELRY">
 			<Text>Revelry</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_REVELRY_HELP">
+			<Text>Adds civilization happiness equal to the caster's modifier.</Text>
 		</Row>
 
 

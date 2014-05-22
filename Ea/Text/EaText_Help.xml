@@ -391,49 +391,6 @@
 
 		<!-- EaActions, Spells -->
 
-		<Row Tag="TXT_KEY_EA_SPELL_MAGIC_MISSILE_HELP">
-			<Text>Gives the caster a range 2 attack with strength equal to the caster's modifier.</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_SPELL_HEX_HELP">
-			<Text>Adds the Hex promotion to an adjacent enemy unit lowering strength by 20%.</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_SPELL_HEAL_HELP">
-			<Text>Heals up to caster's modifier in HPs for one allied living unit on same or adjacent plot.</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_SPELL_EAS_BLESSING_HELP">
-			<Text>Increases the spread and regeneration strength of Living Terrain by the caster's modifier.</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_SPELL_BLESS_HELP">
-			<Text>Adds the Bless promotion to one living unit giving +10 hp natural healing.</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_SPELL_PROTECTION_FROM_EVIL_HELP">
-			<Text>Adds Protection from Evil promotion to one living unit protecting from negative spell effects and giving +5 hp natural healing.</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_SPELL_HURT_HELP">
-			<Text>Damages adjacent enemy living unit up to the caster's modifier.</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_SPELL_CURSE_HELP">
-			<Text>Adds the Cursed promotion to one enemy living unit preventing all natural healing.</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_SPELL_EVIL_EYE_HELP">
-			<Text>Adds the Evil-Eye promotion to one enemy living unit preventing positive spell effects and giving -5 hp natural healing.</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_SPELL_BLOOM_HELP">
-			<Text>Creates a forest or jungle on any valid plot adjacent to an already existing forest or jungle.</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_SPELL_RIDE_LIKE_THE_WIND_HELP">
-			<Text>Adds Ride Like the Wind promotion to all adjacent or same plot horse-mounted units adding +2 movement.</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_SPELL_PURIFY_HELP">
-			<Text>Removes all bad bad spell effects and provides some healing to one unit.</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_SPELL_FAIR_WINDS_HELP">
-			<Text>Permanently adds the Fair Winds promotion to one nearby allied ship adding +1 movement.</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_SPELL_REVELRY_HELP">
-			<Text>Adds civilization happiness equal to the caster's modifier.</Text>
-		</Row>
-
 
 
 

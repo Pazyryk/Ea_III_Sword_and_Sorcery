@@ -19,8 +19,10 @@ local Dprint = DEBUG_PRINT and print or function() end
 local DOMAIN_LAND =							DomainTypes.DOMAIN_LAND
 local DOMAIN_SEA =							DomainTypes.DOMAIN_SEA
 local EAMOD_DEVOTION =						GameInfoTypes.EAMOD_DEVOTION
+local EA_PLOTEFFECT_PROTECTIVE_WARD =		GameInfoTypes.EA_PLOTEFFECT_PROTECTIVE_WARD
 local EA_WONDER_ARCANE_TOWER =				GameInfoTypes.EA_WONDER_ARCANE_TOWER
 local FEATURE_BLIGHT =	 					GameInfoTypes.FEATURE_BLIGHT
+local FEATURE_CRATER =	 					GameInfoTypes.FEATURE_CRATER
 local FEATURE_FALLOUT =	 					GameInfoTypes.FEATURE_FALLOUT
 local FEATURE_FOREST = 						GameInfoTypes.FEATURE_FOREST
 local FEATURE_JUNGLE = 						GameInfoTypes.FEATURE_JUNGLE
@@ -36,6 +38,7 @@ local PROMOTION_FAIR_WINDS =				GameInfoTypes.PROMOTION_FAIR_WINDS
 local PROMOTION_HEX =						GameInfoTypes.PROMOTION_HEX
 local PROMOTION_PROTECTION_FROM_EVIL =		GameInfoTypes.PROMOTION_PROTECTION_FROM_EVIL
 local PROMOTION_RIDE_LIKE_THE_WINDS =		GameInfoTypes.PROMOTION_RIDE_LIKE_THE_WINDS
+local RELIGION_ANRA =						GameInfoTypes.RELIGION_ANRA
 local RELIGION_THE_WEAVE_OF_EA =			GameInfoTypes.RELIGION_THE_WEAVE_OF_EA
 local TERRAIN_GRASS =						GameInfoTypes.TERRAIN_GRASS
 local TERRAIN_PLAINS =						GameInfoTypes.TERRAIN_PLAINS
@@ -49,6 +52,7 @@ local MOD_MEMORY_HALFLIFE =					MOD_MEMORY_HALFLIFE
 
 local MAX_RANGE =							MAX_RANGE
 local FIRST_SPELL_ID =						FIRST_SPELL_ID
+local MAX_UNIT_HP =							100
 
 --global tables
 local GameInfoTypes =						GameInfoTypes
@@ -69,6 +73,7 @@ local gg_bNormalCombatUnit =				gg_bNormalCombatUnit
 local gg_bNormalLivingCombatUnit =			gg_bNormalLivingCombatUnit
 local gg_baseUnitPower =					gg_baseUnitPower
 local gg_playerPlotActionTargeted =			gg_playerPlotActionTargeted
+local gg_eaSpecial =						gg_eaSpecial
 
 --localized functions
 local Floor =								math.floor
@@ -140,6 +145,8 @@ local g_iCity
 local g_city
 local g_eaCity
 
+local g_worldManaDepletion			--0 - 1; use ful for many AI valueations so set once at end of TestEaSpell
+
 --human UI stuff (what is stopping us?)
 local g_bUICall = false
 local g_bUniqueBlocked = false
@@ -150,7 +157,7 @@ local g_bSufficientFaith = true
 local g_bSetDelayedFailForUI = false
 --local g_bHasSpell = false
 
---communicate from TestTarget to SetUI or SetAIValues when needed
+--communicate from TestTarget to SetUI or SetAIValues when needed (reset to 0 from Test)
 local g_testTargetSwitch = 0
 
 --use these values and table to pass among functions (e.g., from specific Test to specific Do function)
@@ -280,7 +287,7 @@ function FinishEaSpell(eaActionID)		--only called from DoEaSpell so file locals 
 
 	--Plot Float Up Text
 	if not g_eaAction.NoFloatUpText or MapModData.bAutoplay then
-		g_plot:AddFloatUpMessage(Locale.Lookup(g_eaAction.Description), 1)
+		g_plot:AddFloatUpMessage(Locale.Lookup(g_eaAction.Description), 2)
 	end
 
 	ClearActionPlotTargetedForPerson(g_iPlayer, g_iPerson)
@@ -497,11 +504,15 @@ function TestEaSpell(eaActionID, iPlayer, unit, iPerson, testX, testY, bAINonTar
 		g_modSpellTimesTurns = g_mod * turnsToComplete		--this will get set again in TestTargetEaSpell, just need quick value here for early faith bailout
 		if g_faith < g_modSpellTimesTurns then
 			g_bSufficientFaith = false
+			g_value = g_modSpellTimesTurns
 			return false
 		else
 			g_bSufficientFaith = true
 		end
 	end
+
+	g_worldManaDepletion = 1 - gWorld.sumOfAllMana / MapModData.STARTING_SUM_OF_ALL_MANA
+
 	--Specific action test (runs if it exists)
 	if Test[eaActionID] and not Test[eaActionID]() then return false end
 
@@ -798,7 +809,7 @@ function DoEaSpell(eaActionID, iPlayer, unit, iPerson, targetX, targetY)
 
 		--Plot Float Up Text
 		if not g_eaAction.NoFloatUpText or MapModData.bAutoplay then
-			g_plot:AddFloatUpMessage(Locale.Lookup(g_eaAction.Description), 1)
+			g_plot:AddFloatUpMessage(Locale.Lookup(g_eaAction.Description), 2)
 		end
 
 		if 0 < g_eaAction.FixedFaith then
@@ -980,7 +991,9 @@ end
 --Note: spells skip over generic civ and caster prereqs; Test function is rarely used
 --Use TestTarget, SetUI, SetAIValues, Do (for 1 turn completion) and Finish (for >1 turn completion)
 
--- Model "Summon" spell
+----------------------------------------------------------------------------
+-- Summon-type spells
+----------------------------------------------------------------------------
 
 local EA_SPELL_CONJURE_MONSTER =			GameInfoTypes.EA_SPELL_CONJURE_MONSTER
 local EA_SPELL_REANIMATE_DEAD =				GameInfoTypes.EA_SPELL_REANIMATE_DEAD
@@ -998,7 +1011,7 @@ local EA_SPELL_CALL_MAJOR_SPIRIT =			GameInfoTypes.EA_SPELL_CALL_MAJOR_SPIRIT
 local monsters = {GameInfoTypes.UNIT_GIANT_SPIDER, GameInfoTypes.UNIT_DRAKE_GREEN, GameInfoTypes.UNIT_DRAKE_BLUE, GameInfoTypes.UNIT_DRAKE_RED}	--weakest to strongest
 local undead = {GameInfoTypes.UNIT_SKELETON_SWORDSMEN, GameInfoTypes.UNIT_ZOMBIES}
 local abyssalCreatures = {GameInfoTypes.UNIT_HORMAGAUNT}
-local demons = {GameInfoTypes.UNIT_LICTOR, GameInfoTypes.UNIT_HIVE_TYRANT}
+local demons = {GameInfoTypes.UNIT_DEMON_I, GameInfoTypes.UNIT_UNIT_DEMON_II}
 local heavensGuard = {GameInfoTypes.UNIT_ANGEL_SPEARMAN}
 local angels = {GameInfoTypes.UNIT_ANGEL}
 local animals = {GameInfoTypes.UNIT_WOLVES, GameInfoTypes.UNIT_LIONS}
@@ -1393,16 +1406,598 @@ SetUI[GameInfoTypes.EA_SPELL_CALL_MAJOR_SPIRIT] = ModelSummon_SetUI
 SetAIValues[GameInfoTypes.EA_SPELL_CALL_MAJOR_SPIRIT] = ModelSummon_SetAIValues
 Finish[GameInfoTypes.EA_SPELL_CALL_MAJOR_SPIRIT] = ModelSummon_Finish
 
+----------------------------------------------------------------------------
+-- Glyphs, Runes and Wards
+----------------------------------------------------------------------------
+
+--EA_SPELL_EXPLOSIVE_RUNE
+TestTarget[GameInfoTypes.EA_SPELL_EXPLOSIVE_RUNE] = function()
+	g_int1, g_int2, g_int3, g_int4 = g_plot:GetPlotEffectData()	--effectID, effectStength, iEffectPlayer, iCaster
+	if g_int1 ~= -1 then
+		if g_int3 == g_iPlayer then
+			g_testTargetSwitch = 2
+			return false			
+		end
+		--need more logic here for overwriteable effects
+		g_testTargetSwitch = 3
+		return false
+	end
+	return true
+end
+
+SetUI[GameInfoTypes.EA_SPELL_EXPLOSIVE_RUNE] = function()
+	if g_bNonTargetTestsPassed then
+		if g_bAllTestsPassed then
+			MapModData.text = "Inscribe an Explosive Rune on this plot"
+		elseif g_testTargetSwitch == 2 then
+			MapModData.text = "[COLOR_WARNING_TEXT]Your civilization has already placed a Glyph, Rune or Ward on this plot[ENDCOLOR]"
+		elseif g_testTargetSwitch == 3 then
+			MapModData.text = "[COLOR_WARNING_TEXT]Another civilization has placed a Glyph, Rune or Ward on this plot[ENDCOLOR]"
+		end
+	end
+end
+
+SetAIValues[GameInfoTypes.EA_SPELL_EXPLOSIVE_RUNE] = function()	--already restricted by AI heuristic to capital 3 radius and other city 1 radius
+	gg_aiOptionValues.i = -GetNIMBY(g_iPlayer, g_x, g_y)		--reverse NIMBY: will be in 10 to 30 range in and around my civ
+end
+
+Finish[GameInfoTypes.EA_SPELL_EXPLOSIVE_RUNE] = function()
+	g_plot:SetPlotEffectData(GameInfoTypes.EA_PLOTEFFECT_EXPLOSIVE_RUNE, g_modSpell, g_iPlayer, g_iPerson)	--effectID, effectStength, iPlayer, iCaster
+	if g_iPlayer == g_iActivePlayer then
+		UpdatePlotEffectHighlight(g_iPlot, 2)
+	else
+		UpdatePlotEffectHighlight(g_iPlot)
+	end
+	UseManaOrDivineFavor(g_iPlayer, g_iPerson, g_modSpellTimesTurns)
+	return true
+end
+
+--EA_SPELL_DEATH_RUNE
+TestTarget[GameInfoTypes.EA_SPELL_DEATH_RUNE] = function()
+	g_int1, g_int2, g_int3, g_int4 = g_plot:GetPlotEffectData()	--effectID, effectStength, iEffectPlayer, iCaster
+	if g_int1 ~= -1 then
+		if g_int3 == g_iPlayer then
+			g_testTargetSwitch = 2
+			return false			
+		end
+		--need more logic here for overwriteable effects
+		g_testTargetSwitch = 3
+		return false
+	end
+	return true
+end
+
+SetUI[GameInfoTypes.EA_SPELL_DEATH_RUNE] = function()
+	if g_bNonTargetTestsPassed then
+		if g_bAllTestsPassed then
+			MapModData.text = "Inscribe a Death Rune on this plot"
+		elseif g_testTargetSwitch == 2 then
+			MapModData.text = "[COLOR_WARNING_TEXT]Your civilization has already placed a Glyph, Rune or Ward on this plot[ENDCOLOR]"
+		elseif g_testTargetSwitch == 3 then
+			MapModData.text = "[COLOR_WARNING_TEXT]Another civilization has placed a Glyph, Rune or Ward on this plot[ENDCOLOR]"
+		end
+	end
+end
+
+SetAIValues[GameInfoTypes.EA_SPELL_DEATH_RUNE] = function()		--already restricted by AI heuristic to capital 3 radius and other city 1 radius
+	gg_aiOptionValues.i = -GetNIMBY(g_iPlayer, g_x, g_y)		--reverse NIMBY: will be in 10 to 30 range in and around my civ
+end
+
+Finish[GameInfoTypes.EA_SPELL_DEATH_RUNE] = function()
+	g_plot:SetPlotEffectData(GameInfoTypes.EA_PLOTEFFECT_DEATH_RUNE, g_modSpell, g_iPlayer, g_iPerson)	--effectID, effectStength, iPlayer, iCaster
+	if g_iPlayer == g_iActivePlayer then
+		UpdatePlotEffectHighlight(g_iPlot, 2)
+	else
+		UpdatePlotEffectHighlight(g_iPlot)
+	end
+	UseManaOrDivineFavor(g_iPlayer, g_iPerson, g_modSpellTimesTurns)
+	return true
+end
+
+--EA_SPELL_PROTECTIVE_WARD
+TestTarget[GameInfoTypes.EA_SPELL_PROTECTIVE_WARD] = function()
+	g_int1, g_int2, g_int3, g_int4 = g_plot:GetPlotEffectData()	--effectID, effectStength, iEffectPlayer, iCaster
+	if g_int1 ~= -1 then
+		if g_int3 == g_iPlayer then
+			g_testTargetSwitch = 2
+			return false			
+		end
+		--need more logic here for overwriteable effects
+		g_testTargetSwitch = 3
+		return false
+	end
+	return true
+end
+
+SetUI[GameInfoTypes.EA_SPELL_PROTECTIVE_WARD] = function()
+	if g_bNonTargetTestsPassed then
+		if g_bAllTestsPassed then
+			MapModData.text = "Inscribe a Protective Ward on this plot"
+		elseif g_testTargetSwitch == 2 then
+			MapModData.text = "[COLOR_WARNING_TEXT]Your civilization has already placed a Glyph, Rune or Ward on this plot[ENDCOLOR]"
+		elseif g_testTargetSwitch == 3 then
+			MapModData.text = "[COLOR_WARNING_TEXT]Another civilization has placed a Glyph, Rune or Ward on this plot[ENDCOLOR]"
+		end
+	end
+end
+
+SetAIValues[GameInfoTypes.EA_SPELL_PROTECTIVE_WARD] = function()		--already restricted by AI heuristic to capital 3 radius and other city 1 radius
+	gg_aiOptionValues.i = -GetNIMBY(g_iPlayer, g_x, g_y) * g_worldManaDepletion * 10		--as good as explosive when 10% mana depletion			
+end
+
+Finish[GameInfoTypes.EA_SPELL_PROTECTIVE_WARD] = function()
+	g_plot:SetPlotEffectData(EA_PLOTEFFECT_PROTECTIVE_WARD, g_modSpell, g_iPlayer, g_iPerson)	--effectID, effectStength, iPlayer, iCaster
+	if g_iPlayer == g_iActivePlayer then
+		UpdatePlotEffectHighlight(g_iPlot, 2)
+	else
+		UpdatePlotEffectHighlight(g_iPlot)
+	end
+	UseManaOrDivineFavor(g_iPlayer, g_iPerson, g_modSpellTimesTurns)
+	return true
+end
+
+--EA_SPELL_DETECT_GLYPHS_RUNES_WARDS
+TestTarget[GameInfoTypes.EA_SPELL_DETECT_GLYPHS_RUNES_WARDS] = function()
+	local revealedPlotEffects = g_eaPlayer.revealedPlotEffects
+	local numPlots = 0
+	local numRevealed = 1
+	for plot in PlotAreaSpiralIterator(g_plot, g_modSpell, 1, false, false, true) do
+		local iPlot = plot:GetPlotIndex()
+		if not revealedPlotEffects[iPlot] then
+			local effectID, effectStength, iEffectPlayer, iCaster = plot:GetPlotEffectData()
+			if effectID ~= -1 and iEffectPlayer ~= g_iPlayer then
+				numRevealed = numRevealed + 1
+				g_integers[numRevealed] = iPlot
+			end
+		end
+		numPlots = numPlots + 1
+		if g_modSpell < numPlots then break end
+	end
+	if numPlots == 0 then return false end
+	g_count = numRevealed
+	return false
+end
+
+SetUI[GameInfoTypes.EA_SPELL_DETECT_GLYPHS_RUNES_WARDS] = function()
+	if g_bNonTargetTestsPassed then
+		if g_bAllTestsPassed then
+			MapModData.text = "Reveal nearby Glyphs, Runes or Wards"
+		else
+			MapModData.text = "[COLOR_WARNING_TEXT]There are no nearby Glyphs, Runes or Wards to reveal[ENDCOLOR]"
+		end
+	end
+end
+
+SetAIValues[GameInfoTypes.EA_SPELL_DETECT_GLYPHS_RUNES_WARDS] = function()
+	gg_aiOptionValues.i = g_count		
+end
+
+Finish[GameInfoTypes.EA_SPELL_DETECT_GLYPHS_RUNES_WARDS] = function()
+	local revealedPlotEffects = g_eaPlayer.revealedPlotEffects
+	for i = 1, g_count do
+		local iPlot = g_integers[i]
+		revealedPlotEffects[iPlot] = true
+	end
+	UseManaOrDivineFavor(g_iPlayer, g_iPerson, g_count)
+	if g_iPlayer == g_iActivePlayer then
+		UpdatePlotEffectHighlight(nil, 1, true)	--puts UI in "show other players's effects" state, forces update
+	end
+	return true
+end
+
+--EA_SPELL_DISPEL_GLYPHS_RUNES_WARDS
+TestTarget[GameInfoTypes.EA_SPELL_DISPEL_GLYPHS_RUNES_WARDS] = function()
+	if not g_eaPlayer.revealedPlotEffects[g_iPlot] then
+		if g_iPlayer == g_iActivePlayer then
+			local effectID, effectStength, iEffectPlayer, iCaster = g_plot:GetPlotEffectData()
+			if effectID == -1 or iEffectPlayer ~= g_iPlayer then return false end					--human player can Dispel their own
+			g_testTargetSwitch = 1
+		else
+			return false
+		end
+	end
+
+	--see if there really is one here (otherwise update revealedPlotEffects)
+	local effectID, effectStength, iEffectPlayer, iCaster = g_plot:GetPlotEffectData()
+	if effectID == -1 or iEffectPlayer == g_iPlayer then		--update revealedPlotEffects (it's wrong) and bail out unless this is human dispelling their own
+		g_eaPlayer.revealedPlotEffects[g_iPlot] = nil
+		if effectID == -1 or g_iPlayer ~= g_iActivePlayer then return false end
+		g_testTargetSwitch = 1
+	end
+
+	--are we strong enough to dispel? (must be equal so human caster can dispel their own)
+	if g_modSpell < effectStength then
+		g_testTargetSwitch = 2
+		return false
+	end
+
+	--we can do it; load up info for AI valuation
+	g_int1 = effectID
+	g_int2 = effectStength
+	g_int3 = iEffectPlayer
+	return true
+end
+
+SetUI[GameInfoTypes.EA_SPELL_DISPEL_GLYPHS_RUNES_WARDS] = function()
+	if g_bNonTargetTestsPassed then
+		if g_bAllTestsPassed then
+			local name = Locale.Lookup(GameInfo.EaPlotEffects[g_int1].Description)
+			if g_testTargetSwitch == 1 then
+				MapModData.text = "Dispel the " .. name .. " at this plot (WARING: This is your own plot effect!)"
+			else
+				MapModData.text = "Dispel the " .. name .. " at this plot"
+			end
+		elseif g_testTargetSwitch == 2 then
+			local name = Locale.Lookup(GameInfo.EaPlotEffects[g_int1].Description)
+			MapModData.text = "[COLOR_WARNING_TEXT]You do not have sufficiently high Abjuration Modifier to Dispel the " .. name .. " at this plot (need " .. g_int2 .. ")[ENDCOLOR]"
+		else
+			MapModData.text = "[COLOR_WARNING_TEXT]There are no revealed Glyphs, Runes or Wards here[ENDCOLOR]"
+		end
+	end
+end
+
+SetAIValues[GameInfoTypes.EA_SPELL_DISPEL_GLYPHS_RUNES_WARDS] = function()
+	-- AI wants to do it if at war with player or (Anra follower and Protective Ward and g_worldManaDepletion kicking in)
+	if g_int1 == EA_PLOTEFFECT_PROTECTIVE_WARD then
+		if g_eaPlayer.religionID == RELIGION_ANRA then
+			gg_aiOptionValues.i = g_worldManaDepletion * GetNIMBY() * 5		--gets us into the range of 25 in foreign lands as depletion goes >0.5
+		end
+	else
+		if g_team:IsAtWar(Players[g_int3]:GetTeam()) then
+			gg_aiOptionValues.i = g_int2				--stonger is better since we can dispel; AI will prioritize mostly by proximity
+		else
+			gg_aiOptionValues.i = 0	
+		end
+	end
+end
+
+Finish[GameInfoTypes.EA_SPELL_DISPEL_GLYPHS_RUNES_WARDS] = function()
+	g_plot:SetPlotEffectData(-1, -1, -1, -1)
+	g_eaPlayer.revealedPlotEffects[g_iPlot] = nil
+	UseManaOrDivineFavor(g_iPlayer, g_iPerson, g_int2 * 2)
+	UpdatePlotEffectHighlight(g_iPlot)
+	return true
+end
+
+----------------------------------------------------------------------------
+-- Banish-type and Turn Undead 
+----------------------------------------------------------------------------
+
+--EA_SPELL_BANISH_UNDEAD
+TestTarget[GameInfoTypes.EA_SPELL_BANISH] = function()
+	--are enemy conjured, summoned or called units in 3-plot range?
+	local bCanBanish = false
+	local remainingMod = g_modSpellTimesTurns
+	g_count = 0
+	g_value = 0
+	g_int1 = 99999
+	local sector = Rand(6, "hello")	+ 1	--won't affect test, but randomizes who if >1
+	for plot in PlotAreaSpiralIterator(g_plot, 3, sector, false, false, false) do
+		if plot:IsVisibleEnemyUnit(g_iPlayer) then
+			local unitCount = plot:GetNumUnits()
+			for i = 0, unitCount - 1 do
+				local unit = plot:GetUnit(i)
+				if unit:GetSummonerIndex() ~= -1 then
+					local unitTypeID = unit:GetUnitType()
+					if gg_eaSpecial[unitTypeID] ~= "Undead" then
+						--have qualified unit; are we strong enough?
+						g_testTargetSwitch = 1
+						local power = gg_baseUnitPower[unitTypeID] * unit:GetCurrHitPoints() / MAX_UNIT_HP
+						if remainingMod >= power then
+							bCanBanish = true
+							remainingMod = remainingMod - power
+							g_value = g_value + power
+							g_count = g_count + 1
+							g_table[g_count] = unit
+						else
+							g_int1 = power < g_int1 and power or g_int1 --what we needed if spell fails
+						end
+					end
+				end
+			end
+		end
+	end
+	return bCanBanish
+end
+
+SetUI[GameInfoTypes.EA_SPELL_BANISH] = function()
+	if g_bNonTargetTestsPassed then
+		if g_bAllTestsPassed then
+			MapModData.text = "Banish one or more nearby conjured, summoned or called units"
+		elseif g_testTargetSwitch == 1 then
+			local modNeeded = Floor(g_int1 * g_modSpell / g_modSpellTimesTurns + 0.5)
+			MapModData.text = "[COLOR_WARNING_TEXT]There are conjured, summoned or called units nearby, but you do not have sufficient Abjuration Mod to Banish them (need " .. modNeeded .. ")[ENDCOLOR]"
+		else
+			MapModData.text = "[COLOR_WARNING_TEXT]There are no conjured, summoned or called units nearby[ENDCOLOR]"
+		end
+	end
+end
+
+SetAIValues[GameInfoTypes.EA_SPELL_BANISH] = function()
+	gg_aiOptionValues.i = g_value * 2
+end
+
+Finish[GameInfoTypes.EA_SPELL_BANISH] = function()
+	for i = 1, g_count do
+		local unit = g_table[i]
+		local plot = unit:GetPlot()
+		MapModData.bBypassOnCanSaveUnit = true
+		unit:Kill(true, g_iPlayer)
+		plot:AddFloatUpMessage("Banished!", 2)
+	end
+	UseManaOrDivineFavor(g_iPlayer, g_iPerson, g_value * 2)
+	return true
+end
+
+--EA_SPELL_BANISH_UNDEAD
+TestTarget[GameInfoTypes.EA_SPELL_BANISH_UNDEAD] = function()
+	--are any of these in 3-plot range? Pick first in spiral that we can banish
+	local bCanBanish = false
+	local remainingMod = g_modSpellTimesTurns
+	g_count = 0
+	g_value = 0
+	g_int1 = 99999
+	local sector = Rand(6, "hello")	+ 1	--won't affect test, but randomizes who if >1
+	for plot in PlotAreaSpiralIterator(g_plot, 3, sector, false, false, false) do
+		if plot:IsVisibleEnemyUnit(g_iPlayer) then
+			local unitCount = plot:GetNumUnits()
+			for i = 0, unitCount - 1 do
+				local unit = plot:GetUnit(i)
+				local unitTypeID = unit:GetUnitType()
+				if gg_eaSpecial[unitTypeID] == "Undead" then
+					--have qualified unit; are we strong enough?
+					g_testTargetSwitch = 1
+					local power = gg_baseUnitPower[unitTypeID] * unit:GetCurrHitPoints() / MAX_UNIT_HP
+					if remainingMod >= power then
+						bCanBanish = true
+						remainingMod = remainingMod - power
+						g_value = g_value + power
+						g_count = g_count + 1
+						g_table[g_count] = unit
+					else
+						g_int1 = power < g_int1 and power or g_int1 --what we needed if spell fails
+					end
+				end
+			end
+		end
+	end
+	return bCanBanish
+end
+
+SetUI[GameInfoTypes.EA_SPELL_BANISH_UNDEAD] = function()
+	if g_bNonTargetTestsPassed then
+		if g_bAllTestsPassed then
+			MapModData.text = "Banish one or more nearby undead"
+		elseif g_testTargetSwitch == 1 then
+			local modNeeded = Floor(g_int1 * g_modSpell / g_modSpellTimesTurns + 0.5)
+			MapModData.text = "[COLOR_WARNING_TEXT]There are undead nearby, but you do not have sufficient Spell Modifier to Banish them (need " .. modNeeded .. ")[ENDCOLOR]"
+		else
+			MapModData.text = "[COLOR_WARNING_TEXT]There are no undead units nearby[ENDCOLOR]"
+		end
+	end
+end
+
+SetAIValues[GameInfoTypes.EA_SPELL_BANISH_UNDEAD] = function()
+	gg_aiOptionValues.i = g_value * 2
+end
+
+Finish[GameInfoTypes.EA_SPELL_BANISH_UNDEAD] = function()
+	for i = 1, g_count do
+		local unit = g_table[i]
+		local plot = unit:GetPlot()
+		MapModData.bBypassOnCanSaveUnit = true
+		unit:Kill(true, g_iPlayer)
+		plot:AddFloatUpMessage("Banished!", 2)
+	end
+	UseManaOrDivineFavor(g_iPlayer, g_iPerson, g_value * 2)
+	return true
+end
+
+--EA_SPELL_TURN_UNDEAD
+TestTarget[GameInfoTypes.EA_SPELL_TURN_UNDEAD] = function()
+	--are any of these in 3-plot range? Pick first in spiral that we can banish
+	local bCanTurn = false
+	local remainingMod = g_modSpellTimesTurns
+	g_count = 0
+	g_value = 0
+	g_int1 = 99999
+	local sector = Rand(6, "hello")	+ 1	--won't affect test, but randomizes who if >1
+	for plot in PlotAreaSpiralIterator(g_plot, 3, sector, false, false, false) do
+		if plot:IsVisibleEnemyUnit(g_iPlayer) then
+			local unitCount = plot:GetNumUnits()
+			for i = 0, unitCount - 1 do
+				local unit = plot:GetUnit(i)
+				local unitTypeID = unit:GetUnitType()
+				if gg_eaSpecial[unitTypeID] == "Undead" then
+					--have qualified unit; are we strong enough?
+					g_testTargetSwitch = 1
+					local power = gg_baseUnitPower[unitTypeID] * unit:GetCurrHitPoints() / MAX_UNIT_HP
+					if remainingMod >= power then
+						bCanTurn = true
+						remainingMod = remainingMod - power
+						g_value = g_value + power
+						g_count = g_count + 1
+						g_table[g_count] = unit
+					else
+						g_int1 = power < g_int1 and power or g_int1 --what we needed if spell fails
+					end
+				end
+			end
+		end
+	end
+	return bCanTurn
+end
+
+SetUI[GameInfoTypes.EA_SPELL_TURN_UNDEAD] = function()
+	if g_bNonTargetTestsPassed then
+		if g_bAllTestsPassed then
+			MapModData.text = "Turn one or more nearby undead"
+		elseif g_testTargetSwitch == 1 then
+			local modNeeded = Floor(g_int1 * g_modSpell / g_modSpellTimesTurns + 0.5)
+			MapModData.text = "[COLOR_WARNING_TEXT]There are undead nearby, but you do not have sufficient Spell Modifier to Turn them (need " .. modNeeded .. ")[ENDCOLOR]"
+		else
+			MapModData.text = "[COLOR_WARNING_TEXT]There are no undead units nearby[ENDCOLOR]"
+		end
+	end
+end
+
+SetAIValues[GameInfoTypes.EA_SPELL_TURN_UNDEAD] = function()
+	gg_aiOptionValues.i = g_value * 2
+end
+
+Finish[GameInfoTypes.EA_SPELL_TURN_UNDEAD] = function()
+	for i = 1, g_count do
+		local unit = g_table[i]
+		local plot = unit:GetPlot()
+		local x, y = plot:GetXY()
+		local unitTypeID = unit:GetUnitType()
+		MapModData.bBypassOnCanSaveUnit = true
+		unit:Kill(false, g_iPlayer)
+		g_player:IntiUnit(unitTypeID, x, y)
+		plot:AddFloatUpMessage("Turned Undead!", 2)
+	end
+	UseManaOrDivineFavor(g_iPlayer, g_iPerson, g_value * 2)
+	return true
+end
+
+--EA_SPELL_BANISH_DEMONS
+TestTarget[GameInfoTypes.EA_SPELL_BANISH_DEMONS] = function()
+	--are any of these in 3-plot range? Pick first in spiral that we can banish
+	local bCanBanish = false
+	local remainingMod = g_modSpellTimesTurns
+	g_count = 0
+	g_value = 0
+	g_int1 = 99999
+	local sector = Rand(6, "hello")	+ 1	--won't affect test, but randomizes who if >1
+	for plot in PlotAreaSpiralIterator(g_plot, 3, sector, false, false, false) do
+		if plot:IsVisibleEnemyUnit(g_iPlayer) then
+			local unitCount = plot:GetNumUnits()
+			for i = 0, unitCount - 1 do
+				local unit = plot:GetUnit(i)
+				local unitTypeID = unit:GetUnitType()
+				if gg_eaSpecial[unitTypeID] == "Demon" or gg_eaSpecial[unitTypeID] == "Archdemon" then
+					--have qualified unit; are we strong enough?
+					g_testTargetSwitch = 1
+					local power = gg_baseUnitPower[unitTypeID] * unit:GetCurrHitPoints() / MAX_UNIT_HP
+					if remainingMod >= power then
+						bCanBanish = true
+						remainingMod = remainingMod - power
+						g_value = g_value + power
+						g_count = g_count + 1
+						g_table[g_count] = unit
+					else
+						g_int1 = power < g_int1 and power or g_int1 --what we needed if spell fails
+					end
+				end
+			end
+		end
+	end
+	return bCanBanish
+end
+
+SetUI[GameInfoTypes.EA_SPELL_BANISH_DEMONS] = function()
+	if g_bNonTargetTestsPassed then
+		if g_bAllTestsPassed then
+			MapModData.text = "Banish one or more nearby demons"
+		elseif g_testTargetSwitch == 1 then
+			local modNeeded = Floor(g_int1 * g_modSpell / g_modSpellTimesTurns + 0.5)
+			MapModData.text = "[COLOR_WARNING_TEXT]There are demons nearby, but you do not have sufficient Spell Modifier to Banish them (need " .. modNeeded .. ")[ENDCOLOR]"
+		else
+			MapModData.text = "[COLOR_WARNING_TEXT]There are no demons nearby[ENDCOLOR]"
+		end
+	end
+end
+
+SetAIValues[GameInfoTypes.EA_SPELL_BANISH_DEMONS] = function()
+	gg_aiOptionValues.i = g_value * 2
+end
+
+Finish[GameInfoTypes.EA_SPELL_BANISH_DEMONS] = function()
+	for i = 1, g_count do
+		local unit = g_table[i]
+		local plot = unit:GetPlot()
+		MapModData.bBypassOnCanSaveUnit = true
+		unit:Kill(true, g_iPlayer)
+		plot:AddFloatUpMessage("Banished!", 2)
+	end
+	UseManaOrDivineFavor(g_iPlayer, g_iPerson, g_value * 2)
+	return true
+end
+
+--EA_SPELL_BANISH_ANGELS
+TestTarget[GameInfoTypes.EA_SPELL_BANISH_ANGELS] = function()
+	--are any angels in 3-plot range?
+	local bCanBanish = false
+	local remainingMod = g_modSpellTimesTurns
+	g_count = 0
+	g_value = 0
+	g_int1 = 99999
+	local sector = Rand(6, "hello")	+ 1	--won't affect test, but randomizes who if >1
+	for plot in PlotAreaSpiralIterator(g_plot, 3, sector, false, false, false) do
+		if plot:IsVisibleEnemyUnit(g_iPlayer) then
+			local unitCount = plot:GetNumUnits()
+			for i = 0, unitCount - 1 do
+				local unit = plot:GetUnit(i)
+				local unitTypeID = unit:GetUnitType()
+				if gg_eaSpecial[unitTypeID] == "Angel" or gg_eaSpecial[unitTypeID] == "Archangel" then
+					--have qualified unit; are we strong enough?
+					g_testTargetSwitch = 1
+					local power = gg_baseUnitPower[unitTypeID] * unit:GetCurrHitPoints() / MAX_UNIT_HP
+					if remainingMod >= power then
+						bCanBanish = true
+						remainingMod = remainingMod - power
+						g_value = g_value + power
+						g_count = g_count + 1
+						g_table[g_count] = unit
+					else
+						g_int1 = power < g_int1 and power or g_int1 --what we needed if spell fails
+					end
+				end
+			end
+		end
+	end
+	return bCanBanish
+end
+
+SetUI[GameInfoTypes.EA_SPELL_BANISH_ANGELS] = function()
+	if g_bNonTargetTestsPassed then
+		if g_bAllTestsPassed then
+			MapModData.text = "Banish one or more nearby angels"
+		elseif g_testTargetSwitch == 1 then
+			local modNeeded = Floor(g_int1 * g_modSpell / g_modSpellTimesTurns + 0.5)
+			MapModData.text = "[COLOR_WARNING_TEXT]There are angels nearby, but you do not have sufficient Spell Modifier to Banish them (need " .. modNeeded .. ")[ENDCOLOR]"
+		else
+			MapModData.text = "[COLOR_WARNING_TEXT]There are no angels nearby[ENDCOLOR]"
+		end
+	end
+end
+
+SetAIValues[GameInfoTypes.EA_SPELL_BANISH_ANGELS] = function()
+	gg_aiOptionValues.i = g_value * 2
+end
+
+Finish[GameInfoTypes.EA_SPELL_BANISH_ANGELS] = function()
+	for i = 1, g_count do
+		local unit = g_table[i]
+		local plot = unit:GetPlot()
+		MapModData.bBypassOnCanSaveUnit = true
+		unit:Kill(true, g_iPlayer)
+		plot:AddFloatUpMessage("Banished!", 2)
+	end
+	UseManaOrDivineFavor(g_iPlayer, g_iPerson, g_value * 2)
+	return true
+end
+
+
+
 
 --EA_SPELL_SCRYING
 --EA_SPELL_SEEING_EYE_GLYPH
---EA_SPELL_DETECT_GLYPHS_RUNES_WARDS
 --EA_SPELL_KNOW_WORLD
 --EA_SPELL_DISPEL_HEXES
---EA_SPELL_DESPEL_GLYPHS_RUNES_WARDS
+
 --EA_SPELL_DISPEL_ILLUSIONS
---EA_SPELL_BANISHMENT
---EA_SPELL_PROTECTIVE_WARD
+
 --EA_SPELL_DISPEL_MAGIC
 --EA_SPELL_TIME_STOP
 
@@ -1444,10 +2039,12 @@ TestTarget[GameInfoTypes.EA_SPELL_MAGIC_MISSILE] = function()	--TO DO: need bett
 end
 
 SetUI[GameInfoTypes.EA_SPELL_MAGIC_MISSILE] = function()
-	if g_bAllTestsPassed then
-		MapModData.text = "Magic Missile attack (ranged strength " .. g_modSpell .. ")"
-	else
-		MapModData.text = "[COLOR_WARNING_TEXT]No valid target in range[ENDCOLOR]"
+	if g_bNonTargetTestsPassed then
+		if g_bAllTestsPassed then
+			MapModData.text = "Magic Missile attack (ranged strength " .. g_modSpell .. ")"
+		else
+			MapModData.text = "[COLOR_WARNING_TEXT]No valid target in range[ENDCOLOR]"
+		end
 	end
 end
 
@@ -1489,46 +2086,87 @@ Do[GameInfoTypes.EA_SPELL_MAGIC_MISSILE] = function()
 	return true
 end
 
---EA_SPELL_EXPLOSIVE_RUNE
-TestTarget[GameInfoTypes.EA_SPELL_EXPLOSIVE_RUNE] = function()
-	g_int1, g_int2, g_int3, g_int4 = g_plot:GetPlotEffectData()	--effectID, effectStength, iEffectPlayer, iCaster
-	if g_int1 ~= -1 then
-		if g_int3 == g_iPlayer then
-			g_testTargetSwitch = 2
-			return false			
-		end
-		--need more logic here for overwriteable effects
-		g_testTargetSwitch = 3
-		return false
-	end
-	return true
-end
 
-SetUI[GameInfoTypes.EA_SPELL_EXPLOSIVE_RUNE] = function()
-	if g_bNonTargetTestsPassed then
-		if g_bAllTestsPassed then
-			MapModData.text = "Inscribe an Explosive Rune on this plot"
-		elseif g_testTargetSwitch == 2 then
-			MapModData.text = "[COLOR_WARNING_TEXT]Your civilization has already placed a Glyph, Rune or Ward on this plot[ENDCOLOR]"
-		elseif g_testTargetSwitch == 3 then
-			MapModData.text = "[COLOR_WARNING_TEXT]Another civilization has placed a Glyph, Rune or Ward on this plot[ENDCOLOR]"
-		end
-	end
-end
-
-SetAIValues[GameInfoTypes.EA_SPELL_EXPLOSIVE_RUNE] = function()	
-	gg_aiOptionValues.i = 10		--TO DO: Add some logic here (AI only looks around capital for now)
-end
-
-Finish[GameInfoTypes.EA_SPELL_EXPLOSIVE_RUNE] = function()
-	g_plot:SetPlotEffectData(GameInfoTypes.EA_PLOTEFFECT_EXPLOSIVE_RUNE, g_modSpell, g_iPlayer, g_iPerson)	--effectID, effectStength, iPlayer, iCaster
-	UpdatePlotEffectHighlight(g_iPlot)
-	UseManaOrDivineFavor(g_iPlayer, g_iPerson, g_modSpellTimesTurns)
-	return true
-end
 
 --EA_SPELL_MAGE_SWORD
+
 --EA_SPELL_BREACH
+TestTarget[GameInfoTypes.EA_SPELL_BREACH] = function()
+	--copied from Blight with one major change: this spell either overcomes protection or not (does not weaken)
+
+	--if true, then:
+	--g_obj1 = affected plot (this plot or distant plot from tower/temple)
+	--g_int2 = terrainStrength
+	--g_int3 = radius (tower/temple only)
+	--g_int4 = ownPlotsInDanger (tower/temple only)
+	--g_int5 = totalPlotsInDanger (tower/temple only)
+
+	if g_bInTowerOrTemple then	--Can distant plot be blighted? (max range = mod)
+		local BreachPlot = BreachPlot
+		--random sector/direction, spiral in until valid plot found
+		local sector = Rand(6, "hello") + 1
+		local anticlock = Rand(2, "hello") == 0
+		local maxRadius = g_modSpell < MAX_RANGE and g_modSpell or MAX_RANGE
+		for radius = maxRadius, 1, -1 do	--test one full ring at a time (we test whole ring so AI can account for own plots in danger)
+			g_obj1 = nil
+			local ownPlotsInDanger, totalPlotsInDanger = 0, 0
+			for plot in PlotRingIterator(g_plot, radius, sector, anticlock) do
+				if BreachPlot(plot, g_iPlayer, g_iPerson, g_modSpell, true) then		--tests whether spell mod can overcome protection
+					totalPlotsInDanger = totalPlotsInDanger + 1
+					if plot:IsPlayerCityRadius(g_iPlayer) then
+						ownPlotsInDanger = ownPlotsInDanger + 1
+					end	
+					g_int2 = 0
+					g_obj1 = plot
+				end
+			end
+			if g_obj1 then
+				g_int3 = radius
+				g_int4 = ownPlotsInDanger
+				g_int5 = totalPlotsInDanger
+				return true
+			end
+		end
+		return false
+	else	--Can THIS plot be Breached?
+		if not BreachPlot(g_plot, g_iPlayer, g_iPerson, g_modSpell, true) then return false end	--tests whether spell mod can overcome protection
+
+		g_obj1 = g_plot
+		return true
+	end
+end
+
+SetUI[GameInfoTypes.EA_SPELL_BREACH] = function()
+	if g_bAllTestsPassed then
+		if g_bInTowerOrTemple then
+			MapModData.text = "Breach land at range " .. g_int3
+		else
+			MapModData.text = "Breach this land"
+		end			
+	elseif g_bNonTargetTestsPassed then
+		if g_bInTowerOrTemple then
+			MapModData.text = "[COLOR_WARNING_TEXT]No land within the caster's " .. g_modSpell .. "-plot range can be breached[ENDCOLOR]"
+		else
+			MapModData.text = "[COLOR_WARNING_TEXT]This plot cannot be breached[ENDCOLOR]"
+		end
+	end
+end
+
+SetAIValues[GameInfoTypes.EA_SPELL_BREACH] = function()
+	if g_bInTowerOrTemple then
+		gg_aiOptionValues.i = 200 * g_modSpell * (0.05 - g_int4 / g_int5)		--goes negative if 5% of plots our ours
+	elseif not g_plot:IsPlayerCityRadius(g_iPlayer) then	--no value if in our city's 3-plot radius (really should check distance to any of our cities)
+		gg_aiOptionValues.i = 50 * GetNIMBY(g_iPlayer, g_x, g_y)	--so in range of 500 for foreign lands (we really want AI to do this)
+	end	
+end
+
+Finish[GameInfoTypes.EA_SPELL_BREACH] = function()
+	print("Finish[GameInfoTypes.EA_SPELL_BREACH] ", g_obj1, g_iPlayer, g_iPerson, g_modSpell)
+	g_specialEffectsPlot = g_obj1
+	BreachPlot(g_obj1, g_iPlayer, g_iPerson, g_modSpell)	--this will give xp and use mana if success (more than if failure below)
+	return true
+end
+
 --EA_SPELL_WISH
 --EA_SPELL_SLOW
 --EA_SPELL_HASTE
@@ -1547,7 +2185,7 @@ TestTarget[GameInfoTypes.EA_SPELL_BLIGHT] = function()
 	--g_int5 = totalPlotsInDanger (tower/temple only)
 
 	if g_bInTowerOrTemple then	--Can distant plot be blighted? (max range = mod)
-
+		local BlightPlot = BlightPlot
 		--random sector/direction, spiral in until valid plot found
 		local sector = Rand(6, "hello") + 1
 		local anticlock = Rand(2, "hello") == 0
@@ -1555,29 +2193,14 @@ TestTarget[GameInfoTypes.EA_SPELL_BLIGHT] = function()
 		for radius = maxRadius, 1, -1 do	--test one full ring at a time (we test whole ring so AI can account for own plots in danger)
 			g_obj1 = nil
 			local ownPlotsInDanger, totalPlotsInDanger = 0, 0
-			for plot in PlotRingIterator(g_plot, radius, sector, anticlock) do	
-				if not (plot:IsWater() or plot:IsMountain() or plot:IsImpassable()) then
-					local featureID = plot:GetFeatureType()
-					if not (featureID == FEATURE_BLIGHT or featureID == FEATURE_FALLOUT) then
-						if featureID == FEATURE_FOREST or featureID == FEATURE_JUNGLE or featureID == FEATURE_MARSH then	--Must overpower any living terrain here (subtract range from mod)
-							local terrainStrength = plot:GetLivingTerrainStrength()
-							if g_modSpell - radius > terrainStrength then
-								totalPlotsInDanger = totalPlotsInDanger + 1
-								if plot:IsPlayerCityRadius(g_iPlayer) then
-									ownPlotsInDanger = ownPlotsInDanger + 1
-								end		
-								g_int2 = terrainStrength		
-								g_obj1 = plot
-							end
-						else
-							totalPlotsInDanger = totalPlotsInDanger + 1
-							if plot:IsPlayerCityRadius(g_iPlayer) then
-								ownPlotsInDanger = ownPlotsInDanger + 1
-							end	
-							g_int2 = 0
-							g_obj1 = plot
-						end
-					end
+			for plot in PlotRingIterator(g_plot, radius, sector, anticlock) do
+				if BlightPlot(plot, g_iPlayer, g_iPerson, 0, true) then		--just a casting test
+					totalPlotsInDanger = totalPlotsInDanger + 1
+					if plot:IsPlayerCityRadius(g_iPlayer) then
+						ownPlotsInDanger = ownPlotsInDanger + 1
+					end	
+					g_int2 = 0
+					g_obj1 = plot
 				end
 			end
 			if g_obj1 then
@@ -1585,22 +2208,33 @@ TestTarget[GameInfoTypes.EA_SPELL_BLIGHT] = function()
 				g_int4 = ownPlotsInDanger
 				g_int5 = totalPlotsInDanger
 				return true
-			else
-				return false
 			end
 		end
-	else	--Can this plot be blighted?
-		if g_plot:IsWater() or g_plot:IsMountain() or g_plot:IsImpassable() then return false end	--IsImpassable protects Natural Wonders (unless they become passible) 
-		local featureID = g_plot:GetFeatureType()
-		if featureID == FEATURE_BLIGHT or featureID == FEATURE_FALLOUT then return false end
+		return false
+	else	--Can THIS plot be blighted (or at least weakened)?
+		if not BlightPlot(g_plot, g_iPlayer, g_iPerson, 0, true) then return false end	--just a casting test
+
+		--spell can "work" even if blocked, but only to weaken; best AI value is to blight AND weaken
+		local strengthNeeded = 0
 		if featureID == FEATURE_FOREST or featureID == FEATURE_JUNGLE or featureID == FEATURE_MARSH then	--Must overpower any living terrain here
-			g_int2 = g_plot:GetLivingTerrainStrength()
-			if g_modSpell < g_int2 then
-				return false
-			end
-		else
-			g_int2 = 0	
+			strengthNeeded = strengthNeeded + g_plot:GetLivingTerrainStrength()
 		end
+		local effectID, effectStength, iEffectPlayer, iEffectCaster = g_plot:GetPlotEffectData()
+		if effectID == EA_PLOTEFFECT_PROTECTIVE_WARD then
+			strengthNeeded = strengthNeeded + effectStength
+		end
+		if g_modSpell < strengthNeeded then
+			g_value = g_modSpell
+			g_int1 = strengthNeeded
+			g_testTargetSwitch = 1
+		elseif strengthNeeded > 0 then
+			g_value = g_modSpell + 20
+			g_int1 = strengthNeeded
+			g_testTargetSwitch = 2
+		else
+			g_value = 20
+		end
+
 		g_obj1 = g_plot
 		return true
 	end
@@ -1611,36 +2245,38 @@ SetUI[GameInfoTypes.EA_SPELL_BLIGHT] = function()
 		if g_bInTowerOrTemple then
 			MapModData.text = "Blight land at range " .. g_int3
 		else
-			if g_int2 > 0 then
-				MapModData.text = "Blight this land (overcome terrain strength " .. g_int2 .. ")"
+			if g_testTargetSwitch == 1 then
+				MapModData.text = "You cannot overcome terrain and/or ward strength at this plot (" .. g_int1 .. "); however, the spell will weaken this protection by " .. g_modSpell
+			elseif g_testTargetSwitch == 2 then
+				MapModData.text = "Blight this land (overcome terrain and/or ward strength " .. g_int1 .. ")"
 			else
 				MapModData.text = "Blight this land"
 			end
 		end			
-	else
+	elseif g_bNonTargetTestsPassed then
 		if g_bInTowerOrTemple then
 			MapModData.text = "[COLOR_WARNING_TEXT]No land within the caster's " .. g_modSpell .. "-plot range can be blighted[ENDCOLOR]"
 		else
-			if g_testTargetSwitch == 1 then
-				MapModData.text = "[COLOR_WARNING_TEXT]You cannot overcome this land's strength (" .. g_int2 .. ")[ENDCOLOR]"
-			else
-				MapModData.text = "[COLOR_WARNING_TEXT]This plot cannot be blighted[ENDCOLOR]"
-			end
+			MapModData.text = "[COLOR_WARNING_TEXT]This plot cannot be blighted[ENDCOLOR]"
 		end
 	end
 end
 
 SetAIValues[GameInfoTypes.EA_SPELL_BLIGHT] = function()
 	if g_bInTowerOrTemple then
-		gg_aiOptionValues.i = g_modSpell * (1 - g_int4 / g_int5)	-- deduct for proportion of possibly affected plots in own city's 3-plot radius
-	elseif not g_plot:IsPlayerCityRadius(g_iPlayer) then
-		gg_aiOptionValues.i = g_modSpell + g_int2	--prefer to kill strongest living terrain possible
-	end		--no value if in our city's 3-plot radius
+		gg_aiOptionValues.i = 10 * g_modSpell * (0.2 - g_int4 / g_int5)		--goes negative if 20% of plots our ours
+	elseif not g_plot:IsPlayerCityRadius(g_iPlayer) then	--no value if in our city's 3-plot radius (really should check distance to any of our cities)
+		gg_aiOptionValues.i = g_value * GetNIMBY(g_iPlayer, g_x, g_y) / 20		--10ish around foreign lands
+	end	
 end
 
 Finish[GameInfoTypes.EA_SPELL_BLIGHT] = function()
 	g_specialEffectsPlot = g_obj1
-	BlightPlot(g_obj1, g_iPlayer, g_iPerson)	--this will give xp and use mana
+	local bSuccess = BlightPlot(g_obj1, g_iPlayer, g_iPerson, g_modSpell)	--this will give xp and use mana if success (more than if failure below)
+	if not bSuccess then
+		UseManaOrDivineFavor(g_iPlayer, g_iPerson, g_modSpell, false)
+	end
+	return true
 end
 
 
@@ -1703,52 +2339,61 @@ end
 
 --EA_SPELL_TELEPORT
 --EA_SPELL_PHASE_DOOR
---EA_SPELL_REANIMATE_DEAD
-
-
---EA_SPELL_DEATH_RUNE			(almost a copy of EA_SPELL_EXPLOSIVE_RUNE)
-TestTarget[GameInfoTypes.EA_SPELL_DEATH_RUNE] = function()
-	g_int1, g_int2, g_int3, g_int4 = g_plot:GetPlotEffectData()	--effectID, effectStength, iEffectPlayer, iCaster
-	if g_int1 ~= -1 then
-		if g_int3 == g_iPlayer then
-			g_testTargetSwitch = 2
-			return false			
-		end
-		--need more logic here for overwriteable effects
-		g_testTargetSwitch = 3
-		return false
-	end
-	return true
-end
-
-SetUI[GameInfoTypes.EA_SPELL_DEATH_RUNE] = function()
-	if g_bNonTargetTestsPassed then
-		if g_bAllTestsPassed then
-			MapModData.text = "Inscribe a Death Rune on this plot"
-		elseif g_testTargetSwitch == 2 then
-			MapModData.text = "[COLOR_WARNING_TEXT]Your civilization has already placed a Glyph, Rune or Ward on this plot[ENDCOLOR]"
-		elseif g_testTargetSwitch == 3 then
-			MapModData.text = "[COLOR_WARNING_TEXT]Another civilization has placed a Glyph, Rune or Ward on this plot[ENDCOLOR]"
-		end
-	end
-end
-
-SetAIValues[GameInfoTypes.EA_SPELL_DEATH_RUNE] = function()	--already restricted by AI heuristic; just value good defence plot
-	gg_aiOptionValues.i = 10		--placeholder
-end
-
-Finish[GameInfoTypes.EA_SPELL_DEATH_RUNE] = function()
-	g_plot:SetPlotEffectData(GameInfoTypes.EA_PLOTEFFECT_DEATH_RUNE, g_modSpell, g_iPlayer, g_iPerson)	--effectID, effectStength, iPlayer, iCaster
-	UpdatePlotEffectHighlight(g_iPlot)
-	UseManaOrDivineFavor(g_iPlayer, g_iPerson, g_modSpellTimesTurns)
-	return true
-end
-
 
 
 --EA_SPELL_VAMPIRIC_TOUCH
 --EA_SPELL_DEATH_STAY
+
 --EA_SPELL_BECOME_LICH
+TestTarget[GameInfoTypes.EA_SPELL_BECOME_LICH] = function()
+	if gWonders[EA_WONDER_ARCANE_TOWER][g_iPerson] and gWonders[EA_WONDER_ARCANE_TOWER][g_iPerson].iPlot == g_iPlot then	--only in own tower
+		if g_modSpell < g_unit:GetLevel() then
+			g_testTargetSwitch = 1
+			return false
+		else
+			return true
+		end
+	end
+	return false
+end
+
+SetUI[GameInfoTypes.EA_SPELL_BECOME_LICH] = function()
+	if g_bNonTargetTestsPassed then
+		if g_bAllTestsPassed then
+			MapModData.text = "You will become a Lich, ageless and regenerating in Tower if killed"
+		elseif g_testTargetSwitch == 1 then
+			MapModData.text = "[COLOR_WARNING_TEXT]You do not have sufficient Necromancy Modifier to cast this spell (need " .. g_unit:GetLevel() .. ")[ENDCOLOR]"
+		else
+			MapModData.text = "[COLOR_WARNING_TEXT]This spell can be cast only from your Tower[ENDCOLOR]"
+		end
+	end
+end
+
+SetAIValues[GameInfoTypes.EA_SPELL_BECOME_LICH] = function()
+	gg_aiOptionValues.i = 1000
+end
+
+Finish[GameInfoTypes.EA_SPELL_BECOME_LICH] = function()
+	g_eaPerson.unitTypeID = GameInfoTypes.UNIT_LICH
+	g_eaPerson.predestinedAgeOfDeath = nil
+	local lich = g_player:InitUnit(GameInfoTypes.UNIT_LICH, g_x, g_y)
+	g_eaPerson.iUnit = lich:GetID()
+	lich:SetPersonIndex(g_iPerson)
+	MapModData.bBypassOnCanSaveUnit = true
+	lich:Convert(g_unit, false)
+	UseManaOrDivineFavor(g_iPlayer, g_iPerson, lich:GetLevel() * 100)
+
+
+	--kill bypass!!!!
+
+	return true
+end
+
+
+
+
+
+
 --EA_SPELL_FINGER_OF_DEATH
 --EA_SPELL_CHARM_MONSTER
 --EA_SPELL_CAUSE_FEAR
@@ -2193,12 +2838,14 @@ TestTarget[GameInfoTypes.EA_SPELL_EAS_BLESSING] = function()
 end
 
 SetUI[GameInfoTypes.EA_SPELL_EAS_BLESSING] = function()
-	if g_bAllTestsPassed then
-		local featureInfo = GameInfo.Features[g_int2]
-		local featureName = Locale.ConvertTextKey(featureInfo.Description)
-		MapModData.text = "Increase spreading and regeneration strength of " .. featureName .. " by " .. g_modSpell
-	else
-		MapModData.text = "[COLOR_WARNING_TEXT]Plot must be Living Terrain (Forest, Jungle or Marsh)[ENDCOLOR]"
+	if g_bNonTargetTestsPassed then
+		if g_bAllTestsPassed then
+			local featureInfo = GameInfo.Features[g_int2]
+			local featureName = Locale.ConvertTextKey(featureInfo.Description)
+			MapModData.text = "Increase spreading and regeneration strength of " .. featureName .. " by " .. g_modSpell
+		else
+			MapModData.text = "[COLOR_WARNING_TEXT]Plot must be Living Terrain (Forest, Jungle or Marsh)[ENDCOLOR]"
+		end
 	end
 end
 

@@ -454,6 +454,54 @@
     <DeployMod>true</DeployMod>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="Scratch\WTI_B.fxsxml">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>False</ImportIntoVFS>
+    </Content>
+    <Content Include="Scratch\WTI_HB.fxsxml">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>False</ImportIntoVFS>
+    </Content>
+    <Content Include="Scratch\WTI_PL.fxsxml">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>False</ImportIntoVFS>
+    </Content>
+    <Content Include="Utilities\EaNIMBY.lua">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="_MoveToMediaPack\3DUnits\blank_texture.dds">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="_MoveToMediaPack\3DUnits\magic_missile.fxsxml">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="_MoveToMediaPack\3DUnits\magic_missile.gr2">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="_WorkingArt\FontIcons\EaFontIcons.dds">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="_WorkingArt\FontIcons\EaFontIcons.ggxml">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="_WorkingArt\IconAtlases\EaSpellsAtlas45.dds">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="_WorkingArt\IconAtlases\EaSpellsAtlas48.dds">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="_WorkingArt\IconAtlases\EaSpellsAtlas64.dds">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
     <Content Include="CoreTables\Icons.sql">
       <SubType>Lua</SubType>
       <ImportIntoVFS>False</ImportIntoVFS>
@@ -901,10 +949,6 @@
     <Content Include="CvGameCore_Ea.dll">
       <SubType>Lua</SubType>
       <ImportIntoVFS>False</ImportIntoVFS>
-    </Content>
-    <Content Include="CvGameCore_Ea.pdb">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
     </Content>
     <Content Include="EaMain\EaAICivPlanning.lua">
       <SubType>Lua</SubType>
@@ -1450,44 +1494,15 @@
       <SubType>Lua</SubType>
       <ImportIntoVFS>True</ImportIntoVFS>
     </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\blank_texture.dds">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\magic_missile.fxsxml">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\3DUnits\magic_missile.gr2">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\FontIcons\EaFontIcons.dds">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\FontIcons\EaFontIcons.ggxml">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\IconAtlases\EaSpellsAtlas45.dds">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\IconAtlases\EaSpellsAtlas48.dds">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="_MoveToMediaPack\IconAtlases\EaSpellsAtlas64.dds">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="_WorkingArt\FontIcons" />
+    <Folder Include="_WorkingArt\IconAtlases" />
     <Folder Include="EventsDrivers" />
     <Folder Include="CoreUI_FrontEnd" />
     <Folder Include="Misc" />
     <Folder Include="CoreUI_font_mod_only" />
+    <Folder Include="_WorkingArt" />
     <Folder Include="Scratch" />
     <Folder Include="_MoveToMediaPack" />
     <Folder Include="Pregame" />
@@ -1498,9 +1513,7 @@
     <Folder Include="CoreUI_InGame" />
     <Folder Include="EaMain" />
     <Folder Include="Utilities" />
-    <Folder Include="_MoveToMediaPack\IconAtlases" />
     <Folder Include="_MoveToMediaPack\3DUnits" />
-    <Folder Include="_MoveToMediaPack\FontIcons" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Firaxis\ModBuddy\Civ5Mod.targets" />
 </Project>

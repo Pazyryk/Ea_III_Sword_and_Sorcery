@@ -46,9 +46,9 @@ function GetCityHealthInfo(city, eaCity, size, followerReligion, aiGrowthPercent
 		healthFromAIHandicap = healthFromAIHandicap + (110 - aiGrowthPercent) / 10
 	end
 
-	local healthFromAnra = (followerReligion == RELIGION_ANRA) and 2 or 0
+	local healthFromAnra = (followerReligion == RELIGION_ANRA) and -2 or 0
 
-	local healthFromArmageddon = (gT.gWorld.armageddonStage < 3) and 0 or gT.gWorld.armageddonSap
+	local healthFromArmageddon = (gT.gWorld.armageddonStage < 3) and 0 or -gT.gWorld.armageddonSap
 
 	local health = Floor(BASE_HEALTH_FROM_HANDICAP + healthFromAIHandicap + healthFromBuildings + healthFromAnra + healthFromArmageddon - size)
 

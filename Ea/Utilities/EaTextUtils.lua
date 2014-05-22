@@ -36,10 +36,10 @@ function GetEaUnitFullName(unit)
 		end		
 	elseif playerType == "Barbs" then	
 		local encampmentID = unit:GetScenarioData()
-		if encampmentID ~= 0 then
+		if encampmentID > 0 then
 			local adjTxtKey = GameInfo.EaEncampments[encampmentID].TribeAdjective
 			civAdj = adjTxtKey and Locale.Lookup(adjTxtKey)
-		else
+		elseif encampmentID == 0 then
 			civAdj = "Captured"
 		end
 	elseif playerType == "CityState" then	

@@ -43,7 +43,7 @@ local BUILDING_SIDHE =						GameInfoTypes.BUILDING_SIDHE
 local BUILDING_HELDEOFOL =					GameInfoTypes.BUILDING_HELDEOFOL
 local BUILDING_WINDMILL =					GameInfoTypes.BUILDING_WINDMILL
 local BUILDING_WINDMILL_ALLOW =				GameInfoTypes.BUILDING_WINDMILL_ALLOW
-local BUILDING_RACIAL_HARMONY =				GameInfoTypes.BUILDING_RACIAL_HARMONY
+local BUILDING_RACIAL_DISHARMONY =				GameInfoTypes.BUILDING_RACIAL_DISHARMONY
 local BUILDING_FOREFATHERS_STATUE =			GameInfoTypes.BUILDING_FOREFATHERS_STATUE
 local BUILDING_SLAVE_BREEDING_PEN =			GameInfoTypes.BUILDING_SLAVE_BREEDING_PEN
 local BUILDING_HARBOR =						GameInfoTypes.BUILDING_HARBOR
@@ -1028,9 +1028,6 @@ local function OnPlayerCityFounded(iPlayer, x, y)
 	--Set race
 	city:SetNumRealBuilding(GameInfoTypes[raceInfo.IdentifierBuilding], 1)
 
-	--Same race (always for new city)
-	city:SetNumRealBuilding(BUILDING_RACIAL_HARMONY, 1)
-
 	AddCityToResDistanceMatrixes(iPlayer, city)
 
 	if playerType[iPlayer] == "FullCiv" then
@@ -1156,9 +1153,9 @@ local function OnCityCaptureComplete(iPlayer, bCapital, x, y, iNewOwner)		-- THI
 	--Check race
 	local newCivRace = eaNewOwner.race
 	if newCivRace == GetCityRace(city) then
-		city:SetNumRealBuilding(BUILDING_RACIAL_HARMONY, 1)
+		city:SetNumRealBuilding(BUILDING_RACIAL_DISHARMONY, 0)
 	else
-		city:SetNumRealBuilding(BUILDING_RACIAL_HARMONY, 0)
+		city:SetNumRealBuilding(BUILDING_RACIAL_DISHARMONY, 1)
 	end
 
 	--City size and pop killed

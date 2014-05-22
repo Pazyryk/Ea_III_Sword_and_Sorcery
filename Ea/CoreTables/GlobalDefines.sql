@@ -30,7 +30,7 @@ UPDATE Defines SET Value = 5 WHERE Name = 'RELIGION_PER_TURN_FOUNDING_CITY_PRESS
 UPDATE Defines SET Value = 8 WHERE Name = 'RELIGION_ADJACENT_CITY_DISTANCE';			--10
 
 --happiness
-UPDATE Defines SET Value = 2 WHERE Name = 'UNHAPPINESS_PER_CITY';	--countered by +2h for same-race city (so effectively 0 for non-conquered cities)
+UPDATE Defines SET Value = 0 WHERE Name = 'UNHAPPINESS_PER_CITY';					--but there is a racial disharmonly penalty
 UPDATE Defines SET Value = 0 WHERE Name = 'VERY_UNHAPPY_CANT_TRAIN_SETTLERS';
 UPDATE Defines SET Value = -33 WHERE Name = 'VERY_UNHAPPY_PRODUCTION_PENALTY';		--reduced from -50
 UPDATE Defines SET Value = -50 WHERE Name = 'UNHAPPY_GROWTH_PENALTY';

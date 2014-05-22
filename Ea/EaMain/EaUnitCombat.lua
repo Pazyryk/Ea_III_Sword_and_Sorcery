@@ -21,6 +21,7 @@ local EACIV_GAZIYA =								GameInfoTypes.EACIV_GAZIYA
 local EARACE_MAN =									GameInfoTypes.EARACE_MAN
 local EARACE_SIDHE =								GameInfoTypes.EARACE_SIDHE
 local EARACE_HELDEOFOL =							GameInfoTypes.EARACE_HELDEOFOL
+local EA_WONDER_ARCANE_TOWER =						GameInfoTypes.EA_WONDER_ARCANE_TOWER
 local INVISIBLE_SUBMARINE =							GameInfoTypes.INVISIBLE_SUBMARINE
 local POLICY_SLAVERY =								GameInfoTypes.POLICY_SLAVERY
 local PROMOTION_FOR_HIRE =							GameInfoTypes.PROMOTION_FOR_HIRE
@@ -28,6 +29,7 @@ local PROMOTION_MERCENARY =							GameInfoTypes.PROMOTION_MERCENARY
 local PROMOTION_SLAVE =								GameInfoTypes.PROMOTION_SLAVE
 local PROMOTION_SLAVERAIDER =						GameInfoTypes.PROMOTION_SLAVERAIDER
 local PROMOTION_SLAVEMAKER =						GameInfoTypes.PROMOTION_SLAVEMAKER
+local UNIT_LICH =									GameInfoTypes.UNIT_LICH
 local UNIT_SLAVES_MAN =								GameInfoTypes.UNIT_SLAVES_MAN
 local UNIT_SLAVES_SIDHE =							GameInfoTypes.UNIT_SLAVES_SIDHE
 local UNIT_SLAVES_ORC =								GameInfoTypes.UNIT_SLAVES_ORC
@@ -572,6 +574,12 @@ local function OnCanSaveUnit(iPlayer, iUnit, bDelay)	--fires for combat and non-
 			print("A GP was killed for unknown reason; disbanded?")
 			deathType = "Unknown"
 		end
+
+		if unit:GetUnitType() == UNIT_LICH and gWonders[EA_WONDER_ARCANE_TOWER][iPerson] then
+			SaveLich(unit)
+			return true
+		end
+
 		KillPerson(iPlayer, iPerson, nil, nil, deathType)	--unit must be nil here because dll will finish it off!
 		g_iDefendingPlayer, g_iDefendingUnit, g_iAttackingPlayer, g_iAttackingUnit = -1, -1, -1, -1
 		return false
@@ -584,6 +592,12 @@ local function OnCanSaveUnit(iPlayer, iUnit, bDelay)	--fires for combat and non-
 		local attackingUnit = attackingPlayer:GetUnitByID(iAttackingUnit)
 		if attackingUnit and attackingUnit:IsGreatPerson() then
 			print("A GP was killed by an attacking unit in GP layer")
+
+			if unit:GetUnitType() == UNIT_LICH and gWonders[EA_WONDER_ARCANE_TOWER][iPerson] then
+				SaveLich(unit)
+				return true
+			end
+
 			KillPerson(iPlayer, iPerson, nil, nil, "Killed by GP layer unit")
 			g_iDefendingPlayer, g_iDefendingUnit, g_iAttackingPlayer, g_iAttackingUnit = -1, -1, -1, -1
 			return false
@@ -607,11 +621,33 @@ local function OnCanSaveUnit(iPlayer, iUnit, bDelay)	--fires for combat and non-
 		end
 	end
 	print("!!!! WARNING: Could not find safe accessible plot for GP to escape to; GP will die!")
+
+	if unit:GetUnitType() == UNIT_LICH and gWonders[EA_WONDER_ARCANE_TOWER][iPerson] then
+		SaveLich(unit)
+		return true
+	end
+
 	KillPerson(iPlayer, iPerson, nil, nil, "Failed to save GP")
 	return false
 
 end
 GameEvents.CanSaveUnit.Add(function(iPlayer, iUnit, bDelay) return HandleError31(OnCanSaveUnit, iPlayer, iUnit, bDelay) end)
+
+function SaveLich(unit)
+	local iPlayer = unit:GetOwner()
+	local iPerson = unit:GetPersonIndex()
+	local iPlot = gWonders[EA_WONDER_ARCANE_TOWER][iPerson].iPlot
+	local x, y = GetXYFromPlotIndex(iPlot)
+	--TO DO: need to make Lich "dormant" if tower in ruins
+
+	unit:SetXY(x, y)
+	if unit:GetPlot():GetOwner() ~= iPlayer then
+		unit:JumpToNearestValidPlot()		--only kicks out of tower, but the idea is clear
+	end
+
+	UseManaOrDivineFavor(iPlayer, iPerson, unit:GetLevel() * 10)
+end
+
 
 local function OnCanChangeExperience(iPlayer, iUnit, iSummoner, iExperience, iMax, bFromCombat, bInBorders, bUpdateGlobal)
 	print("OnCanChangeExperience ", iPlayer, iUnit, iSummoner, iExperience, iMax, bFromCombat, bInBorders, bUpdateGlobal)

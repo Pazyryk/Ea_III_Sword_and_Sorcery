@@ -73,15 +73,15 @@ include("EaPolicies.lua")
 include("EaReligions.lua")
 include("EaTechs.lua")
 include("EaCivNaming.lua")
-
 include("EaUnitCombat.lua")
 include("EaUnits.lua")
 include("EaWonders.lua")
 include("EaYields.lua")
 include("EaDiplomacy.lua")			--depends on EaPolicies
 include("EaVictories.lua")
-
 include("EaAIUnits.lua")
+include("EaNIMBY.lua")
+
 include("EaDebugUtils.lua")
 
 include("EaTextUtils.lua")
@@ -234,14 +234,14 @@ local function OnPlayerDoTurn(iPlayer)	-- Runs at begining of turn for all livin
 		end
 		PrintGameTurn(iPlayer, gameTurn)
 		timerAllPerTurnFunctions = 0
-
+		UpdateNIMBYTurn(gameTurn)
 		EaArmageddonPerTurn()
 		AICivsPerGameTurn()
 		AIMercenaryPerGameTurn()
 		local startPlotsPerTurn = Clock()
 		PlotsPerTurn()
 		timerPlotsPerTurn = Clock() - startPlotsPerTurn
-		EncampmentsPerTurn()
+		BarbSpawnPerTurn()
 		AnimalsPerTurn()
 		ReligionPerGameTurn()
 		CityStateFollowerCityCounting()

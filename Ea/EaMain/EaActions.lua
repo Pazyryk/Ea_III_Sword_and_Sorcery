@@ -261,7 +261,6 @@ for i = 2, 50 do						--pre-calculate rate powers for speed
 	discountCombatRateTable[i] = discountCombatRateTable[i - 1] * TIME_DISCOUNT_RATE_COMBAT
 end
 
-local OutOfRangeReturnZeroMetaTable = {__index = function() return 0 end}	--return 0 rather than nil for out of range index
 setmetatable(discountRateTable, OutOfRangeReturnZeroMetaTable)
 setmetatable(discountCombatRateTable, OutOfRangeReturnZeroMetaTable)
 
@@ -319,7 +318,7 @@ local function FinishEaAction(eaActionID)		--only called from DoEaAction so file
 
 	--Plot Float Up Text
 	if not g_eaAction.NoFloatUpText or MapModData.bAutoplay then
-		g_plot:AddFloatUpMessage(Locale.Lookup(g_eaAction.Description), 1)
+		g_plot:AddFloatUpMessage(Locale.Lookup(g_eaAction.Description), 2)
 	end
 
 	ClearActionPlotTargetedForPerson(g_iPlayer, g_iPerson)
@@ -1051,7 +1050,7 @@ function DoEaAction(eaActionID, iPlayer, unit, iPerson, targetX, targetY)
 
 		--Plot Float Up Text
 		if not g_eaAction.NoFloatUpText or MapModData.bAutoplay then
-			g_plot:AddFloatUpMessage(Locale.Lookup(g_eaAction.Description), 1)
+			g_plot:AddFloatUpMessage(Locale.Lookup(g_eaAction.Description), 2)
 		end
 
 		if 0 < g_eaAction.FixedFaith then

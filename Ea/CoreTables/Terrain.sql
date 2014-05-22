@@ -62,12 +62,14 @@ ALTER TABLE Features ADD COLUMN 'NaturalWonderHappiness' INTEGER DEFAULT 1;
 
 UPDATE Features SET ID = ID + 100 WHERE ID > 6;
 
-INSERT INTO Features (ID, Type, Description, Civilopedia, Help, ArtDefineTag, PortraitIndex, IconAtlas) VALUES
-(7, 'FEATURE_BLIGHT',	'TXT_KEY_EA_FEATURE_BLIGHT',	'TXT_KEY_EA_FEATURE_BLIGHT_PEDIA',	'TXT_KEY_EA_FEATURE_BLIGHT_HELP',	'dummy',	17,	'TERRAIN_ATLAS');
+INSERT INTO Features (ID, Type, Description,			Civilopedia,						Help,								Movement,	ArtDefineTag,	PortraitIndex,	IconAtlas		) VALUES
+(7, 'FEATURE_BLIGHT',	'TXT_KEY_EA_FEATURE_BLIGHT',	'TXT_KEY_EA_FEATURE_BLIGHT_PEDIA',	'TXT_KEY_EA_FEATURE_BLIGHT_HELP',	1,			'dummy',		17,				'TERRAIN_ATLAS'	);
+
+UPDATE Features SET Description = 'TXT_KEY_EA_FEATURE_BREACH' WHERE Type = 'FEATURE_FALLOUT';
+
 
 UPDATE Features SET ID = 8 WHERE Type = 'FEATURE_ATOLL';
 UPDATE Features SET ID = ID - 98 WHERE ID > 8;
-
 
 UPDATE Features SET YieldNotAdditive = 0;
 
@@ -91,6 +93,8 @@ UPDATE Features SET Description = 'TXT_KEY_EA_FEATURE_ABGALS_OUTCROP', EaGod = '
 UPDATE Features SET Description = 'TXT_KEY_EA_FEATURE_NESRS_BOWL', EaGod = 'MINOR_CIV_GOD_NESR', NaturalWonderHappiness = 0 WHERE Type = 'FEATURE_CRATER';
 UPDATE Features SET Description = 'TXT_KEY_EA_FEATURE_PYRAMID_AZZANDARA' WHERE Type = 'FEATURE_EL_DORADO';
 UPDATE Features SET Description = 'TXT_KEY_EA_FEATURE_VAULT_AHRIMAN', NaturalWonderHappiness = -2 WHERE Type = 'FEATURE_SOLOMONS_MINES';
+
+--Note: Lua expects FEATURE_CRATER to be first Natural Wonder (it is in base); we should fix this with an IsNaturalWonder column!
 
 
 UPDATE Features SET Civilopedia = Description || '_PEDIA' WHERE NaturalWonder = 1;

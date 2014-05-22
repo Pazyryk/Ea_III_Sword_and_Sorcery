@@ -5,6 +5,13 @@
 
 		<!-- Features -->
 
+		<Row Tag="TXT_KEY_EA_FEATURE_BLIGHT">
+			<Text>Blight</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_FEATURE_BREACH">
+			<Text>Breach</Text>
+		</Row>
+
 		<Row Tag="TXT_KEY_EA_FEATURE_MOUNT_ABNOAB">
 			<Text>Mount Abnoab</Text>
 		</Row>

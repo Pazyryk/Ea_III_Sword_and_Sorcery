@@ -43,7 +43,6 @@ PlayerTechCostMod(iPlayer, techID)
 PlayerMinorFriendshipAnchor(eMajor, eMinor)
 
 
-
 --Added but currently disabled:
 //CityCanRangeStrikeAt(iAttacker, iCity, x, y)	CallTestAll
 
@@ -72,7 +71,11 @@ int		GetLeaderYieldBoost(int yieldTypeID)
 void	SetLeaderYieldBoost(int yieldTypeID, iNewValue)
 bool	IsYieldFromSpecialPlotsOnly()
 void	SetYieldFromSpecialPlotsOnly(bool bValue)	--used to restrict plot yields for Pantheistic civs
-int		GetNumRealPolicies()		--counts only non-Utility policies
+int		GetNumRealPolicies()						--counts only non-Utility policies
+int		GetHappinessFromMod()						--persisted happy and unhappy from mod
+void	SetHappinessFromMod(int)
+int		GetUnhappinessFromMod()
+void	SetUnhappinessFromMod(int)
 
 --------------------------------------------------------------
 -- Plots

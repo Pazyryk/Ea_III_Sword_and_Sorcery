@@ -14,6 +14,8 @@ local Dprint = DEBUG_PRINT and print or function() end
 --constants
 local ANIMALS_PLAYER_INDEX =				ANIMALS_PLAYER_INDEX
 
+local EA_PLOTEFFECT_PROTECTIVE_WARD =		GameInfoTypes.EA_PLOTEFFECT_PROTECTIVE_WARD
+
 local PLOT_OCEAN =							PlotTypes.PLOT_OCEAN
 local PLOT_LAND =							PlotTypes.PLOT_LAND
 local PLOT_HILLS =							PlotTypes.PLOT_HILLS
@@ -30,6 +32,7 @@ local FEATURE_JUNGLE = 						GameInfoTypes.FEATURE_JUNGLE
 local FEATURE_MARSH =	 					GameInfoTypes.FEATURE_MARSH
 local FEATURE_BLIGHT =	 					GameInfoTypes.FEATURE_BLIGHT
 local FEATURE_FALLOUT =	 					GameInfoTypes.FEATURE_FALLOUT
+local FEATURE_CRATER =	 					GameInfoTypes.FEATURE_CRATER		--1st Natural Wonder
 
 local RESOURCE_TIMBER =						GameInfoTypes.RESOURCE_TIMBER
 local RESOURCE_IVORY =						GameInfoTypes.RESOURCE_IVORY
@@ -77,8 +80,12 @@ local gPlayers =	gPlayers
 local playerType =	MapModData.playerType
 local bHidden =		MapModData.bHidden
 local realCivs =	MapModData.realCivs
-local gg_animalSpawnPlots = gg_animalSpawnPlots
-local gg_animalSpawnInhibitTeams = gg_animalSpawnInhibitTeams
+local gg_animalSpawnPlots =			gg_animalSpawnPlots
+local gg_animalSpawnInhibitTeams =	gg_animalSpawnInhibitTeams
+local gg_undeadSpawnPlots =			gg_undeadSpawnPlots
+local gg_demonSpawnPlots =			gg_demonSpawnPlots
+	
+	
 
 --localized functions
 local Rand = Map.Rand
@@ -114,6 +121,7 @@ local g_cityDesertCahraFollower = {}	--count for Cult of Cahra only
 
 local integers1 = {}
 local integers2 = {}
+local g_plotList = {}
 
 local bInitialized = false
 
@@ -440,15 +448,53 @@ local function ResetTablesForPlotLoop()
 	end
 end
 
+
+
 --------------------------------------------------------------
 -- Interface
 --------------------------------------------------------------
 
-function BlightPlot(plot, iPlayer, iPerson, iMaxMana)		--last 3 are optional
+function BlightPlot(plot, iPlayer, iPerson, strength, bTestCanCast)		--last 4 are optional
+	print("BlightPlot ", plot, iPlayer, iPerson, strength, bTestCanCast)
+	local featureID = plot:GetFeatureType()
+	if featureID == FEATURE_BLIGHT or featureID == FEATURE_FALLOUT or featureID >= FEATURE_CRATER or plot:IsCity() then return false end
 
-	local manaConsumed = plot:GetLivingTerrainStrength() + 20
-	if iMaxMana and iMaxMana < manaConsumed then return false end
+	if bTestCanCast then return true end
 
+	--if no strength supplied then this is a spread; give it a random strength
+	strength = strength or Rand(20, "hello") + 1
+
+	local manaConsumed = 20		--minimum
+
+	--protected by living terrain?
+	local livingTerrainStrength = plot:GetLivingTerrainStrength()
+	if livingTerrainStrength > 0 then
+		if strength < livingTerrainStrength then
+			plot:SetLivingTerrainStrength(livingTerrainStrength - strength)
+			plot:AddFloatUpMessage(Locale.Lookup("TXT_KEY_EA_PLOT_PROTECTED_BY_LIVING_TERRAIN"))
+			return false
+		else
+			plot:SetLivingTerrainStrength(0)
+			strength = strength - livingTerrainStrength
+			manaConsumed = manaConsumed + livingTerrainStrength
+		end
+	end
+
+	--protected by ward?
+	local effectID, effectStength, iEffectPlayer, iEffectCaster = plot:GetPlotEffectData()
+	if effectID == EA_PLOTEFFECT_PROTECTIVE_WARD then
+		if strength < effectStength then
+			plot:SetPlotEffectData(effectID, effectStength - strength, iEffectPlayer, iEffectCaster)
+			plot:AddFloatUpMessage(Locale.Lookup("TXT_KEY_EA_PLOT_PROTECTED_BY_WARD"))
+			return false
+		else
+			plot:SetPlotEffectData(-1,-1,-1,-1)
+			strength = strength - effectStength
+			manaConsumed = manaConsumed + effectStength
+		end
+	end	
+
+	--OK to Blight!
 	local improvementID = plot:GetImprovementType()
 	local resourceID = plot:GetResourceType(-1)
 
@@ -475,42 +521,94 @@ function BlightPlot(plot, iPlayer, iPerson, iMaxMana)		--last 3 are optional
 	return true
 end
 
-function DebugBlightWorld()
-	for iPlot = 0, Map.GetNumPlots() - 1 do
-		local plot = GetPlotByIndex(iPlot)
-		BlightPlot(plot)
-	end
-end
-
-function BreachPlot(plot, iPlayer, iPerson, iMaxMana)		--last 3 are optional
-
-	local manaConsumed = plot:GetLivingTerrainStrength() + 100
-	if iMaxMana and iMaxMana < manaConsumed then return false end
-
+function BreachPlot(plot, iPlayer, iPerson, strength, bTestCanBreach)		--last 4 are optional
+	print("BreachPlot ", plot, iPlayer, iPerson, strength, bTestCanBreach)
+	if plot:IsWater() or plot:IsMountain() or plot:IsCity() then return false end
+	local featureID = plot:GetFeatureType()
+	if featureID == FEATURE_FALLOUT or featureID >= FEATURE_CRATER then return false end
 	local improvementID = plot:GetImprovementType()
-	local resourceID = plot:GetResourceType(-1)
+	if blightSafeImprovement[improvementID] then return false end		--saves us trouble for now
 
-	if improvementID ~= IMPROVEMENT_BLIGHT and resourceID ~= RESOURCE_BLIGHT then
-		if improvementID == -1 or not blightSafeImprovement[improvementID] then
-			plot:SetImprovementType(IMPROVEMENT_BLIGHT)
-		else
-			if resourceID ~= -1 then
-				ChangeResource(plot, -1)
-			end
-			ChangeResource(plot, RESOURCE_BLIGHT, 1)
+	--breach spreads in fault-like pattern; doesn't want 2 adjacent
+	local bOneAdj = false
+	for testPlot in AdjacentPlotIterator(plot) do
+		if testPlot:GetFeatureType() == FEATURE_FALLOUT then
+			if bOneAdj then return false end
+			bOneAdj = true
 		end
 	end
 
+	--if no strength supplied then this is a spread; give it a random strength
+	strength = strength or Rand(40, "hello") + 1
+
+	local manaConsumed = 100		--minimum
+
+	--protected by living terrain?
+	local livingTerrainStrength = plot:GetLivingTerrainStrength()
+	if livingTerrainStrength > 0 then
+		if strength < livingTerrainStrength then
+			if not bTestCanBreach then
+				plot:SetLivingTerrainStrength(livingTerrainStrength - strength)
+				plot:AddFloatUpMessage(Locale.Lookup("TXT_KEY_EA_PLOT_PROTECTED_BY_LIVING_TERRAIN"))
+			end
+			return false
+		else
+			if not bTestCanBreach then
+				plot:SetLivingTerrainStrength(0)
+			end
+			strength = strength - livingTerrainStrength
+			manaConsumed = manaConsumed + livingTerrainStrength
+		end
+	end
+
+	--protected by ward?
+	local effectID, effectStength, iEffectPlayer, iEffectCaster = plot:GetPlotEffectData()
+	if effectID == EA_PLOTEFFECT_PROTECTIVE_WARD then
+		if strength < effectStength then
+			if not bTestCanBreach then
+				plot:SetPlotEffectData(effectID, effectStength - strength, iEffectPlayer, iEffectCaster)
+				plot:AddFloatUpMessage(Locale.Lookup("TXT_KEY_EA_PLOT_PROTECTED_BY_WARD"))
+			end
+			return false
+		else
+			if not bTestCanBreach then
+				plot:SetPlotEffectData(-1,-1,-1,-1)
+				strength = strength - effectStength
+				manaConsumed = manaConsumed + effectStength
+			end
+		end
+	end
+
+	if bTestCanBreach then return true end
+
+	--OK to Breach!
+	plot:SetImprovementType(-1)
+
+	local resourceID = plot:GetResourceType(-1)
+	if resourceID ~= RESOURCE_BLIGHT then
+		ChangeResource(plot, RESOURCE_BLIGHT, 1)
+	end
+
 	local player = iPlayer and Players[iPlayer]
+
 	if player and player:IsAlive() then
-		player:ChangeFaith(manaConsumed)						--generates mana as it consumes it
-		UseManaOrDivineFavor(iPlayer, iPerson, manaConsumed)
+		UseManaOrDivineFavor(iPlayer, iPerson, manaConsumed, false)
 	else
 		gWorld.sumOfAllMana = gWorld.sumOfAllMana - manaConsumed
 		plot:AddFloatUpMessage(Locale.Lookup("TXT_KEY_EA_CONSUMED_MANA", manaConsumed), 1)
 	end
 
 	plot:SetFeatureType(FEATURE_FALLOUT)
+	plot:SetPlotEffectData(-1,-1,-1,-1)	--just cancel out any spell effects
+
+	--blight plots out to 3 radius
+	for radius = 1, 2 do
+		for loopPlot in PlotRingIterator(plot, radius, 1, false) do
+			if radius < 2 or Rand(2, "hello") < 1 then
+				BlightPlot(loopPlot, nil, nil, (3 - radius) * (Rand(5, "hello") + 5))	--strength is 10-20 (radius 1) to 5-10 (radius 2)
+			end
+		end
+	end
 	return true
 end
 
@@ -677,6 +775,26 @@ function PlotsPerTurn()
 	local junglePlots = 0
 	local grapesWorkedByBakkeiaFollower = 0
 	local earthResWorkedByPloutonFollower = 0
+	gg_undeadSpawnPlots.pos = 0
+	gg_demonSpawnPlots.pos = 0
+
+	--undead/demon spawning and breach/blight spread
+	local armageddonStage = gWorld.armageddonStage
+	local manaDepletion = 1 - (gWorld.sumOfAllMana / MapModData.STARTING_SUM_OF_ALL_MANA)
+	local blightBreachSpread = 0
+	local blightSpawn = 0
+	local breachSpawn = 0
+	if 10 < armageddonStage then
+		blightBreachSpread = 33 * manaDepletion 
+		blightSpawn = 4.5 * (manaDepletion - 0.6667) + 0.5
+		breachSpawn = 2 * blightSpawn 
+	elseif 5 < armageddonStage then
+		blightBreachSpread = 10 * manaDepletion
+		blightSpawn = 4.5 * (manaDepletion - 0.6667) + 0.5	--0.5% to 2%
+	elseif 3 < armageddonStage then
+		blightBreachSpread = 10 * manaDepletion 
+	end
+	print("blightBreachSpread, blightSpawn, breachSpawn = ", blightBreachSpread, blightSpawn, breachSpawn)
 
 	--Main plot loop
 	for iPlot = 0, Map.GetNumPlots() - 1 do
@@ -692,6 +810,37 @@ function PlotsPerTurn()
 		local bIsCity = plot:IsCity()
 		local bIsWater = plot:IsWater()
 		local bIsImpassable = plot:IsImpassable()
+
+		--Breach/Blight effects
+		if featureID == FEATURE_FALLOUT then
+
+			--spread
+			if 0 < blightBreachSpread then
+				local d100 = Rand(100, "hello")
+				if d100 < blightBreachSpread then
+					local spreadPlot = GetRandomAdjacentPlot(plot)
+					if spreadPlot then
+						BreachPlot(spreadPlot)
+					end
+					if d100 < blightBreachSpread - 10 then
+						--TO DO: jump 10 plots so we can hit islands
+					end
+				end
+			end 
+		elseif featureID == FEATURE_BLIGHT then
+			if 0 < blightBreachSpread then
+				if Rand(100, "hello") < blightBreachSpread then
+					local spreadPlot = GetRandomAdjacentPlot(plot)
+					if spreadPlot then
+						BlightPlot(spreadPlot)
+					end
+				end
+			end 
+		end
+		if bIsCity then		--temp until graveyards/battlefields is implemented
+			gg_undeadSpawnPlots.pos = gg_undeadSpawnPlots.pos + 1
+			gg_undeadSpawnPlots[gg_undeadSpawnPlots.pos] = iPlot
+		end
 
 		--Encampments
 		if improvementID == IMPROVEMENT_BARBARIAN_CAMP then

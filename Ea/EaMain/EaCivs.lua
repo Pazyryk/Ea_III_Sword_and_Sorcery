@@ -270,10 +270,16 @@ end
 function CityStatePerCivTurn(iPlayer)	-- called for true city states only
 	print("CityStatePerCivTurn ", iPlayer)
 	local player = Players[iPlayer]
-	local eaPlayer = gPlayers[iPlayer]
 	local minorTrait = player:GetMinorCivTrait()
+
+	-- Happy/Unhappy effects
+	if 2 < gWorld.armageddonStage then
+		player:SetUnhappinessFromMod(gWorld.armageddonSap)
+	end
+
 	-- Holy CS accumulats Azz followers
 	if minorTrait == MINOR_TRAIT_HOLY then
+		local eaPlayer = gPlayers[iPlayer]
 		if gReligions[RELIGION_AZZANDARAYASNA] and eaPlayer.religionID ~= RELIGION_ANRA then
 			if Rand(10, "hello") < 1 then	--10% chance for gaining one follower
 				local city = player:GetCapitalCity()
@@ -295,6 +301,11 @@ function FullCivPerCivTurn(iPlayer)		-- called for full civs only
 	local team = Teams[player:GetTeam()]
 	local nameTrait = eaPlayer.eaCivNameID
 	local classPoints = eaPlayer.classPoints
+
+	-- Happy/Unhappy effects
+	if 2 < gWorld.armageddonStage then
+		player:SetUnhappinessFromMod(gWorld.armageddonSap)
+	end
 
 	--GP point counting for civ
 	if nameTrait then

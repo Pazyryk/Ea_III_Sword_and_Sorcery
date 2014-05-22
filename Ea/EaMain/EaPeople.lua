@@ -25,6 +25,8 @@ local PROMOTION_SORCERER =				GameInfoTypes.PROMOTION_SORCERER
 local PROMOTION_PROPHET =				GameInfoTypes.PROMOTION_PROPHET
 local EA_ACTION_GO_TO_PLOT =			GameInfoTypes.EA_ACTION_GO_TO_PLOT
 
+local UNIT_LICH =						GameInfoTypes.UNIT_LICH
+
 local YIELD_PRODUCTION = 				GameInfoTypes.YIELD_PRODUCTION
 local YIELD_GOLD = 						GameInfoTypes.YIELD_GOLD
 local YIELD_SCIENCE =					GameInfoTypes.YIELD_SCIENCE
@@ -566,7 +568,7 @@ end
 --LuaEvents.EaPeopleGenerateGreatPerson.Add(GenerateGreatPerson)
 
 
-function UpdateGreatPersonStatsFromUnit(unit, eaPerson)	--must have unit
+function UpdateGreatPersonStatsFromUnit(unit, eaPerson)		--DEPRECIATE THIS !!!!
 	eaPerson.x = unit:GetX()
 	eaPerson.y = unit:GetY()
 	eaPerson.direction = unit:GetFacingDirection()
@@ -592,6 +594,7 @@ function ResetAgeOfDeath(iPerson)
 	local race = eaPerson.race
 	local raceInfo = GameInfo.EaRaces[race]
 	if raceInfo.NominalLifeSpan == -1 then return end	--Sidhe
+	if eaPerson.unitTypeID == UNIT_LICH then return end
 
 	local ageDeathReduction = 0
 	local eaPersonRowID = eaPerson.eaPersonRowID	--nil if generic

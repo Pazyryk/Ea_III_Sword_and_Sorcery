@@ -152,7 +152,7 @@ INSERT INTO Buildings (Type,			Cost,	NeverCapture,	ArtDefineTag,	IconAtlas,		Por
 ('BUILDING_HELDEOFOL',					-1,		0,				'MONUMENT',		'BW_ATLAS_1',	1,				NULL,			'Util'	),
 ('BUILDING_TIMBERYARD_ALLOW',			-1,		1,				'MONUMENT',		'BW_ATLAS_1',	1,				NULL,			'Util'	),
 ('BUILDING_WINDMILL_ALLOW',				-1,		1,				'MONUMENT',		'BW_ATLAS_1',	1,				NULL,			'Util'	),
-('BUILDING_RACIAL_HARMONY',				-1,		1,				'MONUMENT',		'BW_ATLAS_1',	1,				NULL,			'Util'	),
+('BUILDING_RACIAL_DISHARMONY',				-1,		1,				'MONUMENT',		'BW_ATLAS_1',	1,				NULL,			'Util'	),
 ('BUILDING_CULT_LEAVES_1F1C',			-1,		1,				'MONUMENT',		'BW_ATLAS_1',	1,				NULL,			'Util'	),
 ('BUILDING_CULT_CAHRA_1F',				-1,		1,				'MONUMENT',		'BW_ATLAS_1',	1,				NULL,			'Util'	),
 ('BUILDING_PLUS_1_UNHAPPINESS',			-1,		1,				'MONUMENT',		'BW_ATLAS_1',	1,				NULL,			'Util'	),
@@ -246,7 +246,7 @@ UPDATE Buildings SET Water = 1 WHERE Type IN ('BUILDING_HARBOR', 'BUILDING_LIGHT
 UPDATE Buildings SET FoodKept = 10 WHERE TYPE IN ('BUILDING_WARRENS', 'BUILDING_GRANARY');
 UPDATE Buildings SET BuildingProductionModifier = 10 WHERE Type = 'BUILDING_WORKSHOP';
 UPDATE Buildings SET EaPrereqOrPolicy = 'POLICY_THEISM', EaPrereqOrPolicy2 = 'POLICY_ANTI_THEISM' WHERE Type = 'BUILDING_SHRINE';
-UPDATE Buildings SET MutuallyExclusiveGroup = 1 WHERE Type = 'BUILDING_TRIBAL_COUNCIL';		--exclusive with BUILDING_RACIAL_HARMONY, so only buildable in differing race city
+UPDATE Buildings SET MutuallyExclusiveGroup = 1 WHERE Type = 'BUILDING_FOREFATHERS_STATUE';		--exclusive with BUILDING_RACIAL_DISHARMONY, so only buildable in differing race city
 UPDATE Buildings SET NoOccupiedUnhappiness = 1 WHERE Type = 'BUILDING_FOREFATHERS_STATUE';
 UPDATE Buildings SET CityConnectionTradeRouteModifier = 20 WHERE Type = 'BUILDING_LIGHTHOUSE';	
 UPDATE Buildings SET Happiness = 1, EaOccupationUnhapReduction = 30 WHERE Type = 'BUILDING_COURTHOUSE';
@@ -270,7 +270,7 @@ UPDATE Buildings SET Mountain = 1 WHERE Type = 'BUILDING_OBSERVATORY';
 UPDATE Buildings SET TrainedFreePromotion = 'PROMOTION_STALLIONS_OF_EPONA' WHERE Type = 'BUILDING_CULT_OF_EPONA_FOLLOWER';
 UPDATE Buildings SET TrainedFreePromotion = 'PROMOTION_DRUNKARD' WHERE Type = 'BUILDING_CULT_OF_BAKKHEIA_FOLLOWER';
 
-UPDATE Buildings SET UnmoddedHappiness = 2, MutuallyExclusiveGroup = 1 WHERE Type = 'BUILDING_RACIAL_HARMONY';
+UPDATE Buildings SET UnmoddedHappiness = -2, MutuallyExclusiveGroup = 1 WHERE Type = 'BUILDING_RACIAL_DISHARMONY';
 
 UPDATE Buildings SET Happiness = 1 WHERE Type = 'BUILDING_PLUS_1_LOCAL_HAPPY';
 
@@ -410,7 +410,7 @@ INSERT INTO Building_ClassesNeededInCity (BuildingType, BuildingClassType) VALUE
 ('BUILDING_SEWERS',				'BUILDINGCLASS_AQUEDUCT'		),
 ('BUILDING_TIMBERYARD',			'BUILDINGCLASS_TIMBERYARD_ALLOW'),
 ('BUILDING_WINDMILL',			'BUILDINGCLASS_WINDMILL_ALLOW'	),
-('BUILDING_FOREFATHERS_STATUE',	'BUILDINGCLASS_RACIAL_HARMONY'	);
+('BUILDING_TRIBAL_COUNCIL',		'BUILDINGCLASS_RACIAL_DISHARMONY');
 
 DELETE FROM Building_Flavors;
 INSERT INTO Building_Flavors (BuildingType,	FlavorType,	Flavor) VALUES

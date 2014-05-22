@@ -249,10 +249,10 @@
 		<Row Tag="TXT_KEY_EA_UNIT_ZOMBIES">
 			<Text>Zombies</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_UNIT_HIVE_TYRANT">
+		<Row Tag="TXT_KEY_EA_UNIT_UNIT_DEMON_II">
 			<Text>Demon, Type II</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_UNIT_LICTOR">
+		<Row Tag="TXT_KEY_EA_UNIT_DEMON_I">
 			<Text>Demon, Type I</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_HORMAGAUNT">

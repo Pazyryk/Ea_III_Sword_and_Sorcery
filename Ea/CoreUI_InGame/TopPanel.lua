@@ -13,6 +13,9 @@ MapModData.gT = MapModData.gT or {}
 local gT = MapModData.gT
 
 local EA_EPIC_VOLUSPA = GameInfoTypes.EA_EPIC_VOLUSPA
+local EA_EPIC_HAVAMAL = GameInfoTypes.EA_EPIC_HAVAMAL
+
+
 
 MapModData.faithFromCityStates = 0
 MapModData.faithFromGPs = 0
@@ -733,12 +736,14 @@ function HappinessTipHandler( control )
 		local iReligionHappiness = pPlayer:GetHappinessFromReligion();
 		local iNaturalWonderHappiness = pPlayer:GetHappinessFromNaturalWonders() + iAhrimansVaultUnhappiness;		--Paz: iAhrimansVaultUnhappiness
 		local iExtraHappinessPerCity = pPlayer:GetExtraHappinessPerCity() * pPlayer:GetNumCities();
-	
 		local iMinorCivHappiness = pPlayer:GetHappinessFromMinorCivs();
+		--Paz add
+		local iHavamalEpic = (gT.gEpics[EA_EPIC_HAVAMAL] and gT.gEpics[EA_EPIC_HAVAMAL].iPlayer == iPlayerID) and gT.gEpics[EA_EPIC_HAVAMAL].mod or 0
+		--end Paz add
 	
 		local iHandicapHappiness = pPlayer:GetHappiness() - iPoliciesHappiness - iResourcesHappiness - iCityHappiness - iBuildingHappiness - iTradeRouteHappiness - iReligionHappiness - iNaturalWonderHappiness - iMinorCivHappiness - iExtraHappinessPerCity;
 		--Paz add
-		iHandicapHappiness = iHandicapHappiness + iRacialDisharmony + iAhrimansVaultUnhappiness
+		iHandicapHappiness = iHandicapHappiness + iRacialDisharmony + iAhrimansVaultUnhappiness - iHavamalEpic
 		--end Paz add
 
 		if (pPlayer:IsEmpireVeryUnhappy()) then
@@ -829,6 +834,12 @@ function HappinessTipHandler( control )
 			strText = strText .. "[NEWLINE]";
 			strText = strText .. "  [ICON_BULLET]" .. Locale.ConvertTextKey("TXT_KEY_TP_HAPPINESS_CITY_STATE_FRIENDSHIP", iMinorCivHappiness);
 		end
+		--Paz add
+		if (iHavamalEpic ~= 0) then
+			strText = strText .. "[NEWLINE]  [ICON_BULLET]" .. Locale.ConvertTextKey("TXT_KEY_EA_TP_UNHAPPINESS_FROM_HAVAMAL_EPIC", iHavamalEpic);
+		end
+		--end Paz add
+
 		strText = strText .. "[NEWLINE]";
 		strText = strText .. "  [ICON_BULLET]" .. Locale.ConvertTextKey("TXT_KEY_TP_HAPPINESS_DIFFICULTY_LEVEL", iHandicapHappiness);
 		strText = strText .. "[/COLOR]";

@@ -112,6 +112,9 @@
 		<Row Tag="TXT_KEY_EA_TP_UNHAPPINESS_FROM_ARMAGEDDON">
 			<Text>{1_Num} from mana depletion by the Fallen.</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_TP_UNHAPPINESS_FROM_HAVAMAL_EPIC">
+			<Text>{1_Num} from the Hávamál Epic.</Text>
+		</Row>
 
 		
 

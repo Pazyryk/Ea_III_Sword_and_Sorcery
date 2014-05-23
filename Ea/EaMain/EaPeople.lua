@@ -18,6 +18,7 @@ local EACIV_LJOSALFAR =					GameInfoTypes.EACIV_LJOSALFAR
 local EAMOD_DEVOTION =					GameInfoTypes.EAMOD_DEVOTION
 local EAMOD_LEADERSHIP =				GameInfoTypes.EAMOD_LEADERSHIP
 
+local EA_EPIC_GRIMNISMAL =				GameInfoTypes.EA_EPIC_GRIMNISMAL
 local EA_WONDER_ARCANE_TOWER =			GameInfoTypes.EA_WONDER_ARCANE_TOWER
 
 local PROMOTION_LEARN_SPELL =			GameInfoTypes.PROMOTION_LEARN_SPELL
@@ -571,6 +572,8 @@ function GenerateGreatPerson(iPlayer, class, subclass, eaPersonRowID, bAsLeader,
 
 	RegisterGPActions(iPerson)
 
+	unit:TestPromotionReady()
+
 	return iPerson
 end
 --LuaEvents.EaPeopleGenerateGreatPerson.Add(GenerateGreatPerson)
@@ -1085,7 +1088,15 @@ function GetGPMod(iPerson, modType1, modType2)
 		end
 	end
 
-	return Floor(levelMod + promoMod + bonuses), bHasAnyLevelsMod1		--2nd arg used for actions that require at least 1 promotion level to do
+	local totalMod = levelMod + promoMod + bonuses
+
+	if modType1 == EAMOD_LEADERSHIP or modType2 == EAMOD_LEADERSHIP then
+		if gEpics[EA_EPIC_GRIMNISMAL] and gEpics[EA_EPIC_GRIMNISMAL].iPlayer == eaPerson.iPlayer then
+			totalMod = totalMod * (100 + gEpics[EA_EPIC_GRIMNISMAL].mod) / 100
+		end
+	end
+
+	return Floor(totalMod), bHasAnyLevelsMod1		--2nd arg used for actions that require at least 1 promotion level to do
 end
 
 function SetTowerMods(iPlayer, iPerson)

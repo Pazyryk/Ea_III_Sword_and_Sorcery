@@ -82,19 +82,27 @@ Controls.TabButtonArcane:RegisterCallback( Mouse.eLClick, function() TabSelect("
 Controls.TabButtonDivine:RegisterCallback( Mouse.eLClick, function() TabSelect("Divine") end )
 
 function RefreshSpells(spellClass)
+	print("RefreshSpells ", spellClass)
 	LuaEvents.EaMagicGenerateLearnableSpellList(g_iPlayer, bLearnSpell and g_iPerson, spellClass)		--call to EaActions.lua to generate learnable spell list
 	g_SpellManager:ResetInstances()
 	local numSpells = #sharedIntegerList
+	print(numSpells)
 	for i = 1, numSpells do
 		local spellID = sharedIntegerList[i]
+		print("spellID = ", spellID)
 		local spellInfo = GameInfo.EaActions[spellID]
 		local spellEntry = g_SpellManager:GetInstance()
 		spellEntry.SpellName:SetText(Locale.Lookup(spellInfo.Description))
 		spellEntry.SpellDescription:SetText(Locale.Lookup(spellInfo.Help))
 		IconHookup(spellInfo.IconIndex, 45, spellInfo.IconAtlas, spellEntry.SpellIcon)
 		spellEntry.SpellButton:SetVoid1(spellID)
+		print("before RegisterCallback")
 		spellEntry.SpellButton:RegisterCallback(Mouse.eLClick, SpellSelected)
+		print("after RegisterCallback")		--CTD before this print on 3rd or 4th consectutive call to Learn Spell
+											--Note: no CTD if you flip constantly between Divine and Arcane, which is surprizing because it is running the same code with each tab change
+
 		spellEntry.SpellButton:SetDisabled(not bLearnSpell)
+		print("Built spellEntry")
 	end
 	if numSpells > 0 then
 		Controls.NoAvailableSpells:SetHide(true)
@@ -122,6 +130,7 @@ function SpellSelected(spellID)
 end
 
 function OnYes()
+	g_SpellManager:ResetInstances()
 	Controls.SpellSelectConfirm:SetHide(true)
     ContextPtr:SetHide(true)
 	local eaPerson = gT.gPeople[g_iPerson]
@@ -138,12 +147,22 @@ end
 Controls.No:RegisterCallback( Mouse.eLClick, OnNo )
 
 function Close()
+	g_SpellManager:ResetInstances()
     ContextPtr:SetHide(true)
 	if g_iPerson ~= -1 then
+		print("Closing Learn spell without selection...")
 		--dll has already given level when popup occured; take it away so player has promotion selection again
 		local eaPerson = gT.gPeople[g_iPerson]
 		local unit = Players[g_iPlayer]:GetUnitByID(eaPerson.iUnit)
-		unit:SetLevel(unit:GetLevel() - 1)
+
+		--debug
+		print("level = ", unit:GetLevel())
+		print("experience = ", unit:GetExperience())
+		print("CanAcquirePromotionAny = ", unit:CanAcquirePromotionAny())
+		--CTD note: I thought it might be here, but you can cycle this repeatedly without CTD as long as you view tab with no spells in list.
+		--			It seems to be the combination of exiting this way after opeing tab with spells (repeatedly 3 or 4 times)
+
+		unit:SetLevel(unit:GetLevel() - 1)		--dll gave level the moment we presed select spell; we need to give it back
 		unit:TestPromotionReady()
 	end
 end

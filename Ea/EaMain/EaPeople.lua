@@ -265,8 +265,13 @@ function PeoplePerCivTurn(iPlayer)
 			print("Cycle GP", iPerson, eaPerson.iUnit, eaPerson.name, (eaPerson.subclass or eaPerson.class1), eaPerson.eaActionID ~= -1 and GameInfo.EaActions[eaPerson.eaActionID].Type or -1)
 
 			local unit = player:GetUnitByID(eaPerson.iUnit)
+
+			local bKill = false
+
 			if not unit then
-				error("No unit for GP")
+				print("!!!! ERROR: No unit for GP; killing person")
+				bKill = true
+				--error("No unit for GP")
 			end
 
 			--Death by old age
@@ -274,6 +279,8 @@ function PeoplePerCivTurn(iPlayer)
 
 			if bDieOfOldAge then
 				KillPerson(iPlayer, iPerson, unit, nil, "OldAge")
+			elseif bKill then
+				KillPerson(iPlayer, iPerson, nil, nil, nil)
 			else
 				local bIsLeader = iPerson == eaPlayer.leaderEaPersonIndex
 
@@ -400,7 +407,9 @@ function PeopleAfterTurn(iPlayer, bActionInfoPanelCall)
 
 			local unit = eaPerson.iUnit ~= -1 and player:GetUnitByID(eaPerson.iUnit)
 			if not unit then
-				error("No unit for GP")
+				print("!!!! ERROR: No unit for GP; killing person")
+				KillPerson(iPlayer, iPerson, nil, nil, nil)
+				--error("No unit for GP")
 			else
 				if bHumanPlayer and not bLastCallWasHumanPlayer then	--Human actions run automatically at turn end so that player can interupt
 					if unit:GetMoves() > 0 then
@@ -423,7 +432,6 @@ function PeopleAfterTurn(iPlayer, bActionInfoPanelCall)
 					end
 
 				end
-
 			end
 		end
 	end
@@ -1155,7 +1163,9 @@ function AIInturruptGPsForLeadershipOpportunity(iPlayer)	--TO DO: Make this bett
 					iClosestGP = iPerson
 				end
 			else
-				error("No unit for GP")
+				print("!!!! ERROR: No unit for GP; killing person")
+				KillPerson(iPlayer, iPerson, nil, nil, nil)
+				--error("No unit for GP")
 			end
 		end
 	end

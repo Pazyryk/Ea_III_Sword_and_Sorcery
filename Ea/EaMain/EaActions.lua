@@ -2121,7 +2121,7 @@ end
 
 SetUI[GameInfoTypes.EA_ACTION_TRAIN_UNIT] = function()
 	if g_bAllTestsPassed then
-		local unitText = Locale.ConvertTextKey(GameInfo.Units[g_int1])
+		local unitText = Locale.ConvertTextKey(GameInfo.Units[g_int1].Description)
 		local xp = Floor(g_mod / 2)
 		MapModData.text = "Provide " .. unitText .. " with " .. xp .. " experience per turn"
 	end

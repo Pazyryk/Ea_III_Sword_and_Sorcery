@@ -172,7 +172,7 @@ UPDATE EaCivs SET KnowlMaintModifier = -20 WHERE Type IN ('EACIV_THEANON', 'EACI
 --improvement triggers
 INSERT INTO EaCivs (Type,	PopupImage,								DefaultPlayerColor,		ImprovementType,				OrImprovementType,	ImprovementNumber,	FavoredGPClass,	GainPolicy) VALUES
 ('EACIV_HY_BREASIL',		'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_GERMANY',	'IMPROVEMENT_FISHING_BOATS',	NULL,				3,					'Merchant',		NULL			),
-('EACIV_AGARTHA',			'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_GREECE',	'IMPROVEMENT_MINE',				NULL,				2,					'Engineer',		NULL			);
+('EACIV_AGARTHA',			'testbackground_1.17_856x700.dds',		'PLAYERCOLOR_GREECE',	'IMPROVEMENT_MINE_2',			'IMPROVEMENT_MINE',	2,					'Engineer',		NULL			);
 
 -- building triggers
 INSERT INTO EaCivs (Type,	PopupImage,								DefaultPlayerColor,		BuildingType,			FavoredGPClass,	GainPolicy			) VALUES

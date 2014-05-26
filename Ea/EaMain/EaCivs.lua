@@ -15,6 +15,8 @@ local Dprint = DEBUG_PRINT and print or function() end
 local EACIV_DAIRINE =							GameInfoTypes.EACIV_DAIRINE
 local EACIV_PARTHOLON =							GameInfoTypes.EACIV_PARTHOLON
 local EACIV_SKOGR =								GameInfoTypes.EACIV_SKOGR
+local EA_EPIC_HAVAMAL =							GameInfoTypes.EA_EPIC_HAVAMAL
+
 local POLICY_PANTHEISM =						GameInfoTypes.POLICY_PANTHEISM
 local POLICY_PATRONAGE =						GameInfoTypes.POLICY_PATRONAGE
 local MINOR_TRAIT_ARCANE =						GameInfoTypes.MINOR_TRAIT_ARCANE
@@ -294,6 +296,26 @@ function CityStatePerCivTurn(iPlayer)	-- called for true city states only
 	end
 end
 
+function ResetHappyUnhappyFromMod(iPlayer)
+	print("ResetHappyUnhappyFromMod ", iPlayer)
+	local modHappiness = 0
+	if gEpics[EA_EPIC_HAVAMAL] and gEpics[EA_EPIC_HAVAMAL].iPlayer == iPlayer then
+		modHappiness = modHappiness + gEpics[EA_EPIC_HAVAMAL].mod
+	end
+	if modHappiness ~= 0 then
+		player:SetHappinessFromMod(modHappiness)
+	end
+
+	local modUnhappiness = 0
+	if 2 < gWorld.armageddonStage then
+		modUnhappiness = modUnhappiness + gWorld.armageddonSap
+	end
+	if modUnhappiness ~= 0 then
+		player:SetUnhappinessFromMod(modUnhappiness)
+	end
+end
+
+
 function FullCivPerCivTurn(iPlayer)		-- called for full civs only
 	print("FullCivPerCivTurn", iPlayer)
 	local player = Players[iPlayer]
@@ -302,10 +324,8 @@ function FullCivPerCivTurn(iPlayer)		-- called for full civs only
 	local nameTrait = eaPlayer.eaCivNameID
 	local classPoints = eaPlayer.classPoints
 
-	-- Happy/Unhappy effects
-	if 2 < gWorld.armageddonStage then
-		player:SetUnhappinessFromMod(gWorld.armageddonSap)
-	end
+	-- Mod Happy/Unhappy effects
+	ResetHappyUnhappyFromMod(iPlayer)
 
 	--GP point counting for civ
 	if nameTrait then

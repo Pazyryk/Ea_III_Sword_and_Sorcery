@@ -80,6 +80,8 @@ local function GenerateLearnableSpellList(iPlayer, iPerson, spellClass)	--iPerso
 		end
 	end
 
+	print("numSpells = ", numSpells)
+
 	--trim recycled table for UI
 	for i = #sharedIntegerList, numSpells + 1, -1 do
 		sharedIntegerList[i] = nil

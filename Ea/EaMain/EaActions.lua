@@ -2732,10 +2732,14 @@ SetUI[GameInfoTypes.EA_ACTION_EPIC_HAVAMAL] = function()
 	end
 end
 
+Finish[GameInfoTypes.EA_ACTION_EPIC_HAVAMAL] = function()
+	ResetHappyUnhappyFromMod(g_iPlayer)
+end
+
 --EA_ACTION_EPIC_VAFTHRUTHNISMAL
 SetUI[GameInfoTypes.EA_ACTION_EPIC_VAFTHRUTHNISMAL] = function()
 	if g_bAllTestsPassed then
-		MapModData.text = "Increases research by " .. g_mod
+		MapModData.text = "Decreases the cost of non-Arcane techs by " .. g_mod .. "%"
 	end
 end
 
@@ -2756,10 +2760,6 @@ end
 --EA_ACTION_EPIC_NATIONAL
 Test[GameInfoTypes.EA_ACTION_EPIC_NATIONAL] = function()
 	return false
-end
-
-Finish[GameInfoTypes.EA_ACTION_EPIC_NATIONAL] = function()
-	
 end
 
 ------------------------------------------------------------------------------------------------------------------------------

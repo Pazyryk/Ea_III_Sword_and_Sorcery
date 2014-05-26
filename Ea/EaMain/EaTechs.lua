@@ -27,6 +27,8 @@ local EARACE_SIDHE =					GameInfoTypes.EARACE_SIDHE
 local EARACE_HELDEOFOL =				GameInfoTypes.EARACE_HELDEOFOL
 local EACIV_SISUKAS =					GameInfoTypes.EACIV_SISUKAS
 local EA_WONDER_GREAT_LIBRARY =			GameInfoTypes.EA_WONDER_GREAT_LIBRARY
+local EA_EPIC_VAFTHRUTHNISMAL =			GameInfoTypes.EA_EPIC_VAFTHRUTHNISMAL
+
 local POLICY_PANTHEISM =				GameInfoTypes.POLICY_PANTHEISM
 local POLICY_SCHOLASTICISM = 			GameInfoTypes.POLICY_SCHOLASTICISM
 local POLICY_ACADEMIC_TRADITION = 		GameInfoTypes.POLICY_ACADEMIC_TRADITION
@@ -242,6 +244,8 @@ local function OnPlayerTechCostMod(iPlayer, techID)		--Ea API
 	end
 	if arcaneTechs[techID] then
 		mod = mod + gg_playerArcaneMod[iPlayer]
+	elseif gEpics[EA_EPIC_VAFTHRUTHNISMAL] and gEpics[EA_EPIC_VAFTHRUTHNISMAL].iPlayer == iPlayer then
+		mod = mod - gEpics[EA_EPIC_VAFTHRUTHNISMAL].mod
 	end
 	local greatLibrary = gWonders[EA_WONDER_GREAT_LIBRARY]
 	if greatLibrary and greatLibrary.iPlayer == iPlayer then
@@ -276,7 +280,8 @@ function TechPerCivTurn(iPlayer)
 	eaPlayer.rpFromConquest = 0
 
 	if bAI then
-		if gameTurn % 49 == 0 and gameTurn / 50 < AI_FREE_TECHS then	--1 free tech at turn 49, 99, 149,... until all free techs given
+		if (gameTurn + 1) % 50 == 0 and gameTurn / 50 <= AI_FREE_TECHS then	--1 free tech at turn 49, 99, 149,... until all free techs given
+			
 			player:SetNumFreeTechs(1)		--TO DO: Prevent high tier techs? Mod isn't compatible with unlimited free
 		end
 	end

@@ -193,6 +193,10 @@ function ShowDeath(info)
 	local eaPlayer = gT.gPlayers[iPlayer]
 	if not eaPlayer then return end
 	local eaPerson = gT.gPeople[info.id]
+	--ls612: This is a cheap hack for now to fix the errors with multiple death popups making 
+	--the popups unclosable
+	--Paz, you will want to look at the cause of this when you get back
+	if not eaPerson then return end
 	local name = GetEaPersonFullTitle(eaPerson)
 	local gender = GameInfo.EaPeople[eaPerson.eaPersonRowID].Gender
 

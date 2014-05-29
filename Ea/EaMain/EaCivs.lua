@@ -299,6 +299,7 @@ end
 function ResetHappyUnhappyFromMod(iPlayer)
 	print("ResetHappyUnhappyFromMod ", iPlayer)
 	local modHappiness = 0
+	local player = Players[iPlayer]
 	if gEpics[EA_EPIC_HAVAMAL] and gEpics[EA_EPIC_HAVAMAL].iPlayer == iPlayer then
 		modHappiness = modHappiness + gEpics[EA_EPIC_HAVAMAL].mod
 	end

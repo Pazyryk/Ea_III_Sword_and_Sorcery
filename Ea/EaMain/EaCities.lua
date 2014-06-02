@@ -562,7 +562,7 @@ function TestNaturalHarborForFreeHarbor(city)	--assumes proper tech
 				end
 			end
 			print(" -number surrounding land = ", adjLandPlots)
-			if 2 < adjLandPlots then
+			if 3 < adjLandPlots then --four or more adj. plots must be land
 				bHasNaturalHarbor = true
 				plot:SetOwner(city:GetOwner(), city:GetID())
 			end

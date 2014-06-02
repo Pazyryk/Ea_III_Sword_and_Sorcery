@@ -316,7 +316,7 @@ function TimeDelayForHumanMeleeCharge(tickCount, timeIncrement)		--DON'T LOCALIZ
 	if g_bStart then
 		if MELEE_ATTACK_AFTER_THOUSANDTHS_SECONDS < tickCount - g_tickStart then
 			Events.LocalMachineAppUpdate.RemoveAll()	--also removes tutorial checks (good riddence!)
-			print("TimeDelayForHumanMeleeCharge; delay in sec/1000 = ", tickCount - tickStart)
+			print("TimeDelayForHumanMeleeCharge; delay in sec/1000 = ", tickCount - g_tickStart)
 			print("os.clock() / tickCount : ", os.clock(), tickCount)
 			DoDelayedAttacks(Game.GetActivePlayer())
 		end

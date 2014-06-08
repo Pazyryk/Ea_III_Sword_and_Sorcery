@@ -74,8 +74,13 @@ GP_TXT_KEYS = {	Engineer = "TXT_KEY_EA_ENGINEER",
 MapModData.GP_TXT_KEYS = GP_TXT_KEYS
 
 BARB_PLAYER_INDEX = GameDefines.BARBARIAN_PLAYER
-local EaSetupDB = Modding.OpenUserData("EaSetupData", 1)
-FAY_PLAYER_INDEX = EaSetupDB.GetValue("FAY_PLAYER_INDEX")
+for iPlayer = 0, BARB_PLAYER_INDEX do
+	local player = Players[iPlayer]
+	if player:GetCivilizationType() == GameInfoTypes.CIVILIZATION_THE_FAY then
+		FAY_PLAYER_INDEX = iPlayer
+		break
+	end	
+end
 --ANIMALS_PLAYER_INDEX = EaSetupDB.GetValue("ANIMALS_PLAYER_INDEX")
 ANIMALS_PLAYER_INDEX = GameDefines.ANIMAL_PLAYER
 OBSERVER_TEAM = GameDefines.MAX_MAJOR_CIVS - 1

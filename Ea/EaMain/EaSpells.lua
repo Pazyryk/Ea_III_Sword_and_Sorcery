@@ -1853,7 +1853,7 @@ Finish[GameInfoTypes.EA_SPELL_TURN_UNDEAD] = function()
 		local unitTypeID = unit:GetUnitType()
 		MapModData.bBypassOnCanSaveUnit = true
 		unit:Kill(false, g_iPlayer)
-		g_player:IntiUnit(unitTypeID, x, y)
+		g_player:InitUnit(unitTypeID, x, y)
 		plot:AddFloatUpMessage("Turned Undead!", 2)
 	end
 	UseManaOrDivineFavor(g_iPlayer, g_iPerson, g_value * 2)

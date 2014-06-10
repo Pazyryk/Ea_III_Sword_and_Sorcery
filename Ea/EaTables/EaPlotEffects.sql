@@ -12,8 +12,8 @@ CREATE TABLE EaPlotEffects ('ID' INTEGER PRIMARY KEY AUTOINCREMENT,
 							'CanOverwrite' BOOLEAN DEFAULT NULL	);		--can overwrite without a dispel (not yet implemented)
 
 INSERT INTO EaPlotEffects (Type,		TextColor,				HighlightColor	) VALUES
+('EA_PLOTEFFECT_SEEING_EYE_GLYPH',		'[COLOR_YELLOW]',		'YELLOW'		),	--Hard-coded ID=1 in dll!!!
 ('EA_PLOTEFFECT_PROTECTIVE_WARD',		'[COLOR_BLUE]',			'BLUE'			),
-('EA_PLOTEFFECT_SEEING_EYE_GLYPH',		'[COLOR_YELLOW]',		'YELLOW'		),
 ('EA_PLOTEFFECT_EXPLOSIVE_RUNE',		'[COLOR_RED]',			'RED'			),
 ('EA_PLOTEFFECT_DEATH_RUNE',			'[COLOR_LIGHT_GREY]',	'BLACK'			);
 

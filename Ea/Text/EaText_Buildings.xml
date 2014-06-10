@@ -191,7 +191,7 @@
 			<Text>Governor's Compound</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_GOVERNORS_COMPOUND_HELP">
-			<Text>Reduces extra [ICON_HAPPINESS_4] Unhappiness from an [ICON_OCCUPIED] Occupied City by 40%.[NEWLINE][NEWLINE]May only be built if you have taken the [COLOR_POSITIVE_TEXT]Militarism[ENDCOLOR] Social Policy.</Text>
+			<Text>Reduces extra [ICON_HAPPINESS_4] Unhappiness from an [ICON_OCCUPIED] Occupied City by 40%.[NEWLINE][NEWLINE]May be built only in occupied cities if you have the [COLOR_POSITIVE_TEXT]Militarism[ENDCOLOR] Social Policy.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_TRIBAL_COUNCIL">
 			<Text>Tribal Council</Text>

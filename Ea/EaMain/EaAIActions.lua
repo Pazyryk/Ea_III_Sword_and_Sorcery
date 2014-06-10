@@ -435,15 +435,18 @@ AITarget.Tower = function()
 	end
 end
 
-AITarget.SelfAndTower = function()
+AITarget.SelfTowerTemple = function()
 	TestAddOption("Plot", g_gpX, g_gpY, 0, 0)
 	local tower = gWonders[EA_WONDER_ARCANE_TOWER][g_iPerson]
 	if tower then
 		local x, y = GetXYFromPlotIndex(tower.iPlot)
 		TestAddOption("Plot", x, y, 0, nil)
+	elseif g_eaPerson.templeID then
+		local temple = gWonders[g_eaPerson.templeID]
+		local x, y = GetXYFromPlotIndex(temple.iPlot)
+		TestAddOption("Plot", x, y, 0, nil)
 	end
 end
-
 
 AITarget.VacantTower = function()
 	for iPerson, tower in pairs(gWonders[EA_WONDER_ARCANE_TOWER]) do
@@ -562,6 +565,21 @@ AITarget.AnraSpread = function()
 		end
 	end
 end
+
+AITarget.SeeingEyeGlyph = function()
+	-- test ring 3-4 unowned and currently unseen plots (SetAIValue will test for good visibility plot)
+	local iTeam = g_player:GetTeam()
+	for radius = 3, 4 do
+		for plot in PlotRingIterator(g_gpPlot, radius, 1, false) do
+			if plot:GetOwner() ~= g_iPlayer and not plot:IsVisible(iTeam) and not plot:IsAdjacentVisible(iTeam) then
+				local x, y = plot:GetXY()
+				TestAddOption("Plot", x, y, 0, nil)
+			end
+		end
+	end
+end
+
+
 
 AITarget.OwnLandUnits = function()
 	print("AddNonCombatOptions testing OwnLandUnits")

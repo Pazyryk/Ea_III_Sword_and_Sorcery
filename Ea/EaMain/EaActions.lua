@@ -82,6 +82,7 @@ local SetAIValues = {}
 local Do = {}
 local Interrupt = {}
 local Finish = {}
+local Turns = {}	--only tested if TurnsToComplete == nil
 
 --file control
 --	All applicable are calculated in TestEaAction any time we are in this file. Never change anywhere else!
@@ -124,6 +125,8 @@ local g_specialEffectsPlot			--same as g_plot unless changed in specific functio
 local g_iOwner
 local g_x
 local g_y
+
+local g_bInTowerOrTemple			--set only if g_eaAction.ConsiderTowerTemple
 
 local g_bIsCity		--if true then the following values are always calculated (follows target g_x, g_y if provided; otherwise g_unit g_x,g_y)
 local g_iCity
@@ -906,8 +909,27 @@ function TestEaActionTarget(eaActionID, testX, testY, bAITargetTest)
 
 	--print("pass r")
 
+	--Tower/Temple test (stripped down version of EaSpells test used only for Learn Spell now)
+	if g_eaAction.ConsiderTowerTemple then
+		if gWonders[EA_WONDER_ARCANE_TOWER][g_iPerson] then		--has tower
+			if gWonders[EA_WONDER_ARCANE_TOWER][g_iPerson].iPlot == g_iPlot then	--in tower
+				g_bInTowerOrTemple = true
+			else	--not in tower
+				if g_eaAction.TowerTempleOnly then return false end
+				g_bInTowerOrTemple = false
+			end
+		elseif g_eaPerson.templeID and gWonders[g_eaPerson.templeID].iPlot == g_iPlot then		--has temple and is in it
+			g_bInTowerOrTemple = true
+		else	
+			if g_eaAction.TowerTempleOnly then return false end
+			g_bInTowerOrTemple = false
+		end
+	else
+		g_bInTowerOrTemple = false
+	end
+
 	--Caluculate turns to complete
-	local turnsToComplete = g_eaAction.TurnsToComplete
+	local turnsToComplete = g_eaAction.TurnsToComplete or Turns[eaActionID]()
 
 	if turnsToComplete == 1000 and g_bAIControl then turnsToComplete = 8 end	--AI will wake up and test other options
 	if turnsToComplete > 1 and turnsToComplete ~= 1000 then
@@ -1033,7 +1055,7 @@ function DoEaAction(eaActionID, iPlayer, unit, iPerson, targetX, targetY)
 	end
 
 	--Ongoing actions with turnsToComplete > 0 (DoEaAction is called each turn of construction)
-	local turnsToComplete = g_eaAction.TurnsToComplete
+	local turnsToComplete = g_eaAction.TurnsToComplete or Turns[eaActionID]()
 	
 	--Reserve this action at this plot (will cause TestEaActionTarget fail for other GPs)
 	if 1 < turnsToComplete and not g_eaAction.NoGPNumLimit then
@@ -2139,6 +2161,53 @@ end
 ------------------------------------------------------------------------------------------------------------------------------
 -- Misc Actions
 ------------------------------------------------------------------------------------------------------------------------------
+
+--EA_ACTION_LEARN_SPELL
+Test[GameInfoTypes.EA_ACTION_LEARN_SPELL] = function()
+	if g_eaPerson.learningSpellID ~= -1 then return true end	--learning one now; don't retest
+
+	--any currently learnable by caster? (pick one for AI)
+	g_count = 0
+	local bestSpell, bestValue = -1, 0
+	local TestSpellLearnable = TestSpellLearnable
+	for spellID = FIRST_SPELL_ID, LAST_SPELL_ID do
+		local bLearnable, spellLevel = TestSpellLearnable(g_iPlayer, g_iPerson, spellID, nil)
+		if bLearnable then
+			g_count = g_count + 1
+			local value = spellLevel
+			--spell mod
+
+
+
+		end
+	end
+	if g_count == 0 then return false end
+	g_int1 = bestSpell
+	g_value = bestValue
+	return true
+end
+
+Turns[GameInfoTypes.EA_ACTION_LEARN_SPELL] = function()
+	return g_bInTowerOrTemple and 4 or 8
+end
+
+SetUI[GameInfoTypes.EA_ACTION_LEARN_SPELL] = function()
+
+end
+
+SetAIValues[GameInfoTypes.EA_ACTION_LEARN_SPELL] = function()
+
+end
+
+Finish[GameInfoTypes.EA_ACTION_LEARN_SPELL] = function()
+
+end
+
+Interrupt[GameInfoTypes.EA_ACTION_LEARN_SPELL] = function(iPlayer, iPerson)
+	local eaPerson = gPeople[iPerson]
+	eaPerson.learningSpellID = -1
+end
+
 --EA_ACTION_OCCUPY_TOWER
 Test[GameInfoTypes.EA_ACTION_OCCUPY_TOWER] = function()
 	if g_eaPerson.bHasTower then return false end

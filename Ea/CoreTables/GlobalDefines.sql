@@ -48,8 +48,10 @@ UPDATE Defines SET Value = 1 WHERE Name = 'CAN_WORK_WATER_FROM_GAME_START';
 UPDATE Defines SET Value = 100 WHERE Name = 'RANGE_ATTACK_RANGED_DEFENDER_MOD';						--changed from 125 in G&K (was 100 in vanilla)
 UPDATE Defines SET Value = 1800 WHERE Name = 'RANGE_ATTACK_SAME_STRENGTH_MIN_DAMAGE';				--changed from 2400 in G&K
 UPDATE Defines SET Value = 900 WHERE Name = 'RANGE_ATTACK_SAME_STRENGTH_POSSIBLE_EXTRA_DAMAGE';		--changed from 1200 in G&K
-
 UPDATE Defines SET Value = -30 WHERE Name = 'STRATEGIC_RESOURCE_EXHAUSTED_PENALTY';		--changed from -50
+UPDATE Defines SET Value = 3 WHERE Name = 'RECON_VISIBILITY_RANGE';		--changed from 6
+
+
 
 --barbs
 UPDATE Defines SET Value = 100 WHERE Name = 'BARBARIAN_TECH_PERCENT';		--changed from 75

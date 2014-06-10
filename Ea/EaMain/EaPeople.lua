@@ -531,6 +531,7 @@ function GenerateGreatPerson(iPlayer, class, subclass, eaPersonRowID, bAsLeader,
 		end		
 		if class1 == "Devout" or class2 == "Devout" or class1 == "Thaumaturge" or class2 == "Thaumaturge" then
 			eaPerson.spells = {}		--presence of this table is cue that this is a spellcaster (used by AI and in level gains)
+			g_eaPerson.learningSpellID = -1
 			local spellID = FIRST_SPELL_ID
 			local spellInfo = GameInfo.EaActions[spellID]
 			while spellInfo do

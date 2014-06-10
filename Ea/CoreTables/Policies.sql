@@ -168,6 +168,8 @@ INSERT INTO Policies (Type,			PolicyBranchType,				PortraitIndex,	IconAtlas,		Ic
 
 ('POLICY_ANIMAL_MASTERS',			'POLICY_BRANCH_CIV_ENABLED',	24,				'POLICY_ATLAS',	'POLICY_A_ATLAS' );
 
+--Note that GridX, GridY are not used for Civ-Enabled, except that GridY is used to determine spell level for policy enabled spells (so set it if there are any)
+
 
 
 INSERT INTO Policies (Type,				Utility,	GridX,	GridY,	PolicyBranchType,		PortraitIndex,	IconAtlas,		IconAtlasAchieved) VALUES

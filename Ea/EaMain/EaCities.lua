@@ -1305,6 +1305,11 @@ TestCityCanConstruct[GameInfoTypes.BUILDING_FOREFATHERS_STATUE] = function(iPlay
 	return city:GetGameTurnAcquired() < Game.GetGameTurn() - 100	--can only build 100 turns after conquest
 end
 
+TestCityCanConstruct[GameInfoTypes.BUILDING_GOVERNORS_COMPOUND] = function(iPlayer, iCity)
+	local city = Players[iPlayer]:GetCityByID(iCity)
+	return city:IsOccupied() and not city:IsNoOccupiedUnhappiness()
+end
+
 TestCityCanConstruct[GameInfoTypes.BUILDING_SMOKEHOUSE] = function(iPlayer, iCity)
 	local player = Players[iPlayer]
 	local city = player:GetCityByID(iCity)

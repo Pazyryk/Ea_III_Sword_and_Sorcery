@@ -457,6 +457,7 @@ ScreenOptions = {
 			]]	
 			for civInfo in GameInfo.Civilizations() do		--use order in Civilizations table
 				if not civInfo.Playable then break end
+				if not civInfo.EaRaceSelectionText then break end
 				table.insert(civs, {CivID = civInfo.ID, Description = civInfo.Description, EaRaceSelectionText = civInfo.EaRaceSelectionText})	--starts with index 1 (civID = 0)
 			end
 

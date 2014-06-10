@@ -962,10 +962,9 @@ function DoEaAction(eaActionID, iPlayer, unit, iPerson, targetX, targetY)
 	local bTest = TestEaAction(eaActionID, iPlayer, unit, iPerson, targetX, targetY, false)	--this will set all file variables we need
 	print("DoEaAction after test ", g_eaAction.Type, iPlayer, unit, iPerson, targetX, targetY, bTest)
 
-	g_eaPerson.gotoPlotIndex = -1	
-	g_eaPerson.gotoEaActionID = -1
-
 	if g_bGreatPerson then
+		g_eaPerson.gotoPlotIndex = -1	
+		g_eaPerson.gotoEaActionID = -1	
 		if g_eaPerson.eaActionID ~= -1 and g_eaPerson.eaActionID ~= eaActionID then					--GP had a previous action that needs to be interrupted
 			InterruptEaAction(iPlayer, iPerson)
 		elseif not bTest and g_eaPerson.eaActionID == eaActionID then								--this was an ongoing action that needs to be interrupted
@@ -996,12 +995,11 @@ function DoEaAction(eaActionID, iPlayer, unit, iPerson, targetX, targetY)
 				g_eaPerson.modMemory[modID] = (g_eaPerson.modMemory[modID] or 0) + memValue
 			end
 		end
-	end
-
-	if g_eaAction.StayInvisible then
-		g_unit:SetInvisibleType(INVISIBLE_SUBMARINE)
-	else 
-		g_unit:SetInvisibleType(-1)
+		if g_eaAction.StayInvisible then
+			g_unit:SetInvisibleType(INVISIBLE_SUBMARINE)
+		else 
+			g_unit:SetInvisibleType(-1)
+		end	
 	end
 
 	--Alt unit upgrades
@@ -1022,7 +1020,7 @@ function DoEaAction(eaActionID, iPlayer, unit, iPerson, targetX, targetY)
 	end
 
 	--Finish moves
-	if g_eaAction.FinishMoves  then
+	if g_eaAction.FinishMoves and g_unit then
 		g_unit:FinishMoves()
 	end
 

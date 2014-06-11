@@ -629,7 +629,9 @@ function UpdateUnitActions( unit )
 	--Paz add ******************************************************************************************************************************
 	elseif inProgressEaActionID > 1 then
 		local eaAction = GameInfo.EaActions[inProgressEaActionID]
-		local totalTurns = eaAction.TurnsToComplete
+		local totalTurns = eaAction.TurnsToComplete or eaPerson.turnsToComplete
+
+
 		local civilianUnitStr = Locale.ConvertTextKey(eaAction.Description)
 		if totalTurns < 1000 then
 			local progressHolder = eaAction.ProgressHolder

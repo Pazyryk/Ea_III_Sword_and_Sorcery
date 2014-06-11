@@ -45,7 +45,7 @@ function Show()					--called from diplo corner
 	TabSelect(g_CurrentTab)
 end
 
-function LearnSpell(iPerson)		--called from Learn Spell action
+function LearnSpell(iPerson)		--called from Learn Spell action on 1st turn only
 	--info different then base popups; fields used: type, id, text, sound (not all required or used for all types)
 	print("Running LearnSpell ", iPerson)
 	ContextPtr:SetHide(false)
@@ -54,6 +54,8 @@ function LearnSpell(iPerson)		--called from Learn Spell action
 	g_spellID = -1
 	bLearnSpell = true
 	local eaPerson = gT.gPeople[iPerson]
+	local progressTable = eaPerson.progress
+	progressTable[GameInfoTypes.EA_ACTION_LEARN_SPELL] = nil
 	local class1, class2 = eaPerson.class1, eaPerson.class2
 	bAllowArcane = class1 == "Thaumaturge" or class2 == "Thaumaturge"
 	bAllowDivine = class1 == "Devout" or class2 == "Devout"
@@ -151,7 +153,9 @@ function Close()
     ContextPtr:SetHide(true)
 	if g_iPerson ~= -1 then
 		print("Closing Learn spell without selection...")
-		--nothing happens and no GP movement taken
+		local eaPerson = gT.gPeople[g_iPerson]
+		local progressTable = eaPerson.progress
+		progressTable[GameInfoTypes.EA_ACTION_LEARN_SPELL] = nil
 	end
 end
 Controls.CloseButton:RegisterCallback(Mouse.eLClick, Close)

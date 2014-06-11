@@ -918,7 +918,11 @@ function TestEaActionTarget(eaActionID, testX, testY, bAITargetTest)
 	end
 
 	--Caluculate turns to complete
-	local turnsToComplete = g_eaAction.TurnsToComplete or Turns[eaActionID]()
+	local turnsToComplete = g_eaAction.TurnsToComplete
+	if not turnsToComplete then
+		turnsToComplete = Turns[eaActionID]()
+		g_eaPerson.turnsToComplete = turnsToComplete
+	end
 
 	if turnsToComplete == 1000 and g_bAIControl then turnsToComplete = 8 end	--AI will wake up and test other options
 	if turnsToComplete > 1 and turnsToComplete ~= 1000 then
@@ -1044,7 +1048,11 @@ function DoEaAction(eaActionID, iPlayer, unit, iPerson, targetX, targetY)
 	end
 
 	--Ongoing actions with turnsToComplete > 0 (DoEaAction is called each turn of construction)
-	local turnsToComplete = g_eaAction.TurnsToComplete or Turns[eaActionID]()
+	local turnsToComplete = g_eaAction.TurnsToComplete
+	if not turnsToComplete then
+		turnsToComplete = Turns[eaActionID]()
+		g_eaPerson.turnsToComplete = turnsToComplete
+	end
 	
 	--Reserve this action at this plot (will cause TestEaActionTarget fail for other GPs)
 	if 1 < turnsToComplete and not g_eaAction.NoGPNumLimit then

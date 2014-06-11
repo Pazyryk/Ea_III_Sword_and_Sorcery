@@ -21,7 +21,6 @@ local EAMOD_LEADERSHIP =				GameInfoTypes.EAMOD_LEADERSHIP
 local EA_EPIC_GRIMNISMAL =				GameInfoTypes.EA_EPIC_GRIMNISMAL
 local EA_WONDER_ARCANE_TOWER =			GameInfoTypes.EA_WONDER_ARCANE_TOWER
 
-local PROMOTION_LEARN_SPELL =			GameInfoTypes.PROMOTION_LEARN_SPELL
 local PROMOTION_SORCERER =				GameInfoTypes.PROMOTION_SORCERER
 local PROMOTION_PROPHET =				GameInfoTypes.PROMOTION_PROPHET
 local EA_ACTION_GO_TO_PLOT =			GameInfoTypes.EA_ACTION_GO_TO_PLOT
@@ -531,7 +530,7 @@ function GenerateGreatPerson(iPlayer, class, subclass, eaPersonRowID, bAsLeader,
 		end		
 		if class1 == "Devout" or class2 == "Devout" or class1 == "Thaumaturge" or class2 == "Thaumaturge" then
 			eaPerson.spells = {}		--presence of this table is cue that this is a spellcaster (used by AI and in level gains)
-			g_eaPerson.learningSpellID = -1
+			eaPerson.learningSpellID = -1
 			local spellID = FIRST_SPELL_ID
 			local spellInfo = GameInfo.EaActions[spellID]
 			while spellInfo do
@@ -1021,37 +1020,37 @@ end
 --------------------------------------------------------------
 
 local subclassModLevelModifier = {
-	Witch = {		[GameInfoTypes.EAMOD_DIVINATION] =		0.25,
-					[GameInfoTypes.EAMOD_ENCHANTMENT] =		0.25,
-					[GameInfoTypes.EAMOD_ABJURATION] =		0.1,
-					[GameInfoTypes.EAMOD_EVOCATION] =		0.1,
-					[GameInfoTypes.EAMOD_TRANSMUTATION] =	0.1,
-					[GameInfoTypes.EAMOD_CONJURATION] =		0.1,
-					[GameInfoTypes.EAMOD_NECROMANCY] =		0.1,
-					[GameInfoTypes.EAMOD_ILLUSION] =		0.1		},
-	Wizard = {		[GameInfoTypes.EAMOD_DIVINATION] =		0.2,
-					[GameInfoTypes.EAMOD_ABJURATION] =		0.2,
-					[GameInfoTypes.EAMOD_EVOCATION] =		0.2,
-					[GameInfoTypes.EAMOD_TRANSMUTATION] =	0.2,
-					[GameInfoTypes.EAMOD_CONJURATION] =		0.2,
-					[GameInfoTypes.EAMOD_ENCHANTMENT] =		0.2		},
-	Sorcerer = {	[GameInfoTypes.EAMOD_DIVINATION] =		0.2,
-					[GameInfoTypes.EAMOD_EVOCATION] =		0.2,
-					[GameInfoTypes.EAMOD_TRANSMUTATION] =	0.2,
-					[GameInfoTypes.EAMOD_CONJURATION] =		0.2,
-					[GameInfoTypes.EAMOD_NECROMANCY] =		0.2,
-					[GameInfoTypes.EAMOD_ILLUSION] =		0.2		},
-	Necromancer = {	[GameInfoTypes.EAMOD_NECROMANCY] =		0.5		},
-	Illusionist = {	[GameInfoTypes.EAMOD_ILLUSION] =		0.5		}
+	Witch = {		EAMOD_DIVINATION =		0.25,
+					EAMOD_ENCHANTMENT =		0.25,
+					EAMOD_ABJURATION =		0.1,
+					EAMOD_EVOCATION =		0.1,
+					EAMOD_TRANSMUTATION =	0.1,
+					EAMOD_CONJURATION =		0.1,
+					EAMOD_NECROMANCY =		0.1,
+					EAMOD_ILLUSION =		0.1		},
+	Wizard = {		EAMOD_DIVINATION =		0.2,
+					EAMOD_ABJURATION =		0.2,
+					EAMOD_EVOCATION =		0.2,
+					EAMOD_TRANSMUTATION =	0.2,
+					EAMOD_CONJURATION =		0.2,
+					EAMOD_ENCHANTMENT =		0.2		},
+	Sorcerer = {	EAMOD_DIVINATION =		0.2,
+					EAMOD_EVOCATION =		0.2,
+					EAMOD_TRANSMUTATION =	0.2,
+					EAMOD_CONJURATION =		0.2,
+					EAMOD_NECROMANCY =		0.2,
+					EAMOD_ILLUSION =		0.2		},
+	Necromancer = {	EAMOD_NECROMANCY =		0.5		},
+	Illusionist = {	EAMOD_ILLUSION =		0.5		}
 }
 
 local subclassModModifier = {
-	Illusionist = {	[GameInfoTypes.EAMOD_DIVINATION] =		-2,
-					[GameInfoTypes.EAMOD_ABJURATION] =		-2,
-					[GameInfoTypes.EAMOD_EVOCATION] =		-2,
-					[GameInfoTypes.EAMOD_TRANSMUTATION] =	-2,
-					[GameInfoTypes.EAMOD_CONJURATION] =		-2,
-					[GameInfoTypes.EAMOD_NECROMANCY] =		-2		}
+	Illusionist = {	EAMOD_DIVINATION =		-2,
+					EAMOD_ABJURATION =		-2,
+					EAMOD_EVOCATION =		-2,
+					EAMOD_TRANSMUTATION =	-2,
+					EAMOD_CONJURATION =		-2,
+					EAMOD_NECROMANCY =		-2		}
 }
 
 function GetGPMod(iPerson, modType1, modType2)
@@ -1091,7 +1090,7 @@ function GetGPMod(iPerson, modType1, modType2)
 
 	local totalMod = levelMod + promoMod + bonuses
 
-	if modType1 == EAMOD_LEADERSHIP or modType2 == EAMOD_LEADERSHIP then
+	if modType1 == "EAMOD_LEADERSHIP" or modType2 == "EAMOD_LEADERSHIP" then
 		if gEpics[EA_EPIC_GRIMNISMAL] and gEpics[EA_EPIC_GRIMNISMAL].iPlayer == eaPerson.iPlayer then
 			totalMod = totalMod * (100 + gEpics[EA_EPIC_GRIMNISMAL].mod) / 100
 		end
@@ -1113,7 +1112,7 @@ function SetTowerMods(iPlayer, iPerson)
 	local modSum = 0
 	local bestCasterMod, bestTowerMod = 0, 0
 	for i = numModTypes - 7, numModTypes do
-		local casterMod = GetGPMod(iPerson, i, nil)
+		local casterMod = GetGPMod(iPerson, modTypes[i], nil)
 		local towerMod = tower[i]
 		if bestCasterMod < casterMod then
 			bestCasterMod = casterMod

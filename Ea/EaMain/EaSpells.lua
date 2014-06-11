@@ -180,19 +180,19 @@ local g_tradeAvailableTable = {}
 ---------------------------------------------------------------
 
 local EaActionsInfo = {}			-- Contains the entire table for speed (for ID >= FIRST_SPELL_ID)
-local spellLevel = {}				-- only used for Learn Spell AI valuation
-for row in GameInfo.EaActions() do
-	local id = row.ID
+local spellLevel = {}				-- used only for AI valuation in choosing spell to learn
+for eaActionInfo in GameInfo.EaActions() do
+	local id = eaActionInfo.ID
 	if id >= FIRST_SPELL_ID then
-		EaActionsInfo[id] = row
+		EaActionsInfo[id] = eaActionInfo
 		spellLevel[id] = 1
-		if row.TechReq then
-			local techInfo = GameInfo.Technologies[row.TechReq]
-			spellLevel[id] = 0 < GridX and GridX + 1 or 1
-		elseif row.PolicyReq then
-			local policyInfo = GameInfo.Policies[row.TechReq]
+		if eaActionInfo.TechReq then
+			local techInfo = GameInfo.Technologies[eaActionInfo.TechReq]
+			spellLevel[id] = 0 < techInfo.GridX and techInfo.GridX + 1 or 1
+		elseif eaActionInfo.PolicyReq then
+			local policyInfo = GameInfo.Policies[eaActionInfo.PolicyReq]
 			if policyInfo.PolicyBranchType then
-				spellLevel[id] = 0 < GridY and GridY + 1 or 1
+				spellLevel[id] = 0 < policyInfo.GridY and policyInfo.GridY + 1 or 1
 			elseif string.find(policyInfo.Type, "_FINISHER") then
 				spellLevel[id] = 6
 			end
@@ -994,7 +994,7 @@ function TestSpellLearnable(iPlayer, iPerson, spellID, spellClass)		--iPerson = 
 		if spellInfo.PromotionReq and not eaPerson.promotions[GameInfoTypes[spellInfo.PromotionReq] ] then return false end
 	end
 	if spellInfo.ReqEaWonder and not gWonders[GameInfoTypes[spellInfo.ReqEaWonder] ] then return false end
-	return true, spellLevel[spellID]
+	return true, spellLevel[spellID], spellInfo.GPModType1, spellInfo.GPModType2
 end
 
 

@@ -221,15 +221,10 @@ function RegisterGPActions(iPerson)
 	local number = 1
 	for id = FIRST_GP_ACTION, FIRST_SPELL_ID - 1 do
 		local eaAction = EaActionsInfo[id]
-		--print(eaAction.Type)
 		if not eaAction.GPSubclass or eaAction.GPSubclass == subclass then
-			--print("-pass subclass")
-			if not eaAction.GPClass or eaAction.GPClass == class1 or eaAction.GPClass == class2 then
-				--print("-pass class")
+			if not eaAction.GPClass or eaAction.GPClass == class1 or eaAction.GPClass == class2 or (eaAction.OrGPClass and (eaAction.OrGPClass == class1 or eaAction.OrGPClass == class2)) then
 				if not eaAction.ExcludeGPSubclass or eaAction.ExcludeGPSubclass ~= subclass then
-					--print("-pass subclass exclude")
 					if not eaAction.NotGPClass or (eaAction.NotGPClass ~= class1 and eaAction.NotGPClass ~= class1) then
-						--print("-pass class exclude")
 						actions[number] = id
 						number = number + 1
 					end
@@ -684,17 +679,11 @@ function TestEaAction(eaActionID, iPlayer, unit, iPerson, testX, testY, bAINonTa
 	if g_bGreatPerson then
 		--all tests here are now in RegisterGPActions 
 		g_subclass = g_eaPerson.subclass
-		--if g_eaAction.GPSubclass and g_eaAction.GPSubclass ~= g_subclass and g_eaAction.OrGPSubclass ~= g_subclass then return false end
-		--if g_eaAction.ExcludeGPSubclass and g_eaAction.ExcludeGPSubclass == g_subclass then return false end
 		g_class1 = g_eaPerson.class1
 		g_class2 = g_eaPerson.class2	--nil unless dual-class GP
-		--if g_eaAction.GPClass and g_eaAction.GPClass ~= g_class1 and g_eaAction.GPClass ~= g_class2 then return false end
-		--if g_eaAction.NotGPClass and (g_eaAction.NotGPClass == g_class1 or g_eaAction.NotGPClass == g_class2) then return false end
 	elseif g_eaAction.GPOnly then
 		return false
 	end
-
-	--print("pass f")
 
 	--Unique already created or being created			TEST THIS!!!
 	if g_bGreatPerson and g_eaAction.UniqueType then		--built or someone else building
@@ -2166,24 +2155,25 @@ end
 Test[GameInfoTypes.EA_ACTION_LEARN_SPELL] = function()
 	if g_eaPerson.learningSpellID ~= -1 then return true end	--learning one now; don't retest
 
-	--any currently learnable by caster? (pick one for AI)
+	--any currently learnable by caster? (pick one and value for AI)
 	g_count = 0
 	local bestSpell, bestValue = -1, 0
 	local TestSpellLearnable = TestSpellLearnable
 	for spellID = FIRST_SPELL_ID, LAST_SPELL_ID do
-		local bLearnable, spellLevel = TestSpellLearnable(g_iPlayer, g_iPerson, spellID, nil)
+		local bLearnable, spellLevel, modType1, modType12 = TestSpellLearnable(g_iPlayer, g_iPerson, spellID, nil)
 		if bLearnable then
 			g_count = g_count + 1
-			local value = spellLevel
-			--spell mod
-
-
-
+			local mod = GetGPMod(g_iPerson, modType1, modType12)	--value by what caster is good at
+			local value = mod * (spellLevel + 2) ^ 2		
+			if bestValue < value then
+				bestValue = value
+				bestSpell = spellID
+			end
 		end
 	end
-	if g_count == 0 then return false end
+	if bestValue == 0 then return false end
 	g_int1 = bestSpell
-	g_value = bestValue
+	g_value = 0.02 * bestValue / (#g_eaPerson.spells + 0.1)
 	return true
 end
 
@@ -2192,15 +2182,43 @@ Turns[GameInfoTypes.EA_ACTION_LEARN_SPELL] = function()
 end
 
 SetUI[GameInfoTypes.EA_ACTION_LEARN_SPELL] = function()
-
+	if g_eaPerson.learningSpellID == -1 then
+		if g_bInTowerOrTemple then
+			MapModData.text = "Learn a new spell"
+		else
+			MapModData.text = "Learn a new spell (this can be done twice as fast in the caster's Tower or Temple!)"
+		end
+	else
+		local spellName = Locale.Lookup(GameInfo.EaActions[g_eaPerson.learningSpellID].Description)
+		MapModData.text = "Learn " .. spellName
+	end
 end
 
 SetAIValues[GameInfoTypes.EA_ACTION_LEARN_SPELL] = function()
+	gg_aiOptionValues.i = g_value
+end
 
+Do[GameInfoTypes.EA_ACTION_LEARN_SPELL] = function()
+	if g_eaPerson.learningSpellID == -1 then	--this must be initial turn of action so we need to pick a spell
+		if g_iPlayer == g_iActivePlayer then	--human, pass it off to UI
+			LuaEvents.LearnSpellPopup(g_iPerson)
+			return true
+		else									--AI, set best spell
+			g_eaPerson.learningSpellID = g_int1
+		end
+	end
+	g_unit:FinishMoves()
+	return true
 end
 
 Finish[GameInfoTypes.EA_ACTION_LEARN_SPELL] = function()
-
+	if g_eaPerson.learningSpellID == -1 then
+		error("What spell was being learned?")
+	end
+	g_eaPerson.spells[#g_eaPerson.spells + 1] = g_eaPerson.learningSpellID
+	print("GP learned a spell: ", GameInfo.EaActions[g_eaPerson.learningSpellID].Type)
+	g_eaPerson.learningSpellID = -1
+	g_unit:FinishMoves()
 end
 
 Interrupt[GameInfoTypes.EA_ACTION_LEARN_SPELL] = function(iPlayer, iPerson)

@@ -45,7 +45,7 @@ function Show()					--called from diplo corner
 	TabSelect(g_CurrentTab)
 end
 
-function LearnSpell(iPerson)		--called from Learn Spell promotion selection
+function LearnSpell(iPerson)		--called from Learn Spell action
 	--info different then base popups; fields used: type, id, text, sound (not all required or used for all types)
 	print("Running LearnSpell ", iPerson)
 	ContextPtr:SetHide(false)
@@ -134,9 +134,9 @@ function OnYes()
 	Controls.SpellSelectConfirm:SetHide(true)
     ContextPtr:SetHide(true)
 	local eaPerson = gT.gPeople[g_iPerson]
-	--eaPerson.spells[g_spellID] = true
-	eaPerson.spells[#eaPerson.spells + 1] = g_spellID									--gives spell
-	Events.SerialEventUnitInfoDirty()
+	eaPerson.learningSpellID = g_spellID
+	local unit = Players[g_iPlayer]:GetUnitByID(eaPerson.iUnit)
+	unit:FinishMoves()
 end
 Controls.Yes:RegisterCallback( Mouse.eLClick, OnYes )
 
@@ -151,19 +151,7 @@ function Close()
     ContextPtr:SetHide(true)
 	if g_iPerson ~= -1 then
 		print("Closing Learn spell without selection...")
-		--dll has already given level when popup occured; take it away so player has promotion selection again
-		local eaPerson = gT.gPeople[g_iPerson]
-		local unit = Players[g_iPlayer]:GetUnitByID(eaPerson.iUnit)
-
-		--debug
-		print("level = ", unit:GetLevel())
-		print("experience = ", unit:GetExperience())
-		print("CanAcquirePromotionAny = ", unit:CanAcquirePromotionAny())
-		--CTD note: I thought it might be here, but you can cycle this repeatedly without CTD as long as you view tab with no spells in list.
-		--			It seems to be the combination of exiting this way after opeing tab with spells (repeatedly 3 or 4 times)
-
-		unit:SetLevel(unit:GetLevel() - 1)		--dll gave level the moment we presed select spell; we need to give it back
-		unit:TestPromotionReady()
+		--nothing happens and no GP movement taken
 	end
 end
 Controls.CloseButton:RegisterCallback(Mouse.eLClick, Close)

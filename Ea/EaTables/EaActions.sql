@@ -49,6 +49,7 @@ CREATE TABLE EaActions ('ID' INTEGER PRIMARY KEY AUTOINCREMENT,
 						--Unit reqs (any EaAction may also have a Lua req defined in EaActions.lua)
 						'GPOnly' BOOLEAN DEFAULT NULL,
 						'GPClass' TEXT DEFAULT NULL,	
+						'OrGPClass' TEXT DEFAULT NULL,	
 						'NotGPClass' TEXT DEFAULT NULL,		
 						'GPSubclass' TEXT DEFAULT NULL,	
 						'OrGPSubclass' TEXT DEFAULT NULL,
@@ -194,7 +195,7 @@ INSERT INTO EaActions (Type,			Description,							Help,										GPOnly,	UIType,
 ('EA_ACTION_OCCUPY_TOWER',				'TXT_KEY_EA_ACTION_OCCUPY_TOWER',		'TXT_KEY_EA_ACTION_OCCUPY_TOWER_HELP',		1,		'Action',	'Thaumaturge',	1,				'VacantTower',	NULL,			NULL,					3,					'Person',		1,				6,			'BW_ATLAS_1'	),
 ('EA_ACTION_OCCUPY_TEMPLE',				'TXT_KEY_EA_ACTION_OCCUPY_TEMPLE',		'TXT_KEY_EA_ACTION_OCCUPY_TEMPLE_HELP',		1,		'Action',	'Devout',		1,				'VacantTemple',	NULL,			NULL,					3,					'Person',		1,				6,			'BW_ATLAS_1'	);
 
-UPDATE EaActions SET OrClass = 'Devout', ConsiderTowerTemple = 1 WHERE Type = 'EA_ACTION_LEARN_SPELL';
+UPDATE EaActions SET OrGPClass = 'Devout', ConsiderTowerTemple = 1, FinishMoves = NULL WHERE Type = 'EA_ACTION_LEARN_SPELL';
 UPDATE EaActions SET NotGPClass = 'Devout' WHERE Type = 'EA_ACTION_OCCUPY_TOWER';
 
 --Prophecies

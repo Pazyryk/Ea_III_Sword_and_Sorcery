@@ -593,19 +593,28 @@ local function OnUnitTakingPromotion(iPlayer, iUnit, promotionID)
 	local iPerson = unit:GetPersonIndex() 
 	if player:IsHuman() then
 		if iPerson ~= -1 then	--quick access promo levels
+			local eaPerson = gPeople[iPerson]
 			local promoInfo = GameInfo.UnitPromotions[promotionID]
 			local prefix, level = GetPromoPrefixLevelFromType(promoInfo.Type)
 			if prefix then
-				gPeople[iPerson][prefix] = level
+				eaPerson[prefix] = level
 			end
+			if eaPerson.assumedLeadershipTurn then
+				eaPerson.leaderLevel = Floor((Game.GetGameTurn() - eaPerson.assumedLeadershipTurn) / 20)	--intentional that this only updates w/ leveling (game interest and works better for mod caching)
+			end
+
 			SetTowerMods(iPlayer, iPerson)
 		end
 		return true		--allow whatever human player picks
 	else	--AI
 		if iPerson ~= -1 then
+			local eaPerson = gPeople[iPerson]
 			AIPickGPPromotion(iPlayer, iPerson, unit)
+			if eaPerson.assumedLeadershipTurn then
+				eaPerson.leaderLevel = Floor((Game.GetGameTurn() - eaPerson.assumedLeadershipTurn) / 20)
+			end
 			SetTowerMods(iPlayer, iPerson)
-			return false
+			return false				--We are cancelling whatever dll picked for GP
 		else
 			return true
 		end
@@ -623,7 +632,6 @@ function GetHighestPromotionLevel(prefixStr, unit, iPerson)		--unit is not used 
 	if iPerson then		--for quick access, levels are kept in eaPlayer (faster than testing all promos)
 		local eaPerson = gPeople[iPerson]
 		local level = eaPerson[prefixStr] or 0
-
 		return level
 	end
 

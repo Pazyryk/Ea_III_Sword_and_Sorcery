@@ -5,13 +5,15 @@ CREATE TABLE EaModifiers (	'ID' INTEGER PRIMARY KEY AUTOINCREMENT,
 							'Class' TEXT DEFAULT NULL,
 							'Subclass' TEXT DEFAULT NULL,
 							'ExcludeSubclass' TEXT DEFAULT NULL,
-							'PromotionPrefix' TEXT NOT NULL,
+							'PromotionPrefix' TEXT DEFAULT NULL,
 							--'ModMultiplier' FLOAT DEFAULT 1,
 							'ProphetBonus' BOOLEAN DEFAULT NULL);
 
+INSERT INTO EaModifiers(ID,	Type, Description,			Class) VALUES
+(0,	'EAMOD_LEADERSHIP',			'Leadership',			'Any');				--Special, Lua assumes ID=0; only leadership can have PromotionPrefix = NULL
+
 
 INSERT INTO EaModifiers(Type,	Description,			Class,			PromotionPrefix					) VALUES
-('EAMOD_LEADERSHIP',			'Leadership',			'Any',			'PROMOTION_LEADERSHIP'			),
 ('EAMOD_CONSTRUCTION',			'Construction',			'Engineer',		'PROMOTION_CONSTRUCTION'		),
 ('EAMOD_COMBAT_ENGINEERING',	'Combat Engineering',	'Engineer',		'PROMOTION_COMBAT_ENGINEERING'	),
 ('EAMOD_TRADE',					'Trade',				'Merchant',		'PROMOTION_TRADE'				),

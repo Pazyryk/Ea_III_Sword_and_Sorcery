@@ -31,7 +31,12 @@
       <Action>
         <Set>OnModActivated</Set>
         <Type>UpdateDatabase</Type>
-        <FileName>CoreTables/ArtDefines.sql</FileName>
+        <FileName>CoreTables/ArtDefinesLandmarks.sql</FileName>
+      </Action>
+      <Action>
+        <Set>OnModActivated</Set>
+        <Type>UpdateDatabase</Type>
+        <FileName>CoreTables/ArtDefinesUnits.sql</FileName>
       </Action>
       <Action>
         <Set>OnModActivated</Set>
@@ -454,6 +459,10 @@
     <DeployMod>true</DeployMod>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="CoreTables\ArtDefinesLandmarks.sql">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>False</ImportIntoVFS>
+    </Content>
     <Content Include="CvGameCore_Ea.pdb">
       <SubType>Lua</SubType>
       <ImportIntoVFS>True</ImportIntoVFS>
@@ -758,7 +767,7 @@
       <SubType>Lua</SubType>
       <ImportIntoVFS>True</ImportIntoVFS>
     </Content>
-    <Content Include="CoreTables\ArtDefines.sql">
+    <Content Include="CoreTables\ArtDefinesUnits.sql">
       <SubType>Lua</SubType>
       <ImportIntoVFS>False</ImportIntoVFS>
     </Content>

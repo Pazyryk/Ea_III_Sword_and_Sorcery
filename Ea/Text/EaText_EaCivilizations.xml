@@ -397,7 +397,7 @@
 			<Text>Ljósálfar</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_LJOSALFAR_HELP">
-			<Text>[ICON_BULLET]All Great People gain passive experience at three times the normal rate</Text>
+			<Text>[ICON_BULLET]All Great People have a 1 in 5 chance of gaining 5 xp per turn (10 xp for Leader)</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_SEGOYIM">
 			<Text>Segoÿim</Text>

@@ -16,7 +16,7 @@ local PlotDistance = Map.PlotDistance
 local Floor = math.floor
 
 local iW, iH = Map.GetGridSize()
-local iW5, iH5 = Floor(iW/5), Floor(iH/5)
+local iW5, iH5 = Floor(iW/5) + 1, Floor(iH/5) + 1
 
 local g_playerCacheTurn = {}
 local g_malus = {}
@@ -89,7 +89,7 @@ local function UpdateNIMBY(iPlayer)
 			for iPlot, eaCity in pairs(gCities) do
 			
 				local x, y = iPlot % iW, Floor(iPlot / iW)
-				local dist = PlotDistance(x, y, x5*5, y5*5)
+				local dist = PlotDistance(x, y, (x5-1)*5, (y5-1)*5)
 				nimbyGrid[x5][y5] = nimbyGrid[x5][y5] + g_malus[eaCity.iOwner] * eaCity.size / (dist + 3)
 			
 			end
@@ -107,7 +107,11 @@ function GetNIMBY(iPlayer, x, y)
 		InitPlayerNIMBY(iPlayer)
 		UpdateNIMBY(iPlayer)
 	end
-	return g_playerNimbyGrids[iPlayer][Floor(x/5)][Floor(y/5)]
+	local nimby = g_playerNimbyGrids[iPlayer][Floor(x/5) + 1][Floor(y/5) + 1]
+	if not nimby then
+		error("nimby = nil")
+	end
+	return nimby
 end
 
 -- Typical return values for game turn 200 with size 10ish cities, no war:

@@ -1,99 +1,4 @@
 
------------------------------------------------------------------------------------------
--- Terrain
------------------------------------------------------------------------------------------
-
-INSERT INTO ArtDefine_LandmarkTypes (Type,	LandmarkType,	FriendlyName) VALUES
-('ART_DEF_RESOURCE_POPPY',					'Resource',		'Poppy'		),
-('ART_DEF_RESOURCE_TOBACCO',				'Resource',		'Tobacco'	),
-('ART_DEF_RESOURCE_ALOEVERA',				'Resource',		'Moly'		),
-('ART_DEF_RESOURCE_MANGANESE',				'Resource',		'Cinnabar'	),	--Paz adjusted colors
-('ART_DEF_RESOURCE_BERRIES',				'Resource',		'Berries'	),
-('ART_DEF_RESOURCE_TEA',					'Resource',		'Tea'		),
-('ART_DEF_RESOURCE_LUBORIC',				'Resource',		'Jade'		),	--adjusted colors from G&K?
-('ART_DEF_RESOURCE_TIN',					'Resource',		'Copper'	),	--Paz adjusted colors
-('ART_DEF_IMPROVEMENT_FARM_FIX',			'Improvement',	'Farm Fix'	),
-('ART_DEF_IMPROVEMENT_PYRAMID',				'Improvement',	'Pyramids'	),
-('ART_DEF_IMPROVEMENT_STONEHENGE',			'Improvement',	'Stonehenge'),
-('ART_DEF_IMPROVEMENT_BLIGHT',				'Improvement',	'Blight'	);
-
-INSERT INTO ArtDefine_StrategicView (StrategicViewType, TileType, Asset) VALUES
-('ART_DEF_RESOURCE_POPPY',				'Resource',		'SV_Poppy.dds'		),
-('ART_DEF_RESOURCE_TOBACCO',			'Resource',		'sv_tobacco.dds'	),
-('ART_DEF_RESOURCE_ALOEVERA',			'Resource',		'SV_Aloevera.dds'	),
-('ART_DEF_RESOURCE_MANGANESE',			'Resource',		'SV_Manganese.dds'	),
-('ART_DEF_RESOURCE_BERRIES',			'Resource',		'SV_Berries.dds'	),
-('ART_DEF_RESOURCE_TEA',				'Resource',		'SV_Tea.dds'		),
-('ART_DEF_RESOURCE_LUBORIC',			'Resource',		'sv_jade.dds'		),
-('ART_DEF_RESOURCE_TIN',				'Resource',		'sv_newcopper.dds'	),
-('ART_DEF_IMPROVEMENT_FARM_FIX',		'Improvement',	'SV_Farm.dds'		),
-('ART_DEF_IMPROVEMENT_PYRAMID',			'Improvement',	'sv_landmark.dds'	),
-('ART_DEF_IMPROVEMENT_STONEHENGE',		'Improvement',	'sv_landmark.dds'	),
-('ART_DEF_IMPROVEMENT_BLIGHT',			'Improvement',	'sv_uranium.dds'	);
-
-INSERT INTO ArtDefine_Landmarks (Era, State, Scale,	ImprovementType,					LayoutHandler,	ResourceType,					Model,								TerrainContour) VALUES
-('Any',		'Any',				0.9399999976158142,	'ART_DEF_IMPROVEMENT_NONE',			'SNAPSHOT',		'ART_DEF_RESOURCE_POPPY',		'Resource_Poppy.fxsxml',			1	),
-('Ancient',	'UnderConstruction',0.9599999785423279,	'ART_DEF_IMPROVEMENT_PLANTATION',	'SNAPSHOT',		'ART_DEF_RESOURCE_POPPY',		'HB_Plantation_MID_Poppy.fxsxml',	1	),
-('Ancient',	'Constructed',		0.9599999785423279,	'ART_DEF_IMPROVEMENT_PLANTATION',	'SNAPSHOT',		'ART_DEF_RESOURCE_POPPY',		'Plantation_MID_Poppy.fxsxml',		1	),
-('Ancient',	'Pillaged',			0.9599999785423279,	'ART_DEF_IMPROVEMENT_PLANTATION',	'SNAPSHOT',		'ART_DEF_RESOURCE_POPPY',		'PL_Plantation_MID_Poppy.fxsxml',	1	),
-('Any',		'Any',				0.9800000190734863,	'ART_DEF_IMPROVEMENT_NONE',			'SNAPSHOT',		'ART_DEF_RESOURCE_TOBACCO',		'Resource_Tobacco.fxsxml',			1	),
-('Ancient',	'UnderConstruction',0.9599999785423279,	'ART_DEF_IMPROVEMENT_PLANTATION',	'SNAPSHOT',		'ART_DEF_RESOURCE_TOBACCO',		'HB_Plantation_MID_Tobacco.fxsxml',	1	),
-('Ancient',	'Constructed',		0.9599999785423279,	'ART_DEF_IMPROVEMENT_PLANTATION',	'SNAPSHOT',		'ART_DEF_RESOURCE_TOBACCO',		'Plantation_MID_Tobacco.fxsxml',	1	),
-('Ancient',	'Pillaged',			0.9599999785423279,	'ART_DEF_IMPROVEMENT_PLANTATION',	'SNAPSHOT',		'ART_DEF_RESOURCE_TOBACCO',		'PL_Plantation_MID_Tobacco.fxsxml',	1	),
-('Any',		'Any',				0.9399999976158142,	'ART_DEF_IMPROVEMENT_NONE',			'SNAPSHOT',		'ART_DEF_RESOURCE_ALOEVERA',	'Resource_Aloevera.fxsxml',			1	),
-('Ancient',	'UnderConstruction',0.9599999785423279,	'ART_DEF_IMPROVEMENT_PLANTATION',	'SNAPSHOT',		'ART_DEF_RESOURCE_ALOEVERA',	'HB_Plantation_MID_Aloevera.fxsxml',1	),
-('Ancient',	'Constructed',		0.9599999785423279,	'ART_DEF_IMPROVEMENT_PLANTATION',	'SNAPSHOT',		'ART_DEF_RESOURCE_ALOEVERA',	'Plantation_MID_Aloevera.fxsxml',	1	),
-('Ancient',	'Pillaged',			0.9599999785423279,	'ART_DEF_IMPROVEMENT_PLANTATION',	'SNAPSHOT',		'ART_DEF_RESOURCE_ALOEVERA',	'PL_Plantation_MID_Aloevera.fxsxml',1	),
-('Any',		'Any',				1,					'ART_DEF_IMPROVEMENT_NONE',			'SNAPSHOT',		'ART_DEF_RESOURCE_MANGANESE',	'Manganese.fxsxml',					1	),
-('Ancient',	'UnderConstruction',1,					'ART_DEF_IMPROVEMENT_MINE',			'SNAPSHOT',		'ART_DEF_RESOURCE_MANGANESE',	'HB_MED_Mine_Manganese.fxsxml',		1	),
-('Ancient',	'Constructed',		1,					'ART_DEF_IMPROVEMENT_MINE',			'SNAPSHOT',		'ART_DEF_RESOURCE_MANGANESE',	'MED_Mine_Manganese.fxsxml',		1	),
-('Ancient',	'Pillaged',			1,					'ART_DEF_IMPROVEMENT_MINE',			'SNAPSHOT',		'ART_DEF_RESOURCE_MANGANESE',	'PL_MED_Mine_Manganese.fxsxml',		1	),
-('Any',		'Any',				1,					'ART_DEF_IMPROVEMENT_NONE',			'SNAPSHOT',		'ART_DEF_RESOURCE_BERRIES',		'Resource_Berries.fxsxml',			1	),
-('Ancient',	'UnderConstruction',1,					'ART_DEF_IMPROVEMENT_PLANTATION',	'SNAPSHOT',		'ART_DEF_RESOURCE_BERRIES',		'HB_Plantation_MID_Berries.fxsxml',	1	),
-('Ancient',	'Constructed',		1,					'ART_DEF_IMPROVEMENT_PLANTATION',	'SNAPSHOT',		'ART_DEF_RESOURCE_BERRIES',		'Plantation_MID_Berries.fxsxml',	1	),
-('Ancient',	'Pillaged',			1,					'ART_DEF_IMPROVEMENT_PLANTATION',	'SNAPSHOT',		'ART_DEF_RESOURCE_BERRIES',		'PL_Plantation_MID_Berries.fxsxml',	1	),
-('Any',		'Any',				0.7399999976158142,	'ART_DEF_IMPROVEMENT_NONE',			'SNAPSHOT',		'ART_DEF_RESOURCE_TEA',			'Resource_Tea.fxsxml',				1	),
-('Ancient',	'UnderConstruction',0.7599999785423279,	'ART_DEF_IMPROVEMENT_PLANTATION',	'SNAPSHOT',		'ART_DEF_RESOURCE_TEA',			'HB_Plantation_MID_Tea.fxsxml',		1	),
-('Ancient',	'Constructed',		0.7599999785423279,	'ART_DEF_IMPROVEMENT_PLANTATION',	'SNAPSHOT',		'ART_DEF_RESOURCE_TEA',			'Plantation_MID_Tea.fxsxml',		1	),
-('Ancient',	'Pillaged',			0.7599999785423279,	'ART_DEF_IMPROVEMENT_PLANTATION',	'SNAPSHOT',		'ART_DEF_RESOURCE_TEA',			'APL_Plantation_MID_Tea.fxsxml',	1	),
-('Any',		'Any',				1.0,				'ART_DEF_IMPROVEMENT_NONE',			'SNAPSHOT',		'ART_DEF_RESOURCE_LUBORIC',		'luboric.fxsxml',					1	),
-('Ancient',	'UnderConstruction',1.0,				'ART_DEF_IMPROVEMENT_MINE',			'SNAPSHOT',		'ART_DEF_RESOURCE_LUBORIC',		'hb_med_luboric_mine.fxsxml',		1	),
-('Ancient',	'Constructed',		1.0,				'ART_DEF_IMPROVEMENT_MINE',			'SNAPSHOT',		'ART_DEF_RESOURCE_LUBORIC',		'med_mine_luboric.fxsxml',			1	),
-('Ancient',	'Pillaged',			1.0,				'ART_DEF_IMPROVEMENT_MINE',			'SNAPSHOT',		'ART_DEF_RESOURCE_LUBORIC',		'pl_med_mine_luboric.fxsxml',		1	),
-('Any',		'Any',				1.0,				'ART_DEF_IMPROVEMENT_NONE',			'SNAPSHOT',		'ART_DEF_RESOURCE_TIN',			'tin.fxsxml',						1	),
-('Ancient',	'UnderConstruction',1.0,				'ART_DEF_IMPROVEMENT_MINE',			'SNAPSHOT',		'ART_DEF_RESOURCE_TIN',			'hb_med_tin_mine.fxsxml',			1	),
-('Ancient',	'Constructed',		1.0,				'ART_DEF_IMPROVEMENT_MINE',			'SNAPSHOT',		'ART_DEF_RESOURCE_TIN',			'med_tin_mine.fxsxml',				1	),
-('Ancient',	'Pillaged',			1.0,				'ART_DEF_IMPROVEMENT_MINE',			'SNAPSHOT',		'ART_DEF_RESOURCE_TIN',			'pl_med_mine_tin.fxsxml',			1	),
---alt farm graphic since base farm is hardcoded to "IMPROVEMENT_FARM"
-('Any', 'UnderConstruction',	1.35,  				'ART_DEF_IMPROVEMENT_FARM_FIX',		'RANDOM',		'ART_DEF_RESOURCE_WHEAT',		'HBfarmfix01.fxsxml',				1	),
-('Any', 'Constructed',			1.35,  				'ART_DEF_IMPROVEMENT_FARM_FIX',		'RANDOM',		'ART_DEF_RESOURCE_WHEAT',		'farmwheat01.fxsxml',				1	),
-('Any', 'Pillaged',				1.35,  				'ART_DEF_IMPROVEMENT_FARM_FIX',		'RANDOM',		'ART_DEF_RESOURCE_WHEAT',		'PLfarmfix01.fxsxml',				1	),
-('Any', 'UnderConstruction',	1.35,  				'ART_DEF_IMPROVEMENT_FARM_FIX',		'RANDOM',		'ART_DEF_RESOURCE_WHEAT',		'HBfarmfix02.fxsxml',				1	),
-('Any', 'Constructed',			1.35,  				'ART_DEF_IMPROVEMENT_FARM_FIX',		'RANDOM',		'ART_DEF_RESOURCE_WHEAT',		'farmwheat02.fxsxml',				1	),
-('Any', 'Pillaged',				1.35,  				'ART_DEF_IMPROVEMENT_FARM_FIX',		'RANDOM',		'ART_DEF_RESOURCE_WHEAT',		'PLfarmfix02.fxsxml',				1	),
-('Any', 'UnderConstruction',	1.35,  				'ART_DEF_IMPROVEMENT_FARM_FIX',		'RANDOM',		'ART_DEF_RESOURCE_WHEAT',		'HBfarmfix03.fxsxml',				1	),
-('Any', 'Constructed',			1.35,  				'ART_DEF_IMPROVEMENT_FARM_FIX',		'RANDOM',		'ART_DEF_RESOURCE_WHEAT',		'farmwheat03.fxsxml',				1	),
-('Any', 'Pillaged',				1.35,  				'ART_DEF_IMPROVEMENT_FARM_FIX',		'RANDOM',		'ART_DEF_RESOURCE_WHEAT',		'PLfarmfix03.fxsxml',				1	),
---fishing on lakes
-('Any',	'Any',					0.07000000029802322,'ART_DEF_IMPROVEMENT_FISHING_BOATS','ANIMATED',		'ART_DEF_RESOURCE_NONE',		'Fish.fxsxml',						1	),
---Wonder improvements
-('Any', 'UnderConstruction',	1,  				'ART_DEF_IMPROVEMENT_PYRAMID',		'SNAPSHOT',		'ART_DEF_RESOURCE_NONE',		'hb_pyramidsTI.fxsxml',				1	),
-('Any', 'Constructed',			1,  				'ART_DEF_IMPROVEMENT_PYRAMID',		'SNAPSHOT',		'ART_DEF_RESOURCE_NONE',		'pyramidsTI.fxsxml',				1	),
-('Any', 'Pillaged',				1,  				'ART_DEF_IMPROVEMENT_PYRAMID',		'SNAPSHOT',		'ART_DEF_RESOURCE_NONE',		'pl_pyramidsTI.fxsxml',				1	),
-('Any', 'UnderConstruction',	1,  				'ART_DEF_IMPROVEMENT_STONEHENGE',	'SNAPSHOT',		'ART_DEF_RESOURCE_NONE',		'hb_stonehengeTI.fxsxml',			1	),
-('Any', 'Constructed',			1,  				'ART_DEF_IMPROVEMENT_STONEHENGE',	'SNAPSHOT',		'ART_DEF_RESOURCE_NONE',		'stonehengeTI.fxsxml',				1	),
-('Any', 'Pillaged',				1,  				'ART_DEF_IMPROVEMENT_STONEHENGE',	'SNAPSHOT',		'ART_DEF_RESOURCE_NONE',		'pl_stonehengeTI.fxsxml',			1	),
-
---Blight
-('Any',	'Any',					1.45,				'ART_DEF_IMPROVEMENT_BLIGHT',		'SNAPSHOT',		'ART_DEF_RESOURCE_ALL',			'blight.fxsxml',					0	),
-('Any',	'Any',					1.45,				'ART_DEF_IMPROVEMENT_NONE',			'SNAPSHOT',		'ART_DEF_RESOURCE_BLIGHT',		'blight.fxsxml',					0	),
-('Any',	'Any',					1.45,				'ART_DEF_IMPROVEMENT_HALICARNASSUS','SNAPSHOT',		'ART_DEF_RESOURCE_BLIGHT',		'blight.fxsxml',					0	);	--Arcane Tower
-
-
------------------------------------------------------------------------------------------
--- Units
------------------------------------------------------------------------------------------
-
 INSERT INTO ArtDefine_StrategicView(StrategicViewType, TileType, Asset) VALUES
 --animals
 ('ART_DEF_UNIT_WOLF',				'Unit',	'SV_Jaguar.dds'		),
@@ -121,10 +26,19 @@ INSERT INTO ArtDefine_StrategicView(StrategicViewType, TileType, Asset) VALUES
 ('ART_DEF_UNIT_NAGA_BLUE',			'Unit',	'SV_Maori.dds'		),
 --regulars
 ('ART_DEF_UNIT_MAN_CHARIOT',		'Unit',	'SV_Maori.dds'		),
-('ART_DEF_UNIT_ORC_SPEARMAN',		'Unit',	'SV_Spearman.dds'	),
+
+('ART_DEF_UNIT_ORC_WARRIOR',		'Unit',	'SV_Spearman.dds'	),
+('ART_DEF_UNIT_ORC_LT_INF',			'Unit',	'SV_Spearman.dds'	),
+('ART_DEF_UNIT_ORC_MED_INF',		'Unit',	'SV_Spearman.dds'	),
+('ART_DEF_UNIT_ORC_HEV_INF',		'Unit',	'SV_Spearman.dds'	),
+('ART_DEF_UNIT_ORC_IMMORTAL',		'Unit',	'SV_Spearman.dds'	),
+
 ('ART_DEF_UNIT_GOBLIN_WARRIOR',		'Unit',	'SV_Spearman.dds'	),
 ('ART_DEF_UNIT_GOBLIN_ARCHER',		'Unit',	'SV_Spearman.dds'	),
+('ART_DEF_UNIT_GOBLIN_BOWMAN',		'Unit',	'SV_Spearman.dds'	),
+('ART_DEF_UNIT_GOBLIN_MARKSMAN',	'Unit',	'SV_Spearman.dds'	),
 ('ART_DEF_UNIT_GOBLIN_CROSSBOWMAN',	'Unit',	'SV_Spearman.dds'	),
+('ART_DEF_UNIT_GOBLIN_ARQUEBUSIER',	'Unit',	'SV_Spearman.dds'	),
 ('ART_DEF_UNIT_GOBLIN_SCOUT',		'Unit',	'SV_Spearman.dds'	),
 ('ART_DEF_UNIT_GOBLIN_TRACKER',		'Unit',	'SV_Spearman.dds'	),
 ('ART_DEF_UNIT_GOBLIN_WOLF_RIDER',	'Unit',	'SV_Spearman.dds'	),
@@ -172,10 +86,18 @@ INSERT INTO ArtDefine_UnitInfos (Type,	DamageStates,	Formation) VALUES
 ('ART_DEF_UNIT_NAGA_BLUE',				1,				'Barbarian'			),	
 --regulars
 ('ART_DEF_UNIT_MAN_CHARIOT',			1,				'ChariotElephant'	),
-('ART_DEF_UNIT_ORC_SPEARMAN',			1,				'Barbarian'			),
+('ART_DEF_UNIT_ORC_WARRIOR',			1,				'Barbarian'			),
+('ART_DEF_UNIT_ORC_LT_INF',				1,				'Barbarian'			),
+('ART_DEF_UNIT_ORC_MED_INF',			1,				'Barbarian'			),
+('ART_DEF_UNIT_ORC_HEV_INF',			1,				'Barbarian'			),
+('ART_DEF_UNIT_ORC_IMMORTAL',			1,				'Barbarian'			),
+
 ('ART_DEF_UNIT_GOBLIN_WARRIOR',			1,				'Barbarian'			),
 ('ART_DEF_UNIT_GOBLIN_ARCHER',			1,				'Archer'			),
+('ART_DEF_UNIT_GOBLIN_BOWMAN',			1,				'Archer'			),
+('ART_DEF_UNIT_GOBLIN_MARKSMAN',		1,				'Archer'			),
 ('ART_DEF_UNIT_GOBLIN_CROSSBOWMAN',		1,				'Archer'			),
+('ART_DEF_UNIT_GOBLIN_ARQUEBUSIER',		1,				'Archer'			),
 ('ART_DEF_UNIT_GOBLIN_SCOUT',			1,				'Scout'				),
 ('ART_DEF_UNIT_GOBLIN_TRACKER',			1,				'Scout'				),
 ('ART_DEF_UNIT_GOBLIN_WOLF_RIDER',		1,				'DefaultCavalry'	),
@@ -239,10 +161,21 @@ INSERT INTO ArtDefine_UnitInfoMemberInfos (UnitInfoType,	UnitMemberInfoType,		Nu
 ('ART_DEF_UNIT_NAGA_BLUE',				'ART_DEF_UNIT_MEMBER_NAGA_BLUE',			6		),
 --regulars
 ('ART_DEF_UNIT_MAN_CHARIOT',			'ART_DEF_UNIT_MEMBER_MAN_CHARIOT',			2		),
-('ART_DEF_UNIT_ORC_SPEARMAN',			'ART_DEF_UNIT_MEMBER_ORC_SPEARMAN',			12		),
+
+('ART_DEF_UNIT_ORC_WARRIOR',			'ART_DEF_UNIT_MEMBER_ORC_WARRIOR',			11		),
+('ART_DEF_UNIT_ORC_LT_INF',				'ART_DEF_UNIT_MEMBER_ORC_AXEMAN',			11		),
+('ART_DEF_UNIT_ORC_MED_INF',			'ART_DEF_UNIT_MEMBER_ORC_SWORDSMAN',		11		),
+('ART_DEF_UNIT_ORC_HEV_INF',			'ART_DEF_UNIT_MEMBER_ORC_LONGSWORDSMAN',	6		),
+('ART_DEF_UNIT_ORC_HEV_INF',			'ART_DEF_UNIT_MEMBER_ORC_MACEMAN',			5		),
+('ART_DEF_UNIT_ORC_IMMORTAL',			'ART_DEF_UNIT_MEMBER_ORC_CHAMPION',			11		),
+
+
 ('ART_DEF_UNIT_GOBLIN_WARRIOR',			'ART_DEF_UNIT_MEMBER_GOBLIN_WARRIOR',		18		),
 ('ART_DEF_UNIT_GOBLIN_ARCHER',			'ART_DEF_UNIT_MEMBER_GOBLIN_ARCHER',		12		),
+('ART_DEF_UNIT_GOBLIN_BOWMAN',			'ART_DEF_UNIT_MEMBER_GOBLIN_BOWMAN',		12		),
+('ART_DEF_UNIT_GOBLIN_MARKSMAN',		'ART_DEF_UNIT_MEMBER_GOBLIN_MARKSMAN',		12		),
 ('ART_DEF_UNIT_GOBLIN_CROSSBOWMAN',		'ART_DEF_UNIT_MEMBER_GOBLIN_CROSSBOWMAN',	12		),
+('ART_DEF_UNIT_GOBLIN_ARQUEBUSIER',		'ART_DEF_UNIT_MEMBER_GOBLIN_ARQUEBUSIER',	12		),
 ('ART_DEF_UNIT_GOBLIN_SCOUT',			'ART_DEF_UNIT_MEMBER_GOBLIN_SCOUT',			8		),
 ('ART_DEF_UNIT_GOBLIN_TRACKER',			'ART_DEF_UNIT_MEMBER_GOBLIN_TRACKER',		8		),
 ('ART_DEF_UNIT_GOBLIN_WOLF_RIDER',		'ART_DEF_UNIT_MEMBER_GOBLIN_WOLF_RIDER',	10		),
@@ -285,7 +218,7 @@ INSERT INTO ArtDefine_UnitMemberInfos (Type,Scale,	Domain,		Model,							Materia
 ('ART_DEF_UNIT_MEMBER_SCORPION_WHITE',		0.2,	'',			'Scorpion_White.fxsxml',		'CLOTH',			'FLESH'			),
 --beasts
 ('ART_DEF_UNIT_MEMBER_KRAKEN',				1,		'Sea',		'kraken.fxsxml',				'CLOTH',			'FLESH'			),
-('ART_DEF_UNIT_MEMBER_GIANT_SPIDER',		1,		'',			'spider.fxsxml',				'CLOTH',			'FLESH'			),
+('ART_DEF_UNIT_MEMBER_GIANT_SPIDER',		1.3,	'',			'Spider_Yellow.fxsxml',			'CLOTH',			'FLESH'			),
 ('ART_DEF_UNIT_MEMBER_DRAKE_GREEN',			45,		'Hover',	'emerald_drake.fxsxml',			'CLOTH',			'FLESH'			),
 ('ART_DEF_UNIT_MEMBER_DRAKE_BLUE',			50,		'Hover',	'storm_drake.fxsxml',			'CLOTH',			'FLESH'			),
 ('ART_DEF_UNIT_MEMBER_DRAKE_RED',			55,		'Hover',	'red_drake.fxsxml',				'CLOTH',			'FLESH'			),
@@ -298,11 +231,21 @@ INSERT INTO ArtDefine_UnitMemberInfos (Type,Scale,	Domain,		Model,							Materia
 ('ART_DEF_UNIT_MEMBER_NAGA_BLUE',			0.14,	'',			'Naga_Blue.dds',				'CLOTH',			'FLESH'			),
 --regulars
 ('ART_DEF_UNIT_MEMBER_MAN_CHARIOT',			0.13,	'',			'Chariot_Viking.fxsxml',		'CLOTH',			'WOODSM'		),
-('ART_DEF_UNIT_MEMBER_ORC_SPEARMAN',		0.14,	'',			'orc_spearman.fxsxml',			'CLOTH',			'FLESH'			),
+
+('ART_DEF_UNIT_MEMBER_ORC_WARRIOR',			0.15,	'',			'orc_warrior.fxsxml',			'CLOTH',			'FLESH'			),
+('ART_DEF_UNIT_MEMBER_ORC_AXEMAN',			0.15,	'',			'Orc_Axeman.fxsxml',			'ARMOR',			'ARMOR'			),
+('ART_DEF_UNIT_MEMBER_ORC_SWORDSMAN',		0.15,	'',			'Orc_Swordsman.fxsxml',			'ARMOR',			'ARMOR'			),
+('ART_DEF_UNIT_MEMBER_ORC_LONGSWORDSMAN',	0.15,	'',			'Orc_Longswordsman.fxsxml',		'ARMOR',			'ARMOR'			),
+('ART_DEF_UNIT_MEMBER_ORC_MACEMAN',			0.15,	'',			'Orc_Maceman.fxsxml',			'ARMOR',			'ARMOR'			),
+('ART_DEF_UNIT_MEMBER_ORC_CHAMPION',		0.15,	'',			'Orc_Champion.fxsxml',			'ARMOR',			'ARMOR'			),
+
 
 ('ART_DEF_UNIT_MEMBER_GOBLIN_WARRIOR',		0.1,	'',			'Goblin_Warrior.fxsxml',		'CLOTH',			'FLESH'			),
 ('ART_DEF_UNIT_MEMBER_GOBLIN_ARCHER',		0.1,	'',			'Goblin_Archer.fxsxml',			'CLOTH',			'FLESH'			),
-('ART_DEF_UNIT_MEMBER_GOBLIN_CROSSBOWMAN',	0.1,	'',			'Goblin_Crossbowman.fxsxml',	'CLOTH',			'FLESH'			),
+('ART_DEF_UNIT_MEMBER_GOBLIN_BOWMAN',		0.1,	'',			'Goblin_Bowman.fxsxml',			'CLOTH',			'FLESH'			),
+('ART_DEF_UNIT_MEMBER_GOBLIN_MARKSMAN',		0.1,	'',			'Goblin_Marksman.fxsxml',		'ARMOR',			'ARMOR'			),
+('ART_DEF_UNIT_MEMBER_GOBLIN_CROSSBOWMAN',	0.1,	'',			'Goblin_Crossbowman.fxsxml',	'ARMOR',			'ARMOR'			),
+('ART_DEF_UNIT_MEMBER_GOBLIN_ARQUEBUSIER',	0.1,	'',			'Goblin_Arquebusier.fxsxml',	'ARMOR',			'ARMOR'			),
 ('ART_DEF_UNIT_MEMBER_GOBLIN_SCOUT',		0.1,	'',			'Goblin_Scout.fxsxml',			'CLOTH',			'FLESH'			),
 ('ART_DEF_UNIT_MEMBER_GOBLIN_TRACKER',		0.1,	'',			'Goblin_Hunter.fxsxml',			'CLOTH',			'FLESH'			),
 ('ART_DEF_UNIT_MEMBER_GOBLIN_WOLF_RIDER',	0.1,	'',			'Goblin_Wolfrider.fxsxml',		'CLOTH',			'FLESH'			),
@@ -345,10 +288,21 @@ INSERT INTO ArtDefine_UnitMemberCombats (UnitMemberType, DisableActions, EnableA
 ('ART_DEF_UNIT_MEMBER_NAGA_BLUE',			'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					),
 --regulars
 ('ART_DEF_UNIT_MEMBER_MAN_CHARIOT',			'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk',				24.0,				0.349999994039536,	12,				1,						2					),
-('ART_DEF_UNIT_MEMBER_ORC_SPEARMAN',		'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					),
+
+('ART_DEF_UNIT_MEMBER_ORC_WARRIOR',			'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					),
+('ART_DEF_UNIT_MEMBER_ORC_AXEMAN',			'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					),
+('ART_DEF_UNIT_MEMBER_ORC_SWORDSMAN',		'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					),
+('ART_DEF_UNIT_MEMBER_ORC_LONGSWORDSMAN',	'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					),
+('ART_DEF_UNIT_MEMBER_ORC_MACEMAN',			'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					),
+('ART_DEF_UNIT_MEMBER_ORC_CHAMPION',		'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					),
+
+
 ('ART_DEF_UNIT_MEMBER_GOBLIN_WARRIOR',		'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					),
 ('ART_DEF_UNIT_MEMBER_GOBLIN_ARCHER',		'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					),
+('ART_DEF_UNIT_MEMBER_GOBLIN_BOWMAN',		'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					),
+('ART_DEF_UNIT_MEMBER_GOBLIN_MARKSMAN',		'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					),
 ('ART_DEF_UNIT_MEMBER_GOBLIN_CROSSBOWMAN',	'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					),
+('ART_DEF_UNIT_MEMBER_GOBLIN_ARQUEBUSIER',	'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					),
 ('ART_DEF_UNIT_MEMBER_GOBLIN_SCOUT',		'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						NULL				),
 ('ART_DEF_UNIT_MEMBER_GOBLIN_TRACKER',		'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					),
 ('ART_DEF_UNIT_MEMBER_GOBLIN_WOLF_RIDER',	'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk',				24.0,				0.349999994039536,	12,				1,						2					),
@@ -372,7 +326,7 @@ UPDATE ArtDefine_UnitMemberCombats SET TurnRateMin = 0.5, TurnRateMax = 0.75, Tu
 ('ART_DEF_UNIT_MEMBER_MAN_CHARIOT', 'ART_DEF_UNIT_MEMBER_GOBLIN_WOLF_RIDER');
 
 UPDATE ArtDefine_UnitMemberCombats SET HasShortRangedAttack = 1, HasLongRangedAttack = 1 WHERE UnitMemberType IN
-('ART_DEF_UNIT_MEMBER_GOBLIN_ARCHER', 'ART_DEF_UNIT_MEMBER_GOBLIN_CROSSBOWMAN');
+('ART_DEF_UNIT_MEMBER_GOBLIN_ARCHER', 'ART_DEF_UNIT_MEMBER_GOBLIN_BOWMAN', 'ART_DEF_UNIT_MEMBER_GOBLIN_MARKSMAN', 'ART_DEF_UNIT_MEMBER_GOBLIN_CROSSBOWMAN', 'ART_DEF_UNIT_MEMBER_GOBLIN_ARQUEBUSIER');
 
 UPDATE ArtDefine_UnitMemberCombats SET HasShortRangedAttack = 1 WHERE UnitMemberType IN
 ('ART_DEF_UNIT_MEMBER_DRAKE_GREEN', 'ART_DEF_UNIT_MEMBER_DRAKE_BLUE', 'ART_DEF_UNIT_MEMBER_DRAKE_RED');
@@ -402,6 +356,8 @@ INSERT INTO ArtDefine_UnitMemberCombatWeapons(UnitMemberType,	"Index",	SubIndex,
 --beasts
 ('ART_DEF_UNIT_MEMBER_KRAKEN',									0,			0,			'',		'BLUNT',			'BLUNT',					NULL,				NULL,				NULL,					''			),
 ('ART_DEF_UNIT_MEMBER_GIANT_SPIDER',							0,			0,			'',		'BLUNT',			'BLUNT',					NULL,				NULL,				NULL,					''			),
+('ART_DEF_UNIT_MEMBER_GIANT_SPIDER',							1,			0,			'',		'FLAMING_ARROW',	'',							10,					20,					10,						''			),
+
 
 ('ART_DEF_UNIT_MEMBER_DRAKE_GREEN',								0,			0,			'',		'BLUNT',			'BLUNT',					NULL,				NULL,				NULL,					''			),
 ('ART_DEF_UNIT_MEMBER_DRAKE_BLUE',								0,			0,			'',		'BLUNT',			'BLUNT',					NULL,				NULL,				NULL,					''			),
@@ -415,15 +371,24 @@ INSERT INTO ArtDefine_UnitMemberCombatWeapons(UnitMemberType,	"Index",	SubIndex,
 ('ART_DEF_UNIT_MEMBER_STONESKIN_OGRE',							1,			0,			'',		'FLAMING_ARROW',	'',							10,					20,					10,						''			),
 ('ART_DEF_UNIT_MEMBER_STONESKIN_OGRE_2',						0,			0,			'',		'METAL',			'SWORD',					NULL,				NULL,				NULL,					''			),
 ('ART_DEF_UNIT_MEMBER_STONESKIN_OGRE_2',						1,			0,			'',		'FLAMING_ARROW',	'',							10,					20,					10,						''			),
-
 ('ART_DEF_UNIT_MEMBER_NAGA_GREEN',								0,			0,			'',		'BLUNT',			'BLUNT',					NULL,				NULL,				NULL,					''			),
 ('ART_DEF_UNIT_MEMBER_NAGA_BLUE',								0,			0,			'',		'BLUNT',			'BLUNT',					NULL,				NULL,				NULL,					''			),
 
 --regulars
 ('ART_DEF_UNIT_MEMBER_MAN_CHARIOT',								0,			0,			'',		'METAL',			'SWORD',					NULL,				NULL,				NULL,					''			),
 ('ART_DEF_UNIT_MEMBER_MAN_CHARIOT',								1,			0,			'',		'FLAMING_ARROW',	'',							10,					20,					10,						''			),
-('ART_DEF_UNIT_MEMBER_ORC_SPEARMAN',							0,			0,			'',		'METAL',			'SPEAR',					NULL,				NULL,				NULL,					''			),
-('ART_DEF_UNIT_MEMBER_ORC_SPEARMAN',							1,			0,			'',		'FLAMING_ARROW',	'',							10,					20,					10,						''			),
+('ART_DEF_UNIT_MEMBER_ORC_WARRIOR',								0,			0,			'',		'METAL',			'SPEAR',					NULL,				NULL,				NULL,					''			),
+('ART_DEF_UNIT_MEMBER_ORC_WARRIOR',								1,			0,			'',		'FLAMING_ARROW',	'',							10,					20,					10,						''			),
+('ART_DEF_UNIT_MEMBER_ORC_AXEMAN',								0,			0,			'',		'METAL',			'SWORD',					NULL,				NULL,				NULL,					''			),
+('ART_DEF_UNIT_MEMBER_ORC_AXEMAN',								1,			0,			'',		'FLAMING_ARROW',	'',							10,					20,					10,						''			),
+('ART_DEF_UNIT_MEMBER_ORC_SWORDSMAN',							0,			0,			'',		'METAL',			'SWORD',					NULL,				NULL,				NULL,					''			),
+('ART_DEF_UNIT_MEMBER_ORC_SWORDSMAN',							1,			0,			'',		'FLAMING_ARROW',	'',							10,					20,					10,						''			),
+('ART_DEF_UNIT_MEMBER_ORC_LONGSWORDSMAN',						0,			0,			'',		'METAL',			'SWORD',					NULL,				NULL,				NULL,					''			),
+('ART_DEF_UNIT_MEMBER_ORC_LONGSWORDSMAN',						1,			0,			'',		'FLAMING_ARROW',	'',							10,					20,					10,						''			),
+('ART_DEF_UNIT_MEMBER_ORC_MACEMAN',								0,			0,			'',		'METAL',			'SWORD',					NULL,				NULL,				NULL,					''			),
+('ART_DEF_UNIT_MEMBER_ORC_MACEMAN',								1,			0,			'',		'FLAMING_ARROW',	'',							10,					20,					10,						''			),
+('ART_DEF_UNIT_MEMBER_ORC_CHAMPION',							0,			0,			'',		'METAL',			'SWORD',					NULL,				NULL,				NULL,					''			),
+('ART_DEF_UNIT_MEMBER_ORC_CHAMPION',							1,			0,			'',		'FLAMING_ARROW',	'',							10,					20,					10,						''			),
 
 ('ART_DEF_UNIT_MEMBER_GOBLIN_WARRIOR',							0,			0,			'',		'BLUNT',			'BLUNT',					NULL,				NULL,				NULL,					''			),
 ('ART_DEF_UNIT_MEMBER_GOBLIN_WARRIOR',							1,			0,			'',		'FLAMING_ARROW',	'',							10,					20,					10,						''			),
@@ -431,14 +396,20 @@ INSERT INTO ArtDefine_UnitMemberCombatWeapons(UnitMemberType,	"Index",	SubIndex,
 ('ART_DEF_UNIT_MEMBER_GOBLIN_ARCHER',							0,			0,			'',		'ARROW',			'ARROW',					NULL,				NULL,				10,						''			),
 ('ART_DEF_UNIT_MEMBER_GOBLIN_ARCHER',							1,			0,			'',		'FLAMING_ARROW',	'',							10,					20,					10,						''			),
 
+('ART_DEF_UNIT_MEMBER_GOBLIN_BOWMAN',							0,			0,			'',		'ARROW',			'ARROW',					NULL,				NULL,				10,						''			),
+('ART_DEF_UNIT_MEMBER_GOBLIN_BOWMAN',							1,			0,			'',		'FLAMING_ARROW',	'',							10,					20,					10,						''			),
+
+('ART_DEF_UNIT_MEMBER_GOBLIN_MARKSMAN',							0,			0,			'',		'ARROW',			'ARROW',					NULL,				NULL,				10,						''			),
+('ART_DEF_UNIT_MEMBER_GOBLIN_MARKSMAN',							1,			0,			'',		'FLAMING_ARROW',	'',							10,					20,					10,						''			),
+
 ('ART_DEF_UNIT_MEMBER_GOBLIN_CROSSBOWMAN',						0,			0,			'',		'ARROW',			'ARROW',					NULL,				NULL,				10,						''			),
 ('ART_DEF_UNIT_MEMBER_GOBLIN_CROSSBOWMAN',						1,			0,			'',		'FLAMING_ARROW',	'',							10,					20,					10,						''			),
 
-('ART_DEF_UNIT_MEMBER_GOBLIN_SCOUT',							0,			0,			'',		'BLUNT',			'SPEAR',					NULL,				NULL,				NULL,					''			),
+('ART_DEF_UNIT_MEMBER_GOBLIN_ARQUEBUSIER',						0,			0,			'',		'BULLET',			'BULLET',					NULL,				NULL,				10,						''			),
 
+('ART_DEF_UNIT_MEMBER_GOBLIN_SCOUT',							0,			0,			'',		'BLUNT',			'SPEAR',					NULL,				NULL,				NULL,					''			),
 ('ART_DEF_UNIT_MEMBER_GOBLIN_TRACKER',							0,			0,			'',		'METAL',			'SPEAR',					NULL,				NULL,				NULL,					''			),
 ('ART_DEF_UNIT_MEMBER_GOBLIN_TRACKER',							1,			0,			'',		'FLAMING_ARROW',	'',							10,					20,					10,						''			),
-
 ('ART_DEF_UNIT_MEMBER_GOBLIN_WOLF_RIDER',						0,			0,			'',		'METAL',			'SWORD',					NULL,				NULL,				NULL,					''			),
 ('ART_DEF_UNIT_MEMBER_GOBLIN_WOLF_RIDER',						1,			0,			'',		'FLAMING_ARROW',	'',							10,					20,					10,						''			),
 
@@ -469,6 +440,8 @@ INSERT INTO ArtDefine_UnitMemberCombatWeapons(UnitMemberType,	"Index",	SubIndex,
 ('ART_DEF_UNIT_MEMBER_STORM_GIANT',								0,			0,			'',		'METAL',			'SPEAR',					NULL,				NULL,				NULL,					''			),
 ('ART_DEF_UNIT_MEMBER_STORM_GIANT',								1,			0,			'',		'FLAMING_ARROW',	'',							10,					20,					10,						''			);
 
+UPDATE ArtDefine_UnitMemberCombatWeapons SET ProjectileSpeed = 5.30000019073486 WHERE "Index" = 1 AND UnitMemberType IN
+('ART_DEF_UNIT_MEMBER_GOBLIN_BOWMAN', 'ART_DEF_UNIT_MEMBER_GOBLIN_MARKSMAN');
 
 
 --GPs or other units dirived from existing members

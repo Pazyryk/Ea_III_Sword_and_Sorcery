@@ -23,7 +23,9 @@ local Rand = Map.Rand
 --------------------------------------------------------------
 local sortedMods = {}
 for modInfo in GameInfo.EaModifiers() do
-	sortedMods[modInfo.ID] = modInfo.ID
+	if modInfo.Type ~= "EAMOD_LEADERSHIP" then
+		sortedMods[modInfo.ID] = modInfo.ID
+	end
 end
 
 local spellList = {}

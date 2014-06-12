@@ -347,8 +347,13 @@ function GetImprovementString(plot)
 		]]
 		if iImprovementType == GameInfoTypes.IMPROVEMENT_BARBARIAN_CAMP then
 			local encampmentID = gT.gWorld.encampments[plot:GetPlotIndex()]
-			local eaEncampmentInfo = GameInfo.EaEncampments[encampmentID]
-			improvementStr = Locale.ConvertTextKey(eaEncampmentInfo.Description)
+			if encampmentID then
+				local eaEncampmentInfo = GameInfo.EaEncampments[encampmentID]
+				improvementStr = Locale.ConvertTextKey(eaEncampmentInfo.Description)
+			else
+				print("!!!! WARNING: Barb camp is not registered in gWorld.encampments; iPlot = " .. plot:GetPlotIndex())
+				improvementStr = GetImprovementText(iImprovementType)
+			end
 		elseif iImprovementType == GameInfoTypes.IMPROVEMENT_ARCANE_TOWER then
 			improvementStr = plot:GetScriptData()	
 		elseif iImprovementType == GameInfoTypes.IMPROVEMENT_RUINS then

@@ -767,22 +767,24 @@ function DoEaSpell(eaActionID, iPlayer, unit, iPerson, targetX, targetY)
 	end
 
 	if g_bGreatPerson then
-		--Memory for AI specialization
+		--memory for AI specialization
 		if g_eaAction.GPModType1 then
-			local memValue = 2 ^ (g_gameTurn / MOD_MEMORY_HALFLIFE)
-			local modID = GameInfoTypes[g_eaAction.GPModType1]
-			g_eaPerson.modMemory[modID] = (g_eaPerson.modMemory[modID] or 0) + memValue
-			if g_eaAction.GPModType2 then
+			if g_eaAction.GPModType1 ~= "EAMOD_LEADERSHIP" then
+				local memValue = 2 ^ (g_gameTurn / MOD_MEMORY_HALFLIFE)
+				local modID = GameInfoTypes[g_eaAction.GPModType1]
+				g_eaPerson.modMemory[modID] = (g_eaPerson.modMemory[modID] or 0) + memValue
+			end
+			if g_eaAction.GPModType2 and g_eaAction.GPModType2 ~= "EAMOD_LEADERSHIP" then
 				local modID = GameInfoTypes[g_eaAction.GPModType2]
 				g_eaPerson.modMemory[modID] = (g_eaPerson.modMemory[modID] or 0) + memValue
 			end
 		end
-	end
-
-	if g_eaAction.StayInvisible then
-		g_unit:SetInvisibleType(INVISIBLE_SUBMARINE)
-	else 
-		g_unit:SetInvisibleType(-1)
+		--invisibility
+		if g_eaAction.StayInvisible then
+			g_unit:SetInvisibleType(INVISIBLE_SUBMARINE)
+		else 
+			g_unit:SetInvisibleType(-1)
+		end	
 	end
 
 	--effects on unit
@@ -794,7 +796,7 @@ function DoEaSpell(eaActionID, iPlayer, unit, iPerson, targetX, targetY)
 	end
 
 	--Finish moves
-	if g_eaAction.FinishMoves then
+	if g_eaAction.FinishMoves and g_unit then
 		g_unit:FinishMoves()
 	end
 

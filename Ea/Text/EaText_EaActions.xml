@@ -61,6 +61,15 @@
 			<Text>Train Unit</Text>
 		</Row>
 		
+		<Row Tag="TXT_KEY_EA_ACTION_LEARN_SPELL">
+			<Text>Learn Spell</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_OCCUPY_TOWER">
+			<Text>Occupy Tower</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_OCCUPY_TEMPLE">
+			<Text>Occupy Temple</Text>
+		</Row>		
 		
 		<Row Tag="TXT_KEY_EA_ACTION_PROPHECY_AHURADHATA">
 			<Text>Prophecy of Ahuradhâta</Text>

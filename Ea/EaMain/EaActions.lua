@@ -1000,16 +1000,19 @@ function DoEaAction(eaActionID, iPlayer, unit, iPerson, targetX, targetY)
 	end
 
 	if g_bGreatPerson then
-		--Memory for AI specialization
+		--memory for AI specialization
 		if g_eaAction.GPModType1 then
-			local memValue = 2 ^ (g_gameTurn / MOD_MEMORY_HALFLIFE)
-			local modID = GameInfoTypes[g_eaAction.GPModType1]
-			g_eaPerson.modMemory[modID] = (g_eaPerson.modMemory[modID] or 0) + memValue
-			if g_eaAction.GPModType2 then
+			if g_eaAction.GPModType1 ~= "EAMOD_LEADERSHIP" then
+				local memValue = 2 ^ (g_gameTurn / MOD_MEMORY_HALFLIFE)
+				local modID = GameInfoTypes[g_eaAction.GPModType1]
+				g_eaPerson.modMemory[modID] = (g_eaPerson.modMemory[modID] or 0) + memValue
+			end
+			if g_eaAction.GPModType2 and g_eaAction.GPModType2 ~= "EAMOD_LEADERSHIP" then
 				local modID = GameInfoTypes[g_eaAction.GPModType2]
 				g_eaPerson.modMemory[modID] = (g_eaPerson.modMemory[modID] or 0) + memValue
 			end
 		end
+		--invisibility
 		if g_eaAction.StayInvisible then
 			g_unit:SetInvisibleType(INVISIBLE_SUBMARINE)
 		else 
@@ -1305,12 +1308,15 @@ function DoGotoPlot(iPlayer, unit, iPerson, gotoX, gotoY)
 		eaPerson.eaActionID = 0
 
 		local gotoEaAction = EaActionsInfo[eaPerson.gotoEaActionID]
-		if gotoEaAction then	--AI has decided it is worth moving to do some action
+		if gotoEaAction then
+			--modMemory (AI has decided it is worth moving to do some action)
 			if gotoEaAction.GPModType1 then
-				local memValue = 2 ^ (g_gameTurn / MOD_MEMORY_HALFLIFE)
-				local modID = GameInfoTypes[gotoEaAction.GPModType1]
-				eaPerson.modMemory[modID] = (eaPerson.modMemory[modID] or 0) + memValue
-				if gotoEaAction.GPModType2 then
+				if gotoEaAction.GPModType1 ~= "EAMOD_LEADERSHIP" then
+					local memValue = 2 ^ (g_gameTurn / MOD_MEMORY_HALFLIFE)
+					local modID = GameInfoTypes[gotoEaAction.GPModType1]
+					eaPerson.modMemory[modID] = (eaPerson.modMemory[modID] or 0) + memValue
+				end
+				if gotoEaAction.GPModType2 and gotoEaAction.GPModType2 ~= "EAMOD_LEADERSHIP" then
 					local modID = GameInfoTypes[gotoEaAction.GPModType2]
 					eaPerson.modMemory[modID] = (eaPerson.modMemory[modID] or 0) + memValue
 				end
@@ -2181,7 +2187,7 @@ Test[GameInfoTypes.EA_ACTION_LEARN_SPELL] = function()
 	end
 	if bestValue == 0 then return false end
 	g_int1 = bestSpell
-	g_value = 0.02 * bestValue / (#g_eaPerson.spells + 0.1)
+	g_value = 0.1 * bestValue / (#g_eaPerson.spells + 0.1)
 	return true
 end
 
@@ -2194,11 +2200,11 @@ SetUI[GameInfoTypes.EA_ACTION_LEARN_SPELL] = function()
 		if g_bInTowerOrTemple then
 			MapModData.text = "Learn a new spell"
 		else
-			MapModData.text = "Learn a new spell (this can be done twice as fast in the caster's Tower or Temple!)"
+			MapModData.text = "Learn a new spell (learn twice as fast in the caster's Tower or Temple!)"
 		end
 	else
 		local spellName = Locale.Lookup(GameInfo.EaActions[g_eaPerson.learningSpellID].Description)
-		MapModData.text = "Learn " .. spellName
+		MapModData.text = "Continue learning " .. spellName
 	end
 end
 
@@ -2232,6 +2238,8 @@ end
 Interrupt[GameInfoTypes.EA_ACTION_LEARN_SPELL] = function(iPlayer, iPerson)
 	local eaPerson = gPeople[iPerson]
 	eaPerson.learningSpellID = -1
+	local progressTable = eaPerson.progress
+	progressTable[GameInfoTypes.EA_ACTION_LEARN_SPELL] = nil
 end
 
 --EA_ACTION_OCCUPY_TOWER
@@ -2841,6 +2849,10 @@ SetUI[GameInfoTypes.EA_ACTION_EPIC_GRIMNISMAL] = function()
 	if g_bAllTestsPassed then
 		MapModData.text = "Increases leader effects by " .. g_mod .. "%"
 	end
+end
+
+Finish[GameInfoTypes.EA_ACTION_EPIC_GRIMNISMAL] = function()
+	ResetPlayerGPMods(g_iPlayer)
 end
 
 --EA_ACTION_EPIC_HYMISKVITHA

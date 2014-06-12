@@ -16,7 +16,6 @@ local MOD_MEMORY_HALFLIFE =				MOD_MEMORY_HALFLIFE
 
 local EACIV_LJOSALFAR =					GameInfoTypes.EACIV_LJOSALFAR
 local EAMOD_DEVOTION =					GameInfoTypes.EAMOD_DEVOTION
-local EAMOD_LEADERSHIP =				GameInfoTypes.EAMOD_LEADERSHIP
 
 local EA_EPIC_GRIMNISMAL =				GameInfoTypes.EA_EPIC_GRIMNISMAL
 local EA_WONDER_ARCANE_TOWER =			GameInfoTypes.EA_WONDER_ARCANE_TOWER
@@ -68,8 +67,8 @@ for modInfo in GameInfo.EaModifiers() do		--cache table values for speed
 	local modType = modInfo.Type
 	local id = modInfo.ID
 	modTypes[id] = modType
-	modTexts[id] = modInfo.Description			--make text key
-	modsPromotionTable[modType] = modInfo.PromotionPrefix
+	modTexts[id] = modInfo.Description
+	modsPromotionTable[modType] = modInfo.PromotionPrefix	--nil for leadership
 	modsProphetBonus[modType] = modInfo.ProphetBonus
 	modsClassTable[modType] = modInfo.Class
 	modsSubclassTable[modType] = modInfo.Subclass
@@ -237,7 +236,7 @@ function PeoplePerCivTurn(iPlayer)
 	local bHumanPlayer = not bFullCivAI[iPlayer]
 	local classPoints = eaPlayer.classPoints
 	local gameTurn = Game.GetGameTurn()
-	local bExtraPassiveXP = eaPlayer.eaCivNameID == EACIV_LJOSALFAR
+	local bLjosalfar = eaPlayer.eaCivNameID == EACIV_LJOSALFAR
 
 	--GP Probability Generation
 	local chance = CalculateGPSpawnChance(iPlayer)
@@ -282,23 +281,13 @@ function PeoplePerCivTurn(iPlayer)
 			elseif bKill then
 				KillPerson(iPlayer, iPerson, nil, nil, nil)
 			else
-				local bIsLeader = iPerson == eaPlayer.leaderEaPersonIndex
 
-				--Leader modMemory
-				if bIsLeader then
-					local memValue = 2 ^ (gameTurn / MOD_MEMORY_HALFLIFE)
-					eaPerson.modMemory[EAMOD_LEADERSHIP] = eaPerson.modMemory[EAMOD_LEADERSHIP] + (memValue / 2)
-				end
-
-				--Do passive xp
-				local chance = 100 - age
-				chance = chance < 20 and 20 or chance
-				if Rand(100, "hello") < chance then
-					local xp = bIsLeader and 4 or 2
-					if bExtraPassiveXP then
-						xp = xp * 3
+				--Do passive xp (Ljosalfar only)
+				if bLjosalfar then
+					if Rand(5, "hello") == 0 then		-- 1 in 5
+						local xp = (iPerson == eaPlayer.leaderEaPersonIndex) and 10 or 5
+						unit:ChangeExperience(xp)
 					end
-					unit:ChangeExperience(xp)
 				end
 
 				if not bHumanPlayer and unit:IsPromotionReady() then
@@ -471,16 +460,13 @@ function GenerateGreatPerson(iPlayer, class, subclass, eaPersonRowID, bAsLeader,
 		for i = 1, #gpClassTable do
 			if dice < eaPlayer.classPoints[i] then
 				class = gpClassTable[i]
-				if eaPlayer.classPoints[i] > 50 then
-					eaPlayer.classPoints[i] = eaPlayer.classPoints[i] - 50
-					if i == 5 then	--Warrior
-						gg_combatPointDiff[iPlayer] = gg_combatPointDiff[iPlayer] + 50
-					end
-				else
-					if i == 5 then
-						gg_combatPointDiff[iPlayer] = gg_combatPointDiff[iPlayer] + eaPlayer.classPoints[5]
-					end
-					eaPlayer.classPoints[i] = 0
+				--reduce GP points for class
+				local currentPts = eaPlayer.classPoints[i]
+				local ptsReduction = Floor(currentPts / 2) + 50
+				ptsReduction = currentPts < ptsReduction and currentPts or ptsReduction
+				eaPlayer.classPoints[i] = currentPts - ptsReduction
+				if i == 5 then	--Warrior
+					gg_combatPointDiff[iPlayer] = gg_combatPointDiff[iPlayer] + ptsReduction
 				end
 				break
 			end
@@ -801,6 +787,7 @@ function MakeLeader(iPlayer, iPerson)
 		UngenericizePerson(iPlayer, iPerson)
 	end
 	eaPlayer.leaderEaPersonIndex = iPerson
+	eaPerson.assumedLeadershipTurn = Game.GetGameTurn()
 
 	local eaPersonInfo = GameInfo.EaPeople[eaPerson.eaPersonRowID]
 	if eaPersonInfo.LeaderTitleOverride then
@@ -839,18 +826,6 @@ function MakeLeader(iPlayer, iPerson)
 	--apply "leader promotion"?
 
 	UpdateLeaderEffects(iPlayer)
-
-	--Since GP will stay leader from now on, adjust modMemory so they will take leadership promotions
-	local totalModMemory = 0
-	for modID, value in pairs(eaPerson.modMemory) do
-		if modID ~= EAMOD_LEADERSHIP then
-			totalModMemory = totalModMemory + value
-		end
-	end
-	eaPerson.modMemory[EAMOD_LEADERSHIP] = eaPerson.modMemory[EAMOD_LEADERSHIP] or 0
-	if eaPerson.modMemory[EAMOD_LEADERSHIP] < 0.667 * totalModMemory then
-		eaPerson.modMemory[EAMOD_LEADERSHIP] = 0.667 * totalModMemory
-	end
 
 	if iPlayer == g_iActivePlayer then
 		if eaPerson.class1 ~= "Warrior" and eaPerson.class2 ~= "Warrior" then
@@ -1053,42 +1028,79 @@ local subclassModModifier = {
 					EAMOD_NECROMANCY =		-2		}
 }
 
+local cachedGPMod = {}
+
+function ResetGPMods(iPerson)
+	cachedGPMod[iPerson] = nil
+end
+
+function ResetPlayerGPMods(iPlayer)
+	for iPerson, eaPerson in pairs(gPeople) do
+		if eaPerson.iPlayer == iPlayer then
+			cachedGPMod[iPerson] = nil
+		end
+	end
+end
+
 function GetGPMod(iPerson, modType1, modType2)
 	--need unit or iPerson; modType2 is optional; assumes mod is valid for class/subclass
 
-	--TO DO: Memoize by turn so repeat calls aren't so expensive
 	local eaPerson = gPeople[iPerson]
 	local level = eaPerson.level
-	local levelMod = 5 + Floor(level / 3)
-	local promoMod = GetHighestPromotionLevel(modsPromotionTable[modType1], nil, iPerson)
-	local bHasAnyLevelsMod1 = 0 < promoMod
+
+	local gpModTable = cachedGPMod[iPerson]
+	if gpModTable and gpModTable.level == level then
+		local mod1Table = gpModTable[modType1]
+		if mod1Table then
+			local mod = mod1Table[modType2 or "nil"]
+			if mod then
+				return mod		--return cached value (may happen 100s of times a turn)
+			end
+		else
+			cachedGPMod[iPerson][modType1] = {}
+		end
+	else
+		cachedGPMod[iPerson] = {level = level, [modType1] = {}}
+	end
+
+	local promos
+	if modType1 == "EAMOD_LEADERSHIP" then
+		promos = eaPerson.leaderLevel or 0		--counted as if promo level (so biggest bump early)
+	else
+		promos = GetHighestPromotionLevel(modsPromotionTable[modType1], nil, iPerson)
+	end
 
 	if modType2 then
-		local promoMod2 = GetHighestPromotionLevel(modsPromotionTable[modType2], nil, iPerson)
-		promoMod = promoMod + promoMod2
+		if modType2 == "EAMOD_LEADERSHIP" then
+			promos = promos + (eaPerson.leaderLevel or 0)
+		else
+			promos = promos + GetHighestPromotionLevel(modsPromotionTable[modType2], nil, iPerson)
+		end
 	end
 
-	local bonuses = 0
-	if eaPerson.promotions[PROMOTION_PROPHET] then
-		bonuses = (modsProphetBonus[modType1] or (modType2 and modsProphetBonus[modType2])) and 2 or 0
+	local totalMod = (level / 3) + (promos * (1 + 10/(promos + 3)))
+	--complicated promo effect gives this progression for I - XVIII (floored): 3 6 8 9 11 12 14 15 16 17 18 20 21 22 23 24 25 26
+
+	--prophet
+	if eaPerson.promotions[PROMOTION_PROPHET] and (modsProphetBonus[modType1] or (modType2 and modsProphetBonus[modType2])) then
+		totalMod = totalMod + 2
 	end
+
+	--subclass
 	local subclass = eaPerson.subclass
 	if subclass then
 		local modLevelModifier = subclassModLevelModifier[subclass]
 		if modLevelModifier then
-			local levelMod1 = modLevelModifier[modType1] or 0
-			local levelMod2 = modLevelModifier[modType2] or 0
-			bonuses = bonuses + (levelMod1 + levelMod2) * level
+			totalMod = totalMod + level * ((modLevelModifier[modType1] or 0) + (modLevelModifier[modType2] or 0))
 		end
 		local modModifier = subclassModModifier[subclass]
 		if modModifier then
-			local mod1 = modModifier[modType1] or 0
-			local mod2 = modModifier[modType2] or 0
-			bonuses = bonuses + mod1 + mod2
+			totalMod = totalMod + (modModifier[modType1] or 0) + (modModifier[modType2] or 0)
 		end
 	end
 
-	local totalMod = levelMod + promoMod + bonuses
+	--age class (TO DO)
+
 
 	if modType1 == "EAMOD_LEADERSHIP" or modType2 == "EAMOD_LEADERSHIP" then
 		if gEpics[EA_EPIC_GRIMNISMAL] and gEpics[EA_EPIC_GRIMNISMAL].iPlayer == eaPerson.iPlayer then
@@ -1096,7 +1108,10 @@ function GetGPMod(iPerson, modType1, modType2)
 		end
 	end
 
-	return Floor(totalMod), bHasAnyLevelsMod1		--2nd arg used for actions that require at least 1 promotion level to do
+	totalMod = Floor(totalMod)
+
+	cachedGPMod[iPerson][modType1][modType2 or "nil"] = totalMod
+	return totalMod
 end
 
 function SetTowerMods(iPlayer, iPerson)
@@ -1158,9 +1173,10 @@ function UnJoinGP(iPlayer, eaPerson)
 
 end
 
-function AIInturruptGPsForLeadershipOpportunity(iPlayer)	--TO DO: Make this better by selecting good leader for civ
+function AIInturruptGPsForLeadershipOpportunity(iPlayer)	--TO DO: Make this better by selecting best leader for civ
 	local player = Players[iPlayer]
 	local capital = player:GetCapitalCity()
+	if not capital then return end
 	local capitalX, capitalY = capital:GetX(), capital:GetY()
 	local iClosestGP
 	local closestDist = 15	--don't bother anyone past this; a new GP will appear eventually (Heldeofol should be able to take leadership at a distance if at war)

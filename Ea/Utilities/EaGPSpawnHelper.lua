@@ -23,6 +23,16 @@ local Floor = math.floor
 local gpClassTable = {"Engineer", "Merchant", "Sage", "Artist", "Warrior", "Devout", "Thaumaturge"}
 local numberGPClasses = #gpClassTable
 
+local raceChanceBoost = {}
+for raceInfo in GameInfo.EaRaces() do
+	local lifespan = raceInfo.NominalLifeSpan
+	if lifespan ~= -1 then
+		raceChanceBoost[raceInfo.ID] = (1 - 0.5 ^ (2 / lifespan)) * 1000 * GP_TARGET_NUMBER
+	else
+		raceChanceBoost[raceInfo.ID] = 0
+	end
+end
+
 
 MapModData.totalGreatPersonPoints = 0
 MapModData.numberGreatPeople = 0
@@ -51,8 +61,10 @@ function CalculateGPSpawnChance(iPlayer)
 
 		if totalPoints > 0 then
 			local targetNumber = GP_TARGET_NUMBER * totalPoints / (totalPoints + 50)	--asymptotic; totalPoints = 50 gives 50%, 100 gives 75%, etc... (of GP_TARGET_NUMBER)
-			chance = Floor(150 / (1 + 2.72 ^ (n - targetNumber + 1)))	--logistic function with max 150 (=15%)
-		end							-- (n - targetNumber) = -3, -2, -1, 0, 1, 2, 3 gives 13%, 11%, 7.5%, 4.0%, 1.8%, 0.7%, 0.2%
+			chance = 150 / (1 + 2.72 ^ (n - targetNumber + 1))	--logistic function with max 150 (=15%)
+			-- (n - targetNumber) = -3, -2, -1, 0, 1, 2, 3 gives 13%, 11%, 7.5%, 4.0%, 1.8%, 0.7%, 0.2%
+			chance = Floor(chance + raceChanceBoost[eaPlayer.race])
+		end							
 		
 		MapModData.totalGreatPersonPoints = totalPoints		--used for UI
 		MapModData.numberGreatPeople = n

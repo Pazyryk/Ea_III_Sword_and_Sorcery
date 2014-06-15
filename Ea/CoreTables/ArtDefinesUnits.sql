@@ -3,6 +3,8 @@ INSERT INTO ArtDefine_StrategicView(StrategicViewType, TileType, Asset) VALUES
 --animals
 ('ART_DEF_UNIT_WOLF',				'Unit',	'SV_Jaguar.dds'		),
 ('ART_DEF_UNIT_WOLVES',				'Unit',	'SV_Jaguar.dds'		),
+('ART_DEF_UNIT_WARG',				'Unit',	'SV_Jaguar.dds'		),
+('ART_DEF_UNIT_WARGS',				'Unit',	'SV_Jaguar.dds'		),
 ('ART_DEF_UNIT_LION',				'Unit',	'SV_Jaguar.dds'		),
 ('ART_DEF_UNIT_LIONS',				'Unit',	'SV_Jaguar.dds'		),
 ('ART_DEF_UNIT_GRIFFON',			'Unit',	'SV_Jaguar.dds'		),
@@ -42,6 +44,7 @@ INSERT INTO ArtDefine_StrategicView(StrategicViewType, TileType, Asset) VALUES
 ('ART_DEF_UNIT_GOBLIN_SCOUT',		'Unit',	'SV_Spearman.dds'	),
 ('ART_DEF_UNIT_GOBLIN_TRACKER',		'Unit',	'SV_Spearman.dds'	),
 ('ART_DEF_UNIT_GOBLIN_WOLF_RIDER',	'Unit',	'SV_Spearman.dds'	),
+('ART_DEF_UNIT_GOBLIN_WARG_RIDER',	'Unit',	'SV_Spearman.dds'	),
 --summoned/called
 ('ART_DEF_UNIT_TREE_ENT',			'Unit',	'SV_Maori.dds'		),
 ('ART_DEF_UNIT_SKELETON_SWORDSMAN',	'Unit',	'SV_Maori.dds'		),
@@ -61,6 +64,8 @@ INSERT INTO ArtDefine_UnitInfos (Type,	DamageStates,	Formation) VALUES
 --animals
 ('ART_DEF_UNIT_WOLF',					1,				''					),
 ('ART_DEF_UNIT_WOLVES',					1,				'Barbarian'			),
+('ART_DEF_UNIT_WARG',					1,				''					),
+('ART_DEF_UNIT_WARGS',					1,				'Barbarian'			),
 ('ART_DEF_UNIT_LION',					1,				''					),
 ('ART_DEF_UNIT_LIONS',					1,				'Barbarian'			),
 ('ART_DEF_UNIT_GRIFFON',				1,				''					),
@@ -101,6 +106,7 @@ INSERT INTO ArtDefine_UnitInfos (Type,	DamageStates,	Formation) VALUES
 ('ART_DEF_UNIT_GOBLIN_SCOUT',			1,				'Scout'				),
 ('ART_DEF_UNIT_GOBLIN_TRACKER',			1,				'Scout'				),
 ('ART_DEF_UNIT_GOBLIN_WOLF_RIDER',		1,				'DefaultCavalry'	),
+('ART_DEF_UNIT_GOBLIN_WARG_RIDER',		1,				'DefaultCavalry'	),
 --summoned/called
 ('ART_DEF_UNIT_TREE_ENT',				1,				''					),
 ('ART_DEF_UNIT_SKELETON_SWORDSMAN',		1,				'Barbarian'			),
@@ -132,7 +138,8 @@ INSERT INTO ArtDefine_UnitInfoMemberInfos (UnitInfoType,	UnitMemberInfoType,		Nu
 --animals
 ('ART_DEF_UNIT_WOLF',					'ART_DEF_UNIT_MEMBER_DIREWOLF',				1		),
 ('ART_DEF_UNIT_WOLVES',					'ART_DEF_UNIT_MEMBER_DIREWOLF',				7		),
---('ART_DEF_UNIT_WOLVES',					'ART_DEF_UNIT_MEMBER_DIREWOLF_DARK',		3		),
+('ART_DEF_UNIT_WARG',					'ART_DEF_UNIT_MEMBER_WARG',					1		),
+('ART_DEF_UNIT_WARGS',					'ART_DEF_UNIT_MEMBER_WARG',					5		),
 ('ART_DEF_UNIT_LION',					'ART_DEF_UNIT_MEMBER_LION',					1		),
 ('ART_DEF_UNIT_LIONS',					'ART_DEF_UNIT_MEMBER_LION',					4		),
 ('ART_DEF_UNIT_GRIFFON',				'ART_DEF_UNIT_MEMBER_GRIFFON',				1		),
@@ -178,7 +185,8 @@ INSERT INTO ArtDefine_UnitInfoMemberInfos (UnitInfoType,	UnitMemberInfoType,		Nu
 ('ART_DEF_UNIT_GOBLIN_ARQUEBUSIER',		'ART_DEF_UNIT_MEMBER_GOBLIN_ARQUEBUSIER',	12		),
 ('ART_DEF_UNIT_GOBLIN_SCOUT',			'ART_DEF_UNIT_MEMBER_GOBLIN_SCOUT',			8		),
 ('ART_DEF_UNIT_GOBLIN_TRACKER',			'ART_DEF_UNIT_MEMBER_GOBLIN_TRACKER',		8		),
-('ART_DEF_UNIT_GOBLIN_WOLF_RIDER',		'ART_DEF_UNIT_MEMBER_GOBLIN_WOLF_RIDER',	10		),
+('ART_DEF_UNIT_GOBLIN_WOLF_RIDER',		'ART_DEF_UNIT_MEMBER_GOBLIN_WOLF_RIDER',	7		),
+('ART_DEF_UNIT_GOBLIN_WARG_RIDER',		'ART_DEF_UNIT_MEMBER_GOBLIN_WARG_RIDER',	5		),
 --summoned/called
 ('ART_DEF_UNIT_TREE_ENT',				'ART_DEF_UNIT_MEMBER_TREE_ENT',				1		),
 ('ART_DEF_UNIT_SKELETON_SWORDSMAN',		'ART_DEF_UNIT_MEMBER_SKELETON_SWORDSMAN',	11		),
@@ -210,7 +218,7 @@ INSERT INTO ArtDefine_UnitInfoMemberInfos (UnitInfoType,	UnitMemberInfoType,		Nu
 INSERT INTO ArtDefine_UnitMemberInfos (Type,Scale,	Domain,		Model,							MaterialTypeTag,	MaterialTypeSoundOverrideTag) VALUES
 --animals
 ('ART_DEF_UNIT_MEMBER_DIREWOLF',			2,		'',			'direwolf.fxsxml',				'CLOTH',			'FLESH'			),
---('ART_DEF_UNIT_MEMBER_DIREWOLF_DARK',		2,		'',			'direwolf_dark.fxsxml',			'CLOTH',			'FLESH'			),
+('ART_DEF_UNIT_MEMBER_WARG',				1.9,	'',			'Warg_bk.fxsxml',				'CLOTH',			'FLESH'			),
 ('ART_DEF_UNIT_MEMBER_LION',				2.5,	'',			'lion.fxsxml',					'CLOTH',			'FLESH'			),
 ('ART_DEF_UNIT_MEMBER_GRIFFON',				2.5,	'Hover',	'griffon.fxsxml',				'CLOTH',			'FLESH'			),
 ('ART_DEF_UNIT_MEMBER_SCORPION_SAND',		0.2,	'',			'Scorpion_Sand.fxsxml',			'CLOTH',			'FLESH'			),
@@ -249,6 +257,7 @@ INSERT INTO ArtDefine_UnitMemberInfos (Type,Scale,	Domain,		Model,							Materia
 ('ART_DEF_UNIT_MEMBER_GOBLIN_SCOUT',		0.1,	'',			'Goblin_Scout.fxsxml',			'CLOTH',			'FLESH'			),
 ('ART_DEF_UNIT_MEMBER_GOBLIN_TRACKER',		0.1,	'',			'Goblin_Hunter.fxsxml',			'CLOTH',			'FLESH'			),
 ('ART_DEF_UNIT_MEMBER_GOBLIN_WOLF_RIDER',	0.1,	'',			'Goblin_Wolfrider.fxsxml',		'CLOTH',			'FLESH'			),
+('ART_DEF_UNIT_MEMBER_GOBLIN_WARG_RIDER',	0.1,	'',			'Goblin_WargRider.fxsxml',		'CLOTH',			'FLESH'			),
 --summoned/called
 ('ART_DEF_UNIT_MEMBER_TREE_ENT',			1,		'',			'tree.fxsxml',					'CLOTH',			'FLESH'			),
 ('ART_DEF_UNIT_MEMBER_SKELETON_SWORDSMAN',	0.125,	'',			'skeleton_swordsman.fxsxml',	'CLOTH',			'FLESH'			),
@@ -267,7 +276,7 @@ INSERT INTO ArtDefine_UnitMemberInfos (Type,Scale,	Domain,		Model,							Materia
 INSERT INTO ArtDefine_UnitMemberCombats (UnitMemberType, DisableActions, EnableActions,																		ShortMoveRadius,	ShortMoveRate,		TargetHeight,	HasRefaceAfterCombat,	ReformBeforeCombat	) VALUES
 --animals
 ('ART_DEF_UNIT_MEMBER_DIREWOLF',			'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					),
---('ART_DEF_UNIT_MEMBER_DIREWOLF_DARK',		'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					),
+('ART_DEF_UNIT_MEMBER_WARG',				'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					),
 ('ART_DEF_UNIT_MEMBER_LION',				'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					),
 ('ART_DEF_UNIT_MEMBER_GRIFFON',				'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					),
 ('ART_DEF_UNIT_MEMBER_SCORPION_SAND',		'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					),
@@ -306,6 +315,7 @@ INSERT INTO ArtDefine_UnitMemberCombats (UnitMemberType, DisableActions, EnableA
 ('ART_DEF_UNIT_MEMBER_GOBLIN_SCOUT',		'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						NULL				),
 ('ART_DEF_UNIT_MEMBER_GOBLIN_TRACKER',		'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					),
 ('ART_DEF_UNIT_MEMBER_GOBLIN_WOLF_RIDER',	'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk',				24.0,				0.349999994039536,	12,				1,						2					),
+('ART_DEF_UNIT_MEMBER_GOBLIN_WARG_RIDER',	'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk',				24.0,				0.349999994039536,	12,				1,						2					),
 --summoned/called
 ('ART_DEF_UNIT_MEMBER_TREE_ENT',			'',	'Idle Attack RunCharge Death Run Fortify CombatReady Walk AttackCharge',									12.0,				0.349999994039536,	8,				1,						1					),
 ('ART_DEF_UNIT_MEMBER_SKELETON_SWORDSMAN',	'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					),
@@ -323,7 +333,7 @@ INSERT INTO ArtDefine_UnitMemberCombats (UnitMemberType, DisableActions, EnableA
 
 
 UPDATE ArtDefine_UnitMemberCombats SET TurnRateMin = 0.5, TurnRateMax = 0.75, TurnFacingRateMin = 15, TurnFacingRateMax = 20, HasStationaryMelee = 1, OnlyTurnInMovementActions = 1, RushAttackFormation = 'DefaultCavalry' WHERE UnitMemberType IN
-('ART_DEF_UNIT_MEMBER_MAN_CHARIOT', 'ART_DEF_UNIT_MEMBER_GOBLIN_WOLF_RIDER');
+('ART_DEF_UNIT_MEMBER_MAN_CHARIOT', 'ART_DEF_UNIT_MEMBER_GOBLIN_WOLF_RIDER', 'ART_DEF_UNIT_MEMBER_GOBLIN_WARG_RIDER');
 
 UPDATE ArtDefine_UnitMemberCombats SET HasShortRangedAttack = 1, HasLongRangedAttack = 1 WHERE UnitMemberType IN
 ('ART_DEF_UNIT_MEMBER_GOBLIN_ARCHER', 'ART_DEF_UNIT_MEMBER_GOBLIN_BOWMAN', 'ART_DEF_UNIT_MEMBER_GOBLIN_MARKSMAN', 'ART_DEF_UNIT_MEMBER_GOBLIN_CROSSBOWMAN', 'ART_DEF_UNIT_MEMBER_GOBLIN_ARQUEBUSIER');
@@ -347,7 +357,7 @@ INSERT INTO ArtDefine_UnitMemberCombatWeapons(UnitMemberType,	"Index",	SubIndex,
 
 
 ('ART_DEF_UNIT_MEMBER_DIREWOLF',								0,			0,			'',		'BLUNT',			'BLUNT',					NULL,				NULL,				NULL,					''			),
---('ART_DEF_UNIT_MEMBER_DIREWOLF_DARK',							0,			0,			'',		'BLUNT',			'BLUNT',					NULL,				NULL,				NULL,					''			),
+('ART_DEF_UNIT_MEMBER_WARG',									0,			0,			'',		'BLUNT',			'BLUNT',					NULL,				NULL,				NULL,					''			),
 ('ART_DEF_UNIT_MEMBER_LION',									0,			0,			'',		'BLUNT',			'BLUNT',					NULL,				NULL,				NULL,					''			),
 ('ART_DEF_UNIT_MEMBER_GRIFFON',									0,			0,			'',		'BLUNT',			'BLUNT',					NULL,				NULL,				NULL,					''			),
 ('ART_DEF_UNIT_MEMBER_SCORPION_SAND',							0,			0,			'',		'BLUNT',			'BLUNT',					NULL,				NULL,				NULL,					''			),
@@ -413,6 +423,8 @@ INSERT INTO ArtDefine_UnitMemberCombatWeapons(UnitMemberType,	"Index",	SubIndex,
 ('ART_DEF_UNIT_MEMBER_GOBLIN_WOLF_RIDER',						0,			0,			'',		'METAL',			'SWORD',					NULL,				NULL,				NULL,					''			),
 ('ART_DEF_UNIT_MEMBER_GOBLIN_WOLF_RIDER',						1,			0,			'',		'FLAMING_ARROW',	'',							10,					20,					10,						''			),
 
+('ART_DEF_UNIT_MEMBER_GOBLIN_WARG_RIDER',						0,			0,			'',		'METAL',			'SWORD',					NULL,				NULL,				NULL,					''			),
+('ART_DEF_UNIT_MEMBER_GOBLIN_WARG_RIDER',						1,			0,			'',		'FLAMING_ARROW',	'',							10,					20,					10,						''			),
 
 --summoned/called
 ('ART_DEF_UNIT_MEMBER_TREE_ENT',								0,			0,			'',		'METAL',			'SPEAR',					NULL,				NULL,				NULL,					''			),

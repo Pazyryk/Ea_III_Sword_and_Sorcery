@@ -477,7 +477,7 @@ function GenerateGreatPerson(iPlayer, class, subclass, eaPersonRowID, bAsLeader,
 	subclass = subclass or PickSubclassForSpawnedClass(iPlayer, class)
 	local unitTypeID, class1, class2 = GetInfoFromSubclassClass(subclass, class)
 	class2 = class2 or dualClass
-	--note: class1 always has value; subclass and/or class2 may be nil
+	--note: class1 always has value; class2 and subclass may be nil
 
 	local capital = player:GetCapitalCity()
 	if not capital then return end

@@ -136,7 +136,7 @@ INSERT INTO Units (Type,		PrereqTech,					Cost,	Combat,	RangedCombat,	Range,	Mov
 ('UNIT_IMMORTALS_ORC',			'TECH_MITHRIL_WORKING',		420,	21,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			1,					1,					NULL,				0,			'ART_DEF_UNIT_ORC_IMMORTAL',			'UNIT_ATLAS_1',				36,				'UNIT_FLAG_ATLAS',				35,					'HEAVY_BIPED'	),
 --note: will change horse techs and req later
 ('UNIT_WOLF_RIDERS_GOBLIN',		'TECH_HORSEBACK_RIDING',	200,	9,		0,				0,		4,		'UNITCOMBAT_MOUNTED',		'DOMAIN_LAND',	'UNITAI_FAST_ATTACK',	1,			1,					1,					'TECH_WAR_HORSES',	0,			'ART_DEF_UNIT_GOBLIN_WOLF_RIDER',		'UNIT_ATLAS_1',				17,				'UNIT_FLAG_ATLAS',				17,					'QUADRUPED'		),
-('UNIT_WARG_RIDERS_GOBLIN',		'TECH_STIRRUPS',			260,	12,		0,				0,		4,		'UNITCOMBAT_MOUNTED',		'DOMAIN_LAND',	'UNITAI_FAST_ATTACK',	1,			1,					1,					NULL,				0,			'ART_DEF_UNIT_GOBLIN_WOLF_RIDER',		'UNIT_ATLAS_1',				17,				'UNIT_FLAG_ATLAS',				17,					'QUADRUPED'		),
+('UNIT_WARG_RIDERS_GOBLIN',		'TECH_STIRRUPS',			300,	14,		0,				0,		4,		'UNITCOMBAT_MOUNTED',		'DOMAIN_LAND',	'UNITAI_FAST_ATTACK',	1,			1,					1,					NULL,				0,			'ART_DEF_UNIT_GOBLIN_WARG_RIDER',		'UNIT_ATLAS_1',				17,				'UNIT_FLAG_ATLAS',				17,					'QUADRUPED'		),
 
 ('UNIT_ARCHERS_GOBLIN',			'TECH_ARCHERY',				180,	8,		8,				1,		2,		'UNITCOMBAT_ARCHER',		'DOMAIN_LAND',	'UNITAI_RANGED',		1,			1,					1,					NULL,				0,			'ART_DEF_UNIT_GOBLIN_ARCHER',			'UNIT_ATLAS_1',				6,				'UNIT_FLAG_ATLAS',				6,					'BIPED'			),
 ('UNIT_BOWMEN_GOBLIN',			'TECH_BOWYERS',				260,	12,		12,				1,		2,		'UNITCOMBAT_ARCHER',		'DOMAIN_LAND',	'UNITAI_RANGED',		1,			1,					1,					NULL,				0,			'ART_DEF_UNIT_GOBLIN_BOWMAN',			'EXPANSION_UNIT_ATLAS_1',	13,				'EXPANSION_UNIT_FLAG_ATLAS',	13,					'BIPED'			),
@@ -161,6 +161,7 @@ INSERT INTO Units (Type,		Cost,	Combat,	RangedCombat,	Range,	Moves,	CombatClass,
 --Animals and Beasts
 INSERT INTO Units (Type,		Cost,	Combat,	RangedCombat,	Range,	Moves,	CombatClass,				Domain,			DefaultUnitAI,			Pillage,	MilitarySupport,	MilitaryProduction,	ObsoleteTech,		Mechanized,	UnitArtInfo,							IconAtlas,					PortraitIndex,	UnitFlagAtlas,					UnitFlagIconOffset,	MoveRate,		EaNoTrain,	EaSpecial	) VALUES
 ('UNIT_WOLVES',					-1,		6,		0,				0,		4,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		0,			0,					1,					NULL,				0,			'ART_DEF_UNIT_WOLVES',					'UNIT_ATLAS_1',				4,				'UNIT_FLAG_ATLAS',				4,					'BIPED',		1,			'Animal'	),
+('UNIT_WARGS',					-1,		6,		0,				0,		4,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		0,			0,					1,					NULL,				0,			'ART_DEF_UNIT_WARGS',					'UNIT_ATLAS_1',				4,				'UNIT_FLAG_ATLAS',				4,					'BIPED',		1,			'Animal'	),
 ('UNIT_LIONS',					-1,		9,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		0,			0,					1,					NULL,				0,			'ART_DEF_UNIT_LIONS',					'UNIT_ATLAS_1',				4,				'UNIT_FLAG_ATLAS',				4,					'BIPED',		1,			'Animal'	),
 ('UNIT_GRIFFONS',				-1,		8,		0,				0,		4,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		0,			0,					1,					NULL,				0,			'ART_DEF_UNIT_GRIFFONS',				'UNIT_ATLAS_1',				4,				'UNIT_FLAG_ATLAS',				4,					'BIPED',		1,			'Animal'	),
 ('UNIT_SCORPIONS_SAND',			-1,		8,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		0,			0,					1,					NULL,				0,			'ART_DEF_UNIT_SCORPIONS_SAND',			'UNIT_ATLAS_1',				4,				'UNIT_FLAG_ATLAS',				4,					'BIPED',		1,			'Animal'	),
@@ -894,6 +895,7 @@ INSERT INTO Unit_FreePromotions (UnitType, PromotionType) VALUES
 ('UNIT_HOBGOBLINS', 'PROMOTION_INFANTRY'),
 
 ('UNIT_WOLVES', 'PROMOTION_ANIMAL'),
+('UNIT_WARGS', 'PROMOTION_ANIMAL'),
 ('UNIT_LIONS', 'PROMOTION_ANIMAL'),
 ('UNIT_GRIFFONS', 'PROMOTION_ANIMAL'),
 ('UNIT_GRIFFONS', 'PROMOTION_HOVERING_UNIT'),

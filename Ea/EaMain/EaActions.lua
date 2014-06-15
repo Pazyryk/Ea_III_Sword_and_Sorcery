@@ -344,8 +344,18 @@ local function FinishEaAction(eaActionID)		--only called from DoEaAction so file
 		--	g_eaPerson.cult = cultID
 			local freeSpellType = GameInfo.Religions[cultID].EaFreeCultSpell
 			if freeSpellType then
-				--g_eaPerson.spells[GameInfoTypes[freeSpellType] ] = true
-				g_eaPerson.spells[#g_eaPerson.spells + 1] = GameInfoTypes[freeSpellType]
+				local spells = g_eaPerson.spells
+				local numSpells = #spells
+				local bLearnFreeSpell = true
+				for i = 1, #numSpells do
+					if spells[i] == spellID then	--already known
+						bLearnFreeSpell = false
+						break
+					end	
+				end
+				if bLearnFreeSpell then
+					spells[#numSpells + 1] = GameInfoTypes[freeSpellType]
+				end
 			end
 		--end
 		if gReligions[cultID] then		--already founded

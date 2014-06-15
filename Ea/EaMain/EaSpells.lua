@@ -202,6 +202,7 @@ end
 
 local gpTempTypeUnits = {}	--index by role, originalTypeID; holds tempTypeID
 local firstArchdemonID, firstArchangelID
+local godUnits = {}
 for unitInfo in GameInfo.Units() do
 	if unitInfo.EaGPTempRole then
 		local role = unitInfo.EaGPTempRole
@@ -220,6 +221,13 @@ for unitInfo in GameInfo.Units() do
 			firstArchdemonID = firstArchdemonID or unitInfo.ID
 		elseif unitInfo.EaSpecial == "Archangel" then
 			firstArchangelID = firstArchangelID or unitInfo.ID
+		elseif unitInfo.EaSpecial == "MajorSpirit" then
+			local minorTypeID = GameInfoTypes[string.gsub(unitInfo.Type, "'UNIT_", "MINOR_CIV_")]
+			local iPlayer = gg_minorPlayerByTypeID[minorTypeID]		--nil if not in this game
+			if iPlayer then
+				godUnits[iPlayer] = unitInfo.ID
+				print("iGodPlayer / unit = ", iPlayer, unitInfo.ID)
+			end
 		end
 	end
 end
@@ -1394,16 +1402,17 @@ Test[GameInfoTypes.EA_SPELL_CALL_MAJOR_SPIRIT] = function()
 	end
 	--must have 500 relationship with god; pick best
 	local bestGodFriendship = 0
-	local iBestGodFriend
+	local bestGodUnitID
 	local calledMajorSpirits = gWorld.calledMajorSpirits
 	for iGod in pairs(gods) do
-		if not calledMajorSpirits[iGod] then		--already called?
+		local godUnitID = godUnits[iGod]
+		if not calledMajorSpirits[godUnitID] then		--already called?
 			local god = Players[iGod]
 			if god:GetAlly() == g_iPlayer then
 				local friendship = god:GetMinorCivFriendshipWithMajor(g_iPlayer)
 				if bestGodFriendship < friendship then
 					bestGodFriendship = friendship
-					iBestGodFriend = iGod
+					bestGodUnitID = godUnitID
 				end
 			end
 		end
@@ -1412,7 +1421,7 @@ Test[GameInfoTypes.EA_SPELL_CALL_MAJOR_SPIRIT] = function()
 		g_testTargetSwitch = 11						--there are none that can be called
 		return false
 	end
-	g_int1 = iBestGodFriend
+	g_int1 = bestGodUnitID
 	print("-g_int1 = ", g_int1, GameInfo.Units[g_int1].Type)
 	return true
 end

@@ -209,6 +209,9 @@
 		<Row Tag="TXT_KEY_EA_UNIT_WOLVES">
 			<Text>Wolves</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_WARGS">
+			<Text>Wargs</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_LIONS">
 			<Text>Lions</Text>
 		</Row>

@@ -253,7 +253,7 @@ local function OnPlayerTechCostMod(iPlayer, techID)		--Ea API
 	end
 
 	if mod < -50 then
-		mod = -50 - Floor(50 * (mod + 50) / mod)		--beyond -50, becomes asymptotic to -100
+		mod = -50 - Floor(50 * (mod + 50) / mod)		--below -50 becomes asymptotic to -100 (& dll sets min to -90)
 	end
 
 	return mod

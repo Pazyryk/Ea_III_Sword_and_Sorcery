@@ -6,6 +6,7 @@ CREATE TABLE EaAnimal_Prefs ('UnitType' TEXT, 'Preference' TEXT, 'Weight', INTEG
 INSERT INTO EaAnimal_Prefs (UnitType, Preference, Weight) VALUES
 ('UNIT_WOLVES',				'ColdTerrain',		10	),
 ('UNIT_WOLVES',				'Forest',			10	),
+('UNIT_WARGS',				'Forest',			12	),		--rare
 ('UNIT_LIONS',				'OpenGrassPlains',	5	),
 ('UNIT_LIONS',				'ColdTerrain',		-10	),
 ('UNIT_GRIFFONS',			'Mountain',			10	),

@@ -505,6 +505,8 @@ function GenerateGreatPerson(iPlayer, class, subclass, eaPersonRowID, bAsLeader,
 							modMemory = {}	}		
 		
 		gPeople[iPerson] = eaPerson
+		RegisterGPActions(iPerson)		--only needs class1, class2 and subclass to work
+
 		unit:SetPersonIndex(iPerson)
 
 		UpdateGreatPersonStatsFromUnit(unit, eaPerson)		--x, y, moves, level, xp; filles promotions table
@@ -554,8 +556,6 @@ function GenerateGreatPerson(iPlayer, class, subclass, eaPersonRowID, bAsLeader,
 		local personType = bAsLeader and "NewPersonLeader" or "NewPerson"
 		LuaEvents.EaImagePopup({type = personType, id = iPerson, sound = "AS2D_EVENT_NOTIFICATION_GOOD"})
 	end
-
-	RegisterGPActions(iPerson)
 
 	unit:TestPromotionReady()
 

@@ -335,9 +335,11 @@ local function OnCanAutoSave(bInitial, bPostTurn)
 	TableSave(gT, "Ea")
 	local saveStr
 	if bInitial then
-		saveStr = "auto/AutoSave_Initial_Ea Year " .. Game.GetGameTurn()
+		--saveStr = "auto/AutoSave_Initial_Ea Year " .. Game.GetGameTurn()
+		saveStr = "../../ModdedSaves/single/auto/AutoSave_Initial_Ea Year " .. Game.GetGameTurn()
 	else
-		saveStr = "auto/AutoSave_Ea Year " .. Game.GetGameTurn()
+		--saveStr = "auto/AutoSave_Ea Year " .. Game.GetGameTurn()
+		saveStr = "../../ModdedSaves/single/auto/AutoSave_Ea Year " .. Game.GetGameTurn()
 	end
 	print("Saving game as ", saveStr)
 	UI.SaveGame(saveStr)

@@ -322,7 +322,7 @@ local function FinishEaAction(eaActionID)		--only called from DoEaAction so file
 	ClearActionPlotTargetedForPerson(g_iPlayer, g_iPerson)
 	g_eaPerson.eaActionID = -1		--will bring back to map on next turn
 
-	--g_unit:SetInvisibleType(INVISIBLE_SUBMARINE)
+	g_unit:SetInvisibleType(INVISIBLE_SUBMARINE)
 
 	--Mana or divine favor
 	if 0 < g_eaAction.FixedFaith then
@@ -347,14 +347,14 @@ local function FinishEaAction(eaActionID)		--only called from DoEaAction so file
 				local spells = g_eaPerson.spells
 				local numSpells = #spells
 				local bLearnFreeSpell = true
-				for i = 1, #numSpells do
+				for i = 1, numSpells do
 					if spells[i] == spellID then	--already known
 						bLearnFreeSpell = false
 						break
 					end	
 				end
 				if bLearnFreeSpell then
-					spells[#numSpells + 1] = GameInfoTypes[freeSpellType]
+					spells[numSpells + 1] = GameInfoTypes[freeSpellType]
 				end
 			end
 		--end
@@ -1012,8 +1012,8 @@ function DoEaAction(eaActionID, iPlayer, unit, iPerson, targetX, targetY)
 	if g_bGreatPerson then
 		--memory for AI specialization
 		if g_eaAction.GPModType1 then
+			local memValue = 2 ^ (g_gameTurn / MOD_MEMORY_HALFLIFE)
 			if g_eaAction.GPModType1 ~= "EAMOD_LEADERSHIP" then
-				local memValue = 2 ^ (g_gameTurn / MOD_MEMORY_HALFLIFE)
 				local modID = GameInfoTypes[g_eaAction.GPModType1]
 				g_eaPerson.modMemory[modID] = (g_eaPerson.modMemory[modID] or 0) + memValue
 			end
@@ -1196,7 +1196,7 @@ function InterruptEaAction(iPlayer, iPerson)
 	if Interrupt[eaActionID] then Interrupt[eaActionID](iPlayer, iPerson) end	
 
 	--Make invisible again
-	local unit = player:GetUnitByID(eaPlayer.iUnit)
+	local unit = player:GetUnitByID(eaPerson.iUnit)
 	if unit and not unit:IsDelayedDeath() then						--Could be interrupt for death, so no unit
 		unit:SetInvisibleType(INVISIBLE_SUBMARINE)
 	end
@@ -2058,7 +2058,6 @@ end
 
 Do[GameInfoTypes.EA_ACTION_LEAD_CHARGE] = function()
 
-	g_unit:SetInvisibleType(-1)
 	g_unit:SetGPAttackState(1)
 
 
@@ -3037,6 +3036,8 @@ TestTarget[GameInfoTypes.EA_ACTION_LAND_TRADE_ROUTE] = function()
 		--disallow if someone else from my civ making one now
 		for iTestPerson, eaTestPerson in pairs(gPeople) do
 			if eaTestPerson.iPlayer == g_iPlayer and iTestPerson ~= g_iPerson then
+
+				--TO DO: Depreciate eaPerson.x, y
 				if eaTestPerson.x == g_x and eaTestPerson.y == g_y and eaTestPerson.eaActionID == g_eaAction.ID then
 					g_testTargetSwitch = 3	--"Another Merchant from your civilization is currently establishing a trade route in this city"
 					return false

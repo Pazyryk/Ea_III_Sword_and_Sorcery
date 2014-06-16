@@ -20,7 +20,7 @@ MapModData.bDisableEnabledPolicies = true
 -- Settings
 --------------------------------------------------------------
 
-MapModData.STARTING_SUM_OF_ALL_MANA = 100000
+UNADJUSTED_STARTING_SUM_OF_ALL_MANA = 100000
 MOD_MEMORY_HALFLIFE = 30	--What AI is doing now is twice as important as this many turns ago
 
 --------------------------------------------------------------
@@ -30,24 +30,31 @@ MOD_MEMORY_HALFLIFE = 30	--What AI is doing now is twice as important as this ma
 WeakKeyMetatable = {__mode = "k"}
 OutOfRangeReturnZeroMetaTable = {__index = function() return 0 end}	--return 0 rather than nil for out of range index
 
-local gameSpeedMultipliers = {	[GameInfoTypes.GAMESPEED_QUICK] = 1,
-								[GameInfoTypes.GAMESPEED_STANDARD] = 1.5,
-								[GameInfoTypes.GAMESPEED_EPIC] = 2,
-								[GameInfoTypes.GAMESPEED_MARATHON] = 3	}
+local gameSpeedMultipliers = {	[GameInfoTypes.GAMESPEED_QUICK] = 0.67,
+								[GameInfoTypes.GAMESPEED_STANDARD] = 1,
+								[GameInfoTypes.GAMESPEED_EPIC] = 1.33,
+								[GameInfoTypes.GAMESPEED_MARATHON] = 2	}
 
-local mapSizeMultipliers = {	[GameInfoTypes.WORLDSIZE_DUEL] = 1,
-								[GameInfoTypes.WORLDSIZE_TINY] = 1,
-								[GameInfoTypes.WORLDSIZE_SMALL] = 1,
-								[GameInfoTypes.WORLDSIZE_STANDARD] = 1.1,	
-								[GameInfoTypes.WORLDSIZE_LARGE ] = 1.2,
-								[GameInfoTypes.WORLDSIZE_HUGE ] = 1.3	}
+local mapSizeMultipliers = {	[GameInfoTypes.WORLDSIZE_DUEL] = 0.5,
+								[GameInfoTypes.WORLDSIZE_TINY] = 0.5,
+								[GameInfoTypes.WORLDSIZE_SMALL] = 0.67,
+								[GameInfoTypes.WORLDSIZE_STANDARD] = 1,	
+								[GameInfoTypes.WORLDSIZE_LARGE ] = 1.33,
+								[GameInfoTypes.WORLDSIZE_HUGE ] = 2	}
 
-local gameSpeed = Game.GetGameSpeedType()
-local mapSize = Map.GetWorldSize()
-GAME_SPEED_MULTIPLIER = gameSpeedMultipliers[gameSpeed]
-MAP_SIZE_MULTIPLIER = mapSizeMultipliers[mapSize]
+GAME_SPEED = Game.GetGameSpeedType()
+MAP_SIZE = Map.GetWorldSize()
+GAME_SPEED_MULTIPLIER = gameSpeedMultipliers[GAME_SPEED]
+MAP_SIZE_MULTIPLIER = mapSizeMultipliers[MAP_SIZE]
+
+MapModData.GAME_SPEED = GAME_SPEED
+MapModData.MAP_SIZE = MAP_SIZE
+MapModData.GAME_SPEED_MULTIPLIER = GAME_SPEED_MULTIPLIER
+MapModData.MAP_SIZE_MULTIPLIER = MAP_SIZE_MULTIPLIER
 
 print("Game speed, map size, speed multiplier, size multiplier = ", gameSpeed, mapSize, GAME_SPEED_MULTIPLIER, MAP_SIZE_MULTIPLIER)
+
+MapModData.STARTING_SUM_OF_ALL_MANA = math.floor(UNADJUSTED_STARTING_SUM_OF_ALL_MANA * GAME_SPEED_MULTIPLIER * MAP_SIZE_MULTIPLIER)
 
 UNIT_SUFFIXES = {"_MAN", "_SIDHE", "_ORC"}
 

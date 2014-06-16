@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- edited with XMLSPY v2004 rel. 2 U (http://www.xmlspy.com) by Anton Strenger (Firaxis Games) -->
 <Context Name="InGame">
+	<!-- EaMain below loads before all UI -->
+	<LuaContext FileName="EaMain/EaMain" ID="EaMain" Hidden="True"/>
 	<LuaContext FileName="Assets/UI/Civilopedia/CivilopediaScreen" ID="CivilopediaScreen" Hidden="True"/>
 	<Container Size="F,F" ID="BulkUI">
 		<Container ID="WorldViewControls">

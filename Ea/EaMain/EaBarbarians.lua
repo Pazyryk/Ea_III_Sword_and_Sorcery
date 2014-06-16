@@ -43,6 +43,7 @@ end
 --------------------------------------------------------------
 
 local BARB_PLAYER_INDEX =					BARB_PLAYER_INDEX
+local GAME_SPEED_MULTIPLIER =				GAME_SPEED_MULTIPLIER
 
 local IMPROVEMENT_BARBARIAN_CAMP =			GameInfoTypes.IMPROVEMENT_BARBARIAN_CAMP
 local EA_ENCAMPMENT_ORCS =					GameInfoTypes.EA_ENCAMPMENT_ORCS
@@ -177,7 +178,7 @@ end
 local techAwardByTurn = {}
 for row in GameInfo.EaEncampments_TechAwardByTurn() do
 	local adjTurn = Floor(row.Turn * GAME_SPEED_MULTIPLIER * MAP_SIZE_MULTIPLIER)
-	techAwardByTurn[adjTurn] = GameInfoTypes[row.TechType]
+	techAwardByTurn[GameInfoTypes[row.TechType]] = adjTurn
 end
 
 --------------------------------------------------------------
@@ -276,7 +277,7 @@ function EaEncampmentsInit(bNewGame)
 		end
 		local gameTurn = Game.GetGameTurn()
 		for row in GameInfo.EaEncampments_TechAwardByTurn() do
-			for awardByTurn, techID in pairs(techAwardByTurn) do
+			for techID, awardByTurn in pairs(techAwardByTurn) do
 				if awardByTurn <= gameTurn then
 					g_barbTechs[techID] = true
 				end
@@ -569,15 +570,14 @@ function BarbSpawnPerTurn()		--called right after PlotsPerTurn()
 	print("Running BarbSpawnPerTurn")
 	local player = Players[BARB_PLAYER_INDEX]
 	local encampments = gWorld.encampments
-	local adjGameTurn = Game.GetGameTurn()
+	local adjGameTurn = Game.GetGameTurn() / GAME_SPEED_MULTIPLIER
 
 	--TO DO: adjust for game speed 
 	adjGameTurn = adjGameTurn < TURN_CEILING and adjGameTurn or TURN_CEILING
 
 	--Ad hoc tech awarding (in case no one ever researches)
-	if techAwardByTurn[adjGameTurn] then
-		local techID = techAwardByTurn[adjGameTurn]
-		if not g_barbTechs[techID] then
+	for techID, awardByTurn in pairs(techAwardByTurn) do
+		if awardByTurn <= adjGameTurn and not g_barbTechs[techID] then
 			UpdateBarbTech(techID)
 		end
 	end

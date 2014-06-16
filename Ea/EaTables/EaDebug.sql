@@ -56,8 +56,8 @@ INSERT INTO Ea_ExpectedTableFiles (FileName) VALUES
 	('EaText_UnitBuilds.xml'),
 	('EaText_UnitPromotions.xml'),
 	('EaText_Units.xml'),
-
-	('EaArtDefines.sql');
+	('EaArtDefinesLandmarks.sql'),
+	('EaArtDefinesUnits.sql');
 
 CREATE TABLE Ea_DBErrors ('ErrorText' TEXT NOT NULL, 'ItemText' TEXT DEFAULT NULL);
 

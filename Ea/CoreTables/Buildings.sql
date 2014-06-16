@@ -19,17 +19,17 @@ ALTER TABLE Buildings ADD COLUMN 'EaSpecial' TEXT DEFAULT NULL;		--Arcane, Relig
 -- 1st available
 INSERT INTO Buildings (Type,			Cost,	FoodKept,	NeverCapture,	ArtDefineTag,				IconAtlas,				PortraitIndex) VALUES
 ('BUILDING_MONUMENT',					80,		0,			1,				'MONUMENT',					'BW_ATLAS_1',			21		),
-('BUILDING_WARRENS',					200,	10,			1,				'ART_DEF_BUILDING_FORGE',	'NEW_BLDG_ATLAS2_DLC',	1		);
+('BUILDING_WARRENS',					150,	10,			1,				'ART_DEF_BUILDING_FORGE',	'NEW_BLDG_ATLAS2_DLC',	1		);
 -- early specialist
 INSERT INTO Buildings (Type,			Cost,	GoldMaintenance,	PrereqTech,					EaPrereqPolicy,		EaSpecial,		Happiness,	SpecialistType,			SpecialistCount,	NeverCapture,	ArtDefineTag,				IconAtlas,				PortraitIndex) VALUES
-('BUILDING_MARKETPLACE',				200,	0,					'TECH_CURRENCY',			NULL,				NULL,			0,			'SPECIALIST_TRADER',	1,					0,				'ART_DEF_BUILDING_MARKET',	'BW_ATLAS_1',			16	),
-('BUILDING_LIBRARY',					200,	1,					'TECH_WRITING',				NULL,				NULL,			0,			'SPECIALIST_SCRIBE',	1,					0,				'ART_DEF_BUILDING_LIBRARY',	'BW_ATLAS_1',			11	),
-('BUILDING_AMPHITHEATER',				200,	1,					'TECH_DRAMA',				NULL,				NULL,			1,			'SPECIALIST_ARTISAN',	1,					0,				'COLESSEUM',				'EXPANSION_BW_ATLAS_1',	0	),
-('BUILDING_WORKSHOP',					200,	1,					'TECH_MATHEMATICS',			NULL,				NULL,			0,			'SPECIALIST_SMITH',		1,					0,				'ART_DEF_BUILDING_FORGE',	'BW_ATLAS_1',			28	),
-('BUILDING_FORGE',						200,	1,					'TECH_BRONZE_WORKING',		NULL,				NULL,			0,			'SPECIALIST_SMITH',		1,					0,				'ART_DEF_BUILDING_FORGE',	'BW_ATLAS_1',			2	),
-('BUILDING_SHRINE',						200,	1,					NULL,						'POLICY_PANTHEISM',	'Religious',	0,			'SPECIALIST_DISCIPLE',	1,					1,				'TEMPLE',					'EXPANSION_BW_ATLAS_1',	9	),
-('BUILDING_MAGE_SCHOOL',				200,	1,					'TECH_THAUMATURGY',			NULL,				'Arcane',		0,			'SPECIALIST_ADEPT',		1,					1,				'TEMPLE',					'EXPANSION_BW_ATLAS_1',	9	),
-('BUILDING_PHARMAKEIA',					200,	1,					'TECH_MALEFICIUM',			NULL,				'Arcane',		0,			'SPECIALIST_ADEPT',		1,					1,				'TEMPLE',					'EXPANSION_BW_ATLAS_1',	9	);
+('BUILDING_MARKETPLACE',				150,	0,					'TECH_CURRENCY',			NULL,				NULL,			0,			'SPECIALIST_TRADER',	1,					0,				'ART_DEF_BUILDING_MARKET',	'BW_ATLAS_1',			16	),
+('BUILDING_LIBRARY',					150,	1,					'TECH_WRITING',				NULL,				NULL,			0,			'SPECIALIST_SCRIBE',	1,					0,				'ART_DEF_BUILDING_LIBRARY',	'BW_ATLAS_1',			11	),
+('BUILDING_AMPHITHEATER',				150,	1,					'TECH_DRAMA',				NULL,				NULL,			1,			'SPECIALIST_ARTISAN',	1,					0,				'COLESSEUM',				'EXPANSION_BW_ATLAS_1',	0	),
+('BUILDING_WORKSHOP',					150,	1,					'TECH_MATHEMATICS',			NULL,				NULL,			0,			'SPECIALIST_SMITH',		1,					0,				'ART_DEF_BUILDING_FORGE',	'BW_ATLAS_1',			28	),
+('BUILDING_FORGE',						150,	1,					'TECH_BRONZE_WORKING',		NULL,				NULL,			0,			'SPECIALIST_SMITH',		1,					0,				'ART_DEF_BUILDING_FORGE',	'BW_ATLAS_1',			2	),
+('BUILDING_SHRINE',						150,	1,					NULL,						'POLICY_PANTHEISM',	'Religious',	0,			'SPECIALIST_DISCIPLE',	1,					1,				'TEMPLE',					'EXPANSION_BW_ATLAS_1',	9	),
+('BUILDING_MAGE_SCHOOL',				150,	1,					'TECH_THAUMATURGY',			NULL,				'Arcane',		0,			'SPECIALIST_ADEPT',		1,					1,				'TEMPLE',					'EXPANSION_BW_ATLAS_1',	9	),
+('BUILDING_PHARMAKEIA',					150,	1,					'TECH_MALEFICIUM',			NULL,				'Arcane',		0,			'SPECIALIST_ADEPT',		1,					1,				'TEMPLE',					'EXPANSION_BW_ATLAS_1',	9	);
 
 -- early resource
 INSERT INTO Buildings (Type,			Cost,	GoldMaintenance,	PrereqTech,					Happiness,	NeverCapture,	ArtDefineTag,				IconAtlas,						PortraitIndex,	DisplayPosition) VALUES
@@ -152,7 +152,7 @@ INSERT INTO Buildings (Type,			Cost,	NeverCapture,	ArtDefineTag,	IconAtlas,		Por
 ('BUILDING_HELDEOFOL',					-1,		0,				'MONUMENT',		'BW_ATLAS_1',	1,				NULL,			'Util'	),
 ('BUILDING_TIMBERYARD_ALLOW',			-1,		1,				'MONUMENT',		'BW_ATLAS_1',	1,				NULL,			'Util'	),
 ('BUILDING_WINDMILL_ALLOW',				-1,		1,				'MONUMENT',		'BW_ATLAS_1',	1,				NULL,			'Util'	),
-('BUILDING_RACIAL_DISHARMONY',				-1,		1,				'MONUMENT',		'BW_ATLAS_1',	1,				NULL,			'Util'	),
+('BUILDING_RACIAL_DISHARMONY',			-1,		1,				'MONUMENT',		'BW_ATLAS_1',	1,				NULL,			'Util'	),
 ('BUILDING_CULT_LEAVES_1F1C',			-1,		1,				'MONUMENT',		'BW_ATLAS_1',	1,				NULL,			'Util'	),
 ('BUILDING_CULT_CAHRA_1F',				-1,		1,				'MONUMENT',		'BW_ATLAS_1',	1,				NULL,			'Util'	),
 ('BUILDING_PLUS_1_UNHAPPINESS',			-1,		1,				'MONUMENT',		'BW_ATLAS_1',	1,				NULL,			'Util'	),
@@ -279,21 +279,14 @@ UPDATE Buildings SET CultureRateModifier = 25 WHERE Type = 'BUILDING_MUSEUM';
 UPDATE Buildings SET CultureRateModifier = 25 WHERE Type = 'BUILDING_THEATRE';
 UPDATE Buildings SET CultureRateModifier = 25 WHERE Type = 'BUILDING_OPERA_HOUSE';
 
-UPDATE Buildings SET GoldMaintenance = 3, EaProhibitSell = 1, ConquestProb = 100, FoodKept = 50 WHERE Type = 'BUILDING_MAN';
-UPDATE Buildings SET GoldMaintenance = 3, EaProhibitSell = 1, ConquestProb = 100, FoodKept = 30 WHERE Type = 'BUILDING_SIDHE';
-UPDATE Buildings SET GoldMaintenance = 3, EaProhibitSell = 1, ConquestProb = 100, FoodKept = 70 WHERE Type = 'BUILDING_HELDEOFOL';
+UPDATE Buildings SET GoldMaintenance = 0, EaProhibitSell = 1, ConquestProb = 100, FoodKept = 50 WHERE Type = 'BUILDING_MAN';
+UPDATE Buildings SET GoldMaintenance = 0, EaProhibitSell = 1, ConquestProb = 100, FoodKept = 30 WHERE Type = 'BUILDING_SIDHE';
+UPDATE Buildings SET GoldMaintenance = 0, EaProhibitSell = 1, ConquestProb = 100, FoodKept = 70 WHERE Type = 'BUILDING_HELDEOFOL';
 
 UPDATE Buildings SET Experience = 1 WHERE Type = 'BUILDING_KOLOSSOS_MOD';
 UPDATE Buildings SET WorkerSpeedModifier = 1 WHERE Type = 'BUILDING_UUC_YABNAL_MOD';
 UPDATE Buildings SET UnmoddedHappiness = 1 WHERE Type = 'BUILDING_DA_BAOEN_SI_MOD';
 UPDATE Buildings SET FreePromotionRemoved = 'PROMOTION_OCEAN_IMPASSABLE_UNTIL_ASTRONOMY' WHERE Type = 'BUILDING_FOMHOIRE';
-
-
-
-
---BALANCE
-UPDATE Buildings SET Cost = Cost / 2 WHERE Cost != -1;
-
 
 
 --DEBUG
@@ -1064,13 +1057,13 @@ INSERT INTO Building_YieldChanges (BuildingType,	YieldType,	Yield) VALUES
 
 DELETE FROM Building_YieldChangesPerPop;
 INSERT INTO Building_YieldChangesPerPop (BuildingType,	YieldType,	Yield) VALUES
-('BUILDING_LIBRARY',					'YIELD_SCIENCE',		50	),
-('BUILDING_MAN',						'YIELD_PRODUCTION',		100	),
-('BUILDING_SIDHE',						'YIELD_PRODUCTION',		100	),
-('BUILDING_HELDEOFOL',					'YIELD_PRODUCTION',		100	),
-('BUILDING_MAN',						'YIELD_GOLD',			100	),
-('BUILDING_SIDHE',						'YIELD_GOLD',			100	),
-('BUILDING_HELDEOFOL',					'YIELD_GOLD',			100 );
+('BUILDING_LIBRARY',					'YIELD_SCIENCE',		50	);
+--('BUILDING_MAN',						'YIELD_PRODUCTION',		100	),
+--('BUILDING_SIDHE',						'YIELD_PRODUCTION',		100	),
+--('BUILDING_HELDEOFOL',					'YIELD_PRODUCTION',		100	),
+--('BUILDING_MAN',						'YIELD_GOLD',			100	),
+--('BUILDING_SIDHE',						'YIELD_GOLD',			100	),
+--('BUILDING_HELDEOFOL',					'YIELD_GOLD',			100 );
 
 DELETE FROM Building_YieldModifiers;	--warning! culture & faith don't work
 INSERT INTO Building_YieldModifiers (BuildingType, YieldType, Yield) VALUES

@@ -6,6 +6,17 @@
 		
 		<!-- EaActions -->
 
+
+
+		<Row Tag="TXT_KEY_EA_ACTION_CANCEL">
+			<Text>Cancel Last Mission</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_CANCEL_HELP">
+			<Text>This will cancel the last mission in the unit's mission queue.</Text>
+		</Row>
+
+		
+
 		<Row Tag="TXT_KEY_EA_ACTION_TAKE_LEADERSHIP">
 			<Text>Take Leadership</Text>
 		</Row>

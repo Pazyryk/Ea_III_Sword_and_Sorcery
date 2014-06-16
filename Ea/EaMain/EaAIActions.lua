@@ -440,11 +440,15 @@ AITarget.SelfTowerTemple = function()
 	local tower = gWonders[EA_WONDER_ARCANE_TOWER][g_iPerson]
 	if tower then
 		local x, y = GetXYFromPlotIndex(tower.iPlot)
-		TestAddOption("Plot", x, y, 0, nil)
+		if x ~= g_gpX or y ~= g_gpY then
+			TestAddOption("Plot", x, y, 0, nil)
+		end
 	elseif g_eaPerson.templeID then
 		local temple = gWonders[g_eaPerson.templeID]
 		local x, y = GetXYFromPlotIndex(temple.iPlot)
-		TestAddOption("Plot", x, y, 0, nil)
+		if x ~= g_gpX or y ~= g_gpY then
+			TestAddOption("Plot", x, y, 0, nil)
+		end
 	end
 end
 

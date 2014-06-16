@@ -28,10 +28,10 @@
 			<Text>Animal</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_WOODEN">
-			<Text>Wooden</Text>
+			<Text>Wooden Construct</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_METAL">
-			<Text>Metal</Text>
+			<Text>Metal Construct</Text>
 		</Row>
 
 		<Row Tag="TXT_KEY_EA_PROMOTION_CITY_SIEGE">
@@ -39,6 +39,11 @@
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_GREAT_BOMBARDE">
 			<Text>Great Bombarde</Text>
+		</Row>
+
+
+		<Row Tag="TXT_KEY_EA_PROMOTION_METAL_CLAD">
+			<Text>Metal-Clad</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_EXTENDED_RANGE">
 			<Text>Extended Range</Text>

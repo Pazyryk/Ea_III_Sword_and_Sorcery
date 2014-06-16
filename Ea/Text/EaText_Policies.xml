@@ -118,7 +118,7 @@
 			<Text>Fellowship of Leaves</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_FELLOWSHIP_OF_LEAVES_HELP">
-			<Text>[COLOR_POSITIVE_TEXT]Fellowship of Leaves[ENDCOLOR][NEWLINE][ICON_BULLET]Druids can build Temples[NEWLINE][ICON_BULLET]+1 [ICON_CULTURE] Culture and +1 [ICON_STAR] Mana from Farms, Vineyards and Plantations</Text>
+			<Text>[COLOR_POSITIVE_TEXT]Fellowship of Leaves[ENDCOLOR][NEWLINE][ICON_BULLET]+1 [ICON_CULTURE] Culture and +1 [ICON_STAR] Mana from Farms, Vineyards and Plantations</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_FOREST_DOMINION">
 			<Text>Forest Dominion</Text>

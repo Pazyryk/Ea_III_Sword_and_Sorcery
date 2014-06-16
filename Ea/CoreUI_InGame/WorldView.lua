@@ -677,7 +677,7 @@ function MovementRButtonUp( wParam, lParam )
 		if bBombardEnemy == false then
 
 			--Paz add: clear any EaActions for GP
-			if bGreatPerson then
+			if pHeadSelectedUnit:IsGreatPerson() then
 				local iPlayer = pHeadSelectedUnit:GetOwner()
 				local iPerson = pHeadSelectedUnit:GetPersonIndex()
 				LuaEvents.EaActionsInterruptEaAction(iPlayer, iPerson)

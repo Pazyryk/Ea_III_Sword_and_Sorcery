@@ -139,6 +139,10 @@ function OnYes()
 	eaPerson.learningSpellID = g_spellID
 	local unit = Players[g_iPlayer]:GetUnitByID(eaPerson.iUnit)
 	unit:FinishMoves()
+	local headSelectedUnit = UI.GetHeadSelectedUnit()
+	if headSelectedUnit and headSelectedUnit:MovesLeft() == 0 then	--Don't get stuck on unit with no moves
+		Game.CycleUnits(true, true, false)	--move on to next unit
+	end
 end
 Controls.Yes:RegisterCallback( Mouse.eLClick, OnYes )
 

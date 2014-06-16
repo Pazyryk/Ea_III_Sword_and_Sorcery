@@ -346,7 +346,20 @@ function UpdateUnitActions( unit )
 				eaActionID = testActions[i]
 			end
 		end
-	elseif bUnitHasMovesLeft then
+		if eaPerson.eaActionID > 0 then
+			local eaAction = GameInfo.EaActions[-1]
+			local instance = g_PrimaryIM:GetInstance()
+			numPrimaryActions = numPrimaryActions + 1
+			instance.UnitActionButton:SetAlpha( 1.0 )
+			instance.UnitActionButton:SetDisabled( false )                
+			if instance.UnitActionIcon ~= nil then
+				IconHookup(eaAction.IconIndex, actionIconSize, eaAction.IconAtlas, instance.UnitActionIcon)
+			end
+			instance.UnitActionButton:RegisterCallback( Mouse.eLClick, OnEaActionClicked )
+			instance.UnitActionButton:SetVoid1( eaAction.ID )
+			instance.UnitActionButton:SetToolTipCallback( EaTipHandler )
+		end
+	elseif bUnitHasMovesLeft then		--non-GP mod added actions
 		for i = 1, numNonGPActions do
 			local eaActionID = cachedNonGPActions[i]
 			local eaAction = GameInfo.EaActions[eaActionID]
@@ -415,6 +428,11 @@ function UpdateUnitActions( unit )
         
 		--Paz add
 		bShowActionButton = not eaGPTempType and bShowActionButton
+		if bShowActionButton and bGreatPerson then
+			if action.Type == "COMMAND_WAKE" or action.Type == "COMMAND_AUTOMATE" or action.Type == "MISSION_SLEEP" or action.Type == "MISSION_ALERT" or action.Type == "MISSION_FORTIFY" or action.Type == "AUTOMATE_EXPLORE" then
+				bShowActionButton = false
+			end
+		end
 		--end Paz add
 
 		-- test CanHandleAction w/ visible flag (ie COULD train if ... )
@@ -1247,7 +1265,11 @@ function OnEaActionClicked(eaActionID)
 	if bOkayToProcess then
 		local unit = UI.GetHeadSelectedUnit()
 		local iPerson = unit:IsGreatPerson() and unit:GetPersonIndex() or nil
-		if eaActionID < MapModData.FIRST_SPELL_ID then
+		if eaActionID == -1 then
+			LuaEvents.EaActionsInterruptEaAction(unit:GetOwner(), iPerson)
+			unit:DoCommand(CommandTypes.COMMAND_WAKE)
+			Events.SerialEventUnitInfoDirty()
+		elseif eaActionID < MapModData.FIRST_SPELL_ID then
 			LuaEvents.EaActionsDoEaActionFromOtherState(eaActionID, unit:GetOwner(), unit, iPerson, unit:GetX(), unit:GetY())
 		else
 			LuaEvents.EaSpellsDoEaSpellFromOtherState(eaActionID, unit:GetOwner(), unit, iPerson, unit:GetX(), unit:GetY())

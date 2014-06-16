@@ -16,6 +16,7 @@ local ANIMALS_PLAYER_INDEX =				ANIMALS_PLAYER_INDEX
 
 local EA_PLOTEFFECT_PROTECTIVE_WARD =		GameInfoTypes.EA_PLOTEFFECT_PROTECTIVE_WARD
 
+local PlotTypes =							PlotTypes
 local PLOT_OCEAN =							PlotTypes.PLOT_OCEAN
 local PLOT_LAND =							PlotTypes.PLOT_LAND
 local PLOT_HILLS =							PlotTypes.PLOT_HILLS
@@ -70,7 +71,7 @@ local RELIGION_CULT_OF_PLOUTON =			GameInfoTypes.RELIGION_CULT_OF_PLOUTON
 local RELIGION_CULT_OF_CAHRA =				GameInfoTypes.RELIGION_CULT_OF_CAHRA
 local RELIGION_CULT_OF_BAKKHEIA =			GameInfoTypes.RELIGION_CULT_OF_BAKKHEIA
 
-
+local SPREAD_CHANCE_DENOMINATOR = 300 * GAME_SPEED_MULTIPLIER
 
 --global tables
 local Players =		Players
@@ -191,7 +192,7 @@ function EaPlotsInit(bNewGame)
 				plot:SetLivingTerrainData(livingTerrainType, true, strength, -100)	-- -100 chop turn means never
 			end
 
-			if plotTypeID ~= GameInfoTypes.PLOT_MOUNTAIN then
+			if plotTypeID ~= PlotTypes.PLOT_MOUNTAIN then
 				if resourceID ~= -1 or not plot:IsWater() or plot:IsLake() then
 					ownablePlots = ownablePlots + 1
 				end
@@ -754,15 +755,77 @@ function LivingTerrainGrowHere(iPlot, type)
 	end
 end
 
+local function GetArmageddonPlotStats()
+	local armageddonStage = gWorld.armageddonStage
+	local manaDepletion = 1 - (gWorld.sumOfAllMana / MapModData.STARTING_SUM_OF_ALL_MANA)
+	local blightBreachSpread = 0
+	local blightSpawn = 0
+	local breachSpawn = 0
+	if 10 < armageddonStage then
+		blightBreachSpread = 100 * manaDepletion 
+		blightSpawn = 2 * (manaDepletion - 0.6667) + 0.5
+		breachSpawn = 2 * blightSpawn 
+	elseif 5 < armageddonStage then
+		blightBreachSpread = 30 * manaDepletion
+		blightSpawn = 2 * (manaDepletion - 0.6667) + 0.5	--0.5% to 2%
+	elseif 3 < armageddonStage then
+		blightBreachSpread = 30 * manaDepletion 
+	end
+	print("blightBreachSpread, blightSpawn, breachSpawn = ", blightBreachSpread, blightSpawn, breachSpawn)
+	return blightBreachSpread, blightSpawn, breachSpawn
+end
+
+local function DoVariousPlotUpdates()
+	local totalUnimprovedForestJungle = 0
+	for city, unimprovedForestJungle in pairs(g_cityUnimprovedForestJungle) do
+		local eaCity = gCities[city:Plot():GetPlotIndex()]
+		eaCity.unimprovedForestJungle = unimprovedForestJungle
+		totalUnimprovedForestJungle = totalUnimprovedForestJungle + unimprovedForestJungle
+		g_cityUnimprovedForestJungle[city] = nil		--recycle table
+	end
+	local totalDesertCahraFollower = 0
+	for city, desertCahraFollower in pairs(g_cityDesertCahraFollower) do
+		local eaCity = gCities[city:Plot():GetPlotIndex()]
+		eaCity.desertCahraFollower = desertCahraFollower
+		totalDesertCahraFollower = totalDesertCahraFollower + desertCahraFollower
+		g_cityDesertCahraFollower[city] = nil		--recycle table
+	end
+
+	local iCultOfLeavesFounder = gReligions[RELIGION_CULT_OF_LEAVES] and gReligions[RELIGION_CULT_OF_LEAVES].founder
+	local iCultOfCahraFounder = gReligions[RELIGION_CULT_OF_CAHRA] and gReligions[RELIGION_CULT_OF_CAHRA].founder
+
+	for iPlayer, eaPlayer in pairs(realCivs) do
+		local player = Players[iPlayer]
+		for resourceID, number in pairs(g_addResource[iPlayer]) do
+			number = Floor(number)
+			local change = number - (eaPlayer.addedResources[resourceID] or 0)
+			if change ~= 0 then
+				player:ChangeNumResourceTotal(resourceID, change)
+				eaPlayer.addedResources[resourceID] = number
+			end
+		end
+		if iPlayer == iCultOfLeavesFounder then
+			eaPlayer.manaForCultOfLeavesFounder = Floor(totalUnimprovedForestJungle / 10)
+		end
+		if iPlayer == iCultOfCahraFounder then
+			eaPlayer.manaForCultOfCahraFounder = Floor(totalDesertCahraFollower / 10)
+		end
+		if g_wildlandsCountCommuneWithNature[iPlayer] then
+			eaPlayer.cultureManaFromWildlands = Floor(g_wildlandsCountCommuneWithNature[iPlayer] / 4)
+		end
+
+	end
+end
+
 -- per turn plot loop
+
 function PlotsPerTurn()
+	--This function is really pushing the 60 upvalue limit, but it is also one we want to run very fast
+	--Watch for "Syntax Error: function at line xxx has more than 60 upvalues" when adding stuff
+
 	print("Running PlotsPerTurn")
-	local LivingTerrainGrowHere = LivingTerrainGrowHere
 	local PlotToRadiusIterator = PlotToRadiusIterator
-	local Floor = math.floor
-
 	local encampments = gWorld.encampments
-
 	local gameTurn = Game.GetGameTurn()
 
 	ResetTablesForPlotLoop()
@@ -779,22 +842,7 @@ function PlotsPerTurn()
 	gg_demonSpawnPlots.pos = 0
 
 	--undead/demon spawning and breach/blight spread
-	local armageddonStage = gWorld.armageddonStage
-	local manaDepletion = 1 - (gWorld.sumOfAllMana / MapModData.STARTING_SUM_OF_ALL_MANA)
-	local blightBreachSpread = 0
-	local blightSpawn = 0
-	local breachSpawn = 0
-	if 10 < armageddonStage then
-		blightBreachSpread = 33 * manaDepletion 
-		blightSpawn = 4.5 * (manaDepletion - 0.6667) + 0.5
-		breachSpawn = 2 * blightSpawn 
-	elseif 5 < armageddonStage then
-		blightBreachSpread = 10 * manaDepletion
-		blightSpawn = 4.5 * (manaDepletion - 0.6667) + 0.5	--0.5% to 2%
-	elseif 3 < armageddonStage then
-		blightBreachSpread = 10 * manaDepletion 
-	end
-	print("blightBreachSpread, blightSpawn, breachSpawn = ", blightBreachSpread, blightSpawn, breachSpawn)
+	local blightBreachSpread, blightSpawn, breachSpawn = GetArmageddonPlotStats()
 
 	--Main plot loop
 	for iPlot = 0, Map.GetNumPlots() - 1 do
@@ -816,7 +864,7 @@ function PlotsPerTurn()
 
 			--spread
 			if 0 < blightBreachSpread then
-				local d100 = Rand(100, "hello")
+				local d100 = Rand(SPREAD_CHANCE_DENOMINATOR, "hello")
 				if d100 < blightBreachSpread then
 					local spreadPlot = GetRandomAdjacentPlot(plot)
 					if spreadPlot then
@@ -829,7 +877,7 @@ function PlotsPerTurn()
 			end 
 		elseif featureID == FEATURE_BLIGHT then
 			if 0 < blightBreachSpread then
-				if Rand(100, "hello") < blightBreachSpread then
+				if Rand(SPREAD_CHANCE_DENOMINATOR, "hello") < blightBreachSpread then
 					local spreadPlot = GetRandomAdjacentPlot(plot)
 					if spreadPlot then
 						BlightPlot(spreadPlot)
@@ -853,7 +901,7 @@ function PlotsPerTurn()
 
 		--Animals
 		if not bIsCity and not bIsImpassable and (iOwner == -1 or g_hasFeralBond[iOwner]) and plot:GetNumUnits() == 0 then
-			if plotTypeID ~= PLOT_OCEAN or (iPlot % 7 == 0 and not plot:IsLake()) then	--allow 1/7th of sea plots to be tested
+			if plotTypeID ~= PlotTypes.PLOT_OCEAN or (iPlot % 7 == 0 and not plot:IsLake()) then	--allow 1/7th of sea plots to be tested
 				local bAllow = true
 				for i = 1, numAnimalSpawnInhibitTeams do
 					if 0 < plot:GetVisibilityCount(gg_animalSpawnInhibitTeams[i]) then
@@ -870,7 +918,7 @@ function PlotsPerTurn()
 
 		--Simple world-wide counts
 		totalLivingTerrainStrength = totalLivingTerrainStrength + (strength or 0)
-		if plotTypeID ~= PLOT_MOUNTAIN then
+		if plotTypeID ~= PlotTypes.PLOT_MOUNTAIN then
 			if featureID == FEATURE_FOREST then
 				forestPlots = forestPlots + 1
 			elseif featureID == FEATURE_JUNGLE then
@@ -904,7 +952,7 @@ function PlotsPerTurn()
 						print("a living terrain has been weakened. Now: ", type, present, strength, turnChopped, featureID)
 					end
 				elseif improvementID == -1 or (improvementID ~= IMPROVEMENT_LUMBERMILL and improvementID ~= IMPROVEMENT_FARM) or plot:IsImprovementPillaged() then	--these suppress living terrain
-					if Rand(100, "living terrain spread") < strength then	 --successful spread (will spread if any valid adjacent tile)		
+					if Rand(SPREAD_CHANCE_DENOMINATOR, "living terrain spread") < strength then	 --successful spread (will spread if any valid adjacent tile)		
 						local x = plot:GetX()
 						local y = plot:GetY()
 						for xAdj, yAdj in PlotToRadiusIterator(x, y, 1) do
@@ -912,7 +960,7 @@ function PlotsPerTurn()
 							local iPlotAdj = GetPlotIndexFromXY(xAdj, yAdj)
 							if plotAdj and plotAdj:GetFeatureType() == -1 and not plotAdj:IsCity() then	--test for valid spread tile
 								local adjPlotType = plotAdj:GetPlotType()
-								if adjPlotType ~= PLOT_MOUNTAIN then
+								if adjPlotType ~= PlotTypes.PLOT_MOUNTAIN then
 									local adjTerrainType = plotAdj:GetTerrainType()
 									if type == 1 then	--"forest"
 										if adjTerrainType == TERRAIN_GRASS or adjTerrainType == TERRAIN_PLAINS or adjTerrainType == TERRAIN_TUNDRA then
@@ -941,7 +989,7 @@ function PlotsPerTurn()
 					end
 					--Possible take-over by adjacent player with Forest Dominion policy
 					if (featureID == FEATURE_FOREST or featureID == FEATURE_JUNGLE) and plot:IsAdjacentOwned() then
-						if Rand(100, "Forest Dominion takeover") < 1 then		-- 1% chance if qualified plot
+						if Rand(SPREAD_CHANCE_DENOMINATOR, "Forest Dominion takeover") < 1 then		-- 1% chance if qualified plot
 							local iNewOwner = -1
 							for i = 1, numForestDominionPlayers do
 								local iFDPlayer = g_forestDominionPlayers[i]
@@ -962,7 +1010,7 @@ function PlotsPerTurn()
 				if plot:IsCity() then	--permanently remove (possibly chopped)
 					type, present, strength = -1, false, 0
 					print("Living terrain removed for city")
-				elseif featureID == -1 and Rand(100, "hello there!") < strength	then	--it's back!
+				elseif featureID == -1 and Rand(SPREAD_CHANCE_DENOMINATOR, "hello there!") < strength	then	--it's back!
 					LivingTerrainGrowHere(iPlot, type)
 					present = true
 					print("Living terrain has self-generated: ", type, present, strength, turnChopped)
@@ -995,9 +1043,9 @@ function PlotsPerTurn()
 			end
 			local bFreshWater = plot:IsFreshWater()
 			local plotSpecial
-			if plotTypeID == PLOT_OCEAN then
+			if plotTypeID == PlotTypes.PLOT_OCEAN then
 				if featureID ~= FEATURE_ICE then plotSpecial = "Sea" end
-			elseif plotTypeID == PLOT_MOUNTAIN then
+			elseif plotTypeID == PlotTypes.PLOT_MOUNTAIN then
 				plotSpecial = "Mountain"
 			elseif featureID == FEATURE_FOREST then
 				plotSpecial = "Forest"
@@ -1006,9 +1054,9 @@ function PlotsPerTurn()
 			elseif featureID == FEATURE_MARSH then
 				plotSpecial = "Marsh"
 			elseif featureID == -1 then
-				if plotTypeID == PLOT_HILLS then
+				if plotTypeID == PlotTypes.PLOT_HILLS then
 					plotSpecial = "Hill"
-				elseif bFreshWater and plotTypeID == PLOT_LAND then
+				elseif bFreshWater and plotTypeID == PlotTypes.PLOT_LAND then
 					plotSpecial = "Irrigable"
 				end
 			end
@@ -1027,6 +1075,7 @@ function PlotsPerTurn()
 			--working city counts
 			local workingCity = plot:GetWorkingCity()
 			if workingCity then
+
 				g_cityFollowerReligion[workingCity] = g_cityFollowerReligion[workingCity] or workingCity:GetReligiousMajority()
 				if featureID == FEATURE_FOREST or featureID == FEATURE_JUNGLE then
 					--timber and timberyard
@@ -1103,45 +1152,7 @@ function PlotsPerTurn()
 	gg_counts.grapeAndSpiritsBuildingsBakkheiaFollowerCities = gg_counts.grapeAndSpiritsBuildingsBakkheiaFollowerCities + grapesWorkedByBakkeiaFollower
 	gg_counts.earthResWorkedByPloutonFollower = earthResWorkedByPloutonFollower
 
-	local totalUnimprovedForestJungle = 0
-	for city, unimprovedForestJungle in pairs(g_cityUnimprovedForestJungle) do
-		local eaCity = gCities[city:Plot():GetPlotIndex()]
-		eaCity.unimprovedForestJungle = unimprovedForestJungle
-		totalUnimprovedForestJungle = totalUnimprovedForestJungle + unimprovedForestJungle
-		g_cityUnimprovedForestJungle[city] = nil		--recycle table
-	end
-	local totalDesertCahraFollower = 0
-	for city, desertCahraFollower in pairs(g_cityDesertCahraFollower) do
-		local eaCity = gCities[city:Plot():GetPlotIndex()]
-		eaCity.desertCahraFollower = desertCahraFollower
-		totalDesertCahraFollower = totalDesertCahraFollower + desertCahraFollower
-		g_cityDesertCahraFollower[city] = nil		--recycle table
-	end
-
-	local iCultOfLeavesFounder = gReligions[RELIGION_CULT_OF_LEAVES] and gReligions[RELIGION_CULT_OF_LEAVES].founder
-	local iCultOfCahraFounder = gReligions[RELIGION_CULT_OF_CAHRA] and gReligions[RELIGION_CULT_OF_CAHRA].founder
-
-	for iPlayer, eaPlayer in pairs(realCivs) do
-		local player = Players[iPlayer]
-		for resourceID, number in pairs(g_addResource[iPlayer]) do
-			number = Floor(number)
-			local change = number - (eaPlayer.addedResources[resourceID] or 0)
-			if change ~= 0 then
-				player:ChangeNumResourceTotal(resourceID, change)
-				eaPlayer.addedResources[resourceID] = number
-			end
-		end
-		if iPlayer == iCultOfLeavesFounder then
-			eaPlayer.manaForCultOfLeavesFounder = Floor(totalUnimprovedForestJungle / 10)
-		end
-		if iPlayer == iCultOfCahraFounder then
-			eaPlayer.manaForCultOfCahraFounder = Floor(totalDesertCahraFollower / 10)
-		end
-		if g_wildlandsCountCommuneWithNature[iPlayer] then
-			eaPlayer.cultureManaFromWildlands = Floor(g_wildlandsCountCommuneWithNature[iPlayer] / 4)
-		end
-
-	end
+	DoVariousPlotUpdates()
 
 	--recycle table
 	for city in pairs(g_cityFollowerReligion) do
@@ -1151,6 +1162,7 @@ function PlotsPerTurn()
 	DoLivingTerrainSpread()
 	UseAccumulatedLivingTerrainEffects()
 end
+
 
 --------------------------------------------------------------
 -- GameEvents

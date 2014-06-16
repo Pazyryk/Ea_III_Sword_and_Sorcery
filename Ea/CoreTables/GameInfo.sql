@@ -36,8 +36,10 @@ DROP TABLE IDRemapper;
 ALTER TABLE HandicapInfos ADD COLUMN 'EaAIFreeTechs' INTEGER DEFAULT 0;		--Replaces HandicapInfo_AIFreeTechs bonuses
 UPDATE HandicapInfos SET EaAIFreeTechs = ID - 3 WHERE Type IN ('HANDICAP_KING', 'HANDICAP_EMPEROR', 'HANDICAP_IMMORTAL', 'HANDICAP_DEITY');	-- 1-4 free techs (for King-Diety) given at turn 50, 100, 150, 200; these are free from KM
 
+UPDATE HandicapInfos SET HappinessDefault = HappinessDefault - 4;	--more luxuries and bonuses in Ea
 
-UPDATE HandicapInfos SET HappinessDefault = HappinessDefault - 4;	--impossible to add unhappiness later, so take it away here so we can give/withdraw extra happiness
+UPDATE HandicapInfos SET ProductionFreeUnits = 15, ProductionFreeUnitsPopulationPercent = 50, ProductionFreeUnitsPerCity = 0;	--no scaling in base at Prince and above, so didn't bother here
+
 
 DELETE FROM HandicapInfo_FreeTechs;		--empty in base
 DELETE FROM HandicapInfo_AIFreeTechs;

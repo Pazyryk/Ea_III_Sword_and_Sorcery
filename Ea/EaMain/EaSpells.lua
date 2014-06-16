@@ -314,7 +314,7 @@ function FinishEaSpell(eaActionID)		--only called from DoEaSpell so file locals 
 	ClearActionPlotTargetedForPerson(g_iPlayer, g_iPerson)
 	g_eaPerson.eaActionID = -1		--will bring back to map on next turn
 
-	--g_unit:SetInvisibleType(INVISIBLE_SUBMARINE)
+	g_unit:SetInvisibleType(INVISIBLE_SUBMARINE)
 
 	--Mana or divine favor
 	if 0 < g_eaAction.FixedFaith then
@@ -777,8 +777,8 @@ function DoEaSpell(eaActionID, iPlayer, unit, iPerson, targetX, targetY)
 	if g_bGreatPerson then
 		--memory for AI specialization
 		if g_eaAction.GPModType1 then
+			local memValue = 2 ^ (g_gameTurn / MOD_MEMORY_HALFLIFE)
 			if g_eaAction.GPModType1 ~= "EAMOD_LEADERSHIP" then
-				local memValue = 2 ^ (g_gameTurn / MOD_MEMORY_HALFLIFE)
 				local modID = GameInfoTypes[g_eaAction.GPModType1]
 				g_eaPerson.modMemory[modID] = (g_eaPerson.modMemory[modID] or 0) + memValue
 			end
@@ -943,7 +943,7 @@ function InterruptEaSpell(iPlayer, iPerson)
 	if Interrupt[eaActionID] then Interrupt[eaActionID](iPlayer, iPerson) end	
 
 	--Make invisible again
-	local unit = player:GetUnitByID(eaPlayer.iUnit)
+	local unit = player:GetUnitByID(eaPerson.iUnit)
 	if unit and not unit:IsDelayedDeath() then						--Could be interrupt for death, so no unit
 		unit:SetInvisibleType(INVISIBLE_SUBMARINE)
 	end
@@ -1000,8 +1000,8 @@ function TestSpellLearnable(iPlayer, iPerson, spellID, spellClass)		--iPerson = 
 	if iPerson and (spellInfo.LevelReq or spellInfo.PromotionReq) then
 		local eaPerson = gPeople[iPerson]
 		local unit = player:GetUnitByID(eaPerson.iUnit)
-		if spellInfo.LevelReq and eaPerson.level < spellInfo.LevelReq then return false end
-		if spellInfo.PromotionReq and not eaPerson.promotions[GameInfoTypes[spellInfo.PromotionReq] ] then return false end
+		if spellInfo.LevelReq and unit:GetLevel() < spellInfo.LevelReq then return false end
+		if spellInfo.PromotionReq and not unit:IsHasPromotion(GameInfoTypes[spellInfo.PromotionReq]) then return false end
 	end
 	if spellInfo.ReqEaWonder and not gWonders[GameInfoTypes[spellInfo.ReqEaWonder] ] then return false end
 	return true, spellLevel[spellID], spellInfo.GPModType1, spellInfo.GPModType2
@@ -1461,6 +1461,7 @@ SetUI[GameInfoTypes.EA_SPELL_SEEING_EYE_GLYPH] = function()
 	end
 end
 
+--[[ not yet implemented
 SetAIValues[GameInfoTypes.EA_SPELL_SEEING_EYE_GLYPH] = function()
 	local range = Floor(g_modSpell / 5)
 	local addedVisibility = g_plot:IsVisible(g_iTeam) and 0 or 1
@@ -1471,8 +1472,9 @@ SetAIValues[GameInfoTypes.EA_SPELL_SEEING_EYE_GLYPH] = function()
 			end
 		end
 	end
-	gg_aiOptionValues.i = addedVisibility / 5
+	gg_aiOptionValues.i = addedVisibility / 20
 end
+]]
 
 Finish[GameInfoTypes.EA_SPELL_SEEING_EYE_GLYPH] = function()
 	g_plot:SetPlotEffectData(GameInfoTypes.EA_PLOTEFFECT_SEEING_EYE_GLYPH, g_modSpell, g_iPlayer, g_iPerson)	--effectID, effectStength, iPlayer, iCaster
@@ -2111,9 +2113,11 @@ SetUI[GameInfoTypes.EA_SPELL_SCRYING] = function()
 	end
 end
 
+--[[ not yet implemented
 SetAIValues[GameInfoTypes.EA_SPELL_SCRYING] = function()
 	gg_aiOptionValues.i = g_value
 end
+]]
 
 Do[GameInfoTypes.EA_SPELL_SCRYING] = function()
 	--if g_bAIControl then	--do it

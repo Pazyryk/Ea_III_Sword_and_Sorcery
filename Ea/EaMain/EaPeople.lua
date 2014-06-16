@@ -74,18 +74,17 @@ for modInfo in GameInfo.EaModifiers() do		--cache table values for speed
 	modsSubclassTable[modType] = modInfo.Subclass
 	modsSubclassExcludeTable[modType] = modInfo.ExcludeSubclass
 end
-local numModTypes = #modTypes
+local maxModID = #modTypes
 
 --modsForUI has fixed structure (and text, modType, modType2) for the game but values change
 MapModData.modsForUI = MapModData.modsForUI or {}
 local modsForUI = MapModData.modsForUI
-for i = 1, numModTypes do
-	local modType = modTypes[i]
+for i = 0, maxModID do
 	modsForUI[i] = {text = modTexts[i], value = 0}
 end
-modsForUI.firstMagicMod = numModTypes - 7
-modsForUI[numModTypes + 1] = {text = "All Magic Schools", value = 0}
-modsForUI[numModTypes + 2] = {text = "Other Magic Schools", value = 0}
+modsForUI.firstMagicMod = maxModID - 7
+modsForUI[maxModID + 1] = {text = "All Magic Schools", value = 0}
+modsForUI[maxModID + 2] = {text = "Other Magic Schools", value = 0}
 
 local reservedGPs = {}		--nil all entries after all civs gain names
 for eaCivInfo in GameInfo.EaCivs() do
@@ -156,11 +155,11 @@ local function SetGPModsTable(iPerson)	--used by EaImagePopup for showing GP mod
 	modsForUI.bApplyDevotionMod = bApplyDevotionMod
 
 	local highestMagicSchool, lowestMagicSchool = 0, 99999
-	for i = 1, numModTypes do
+	for i = 0, maxModID do
 		local modType = modTypes[i]
 		local value = TestGPModValid(modType, class1, class2, subclass) and GetGPMod(iPerson, modType, nil) or 0
 		if value > 0 then
-			if i > numModTypes - 8 then		--last 8 are always magic schools (and value always > 0 for all spellcasters)
+			if i > maxModID - 8 then		--last 8 are always magic schools (and value always > 0 for all spellcasters)
 				if bApplyMagicMods then
 					value = value + tower[i]		--tower could really be temple from above
 				end
@@ -170,7 +169,7 @@ local function SetGPModsTable(iPerson)	--used by EaImagePopup for showing GP mod
 				if lowestMagicSchool > value then
 					lowestMagicSchool = value
 				end
-			elseif bApplyDevotionMod and i == numModTypes - 8  then	--Devotion
+			elseif bApplyDevotionMod and i == maxModID - 8  then	--Devotion
 				value = value + temple[i]
 			end
 		end
@@ -178,22 +177,22 @@ local function SetGPModsTable(iPerson)	--used by EaImagePopup for showing GP mod
 	end
 	--Note: this is so we don't have to display all 8 spell modifiers, since 6 or 7 of them are likley to be the same for most casters
 	if highestMagicSchool == 0 then
-		modsForUI[numModTypes + 1].value = 0	--"All Magic Schools"	(value = 0 means that this item won't display)
-		modsForUI[numModTypes + 2].value = 0	--"Other Magic Schools"
+		modsForUI[maxModID + 1].value = 0	--"All Magic Schools"	(value = 0 means that this item won't display)
+		modsForUI[maxModID + 2].value = 0	--"Other Magic Schools"
 	elseif lowestMagicSchool == highestMagicSchool then
-		for i = numModTypes - 7, numModTypes do
+		for i = maxModID - 7, maxModID do
 			modsForUI[i].value = 0
 		end
-		modsForUI[numModTypes + 1].value = lowestMagicSchool	--"All Magic Schools"
-		modsForUI[numModTypes + 2].value = 0					--"Other Magic Schools"
+		modsForUI[maxModID + 1].value = lowestMagicSchool	--"All Magic Schools"
+		modsForUI[maxModID + 2].value = 0					--"Other Magic Schools"
 	else
-		for i = numModTypes - 7, numModTypes do
+		for i = maxModID - 7, maxModID do
 			if modsForUI[i].value == lowestMagicSchool then
 				modsForUI[i].value = 0
 			end
 		end
-		modsForUI[numModTypes + 1].value = 0					--"All Magic Schools"
-		modsForUI[numModTypes + 2].value = lowestMagicSchool	--"Other Magic Schools"		
+		modsForUI[maxModID + 1].value = 0					--"All Magic Schools"
+		modsForUI[maxModID + 2].value = lowestMagicSchool	--"Other Magic Schools"		
 	end
 end
 LuaEvents.EaPeopleSetModsTable.Add(SetGPModsTable)
@@ -497,7 +496,7 @@ function GenerateGreatPerson(iPlayer, class, subclass, eaPersonRowID, bAsLeader,
 							birthYear = Game.GetGameTurn() - 20,
 							progress = {},
 							disappearTurn = -1,		
-							promotions = {},
+							--promotions = {},			--DEPRECIATED: get from unit
 							eaActionID = -1,
 							eaActionData = -1,
 							gotoPlotIndex = -1,
@@ -566,21 +565,23 @@ end
 
 
 function UpdateGreatPersonStatsFromUnit(unit, eaPerson)		--DEPRECIATE THIS !!!!
+
+
 	eaPerson.x = unit:GetX()
 	eaPerson.y = unit:GetY()
-	eaPerson.direction = unit:GetFacingDirection()
-	eaPerson.moves = unit:GetMoves()
+	--eaPerson.direction = unit:GetFacingDirection()
+	--eaPerson.moves = unit:GetMoves()
 	eaPerson.level = unit:GetLevel()
-	eaPerson.xp = unit:GetExperience()
+	--eaPerson.xp = unit:GetExperience()
 
-	local promotions = eaPerson.promotions
-	for promotionID = 0, HIGHEST_PROMOTION_ID do
-		if unit:IsHasPromotion(promotionID) then
-			promotions[promotionID] = true
-		else
-			promotions[promotionID] = nil
-		end
-	end 
+	--local promotions = eaPerson.promotions
+	--for promotionID = 0, HIGHEST_PROMOTION_ID do
+	--	if unit:IsHasPromotion(promotionID) then
+	--		promotions[promotionID] = true
+	--	else
+	--		promotions[promotionID] = nil
+	--	end
+	--end 
 end
 
 
@@ -1078,13 +1079,13 @@ function GetGPMod(iPerson, modType1, modType2)
 		end
 	end
 
-	local totalMod = (level / 3) + (promos * (1 + 10/(promos + 3)))
-	--complicated promo effect gives this progression for I - XVIII (floored): 3 6 8 9 11 12 14 15 16 17 18 20 21 22 23 24 25 26
+	local totalMod = 5 + (level / 3) + (promos * (1 + 10/(promos + 3)))
+	--complicated promo effect gives this progression for I - XVIII (floored): +3 6 8 9 11 12 14 15 16 17 18 20 21 22 23 24 25 26
 
-	--prophet
-	if eaPerson.promotions[PROMOTION_PROPHET] and (modsProphetBonus[modType1] or (modType2 and modsProphetBonus[modType2])) then
-		totalMod = totalMod + 2
-	end
+	--prophet	TO DO: something with this
+	--if eaPerson.promotions[PROMOTION_PROPHET] and (modsProphetBonus[modType1] or (modType2 and modsProphetBonus[modType2])) then
+	--	totalMod = totalMod + 2
+	--end
 
 	--subclass
 	local subclass = eaPerson.subclass
@@ -1118,15 +1119,15 @@ function SetTowerMods(iPlayer, iPerson)
 	local tower = gWonders[EA_WONDER_ARCANE_TOWER][iPerson]
 	if not tower then return end
 	print("SetTowerMods ", iPlayer, iPerson)
-	if not tower[numModTypes] then		--init tower mods
-		for i = numModTypes - 7, numModTypes do
+	if not tower[maxModID] then		--init tower mods
+		for i = maxModID - 7, maxModID do
 			tower[i] = 0
 		end
 	end
 
 	local modSum = 0
 	local bestCasterMod, bestTowerMod = 0, 0
-	for i = numModTypes - 7, numModTypes do
+	for i = maxModID - 7, maxModID do
 		local casterMod = GetGPMod(iPerson, modTypes[i], nil)
 		local towerMod = tower[i]
 		if bestCasterMod < casterMod then
@@ -1277,9 +1278,8 @@ function KillPerson(iPlayer, iPerson, unit, iKillerPlayer, deathType)
 	eaPerson.iUnitJoined = nil
 	--eaPerson.progress = nil
 
-	eaPerson.moves = nil
-	eaPerson.xp = nil
-	--eaPerson.promotions = nil
+	--eaPerson.moves = nil
+	--eaPerson.xp = nil
 	eaPerson.eaActionID = nil
 	eaPerson.eaActionData = nil
 	eaPerson.gotoPlotIndex = nil

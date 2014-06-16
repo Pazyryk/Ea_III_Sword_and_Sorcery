@@ -124,7 +124,7 @@ function ShowPortrait(info)
 
 	--Action/Spell modifiers
 	LuaEvents.EaPeopleSetModsTable(iPerson)		--TO DO: move to helper file
-	for i = 1, #modsForUI do
+	for i = 0, #modsForUI do
 		local mod = modsForUI[i].value
 		if 0 < mod then
 			text = text .. "[NEWLINE]   " .. modsForUI[i].text .. ": " .. mod

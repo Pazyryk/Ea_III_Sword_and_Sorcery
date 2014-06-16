@@ -115,8 +115,9 @@ CREATE TABLE EaActions ('ID' INTEGER PRIMARY KEY AUTOINCREMENT,
 						'MeetGod' TEXT DEFAULT NULL,		--Note: this is both a Req and Effect (req is that god must be present in game)
 						'FinishXP' INTEGER DEFAULT 0);
 
-INSERT INTO EaActions (ID,	Type,			Description,			GPOnly) VALUES
-(0,	'EA_ACTION_GO_TO_PLOT',			'TXT_KEY_EA_NOTSHOWN',	1		);	--special action; must have ID = 0
+INSERT INTO EaActions (ID,	Type,	Description,				Help,							GPOnly,	IconIndex,	IconAtlas			) VALUES
+(-1,	'EA_ACTION_CANCEL',			'TXT_KEY_EA_ACTION_CANCEL','TXT_KEY_EA_ACTION_CANCEL_HELP',	1,		39,			'UNIT_ACTION_ATLAS'	),	--human only (dll doesn't know about these actions, so we need our own cancel)
+(0,		'EA_ACTION_GO_TO_PLOT',		'TXT_KEY_EA_NOTSHOWN',		NULL,							1,		-1,			NULL				);	--special action; must have ID = 0
 
 
 --StayInvisible
@@ -351,8 +352,8 @@ UPDATE EaActions SET OrGPSubclass = 'Eidolon' WHERE Type = 'EA_ACTION_ANTIPROSEL
 
 --Arcane
 INSERT INTO EaActions (Type,			SpellClass,	GPModType1,				TechReq,						City,	AITarget,			AICombatRole,	TurnsToComplete,	FixedFaith,	HumanVisibleFX,	IconIndex,	IconAtlas			) VALUES
-('EA_SPELL_SCRYING',					'Arcane',	'EAMOD_DIVINATION',		'TECH_THAUMATURGY',				NULL,	'SelfTowerTemple',	NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
-('EA_SPELL_SEEING_EYE_GLYPH',			'Arcane',	'EAMOD_DIVINATION',		'TECH_THAUMATURGY',				'Not',	'SeeingEyeGlyph',	NULL,			2,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_SCRYING',					'Arcane',	'EAMOD_DIVINATION',		'TECH_THAUMATURGY',				NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_SEEING_EYE_GLYPH',			'Arcane',	'EAMOD_DIVINATION',		'TECH_THAUMATURGY',				'Not',	NULL,				NULL,			2,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
 ('EA_SPELL_DETECT_GLYPHS_RUNES_WARDS',	'Arcane',	'EAMOD_DIVINATION',		'TECH_THAUMATURGY',				NULL,	'Self',				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
 ('EA_SPELL_KNOW_WORLD',					'Arcane',	'EAMOD_DIVINATION',		'TECH_COSMOGONY',				NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
 ('EA_SPELL_DISPEL_HEXES',				'Arcane',	'EAMOD_ABJURATION',		'TECH_ABJURATION',				NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),

@@ -84,3 +84,6 @@ INSERT INTO ArtDefine_Landmarks (Era, State, Scale,	ImprovementType,					LayoutH
 ('Any',	'Any',					1.45,				'ART_DEF_IMPROVEMENT_BLIGHT',		'SNAPSHOT',		'ART_DEF_RESOURCE_ALL',			'blight.fxsxml',					0	),
 ('Any',	'Any',					1.45,				'ART_DEF_IMPROVEMENT_NONE',			'SNAPSHOT',		'ART_DEF_RESOURCE_BLIGHT',		'blight.fxsxml',					0	),
 ('Any',	'Any',					1.45,				'ART_DEF_IMPROVEMENT_HALICARNASSUS','SNAPSHOT',		'ART_DEF_RESOURCE_BLIGHT',		'blight.fxsxml',					0	);	--Arcane Tower
+
+
+INSERT INTO EaDebugTableCheck(FileName) SELECT 'EaArtDefinesLandmarks.sql';

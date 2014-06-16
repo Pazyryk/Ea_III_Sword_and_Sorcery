@@ -31,26 +31,28 @@ print("")
 -- Includes
 -------------------------------------------------------------------------------------------------------
 
-
+--Utilities that don't need gT data
 include("EaPlotUtils.lua")	
 include("WhowardPlotIterators.lua")	
-
 include("FLuaVector")
 include("EaMathUtils.lua")
 include("EaTableUtils.lua")
 include("EaMiscUtils.lua")
+include("RiverConnections.lua")
+
+--Defines and initialization
+include("EaDefines.lua")			--1st after utils (before any files that reference mod specific data)
+include("TableSaverLoader.lua")		--2rd
+include("EaInit.lua")				--3rd
+include("_Debug.lua")
+
+--Helpers
 include("EaCultureLevelHelper.lua")
 include("EaGPSpawnHelper.lua")
 include("EaFaithHelper.lua")
 include("EaHealthHelper.lua")
 include("EaVictoriesHelper.lua")
-include("RiverConnections.lua")
 
-include("EaDefines.lua")			--1st after utils (before any files that reference mod specific data)
-include("TableSaverLoader.lua")		--2rd
-include("EaInit.lua")				--3rd
-
-include("_Debug.lua")
 include("EaActions.lua")
 include("EaSpells.lua")
 include("EaAIActions.lua")			--depends on EaActions and EaSpells

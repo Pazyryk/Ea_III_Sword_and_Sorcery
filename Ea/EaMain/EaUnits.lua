@@ -128,9 +128,13 @@ for row in GameInfo.Unit_ResourceQuantityRequirements() do
 end
 
 local bAnimal = {}
+local faithMaintenance = {}
 for unitInfo in GameInfo.Units() do
 	if unitInfo.EaSpecial == "Animal" or unitInfo.EaSpecial == "Beast" then
 		bAnimal[unitInfo.ID] = true
+	end
+	if unitInfo.EaFaithMaintenance ~= 0 then
+		faithMaintenance[unitInfo.ID] = unitInfo.EaFaithMaintenance
 	end
 end
 
@@ -401,8 +405,15 @@ function UnitPerCivTurn(iPlayer)	--runs for full civs and city states
 		if bAnimals then
 			--
 		elseif bBarbs then
-			--
+			if faithMaintenance[unitTypeID] then
+				UseManaOrDivineFavor(BARB_PLAYER_INDEX, nil, faithMaintenance[unitTypeID], true, plot)
+			end
 		else	--Full civs and city states
+			if faithMaintenance[unitTypeID] then
+				UseManaOrDivineFavor(iPlayer, nil, faithMaintenance[unitTypeID], false, plot)
+			end
+
+
 			local bSlave
 			local bMercenary
 
@@ -451,11 +462,11 @@ function UnitPerCivTurn(iPlayer)	--runs for full civs and city states
 						MapModData.bBypassOnCanSaveUnit = true
 						unit:Kill(true, -1)
 						Players[BARB_PLAYER_INDEX]:InitUnit(unitTypeID, x, y)
-						plot:AddFloatUpMessage("Unbound dead has gone hostile!")
+						plot:AddFloatUpMessage("Unbound dead has gone hostile!", 1)
 					elseif dice < 3 then
 						MapModData.bBypassOnCanSaveUnit = true
 						unit:Kill(true, -1)
-						plot:AddFloatUpMessage("Unbound dead has un-animated")
+						plot:AddFloatUpMessage("Unbound dead has un-animated", 1)
 					end				
 				end
 			end
@@ -602,6 +613,8 @@ local function OnUnitTakingPromotion(iPlayer, iUnit, promotionID)
 			if eaPerson.assumedLeadershipTurn then
 				eaPerson.leaderLevel = Floor((Game.GetGameTurn() - eaPerson.assumedLeadershipTurn) / 20)	--intentional that this only updates w/ leveling (game interest and works better for mod caching)
 			end
+			eaPerson.level = unit:GetLevel()
+			--eaPerson.promotions[promotionID] = true
 
 			SetTowerMods(iPlayer, iPerson)
 		end
@@ -609,10 +622,13 @@ local function OnUnitTakingPromotion(iPlayer, iUnit, promotionID)
 	else	--AI
 		if iPerson ~= -1 then
 			local eaPerson = gPeople[iPerson]
-			AIPickGPPromotion(iPlayer, iPerson, unit)
+			promotionID = AIPickGPPromotion(iPlayer, iPerson, unit)
 			if eaPerson.assumedLeadershipTurn then
 				eaPerson.leaderLevel = Floor((Game.GetGameTurn() - eaPerson.assumedLeadershipTurn) / 20)
 			end
+			eaPerson.level = unit:GetLevel()
+			--eaPerson.promotions[promotionID] = true
+
 			SetTowerMods(iPlayer, iPerson)
 			return false				--We are cancelling whatever dll picked for GP
 		else

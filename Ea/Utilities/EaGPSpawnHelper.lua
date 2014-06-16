@@ -8,8 +8,9 @@ local MapModData = MapModData
 MapModData.gT = MapModData.gT or {}
 local gT = MapModData.gT
 
+
 --Settings
-local GP_TARGET_NUMBER = 3
+local GP_TARGET_NUMBER = 3 * MapModData.MAP_SIZE_MULTIPLIER
 
 
 --Constants

@@ -457,10 +457,6 @@
       <SubType>Lua</SubType>
       <ImportIntoVFS>False</ImportIntoVFS>
     </Content>
-    <Content Include="CvGameCore_Ea.pdb">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
     <Content Include="Scratch\WTI_B.fxsxml">
       <SubType>Lua</SubType>
       <ImportIntoVFS>False</ImportIntoVFS>

@@ -191,15 +191,15 @@ TableBuilder = function (parentTable, parentName)
 		elseif varTypeStr == "table" then
 			varType = 3
 			--is var an already existing table? If so, we should use that name rather than generate a new name.
-			local bExists = false
-			for i=1, #builtTables.name do
-				if var == builtTables.pointer[i] then
-					bExists = true
-					varText = builtTables.name[i]
-					break
-				end
-			end
-			if not bExists then
+			--local bExists = false
+			--for i=1, #builtTables.name do
+			--	if var == builtTables.pointer[i] then
+			--		bExists = true
+			--		varText = builtTables.name[i]
+			--		break
+			--	end
+			--end
+			--if not bExists then
 				varText = parentName .. key
 				local i = #builtTables.name + 1
 				builtTables.name[i] = varText		-- saved here so that subsequent references to this table will use same name (regardles of how nested)
@@ -207,7 +207,7 @@ TableBuilder = function (parentTable, parentName)
 				varBuffer.top = varBuffer.top + 1	-- hold var and varText in buffer for subsequent calls to TableBuilder (1st in 1st out so parents are before children)
 				varBuffer.var[varBuffer.top] = var				
 				varBuffer.varText[varBuffer.top] = varText
-			end
+			--end
 		else
 			print ("!!!! TableSaverLoader doesn't know type "..varTypeStr)
 		end

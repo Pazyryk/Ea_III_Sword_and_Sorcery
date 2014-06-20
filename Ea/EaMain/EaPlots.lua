@@ -331,7 +331,7 @@ end
 -- Local Functions
 --------------------------------------------------------------
 
-local function LivingTerrainGrowHere(iPlot, type)
+function LivingTerrainGrowHere(iPlot, type)
 	local plot = GetPlotByIndex(iPlot)
 	if type == 1 then	--"forest"
 		plot:SetFeatureType(FEATURE_FOREST)

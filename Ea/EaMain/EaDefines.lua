@@ -5,6 +5,12 @@
 
 print("Loading EaDefines.lua...")
 
+--clear out MapModData in case this is a reload or map regeneration
+for k, v in pairs(MapModData) do
+	print("Clearing MapModData from map regenertion or in-game load ", k, v)
+	MapModData[k] = nil
+end
+
 --------------------------------------------------------------
 -- Debug
 --------------------------------------------------------------

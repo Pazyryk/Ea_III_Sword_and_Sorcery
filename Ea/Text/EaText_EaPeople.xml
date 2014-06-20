@@ -93,7 +93,7 @@
 		<Row Tag="TXT_KEY_EAPERSON_NEMED">
 			<Text>Nemed</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EAPERSON_THEANO">
+		<Row Tag="TXT_KEY_EAPERSON_THEONO">
 			<Text>Theano</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EAPERSON_PARTHOLON">

@@ -1139,7 +1139,7 @@ local function ModelSummon_TestTarget()
 				g_count = g_count + 1
 				g_integers[g_count] = unitTypeID
 				g_value = g_value + power
-				if bLimitOneOnly then return true end	--done!
+				if bLimitOneOnly then break end
 				remainingMod = remainingMod - power
 			end
 			i = i < 2 and i + numTableUnits - 1 or i - 1

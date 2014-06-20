@@ -185,53 +185,23 @@ end
 -- Local Functions
 --------------------------------------------------------------
 
-local function AddEncampmentBaseUnit(iPlot, encampmentID)
-	local x, y = GetXYFromPlotIndex(iPlot)
-	local player = Players[BARB_PLAYER_INDEX]
-	local unitTypeID = g_currentBaseUnit1[encampmentID]
-	if g_currentBaseUnit2[encampmentID] and Rand(2, "hello") < 1 then
-		unitTypeID = g_currentBaseUnit2[encampmentID]
-	end
-	print("PazDebug Adding Encampment base unit ", unitTypeID, x, y, encampmentID, GameInfo.EaEncampments[encampmentID].Type, GameInfo.Units[unitTypeID].Type)
-	local unit = player:InitUnit(unitTypeID, x, y)
-	if unit then
-		unit:SetScenarioData(encampmentID)
-	end
-end
-
-local function SpawnRoamingUnit(iPlot, unitTypeID, encampmentID)
-	local x, y = GetXYFromPlotIndex(iPlot)
-	for loopX, loopY in PlotToRadiusIterator(x, y, 1, nil, nil, false) do
-		local loopPlot = GetPlotFromXY(loopX, loopY)
-		if not loopPlot:IsUnit() and not loopPlot:IsWater() and loopPlot:GetPlotType() ~= PLOT_MOUNTAIN and not loopPlot:IsImpassable() then
-			local player = Players[BARB_PLAYER_INDEX]
-			print("PazDebug Adding Encampment roaming unit ", loopX, loopY, encampmentID, GameInfo.Units[unitTypeID].Type)
-			local unit = player:InitUnit(unitTypeID, loopX, loopY)
-			if unit then
-				unit:SetScenarioData(encampmentID)
-			end
-			return
+local function AddEncampmentBaseUnit(plot, encampmentID)
+	if GetPlotForSpawn(plot, BARB_PLAYER_INDEX, 0, false, true, false, false, false, true) then			--safety test (bIgnoreOwn1UPT = true since previous base unit may be in delayed death) 
+		local barbPlayer = Players[BARB_PLAYER_INDEX]
+		local unitTypeID = g_currentBaseUnit1[encampmentID]
+		if g_currentBaseUnit2[encampmentID] and Rand(2, "hello") < 1 then
+			unitTypeID = g_currentBaseUnit2[encampmentID]
+		end
+		print("PazDebug Adding Encampment base unit ", unitTypeID, x, y, encampmentID, GameInfo.EaEncampments[encampmentID].Type, GameInfo.Units[unitTypeID].Type)
+		local x, y = plot:GetXY()
+		local unit = barbPlayer:InitUnit(unitTypeID, x, y)
+		if unit then
+			unit:SetScenarioData(encampmentID)
 		end
 	end
 end
 
-local function SpawnSeaUnit(iPlot, unitTypeID, encampmentID)
-	local x, y = GetXYFromPlotIndex(iPlot)
-	for loopX, loopY in PlotToRadiusIterator(x, y, 1, nil, nil, false) do
-		local loopPlot = GetPlotFromXY(loopX, loopY)
-		if not loopPlot:IsUnit() and loopPlot:IsWater() and not loopPlot:IsLake() and loopPlot:GetFeatureType() ~= FEATURE_ICE then
-			local player = Players[BARB_PLAYER_INDEX]
-			print("PazDebug Adding Encampment sea unit ", loopX, loopY, encampmentID, GameInfo.Units[unitTypeID].Type)
-			local unit = player:InitUnit(unitTypeID, loopX, loopY)
-			if unit then
-				unit:SetScenarioData(encampmentID)
-			end
-			return
-		end
-	end
-end
-
-local function UpdateBaseUnit(encampmentID)			--kick out present unit if obsolete and replace with new
+local function UpdateBaseUnit(encampmentID)			--kill present unit if obsolete and replace with new
 	print("UpdateBaseUnit for ", GameInfo.EaEncampments[encampmentID].Type)
 	for iPlot, loopEncampmentID	in pairs(gWorld.encampments) do
 		if loopEncampmentID == encampmentID then
@@ -246,7 +216,7 @@ local function UpdateBaseUnit(encampmentID)			--kick out present unit if obsolet
 						--unit:JumpToNearestValidPlot()
 						MapModData.bBypassOnCanSaveUnit = true
 						unit:Kill(true, -1)
-						AddEncampmentBaseUnit(iPlot, encampmentID)
+						AddEncampmentBaseUnit(plot, encampmentID)
 					end
 					break
 				end
@@ -550,7 +520,7 @@ function InitUpgradeEncampment(iPlot, x, y, plot, upgradeTechID)	--called from P
 	--	plot:SetScriptData(tostring(encampmentID) .. encampmentAdj)
 	--end
 	if not prevEncampmentID then							--new encampment init
-		AddEncampmentBaseUnit(iPlot, encampmentID)
+		AddEncampmentBaseUnit(plot, encampmentID)
 	elseif prevEncampmentID ~= encampmentID then
 
 
@@ -568,7 +538,7 @@ end
 
 function BarbSpawnPerTurn()		--called right after PlotsPerTurn()
 	print("Running BarbSpawnPerTurn")
-	local player = Players[BARB_PLAYER_INDEX]
+	local barbPlayer = Players[BARB_PLAYER_INDEX]
 	local encampments = gWorld.encampments
 	local adjGameTurn = Game.GetGameTurn() / GAME_SPEED_MULTIPLIER
 
@@ -605,7 +575,7 @@ function BarbSpawnPerTurn()		--called right after PlotsPerTurn()
 		campsByArea[iArea] = (campsByArea[iArea] or 0) + 1
 	end
 	--unit counting and healing at encampment
-	for unit in player:Units() do
+	for unit in barbPlayer:Units() do
 		local unitTypeID = unit:GetUnitType()
 		if barbUnitPower[unitTypeID] then			--not a captured unit
 			local plot = unit:GetPlot()
@@ -685,11 +655,18 @@ function BarbSpawnPerTurn()		--called right after PlotsPerTurn()
 			print("Roam chance/roll/unitPower/density ", chance, dice, unitPower, density)
 			if dice < chance then
 				local unitTypeID = roamUnit1
-				if roamUnit2 and Rand(2, "hello") < 1 then
+				if roamUnit2 and Rand(2, "hello") == 0 then
 					unitTypeID = roamUnit2
 				end
-				print("PazDebug Trying to add roaming unit ", iPlot, GameInfo.EaEncampments[encampmentID].Type, GameInfo.Units[unitTypeID].Type)
-				SpawnRoamingUnit(iPlot, unitTypeID, encampmentID)
+				local spawnPlot = GetPlotForSpawn(plot, BARB_PLAYER_INDEX, 1, true, false, false, false, true, true)
+				if spawnPlot then
+					local x, y = spawnPlot:GetXY()
+					print("PazDebug Adding Encampment roaming unit ", x, y, encampmentID, GameInfo.Units[unitTypeID].Type)
+					local unit = barbPlayer:InitUnit(unitTypeID, x, y)
+					if unit then
+						unit:SetScenarioData(encampmentID)
+					end
+				end
 			end
 		end
 
@@ -709,17 +686,23 @@ function BarbSpawnPerTurn()		--called right after PlotsPerTurn()
 			print("Sea chance/roll/unitPower/density ", chance, dice, unitPower, density)
 			if dice < chance then
 				local unitTypeID = seaUnit1
-				if seaUnit2 and Rand(2, "hello") < 1 then
+				if seaUnit2 and Rand(2, "hello") == 0 then
 					unitTypeID = seaUnit2
 				end
-				print("PazDebug Trying to add sea unit ", iPlot, GameInfo.EaEncampments[encampmentID].Type, GameInfo.Units[unitTypeID].Type)
-				SpawnSeaUnit(iPlot, unitTypeID, encampmentID)
+				local spawnPlot = GetPlotForSpawn(plot, BARB_PLAYER_INDEX, 1, true, false, true, false, true, true)
+				if spawnPlot then
+					local x, y = spawnPlot:GetXY()
+					print("PazDebug Adding Encampment sea unit ", x, y, encampmentID, GameInfo.Units[unitTypeID].Type)
+					local unit = barbPlayer:InitUnit(unitTypeID, x, y)
+					if unit then
+						unit:SetScenarioData(encampmentID)
+					end
+				end
 			end
 		end
 	end
 
 	--Undead / Demons
-	--undead/demon spawning and breach/blight spread
 	local armageddonStage = gWorld.armageddonStage
 	local manaDepletion = 1 - (gWorld.sumOfAllMana / MapModData.STARTING_SUM_OF_ALL_MANA)
 	local demonUndeadSpawn = 0
@@ -735,28 +718,26 @@ function BarbSpawnPerTurn()		--called right after PlotsPerTurn()
 		local plot = GetPlotByIndex(iPlot)		
 		local iArea = plot:GetArea()
 		local numberByArea = g_barbsByEncampmentTypeByArea[-1][iArea] or 0
-		local adjSpawn = demonUndeadSpawn / (numberByArea + 1)
+		local spawnChance = demonUndeadSpawn / (numberByArea + 1)
 
 		--temp increase since we don't have old battlefield spawns yet (only using city graveyards)
-		adjSpawn = adjSpawn * 3
+		spawnChance = spawnChance * 3
 
-		print("Undead spawn plot; iPlot, iArea, numberByArea, adjSpawn = ", iPlot, iArea, numberByArea, adjSpawn)
-		if 0 < adjSpawn and Rand(100, "hello") < adjSpawn then
-			local undeadUnitID
-			local dice = Rand(2, "hello")
-			if dice == 0 then
-				undeadUnitID = GameInfoTypes.UNIT_SKELETON_SWORDSMEN
-			else
-				undeadUnitID = GameInfoTypes.UNIT_ZOMBIES
-			end
-			local spawnPlot = GetRandomAdjacentPlot(plot)		--plot is really city plot so we need an adjacent
+		print("Undead spawn plot; iPlot, iArea, numberByArea, spawnChance = ", iPlot, iArea, numberByArea, spawnChance)
+		if 0 < spawnChance and Rand(100, "hello") < spawnChance then
+			local spawnPlot = GetPlotForSpawn(plot, BARB_PLAYER_INDEX, 2, true, false, false, false, true, true)		--plot in this case is city plot so we need surrounding
 			if spawnPlot then
-				local newUnit = Players[BARB_PLAYER_INDEX]:InitUnit(undeadUnitID, spawnPlot:GetX(), spawnPlot:GetY())
+				local undeadUnitID
+				local dice = Rand(2, "hello")
+				if dice == 0 then
+					undeadUnitID = GameInfoTypes.UNIT_SKELETON_SWORDSMEN
+				else
+					undeadUnitID = GameInfoTypes.UNIT_ZOMBIES
+				end
+				local x, y = spawnPlot:GetXY()
+				local newUnit = barbPlayer:InitUnit(undeadUnitID, x, y)
 				spawnPlot:AddFloatUpMessage(Locale.Lookup("TXT_KEY_EA_UNDEAD_SPAWN"))
 				newUnit:SetScenarioData(-1)
-				if spawnPlot:GetNumFriendlyUnitsOfType(newUnit) > 1 then
-					newUnit:JumpToNearestValidPlot()
-				end
 			end
 		end
 	end
@@ -766,23 +747,24 @@ function BarbSpawnPerTurn()		--called right after PlotsPerTurn()
 		local plot = GetPlotByIndex(iPlot)
 		local iArea = plot:GetArea()
 		local numberByArea = g_barbsByEncampmentTypeByArea[-1][iArea] or 0
-		local adjSpawn = demonUndeadSpawn / (numberByArea + 1)
-		print("Demon spawn plot; iPlot, iArea, numberByArea, adjSpawn = ", iPlot, iArea, numberByArea, adjSpawn)
-		if 0 < adjSpawn and Rand(100, "hello") < adjSpawn then
-			local demonUnitID
-			local dice = Rand(3, "hello")
-			if dice == 0 then
-				demonUnitID = GameInfoTypes.UNIT_HORMAGAUNT
-			elseif dice == 1 then
-				demonUnitID = GameInfoTypes.UNIT_DEMON_I
-			else
-				demonUnitID = GameInfoTypes.UNIT_UNIT_DEMON_II
-			end
-			local newUnit = Players[BARB_PLAYER_INDEX]:InitUnit(demonUnitID, plot:GetX(), plot:GetY())
-			plot:AddFloatUpMessage(Locale.Lookup("TXT_KEY_EA_DEMON_SPAWN"))
-			newUnit:SetScenarioData(-1)
-			if plot:GetNumFriendlyUnitsOfType(newUnit) > 1 then
-				newUnit:JumpToNearestValidPlot()
+		local spawnChance = demonUndeadSpawn / (numberByArea + 1)
+		print("Demon spawn plot; iPlot, iArea, numberByArea, spawnChance = ", iPlot, iArea, numberByArea, spawnChance)
+		if 0 < spawnChance and Rand(100, "hello") < spawnChance then
+			local spawnPlot = GetPlotForSpawn(plot, BARB_PLAYER_INDEX, 2, false, false, false, false, true, true)
+			if spawnPlot then
+				local demonUnitID
+				local dice = Rand(3, "hello")
+				if dice == 0 then
+					demonUnitID = GameInfoTypes.UNIT_HORMAGAUNT
+				elseif dice == 1 then
+					demonUnitID = GameInfoTypes.UNIT_DEMON_I
+				else
+					demonUnitID = GameInfoTypes.UNIT_UNIT_DEMON_II
+				end
+				local x, y = spawnPlot:GetXY()
+				local newUnit = barbPlayer:InitUnit(demonUnitID, x, y)
+				plot:AddFloatUpMessage(Locale.Lookup("TXT_KEY_EA_DEMON_SPAWN"))
+				newUnit:SetScenarioData(-1)
 			end
 		end
 	end

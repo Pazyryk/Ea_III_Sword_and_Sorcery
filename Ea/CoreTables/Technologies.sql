@@ -150,7 +150,7 @@ UPDATE Technologies SET GoldTrading = 1 WHERE Type = 'TECH_COINAGE';		--TO DO: t
 
 
 UPDATE Technologies SET BridgeBuilding=1 WHERE Type='TECH_ENGINEERING';
-UPDATE Technologies SET OpenBordersTradingAllowed=1 WHERE Type='TECH_GAIN_WITH_NAMING';
+UPDATE Technologies SET AllowEmbassyTradingAllowed = 1, OpenBordersTradingAllowed = 1 WHERE Type='TECH_GAIN_WITH_NAMING';
 UPDATE Technologies SET WaterWork = 1 WHERE Type = 'TECH_FISHING';
 UPDATE Technologies SET AllowsEmbarking = 1 WHERE Type = 'TECH_SAILING';
 UPDATE Technologies SET EmbarkedAllWaterPassage = 1 WHERE Type IN ('TECH_ASTRONOMY', 'TECH_ALLOW_ALL_WATER_PASSAGE');

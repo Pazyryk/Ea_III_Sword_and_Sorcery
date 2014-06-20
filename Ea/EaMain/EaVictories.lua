@@ -47,6 +47,16 @@ function TestUpdateVictory(iPlayer)
 
 	local player = Players[iPlayer]
 	local eaPlayer = gPlayers[iPlayer]
+	if not eaPlayer then		--iPlayer might be autoplay observer, so pick anyone alive and do test
+		for iLoopPlayer, eaLoopPlayer in pairs(fullCivs) do
+			local loopPlayer = Players[iPlayer]
+			if loopPlayer and loopPlayer:IsAlive() then
+				iPlayer, eaPlayer, player = iLoopPlayer, eaLoopPlayer, loopPlayer
+				break
+			end
+		end
+	end
+
 	local modScore = 0
 
 	--Protector

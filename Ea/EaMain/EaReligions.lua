@@ -480,9 +480,10 @@ function BecomeFallen(iPlayer)		--this could happen before, during or after the 
 				end
 
 				--convert subclass
-				if eaPerson.subclass == "Priest" then	--still uses priest unitType, but gains thaumaturge class
+				if eaPerson.subclass == "Priest" then
 					eaPerson.subclass = "FallenPriest"
 					eaPerson.class2 = "Thaumaturge"
+					RegisterGPActions(iPerson)
 					eaPerson.unitTypeID = GameInfoTypes.UNIT_FALLENPRIEST
 					local newUnit = player:InitUnit(GameInfoTypes.UNIT_FALLENPRIEST, unit:GetX(), unit:GetY())
 					MapModData.bBypassOnCanSaveUnit = true
@@ -491,6 +492,7 @@ function BecomeFallen(iPlayer)		--this could happen before, during or after the 
 					eaPerson.iUnit = newUnit:GetID()
 				elseif eaPerson.subclass == "Paladin" then
 					eaPerson.subclass = "Eidolon"
+					RegisterGPActions(iPerson)
 					eaPerson.unitTypeID = GameInfoTypes.UNIT_EIDOLON
 					local newUnit = player:InitUnit(GameInfoTypes.UNIT_EIDOLON, unit:GetX(), unit:GetY())
 					MapModData.bBypassOnCanSaveUnit = true

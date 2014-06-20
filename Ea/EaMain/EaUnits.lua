@@ -278,30 +278,35 @@ function HireMercenary(iPlayer, unit, upFront, gpt)
 	local player = Players[iPlayer]
 	local unitTypeID = unit:GetUnitType()
 	local iOriginalOwner = unit:GetOriginalOwner()
-	local newUnit = player:InitUnit(unitTypeID, unit:GetX(), unit:GetY())
-	if newUnit then
-		newUnit:SetOriginalOwner(iOriginalOwner)
-		local iNewUnit = newUnit:GetID()
-		local mercenaries = gPlayers[iPlayer].mercenaries
-		mercenaries[iOriginalOwner] = mercenaries[iOriginalOwner] or {}
-		mercenaries[iOriginalOwner][iNewUnit] = gpt
-		player:ChangeGold(-upFront)
-		MapModData.bBypassOnCanSaveUnit = true
-		newUnit:Convert(unit)		--sets xp, level, promotions (but not original owner)
-		newUnit:SetHasPromotion(PROMOTION_MERCENARY, true)
-		newUnit:SetHasPromotion(PROMOTION_FOR_HIRE, false)
-		if newUnit:IsHasPromotion(PROMOTION_STRONG_MERCENARY_INACTIVE) then
-			newUnit:SetHasPromotion(PROMOTION_STRONG_MERCENARY_INACTIVE, false)
-			newUnit:SetHasPromotion(PROMOTION_STRONG_MERCENARY, true)
-		end
-		newUnit:JumpToNearestValidPlot()
-		newUnit:FinishMoves()
-		newUnit:SetMorale(0)
-		if iPlayer == g_iActivePlayer then
-			UI.SelectUnit(newUnit)
-			UI.LookAtSelectionPlot(0)
-			local hex = ToHexFromGrid(Vector2(newUnit:GetX(), newUnit:GetY()))
-			Events.GameplayFX(hex.x, hex.y, -1)
+
+	local spawnPlot = GetPlotForSpawn(unit:GetPlot(), iPlayer, 2, false, false, false, false, true, false, unit)
+	if spawnPlot then
+		local unitTypeID = unit:GetUnitType()
+		local x, y = spawnPlot:GetXY()
+		local newUnit = player:InitUnit(unitTypeID, x, y)
+		if newUnit then
+			newUnit:SetOriginalOwner(iOriginalOwner)
+			local iNewUnit = newUnit:GetID()
+			local mercenaries = gPlayers[iPlayer].mercenaries
+			mercenaries[iOriginalOwner] = mercenaries[iOriginalOwner] or {}
+			mercenaries[iOriginalOwner][iNewUnit] = gpt
+			player:ChangeGold(-upFront)
+			MapModData.bBypassOnCanSaveUnit = true
+			newUnit:Convert(unit)		--sets xp, level, promotions (but not original owner)
+			newUnit:SetHasPromotion(PROMOTION_MERCENARY, true)
+			newUnit:SetHasPromotion(PROMOTION_FOR_HIRE, false)
+			if newUnit:IsHasPromotion(PROMOTION_STRONG_MERCENARY_INACTIVE) then
+				newUnit:SetHasPromotion(PROMOTION_STRONG_MERCENARY_INACTIVE, false)
+				newUnit:SetHasPromotion(PROMOTION_STRONG_MERCENARY, true)
+			end
+
+			newUnit:FinishMoves()
+			newUnit:SetMorale(0)
+			if iPlayer == g_iActivePlayer then
+				UI.SelectUnit(newUnit)
+				UI.LookAtSelectionPlot(0)
+				spawnPlot:AddFloatUpMessage("Hired mercenary!", 2)
+			end
 		end
 	end
 end
@@ -324,21 +329,30 @@ function DismissMercenary(iPlayer, iUnit)
 		local originalOwner = Players[iOriginalOwner]
 		local bConverted = false
 		if originalOwner and originalOwner:IsAlive() then
-			local unitTypeID = unit:GetUnitType()
-			local newUnit = originalOwner:InitUnit(unitTypeID, unit:GetX(), unit:GetY())
-			if newUnit then
-				print("Merc has been dismissed")				
-				bConverted = true
-				MapModData.bBypassOnCanSaveUnit = true
-				newUnit:Convert(unit)
-				newUnit:SetHasPromotion(PROMOTION_MERCENARY, false)
-				if newUnit:IsHasPromotion(PROMOTION_STRONG_MERCENARY) then
-					newUnit:SetHasPromotion(PROMOTION_STRONG_MERCENARY, false)
-					newUnit:SetHasPromotion(PROMOTION_STRONG_MERCENARY_INACTIVE, true)
+			local spawnPlot = GetPlotForSpawn(unit:GetPlot(), iOriginalOwner, 2, false, false, false, false, true, false, unit)
+			if spawnPlot then
+				local unitTypeID = unit:GetUnitType()
+				local x, y = spawnPlot:GetXY()
+				local newUnit = originalOwner:InitUnit(unitTypeID, x, y)
+				if newUnit then
+					bConverted = true
+					MapModData.bBypassOnCanSaveUnit = true
+					newUnit:Convert(unit)
+					newUnit:SetOriginalOwner(iOriginalOwner)
+					newUnit:SetHasPromotion(PROMOTION_MERCENARY, false)
+					if newUnit:IsHasPromotion(PROMOTION_STRONG_MERCENARY) then
+						newUnit:SetHasPromotion(PROMOTION_STRONG_MERCENARY, false)
+						newUnit:SetHasPromotion(PROMOTION_STRONG_MERCENARY_INACTIVE, true)
+					end
+					print("Merc has been dismissed")
+					if iOriginalOwner == g_iActivePlayer then
+						spawnPlot:AddFloatUpMessage("Mercenary was dismissed", 1)
+					elseif iPlayer == g_iActivePlayer then
+						spawnPlot:AddFloatUpMessage("Dismissed mercenary", 1)
+					end
+				else
+					print("!!!! WARNING: Merc was dismissed but original civ did not get it back !!!!")
 				end
-				newUnit:JumpToNearestValidPlot()
-			else
-				print("!!!! WARNING: Merc was dismissed but original civ did not get it back !!!!")
 			end
 		else
 			print("Merc has been dismissed; original owner is no longer alive so unit destroyed")
@@ -387,8 +401,8 @@ function UnitPerCivTurn(iPlayer)	--runs for full civs and city states
 	for unit in player:Units() do
 		local iUnit = unit:GetID()
 		local plot = unit:GetPlot()
+		local iPlot = plot:GetPlotIndex()
 		local iPlotOwner = plot:GetOwner()
-		local x, y, iPlot = plot:GetXYIndex()
 		local unitTypeID = unit:GetUnitType()
 
 		--Debug
@@ -457,16 +471,26 @@ function UnitPerCivTurn(iPlayer)	--runs for full civs and city states
 			elseif gg_eaSpecial[unitTypeID] == "Undead" then
 				local iSummoner = unit:GetSummonerIndex()
 				if iSummoner == -99 or not gPeople[iSummoner] then
-					local dice = Rand(6, "hello")
+					local dice = Rand(15, "hello")
 					if dice == 0 then
-						MapModData.bBypassOnCanSaveUnit = true
-						unit:Kill(true, -1)
-						Players[BARB_PLAYER_INDEX]:InitUnit(unitTypeID, x, y)
-						plot:AddFloatUpMessage("Unbound dead has gone hostile!", 1)
-					elseif dice < 3 then
-						MapModData.bBypassOnCanSaveUnit = true
-						unit:Kill(true, -1)
-						plot:AddFloatUpMessage("Unbound dead has un-animated", 1)
+						local spawnPlot = GetPlotForSpawn(plot, BARB_PLAYER_INDEX, 2, false, false, false, false, false, false, unit)
+						if spawnPlot then
+							local x, y = spawnPlot:GetXY()
+							MapModData.bBypassOnCanSaveUnit = true
+							local newUnit = Players[BARB_PLAYER_INDEX]:InitUnit(unitTypeID, x, y)
+							newUnit:Convert(unit, false)
+							iUnit = newUnit:GetID()
+							unit = newUnit			
+							spawnPlot:AddFloatUpMessage("Unbound dead has gone hostile!", 1)
+						else
+							MapModData.bBypassOnCanSaveUnit = true
+							unit:Kill(true, -1)
+							plot:AddFloatUpMessage("Unbound dead has un-animated", 1)						
+						end
+					--elseif dice < 3 then
+					--	MapModData.bBypassOnCanSaveUnit = true
+					--	unit:Kill(true, -1)
+					--	plot:AddFloatUpMessage("Unbound dead has un-animated", 1)
 					end				
 				end
 			end

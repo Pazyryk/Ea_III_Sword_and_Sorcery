@@ -51,14 +51,17 @@ function GetRestorerVictoryData(iPlayer)
 	local livingTerrainAdded = eaPlayer.livingTerrainAdded or 0
 	local livingTerrainStrengthAdded = eaPlayer.livingTerrainStrengthAdded or 0
 	local aveWorldLivingTerrainStrength = MapModData.totalLivingTerrainStrength / MapModData.validForestJunglePlots
+	local harmonicMean = (MapModData.validForestJunglePlots / MapModData.harmonicMeanDenominator) - 1
+	local hmNeeded = (gT.gWorld.panCivsEver + 2) * 400 / MapModData.validForestJunglePlots
+
 
 	--Generate score
 	local score = Floor(livingTerrainAdded + livingTerrainStrengthAdded / 5)
 
 	--Test victory conditions
-	local bVictory = score > 0 and aveWorldLivingTerrainStrength >= 5 
+	local bVictory = score > 0 and harmonicMean >= hmNeeded
 
-	return score, bVictory, livingTerrainAdded, livingTerrainStrengthAdded, aveWorldLivingTerrainStrength
+	return score, bVictory, livingTerrainAdded, livingTerrainStrengthAdded, harmonicMean, hmNeeded
 end
 
 function GetSubduerVictoryData(iPlayer)
@@ -69,6 +72,7 @@ function GetSubduerVictoryData(iPlayer)
 	local worldPopulation = 100 * playerPopulation / Game.GetTotalPopulation()
 	local worldLand = 100 * player:GetTotalLand() / MapModData.ownablePlots
 	local aveWorldLivingTerrainStrength = MapModData.totalLivingTerrainStrength / MapModData.validForestJunglePlots
+	
 
 	--Generate score
 	local score = Floor(playerPopulation + 10 * worldLand)

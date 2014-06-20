@@ -225,7 +225,7 @@ function AnimalsPerTurn()	--Runs after PlotsPerTurn() so we have current info in
 	while plotNumber <= numAnimalSpawnPlots do
 		local iPlot = gg_animalSpawnPlots[plotNumber]
 		local plot = GetPlotByIndex(iPlot)
-		if plot:GetNumUnits() == 0 then	--small chance that barb spawned here since PlotsPerTurn
+		if GetPlotForSpawn(plot, ANIMALS_PLAYER_INDEX, 0, false, false, plot:IsWater(), true, false, true) then	--safety test
 			local x, y = plot:GetXY()
 			local animalUnitTypeID = GetAnimalForPlot(plot)
 			animals:InitUnit(animalUnitTypeID, x, y)

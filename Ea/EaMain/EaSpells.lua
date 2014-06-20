@@ -43,6 +43,7 @@ local RELIGION_THE_WEAVE_OF_EA =			GameInfoTypes.RELIGION_THE_WEAVE_OF_EA
 local TERRAIN_GRASS =						GameInfoTypes.TERRAIN_GRASS
 local TERRAIN_PLAINS =						GameInfoTypes.TERRAIN_PLAINS
 local TERRAIN_TUNDRA =						GameInfoTypes.TERRAIN_TUNDRA
+local UNIT_LICH =							GameInfoTypes.UNIT_LICH
 
 local UNHAPPINESS_PER_CITY =				GameDefines.UNHAPPINESS_PER_CITY
 
@@ -127,6 +128,7 @@ local g_joinedUnit
 
 local g_unitX						--same as g_x, g_y below if no targetX,Y supplied in function call
 local g_unitY
+local g_bEmbarked
 
 local g_bTarget						--true if targetX, targetY provided; otherwise, values are for g_unitX, g_unitY
 local g_iPlot
@@ -386,38 +388,45 @@ function TestEaSpellForHumanUI(eaActionID, iPlayer, unit, iPerson, testX, testY)
 
 	--By default, text will be from eaAction.Help. If we want something else, then we must change below or in action-specific SetUI function.
 
+
+	if g_bEmbarked then
+		MapModData.text = "[COLOR_WARNING_TEXT]Cannot cast spell while embarked[ENDCOLOR]"
+	end
+
 	--Set UI for unique builds (generic way; it can be overriden by specific SetUI funtion)
-	if g_bUniqueBlocked then
-		if g_eaAction.UniqueType == "World" then
-			if gWorldUniqueAction[eaActionID] then
-				if gWorldUniqueAction[eaActionID] ~= -1 then	--being built
-					local bMyCiv = false
-					for iPerson, eaPerson in pairs(gPeople) do
-						if eaPerson.iPlayer == iPlayer and gWorldUniqueAction[eaActionID] == iPerson then
-							bMyCiv = true
-							break
+	if MapModData.text == "no help text" then
+		if g_bUniqueBlocked then
+			if g_eaAction.UniqueType == "World" then
+				if gWorldUniqueAction[eaActionID] then
+					if gWorldUniqueAction[eaActionID] ~= -1 then	--being built
+						local bMyCiv = false
+						for iPerson, eaPerson in pairs(gPeople) do
+							if eaPerson.iPlayer == iPlayer and gWorldUniqueAction[eaActionID] == iPerson then
+								bMyCiv = true
+								break
+							end
+						end
+						if bMyCiv then
+							MapModData.text = "[COLOR_WARNING_TEXT]Another Great Person from your civilization is working on this...[ENDCOLOR]"
+						else
+							MapModData.text = "[COLOR_WARNING_TEXT]A Great Person from another civilization is working on this...[ENDCOLOR]"
 						end
 					end
-					if bMyCiv then
+				end		
+			elseif g_eaAction.UniqueType == "National" then
+				if g_eaPlayer.nationalUniqueAction[eaActionID] then
+					if g_eaPlayer.nationalUniqueAction[eaActionID] ~= -1 then	--being built
 						MapModData.text = "[COLOR_WARNING_TEXT]Another Great Person from your civilization is working on this...[ENDCOLOR]"
-					else
-						MapModData.text = "[COLOR_WARNING_TEXT]A Great Person from another civilization is working on this...[ENDCOLOR]"
 					end
 				end
-			end		
-		elseif g_eaAction.UniqueType == "National" then
-			if g_eaPlayer.nationalUniqueAction[eaActionID] then
-				if g_eaPlayer.nationalUniqueAction[eaActionID] ~= -1 then	--being built
-					MapModData.text = "[COLOR_WARNING_TEXT]Another Great Person from your civilization is working on this...[ENDCOLOR]"
-				end
 			end
+		elseif g_bSomeoneElseDoingHere then		--true only if all other tests passed
+			MapModData.text = "[COLOR_WARNING_TEXT]You cannot do this in the same place as another great person from your civilization[ENDCOLOR]"	
 		end
-	elseif g_bSomeoneElseDoingHere then		--true only if all other tests passed
-		MapModData.text = "[COLOR_WARNING_TEXT]You cannot do this in the same place as another great person from your civilization[ENDCOLOR]"	
 	end
 
 
-	if not g_bSufficientFaith then
+	if MapModData.text == "no help text" and not g_bSufficientFaith then
 		local magicStuff = g_eaPlayer.bUsesDivineFavor and "divine favor" or "mana"
 		if g_faith < 1 then
 			MapModData.text = "[COLOR_WARNING_TEXT]You do not have any " .. magicStuff .. "![ENDCOLOR]"
@@ -425,7 +434,6 @@ function TestEaSpellForHumanUI(eaActionID, iPlayer, unit, iPerson, testX, testY)
 			MapModData.text = "[COLOR_WARNING_TEXT]You do not have sufficient " .. magicStuff .. " to cast this spell (at least " .. g_value .. " needed, maybe more)[ENDCOLOR]"
 		end
 	end
-
 
 	if SetUI[eaActionID] then
 		SetUI[eaActionID]()
@@ -460,6 +468,9 @@ function TestEaSpell(eaActionID, iPlayer, unit, iPerson, testX, testY, bAINonTar
 	if not g_SpellClass then
 		error("TestEaSpell g_eaAction did not have a SpellClass")
 	end
+
+	g_bEmbarked = unit:IsEmbarked()
+	if g_bEmbarked then return false end
 
 	--skip all world and civ-level reqs (for spells, these only apply to learning not casting) except for FixedFaith
 	if not iPerson then return false end	--we'll handle non-GP spellcasting later
@@ -1089,7 +1100,14 @@ local function ModelSummon_TestTarget()
 			g_testTargetSwitch = 5
 			return false
 		end
-		return true
+		g_obj1 = GetPlotForSpawn(g_plot, g_iPlayer, 1, false, false, false, false, true, false)
+		if g_obj1 then
+			return true
+		else
+			g_testTargetSwitch = 6
+			return false
+		end
+
 	else
 		--make our unit list here so we can share it with UI and AI
 		g_count = 0		--number units can summon
@@ -1136,7 +1154,14 @@ local function ModelSummon_TestTarget()
 				return false
 			end
 		end
-		return true
+
+		g_obj1 = GetPlotForSpawn(g_plot, g_iPlayer, 1, false, false, false, false, true, false)
+		if g_obj1 then
+			return true
+		else
+			g_testTargetSwitch = 6
+			return false
+		end
 	end
 end
 
@@ -1151,12 +1176,14 @@ local function ModelSummon_SetUI()
 			else
 				if g_testTargetSwitch == 5 then
 					local name = Locale.Lookup(GameInfo.Units[g_int1].Description)
-					MapModData.text = "You need " .. g_value .. " mana to summon " .. name
+					MapModData.text = "[COLOR_WARNING_TEXT]You need " .. g_value .. " mana to summon " .. name .. "[ENDCOLOR]"
+				elseif g_testTargetSwitch == 6 then
+					MapModData.text = "[COLOR_WARNING_TEXT]You cannont summon onto current or adjacent plots[ENDCOLOR]"
 				elseif g_testTargetSwitch == 10 then
 					local currentName = Locale.Lookup(GameInfo.Units[gg_summonedArchdemon[g_iPlayer] ].Description)
-					MapModData.text = "You cannot summon another archdemon while " .. currentName .. " walks this world"
+					MapModData.text = "[COLOR_WARNING_TEXT]You cannot summon another archdemon while " .. currentName .. " walks this world[ENDCOLOR]"
 				elseif g_testTargetSwitch == 11 then
-					MapModData.text = "All eight archdemons have been summoned; isn't it time to wrap this up...?"
+					MapModData.text = "[COLOR_WARNING_TEXT]All eight archdemons have been summoned; isn't it time to wrap this up...?[ENDCOLOR]"
 				end
 			end
 			return
@@ -1167,12 +1194,14 @@ local function ModelSummon_SetUI()
 			else
 				if g_testTargetSwitch == 5 then
 					local name = Locale.Lookup(GameInfo.Units[g_int1].Description)
-					MapModData.text = "You need " .. g_value .. " mana to call " .. name
+					MapModData.text = "[COLOR_WARNING_TEXT]You need " .. g_value .. " mana to call " .. name .. "[ENDCOLOR]"
+				elseif g_testTargetSwitch == 6 then
+					MapModData.text = "[COLOR_WARNING_TEXT]You cannont call onto current or adjacent plots[ENDCOLOR]"
 				elseif g_testTargetSwitch == 10 then
 					local currentName = Locale.Lookup(GameInfo.Units[gg_calledArchangel[g_iPlayer] ].Description)
-					MapModData.text = "You cannot call another archangel while " .. currentName .. " walks this world"
+					MapModData.text = "[COLOR_WARNING_TEXT]You cannot call another archangel while " .. currentName .. " walks this world[ENDCOLOR]"
 				elseif g_testTargetSwitch == 11 then
-					MapModData.text = "All twelve archangels have been summoned..."
+					MapModData.text = "[COLOR_WARNING_TEXT]All twelve archangels have been summoned...[ENDCOLOR]"
 				end
 			end
 			return
@@ -1183,19 +1212,21 @@ local function ModelSummon_SetUI()
 			else
 				if g_testTargetSwitch == 5 then
 					local name = Locale.Lookup(GameInfo.Units[g_int1].Description)
-					MapModData.text = "You need " .. g_value .. " mana to call " .. name
+					MapModData.text = "[COLOR_WARNING_TEXT]You need " .. g_value .. " mana to call " .. name .. "[ENDCOLOR]"
+				elseif g_testTargetSwitch == 6 then
+					MapModData.text = "[COLOR_WARNING_TEXT]You cannont call onto current or adjacent plots[ENDCOLOR]"
 				elseif g_testTargetSwitch == 10 then
 					local currentName = Locale.Lookup(GameInfo.Units[gg_calledMajorSpirit[g_iPlayer] ].Description)
-					MapModData.text = "You cannot call another major spirit while " .. currentName .. " walks this world"
+					MapModData.text = "[COLOR_WARNING_TEXT]You cannot call another major spirit while " .. currentName .. " walks this world[ENDCOLOR]"
 				elseif g_testTargetSwitch == 11 then
-					MapModData.text = "You must be allied and have friendship of 500 with a major spirit that has not been called"
+					MapModData.text = "[COLOR_WARNING_TEXT]You must be allied and have friendship of 500 with a major spirit that has not been called[ENDCOLOR]"
 				end
 			end
 			return
 		end
 
 		--all the rest
-		local verb, verbCap, unitStr, unitPlurStr				-- my apologies to who ever tries to localize this... 
+		local verb, verbCap, unitStr, unitPlurStr				-- apologies to who ever tries to localize this... 
 		if g_eaActionID == EA_SPELL_CONJURE_MONSTER then
 			verb, verbCap, unitStr, unitPlurStr = "conjure", "Conjure", "monster", "monsters"
 		elseif g_eaActionID == EA_SPELL_REANIMATE_DEAD then
@@ -1235,8 +1266,9 @@ local function ModelSummon_SetUI()
 			MapModData.text = "[COLOR_WARNING_TEXT]Not enough mana to " .. verb .. " additional " .. unitPlurStr .. "[ENDCOLOR]"
 		elseif g_testTargetSwitch == 4 then
 			MapModData.text = "[COLOR_WARNING_TEXT]Your current spell modifier (" .. g_modSpell .. ") is insufficient to " .. verb .. " any " .. unitPlurStr .. " (need " .. Floor(g_int2 * g_modSpell / g_modSpellTimesTurns + 0.9999) .. ")[ENDCOLOR]"
+		elseif g_testTargetSwitch == 6 then
+			MapModData.text = "[COLOR_WARNING_TEXT]You cannont " .. verb .. " onto current or adjacent plots[ENDCOLOR]"
 		end
-
 	end
 end
 
@@ -1268,22 +1300,20 @@ local function ModelSummon_Finish()
 
 	g_eaPerson.summonedUnits = g_eaPerson.summonedUnits or {}
 	local summonedUnits = g_eaPerson.summonedUnits
-	local bOverStacked = false
+
 	for i = 1, g_count do
-		local unitTypeID = g_integers[i]
-		local newUnit = g_player:InitUnit(unitTypeID, g_x, g_y)
-		local iUnit = newUnit:GetID()
-		if bUnboundToCaster then
-			newUnit:SetSummonerIndex(-99)
-		else
-			summonedUnits[iUnit] = unitTypeID
-			newUnit:SetSummonerIndex(g_iPerson)
-		end
-		if bOverStacked then
-			newUnit:JumpToNearestValidPlot()
-		elseif g_plot:GetNumFriendlyUnitsOfType(newUnit) > 1 then
-			bOverStacked = true
-			newUnit:JumpToNearestValidPlot()
+		local summonPlot = (i == 1) and g_obj1 or GetPlotForSpawn(g_plot, g_iPlayer, 2, false, false, false, false, false, false)
+		if summonPlot then
+			local unitTypeID = g_integers[i]
+			local x, y = summonPlot:GetXY()
+			local newUnit = g_player:InitUnit(unitTypeID, x, y)
+			local iUnit = newUnit:GetID()
+			if bUnboundToCaster then
+				newUnit:SetSummonerIndex(-99)
+			else
+				summonedUnits[iUnit] = unitTypeID
+				newUnit:SetSummonerIndex(g_iPerson)
+			end
 		end
 	end
 	UseManaOrDivineFavor(g_iPlayer, g_iPerson, g_value, false)
@@ -1461,7 +1491,6 @@ SetUI[GameInfoTypes.EA_SPELL_SEEING_EYE_GLYPH] = function()
 	end
 end
 
---[[ not yet implemented
 SetAIValues[GameInfoTypes.EA_SPELL_SEEING_EYE_GLYPH] = function()
 	local range = Floor(g_modSpell / 5)
 	local addedVisibility = g_plot:IsVisible(g_iTeam) and 0 or 1
@@ -1474,7 +1503,6 @@ SetAIValues[GameInfoTypes.EA_SPELL_SEEING_EYE_GLYPH] = function()
 	end
 	gg_aiOptionValues.i = addedVisibility / 20
 end
-]]
 
 Finish[GameInfoTypes.EA_SPELL_SEEING_EYE_GLYPH] = function()
 	g_plot:SetPlotEffectData(GameInfoTypes.EA_PLOTEFFECT_SEEING_EYE_GLYPH, g_modSpell, g_iPlayer, g_iPerson)	--effectID, effectStength, iPlayer, iCaster
@@ -1645,9 +1673,10 @@ SetUI[GameInfoTypes.EA_SPELL_DETECT_GLYPHS_RUNES_WARDS] = function()
 	end
 end
 
-SetAIValues[GameInfoTypes.EA_SPELL_DETECT_GLYPHS_RUNES_WARDS] = function()
-	gg_aiOptionValues.i = g_count		
-end
+--Disabled
+--SetAIValues[GameInfoTypes.EA_SPELL_DETECT_GLYPHS_RUNES_WARDS] = function()
+--	gg_aiOptionValues.i = g_count		
+--end
 
 Finish[GameInfoTypes.EA_SPELL_DETECT_GLYPHS_RUNES_WARDS] = function()
 	local revealedPlotEffects = g_eaPlayer.revealedPlotEffects
@@ -1925,13 +1954,20 @@ end
 Finish[GameInfoTypes.EA_SPELL_TURN_UNDEAD] = function()
 	for i = 1, g_count do
 		local unit = g_table[i]
-		local plot = unit:GetPlot()
-		local x, y = plot:GetXY()
-		local unitTypeID = unit:GetUnitType()
-		MapModData.bBypassOnCanSaveUnit = true
-		unit:Kill(false, g_iPlayer)
-		g_player:InitUnit(unitTypeID, x, y)
-		plot:AddFloatUpMessage("Turned Undead!", 2)
+		local turnPlot = GetPlotForSpawn(unit:GetPlot(), g_iPlayer, 2, false, false, false, false, false, false, unit)
+		if turnPlot then
+			local x, y = turnPlot:GetXY()
+			local unitTypeID = unit:GetUnitType()
+			local newUnit = g_player:InitUnit(unitTypeID, x, y)
+			newUnit:SetSummonerIndex(-99)
+			MapModData.bBypassOnCanSaveUnit = true
+			newUnit:Convert(unit, false)
+			turnPlot:AddFloatUpMessage("Turned Undead!", 2)
+		else
+			MapModData.bBypassOnCanSaveUnit = true
+			unit:Kill(true, g_iPlayer)
+			unit:GetPlot():AddFloatUpMessage("Turned Undead!", 2)
+		end
 	end
 	UseManaOrDivineFavor(g_iPlayer, g_iPerson, g_value * 2)
 	return true
@@ -2488,9 +2524,13 @@ end
 
 --EA_SPELL_BECOME_LICH
 TestTarget[GameInfoTypes.EA_SPELL_BECOME_LICH] = function()
+	if g_eaPerson.unitTypeID == UNIT_LICH then
+		g_testTargetSwitch = 1
+		return false
+	end
 	if gWonders[EA_WONDER_ARCANE_TOWER][g_iPerson] and gWonders[EA_WONDER_ARCANE_TOWER][g_iPerson].iPlot == g_iPlot then	--only in own tower
 		if g_modSpell < g_unit:GetLevel() then
-			g_testTargetSwitch = 1
+			g_testTargetSwitch = 2
 			return false
 		else
 			return true
@@ -2502,8 +2542,10 @@ end
 SetUI[GameInfoTypes.EA_SPELL_BECOME_LICH] = function()
 	if g_bNonTargetTestsPassed then
 		if g_bAllTestsPassed then
-			MapModData.text = "You will become a Lich, ageless and regenerating in Tower if killed"
+			MapModData.text = "You will become a Lich, ageless and immortal (will regenerate in Tower if killed)"
 		elseif g_testTargetSwitch == 1 then
+			MapModData.text = "[COLOR_WARNING_TEXT]You are already a Lich![ENDCOLOR]"
+		elseif g_testTargetSwitch == 2 then
 			MapModData.text = "[COLOR_WARNING_TEXT]You do not have sufficient Necromancy Modifier to cast this spell (need " .. g_unit:GetLevel() .. ")[ENDCOLOR]"
 		else
 			MapModData.text = "[COLOR_WARNING_TEXT]This spell can be cast only from your Tower[ENDCOLOR]"
@@ -2516,18 +2558,14 @@ SetAIValues[GameInfoTypes.EA_SPELL_BECOME_LICH] = function()
 end
 
 Finish[GameInfoTypes.EA_SPELL_BECOME_LICH] = function()
-	g_eaPerson.unitTypeID = GameInfoTypes.UNIT_LICH
+	g_eaPerson.unitTypeID = UNIT_LICH
 	g_eaPerson.predestinedAgeOfDeath = nil
-	local lich = g_player:InitUnit(GameInfoTypes.UNIT_LICH, g_x, g_y)
+	local lich = g_player:InitUnit(UNIT_LICH, g_x, g_y)
 	g_eaPerson.iUnit = lich:GetID()
 	lich:SetPersonIndex(g_iPerson)
 	MapModData.bBypassOnCanSaveUnit = true
 	lich:Convert(g_unit, false)
 	UseManaOrDivineFavor(g_iPlayer, g_iPerson, lich:GetLevel() * 100)
-
-
-	--kill bypass!!!!
-
 	return true
 end
 

@@ -108,13 +108,15 @@ function UseManaOrDivineFavor(iPlayer, iPerson, pts, bNoDrain, consumedFloatUpPl
 		local eaPerson = gPeople[iPerson]
 		if eaPerson then
 			local unit = player:GetUnitByID(eaPerson.iUnit)
-			local xp = pts
-			if xpBoostFromManaUse[eaPlayer.eaCivNameID] then
-				xp = xp + Floor(pts * xpBoostFromManaUse[eaPlayer.eaCivNameID] / 100)
-			end
-			unit:ChangeExperience(xp)
-			if eaPlayer.bIsFallen then
-				consumedFloatUpPlot = consumedFloatUpPlot or unit:GetPlot()
+			if unit then
+				local xp = pts
+				if xpBoostFromManaUse[eaPlayer.eaCivNameID] then
+					xp = xp + Floor(pts * xpBoostFromManaUse[eaPlayer.eaCivNameID] / 100)
+				end
+				unit:ChangeExperience(xp)
+				if eaPlayer.bIsFallen then
+					consumedFloatUpPlot = consumedFloatUpPlot or unit:GetPlot()
+				end
 			end
 		end
 	end
@@ -198,30 +200,23 @@ function DoDummyUnitRangedAttack(iPlayer, x, y, mod, dummyUnitID)
 	--roughly speaking, mod integer represents adjusted range strength for UNIT_DUMMY_EXPLODER
 	--iPlayer for Animals or Barbarians doesn't work for some reason (barbs can't air attack?) 
 	dummyUnitID = dummyUnitID or UNIT_DUMMY_EXPLODER
-	local player = Players[iPlayer]
-	local targetPlot = GetPlotByXY(x, y)
-	local sector = Rand(6, "hello") + 1
-	for spawnPlot in PlotAreaSpiralIterator(targetPlot, 10, sector, false, false, false) do
-		if spawnPlot:GetNumUnits() == 0 and not spawnPlot:IsCity() then
-			local spawnX, spawnY = spawnPlot:GetXY()
-			local dummyUnit = player:InitUnit(dummyUnitID, spawnX, spawnY)
-			if mod then
-				dummyUnit:SetMorale(mod * 10 - 100)
-			end
-			print("iUnit, CanRangeStrikeAt = ", dummyUnit:GetID(), dummyUnit:CanRangeStrikeAt(x, y))
-			dummyUnit:RangeStrike(x, y)
-			
-			print("IsDead, IsDelayedDeath = ", dummyUnit:IsDead(), dummyUnit:IsDelayedDeath())
-			return true
+
+	local spawnPlot = GetPlotForSpawn(GetPlotByXY(x, y), iPlayer, 10, true, false, nil, true, true, true)
+	if spawnPlot then
+		local player = Players[iPlayer]
+		local spawnX, spawnY = spawnPlot:GetXY()
+		local dummyUnit = player:InitUnit(dummyUnitID, spawnX, spawnY)
+		if mod then
+			dummyUnit:SetMorale(mod * 10 - 100)
 		end
+		print("iUnit, CanRangeStrikeAt = ", dummyUnit:GetID(), dummyUnit:CanRangeStrikeAt(x, y))
+		dummyUnit:RangeStrike(x, y)
+			
+		print("IsDead, IsDelayedDeath = ", dummyUnit:IsDead(), dummyUnit:IsDelayedDeath())
+		return true
 	end
 
-
-	-- DEBUGGING:
-	--
-	-- UNIT_DUMMY_EXPLODER works great for iPlayer = 0, but not 1 (PushMission doesn't do anything)
-	-- UNIT_DUMMY_NUKE caused CTD when I tried GameInfoTypes.MISSION_NUKE
-
+	--works for nuke?
 	--Try GameInfoTypes.MISSION_NUKE with x, y only (as per dll call); then try it with nuke from city
 
 

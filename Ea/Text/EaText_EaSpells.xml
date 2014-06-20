@@ -10,10 +10,10 @@
 			<Text>placeholder</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_SEEING_EYE_GLYPH">
-			<Text>Inscribe Seeing Eye Glyph</Text>
+			<Text>Seeing Eye Glyph</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_SEEING_EYE_GLYPH_HELP">
-			<Text>placeholder</Text>
+			<Text>Placing this glyph creates visibility from a plot with range equal to the Caster's Divination Mod / 5. The caster's Divination Mod also determines the strength of the glyph which must be overcome to dispel it. Great people are visible to the Seeing Eye Glyph.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_DETECT_GLYPHS_RUNES_WARDS">
 			<Text>Detect Glyphs, Runes & Wards</Text>

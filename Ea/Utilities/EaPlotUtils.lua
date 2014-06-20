@@ -23,9 +23,22 @@ local bWrapX, bWrapY = Map.IsWrapX(), false			--sorry, no donought worlds
 local yIsOddAdjOffsets = {{0, 1},{1, 1},{1, 0},{1, -1},{0, -1},{-1, 0}}
 local yIsEvenAdjOffsets = {{-1, 1},{0, 1},{1, 0},{0, -1},{-1, -1},{-1, 0}}
 
-function AdjacentPlotIterator(plot)		--this is so common I give it a special function for speed
+function AdjacentPlotIterator(plot, bRandomize)		--this is so common I give it a special function for speed
 	local x, y = plot:GetXY()
 	local offsets = (y % 2 == 0) and yIsEvenAdjOffsets or yIsOddAdjOffsets
+	if bRandomize then
+		--this is faster than 6 calls to dll
+		local seed = Rand(46656, "hello")		--0 - 46655
+		local factor, newFactor = 1, 1
+		for i = 1, 6 do
+			newFactor = factor * 6
+			local remainder = seed % newFactor
+			local d6 = remainder / factor + 1
+			seed = seed - remainder
+			factor = newFactor
+			offsets[i], offsets[d6] = offsets[d6], offsets[i]
+		end
+	end
 	local i = 0
 	return function()
 		while i < 6 do
@@ -47,6 +60,7 @@ function AdjacentPlotIterator(plot)		--this is so common I give it a special fun
 		end
 	end
 end
+local AdjacentPlotIterator = AdjacentPlotIterator
 
 function GetRandomAdjacentPlot(plot)	--will return nil rather than invalid off-map plot
 	local x, y = plot:GetXY()

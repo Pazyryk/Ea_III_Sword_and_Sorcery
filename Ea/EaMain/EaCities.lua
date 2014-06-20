@@ -935,7 +935,7 @@ function CityPerCivTurn(iPlayer)		--Full civ only
 						unitID = UNIT_SLAVES_ORC
 					end
 					local newUnit = player:InitUnit(unitID, city:GetX(), city:GetY() )
-					newUnit:JumpToNearestValidPlot()
+					--newUnit:JumpToNearestValidPlot()
 					newUnit:SetHasPromotion(PROMOTION_SLAVE, true)
 				end
 			end
@@ -1091,12 +1091,12 @@ local function OnSetPopulation(x, y, oldPopulation, newPopulation)
 					unitID = UNIT_SLAVES_ORC
 				end			
 				local newUnit = owner:InitUnit(unitID, x, y )
-				newUnit:JumpToNearestValidPlot()
+				--newUnit:JumpToNearestValidPlot()
 				newUnit:SetHasPromotion(PROMOTION_SLAVE, true)
 				local eaPlayer = gPlayers[iOwner]
 				if eaPlayer.eaCivNameID == EACIV_GAZIYA and Rand(3, "hello") == 0 then	--extra 33%
 					local newUnit = owner:InitUnit(unitID, x, y )
-					newUnit:JumpToNearestValidPlot()
+					--newUnit:JumpToNearestValidPlot()
 					newUnit:SetHasPromotion(PROMOTION_SLAVE, true)				
 				end
 
@@ -1119,7 +1119,7 @@ local function OnSetPopulation(x, y, oldPopulation, newPopulation)
 end
 GameEvents.SetPopulation.Add(function(x, y, oldPopulation, newPopulation) return HandleError41(OnSetPopulation, x, y, oldPopulation, newPopulation) end)
 
-local function OnCityCaptureComplete(iPlayer, bCapital, x, y, iNewOwner)		-- THIS HAS NOT BEEN RIGOROUSLY TESTED !!!!
+local function OnCityCaptureComplete(iPlayer, bCapital, x, y, iNewOwner)
 
 	--what about city destroyed on conquest?
 
@@ -1189,8 +1189,8 @@ local function OnCityCaptureComplete(iPlayer, bCapital, x, y, iNewOwner)		-- THI
 			end
 
 			for j = 1, popKilled do
-				local newUnit = newOwner:InitUnit(unitID, city:GetX(), city:GetY() )
-				newUnit:JumpToNearestValidPlot()
+				local newUnit = newOwner:InitUnit(unitID, x, y)
+				--newUnit:JumpToNearestValidPlot()
 				newUnit:SetHasPromotion(PROMOTION_SLAVE, true)
 			end
 			break

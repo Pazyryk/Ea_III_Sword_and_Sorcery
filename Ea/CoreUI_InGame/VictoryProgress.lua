@@ -188,8 +188,8 @@ end
 
 function PopulateRestorer()
 	print("PopulateRestorer")
-	local score, bVictory, livingTerrainAdded, livingTerrainStrengthAdded, aveWorldLivingTerrainStrength = GetRestorerVictoryData(g_iActivePlayer)
-	print(score, bVictory, livingTerrainAdded, livingTerrainStrengthAdded, aveWorldLivingTerrainStrength)
+	local score, bVictory, livingTerrainAdded, livingTerrainStrengthAdded, harmonicMean, hmNeeded = GetRestorerVictoryData(g_iActivePlayer)
+	print(score, bVictory, livingTerrainAdded, livingTerrainStrengthAdded, harmonicMean, hmNeeded)
 
 	if g_bestModScore < score then
 		g_bestModScore = score
@@ -198,7 +198,7 @@ function PopulateRestorer()
 
 	Controls.RestorerA:SetText(Format("%d", livingTerrainAdded))
 	Controls.RestorerB:SetText(Format("%d", livingTerrainStrengthAdded))
-	Controls.RestorerC:SetText(Format("%.2f", aveWorldLivingTerrainStrength))
+	Controls.RestorerC:SetText(Format("%.2f/%.2f", harmonicMean, hmNeeded))
 	Controls.RestorerScore:SetText(Format("%d", score))
 
 	g_scores[g_iActivePlayer] = score

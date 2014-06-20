@@ -89,6 +89,12 @@ function EaPoliciesInit(bNewGame)
 			NRArrayAdd(gg_animalSpawnInhibitTeams, player:GetTeam())
 		end
 	else
+		--v3 save compatibility patch (remove later)
+		local bV3PatchHack = false
+		if gWorld.panCivsEver == 0 then
+			bV3PatchHack = true
+		end	
+
 		for iPlayer, eaPlayer in pairs(fullCivs) do
 			local player = Players[iPlayer]
 			if player:HasPolicy(GameInfoTypes.POLICY_PATRONAGE) then
@@ -100,6 +106,12 @@ function EaPoliciesInit(bNewGame)
 				if player:HasPolicy(GameInfoTypes.POLICY_THROUGH_THE_VEIL) then
 					gg_teamCanMeetFay[iTeam] = true
 				end
+			
+				--v3 save compatibility patch (remove later)
+				if bV3PatchHack then
+					gWorld.panCivsEver = gWorld.panCivsEver + 1
+				end		
+					
 			end
 			if not player:HasPolicy(GameInfoTypes.POLICY_FERAL_BOND) then
 				NRArrayAdd(gg_animalSpawnInhibitTeams, player:GetTeam())
@@ -189,6 +201,8 @@ function OnPlayerAdoptPolicyBranch(iPlayer, policyBranchTypeID)					--called by 
 		local team = Teams[iTeam]
 		local eaPlayer = gPlayers[iPlayer]
 		local capital = player:GetCapitalCity()
+
+		gWorld.panCivsEver = gWorld.panCivsEver + 1
 
 		--Plot yields
 		player:SetYieldFromSpecialPlotsOnly(true)	--new Ea API; this is what kills plot yields for all but resourced, GP improved, and some few other cases

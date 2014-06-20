@@ -39,7 +39,7 @@ UPDATE HandicapInfos SET EaAIFreeTechs = ID - 3 WHERE Type IN ('HANDICAP_KING', 
 UPDATE HandicapInfos SET HappinessDefault = HappinessDefault - 4;	--more luxuries and bonuses in Ea
 
 UPDATE HandicapInfos SET ProductionFreeUnits = 15, ProductionFreeUnitsPopulationPercent = 50, ProductionFreeUnitsPerCity = 0;	--no scaling in base at Prince and above, so didn't bother here
-
+UPDATE HandicapInfos SET InflationPercent = 0, AIInflationPercent = 0; --safe?
 
 DELETE FROM HandicapInfo_FreeTechs;		--empty in base
 DELETE FROM HandicapInfo_AIFreeTechs;

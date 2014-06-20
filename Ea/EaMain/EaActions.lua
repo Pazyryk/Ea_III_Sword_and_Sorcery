@@ -117,6 +117,7 @@ local g_joinedUnit
 
 local g_unitX						--same as g_x, g_y below if no targetX,Y supplied in function call
 local g_unitY				
+local g_bEmbarked
 
 local g_bTarget						--true if targetX, targetY provided; otherwise, values are for g_unitX, g_unitY
 local g_iPlot
@@ -484,40 +485,47 @@ function TestEaActionForHumanUI(eaActionID, iPlayer, unit, iPerson, testX, testY
 	--By default, bShow follows bAllow and text will be from eaAction.Help. If we want bShow=true when bAllow=false,
 	--then we must change below in g_bUniqueBlocked code or in action-specific SetUI function.
 
-	--Set UI for unique builds (generic way; it can be overriden by specific SetUI funtion)
-	if g_bUniqueBlocked then
-		if g_eaAction.UniqueType == "World" then
-			if gWorldUniqueAction[eaActionID] then
-				if gWorldUniqueAction[eaActionID] ~= -1 then	--being built
-					MapModData.bShow = true
-					local bMyCiv = false
-					for iPerson, eaPerson in pairs(gPeople) do
-						if eaPerson.iPlayer == iPlayer and gWorldUniqueAction[eaActionID] == iPerson then
-							bMyCiv = true
-							break
-						end
-					end
-					if bMyCiv then
-						MapModData.text = "[COLOR_WARNING_TEXT]Another Great Person from your civilization is working on this...[ENDCOLOR]"
-					else
-						MapModData.text = "[COLOR_WARNING_TEXT]A Great Person from another civilization is working on this...[ENDCOLOR]"
-					end
-				end
-			end		
-		elseif g_eaAction.UniqueType == "National" then
-			if g_eaPlayer.nationalUniqueAction[eaActionID] then
-				if g_eaPlayer.nationalUniqueAction[eaActionID] ~= -1 then	--being built
-					MapModData.bShow = true
-					MapModData.text = "[COLOR_WARNING_TEXT]Another Great Person from your civilization is working on this...[ENDCOLOR]"
-				end
-			end
-		end
-	elseif g_bSomeoneElseDoingHere then		--true only if all other tests passed
-		MapModData.bShow = true
-		MapModData.text = "[COLOR_WARNING_TEXT]You cannot do this in the same place as another great person from your civilization[ENDCOLOR]"	
+
+	if g_bEmbarked then
+		MapModData.text = "[COLOR_WARNING_TEXT]Cannot do action while embarked[ENDCOLOR]"
 	end
 
-	if g_eaAction.UnitUpgradeTypePrefix then
+	--Set UI for unique builds (generic way; it can be overriden by specific SetUI funtion)
+	if MapModData.text == "no help text" then
+		if g_bUniqueBlocked then
+			if g_eaAction.UniqueType == "World" then
+				if gWorldUniqueAction[eaActionID] then
+					if gWorldUniqueAction[eaActionID] ~= -1 then	--being built
+						MapModData.bShow = true
+						local bMyCiv = false
+						for iPerson, eaPerson in pairs(gPeople) do
+							if eaPerson.iPlayer == iPlayer and gWorldUniqueAction[eaActionID] == iPerson then
+								bMyCiv = true
+								break
+							end
+						end
+						if bMyCiv then
+							MapModData.text = "[COLOR_WARNING_TEXT]Another Great Person from your civilization is working on this...[ENDCOLOR]"
+						else
+							MapModData.text = "[COLOR_WARNING_TEXT]A Great Person from another civilization is working on this...[ENDCOLOR]"
+						end
+					end
+				end		
+			elseif g_eaAction.UniqueType == "National" then
+				if g_eaPlayer.nationalUniqueAction[eaActionID] then
+					if g_eaPlayer.nationalUniqueAction[eaActionID] ~= -1 then	--being built
+						MapModData.bShow = true
+						MapModData.text = "[COLOR_WARNING_TEXT]Another Great Person from your civilization is working on this...[ENDCOLOR]"
+					end
+				end
+			end
+		elseif g_bSomeoneElseDoingHere then		--true only if all other tests passed
+			MapModData.bShow = true
+			MapModData.text = "[COLOR_WARNING_TEXT]You cannot do this in the same place as another great person from your civilization[ENDCOLOR]"	
+		end
+	end
+
+	if MapModData.text == "no help text" and g_eaAction.UnitUpgradeTypePrefix then
 		if g_bAllTestsPassed then
 			MapModData.bShow = true
 			local upgradeUnitInfo = GameInfo.Units[g_int1]
@@ -582,6 +590,9 @@ function TestEaAction(eaActionID, iPlayer, unit, iPerson, testX, testY, bAINonTa
 	if g_eaAction.SpellClass then
 		error("TestEaAction g_eaAction had a SpellClass")
 	end
+
+	g_bEmbarked = unit:IsEmbarked()
+	if g_bEmbarked then return false end
 
 	if g_eaAction.ReqEaWonder and not gWonders[GameInfoTypes[g_eaAction.ReqEaWonder] ] then return false end
 	if g_eaAction.ReligionNotFounded and gReligions[GameInfoTypes[g_eaAction.ReligionNotFounded] ] then return false end

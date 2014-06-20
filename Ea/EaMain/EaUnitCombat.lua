@@ -141,6 +141,7 @@ local function OnSerialEventUnitCreated(iPlayer, iUnit, hexVec, unitType, cultur
 			end
 		end
 		if city and city:GetNumBuilding(BUILDING_INTERNMENT_CAMP) == 1 then
+			local plot = unit:GetPlot()
 			MapModData.bBypassOnCanSaveUnit = true
 			unit:Kill(true, -1)
 			local raceID = GetCityRace(city)		--TO DO: make these unit race, not city race
@@ -152,7 +153,7 @@ local function OnSerialEventUnitCreated(iPlayer, iUnit, hexVec, unitType, cultur
 			else 
 				unitID = UNIT_SLAVES_ORC
 			end
-			local newUnit = player:InitUnit(unitID, city:GetX(), city:GetY() )
+			local newUnit = player:InitUnit(unitID, plot:GetX(), plot:GetY() )
 			newUnit:JumpToNearestValidPlot()
 			newUnit:SetHasPromotion(PROMOTION_SLAVE, true)
 		end

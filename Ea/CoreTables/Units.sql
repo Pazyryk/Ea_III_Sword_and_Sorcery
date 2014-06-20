@@ -258,9 +258,9 @@ INSERT INTO Units (Type,		PrereqTech,					Cost,	Combat,	RangedCombat,	NukeDamage
 --IMPORTANT! Make sure these get PROMOTION_DUMMY_AIR_STRIKE in Unit_FreePromotions below
 
 
-UPDATE Units SET EaFaithMaintenance = 2 WHERE EaSpecial IN ('Animal', 'Undead');
-UPDATE Units SET EaFaithMaintenance = 3 WHERE EaSpecial IN ('Beast', 'Demon', 'Angel', 'Spirit');
-UPDATE Units SET EaFaithMaintenance = 5 WHERE EaSpecial IN ('Archdemon', 'Archangel', 'MajorSpirit');
+UPDATE Units SET EaFaithMaintenance = 2, NoMaintenance = 1 WHERE EaSpecial IN ('Animal', 'Undead');
+UPDATE Units SET EaFaithMaintenance = 3, NoMaintenance = 1 WHERE EaSpecial IN ('Beast', 'Demon', 'Angel', 'Spirit');
+UPDATE Units SET EaFaithMaintenance = 5, NoMaintenance = 1 WHERE EaSpecial IN ('Archdemon', 'Archangel', 'MajorSpirit');
 
 UPDATE Units SET IsWorker = 1 WHERE Type GLOB 'UNIT_WORKERS_*' OR Type GLOB 'UNIT_SLAVES_*';
 UPDATE Units SET EaRace = 'EARACE_MAN', EaCityTrainRace = 'EARACE_MAN' WHERE Type GLOB '*_MAN' OR Type GLOB '*_BARB';
@@ -271,7 +271,7 @@ UPDATE Units SET EaLiving = 1 WHERE (Mechanized = 0 OR Type GLOB 'UNIT_CHARIOT*'
 UPDATE Units SET NoMaintenance = 1 WHERE Type GLOB 'UNIT_WARRIORS_*' OR Type GLOB 'UNIT_SCOUTS_*';
 UPDATE Units SET CombatLimit = 0, Food = 1, Found = 1, CivilianAttackPriority = 'CIVILIAN_ATTACK_PRIORITY_HIGH_EARLY_GAME_ONLY' WHERE Type GLOB 'UNIT_SETTLERS_*';
 UPDATE Units SET CombatLimit = 0, WorkRate = 100, CivilianAttackPriority = 'CIVILIAN_ATTACK_PRIORITY_LOW' WHERE Type GLOB 'UNIT_WORKERS_*';
-UPDATE Units SET CombatLimit = 0, WorkRate = 70, CivilianAttackPriority = 'CIVILIAN_ATTACK_PRIORITY_LOW', NoMaintenance=1 WHERE Type GLOB 'UNIT_SLAVES_*';
+UPDATE Units SET CombatLimit = 0, WorkRate = 70, CivilianAttackPriority = 'CIVILIAN_ATTACK_PRIORITY_LOW', NoMaintenance = 1 WHERE Type GLOB 'UNIT_SLAVES_*';
 UPDATE Units SET CombatLimit = 0, Immobile = 1 WHERE Type IN ('UNIT_FISHING_BOATS','UNIT_WHALING_BOATS','UNIT_HUNTERS');
 --UPDATE Units SET CombatLimit = 0, Immobile = 1, Trade = 1, NoMaintenance = 1, CivilianAttackPriority = 'CIVILIAN_ATTACK_PRIORITY_LOW' WHERE Type IN ('UNIT_CARAVAN','UNITCLASS_CARGO_SHIP');
 UPDATE Units SET Capture = 'UNITCLASS_SLAVES_MAN' WHERE Type IN ('UNIT_SETTLERS_MAN','UNIT_WORKERS_MAN','UNIT_SLAVES_MAN'); 
@@ -307,7 +307,7 @@ INSERT INTO Units (Type, UnitArtInfo,				IconAtlas,					PortraitIndex,	UnitFlagA
 ('UNIT_NECROMANCER',	'ART_DEF_UNIT_INQUISITOR',	'EXPANSION_UNIT_ATLAS_1',	17,				'EA_FLAG_ATLAS',		8,					'SPECIALUNIT_PEOPLE'	),
 ('UNIT_LICH',			'ART_DEF_UNIT_INQUISITOR',	'EXPANSION_UNIT_ATLAS_1',	17,				'EA_FLAG_ATLAS',		8,					'SPECIALUNIT_PEOPLE'	);
 
-UPDATE Units SET Cost = -1, AdvancedStartCost = -1, Domain = 'DOMAIN_LAND', Moves = 2, MoveRate = 'GREAT_PERSON', WorkRate = 100, Combat = 5, CombatLimit = 100, CombatClass = 'UNITCOMBAT_MELEE', RivalTerritory = 1, NoMaintenance = 1, XPValueAttack = 3, XPValueDefense = 3 WHERE Special = 'SPECIALUNIT_PEOPLE';
+UPDATE Units SET Cost = -1, AdvancedStartCost = -1, Domain = 'DOMAIN_LAND', Moves = 2, MoveRate = 'GREAT_PERSON', WorkRate = 100, Combat = 5, CombatLimit = 100, CombatClass = 'UNITCOMBAT_MELEE', RivalTerritory = 1, NoMaintenance = 1, MilitarySupport = 0, XPValueAttack = 3, XPValueDefense = 3 WHERE Special = 'SPECIALUNIT_PEOPLE';
 
 ----------------------------------------------------------------------------------------
 -- People temp type units
@@ -508,6 +508,8 @@ INSERT INTO Unit_Builds (UnitType, BuildType) VALUES	--see Builds in UnitBuilds.
 ('UNIT_WORKERS_MAN', 'BUILD_VINEYARD_PAN'),
 ('UNIT_WORKERS_MAN', 'BUILD_ORCHARD_PAN'),
 ('UNIT_WORKERS_MAN', 'BUILD_QUARRY_PAN'),
+('UNIT_WORKERS_MAN', 'BUILD_WELL'),
+('UNIT_WORKERS_MAN', 'BUILD_WELL_PAN'),
 ('UNIT_SLAVES_MAN', 'BUILD_ROAD'),
 ('UNIT_SLAVES_MAN', 'BUILD_RAILROAD'),
 ('UNIT_SLAVES_MAN', 'BUILD_LUMBERMILL'),
@@ -539,6 +541,8 @@ INSERT INTO Unit_Builds (UnitType, BuildType) VALUES	--see Builds in UnitBuilds.
 ('UNIT_SLAVES_MAN', 'BUILD_VINEYARD_PAN'),
 ('UNIT_SLAVES_MAN', 'BUILD_ORCHARD_PAN'),
 ('UNIT_SLAVES_MAN', 'BUILD_QUARRY_PAN'),
+('UNIT_SLAVES_MAN', 'BUILD_WELL'),
+('UNIT_SLAVES_MAN', 'BUILD_WELL_PAN'),
 
 ('UNIT_WORKERS_SIDHE', 'BUILD_ROAD'),
 ('UNIT_WORKERS_SIDHE', 'BUILD_RAILROAD'),
@@ -571,6 +575,8 @@ INSERT INTO Unit_Builds (UnitType, BuildType) VALUES	--see Builds in UnitBuilds.
 ('UNIT_WORKERS_SIDHE', 'BUILD_VINEYARD_PAN'),
 ('UNIT_WORKERS_SIDHE', 'BUILD_ORCHARD_PAN'),
 ('UNIT_WORKERS_SIDHE', 'BUILD_QUARRY_PAN'),
+('UNIT_WORKERS_SIDHE', 'BUILD_WELL'),
+('UNIT_WORKERS_SIDHE', 'BUILD_WELL_PAN'),
 ('UNIT_SLAVES_SIDHE', 'BUILD_ROAD'),
 ('UNIT_SLAVES_SIDHE', 'BUILD_RAILROAD'),
 ('UNIT_SLAVES_SIDHE', 'BUILD_LUMBERMILL'),
@@ -602,6 +608,8 @@ INSERT INTO Unit_Builds (UnitType, BuildType) VALUES	--see Builds in UnitBuilds.
 ('UNIT_SLAVES_SIDHE', 'BUILD_VINEYARD_PAN'),
 ('UNIT_SLAVES_SIDHE', 'BUILD_ORCHARD_PAN'),
 ('UNIT_SLAVES_SIDHE', 'BUILD_QUARRY_PAN'),
+('UNIT_SLAVES_SIDHE', 'BUILD_WELL'),
+('UNIT_SLAVES_SIDHE', 'BUILD_WELL_PAN'),
 
 ('UNIT_WORKERS_ORC', 'BUILD_ROAD'),
 ('UNIT_WORKERS_ORC', 'BUILD_RAILROAD'),
@@ -634,6 +642,8 @@ INSERT INTO Unit_Builds (UnitType, BuildType) VALUES	--see Builds in UnitBuilds.
 ('UNIT_WORKERS_ORC', 'BUILD_VINEYARD_PAN'),
 ('UNIT_WORKERS_ORC', 'BUILD_ORCHARD_PAN'),
 ('UNIT_WORKERS_ORC', 'BUILD_QUARRY_PAN'),
+('UNIT_WORKERS_ORC', 'BUILD_WELL'),
+('UNIT_WORKERS_ORC', 'BUILD_WELL_PAN'),
 ('UNIT_SLAVES_ORC', 'BUILD_ROAD'),
 ('UNIT_SLAVES_ORC', 'BUILD_RAILROAD'),
 ('UNIT_SLAVES_ORC', 'BUILD_LUMBERMILL'),
@@ -664,7 +674,9 @@ INSERT INTO Unit_Builds (UnitType, BuildType) VALUES	--see Builds in UnitBuilds.
 ('UNIT_SLAVES_ORC', 'BUILD_T_PLANTATION_PAN'),
 ('UNIT_SLAVES_ORC', 'BUILD_VINEYARD_PAN'),
 ('UNIT_SLAVES_ORC', 'BUILD_ORCHARD_PAN'),
-('UNIT_SLAVES_ORC', 'BUILD_QUARRY_PAN' );
+('UNIT_SLAVES_ORC', 'BUILD_QUARRY_PAN' ),
+('UNIT_SLAVES_ORC', 'BUILD_WELL'),
+('UNIT_SLAVES_ORC', 'BUILD_WELL_PAN');
 
 --
 DELETE FROM Unit_FreePromotions;

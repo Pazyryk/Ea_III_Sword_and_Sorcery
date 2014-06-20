@@ -60,6 +60,16 @@ local bVerboseDB = false			-- If true, print all statements that change the DB.
 print ("Loading TableSaverLoader.lua...")
 local print = DISABLE_PRINT and function() end or print
 
+
+
+local DoDBDeletes
+local DoDBInserts
+local DoDBTextUpdates
+local DoDBTypeTextUpdates
+local DBChange
+local TableBuilder
+
+
 local bInited, bCreateTables, bInitDBVars = false, false, false
 local dbParent = {}				-- these 4 keep exact replica of DB during game session (id matches DB rows)
 local dbKey = {}			
@@ -155,8 +165,8 @@ function TableSave(globalTable, DBTablePrefix)
 end
 LuaEvents.TableSaverLoaderSave.Add(TableSave)
 
---don't call this directly
-function TableBuilder(parentTable, parentName)
+
+TableBuilder = function (parentTable, parentName)
 	--print("called TableBuilder("..tostring(parentTable)..", "..parentName..")")
 	local byte = string.byte
 	for originalKey, var in pairs(parentTable) do
@@ -347,7 +357,7 @@ function TableLoad(globalTable, DBTablePrefix)
 	checksum = checksum and 0
 end
 
-function DoDBDeletes()
+DoDBDeletes = function()
 	--print("DoDBDeletes", #deleteIDBuffer)
 	local DBChange = DBChange
 	DBChange("delete from ["..DBTableData.."] where ID in ("..table.concat(deleteIDBuffer,",")..")")
@@ -363,7 +373,7 @@ function DoDBDeletes()
 	end
 end
 	
-function DoDBInserts()
+DoDBInserts = function()
 	--print("DoDBInserts", #insertBuffer.parent)
 	local DBChange = DBChange
 	local items = #insertBuffer.parent
@@ -386,8 +396,7 @@ function DoDBInserts()
 	DBChange("insert into ["..DBTableData.."] (ID,parent,key,varType,varText) select "..table.concat(textStrTable, " union all select ", 1, items))
 end
 
-
-function DoDBTextUpdates()
+DoDBTextUpdates = function()
 	--print("DoDBTextUpdates", #updateTextIDBuffer)
 	local DBChange = DBChange
 	local items = #updateTextIDBuffer
@@ -401,7 +410,7 @@ function DoDBTextUpdates()
 	DBChange("update ["..DBTableData.."] set varText=case "..table.concat(textStrTable, " ",1,items).." end where ID in ("..table.concat(idStrTable, ",",1,items)..")")
 end
 
-function DoDBTypeTextUpdates()
+DoDBTypeTextUpdates = function()
 	print("!!!!WARNING: DoDBTypeTextUpdates", #updateTypeTextIDBuffer)
 	local DBChange = DBChange
 	local items = #updateTypeTextIDBuffer
@@ -420,7 +429,7 @@ function DoDBTypeTextUpdates()
 	DBChange("update ["..DBTableData.."] set varType=case "..table.concat(typeStrTable, " ",1,items).." end, varText=case "..table.concat(textStrTable, " ",1,items).." end where ID in ("..table.concat(idStrTable, ",",1,items)..")")
 end
 
-function DBChange(str)
+DBChange = function(str)
 	--for single DB commands when you don't want a row iteration value
 	local DBQuery = Modding.OpenSaveData().Query
 	local sub = string.sub
@@ -439,12 +448,7 @@ end
 -- Testing / debugging
 ------------------------------------------------------------------------------------------------------------------
 
-function DebugTime(seconds)
-	--test whether civ5 crashes if hijacked by Lua
-	local startTime = os.clock()
-	while os.clock() < startTime + seconds do end
-	print("I'm back..")
-end
+--[[
 
 local debugRows = 0
 function DebugDBInsert(lines, bAppend)
@@ -509,14 +513,6 @@ function DebugDBBigInsert(lines, bAppend)
 	print ("Lines: "..lines.."; Errors: "..errors.."; DBTime: "..DBTime)
 end
 
---Structrue for big updates
---[[
-update DebugTestDB set
-int=case when ID=1 then 10 when ID=2 then 20 end,
-col=case when ID=1 then 'teststr1' when ID=2 then 'teststr2' end
-where ID in (1,2)
-]]
-
 function DebugDBBigUpdate(startRow, stopRow)
 	local timer = os.clock()
 	local DBChange = DBChange
@@ -580,3 +576,5 @@ function DebugTestgPlots()
 	end
 	print("tests: "..tests.."; errors: "..errors)
 end
+
+]]

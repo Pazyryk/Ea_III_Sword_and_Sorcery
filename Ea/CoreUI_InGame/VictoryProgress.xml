@@ -58,7 +58,7 @@
 				<Stack Anchor="L,T" Size="0,0" Offset="5,39" Padding="12" StackGrowth="Bottom">
 					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="L,T" String="Terrain Added:"/>
 					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="L,T" String="Strength Added:"/>
-					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="L,T" String="Wld. Lv. Tr. Str.:"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="L,T" String="Harmonic Mean:"/>
 					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="L,T" String="Your Score:"/>
 				</Stack>
 				<Stack Anchor="L,T" Size="0,0" Offset="150,39" Padding="12" StackGrowth="Bottom">

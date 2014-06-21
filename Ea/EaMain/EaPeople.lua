@@ -339,7 +339,7 @@ function PeoplePerCivTurn(iPlayer)
 				if eaPerson.iUnit ~= -1 and not bHumanPlayer then
 					unit = player:GetUnitByID(eaPerson.iUnit)
 					local debugLoopCount = 0
-					while unit and unit:GetMoves() > 0 do					--repeat call since not all actions use movement or all movement
+					while unit and unit:GetMoves() > 0 and not unit:IsDead() and not unit:IsDelayedDeath() do					--repeat call since not all actions use movement or all movement
 
 						unit = AIGPDoSomething(iPlayer, iPerson, unit)		--this function returns unit (if still on map) or nil
 						print("after AIGPDoSomething from EaPeople", unit, unit and unit:GetMoves())
@@ -500,14 +500,14 @@ function GenerateGreatPerson(iPlayer, class, subclass, eaPersonRowID, bAsLeader,
 							class2 = class2,
 							race = eaPlayer.race,		--takes civ race here; may change when ungenerisized (e.g., Heldeofol takes a subrace)
 							birthYear = Game.GetGameTurn() - 20,
-							progress = {},
-							disappearTurn = -1,		
-							--promotions = {},			--DEPRECIATED: get from unit
+							disappearTurn = -1,	
 							eaActionID = -1,
 							eaActionData = -1,
 							gotoPlotIndex = -1,
 							gotoEaActionID = -1,
-							moves = 0,
+							moves = 0,	
+							promotions = {},
+							progress = {},
 							modMemory = {}	}		
 		
 		gPeople[iPerson] = eaPerson
@@ -570,24 +570,23 @@ end
 --LuaEvents.EaPeopleGenerateGreatPerson.Add(GenerateGreatPerson)
 
 
-function UpdateGreatPersonStatsFromUnit(unit, eaPerson)		--DEPRECIATE THIS !!!!
-
-
+function UpdateGreatPersonStatsFromUnit(unit, eaPerson)		--info we may need if unit dies (or for quick access without dll test)
 	eaPerson.x = unit:GetX()
 	eaPerson.y = unit:GetY()
-	--eaPerson.direction = unit:GetFacingDirection()
-	--eaPerson.moves = unit:GetMoves()
 	eaPerson.level = unit:GetLevel()
-	--eaPerson.xp = unit:GetExperience()
+	eaPerson.xp = unit:GetExperience()
 
-	--local promotions = eaPerson.promotions
-	--for promotionID = 0, HIGHEST_PROMOTION_ID do
-	--	if unit:IsHasPromotion(promotionID) then
-	--		promotions[promotionID] = true
-	--	else
-	--		promotions[promotionID] = nil
-	--	end
-	--end 
+	--v4 hotfix c patch for save compatibility; TO DO: Remove
+	eaPerson.promotions = eaPerson.promotions or {}
+
+	local promotions = eaPerson.promotions
+	for promotionID = 0, HIGHEST_PROMOTION_ID do
+		if unit:IsHasPromotion(promotionID) then
+			promotions[promotionID] = true
+		else
+			promotions[promotionID] = nil
+		end
+	end 
 end
 
 
@@ -1274,20 +1273,52 @@ function KillPerson(iPlayer, iPerson, unit, iKillerPlayer, deathType)
 
 
 	
-	--move person info over to gDeadPeople
+	--move person info we may want over to gDeadPeople; keep: eaPersonRowID, subclass, class1, class1, name, level
 	eaPerson.deathTurn = Game.GetGameTurn()
-	--keep: eaPersonRowID, subclass, class1, class1, name, level
-
 	eaPerson.iUnit = nil
 	eaPerson.iUnitJoined = nil
-	--eaPerson.progress = nil
-	--eaPerson.xp = nil
+	eaPerson.progress = nil
 	eaPerson.eaActionID = nil
 	eaPerson.eaActionData = nil
 	eaPerson.gotoPlotIndex = nil
 	eaPerson.gotoEaActionID = nil
 
-	gDeadPeople[#gDeadPeople + 1] = eaPerson
+	--creat dead person table and transfer data we may need later (not table pointers! they break TableSaverLoader!)
+	local eaDeadPerson = {}
+	eaDeadPerson.deathTurn = Game.GetGameTurn()
+	eaDeadPerson.unitTypeID = eaPerson.unitTypeID
+	eaDeadPerson.subclass = eaPerson.subclass
+	eaDeadPerson.class1 = eaPerson.class1
+	eaDeadPerson.class2 = eaPerson.class2
+	eaDeadPerson.race = eaPerson.race
+	eaDeadPerson.birthYear = eaPerson.birthYear
+	eaDeadPerson.modMemory = {}
+	for k, v in pairs(eaPerson.modMemory) do
+		eaDeadPerson.modMemory[k] = v
+	end
+	
+	eaDeadPerson.x = eaPerson.x			--maybe we want to know where they died?
+	eaDeadPerson.y = eaPerson.y
+	eaDeadPerson.level = eaPerson.level
+
+	--spells
+	if eaPerson.spells then
+		eaDeadPerson.spells = {}
+		for k, v in pairs(eaPerson.spells) do
+			eaDeadPerson.spells[k] = v
+		end
+	end
+
+	--promotions; TO DO: Can remove if test after next version (v5) - only needed for save compatibility
+	if eaPerson.promotions then
+		eaDeadPerson.promotions = {}
+		for k, v in pairs(eaPerson.promotions) do
+			eaDeadPerson.promotions[k] = v
+		end
+	end
+
+
+	gDeadPeople[#gDeadPeople + 1] = eaDeadPerson
 	gPeople[iPerson] = nil
 
 	print("finished KillPerson")

@@ -43,7 +43,7 @@ local BUILDING_SIDHE =						GameInfoTypes.BUILDING_SIDHE
 local BUILDING_HELDEOFOL =					GameInfoTypes.BUILDING_HELDEOFOL
 local BUILDING_WINDMILL =					GameInfoTypes.BUILDING_WINDMILL
 local BUILDING_WINDMILL_ALLOW =				GameInfoTypes.BUILDING_WINDMILL_ALLOW
-local BUILDING_RACIAL_DISHARMONY =				GameInfoTypes.BUILDING_RACIAL_DISHARMONY
+local BUILDING_RACIAL_DISHARMONY =			GameInfoTypes.BUILDING_RACIAL_DISHARMONY
 local BUILDING_FOREFATHERS_STATUE =			GameInfoTypes.BUILDING_FOREFATHERS_STATUE
 local BUILDING_SLAVE_BREEDING_PEN =			GameInfoTypes.BUILDING_SLAVE_BREEDING_PEN
 local BUILDING_HARBOR =						GameInfoTypes.BUILDING_HARBOR
@@ -87,6 +87,7 @@ local IMPROVEMENT_FISHING_BOATS =			GameInfoTypes.IMPROVEMENT_FISHING_BOATS
 local IMPROVEMENT_WHALING_BOATS =			GameInfoTypes.IMPROVEMENT_WHALING_BOATS
 local TERRAIN_GRASS =						GameInfoTypes.TERRAIN_GRASS
 local TERRAIN_PLAINS =						GameInfoTypes.TERRAIN_PLAINS
+local TERRAIN_DESERT =						GameInfoTypes.TERRAIN_DESERT
 
 local UNIT_FISHING_BOATS =					GameInfoTypes.UNIT_FISHING_BOATS
 local UNIT_WHALING_BOATS =					GameInfoTypes.UNIT_WHALING_BOATS
@@ -587,18 +588,18 @@ function TestSetEligibleCityCults(city, eaCity, feedbackCultID)
 	for i = 0, totalPlots - 1 do
 		local plot = city:GetCityIndexPlot(i)
 		if plot then
-			local plotyTypeID = plot:GetPlotType()
-			if plotyTypeID == PLOT_OCEAN then
+			local plotTypeID = plot:GetPlotType()
+			if plotTypeID == PLOT_OCEAN then
 				totalSea = totalSea + 1
 			else
 				totalLand = totalLand + 1
-				if plotyTypeID == PLOT_MOUNTAIN then
+				if plotTypeID == PLOT_MOUNTAIN then
 					totalHillsMountains = totalHillsMountains + 1
 				else
 					if plot:IsLake() then
 						totalPureWater = totalPureWater + 1
 					else
-						if plotyTypeID == PLOT_HILLS then
+						if plotTypeID == PLOT_HILLS then
 							totalHillsMountains = totalHillsMountains + 1
 						end
 						local featureID = plot:GetFeatureType()
@@ -617,6 +618,8 @@ function TestSetEligibleCityCults(city, eaCity, feedbackCultID)
 							totalWine = totalWine + 1
 						end
 						local terrainID = plot:GetTerrainType()
+						print("plot test: ", terrainID, plotTypeID, featureID, resourceID)
+
 						if terrainID == TERRAIN_DESERT then
 							totalDesert = totalDesert + 1
 						elseif terrainID == TERRAIN_GRASS or terrainID == TERRAIN_PLAINS then
@@ -668,9 +671,9 @@ function TestSetEligibleCityCults(city, eaCity, feedbackCultID)
 
 	if feedbackCultID then	--for human UI test, only shows for disallowed cults after generic reasons exhausted (not city, holy city)
 		if feedbackCultID == RELIGION_CULT_OF_EPONA then
-			return "Must have 3 Horses plots, or 2 with 50% qualified flatland (grass or plains without feature); city has " .. totalHorses .. " Horses plots and " .. Floor(100 * totalGoodFlatland / totalLand) .. "% qualified flatland"
+			return "Must have 3 Horse plots, or 2 Horse plots and 50% open flatland (grass or plains); city has " .. totalHorses .. " Horses plots and " .. Floor(100 * totalGoodFlatland / totalLand) .. "% qualified flatland"
 		elseif  feedbackCultID == RELIGION_CULT_OF_BAKKHEIA then
-			return "Must have 2 Wine or 2 spirits buildings (Winery, Brewery or Distillery); city has " .. totalWine .. " Wine and " .. boozeBuildings .. "spirits buildings"
+			return "Must have 2 Wine or 2 spirits buildings (Winery, Brewery or Distillery); city has " .. totalWine .. " Wine and " .. boozeBuildings .. " spirits buildings"
 		end
 
 		if bSeaCity then

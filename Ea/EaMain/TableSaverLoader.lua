@@ -202,7 +202,7 @@ TableBuilder = function (parentTable, parentName)
 			--if not bExists then
 				varText = parentName .. key
 				local i = #builtTables.name + 1
-				builtTables.name[i] = varText		-- saved here so that subsequent references to this table will use same name (regardles of how nested)
+				builtTables.name[i] = varText
 				builtTables.pointer[i] = var
 				varBuffer.top = varBuffer.top + 1	-- hold var and varText in buffer for subsequent calls to TableBuilder (1st in 1st out so parents are before children)
 				varBuffer.var[varBuffer.top] = var				

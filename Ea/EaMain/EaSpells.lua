@@ -1491,6 +1491,7 @@ SetUI[GameInfoTypes.EA_SPELL_SEEING_EYE_GLYPH] = function()
 	end
 end
 
+--[[
 SetAIValues[GameInfoTypes.EA_SPELL_SEEING_EYE_GLYPH] = function()
 	local range = Floor(g_modSpell / 5)
 	local addedVisibility = g_plot:IsVisible(g_iTeam) and 0 or 1
@@ -1503,6 +1504,7 @@ SetAIValues[GameInfoTypes.EA_SPELL_SEEING_EYE_GLYPH] = function()
 	end
 	gg_aiOptionValues.i = addedVisibility / 20
 end
+]]
 
 Finish[GameInfoTypes.EA_SPELL_SEEING_EYE_GLYPH] = function()
 	g_plot:SetPlotEffectData(GameInfoTypes.EA_PLOTEFFECT_SEEING_EYE_GLYPH, g_modSpell, g_iPlayer, g_iPerson)	--effectID, effectStength, iPlayer, iCaster
@@ -1673,10 +1675,10 @@ SetUI[GameInfoTypes.EA_SPELL_DETECT_GLYPHS_RUNES_WARDS] = function()
 	end
 end
 
---Disabled
---SetAIValues[GameInfoTypes.EA_SPELL_DETECT_GLYPHS_RUNES_WARDS] = function()
---	gg_aiOptionValues.i = g_count		
---end
+
+SetAIValues[GameInfoTypes.EA_SPELL_DETECT_GLYPHS_RUNES_WARDS] = function()
+	gg_aiOptionValues.i = g_count		
+end
 
 Finish[GameInfoTypes.EA_SPELL_DETECT_GLYPHS_RUNES_WARDS] = function()
 	local revealedPlotEffects = g_eaPlayer.revealedPlotEffects

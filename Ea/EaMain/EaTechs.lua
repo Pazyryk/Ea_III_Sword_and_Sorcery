@@ -59,11 +59,10 @@ local OnMajorPlayerTechLearned = {}
 local TechReq = {}
 
 --file shared
-local bInitialized = false
+local g_iActivePlayer = Game.GetActivePlayer()
 
 --file tables
 local g_playerKM = {}					--index by iPlayer
-
 local g_playerTomeMods = {}				--index by iPlayer, techID
 local g_playerFavoredTechMods = {}		--index by iPlayer, techID
 
@@ -114,11 +113,14 @@ function EaTechsInit(bNewGame)
 			gg_whalingRange[iPlayer] = 3
 			gg_campRange[iPlayer] = 3
 			local civID = player:GetCivilizationType()
-			if playerType[iPlayer] == "FullCiv" and eaPlayer.race == EARACE_MAN then
-				player:SetNumFreeTechs(1) --  works but without notification
-			end
-			if eaPlayer.race == EARACE_MAN or eaPlayer.race == EARACE_SIDHE then
-				team:SetHasTech(GameInfoTypes.TECH_ALLOW_HORSE_TRADE, true)		--Heldeofol can't trade or use horses
+			if playerType[iPlayer] == "FullCiv" then
+				if eaPlayer.race == EARACE_MAN then
+					player:SetNumFreeTechs(1) --  works but without notification
+					team:SetHasTech(GameInfoTypes.TECH_ALLOW_HORSE_TRADE, true)
+				elseif eaPlayer.race == EARACE_SIDHE then
+					eaPlayer.techCount = 2			-- 2 free given for race
+					team:SetHasTech(GameInfoTypes.TECH_ALLOW_HORSE_TRADE, true)
+				end
 			end
 		end
 	else
@@ -133,12 +135,12 @@ function EaTechsInit(bNewGame)
 			if eaPlayer.eaCivNameID == GameInfoTypes.EACIV_LEMURIA then
 				gg_playerArcaneMod[iPlayer] = gg_playerArcaneMod[iPlayer] - 20
 			end
+			ResetPlayerFavoredTechs(iPlayer)
 		end
 
 		for iPlayer, eaPlayer in pairs(realCivs) do
 			local player = Players[iPlayer]
 			local team = Teams[player:GetTeam()]
-			ResetPlayerFavoredTechs(iPlayer)
 			gg_fishingRange[iPlayer] = 3
 			gg_whalingRange[iPlayer] = 3
 			gg_campRange[iPlayer] = 3
@@ -170,8 +172,7 @@ function EaTechsInit(bNewGame)
 		end
 	end
 
-
-	bInitialized = true
+	ResetTechCostMods(g_iActivePlayer)
 end
 
 
@@ -179,7 +180,7 @@ end
 -- Interface
 --------------------------------------------------------------
 
-local function ResetTechCostMods(iPlayer)
+function ResetTechCostMods(iPlayer)
 	print("ResetTechCostMods ", iPlayer)
 	if not fullCivs[iPlayer] then return end
 	local player = Players[iPlayer]
@@ -189,11 +190,25 @@ local function ResetTechCostMods(iPlayer)
 	--KM
 	local techCount = eaPlayer.techCount
 	local eaCivID = eaPlayer.eaCivNameID
+	local kmPerTechPerCitizen = KM_PER_TECH_PER_CITIZEN
 	if kmModifiers[eaCivID] then
-		techCount = techCount * (100 + kmModifiers[eaCivID]) / 100
+		kmPerTechPerCitizen = kmPerTechPerCitizen * (100 + kmModifiers[eaCivID]) / 100
 	end
-	local pop = player:GetTotalPopulation()
-	g_playerKM[iPlayer] = Floor(KM_PER_TECH_PER_CITIZEN * techCount * pop + 0.5)
+	local totalPopulationForKM = player:GetTotalPopulation()
+	g_playerKM[iPlayer] = Floor(kmPerTechPerCitizen * techCount * totalPopulationForKM + 0.5)
+
+	--Active player TopPanel UI info
+	if iPlayer == g_iActivePlayer then
+		MapModData.knowlMaint = g_playerKM[iPlayer]
+		MapModData.techCount = techCount
+		MapModData.kmPerTechPerCitizen = kmPerTechPerCitizen
+		MapModData.totalPopulationForKM = totalPopulationForKM
+		if kmPerTechPerCitizen ~= KM_PER_TECH_PER_CITIZEN then
+			MapModData.KM_PER_TECH_PER_CITIZEN = KM_PER_TECH_PER_CITIZEN
+		else
+			MapModData.KM_PER_TECH_PER_CITIZEN = nil
+		end
+	end
 
 	--Tomes
 	local tomeMods = g_playerTomeMods[iPlayer]
@@ -214,6 +229,83 @@ local function ResetTechCostMods(iPlayer)
 end
 LuaEvents.EaTechsResetTechCostMods.Add(ResetTechCostMods)
 
+
+local function GetCostHelpForTech(iPlayer, techID)
+	local str = ""
+
+	--Favored Techs
+	if g_playerFavoredTechMods[iPlayer][techID] then
+		str = str .. "[NEWLINE][ICON_BULLET]Favored Tech: [COLOR_POSITIVE_TEXT]" .. g_playerFavoredTechMods[iPlayer][techID] .. "%[ENDCOLOR]"
+	end
+
+	--Tomes (complicated here to separate out Tome of Tomes)
+	local tomeMods = g_playerTomeMods[iPlayer]
+	if tomeMods[techID] and tomeMods[techID] ~= 0 then
+		local tomeOfTomesStr = ""
+		local tomeOfTomesMod = (gArtifacts[EA_ARTIFACT_TOME_OF_TOMES] and gArtifacts[EA_ARTIFACT_TOME_OF_TOMES].iPlayer == iPlayer) and gArtifacts[EA_ARTIFACT_TOME_OF_TOMES].mod or 0
+		for artifactID, artifact in pairs(gArtifacts) do
+			if tomeTechs[artifactID] then
+				local tomeMod = artifact.iPlayer == iPlayer and artifact.mod or 0
+				if tomeMod ~= 0 or tomeOfTomesMod ~= 0 then
+					for testTechID, costChange in pairs(tomeTechs[artifactID]) do
+						if testTechID == techID then
+							if tomeMod ~= 0 then
+								local costModFromTome = Floor(costChange * tomeMod + 0.5)
+								local tomeName = Locale.Lookup(GameInfo.EaArtifacts[artifactID].Description)
+								str = str .. "[NEWLINE][ICON_BULLET]" .. tomeName .. ": [COLOR_POSITIVE_TEXT]" .. costModFromTome .. "%[ENDCOLOR]"
+							end
+							if tomeOfTomesMod ~= 0 then
+								local costModFromTomeOfTomes = Floor(costChange * (tomeOfTomesMod * 0.2) + 0.5)
+								local tomeOfTomesName = Locale.Lookup(GameInfo.EaArtifacts[EA_ARTIFACT_TOME_OF_TOMES].Description)
+								local tomeName = Locale.Lookup(GameInfo.EaArtifacts[artifactID].Description)
+								tomeOfTomesStr = tomeOfTomesStr .. "[NEWLINE][ICON_BULLET]" .. tomeOfTomesName .. " (" .. tomeName .. "): [COLOR_POSITIVE_TEXT]" .. costModFromTomeOfTomes .. "%[ENDCOLOR]"
+							end
+							break
+						end
+					end
+				end
+			end
+		end
+		str = str .. tomeOfTomesStr
+	end
+
+	--Arcane bonuses
+	if arcaneTechs[techID] then
+		local player = Players[iPlayer]
+		local eaPlayer = gPlayers[iPlayer]
+		if player:HasPolicy(GameInfoTypes.POLICY_ARCANE_LORE) then
+			str = str .. "[NEWLINE][ICON_BULLET]Arcane Lore: [COLOR_POSITIVE_TEXT]" .. -10 .. "%[ENDCOLOR]"
+		end
+		if player:HasPolicy(GameInfoTypes.POLICY_ARCANE_RESEARCH) then
+			str = str .. "[NEWLINE][ICON_BULLET]Arcane Research: [COLOR_POSITIVE_TEXT]" .. -20 .. "%[ENDCOLOR]"
+		end
+		if eaPlayer.eaCivNameID == GameInfoTypes.EACIV_LEMURIA then
+			str = str .. "[NEWLINE][ICON_BULLET]Arcane Tech (Lemuria): [COLOR_POSITIVE_TEXT]" .. -20 .. "%[ENDCOLOR]"
+		end
+	
+	--Epic non-arcane bonus
+	elseif gEpics[EA_EPIC_VAFTHRUTHNISMAL] and gEpics[EA_EPIC_VAFTHRUTHNISMAL].iPlayer == iPlayer then
+		local epicName = Locale.Lookup(GameInfo.EaEpics[EA_EPIC_VAFTHRUTHNISMAL].Description)
+		local costMod = - gEpics[EA_EPIC_VAFTHRUTHNISMAL].mod
+		str = str .. "[NEWLINE][ICON_BULLET]" .. epicName .. ": [COLOR_POSITIVE_TEXT]" .. costMod .. "%[ENDCOLOR]"
+	end
+
+	--Great Library
+	if gWonders[EA_WONDER_GREAT_LIBRARY] and gWonders[EA_WONDER_GREAT_LIBRARY].iPlayer == iPlayer then
+		local wonderName = Locale.Lookup(GameInfo.EaWonders[EA_WONDER_GREAT_LIBRARY].Description)
+		local costMod = -gWonders[EA_WONDER_GREAT_LIBRARY].mod
+		str = str .. "[NEWLINE][ICON_BULLET]" .. wonderName .. ": [COLOR_POSITIVE_TEXT]" .. costMod .. "%[ENDCOLOR]"
+	end
+
+	--Total tech cost mod
+	local totalTechCostMod = OnPlayerTechCostMod(iPlayer, techID)
+	local colorCode = 0 < totalTechCostMod and "[COLOR_NEGATIVE_TEXT]" or "[COLOR_POSITIVE_TEXT]"
+	str = str .. "[NEWLINE][ICON_BULLET]Total cost modifier including KM: " .. colorCode .. totalTechCostMod .. "%[ENDCOLOR]"
+
+	MapModData.costHelpForTech = str
+end
+LuaEvents.EaTechsGetCostHelpForTech.Add(GetCostHelpForTech)
+
 function ResetPlayerFavoredTechs(iPlayer)	--only need at game load and once at naming, so no caching
 	print("ResetPlayerFavoredTechs ", iPlayer)
 	local eaPlayer = gPlayers[iPlayer]
@@ -232,7 +324,7 @@ function ResetPlayerFavoredTechs(iPlayer)	--only need at game load and once at n
 	end
 end
 
-local function OnPlayerTechCostMod(iPlayer, techID)		--Ea API
+function OnPlayerTechCostMod(iPlayer, techID)		--Ea API
 	--print("OnPlayerTechCostMod ", iPlayer, techID)
 	if not fullCivs[iPlayer] then return 0 end
 	local mod = g_playerKM[iPlayer]
@@ -464,3 +556,11 @@ TechReq[GameInfoTypes.TECH_UNDERDARK_PATHS] = function(iPlayer)
 	return false	--Disabled for now...
 end
 
+--------------------------------------------------
+-- Active Player change
+--------------------------------------------------
+
+local function OnActivePlayerChanged(iActivePlayer, iPrevActivePlayer)
+	g_iActivePlayer = iActivePlayer
+end
+Events.GameplaySetActivePlayer.Add(OnActivePlayerChanged)

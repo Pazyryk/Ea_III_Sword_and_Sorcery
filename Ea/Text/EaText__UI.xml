@@ -80,6 +80,13 @@
 		</Row>
 
 		<!-- Top Panel -->
+		<Row Tag="TXT_KEY_EA_TP_KNOWLEDGE_MAINT">
+			<Text>Knowledge Maintenance is currently [COLOR_NEGATIVE_TEXT]{1_Num}%[ENDCOLOR] based on [COLOR_POSITIVE_TEXT]{2_Num}[ENDCOLOR] known techs x [COLOR_POSITIVE_TEXT]{3_Pop}[ENDCOLOR] total [ICON_CITIZEN] Citizens x [COLOR_NEGATIVE_TEXT]{4_Num}%[ENDCOLOR] KM per known tech per citizen{5_InsertTxt}. KM is used together with tech-specific modifiers (if any) to calculate research cost for discovering new technologies.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TP_KNOWLEDGE_MAINT_ADJUSMENT_INSERT">
+			<Text> (the later value is reduced for [COLOR_POSITIVE_TEXT]{1_Civ}[ENDCOLOR] from base [COLOR_NEGATIVE_TEXT]{2_Num}%[ENDCOLOR])</Text>
+		</Row>
+		
 		<Row Tag="TXT_KEY_EA_TP_GOLD_FROM_LEADER">
 			<Text>{1_Num} from Leader bonus to non-city income.</Text>
 		</Row>

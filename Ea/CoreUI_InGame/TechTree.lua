@@ -508,6 +508,9 @@ function AddTechButton( tech )
 		thisTechButtonInstance.FreeTechName:SetText( techName );
 		
 		local bShowProgress = false;
+		--Paz add
+		bShowProgress = true
+		--end Paz add
 		thisTechButtonInstance.TechButton:SetToolTipString( GetHelpTextForTech(tech.ID, bShowProgress) );
 		
 		-- update the picture
@@ -599,6 +602,12 @@ function OnDisplay( popupInfo )
 	Events.SerialEventGameMessagePopupShown(m_PopupInfo);
 	
   	RefreshDisplay();
+
+	--Paz add: need full setup so tech cost and other changable info gets updated 
+	g_PipeManager:ResetInstances()
+	g_TechInstanceManager:ResetInstances()
+	InitialSetup()
+	--end Paz add
   	
 end
 Events.SerialEventGameMessagePopup.Add( OnDisplay );

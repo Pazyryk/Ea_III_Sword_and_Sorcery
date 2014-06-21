@@ -130,7 +130,7 @@
 			<Text>Timberyard</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_TIMBERYARD_HELP">
-			<Text>+1 Timber resource from Sawmills near this City.[NEWLINE]+1 Timber for every 4 unimproved Forest and Jungle tiles for Pantheistic Civilizations.</Text>
+			<Text>+1 Timber[NEWLINE]+1 Timber from Sawmills near this City.[NEWLINE]+1 Timber for every 4 unimproved Forest and Jungle tiles for Pantheistic Civilizations.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_COTTON_GIN">
 			<Text>Cotton Gin</Text>

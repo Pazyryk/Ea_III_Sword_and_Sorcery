@@ -551,7 +551,8 @@ function ScienceTipHandler( control )
 			strText = strText .. Locale.ConvertTextKey("TXT_KEY_TP_SCIENCE_FROM_RESEARCH_AGREEMENTS", iScienceFromRAs / 100);
 		end
 
-		--Paz add: Science from Leader
+		--Paz add
+		--Science from Leader
 		local iScienceFromLeader = pPlayer:GetLeaderYieldBoost(GameInfoTypes.YIELD_SCIENCE) * (iScienceFromOtherPlayers + iScienceFromHappiness + iScienceFromRAs) / 100
 		if (iScienceFromLeader ~= 0) then
 		
@@ -564,6 +565,18 @@ function ScienceTipHandler( control )
 	
 			strText = strText .. Locale.ConvertTextKey("TXT_KEY_EA_TP_SCIENCE_FROM_LEADER", iScienceFromLeader / 100);
 		end
+
+		--Knowledge Maintenance blurb
+		local civInsert = ""
+		if MapModData.KM_PER_TECH_PER_CITIZEN then
+			local civName = Locale.Lookup(PreGame.GetCivilizationShortDescription(iPlayerID))
+			local baseKMString = string.format("%.3f", MapModData.KM_PER_TECH_PER_CITIZEN)
+			civInsert = " " .. Locale.Lookup("TXT_KEY_EA_TP_KNOWLEDGE_MAINT_ADJUSMENT_INSERT", civName, MapModData.KM_PER_TECH_PER_CITIZEN)
+		end
+		local kmPerTechPerCitizen = math.floor(1000 * MapModData.kmPerTechPerCitizen + 0.5) / 1000
+		local kmBlurb = Locale.Lookup("TXT_KEY_EA_TP_KNOWLEDGE_MAINT", MapModData.knowlMaint, MapModData.techCount, MapModData.totalPopulationForKM, kmPerTechPerCitizen, civInsert)
+
+		strText = strText .. "[NEWLINE][NEWLINE]" .. kmBlurb
 		--end Paz add
 
 	end

@@ -69,7 +69,7 @@ CREATE TABLE EaCivs (	'ID' INTEGER PRIMARY KEY AUTOINCREMENT,
 INSERT INTO EaCivs (Type,	PopupImage,									DefaultPlayerColor,			KnownTech,					FavoredGPClass,	GainPolicy,						GainCapitalBuilding) VALUES
 ('EACIV_HIPPUS',			'testbackground_1.17_856x700.dds',			'PLAYERCOLOR_CHINA',		'TECH_HORSEBACK_RIDING',	'Merchant',		'POLICY_MERCENARIES',			NULL							),
 ('EACIV_IKKOS',				'testbackground_1.17_856x700.dds',			'PLAYERCOLOR_EGYPT',		'TECH_HORSEBACK_RIDING',	'Warrior',		NULL,							'BUILDING_IKKOS'				),
-('EACIV_AB',				'testbackground_1.17_856x700.dds',			'PLAYERCOLOR_ENGLAND',		'TECH_ELEPHANT_TRAINING',	NULL,			NULL,							'BUILDING_AB'					),
+('EACIV_AB',				'testbackground_1.17_856x700.dds',			'PLAYERCOLOR_ENGLAND',		'TECH_ELEPHANT_LABOR',		NULL,			NULL,							'BUILDING_AB'					),
 ('EACIV_FIR_BOLG',			'testbackground_1.17_856x700.dds',			'PLAYERCOLOR_FRANCE',		'TECH_ANIMAL_HUSBANDRY',	NULL,			NULL,							NULL							),
 ('EACIV_CRUITHNI',			'testbackground_1.17_856x700.dds',			'PLAYERCOLOR_GERMANY',		'TECH_TRACKING_TRAPPING',	NULL,			NULL,							NULL							),
 ('EACIV_CRECY',				'testbackground_1.17_856x700.dds',			'PLAYERCOLOR_GREECE',		'TECH_ARCHERY',				'Warrior',		NULL,							NULL							),

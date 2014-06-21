@@ -1244,6 +1244,7 @@ function OnCityConnected(iPlayer, iCityX, iCityY, iToCityX, iToCityY, bDirect)
 end
 GameEvents.CityConnected.Add(function(iPlayer, iCityX, iCityY, iToCityX, iToCityY, bDirect) return HandleError61(OnCityConnected, iPlayer, iCityX, iCityY, iToCityX, iToCityY, bDirect) end)
 
+GameEvents.CanRazeOverride.Add(function() return true end)
 
 --------------------------------------------------------------
 -- City builds

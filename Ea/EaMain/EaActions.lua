@@ -222,7 +222,7 @@ function RegisterGPActions(iPerson)
 	local number = 1
 	for id = FIRST_GP_ACTION, FIRST_SPELL_ID - 1 do
 		local eaAction = EaActionsInfo[id]
-		if not eaAction.GPSubclass or eaAction.GPSubclass == subclass then
+		if not eaAction.GPSubclass or eaAction.GPSubclass == subclass or (subclass and eaAction.OrGPSubclass == subclass) then
 			if not eaAction.GPClass or eaAction.GPClass == class1 or eaAction.GPClass == class2 or (eaAction.OrGPClass and (eaAction.OrGPClass == class1 or eaAction.OrGPClass == class2)) then
 				if not eaAction.ExcludeGPSubclass or eaAction.ExcludeGPSubclass ~= subclass then
 					if not eaAction.NotGPClass or (eaAction.NotGPClass ~= class1 and eaAction.NotGPClass ~= class1) then

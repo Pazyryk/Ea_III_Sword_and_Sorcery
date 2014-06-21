@@ -152,6 +152,7 @@ INSERT INTO EaActions (Type,			Description,				UnitTypePrefix1,		UnitTypePrefix2
 ('EA_ACTION_UPGRD_SLAVES_WARRIORS',		'TXT_KEY_COMMAND_UPGRADE',	'UNIT_SLAVES',			NULL,					NULL,				NULL,					'UNIT_WARRIORS'			);
 
 UPDATE EaActions SET UIType = 'Action', AITarget = 'Self', OwnTerritory = 1, IconIndex = 44, IconAtlas = 'UNIT_ACTION_ATLAS' WHERE UnitUpgradeTypePrefix IS NOT NULL;
+UPDATE EaActions SET AndTechReq = 'TECH_CHEMISTRY' WHERE Type = 'EA_ACTION_UPGRD_ARQUEBUSSMEN';
 UPDATE EaActions SET NormalCombatUnit = 1 WHERE UnitUpgradeTypePrefix IS NOT NULL AND Type != 'EA_ACTION_UPGRD_SLAVES_WARRIORS';
 UPDATE EaActions SET PolicyReq = 'POLICY_SLAVE_ARMIES' WHERE Type = 'EA_ACTION_UPGRD_SLAVES_WARRIORS';
 

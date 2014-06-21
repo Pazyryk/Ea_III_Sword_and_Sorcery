@@ -103,7 +103,7 @@ end
 
 function CalculateXPManaForAttack(unitTypeId, damage, bKill)
 	local basePower = gg_normalizedUnitPower[unitTypeId] or 18			--city treated as unit with power 18
-	return Floor((damage + (bKill and 33 or 0)) * basePower / 18)		-- 1 pt per 2 hp for a Warriors unit; kill is worth an additional 33 hp
+	return Floor((damage + (bKill and 50 or 0)) * basePower / 18)		-- 1 pt per 2 hp for a Warriors unit; kill is worth an additional 33 hp
 end
 
 
@@ -395,27 +395,11 @@ local function OnCombatResult(iAttackingPlayer, iAttackingUnit, attackerDamage, 
 	local defendingUnit = defendingPlayer:GetUnitByID(iDefendingUnit)
 	print("attackerX, Y = ", attackingUnit and attackingUnit:GetX(), attackingUnit and attackingUnit:GetY())
 
-	if fullCivs[iAttackingPlayer] then	--if full civ then do various functions
-		if attackingUnit then
-	
-			if attackingUnit:IsGreatPerson() then
-				local attackState = attackingUnit:GetGPAttackState()
-				if attackState == 1 then					--This is a Warrior Lead Charge
-					WarriorLeadCharge(iAttackingPlayer, attackingUnit, targetX, targetY)
-				elseif attackState == 2 then
-					--Callenge; not yet implemented
-				end
-			end
-		end
-	end
-
 	g_defendingUnitTypeID = -1
 	if defenderMaxHP == 200	then	--city; TO DO: get hp from Defines
-		
 		--TO DO: get city race
 		gg_defendingCityRace = EARACE_MAN		--use this in city conquest event for slaves
 	else
-		
 		local defendingUnit = defendingPlayer:GetUnitByID(iDefendingUnit)	
 		if defendingUnit then
 			local unitTypeID = defendingUnit:GetUnitType()
@@ -425,6 +409,24 @@ local function OnCombatResult(iAttackingPlayer, iAttackingUnit, attackerDamage, 
 			g_defendingUnitRace = EARACE_MAN
 		end
 	end
+
+	if fullCivs[iAttackingPlayer] then	--if full civ then do various functions
+		if attackingUnit then
+			if attackingUnit:IsGreatPerson() then
+				local attackState = attackingUnit:GetGPAttackState()
+				if attackState == 1 then					--This is a Warrior Lead Charge
+					local bKill = defenderMaxHP <= defenderFinalDamage
+					local pts = CalculateXPManaForAttack(g_defendingUnitTypeID, defenderDamage, bKill)
+					attackingUnit:ChangeExperience(pts)
+					WarriorLeadCharge(iAttackingPlayer, attackingUnit, targetX, targetY)
+				elseif attackState == 2 then
+					--Callenge; not yet implemented
+				end
+			end
+		end
+	end
+
+
 end
 GameEvents.CombatResult.Add(function(iAttackingPlayer, iAttackingUnit, attackerDamage, attackerFinalDamage, attackerMaxHP, iDefendingPlayer, iDefendingUnit, defenderDamage, defenderFinalDamage, defenderMaxHP, iInterceptingPlayer, iInterceptingUnit, interceptorDamage, targetX, targetY) return HandleError(OnCombatResult, iAttackingPlayer, iAttackingUnit, attackerDamage, attackerFinalDamage, attackerMaxHP, iDefendingPlayer, iDefendingUnit, defenderDamage, defenderFinalDamage, defenderMaxHP, iInterceptingPlayer, iInterceptingUnit, interceptorDamage, targetX, targetY) end)
 

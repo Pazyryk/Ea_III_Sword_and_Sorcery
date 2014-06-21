@@ -216,7 +216,13 @@ function EaPeopleInit(bNewGame)
 	for iPerson, eaPerson in pairs(gPeople) do
 		local eaPersonRowID = eaPerson.eaPersonRowID
 		if eaPersonRowID then
-			gg_peopleEverLivedByRowID[eaPersonRowID] = iPerson
+			gg_peopleEverLivedByRowID[eaPersonRowID] = true
+		end
+	end
+	for _, eaPerson in pairs(gDeadPeople) do
+		local eaPersonRowID = eaPerson.eaPersonRowID
+		if eaPersonRowID then
+			gg_peopleEverLivedByRowID[eaPersonRowID] = true
 		end
 	end
 end
@@ -686,14 +692,12 @@ function UngenericizePerson(iPlayer, iPerson, eaPersonRowID)
 	eaPersonRowID = eaPersonRowID or PickPersonRowByClassOrSubclass(iPlayer, eaPerson.subclass or eaPerson.class1)
 
 	if eaPersonRowID then
-		gg_peopleEverLivedByRowID[eaPersonRowID] = iPerson
+		gg_peopleEverLivedByRowID[eaPersonRowID] = true
 		local eaPersonRow = GameInfo.EaPeople[eaPersonRowID]
 		eaPerson.race = GameInfoTypes[eaPersonRow.Race]
 		local name = eaPersonRow.Description
 		eaPerson.name = name
 		eaPerson.eaPersonRowID = eaPersonRowID	--need this for portrait and AI personality (if becomes leader)
-		--local eaPortraitType = string.gsub(eaPersonRow.Type, "EAPERSON", "EAPORTRAIT")
-		--eaPerson.portrait = GameInfo.EaPortraits[eaPortraitType] and GameInfo.EaPortraits[eaPortraitType].File
 		local iUnit = eaPerson.iUnit
 		if iUnit ~= -1 then	--name unit if on map
 			local player = Players[iPlayer]
@@ -1277,8 +1281,6 @@ function KillPerson(iPlayer, iPerson, unit, iKillerPlayer, deathType)
 	eaPerson.iUnit = nil
 	eaPerson.iUnitJoined = nil
 	--eaPerson.progress = nil
-
-	--eaPerson.moves = nil
 	--eaPerson.xp = nil
 	eaPerson.eaActionID = nil
 	eaPerson.eaActionData = nil

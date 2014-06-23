@@ -15,6 +15,17 @@ local OBSERVER_TEAM = GameDefines.MAX_MAJOR_CIVS - 1
 local g_iActivePlayer = Game.GetActivePlayer()
 local g_activePlayer = Players[g_iActivePlayer]
 local function OnActivePlayerChanged(iActivePlayer, iPrevActivePlayer)
+	if not MapModData.fullCivs[iActivePlayer] then
+		iActivePlayer = iPrevActivePlayer
+	end
+	if not MapModData.fullCivs[iActivePlayer] then		--probably autoplay; set to some player so UI doesn't crash if we want to look at it
+		for i = 0, GameDefines.MAX_MAJOR_CIVS do
+			if MapModData.fullCivs[i] then
+				iActivePlayer = i
+				break
+			end
+		end
+	end
 	g_iActivePlayer = iActivePlayer
 	g_activePlayer = Players[g_iActivePlayer]
 end
@@ -143,11 +154,36 @@ function AddSmallButtonsToTechButton( thisTechButtonInstance, tech, maxSmallButt
  	for thisBuildingInfo in GameInfo.Buildings(string.format("PreReqTech = '%s'", techType)) do
  		-- if this tech grants this player the ability to construct this building
 		if validBuildingBuilds[thisBuildingInfo.BuildingClass] == thisBuildingInfo.Type then
-			local buttonName = "B"..tostring(buttonNum);
-			local thisButton = thisTechButtonInstance[buttonName];
-			if thisButton then
-				AdjustArtOnGrantedBuildingButton( thisButton, thisBuildingInfo, textureSize );
-				buttonNum = buttonNum + 1;
+
+			--Paz modified below with bPolicyBranchAllow test
+			local bPolicyBranchAllow = true
+			if thisBuildingInfo.EaPrereqPolicy then
+				local policyBranchType = GameInfo.Policies[thisBuildingInfo.EaPrereqPolicy].PolicyBranchType
+				if policyBranchType then
+					local policyBranchInfo = GameInfo.PolicyBranchTypes[policyBranchType]
+					if not g_activePlayer:HasPolicy(GameInfoTypes[policyBranchInfo.FreePolicy]) then
+						bPolicyBranchAllow = false
+					end
+				else
+					for loopBranchInfo in GameInfo.PolicyBranchTypes() do
+						if loopBranchInfo.FreePolicy == thisBuildingInfo.EaPrereqPolicy or loopBranchInfo.FreeFinishingPolicy == thisBuildingInfo.EaPrereqPolicy then
+							if not g_activePlayer:HasPolicy(GameInfoTypes[loopBranchInfo.FreePolicy]) then
+								bPolicyBranchAllow = false
+							end
+							break
+						end
+					end
+				end
+			end
+
+			if bPolicyBranchAllow then
+				--origninal code block outside if
+				local buttonName = "B"..tostring(buttonNum);
+				local thisButton = thisTechButtonInstance[buttonName];
+				if thisButton then
+					AdjustArtOnGrantedBuildingButton( thisButton, thisBuildingInfo, textureSize );
+					buttonNum = buttonNum + 1;
+				end
 			end
 		end
  	end

@@ -497,6 +497,7 @@ end
 
 function GetPlotForSpawn(focalPlot, iPlayer, maxRange, bExcludeFocalPlot, bIgnoreOwn1UPT, bWaterSpawn, bAllowMountain, bRandomize, bIgnoreOpenBorders, ignoreUnit)
 	-- use maxRange = 0 if you just want a "safety test" for focal plot
+	print("GetPlotForSpawn ", focalPlot, iPlayer, maxRange, bExcludeFocalPlot, bIgnoreOwn1UPT, bWaterSpawn, bAllowMountain, bRandomize, bIgnoreOpenBorders, ignoreUnit)
 
 	maxRange = maxRange or 1
 	local player, team
@@ -524,6 +525,7 @@ function GetPlotForSpawn(focalPlot, iPlayer, maxRange, bExcludeFocalPlot, bIgnor
 				end
 			end	
 			if bAllow then
+				print(" -returning focal plot")
 				return focalPlot
 			end
 		end
@@ -551,6 +553,7 @@ function GetPlotForSpawn(focalPlot, iPlayer, maxRange, bExcludeFocalPlot, bIgnor
 						end
 					end	
 					if bAllow then
+						print(" -returning plot at range 1")
 						return testPlot
 					end
 				end
@@ -582,6 +585,7 @@ function GetPlotForSpawn(focalPlot, iPlayer, maxRange, bExcludeFocalPlot, bIgnor
 							end
 						end	
 						if bAllow then
+							print(" -returning plot at range: ", radius)
 							return testPlot
 						end
 					end

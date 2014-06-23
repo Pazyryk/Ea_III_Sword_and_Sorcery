@@ -208,15 +208,9 @@ local godUnits = {}
 for unitInfo in GameInfo.Units() do
 	if unitInfo.EaGPTempRole then
 		local role = unitInfo.EaGPTempRole
-		local tempType = unitInfo.Type
-		local tempTypeID = unitInfo.ID
-		for row in GameInfo.Unit_EaGPTempTypes() do
-			if row.TempUnitType == tempType then
-				local originalTypeID = GameInfoTypes[row.UnitType]
-				gpTempTypeUnits[role] = gpTempTypeUnits[role] or {}
-				gpTempTypeUnits[role][originalTypeID] = tempTypeID
-			end
-		end
+		local baseUnitTypeID = GameInfoTypes[unitInfo.EaGPTempBaseUnit]
+		gpTempTypeUnits[role] = gpTempTypeUnits[role] or {}
+		gpTempTypeUnits[role][baseUnitTypeID] = unitInfo.ID
 	end
 	if unitInfo.EaSpecial then
 		if unitInfo.EaSpecial == "Archdemon" then
@@ -1039,7 +1033,7 @@ local EA_SPELL_CALL_HEAVENS_GUARD =			GameInfoTypes.EA_SPELL_CALL_HEAVENS_GUARD
 local EA_SPELL_CALL_ANGEL =					GameInfoTypes.EA_SPELL_CALL_ANGEL
 local EA_SPELL_CALL_ARCHANGEL =				GameInfoTypes.EA_SPELL_CALL_ARCHANGEL
 local EA_SPELL_CALL_ANIMALS =				GameInfoTypes.EA_SPELL_CALL_ANIMALS
-local EA_SPELL_CALL_TREE_ENTS =				GameInfoTypes.EA_SPELL_CALL_TREE_ENTS
+local EA_SPELL_CALL_TREE_ENT =				GameInfoTypes.EA_SPELL_CALL_TREE_ENT
 local EA_SPELL_CALL_MAJOR_SPIRIT =			GameInfoTypes.EA_SPELL_CALL_MAJOR_SPIRIT
 
 local monsters = {GameInfoTypes.UNIT_GIANT_SPIDER, GameInfoTypes.UNIT_DRAKE_GREEN, GameInfoTypes.UNIT_DRAKE_BLUE, GameInfoTypes.UNIT_DRAKE_RED}	--weakest to strongest
@@ -1061,7 +1055,6 @@ local function ModelSummon_TestTarget()
 		unitTable = monsters
 		numTableUnits = 4
 		bLimitOneOnly = true
-
 	elseif g_eaActionID == EA_SPELL_REANIMATE_DEAD then
 		unitTable = undead
 		numTableUnits = 2
@@ -1086,8 +1079,14 @@ local function ModelSummon_TestTarget()
 	elseif g_eaActionID == EA_SPELL_CALL_ANIMALS then
 		unitTable = animals
 		numTableUnits = 2
-	elseif g_eaActionID == EA_SPELL_CALL_TREE_ENTS then
+	elseif g_eaActionID == EA_SPELL_CALL_TREE_ENT then
+		local featureID = g_plot:GetFeatureType()
+		if (featureID ~= FEATURE_FOREST and featureID ~= FEATURE_FOREST) or g_plot:GetLivingTerrainStrength() < 18 then
+			g_testTargetSwitch = 20
+			return false
+		end
 		unitTable = treeEnts
+		bLimitOneOnly = true
 		numTableUnits = 1
 	elseif g_eaActionID == EA_SPELL_SUMMON_ARCHDEMON or g_eaActionID == EA_SPELL_CALL_ARCHANGEL or g_eaActionID == EA_SPELL_CALL_MAJOR_SPIRIT then
 		archType = true
@@ -1243,7 +1242,7 @@ local function ModelSummon_SetUI()
 			verb, verbCap, unitStr, unitPlurStr = "call", "Call", "Angel", "Angels"
 		elseif g_eaActionID == EA_SPELL_CALL_ANIMALS then
 			verb, verbCap, unitStr, unitPlurStr = "call", "Call", "animals", "animals"
-		elseif g_eaActionID == EA_SPELL_CALL_TREE_ENTS then
+		elseif g_eaActionID == EA_SPELL_CALL_TREE_ENT then
 			verb, verbCap, unitStr, unitPlurStr = "call", "Call", "Tree-Ent", "Tree-Ents"
 		end
 
@@ -1259,6 +1258,10 @@ local function ModelSummon_SetUI()
 				local name = Locale.Lookup(GameInfo.Units[unitTypeID].Description)	--TO DO: plural cases
 				str = str .. unitCounts[unitTypeID] .. " " .. name
 			end
+			if g_eaActionID == EA_SPELL_CALL_TREE_ENT then
+				local featureStr = g_plot:GetFeatureType() == FEATURE_FOREST and "Forest" or "Jungle"
+				str = str .. "; strength (18) will be taken from " .. featureStr
+			end
 			MapModData.text = verbCap .. " " .. str
 		elseif g_testTargetSwitch == 2 then
 			MapModData.text = "[COLOR_WARNING_TEXT]You can only " .. verb .. " one unit with this spell[ENDCOLOR]"
@@ -1268,6 +1271,10 @@ local function ModelSummon_SetUI()
 			MapModData.text = "[COLOR_WARNING_TEXT]Your current spell modifier (" .. g_modSpell .. ") is insufficient to " .. verb .. " any " .. unitPlurStr .. " (need " .. Floor(g_int2 * g_modSpell / g_modSpellTimesTurns + 0.9999) .. ")[ENDCOLOR]"
 		elseif g_testTargetSwitch == 6 then
 			MapModData.text = "[COLOR_WARNING_TEXT]You cannont " .. verb .. " onto current or adjacent plots[ENDCOLOR]"
+		elseif g_testTargetSwitch == 20 then
+			MapModData.text = "[COLOR_WARNING_TEXT]Tree-Ent can be called only from Forest or Jungle with strength equal to or greater than 18[ENDCOLOR]"
+		else
+			MapModData.text = "[COLOR_WARNING_TEXT]REPORT AS BUG[ENDCOLOR]"
 		end
 	end
 end
@@ -1296,6 +1303,8 @@ local function ModelSummon_Finish()
 		gg_calledMajorSpirit[g_iPlayer] = g_int1
 		g_count = 1
 		g_integers[1] = g_int1	
+	elseif g_eaActionID == EA_SPELL_CALL_TREE_ENT then
+		g_plot:SetLivingTerrainStrength(g_plot:GetLivingTerrainStrength() - 18)
 	end
 
 	g_eaPerson.summonedUnits = g_eaPerson.summonedUnits or {}
@@ -1317,6 +1326,7 @@ local function ModelSummon_Finish()
 		end
 	end
 	UseManaOrDivineFavor(g_iPlayer, g_iPerson, g_value, false)
+	return true
 end
 
 --EA_SPELL_CONJURE_MONSTER
@@ -1367,11 +1377,11 @@ SetUI[GameInfoTypes.EA_SPELL_CALL_ANIMALS] = ModelSummon_SetUI
 SetAIValues[GameInfoTypes.EA_SPELL_CALL_ANIMALS] = ModelSummon_SetAIValues
 Finish[GameInfoTypes.EA_SPELL_CALL_ANIMALS] = ModelSummon_Finish
 
---EA_SPELL_CALL_TREE_ENTS
-TestTarget[GameInfoTypes.EA_SPELL_CALL_TREE_ENTS] = ModelSummon_TestTarget
-SetUI[GameInfoTypes.EA_SPELL_CALL_TREE_ENTS] = ModelSummon_SetUI
-SetAIValues[GameInfoTypes.EA_SPELL_CALL_TREE_ENTS] = ModelSummon_SetAIValues
-Finish[GameInfoTypes.EA_SPELL_CALL_TREE_ENTS] = ModelSummon_Finish
+--EA_SPELL_CALL_TREE_ENT
+TestTarget[GameInfoTypes.EA_SPELL_CALL_TREE_ENT] = ModelSummon_TestTarget
+SetUI[GameInfoTypes.EA_SPELL_CALL_TREE_ENT] = ModelSummon_SetUI
+SetAIValues[GameInfoTypes.EA_SPELL_CALL_TREE_ENT] = ModelSummon_SetAIValues
+Finish[GameInfoTypes.EA_SPELL_CALL_TREE_ENT] = ModelSummon_Finish
 
 --EA_SPELL_SUMMON_ARCHDEMON
 Test[GameInfoTypes.EA_SPELL_SUMMON_ARCHDEMON] = function()
@@ -1461,6 +1471,246 @@ SetAIValues[GameInfoTypes.EA_SPELL_CALL_MAJOR_SPIRIT] = ModelSummon_SetAIValues
 Finish[GameInfoTypes.EA_SPELL_CALL_MAJOR_SPIRIT] = ModelSummon_Finish
 
 ----------------------------------------------------------------------------
+-- Ranged attack spells
+----------------------------------------------------------------------------
+local EA_SPELL_BURNING_HANDS =			GameInfoTypes.EA_SPELL_BURNING_HANDS
+local EA_SPELL_MAGIC_MISSILE =			GameInfoTypes.EA_SPELL_MAGIC_MISSILE
+local EA_SPELL_FIREBALL =				GameInfoTypes.EA_SPELL_FIREBALL
+local EA_SPELL_PLASMA_BOLT =			GameInfoTypes.EA_SPELL_PLASMA_BOLT
+local EA_SPELL_PLASMA_STORM =			GameInfoTypes.EA_SPELL_PLASMA_STORM
+local EA_SPELL_HAIL_OF_PROJECTILES =	GameInfoTypes.EA_SPELL_HAIL_OF_PROJECTILES
+local EA_SPELL_DEATH_RAY =				GameInfoTypes.EA_SPELL_DEATH_RAY
+local EA_SPELL_SEQUENCED_DEATH =		GameInfoTypes.EA_SPELL_SEQUENCED_DEATH
+
+local livingUnitOrGP = {}
+for unitInfo in GameInfo.Units() do
+	if unitInfo.EaLiving then
+		livingUnitOrGP[unitInfo.ID] = true
+	end
+end
+
+local function ModelRanged_TestTarget()	--TO DO: need better AI targeting logic (for now, value goes up with existing damage)
+	local range = 2
+	local bIndirectFire = true			--TO DO: most will be indirect, but that is harder
+	local bAutoTargetAll = false
+	local bLivingOnly = false
+	local bAllowCity = true
+	local bValueDamaged = true
+
+	if g_eaActionID == EA_SPELL_BURNING_HANDS then
+		range = 1
+		bAllowCity = false
+	elseif g_eaActionID == EA_SPELL_PLASMA_STORM or g_eaActionID == EA_SPELL_HAIL_OF_PROJECTILES then
+		bAutoTargetAll = true
+	elseif g_eaActionID == EA_SPELL_DEATH_RAY then
+		bLivingOnly = true
+		bAllowCity = false
+		bValueDamaged = false
+	elseif g_eaActionID == EA_SPELL_SEQUENCED_DEATH then
+		bAutoTargetAll = true
+		bLivingOnly = true
+		bAllowCity = false
+		bValueDamaged = false
+	end
+
+	print("ModelRanged_TestTarget", g_eaActionID)
+	local maxValue, sumValue, count = 0, 0, 0								--Any target makes valid, but AI will value based on current target damage
+	for plot in PlotAreaSpiralIterator(g_plot, range, 1, false, false, false) do
+		if plot:IsCity() then
+			if bAllowCity and g_team:IsAtWar(Players[plot:GetOwner()]:GetTeam()) then
+				count = count + 1
+				local value = plot:GetPlotCity():GetDamage()
+				if bAutoTargetAll then
+					sumValue = sumValue + 1
+					g_table[count] = plot
+				elseif maxValue < value then	
+					maxValue = value
+					g_obj1 = plot
+				end				
+			end
+		elseif plot:IsVisibleEnemyUnit(g_iPlayer) then
+			print("visible enemy unit")
+			local unitCount = plot:GetNumUnits()
+			for i = 0, unitCount - 1 do
+				local unit = plot:GetUnit(i)
+				if not bLivingOnly or livingUnitOrGP[unit:GetUnitType()] then
+					if g_team:IsAtWar(Players[unit:GetOwner()]:GetTeam()) then	--combat unit that we are at war with (need to cache at-war players for speed!)
+						count = count + 1
+						local value = unit:IsCombatUnit() and (bValueDamaged and 100 + unit:GetDamage() or 150) or 1
+						if bAutoTargetAll then
+							sumValue = sumValue + 1
+							g_table[count] = plot
+						elseif maxValue < value then	
+							maxValue = value
+							g_obj1 = plot
+						end
+					end
+				end
+			end
+		end
+	end
+	if count == 0 then return false end	--no targets found
+	if bAutoTargetAll then
+		g_count = count
+		g_value = sumValue
+	else
+		g_value = maxValue
+	end
+
+	return true
+end
+
+local function ModelRanged_SetUI()
+	if g_bNonTargetTestsPassed then
+		if g_bAllTestsPassed then
+			if g_eaActionID == EA_SPELL_BURNING_HANDS then
+				MapModData.text = "Use Burning Hands on adjacent unit with ranged strength " .. g_modSpell
+			elseif g_eaActionID == EA_SPELL_MAGIC_MISSILE then
+				MapModData.text = "Fire Magic Missiles up to range 2 with strength " .. Floor(20 * g_modSpell / 3) / 10
+			elseif g_eaActionID == EA_SPELL_FIREBALL then
+				MapModData.text = "Shoot Fireball up to range 2 with strength " .. g_modSpell
+			elseif g_eaActionID == EA_SPELL_PLASMA_BOLT then
+				MapModData.text = "Shoot Plasma Bolt up to range 2 with strength " .. g_modSpell .. "; may stun target for one turn"
+			elseif g_eaActionID == EA_SPELL_PLASMA_STORM then
+				MapModData.text = "Shoot Plasma Bolts at all hostile targets up to range 2; each has strength " .. g_modSpell .. " and may stun target for one turn"
+			elseif g_eaActionID == EA_SPELL_HAIL_OF_PROJECTILES then
+				MapModData.text = "Cause a Hail of Projectiles to damage all hostile targets up to range 2; each projectile has strength " .. g_modSpell
+			elseif g_eaActionID == EA_SPELL_DEATH_RAY then
+				MapModData.text = "Drain life energy from one living unit up to range 2; may kill outright or will drain " .. g_modSpell .. " experience, transfering that amount to caster"
+			elseif g_eaActionID == EA_SPELL_SEQUENCED_DEATH then
+				MapModData.text = "Cause Death Rays to shoot out at all hostile living units up to range 2; each will drain life energy from one unit, killing it outright or draining " .. g_modSpell .. " experience, transfering that amount to caster"
+			end			
+		else
+			MapModData.text = "[COLOR_WARNING_TEXT]No valid target in range[ENDCOLOR]"
+		end
+	end
+end
+
+local function ModelRanged_SetAIValues()
+	gg_aiOptionValues.i = g_value
+end
+
+local function ModelRanged_Do()
+	print("ModelRanged_Do")
+	UpdateGreatPersonStatsFromUnit(g_unit, g_eaPerson)
+	local oldUnitTypeID = g_unit:GetUnitType()
+	local newUnitTypeID
+	local bAutoTargetAll = false
+	local modX10 = g_modSpell * 10
+	if g_eaActionID == EA_SPELL_BURNING_HANDS then
+		newUnitTypeID = gpTempTypeUnits.BurningHands[oldUnitTypeID] or GameInfoTypes.UNIT_WIZARD_BURNING_HANDS
+	elseif g_eaActionID == EA_SPELL_MAGIC_MISSILE then
+		newUnitTypeID = gpTempTypeUnits.MagicMissle[oldUnitTypeID] or GameInfoTypes.UNIT_WIZARD_MAGIC_MISSLE	--fallback to wizard if we haven't added tempType unit yet
+		modX10 = Floor(2 * modX10 / 3)
+	elseif g_eaActionID == EA_SPELL_FIREBALL then
+		newUnitTypeID = gpTempTypeUnits.Fireball[oldUnitTypeID] or GameInfoTypes.UNIT_WIZARD_FIREBALL
+	elseif g_eaActionID == EA_SPELL_PLASMA_BOLT then
+		newUnitTypeID = gpTempTypeUnits.PlasmaBurst[oldUnitTypeID] or GameInfoTypes.UNIT_WIZARD_PLASMA_BURST
+	elseif g_eaActionID == EA_SPELL_PLASMA_STORM then
+		newUnitTypeID = gpTempTypeUnits.PlasmaBurst[oldUnitTypeID] or GameInfoTypes.UNIT_WIZARD_PLASMA_BURST
+		bAutoTargetAll = true
+	elseif g_eaActionID == EA_SPELL_HAIL_OF_PROJECTILES then
+		newUnitTypeID = gpTempTypeUnits.Rocket[oldUnitTypeID] or GameInfoTypes.UNIT_WIZARD_ROCKET
+		bAutoTargetAll = true
+	elseif g_eaActionID == EA_SPELL_DEATH_RAY then
+		newUnitTypeID = gpTempTypeUnits.EnergyDrain[oldUnitTypeID] or GameInfoTypes.UNIT_WIZARD_ENERGY_DRAIN
+	elseif g_eaActionID == EA_SPELL_SEQUENCED_DEATH then
+		newUnitTypeID = gpTempTypeUnits.EnergyDrain[oldUnitTypeID] or GameInfoTypes.UNIT_WIZARD_ENERGY_DRAIN
+		bAutoTargetAll = true
+	end	
+
+	--init and convert to ranged attack unit
+	local direction = g_unit:GetFacingDirection()
+	local newUnit = g_player:InitUnit(newUnitTypeID, g_x, g_y, nil, direction)
+	MapModData.bBypassOnCanSaveUnit = true
+	newUnit:Convert(g_unit, false)
+	newUnit:SetPersonIndex(g_iPerson)
+	local iNewUnit = newUnit:GetID()
+	g_eaPerson.iUnit = iNewUnit
+	newUnit:SetMorale(modX10 - 100)			--Use morale to modify up or down from ranged strength 10 (can't change ranged strength)
+
+	if bAutoTargetAll then					--same for human and AI
+
+		--Sequenced attacks don't work yet. I think we need a hook on CvTacticalAI::CombatResolved so we can call next attack after last one resolved
+
+
+		g_eaPerson.autoAttack = true
+		--for i = 1, g_count - 1 do
+		--	local x, y = g_table[i]:GetXY()
+		--	newUnit:RangeStrike(x, y)
+		--	newUnit:SetMoves(60)
+		--end
+		g_eaPerson.autoAttack = false		--allows OnCombatEnded to restore normal GP unit
+		local x, y = g_table[g_count]:GetXY()
+		newUnit:RangeStrike(x, y)
+		if newUnit:MovesLeft() > 0  then
+			error("AI GP has movement after Magic Missile! Did it not fire?")
+		end
+	elseif g_bAIControl then		--Carry out attack
+		local x, y = g_obj1:GetXY()
+		newUnit:RangeStrike(x, y)
+		if newUnit:MovesLeft() > 0  then
+			error("AI GP has movement after Magic Missile! Did it not fire?")
+		end
+	elseif g_iPlayer == g_iActivePlayer then
+		MapModData.forcedUnitSelection = iNewUnit
+		MapModData.forcedInterfaceMode = InterfaceModeTypes.INTERFACEMODE_RANGE_ATTACK
+		UI.SelectUnit(newUnit)
+		UI.LookAtSelectionPlot(0)
+	end
+	return true
+end
+
+--EA_SPELL_BURNING_HANDS
+TestTarget[GameInfoTypes.EA_SPELL_BURNING_HANDS] = ModelRanged_TestTarget
+SetUI[GameInfoTypes.EA_SPELL_BURNING_HANDS] = ModelRanged_SetUI
+SetAIValues[GameInfoTypes.EA_SPELL_BURNING_HANDS] = ModelRanged_SetAIValues
+Do[GameInfoTypes.EA_SPELL_BURNING_HANDS] = ModelRanged_Do
+
+--EA_SPELL_MAGIC_MISSILE
+TestTarget[GameInfoTypes.EA_SPELL_MAGIC_MISSILE] = ModelRanged_TestTarget
+SetUI[GameInfoTypes.EA_SPELL_MAGIC_MISSILE] = ModelRanged_SetUI
+SetAIValues[GameInfoTypes.EA_SPELL_MAGIC_MISSILE] = ModelRanged_SetAIValues
+Do[GameInfoTypes.EA_SPELL_MAGIC_MISSILE] = ModelRanged_Do
+
+--EA_SPELL_FIREBALL
+TestTarget[GameInfoTypes.EA_SPELL_FIREBALL] = ModelRanged_TestTarget
+SetUI[GameInfoTypes.EA_SPELL_FIREBALL] = ModelRanged_SetUI
+SetAIValues[GameInfoTypes.EA_SPELL_FIREBALL] = ModelRanged_SetAIValues
+Do[GameInfoTypes.EA_SPELL_FIREBALL] = ModelRanged_Do
+
+--EA_SPELL_PLASMA_BOLT
+TestTarget[GameInfoTypes.EA_SPELL_PLASMA_BOLT] = ModelRanged_TestTarget
+SetUI[GameInfoTypes.EA_SPELL_PLASMA_BOLT] = ModelRanged_SetUI
+SetAIValues[GameInfoTypes.EA_SPELL_PLASMA_BOLT] = ModelRanged_SetAIValues
+Do[GameInfoTypes.EA_SPELL_PLASMA_BOLT] = ModelRanged_Do
+
+--EA_SPELL_PLASMA_STORM
+TestTarget[GameInfoTypes.EA_SPELL_PLASMA_STORM] = ModelRanged_TestTarget
+SetUI[GameInfoTypes.EA_SPELL_PLASMA_STORM] = ModelRanged_SetUI
+--SetAIValues[GameInfoTypes.EA_SPELL_PLASMA_STORM] = ModelRanged_SetAIValues
+Do[GameInfoTypes.EA_SPELL_PLASMA_STORM] = ModelRanged_Do
+
+--EA_SPELL_HAIL_OF_PROJECTILES
+TestTarget[GameInfoTypes.EA_SPELL_HAIL_OF_PROJECTILES] = ModelRanged_TestTarget
+SetUI[GameInfoTypes.EA_SPELL_HAIL_OF_PROJECTILES] = ModelRanged_SetUI
+--SetAIValues[GameInfoTypes.EA_SPELL_HAIL_OF_PROJECTILES] = ModelRanged_SetAIValues
+Do[GameInfoTypes.EA_SPELL_HAIL_OF_PROJECTILES] = ModelRanged_Do
+
+--EA_SPELL_DEATH_RAY
+TestTarget[GameInfoTypes.EA_SPELL_DEATH_RAY] = ModelRanged_TestTarget
+SetUI[GameInfoTypes.EA_SPELL_DEATH_RAY] = ModelRanged_SetUI
+SetAIValues[GameInfoTypes.EA_SPELL_DEATH_RAY] = ModelRanged_SetAIValues
+Do[GameInfoTypes.EA_SPELL_DEATH_RAY] = ModelRanged_Do
+
+--EA_SPELL_SEQUENCED_DEATH
+TestTarget[GameInfoTypes.EA_SPELL_SEQUENCED_DEATH] = ModelRanged_TestTarget
+SetUI[GameInfoTypes.EA_SPELL_SEQUENCED_DEATH] = ModelRanged_SetUI
+--SetAIValues[GameInfoTypes.EA_SPELL_SEQUENCED_DEATH] = ModelRanged_SetAIValues
+Do[GameInfoTypes.EA_SPELL_SEQUENCED_DEATH] = ModelRanged_Do
+
+
+----------------------------------------------------------------------------
 -- Glyphs, Runes and Wards
 ----------------------------------------------------------------------------
 
@@ -1491,7 +1741,6 @@ SetUI[GameInfoTypes.EA_SPELL_SEEING_EYE_GLYPH] = function()
 	end
 end
 
---[[
 SetAIValues[GameInfoTypes.EA_SPELL_SEEING_EYE_GLYPH] = function()
 	local range = Floor(g_modSpell / 5)
 	local addedVisibility = g_plot:IsVisible(g_iTeam) and 0 or 1
@@ -1504,7 +1753,6 @@ SetAIValues[GameInfoTypes.EA_SPELL_SEEING_EYE_GLYPH] = function()
 	end
 	gg_aiOptionValues.i = addedVisibility / 20
 end
-]]
 
 Finish[GameInfoTypes.EA_SPELL_SEEING_EYE_GLYPH] = function()
 	g_plot:SetPlotEffectData(GameInfoTypes.EA_PLOTEFFECT_SEEING_EYE_GLYPH, g_modSpell, g_iPlayer, g_iPerson)	--effectID, effectStength, iPlayer, iCaster
@@ -2108,7 +2356,7 @@ TestTarget[GameInfoTypes.EA_SPELL_SCRYING] = function()
 	--pre-select best scry plot and value for AI (AI mostly wants to explore with this spell)
 	local maxValue = 0
 	for radius = 2, g_modSpell do
-		for plot in PlotRingIterator(g_gpPlot, radius, 1, false) do
+		for plot in PlotRingIterator(g_plot, radius, 1, false) do
 			if plot:IsRevealed(g_iTeam) then
 				local value = 0
 				for adjPlot in AdjacentPlotIterator(plot) do
@@ -2151,13 +2399,11 @@ SetUI[GameInfoTypes.EA_SPELL_SCRYING] = function()
 	end
 end
 
---[[ not yet implemented
-SetAIValues[GameInfoTypes.EA_SPELL_SCRYING] = function()
-	gg_aiOptionValues.i = g_value
-end
-]]
+--SetAIValues[GameInfoTypes.EA_SPELL_SCRYING] = function()
+--	gg_aiOptionValues.i = g_value
+--end
 
-Do[GameInfoTypes.EA_SPELL_SCRYING] = function()
+Finish[GameInfoTypes.EA_SPELL_SCRYING] = function()
 	--if g_bAIControl then	--do it
 		g_unit:SetReconPlot(g_obj1)
 		g_unit:FinishMoves()
@@ -2181,7 +2427,7 @@ end
 --EA_SPELL_DISPEL_MAGIC
 --EA_SPELL_TIME_STOP
 
-
+--[[ moved to model function
 --EA_SPELL_MAGIC_MISSILE
 TestTarget[GameInfoTypes.EA_SPELL_MAGIC_MISSILE] = function()	--TO DO: need better AI targeting logic (for now, value goes up with existing damage)
 	print("TestTarget[GameInfoTypes.EA_SPELL_MAGIC_MISSILE]")
@@ -2221,7 +2467,7 @@ end
 SetUI[GameInfoTypes.EA_SPELL_MAGIC_MISSILE] = function()
 	if g_bNonTargetTestsPassed then
 		if g_bAllTestsPassed then
-			MapModData.text = "Magic Missile attack (ranged strength " .. g_modSpell .. ")"
+			MapModData.text = "Magic Missile attack (ranged strength " .. Floor(20 * g_modSpell / 3) / 10 .. ")"
 		else
 			MapModData.text = "[COLOR_WARNING_TEXT]No valid target in range[ENDCOLOR]"
 		end
@@ -2238,7 +2484,7 @@ Do[GameInfoTypes.EA_SPELL_MAGIC_MISSILE] = function()
 	UpdateGreatPersonStatsFromUnit(g_unit, g_eaPerson)
 
 	local direction = g_unit:GetFacingDirection()
-	local newUnitTypeID = gpTempTypeUnits.MagicMissle[g_unit:GetUnitType()] or GameInfoTypes.UNIT_DRUID_MAGIC_MISSLE	--fallback to druid if we haven't added tempType unit yet
+	local newUnitTypeID = gpTempTypeUnits.MagicMissle[g_unit:GetUnitType()] or GameInfoTypes.UNIT_WIZARD_MAGIC_MISSLE	--fallback to wizard if we haven't added tempType unit yet
 
 	local newUnit = g_player:InitUnit(newUnitTypeID, g_x, g_y, nil, direction)
 	MapModData.bBypassOnCanSaveUnit = true
@@ -2247,7 +2493,7 @@ Do[GameInfoTypes.EA_SPELL_MAGIC_MISSILE] = function()
 	local iNewUnit = newUnit:GetID()
 	g_eaPerson.iUnit = iNewUnit
 
-	newUnit:SetMorale(g_modSpell * 10 - 100)	--Use morale to modify up or down from ranged strength 10 (can't change ranged strength)
+	newUnit:SetMorale(Floor(20 * g_modSpell / 3) - 100)	--Use morale to modify up or down from ranged strength 10 (can't change ranged strength)
 
 	if g_bAIControl then		--Carry out attack
 		print("CanRangeStrikeAt ", newUnit:CanRangeStrikeAt(g_obj1:GetX(), g_obj1:GetY()))
@@ -2265,7 +2511,7 @@ Do[GameInfoTypes.EA_SPELL_MAGIC_MISSILE] = function()
 
 	return true
 end
-
+]]
 
 
 --EA_SPELL_MAGE_SWORD

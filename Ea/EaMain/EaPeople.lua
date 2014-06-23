@@ -279,7 +279,23 @@ function PeoplePerCivTurn(iPlayer)
 			end
 
 			--Death by old age
-			local bDieOfOldAge = eaPerson.predestinedAgeOfDeath and eaPerson.predestinedAgeOfDeath < age	--predestined thwarts game reload
+			local bDieOfOldAge = false
+			if eaPerson.predestinedAgeOfDeath and eaPerson.predestinedAgeOfDeath <= age then	--predestined thwarts game reload
+				if eaPerson.eaActionID == -1 or eaPerson.eaActionID == 0 then
+					bDieOfOldAge = true
+				elseif not eaPerson.deathStayAction then
+					local eaActionInfo = GameInfo.EaActions[eaPerson.eaActionID]
+					local bDeathStay = eaActionInfo.TurnsToComplete ~= 1000		--sustained action
+					if bDeathStay then
+						eaPerson.deathStayAction = eaPerson.eaActionID
+					else
+						bDieOfOldAge = true
+					end
+				elseif eaPerson.deathStayAction ~= eaPerson.eaActionID then	--swapped to different action
+					bDieOfOldAge = true
+				end
+				--lives as long as eaPerson.deathStayAction == eaPerson.eaActionID
+			end
 
 			if bDieOfOldAge then
 				KillPerson(iPlayer, iPerson, unit, nil, "OldAge")
@@ -384,17 +400,16 @@ Events.ActivePlayerTurnStart.Add(SkipPeople)
 --TO DO: This could be done much better with new turn blocking types in dll
 
 
-local bLastCallWasHumanPlayer = false
+local g_iLastPlayerPeopleAfterTurn = -1
 
 function PeopleAfterTurn(iPlayer, bActionInfoPanelCall)
-	--Runs from ActionInfoPanel for human and after turn for AI and human
-	print("Running PeopleAfterTurn ", bActionInfoPanelCall, bLastCallWasHumanPlayer)
+	--Runs from ActionInfoPanel for human, and after turn for AI and human
+	print("Running PeopleAfterTurn ", iPlayer, bActionInfoPanelCall, g_iLastPlayerPeopleAfterTurn)
 	local bHumanPlayer = not bFullCivAI[iPlayer]
 	local bAllowHumanPlayerEndTurn = true	
 	local gameTurn = Game.GetGameTurn()
 	local player = Players[iPlayer]
 	local eaPlayer = gPlayers[iPlayer]				
-	local deadCount = 0
 
 	for iPerson, eaPerson in pairs(gPeople) do
 		if eaPerson.iPlayer == iPlayer then
@@ -403,40 +418,39 @@ function PeopleAfterTurn(iPlayer, bActionInfoPanelCall)
 			if not unit then
 				print("!!!! ERROR: No unit for GP; killing person")
 				KillPerson(iPlayer, iPerson, nil, nil, nil)
-				--error("No unit for GP")
 			else
-				if bHumanPlayer and not bLastCallWasHumanPlayer then	--Human actions run automatically at turn end so that player can interupt
+				if bHumanPlayer and iPlayer ~= g_iLastPlayerPeopleAfterTurn then	--Human actions run automatically at turn end so that player can interupt
 					if unit:GetMoves() > 0 then
 						local eaActionID = eaPerson.eaActionID
 						if eaActionID ~= -1 then
 							if eaActionID < FIRST_SPELL_ID then
-								if not DoEaAction(eaActionID, iPlayer, unit, iPerson) then	--does action or cancels
-									bAllowHumanPlayerEndTurn = false
-								end
+								DoEaAction(eaActionID, iPlayer, unit, iPerson)
 							else
-								if not DoEaSpell(eaActionID, iPlayer, unit, iPerson) then
-									bAllowHumanPlayerEndTurn = false
-								end
+								DoEaSpell(eaActionID, iPlayer, unit, iPerson)
 							end
-						else
+							if unit and unit:GetMoves() > 0 and not unit:IsDelayedDeath() and not unit:IsDead() then
+								print("PeopleAfterTurn blocking human end turn (if it's not too late) for GP with movement", eaActionID, iPlayer, iPerson)
+								bAllowHumanPlayerEndTurn = false
+							end
+						--else
 							--clear whatever this unit thought it was doing (including skip)
-							unit:PopMission()
-							bAllowHumanPlayerEndTurn = false
+						--	print("GP with moves and eaActionID = -1 at PeopleAfterTurn; blocking human end turn", iPerson)
+						--	unit:PopMission()
+						--	bAllowHumanPlayerEndTurn = false
 						end
 					end
-
 				end
 			end
 		end
 	end
 
-	bLastCallWasHumanPlayer = bHumanPlayer
+	g_iLastPlayerPeopleAfterTurn = iPlayer
 
 	if bActionInfoPanelCall and bAllowHumanPlayerEndTurn then
-		print("About to issue Game.DoControl(GameInfoTypes.CONTROL_ENDTURN)")
+		print("PeopleAfterTurn issuing Game.DoControl(GameInfoTypes.CONTROL_ENDTURN)")
 		Game.DoControl(GameInfoTypes.CONTROL_ENDTURN)
 	end
-	print("End of PeapleAfterTurn")
+	print("End of PeopleAfterTurn")
 end
 --LuaEvents.EaPeoplePeopleAfterTurn.Add(PeopleAfterTurn)
 LuaEvents.EaPeoplePeopleAfterTurn.Add(function(iPlayer, bActionInfoPanelCall) return HandleError21(PeopleAfterTurn, iPlayer, bActionInfoPanelCall) end)

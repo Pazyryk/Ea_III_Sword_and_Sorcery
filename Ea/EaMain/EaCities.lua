@@ -618,7 +618,7 @@ function TestSetEligibleCityCults(city, eaCity, feedbackCultID)
 							totalWine = totalWine + 1
 						end
 						local terrainID = plot:GetTerrainType()
-						print("plot test: ", terrainID, plotTypeID, featureID, resourceID)
+						--print("plot test: ", terrainID, plotTypeID, featureID, resourceID)
 
 						if terrainID == TERRAIN_DESERT then
 							totalDesert = totalDesert + 1

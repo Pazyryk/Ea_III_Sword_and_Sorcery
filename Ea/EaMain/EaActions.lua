@@ -2253,6 +2253,7 @@ Finish[GameInfoTypes.EA_ACTION_LEARN_SPELL] = function()
 	print("GP learned a spell: ", GameInfo.EaActions[g_eaPerson.learningSpellID].Type)
 	g_eaPerson.learningSpellID = -1
 	g_unit:FinishMoves()
+	return true
 end
 
 Interrupt[GameInfoTypes.EA_ACTION_LEARN_SPELL] = function(iPlayer, iPerson)
@@ -2313,6 +2314,7 @@ Finish[GameInfoTypes.EA_ACTION_OCCUPY_TOWER] = function()
 	UseManaOrDivineFavor(g_iPlayer, g_iPerson, g_value, false)
 	g_specialEffectsPlot = g_plot
 	UpdateInstanceWonder(g_iPlayer, EA_WONDER_ARCANE_TOWER)
+	return true
 end
 
 --this is not table safe!
@@ -2408,6 +2410,7 @@ Finish[GameInfoTypes.EA_ACTION_OCCUPY_TEMPLE] = function()
 	UseManaOrDivineFavor(g_iPlayer, g_iPerson, 20, false)	--20 mana or divine favor
 	g_specialEffectsPlot = g_plot
 	UpdateUniqueWonder(g_iPlayer, g_int1)
+	return true
 end
 ------------------------------------------------------------------------------------------------------------------------------
 -- Prophecies
@@ -2855,6 +2858,7 @@ end
 
 Finish[GameInfoTypes.EA_ACTION_EPIC_HAVAMAL] = function()
 	ResetHappyUnhappyFromMod(g_iPlayer)
+	return true
 end
 
 --EA_ACTION_EPIC_VAFTHRUTHNISMAL
@@ -2873,6 +2877,7 @@ end
 
 Finish[GameInfoTypes.EA_ACTION_EPIC_GRIMNISMAL] = function()
 	ResetPlayerGPMods(g_iPlayer)
+	return true
 end
 
 --EA_ACTION_EPIC_HYMISKVITHA
@@ -2909,7 +2914,7 @@ Finish[GameInfoTypes.EA_ACTION_TOME_OF_EQUUS] = function()
 			unit:ChangeExperience(xpChange)
 		end
 	end
-	
+	return true	
 end
 
 --EA_ACTION_TOME_OF_BEASTS
@@ -2997,7 +3002,22 @@ end
 ------------------------------------------------------------------------------------------------------------------------------
 --EA_ACTION_LAND_TRADE_ROUTE
 Test[GameInfoTypes.EA_ACTION_LAND_TRADE_ROUTE] = function()
-	--There is no test here; but we need to set g_tradeAvailableTable and gg_tradeAvailableTable
+	local numAvailable = g_player:GetNumInternationalTradeRoutesAvailable()
+	numAvailable = numAvailable - g_player:GetNumInternationalTradeRoutesUsed()
+	if g_bAIControl then
+		numAvailable = numAvailable - (g_eaPlayer.aiNumTradeRoutesTargeted or 0)
+	end
+	if numAvailable < 1 then
+		g_testTargetSwitch = 5
+		return false
+	end
+	numAvailable = numAvailable - g_player:GetNumAvailableTradeUnits()
+	if numAvailable < 1 then
+		g_testTargetSwitch = 5
+		return false
+	end
+
+	--Set g_tradeAvailableTable and gg_tradeAvailableTable
 	MapModData.bBypassOnCanCreateTradeRoute = true
 	g_tradeAvailableTable = g_player:GetTradeRoutesAvailable()
 	MapModData.bBypassOnCanCreateTradeRoute = false
@@ -3082,6 +3102,9 @@ SetUI[GameInfoTypes.EA_ACTION_LAND_TRADE_ROUTE] = function()
 		elseif g_testTargetSwitch == 3 then
 			MapModData.text = "[COLOR_WARNING_TEXT]Only one Merchant at a time can establish Trade Routes in a particular city[ENDCOLOR]"
 		end
+	elseif g_bIsCity and g_testTargetSwitch == 5 then
+		MapModData.bShow = true
+		MapModData.text = "[COLOR_WARNING_TEXT]You are using the maximum number of trade routes allowed for your civilization[ENDCOLOR]"
 	end
 end
 
@@ -3133,13 +3156,33 @@ Finish[GameInfoTypes.EA_ACTION_LAND_TRADE_ROUTE] = function()
 	g_specialEffectsPlot = fromCityPlot
 	local unit = g_player:InitUnit(GameInfoTypes.UNIT_CARAVAN, fromCity:GetX(), fromCity:GetY())
 	unit:PushMission(MissionTypes.MISSION_ESTABLISH_TRADE_ROUTE, g_iPlot, 0, 0, 0, 1)
+	AIRecalculateNumTradeRoutesTargeted(g_iPlayer)
 	return true
+end
+
+Interrupt[GameInfoTypes.EA_ACTION_LAND_TRADE_ROUTE] = function(iPlayer, iPerson)
+	AIRecalculateNumTradeRoutesTargeted(iPlayer)
 end
 
 
 --EA_ACTION_SEA_TRADE_ROUTE
 Test[GameInfoTypes.EA_ACTION_SEA_TRADE_ROUTE] = function()
-	--There is no test here; but we need to set g_tradeAvailableTable and gg_tradeAvailableTable
+	local numAvailable = g_player:GetNumInternationalTradeRoutesAvailable()
+	numAvailable = numAvailable - g_player:GetNumInternationalTradeRoutesUsed()
+	if g_bAIControl then
+		numAvailable = numAvailable - (g_eaPlayer.aiNumTradeRoutesTargeted or 0)
+	end
+	if numAvailable < 1 then
+		g_testTargetSwitch = 5
+		return false
+	end
+	numAvailable = numAvailable - g_player:GetNumAvailableTradeUnits()
+	if numAvailable < 1 then
+		g_testTargetSwitch = 5
+		return false
+	end
+
+	--Set g_tradeAvailableTable and gg_tradeAvailableTable
 	MapModData.bBypassOnCanCreateTradeRoute = true
 	g_tradeAvailableTable = g_player:GetTradeRoutesAvailable()
 	MapModData.bBypassOnCanCreateTradeRoute = false
@@ -3222,6 +3265,9 @@ SetUI[GameInfoTypes.EA_ACTION_SEA_TRADE_ROUTE] = function()
 		elseif g_testTargetSwitch == 3 then
 			MapModData.text = "[COLOR_WARNING_TEXT]Only one Merchant at a time can establish Trade Routes in a particular city[ENDCOLOR]"
 		end
+	elseif g_bIsCity and g_testTargetSwitch == 5 then
+		MapModData.bShow = true
+		MapModData.text = "[COLOR_WARNING_TEXT]You are using the maximum number of trade routes allowed for your civilization[ENDCOLOR]"
 	end
 end
 
@@ -3272,9 +3318,11 @@ Finish[GameInfoTypes.EA_ACTION_SEA_TRADE_ROUTE] = function()
 	g_specialEffectsPlot = fromCityPlot
 	local unit = g_player:InitUnit(GameInfoTypes.UNIT_CARGO_SHIP, fromCity:GetX(), fromCity:GetY())
 	unit:PushMission(MissionTypes.MISSION_ESTABLISH_TRADE_ROUTE, g_iPlot, 2, 0, 0, 1)				--2nd arg?
+	AIRecalculateNumTradeRoutesTargeted(g_iPlayer)
 	return true
 end
 
+Interrupt[GameInfoTypes.EA_ACTION_SEA_TRADE_ROUTE] = Interrupt[GameInfoTypes.EA_ACTION_LAND_TRADE_ROUTE]
 
 --EA_ACTION_TRADE_HOUSE
 TestTarget[GameInfoTypes.EA_ACTION_TRADE_HOUSE] = function()

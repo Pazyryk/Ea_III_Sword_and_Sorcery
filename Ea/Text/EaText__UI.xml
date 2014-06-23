@@ -73,10 +73,10 @@
 			<Text>Hiding Glyphs, Runes & Wards (click to show revealed effects belonging to other players)</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_TT_PLOT_EFFECTS_SHOW_OTHERS">
-			<Text>Showing revealed Glyphs, Runes & Wards belonging to other players (click to show ours)</Text>
+			<Text>Showing revealed Glyphs, Runes & Wards belonging to other players (click to show yours)</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_TT_PLOT_EFFECTS_SHOW_OURS">
-			<Text>Showing Glyphs, Runes & Wards belonging to us (click to hide)</Text>
+			<Text>Showing Glyphs, Runes & Wards belonging to you (click to hide)</Text>
 		</Row>
 
 		<!-- Top Panel -->

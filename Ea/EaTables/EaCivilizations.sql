@@ -74,7 +74,7 @@ INSERT INTO EaCivs (Type,	PopupImage,									DefaultPlayerColor,			KnownTech,		
 ('EACIV_CRUITHNI',			'testbackground_1.17_856x700.dds',			'PLAYERCOLOR_GERMANY',		'TECH_TRACKING_TRAPPING',	NULL,			NULL,							NULL							),
 ('EACIV_CRECY',				'testbackground_1.17_856x700.dds',			'PLAYERCOLOR_GREECE',		'TECH_ARCHERY',				'Warrior',		NULL,							NULL							),
 ('EACIV_DAGGOO',			'testbackground_1.17_856x700.dds',			'PLAYERCOLOR_INDIA',		'TECH_HARPOONS',			NULL,			NULL,							NULL							),
-('EACIV_FOMHOIRE',			'testbackground_1.17_856x700.dds',			'PLAYERCOLOR_JAPAN',		'TECH_SAILING',				NULL,			NULL,							'BUILDING_FOMHOIRE'				),
+('EACIV_FOMHOIRE',			'testbackground_1.17_856x700.dds',			'PLAYERCOLOR_JAPAN',		'TECH_SAILING',				NULL,			NULL,							NULL							),
 ('EACIV_PARAKHORA',			'testbackground_1.17_856x700.dds',			'PLAYERCOLOR_OTTOMAN',		'TECH_MILLING',				NULL,			'POLICY_EACIV_PARAKHORA',		NULL							),
 ('EACIV_NEITH',				'testbackground_1.17_856x700.dds',			'PLAYERCOLOR_OTTOMAN',		'TECH_WEAVING',				'Merchant',		NULL,							NULL							),	
 ('EACIV_ELEUTHERIOS',		'testbackground_1.17_856x700.dds',			'PLAYERCOLOR_ARABIA',		'TECH_ZYMURGY',				'Merchant',		NULL,							NULL							),
@@ -159,8 +159,7 @@ INSERT INTO EaCivs (Type,	Quote,								PopupImage,								DefaultPlayerColor,		
 
 UPDATE EaCivs SET OrAdoptedPolicy1 = 'POLICY_GUILDS', OrAdoptedPolicy2 = 'POLICY_CIVIL_SERVICE'  WHERE Type = 'EACIV_EOGANACHTA';
 UPDATE EaCivs SET OrAdoptedPolicy1 = 'POLICY_WOODS_LORE', OrAdoptedPolicy2 = 'POLICY_EARTH_LORE'  WHERE Type = 'EACIV_SKOGR';
-UPDATE EaCivs SET OrAdoptedPolicy1 = 'POLICY_SOCIO_ARCANA' WHERE Type = 'EACIV_O';
-UPDATE EaCivs SET OrAdoptedPolicy1 = 'POLICY_SOCIO_ARCANA' WHERE Type = 'EACIV_MU';
+UPDATE EaCivs SET OrAdoptedPolicy1 = 'POLICY_SOCIO_ARCANA' WHERE Type IN ('EACIV_O', 'EACIV_MU');
 UPDATE EaCivs SET OrAdoptedPolicy1 = 'POLICY_DEBT_BONDAGE' WHERE Type = 'EACIV_NEZELIBA';
 UPDATE EaCivs SET AndAdoptedPolicy = 'POLICY_SLAVERY' WHERE Type = 'EACIV_DOKKALFAR';
 UPDATE EaCivs SET AndAdoptedPolicy = 'POLICY_TRADITION' WHERE Type = 'EACIV_LJOSALFAR';

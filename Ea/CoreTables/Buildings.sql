@@ -169,7 +169,6 @@ INSERT INTO Buildings (Type,			Cost,	NeverCapture,	ArtDefineTag,	IconAtlas,		Por
 
 ('BUILDING_IKKOS',						-1,		1,				'MONUMENT',		'BW_ATLAS_1',	1,				NULL,			'Util'	),
 ('BUILDING_AB',							-1,		1,				'MONUMENT',		'BW_ATLAS_1',	1,				NULL,			'Util'	),
-('BUILDING_FOMHOIRE',					-1,		1,				'MONUMENT',		'BW_ATLAS_1',	1,				NULL,			'Util'	),
 ('BUILDING_NEITH',						-1,		1,				'MONUMENT',		'BW_ATLAS_1',	1,				NULL,			'Util'	),
 ('BUILDING_MAMONAS',					-1,		1,				'MONUMENT',		'BW_ATLAS_1',	1,				NULL,			'Util'	),
 
@@ -286,7 +285,6 @@ UPDATE Buildings SET GoldMaintenance = 0, EaProhibitSell = 1, ConquestProb = 100
 UPDATE Buildings SET Experience = 1 WHERE Type = 'BUILDING_KOLOSSOS_MOD';
 UPDATE Buildings SET WorkerSpeedModifier = 1 WHERE Type = 'BUILDING_UUC_YABNAL_MOD';
 UPDATE Buildings SET UnmoddedHappiness = 1 WHERE Type = 'BUILDING_DA_BAOEN_SI_MOD';
-UPDATE Buildings SET FreePromotionRemoved = 'PROMOTION_OCEAN_IMPASSABLE_UNTIL_ASTRONOMY' WHERE Type = 'BUILDING_FOMHOIRE';
 
 
 --DEBUG

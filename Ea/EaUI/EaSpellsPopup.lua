@@ -158,8 +158,9 @@ function Close()
 	if g_iPerson ~= -1 then
 		print("Closing Learn spell without selection...")
 		local eaPerson = gT.gPeople[g_iPerson]
-		local progressTable = eaPerson.progress
-		progressTable[GameInfoTypes.EA_ACTION_LEARN_SPELL] = nil
+		--local progressTable = eaPerson.progress
+		--progressTable[GameInfoTypes.EA_ACTION_LEARN_SPELL] = nil
+		LuaEvents.EaActionsInterruptEaAction(eaPerson.iPlayer, g_iPerson)
 	end
 end
 Controls.CloseButton:RegisterCallback(Mouse.eLClick, Close)

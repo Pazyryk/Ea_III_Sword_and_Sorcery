@@ -22,6 +22,8 @@ local TRAVEL_TURNS_WITHIN_AREA = 4
 local EA_ACTION_GO_TO_PLOT =				GameInfoTypes.EA_ACTION_GO_TO_PLOT		-- always = 0
 local EA_ACTION_TAKE_LEADERSHIP =			GameInfoTypes.EA_ACTION_TAKE_LEADERSHIP
 local EA_ACTION_TAKE_RESIDENCE =			GameInfoTypes.EA_ACTION_TAKE_RESIDENCE
+local EA_ACTION_LAND_TRADE_ROUTE =			GameInfoTypes.EA_ACTION_LAND_TRADE_ROUTE
+local EA_ACTION_SEA_TRADE_ROUTE =			GameInfoTypes.EA_ACTION_SEA_TRADE_ROUTE
 local BUILDING_LIBRARY =					GameInfoTypes.BUILDING_LIBRARY
 local RELIGION_AZZANDARAYASNA =				GameInfoTypes.RELIGION_AZZANDARAYASNA
 local RELIGION_ANRA =						GameInfoTypes.RELIGION_ANRA
@@ -111,7 +113,28 @@ for eaActionInfo in GameInfo.EaActions() do
 end
 
 ---------------------------------------------------------------
--- Actions AI functions
+-- Interface AI GP functions not part of core control
+---------------------------------------------------------------
+
+function AIRecalculateNumTradeRoutesTargeted(iPlayer)
+	local player = Players[iPlayer]
+	local eaPlayer = gPlayers[iPlayer]
+	if player:IsHuman() then
+		eaPlayer.aiNumTradeRoutesTargeted = nil
+	else
+		eaPlayer.aiNumTradeRoutesTargeted = 0
+		for iPerson, eaPerson in pairs(gPeople) do
+			if eaPerson.iPlayer == iPlayer then
+				if eaPerson.eaActionID == EA_ACTION_LAND_TRADE_ROUTE or eaPerson.gotoEaActionID == EA_ACTION_LAND_TRADE_ROUTE or eaPerson.eaActionID == EA_ACTION_SEA_TRADE_ROUTE or eaPerson.gotoEaActionID == EA_ACTION_SEA_TRADE_ROUTE then
+					eaPlayer.aiNumTradeRoutesTargeted = eaPlayer.aiNumTradeRoutesTargeted + 1
+				end
+			end
+		end
+	end
+end
+
+---------------------------------------------------------------
+-- Core AI GP actions control
 ---------------------------------------------------------------
 
 function MakeAIActionsPlotsDirty(iPlayer)
@@ -583,7 +606,16 @@ AITarget.SeeingEyeGlyph = function()
 	end
 end
 
-
+AITarget.NearbyStrongWoods = function()
+	-- test to radius 6 including center
+	for plot in PlotAreaSpiralIterator(g_gpPlot, 6, 1, false, false, true) do
+		local featureID = plot:GetFeatureType()
+		if (featureID == FEATURE_FOREST or featureID == FEATURE_FOREST) and 17 < plot:GetLivingTerrainStrength() then		
+			local x, y = plot:GetXY()
+			TestAddOption("Plot", x, y, 0, nil)
+		end
+	end
+end
 
 AITarget.OwnLandUnits = function()
 	print("AddNonCombatOptions testing OwnLandUnits")

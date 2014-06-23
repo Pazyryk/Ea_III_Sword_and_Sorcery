@@ -74,10 +74,28 @@ INSERT INTO ArtDefine_StrategicView(StrategicViewType, TileType, Asset) VALUES
 ('ART_DEF_UNIT_ANGEL_SPEARMAN',		'Unit',	'SV_Maori.dds'		),
 ('ART_DEF_UNIT_ANGEL',				'Unit',	'SV_Maori.dds'		),
 ('ART_DEF_UNIT_ARCHANGEL',			'Unit',	'SV_Maori.dds'		),
-('ART_DEF_UNIT_STORM_GIANT',		'Unit',	'SV_Maori.dds'		);
+('ART_DEF_UNIT_STORM_GIANT',		'Unit',	'SV_Maori.dds'		),
 
 
-INSERT INTO ArtDefine_UnitInfos (Type,	DamageStates,	Formation) VALUES
+('ART_DEF_UNIT_EA_ENGINEER',		'Unit',	'SV_Spearman.dds'	),
+('ART_DEF_UNIT_EA_MERCHANT',		'Unit',	'SV_Spearman.dds'	),
+('ART_DEF_UNIT_EA_SAGE',			'Unit',	'SV_Spearman.dds'	),
+('ART_DEF_UNIT_EA_ARTIST',			'Unit',	'SV_Spearman.dds'	),
+('ART_DEF_UNIT_EA_WARRIOR',			'Unit',	'SV_Spearman.dds'	),
+('ART_DEF_UNIT_EA_PALADIN',			'Unit',	'SV_Spearman.dds'	),
+('ART_DEF_UNIT_EA_EIDOLON',			'Unit',	'SV_Spearman.dds'	),
+('ART_DEF_UNIT_EA_DRUID',			'Unit',	'SV_Spearman.dds'	),
+('ART_DEF_UNIT_EA_PRIEST',			'Unit',	'SV_Spearman.dds'	),
+
+('ART_DEF_UNIT_EA_WIZARD_M1',		'Unit',	'SV_Spearman.dds'	),
+('ART_DEF_UNIT_EA_WIZARD_M2',		'Unit',	'SV_Spearman.dds'	),
+('ART_DEF_UNIT_EA_WIZARD_M2A',		'Unit',	'SV_Spearman.dds'	),
+('ART_DEF_UNIT_EA_WIZARD_M3',		'Unit',	'SV_Spearman.dds'	),
+('ART_DEF_UNIT_EA_WIZARD_M4',		'Unit',	'SV_Spearman.dds'	),
+('ART_DEF_UNIT_EA_WIZARD_M4A',		'Unit',	'SV_Spearman.dds'	);
+
+
+INSERT INTO ArtDefine_UnitInfos (Type,	DamageStates,	Formation			) VALUES
 --animals
 ('ART_DEF_UNIT_WOLF',					1,				''					),
 ('ART_DEF_UNIT_WOLVES',					1,				'Barbarian'			),
@@ -153,7 +171,6 @@ INSERT INTO ArtDefine_UnitInfos (Type,	DamageStates,	Formation) VALUES
 ('ART_DEF_UNIT_ARCHANGEL',				1,				''					),
 ('ART_DEF_UNIT_STORM_GIANT',			1,				''					),
 
-
 ('ART_DEF_UNIT_EA_ENGINEER',			1,				''					),
 ('ART_DEF_UNIT_EA_MERCHANT',			1,				''					),
 ('ART_DEF_UNIT_EA_SAGE',				1,				''					),
@@ -163,8 +180,13 @@ INSERT INTO ArtDefine_UnitInfos (Type,	DamageStates,	Formation) VALUES
 ('ART_DEF_UNIT_EA_EIDOLON',				1,				''					),
 ('ART_DEF_UNIT_EA_DRUID',				1,				''					),
 ('ART_DEF_UNIT_EA_PRIEST',				1,				''					),
-('ART_DEF_UNIT_EA_DRUID_MAGIC_MISSLE',	1,				''					),
-('ART_DEF_UNIT_EA_PRIEST_MAGIC_MISSLE',	1,				''					);
+
+('ART_DEF_UNIT_EA_WIZARD_M1',			1,				''					),
+('ART_DEF_UNIT_EA_WIZARD_M2',			1,				''					),
+('ART_DEF_UNIT_EA_WIZARD_M2A',			1,				''					),
+('ART_DEF_UNIT_EA_WIZARD_M3',			1,				''					),
+('ART_DEF_UNIT_EA_WIZARD_M4',			1,				''					),
+('ART_DEF_UNIT_EA_WIZARD_M4A',			1,				''					);
 
 INSERT INTO ArtDefine_UnitInfoMemberInfos (UnitInfoType,	UnitMemberInfoType,		NumMembers) VALUES
 --animals
@@ -255,10 +277,13 @@ INSERT INTO ArtDefine_UnitInfoMemberInfos (UnitInfoType,	UnitMemberInfoType,		Nu
 ('ART_DEF_UNIT_EA_PALADIN',				'ART_DEF_UNIT_MEMBER_EA_PALADIN',			1		),
 ('ART_DEF_UNIT_EA_DRUID',				'ART_DEF_UNIT_MEMBER_EA_DRUID',				1		),
 ('ART_DEF_UNIT_EA_PRIEST',				'ART_DEF_UNIT_MEMBER_EA_PRIEST',			1		),
-('ART_DEF_UNIT_EA_DRUID_MAGIC_MISSLE',	'ART_DEF_UNIT_MEMBER_EA_MAGIC_MISSILE',		1		),
-('ART_DEF_UNIT_EA_DRUID_MAGIC_MISSLE',	'ART_DEF_UNIT_MEMBER_EA_DRUID',				1		),
-('ART_DEF_UNIT_EA_PRIEST_MAGIC_MISSLE',	'ART_DEF_UNIT_MEMBER_EA_MAGIC_MISSILE',		1		),
-('ART_DEF_UNIT_EA_PRIEST_MAGIC_MISSLE',	'ART_DEF_UNIT_MEMBER_EA_PRIEST',			1		);
+--GPs w/ attacks
+('ART_DEF_UNIT_EA_WIZARD_M1',			'ART_DEF_UNIT_MEMBER_EA_WIZARD_M1',			1		),
+('ART_DEF_UNIT_EA_WIZARD_M2',			'ART_DEF_UNIT_MEMBER_EA_WIZARD_M2',			1		),
+('ART_DEF_UNIT_EA_WIZARD_M2A',			'ART_DEF_UNIT_MEMBER_EA_WIZARD_M2A',		1		),
+('ART_DEF_UNIT_EA_WIZARD_M3',			'ART_DEF_UNIT_MEMBER_EA_WIZARD_M3',			1		),
+('ART_DEF_UNIT_EA_WIZARD_M4',			'ART_DEF_UNIT_MEMBER_EA_WIZARD_M4',			1		),
+('ART_DEF_UNIT_EA_WIZARD_M4A',			'ART_DEF_UNIT_MEMBER_EA_WIZARD_M4A',		1		);
 
 
 INSERT INTO ArtDefine_UnitMemberInfos (Type,		Scale,	Domain,		Model,								MaterialTypeTag,	MaterialTypeSoundOverrideTag) VALUES
@@ -326,8 +351,17 @@ INSERT INTO ArtDefine_UnitMemberInfos (Type,		Scale,	Domain,		Model,								Mate
 ('ART_DEF_UNIT_MEMBER_ANGEL_SPEARMAN',				0.15,	'',			'angel_spearman.fxsxml',			'CLOTH',			'FLESH'			),
 ('ART_DEF_UNIT_MEMBER_ANGEL',						0.35,	'',			'angel_spearman.fxsxml',			'CLOTH',			'FLESH'			),
 ('ART_DEF_UNIT_MEMBER_ARCHANGEL',					0.7,	'',			'angel_spearman.fxsxml',			'CLOTH',			'FLESH'			),
-('ART_DEF_UNIT_MEMBER_STORM_GIANT',					0.7,	'',			'giant.fxsxml',						'CLOTH',			'FLESH'			);
-										-- use 0.7 for archangel
+('ART_DEF_UNIT_MEMBER_STORM_GIANT',					0.7,	'',			'giant.fxsxml',						'CLOTH',			'FLESH'			),
+
+('ART_DEF_UNIT_MEMBER_EA_WIZARD_M1',				0.19,	'',			'Wizard_M1.fxsxml',					'CLOTH',			'FLESH'			),
+('ART_DEF_UNIT_MEMBER_EA_WIZARD_M2',				0.19,	'',			'Wizard_M2.fxsxml',					'CLOTH',			'FLESH'			),
+('ART_DEF_UNIT_MEMBER_EA_WIZARD_M2A',				0.19,	'',			'Wizard_M2A.fxsxml',				'CLOTH',			'FLESH'			),
+('ART_DEF_UNIT_MEMBER_EA_WIZARD_M3',				0.19,	'',			'Wizard_M3.fxsxml',					'CLOTH',			'FLESH'			),
+('ART_DEF_UNIT_MEMBER_EA_WIZARD_M4',				0.19,	'',			'Wizard_M4.fxsxml',					'CLOTH',			'FLESH'			),
+('ART_DEF_UNIT_MEMBER_EA_WIZARD_M4A',				0.19,	'',			'Wizard_M4A.fxsxml',				'CLOTH',			'FLESH'			);
+
+
+
 
 INSERT INTO ArtDefine_UnitMemberCombats (UnitMemberType, DisableActions, EnableActions,																			ShortMoveRadius,	ShortMoveRate,		TargetHeight,	HasRefaceAfterCombat,	ReformBeforeCombat	) VALUES
 --animals
@@ -394,7 +428,14 @@ INSERT INTO ArtDefine_UnitMemberCombats (UnitMemberType, DisableActions, EnableA
 ('ART_DEF_UNIT_MEMBER_ANGEL_SPEARMAN',			'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					),
 ('ART_DEF_UNIT_MEMBER_ANGEL',					'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					),
 ('ART_DEF_UNIT_MEMBER_ARCHANGEL',				'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					),
-('ART_DEF_UNIT_MEMBER_STORM_GIANT',				'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					);
+('ART_DEF_UNIT_MEMBER_STORM_GIANT',				'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					),
+
+('ART_DEF_UNIT_MEMBER_EA_WIZARD_M1',			'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						NULL				),
+('ART_DEF_UNIT_MEMBER_EA_WIZARD_M2',			'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						NULL				),
+('ART_DEF_UNIT_MEMBER_EA_WIZARD_M2A',			'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						NULL				),
+('ART_DEF_UNIT_MEMBER_EA_WIZARD_M3',			'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						NULL				),
+('ART_DEF_UNIT_MEMBER_EA_WIZARD_M4',			'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						NULL				),
+('ART_DEF_UNIT_MEMBER_EA_WIZARD_M4A',			'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						NULL				);
 
 
 UPDATE ArtDefine_UnitMemberCombats SET TurnRateMin = 0.5, TurnRateMax = 0.75, TurnFacingRateMin = 15, TurnFacingRateMax = 20, HasStationaryMelee = 1, OnlyTurnInMovementActions = 1, RushAttackFormation = 'DefaultCavalry' WHERE UnitMemberType IN
@@ -521,7 +562,15 @@ INSERT INTO ArtDefine_UnitMemberCombatWeapons(UnitMemberType,	"Index",	SubIndex,
 ('ART_DEF_UNIT_MEMBER_ARCHANGEL',								0,			0,			'',		'METAL',			'SPEAR',					NULL,				NULL,				NULL,					''			),
 ('ART_DEF_UNIT_MEMBER_ARCHANGEL',								1,			0,			'',		'FLAMING_ARROW',	'',							10,					20,					10,						''			),
 ('ART_DEF_UNIT_MEMBER_STORM_GIANT',								0,			0,			'',		'METAL',			'SPEAR',					NULL,				NULL,				NULL,					''			),
-('ART_DEF_UNIT_MEMBER_STORM_GIANT',								1,			0,			'',		'FLAMING_ARROW',	'',							10,					20,					10,						''			);
+('ART_DEF_UNIT_MEMBER_STORM_GIANT',								1,			0,			'',		'FLAMING_ARROW',	'',							10,					20,					10,						''			),
+
+('ART_DEF_UNIT_MEMBER_EA_WIZARD_M1',							0,			0,			'',		'BLUNT',			'SPEAR',					NULL,				NULL,				NULL,					''			),
+('ART_DEF_UNIT_MEMBER_EA_WIZARD_M2',							0,			0,			'',		'BLUNT',			'SPEAR',					NULL,				NULL,				NULL,					''			),
+('ART_DEF_UNIT_MEMBER_EA_WIZARD_M2A',							0,			0,			'',		'BLUNT',			'SPEAR',					NULL,				NULL,				NULL,					''			),
+('ART_DEF_UNIT_MEMBER_EA_WIZARD_M3',							0,			0,			'',		'BLUNT',			'SPEAR',					NULL,				NULL,				NULL,					''			),
+('ART_DEF_UNIT_MEMBER_EA_WIZARD_M4',							0,			0,			'',		'BLUNT',			'SPEAR',					NULL,				NULL,				NULL,					''			),
+('ART_DEF_UNIT_MEMBER_EA_WIZARD_M4A',							0,			0,			'',		'BLUNT',			'SPEAR',					NULL,				NULL,				NULL,					''			);
+
 
 UPDATE ArtDefine_UnitMemberCombatWeapons SET ProjectileSpeed = 5.30000019073486 WHERE "Index" = 1 AND UnitMemberType IN
 ('ART_DEF_UNIT_MEMBER_GOBLIN_BOWMAN', 'ART_DEF_UNIT_MEMBER_GOBLIN_MARKSMAN');
@@ -536,9 +585,8 @@ INSERT INTO TempList (ExistingMember) VALUES
 ('ART_DEF_UNIT_MEMBER_GREATARTIST_EARLY_TAMBOURINE' ),
 ('ART_DEF_UNIT_MEMBER_SWORDSMAN'					),
 ('ART_DEF_UNIT_MEMBER_LONGSWORDSMAN'				),
-('ART_DEF_UNIT_MEMBER_MISSIONARY_01'				),
 ('ART_DEF_UNIT_MEMBER_BARBARIAN_EURO_ALPHA'			),
-('ART_DEF_UNIT_MEMBER_ROCKETARTILLERY'				);
+('ART_DEF_UNIT_MEMBER_MISSIONARY_01'				);
 
 --ART_DEF_UNIT_MEMBER_GREATARTIST_EARLY_TAMBOURINE	-F
 --ART_DEF_UNIT_MEMBER_GREATARTIST_EARLY_FLUTE		-M
@@ -558,7 +606,6 @@ UPDATE ArtDefine_UnitMemberInfos_Temp SET Type = 'ART_DEF_UNIT_MEMBER_EA_WARRIOR
 UPDATE ArtDefine_UnitMemberInfos_Temp SET Type = 'ART_DEF_UNIT_MEMBER_EA_PALADIN', Scale = Scale * 1.4 WHERE Type = 'ART_DEF_UNIT_MEMBER_LONGSWORDSMAN';
 UPDATE ArtDefine_UnitMemberInfos_Temp SET Type = 'ART_DEF_UNIT_MEMBER_EA_DRUID', Scale = Scale * 1.4 WHERE Type = 'ART_DEF_UNIT_MEMBER_BARBARIAN_EURO_ALPHA';
 UPDATE ArtDefine_UnitMemberInfos_Temp SET Type = 'ART_DEF_UNIT_MEMBER_EA_PRIEST', Scale = Scale * 1.4 WHERE Type = 'ART_DEF_UNIT_MEMBER_MISSIONARY_01';
-UPDATE ArtDefine_UnitMemberInfos_Temp SET Type = 'ART_DEF_UNIT_MEMBER_EA_MAGIC_MISSILE',  Model = 'magic_missile.fxsxml', Scale = 0.06 WHERE Type = 'ART_DEF_UNIT_MEMBER_ROCKETARTILLERY';
 INSERT INTO ArtDefine_UnitMemberInfos SELECT * FROM ArtDefine_UnitMemberInfos_Temp;
 
 
@@ -571,7 +618,6 @@ UPDATE ArtDefine_UnitMemberCombats_Temp SET UnitMemberType = 'ART_DEF_UNIT_MEMBE
 UPDATE ArtDefine_UnitMemberCombats_Temp SET UnitMemberType = 'ART_DEF_UNIT_MEMBER_EA_PALADIN' WHERE UnitMemberType = 'ART_DEF_UNIT_MEMBER_LONGSWORDSMAN';
 UPDATE ArtDefine_UnitMemberCombats_Temp SET UnitMemberType = 'ART_DEF_UNIT_MEMBER_EA_DRUID', EnableActions = 'Idle Bombard Death BombardDefend Fortify CombatReady Walk' WHERE UnitMemberType = 'ART_DEF_UNIT_MEMBER_BARBARIAN_EURO_ALPHA';
 UPDATE ArtDefine_UnitMemberCombats_Temp SET UnitMemberType = 'ART_DEF_UNIT_MEMBER_EA_PRIEST' WHERE UnitMemberType = 'ART_DEF_UNIT_MEMBER_MISSIONARY_01';
-UPDATE ArtDefine_UnitMemberCombats_Temp SET UnitMemberType = 'ART_DEF_UNIT_MEMBER_EA_MAGIC_MISSILE' WHERE UnitMemberType = 'ART_DEF_UNIT_MEMBER_ROCKETARTILLERY';
 INSERT INTO ArtDefine_UnitMemberCombats SELECT * FROM ArtDefine_UnitMemberCombats_Temp;
 
 
@@ -584,7 +630,6 @@ UPDATE ArtDefine_UnitMemberCombatWeapons_Temp SET UnitMemberType = 'ART_DEF_UNIT
 UPDATE ArtDefine_UnitMemberCombatWeapons_Temp SET UnitMemberType = 'ART_DEF_UNIT_MEMBER_EA_PALADIN' WHERE UnitMemberType = 'ART_DEF_UNIT_MEMBER_LONGSWORDSMAN';
 UPDATE ArtDefine_UnitMemberCombatWeapons_Temp SET UnitMemberType = 'ART_DEF_UNIT_MEMBER_EA_DRUID' WHERE UnitMemberType = 'ART_DEF_UNIT_MEMBER_BARBARIAN_EURO_ALPHA';
 UPDATE ArtDefine_UnitMemberCombatWeapons_Temp SET UnitMemberType = 'ART_DEF_UNIT_MEMBER_EA_PRIEST' WHERE UnitMemberType = 'ART_DEF_UNIT_MEMBER_MISSIONARY_01';
-UPDATE ArtDefine_UnitMemberCombatWeapons_Temp SET UnitMemberType = 'ART_DEF_UNIT_MEMBER_EA_MAGIC_MISSILE' WHERE UnitMemberType = 'ART_DEF_UNIT_MEMBER_ROCKETARTILLERY';
 INSERT INTO ArtDefine_UnitMemberCombatWeapons SELECT * FROM ArtDefine_UnitMemberCombatWeapons_Temp;
 
 DROP TABLE TempList;

@@ -48,6 +48,7 @@ local PROMOTION_STRONG_MERCENARY =					GameInfoTypes.PROMOTION_STRONG_MERCENARY
 local PROMOTION_EXTENDED_RANGE =					GameInfoTypes.PROMOTION_EXTENDED_RANGE
 local PROMOTION_DRUNKARD =							GameInfoTypes.PROMOTION_DRUNKARD
 local PROMOTION_STALLIONS_OF_EPONA =				GameInfoTypes.PROMOTION_STALLIONS_OF_EPONA
+local PROMOTION_STUNNED =							GameInfoTypes.PROMOTION_STUNNED
 local RELIGION_CULT_OF_EPONA =						GameInfoTypes.RELIGION_CULT_OF_EPONA
 local RESOURCE_CITRUS =								GameInfoTypes.RESOURCE_CITRUS
 local UNITCOMBAT_MOUNTED = 							GameInfoTypes.UNITCOMBAT_MOUNTED
@@ -386,7 +387,7 @@ function UnitPerCivTurn(iPlayer)	--runs for full civs and city states
 	local sustainedPromotions = eaPlayer.sustainedPromotions
 	local bHorseMountedXP = nameTraitID == EACIV_IKKOS
 	local bHorseMountedStrongMerc = nameTraitID == EACIV_HIPPUS
-	--local bRemoveOceanBlock = bFullCiv and eaPlayer.eaCivNameID == EACIV_FOMHOIRE
+	local bRemoveOceanBlock = bFullCiv and eaPlayer.eaCivNameID == EACIV_FOMHOIRE
 
 	local iLongWallOwner = gWonders[EA_WONDER_THE_LONG_WALL] and Map.GetPlotByIndex(gWonders[EA_WONDER_THE_LONG_WALL].iPlot):GetOwner()
 	local bMayBeSlowedByLongWall = iLongWallOwner and team:IsAtWar(Players[iLongWallOwner]:GetTeam())
@@ -414,6 +415,12 @@ function UnitPerCivTurn(iPlayer)	--runs for full civs and city states
 			if not gPeople[iPerson] then
 				error("!!!! WARNING: Found an orphan GP; iPlayer, unitTypeID, iPlot = " .. iPlayer .. ", " .. GameInfo.Units[unitTypeID].Type .. ", " .. iPlot)
 			end
+		end
+
+		--Stunned units lose movement one turn
+		if unit:IsHasPromotion(PROMOTION_STUNNED) then
+			unit:FinishMoves()
+			unit:SetHasPromotion(PROMOTION_STUNNED, false)
 		end
 		
 		if bAnimals then
@@ -517,12 +524,19 @@ function UnitPerCivTurn(iPlayer)	--runs for full civs and city states
 						end	
 					end	
 					if bScurvy and Rand(100, "scurvy") < 15 then	--15% chance for damage (but never reduced below 1 hp)
+						unit:GetPlot():AddFloatUpMessage("Damaged by Scurvy!", 2)
 						local currentHP = unit:GetCurrHitPoints()
 						if currentHP < 11 then
 							unit:SetDamage(unit:GetDamage() + currentHP - 1, -1)	--, iPlayer, true?
 						else
 							unit:SetDamage(10, -1)
 						end
+					end
+				end
+				if unitCombatTypeID == UNITCOMBAT_NAVAL then
+					if bRemoveOceanBlock then
+						unit:SetHasPromotion(PROMOTION_OCEAN_IMPASSABLE_UNTIL_ASTRONOMY, false)
+						unit:SetHasPromotion(PROMOTION_OCEAN_IMPASSABLE, false)
 					end
 				end
 			elseif bHorseMounted[unitTypeID] then
@@ -540,13 +554,8 @@ function UnitPerCivTurn(iPlayer)	--runs for full civs and city states
 				if bHorseMountedStrongMerc and not (bSlave or bMercenary) then
 					unit:SetHasPromotion(PROMOTION_STRONG_MERCENARY_INACTIVE, true)
 				end
-
-			--elseif unitCombatTypeID == UNITCOMBAT_NAVAL then
-			--	if bRemoveOceanBlock then
-			--		unit:SetHasPromotion(PROMOTION_OCEAN_IMPASSABLE_UNTIL_ASTRONOMY, false)
-			--		unit:SetHasPromotion(PROMOTION_OCEAN_IMPASSABLE, false)
-			--	end
 			end
+
 		end
 
 

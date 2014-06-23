@@ -13,6 +13,7 @@ ALTER TABLE Units ADD COLUMN 'EaSpecialWorker' TEXT DEFAULT NULL;
 ALTER TABLE Units ADD COLUMN 'EaLiving' BOOLEAN DEFAULT NULL;
 ALTER TABLE Units ADD COLUMN 'EaNoTrain' BOOLEAN DEFAULT NULL;
 ALTER TABLE Units ADD COLUMN 'EaGPTempRole' TEXT DEFAULT NULL;
+ALTER TABLE Units ADD COLUMN 'EaGPTempBaseUnit' TEXT DEFAULT NULL;
 ALTER TABLE Units ADD COLUMN 'EaSpecial' TEXT DEFAULT NULL;			--Animal, Beast, Undead, Demon, Angel, Utility
 ALTER TABLE Units ADD COLUMN 'EaFaithMaintenance' INTEGER DEFAULT 0;
 
@@ -178,7 +179,7 @@ INSERT INTO Units (Type,		Cost,	Combat,	RangedCombat,	Range,	Moves,	CombatClass,
 
 --Summoned, called or raised
 INSERT INTO Units (Type,		Cost,	Combat,	RangedCombat,	Range,	Moves,	CombatClass,				Domain,			DefaultUnitAI,			Pillage,	MilitarySupport,	MilitaryProduction,	ObsoleteTech,		Mechanized,	UnitArtInfo,							IconAtlas,					PortraitIndex,	UnitFlagAtlas,					UnitFlagIconOffset,	MoveRate,		EaNoTrain,	EaSpecial	) VALUES
-('UNIT_TREE_ENT',				-1,		15,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_TREE_ENT',				'UNIT_ATLAS_1',				4,				'UNIT_FLAG_ATLAS',				4,					'BIPED',		1,			'Spirit'	),
+('UNIT_TREE_ENT',				-1,		18,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_TREE_ENT',				'UNIT_ATLAS_1',				4,				'UNIT_FLAG_ATLAS',				4,					'BIPED',		1,			'Spirit'	),
 ('UNIT_SKELETON_SWORDSMEN',		-1,		6,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_SKELETON_SWORDSMAN',		'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'Undead'	),
 ('UNIT_ZOMBIES',				-1,		9,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_ZOMBIE',					'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'Undead'	),
 ('UNIT_UNIT_DEMON_II',			-1,		15,		0,				0,		2,		'UNITCOMBAT_MELEE',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			0,					1,					NULL,				0,			'ART_DEF_UNIT_HIVE_TYRANT',				'UNIT_ATLAS_1',				15,				'UNIT_FLAG_ATLAS',				15,					'BIPED',		1,			'Demon'		),
@@ -301,11 +302,11 @@ INSERT INTO Units (Type, UnitArtInfo,				IconAtlas,					PortraitIndex,	UnitFlagA
 ('UNIT_PALADIN',		'ART_DEF_UNIT_EA_PALADIN',	'UNIT_ATLAS_2',				48,				'UNIT_FLAG_ATLAS',		90,					'SPECIALUNIT_PEOPLE'	),
 ('UNIT_EIDOLON',		'ART_DEF_UNIT_EA_PALADIN',	'UNIT_ATLAS_2',				48,				'EA_FLAG_ATLAS',		6,					'SPECIALUNIT_PEOPLE'	),
 ('UNIT_DRUID',			'ART_DEF_UNIT_EA_DRUID',	'EXPANSION_UNIT_ATLAS_1',	17,				'EA_FLAG_ATLAS',		2,					'SPECIALUNIT_PEOPLE'	),
-('UNIT_WITCH',			'ART_DEF_UNIT_INQUISITOR',	'EXPANSION_UNIT_ATLAS_1',	17,				'EA_FLAG_ATLAS',		1,					'SPECIALUNIT_PEOPLE'	),
-('UNIT_WIZARD',			'ART_DEF_UNIT_INQUISITOR',	'EXPANSION_UNIT_ATLAS_1',	17,				'EA_FLAG_ATLAS',		5,					'SPECIALUNIT_PEOPLE'	),
-('UNIT_SORCERER',		'ART_DEF_UNIT_INQUISITOR',	'EXPANSION_UNIT_ATLAS_1',	17,				'EA_FLAG_ATLAS',		8,					'SPECIALUNIT_PEOPLE'	),
-('UNIT_NECROMANCER',	'ART_DEF_UNIT_INQUISITOR',	'EXPANSION_UNIT_ATLAS_1',	17,				'EA_FLAG_ATLAS',		8,					'SPECIALUNIT_PEOPLE'	),
-('UNIT_LICH',			'ART_DEF_UNIT_INQUISITOR',	'EXPANSION_UNIT_ATLAS_1',	17,				'EA_FLAG_ATLAS',		8,					'SPECIALUNIT_PEOPLE'	);
+('UNIT_WITCH',			'ART_DEF_UNIT_EA_WIZARD_M1','EXPANSION_UNIT_ATLAS_1',	17,				'EA_FLAG_ATLAS',		1,					'SPECIALUNIT_PEOPLE'	),
+('UNIT_WIZARD',			'ART_DEF_UNIT_EA_WIZARD_M1','EXPANSION_UNIT_ATLAS_1',	17,				'EA_FLAG_ATLAS',		5,					'SPECIALUNIT_PEOPLE'	),
+('UNIT_SORCERER',		'ART_DEF_UNIT_EA_WIZARD_M1','EXPANSION_UNIT_ATLAS_1',	17,				'EA_FLAG_ATLAS',		8,					'SPECIALUNIT_PEOPLE'	),
+('UNIT_NECROMANCER',	'ART_DEF_UNIT_EA_WIZARD_M1','EXPANSION_UNIT_ATLAS_1',	17,				'EA_FLAG_ATLAS',		8,					'SPECIALUNIT_PEOPLE'	),
+('UNIT_LICH',			'ART_DEF_UNIT_EA_WIZARD_M1','EXPANSION_UNIT_ATLAS_1',	17,				'EA_FLAG_ATLAS',		8,					'SPECIALUNIT_PEOPLE'	);
 
 UPDATE Units SET Cost = -1, AdvancedStartCost = -1, Domain = 'DOMAIN_LAND', Moves = 2, MoveRate = 'GREAT_PERSON', WorkRate = 100, Combat = 5, CombatLimit = 100, CombatClass = 'UNITCOMBAT_MELEE', RivalTerritory = 1, NoMaintenance = 1, MilitarySupport = 0, XPValueAttack = 3, XPValueDefense = 3 WHERE Special = 'SPECIALUNIT_PEOPLE';
 
@@ -313,12 +314,18 @@ UPDATE Units SET Cost = -1, AdvancedStartCost = -1, Domain = 'DOMAIN_LAND', Move
 -- People temp type units
 ----------------------------------------------------------------------------------------
 
-INSERT INTO Units (Type,		Description,				EaGPTempRole,	Combat,	RangedCombat,	Range,	Moves,	Immobile,	CombatClass,			DefaultUnitAI,			UnitArtInfo,							IconAtlas,					PortraitIndex,	UnitFlagIconOffset,	Special					) VALUES
-('UNIT_DRUID_MAGIC_MISSLE',		'TXT_KEY_EA_UNIT_DRUID',	'MagicMissle',	5,		10,				2,		2,		1,			'UNITCOMBAT_ARCHER',	'UNITAI_RANGED',		'ART_DEF_UNIT_EA_DRUID_MAGIC_MISSLE',	'EXPANSION_UNIT_ATLAS_1',	17,				17,					'SPECIALUNIT_PEOPLE'	),
-('UNIT_PRIEST_MAGIC_MISSLE',	'TXT_KEY_EA_UNIT_DRUID',	'MagicMissle',	5,		10,				2,		2,		1,			'UNITCOMBAT_ARCHER',	'UNITAI_RANGED',		'ART_DEF_UNIT_EA_PRIEST_MAGIC_MISSLE',	'EXPANSION_UNIT_ATLAS_1',	20,				20,					'SPECIALUNIT_PEOPLE'	);
+INSERT INTO Units (Type,		Description,				EaGPTempBaseUnit,	EaGPTempRole,	Combat,	RangedCombat,	Range,	Moves,	Immobile,	CombatClass,			DefaultUnitAI,			UnitArtInfo,							IconAtlas,					PortraitIndex,	UnitFlagAtlas,		UnitFlagIconOffset,	Special					) VALUES
+('UNIT_WIZARD_BURNING_HANDS',	'TXT_KEY_EA_UNIT_WIZARD',	'UNIT_WIZARD',		'BurningHands',	5,		10,				1,		2,		1,			'UNITCOMBAT_ARCHER',	'UNITAI_RANGED',		'ART_DEF_UNIT_EA_WIZARD_M4',			'EXPANSION_UNIT_ATLAS_1',	17,				'EA_FLAG_ATLAS',	5,					'SPECIALUNIT_PEOPLE'	),
+('UNIT_WIZARD_MAGIC_MISSLE',	'TXT_KEY_EA_UNIT_WIZARD',	'UNIT_WIZARD',		'MagicMissle',	5,		10,				2,		2,		1,			'UNITCOMBAT_ARCHER',	'UNITAI_RANGED',		'ART_DEF_UNIT_EA_WIZARD_M2',			'EXPANSION_UNIT_ATLAS_1',	17,				'EA_FLAG_ATLAS',	5,					'SPECIALUNIT_PEOPLE'	),
+('UNIT_WIZARD_ROCKET',			'TXT_KEY_EA_UNIT_WIZARD',	'UNIT_WIZARD',		'Rocket',		5,		10,				2,		2,		1,			'UNITCOMBAT_ARCHER',	'UNITAI_RANGED',		'ART_DEF_UNIT_EA_WIZARD_M2A',			'EXPANSION_UNIT_ATLAS_1',	17,				'EA_FLAG_ATLAS',	5,					'SPECIALUNIT_PEOPLE'	),
+('UNIT_WIZARD_ENERGY_DRAIN',	'TXT_KEY_EA_UNIT_WIZARD',	'UNIT_WIZARD',		'EnergyDrain',	5,		1,				2,		2,		1,			'UNITCOMBAT_ARCHER',	'UNITAI_RANGED',		'ART_DEF_UNIT_EA_WIZARD_M3',			'EXPANSION_UNIT_ATLAS_1',	17,				'EA_FLAG_ATLAS',	5,					'SPECIALUNIT_PEOPLE'	),
+('UNIT_WIZARD_FIREBALL',		'TXT_KEY_EA_UNIT_WIZARD',	'UNIT_WIZARD',		'Fireball',		5,		10,				2,		2,		1,			'UNITCOMBAT_ARCHER',	'UNITAI_RANGED',		'ART_DEF_UNIT_EA_WIZARD_M1',			'EXPANSION_UNIT_ATLAS_1',	17,				'EA_FLAG_ATLAS',	5,					'SPECIALUNIT_PEOPLE'	),
+('UNIT_WIZARD_PLASMA_BURST',	'TXT_KEY_EA_UNIT_WIZARD',	'UNIT_WIZARD',		'PlasmaBurst',	5,		10,				2,		2,		1,			'UNITCOMBAT_ARCHER',	'UNITAI_RANGED',		'ART_DEF_UNIT_EA_WIZARD_M4A',			'EXPANSION_UNIT_ATLAS_1',	17,				'EA_FLAG_ATLAS',	5,					'SPECIALUNIT_PEOPLE'	);
+
 
 UPDATE Units SET Cost = -1, AdvancedStartCost = -1, Domain = 'DOMAIN_LAND', Moves = 2, MoveRate = 'GREAT_PERSON', CombatLimit = 100, RivalTerritory = 1, NoMaintenance = 1, XPValueAttack = 3, XPValueDefense = 3 WHERE EaGPTempRole IS NOT NULL;
 
+UPDATE Units SET EaLiving = 1 WHERE Special = 'SPECIALUNIT_PEOPLE' AND Type != 'UNIT_LICH';
 
 --Build out the Units table for dependent strings
 
@@ -333,11 +340,16 @@ UPDATE Units SET Description = REPLACE(Description, '_GOBLIN', '');
 UPDATE Units SET Civilopedia = Description || '_PEDIA', Strategy = Description || '_STRATEGY', Help = Description || '_HELP';
 
 
-
+/*
 CREATE TABLE Unit_EaGPTempTypes (UnitType, TempUnitType);
 INSERT INTO Unit_EaGPTempTypes (UnitType, TempUnitType) VALUES
-('UNIT_DRUID', 'UNIT_DRUID_MAGIC_MISSLE'),		--Lua will fallback to something if no match here
-('UNIT_FALLENPRIEST', 'UNIT_PRIEST_MAGIC_MISSLE');
+('UNIT_WIZARD', 'UNIT_WIZARD_BURNING_HANDS'	),		--Lua will fallback to something if no match here
+('UNIT_WIZARD', 'UNIT_WIZARD_MAGIC_MISSLE'	),	
+('UNIT_WIZARD', 'UNIT_WIZARD_ROCKET'		),	
+('UNIT_WIZARD', 'UNIT_WIZARD_ENERGY_DRAIN'	),	
+('UNIT_WIZARD', 'UNIT_WIZARD_FIREBALL'		),	
+('UNIT_WIZARD', 'UNIT_WIZARD_PLASMA_BURST'	);
+*/
 
 
 ----------------------------------------------------------------------------------------
@@ -988,10 +1000,17 @@ INSERT INTO Unit_FreePromotions (UnitType, PromotionType) VALUES
 ('UNIT_LICH', 'PROMOTION_LICH'),
 ('UNIT_LICH', 'PROMOTION_RIVAL_TERRITORY'),
 
-('UNIT_DRUID_MAGIC_MISSLE', 'PROMOTION_INDIRECT_FIRE'),
-('UNIT_DRUID_MAGIC_MISSLE', 'PROMOTION_ONLY_DEFENSIVE'),
-('UNIT_PRIEST_MAGIC_MISSLE', 'PROMOTION_INDIRECT_FIRE'),
-('UNIT_PRIEST_MAGIC_MISSLE', 'PROMOTION_ONLY_DEFENSIVE' );
+('UNIT_WIZARD_BURNING_HANDS', 'PROMOTION_ONLY_DEFENSIVE'),
+('UNIT_WIZARD_MAGIC_MISSLE', 'PROMOTION_INDIRECT_FIRE'),
+('UNIT_WIZARD_MAGIC_MISSLE', 'PROMOTION_ONLY_DEFENSIVE' ),
+('UNIT_WIZARD_ROCKET', 'PROMOTION_ONLY_DEFENSIVE' ),
+('UNIT_WIZARD_ROCKET', 'PROMOTION_INDIRECT_FIRE'),
+('UNIT_WIZARD_ENERGY_DRAIN', 'PROMOTION_ONLY_DEFENSIVE' ),
+('UNIT_WIZARD_ENERGY_DRAIN', 'PROMOTION_INDIRECT_FIRE'),	--TO DO: remove when targeting code ready
+('UNIT_WIZARD_FIREBALL', 'PROMOTION_ONLY_DEFENSIVE' ),
+('UNIT_WIZARD_FIREBALL', 'PROMOTION_INDIRECT_FIRE'),	--TO DO: remove when targeting code ready
+('UNIT_WIZARD_PLASMA_BURST', 'PROMOTION_ONLY_DEFENSIVE' ),
+('UNIT_WIZARD_PLASMA_BURST', 'PROMOTION_INDIRECT_FIRE');	--TO DO: remove when targeting code ready
 
 --('UNIT_DUMMY_EXPLODER', 'PROMOTION_DUMMY_AIR_STRIKE'),
 --('UNIT_DUMMY_NUKE', 'PROMOTION_DUMMY_AIR_STRIKE' ;

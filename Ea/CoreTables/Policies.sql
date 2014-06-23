@@ -184,7 +184,7 @@ UPDATE Policies SET Civilopedia = Description || '_PEDIA', Help = Description ||
 UPDATE Policies SET EaFirstInBranchGPSubclass = 'Druid' WHERE Type IN ('POLICY_ANIMAL_LORE', 'POLICY_WOODS_LORE', 'POLICY_EARTH_LORE');
 UPDATE Policies SET EaFirstInBranchGPSubclass = 'Priest' WHERE Type IN ('POLICY_PRIESTHOOD', 'POLICY_WAY_OF_THE_WISE', 'POLICY_MYSTICISM');
 UPDATE Policies SET EaFirstInBranchGPSubclass = 'FallenPriest' WHERE Type IN ('POLICY_ANTI_PRIESTHOOD', 'POLICY_ANTI_WAY_OF_THE_WISE', 'POLICY_ANTI_MYSTICISM');
-UPDATE Policies SET EaFirstInBranchGPClass = 'Thaumaturge' WHERE Type IN ('POLICY_ARCANE_TRADITION', 'POLICY_SOCIO_ARCANA');
+UPDATE Policies SET EaFirstInBranchGPSubclass = 'Wizard' WHERE Type IN ('POLICY_ARCANE_TRADITION', 'POLICY_SOCIO_ARCANA');
 UPDATE Policies SET EaFirstInBranchGPSubclass = 'Witch' WHERE Type = 'POLICY_WITCHCRAFT';
 UPDATE Policies SET EaFirstInBranchGPClass = 'Warrior' WHERE Type IN ('POLICY_DISCIPLINE', 'POLICY_WARCRAFT');
 UPDATE Policies SET EaFirstInBranchGPSubclass = 'Berserker' WHERE Type = 'POLICY_WARSPIRIT';

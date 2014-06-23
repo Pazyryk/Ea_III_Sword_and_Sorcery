@@ -27,6 +27,7 @@
 		<Row Tag="TXT_KEY_EA_SPELL_KNOW_WORLD_HELP">
 			<Text>placeholder</Text>
 		</Row>
+		
 		<Row Tag="TXT_KEY_EA_SPELL_DISPEL_HEXES">
 			<Text>Dispel Hexes</Text>
 		</Row>
@@ -69,23 +70,24 @@
 		<Row Tag="TXT_KEY_EA_SPELL_TIME_STOP_HELP">
 			<Text>placeholder</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_SPELL_MAGIC_MISSILE">
-			<Text>Magic Missile</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_SPELL_MAGIC_MISSILE_HELP">
-			<Text>Gives the caster a range 2 attack with strength equal to the caster's modifier.</Text>
-		</Row>
+		
 		<Row Tag="TXT_KEY_EA_SPELL_EXPLOSIVE_RUNE">
 			<Text>Explosive Rune</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_EXPLOSIVE_RUNE_HELP">
 			<Text>Creates an inscription on the caster's plot that will explode when an enemy unit enters the plot. The strength of the rune equals the caster's Evocation Mod. Experience is gained and mana used when the Rune is placed and when it is triggered by an enemy unit.</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_SPELL_MAGE_SWORD">
-			<Text>Mage Sword</Text>
+		<Row Tag="TXT_KEY_EA_SPELL_FIREBALL">
+			<Text>Fireball</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_SPELL_MAGE_SWORD_HELP">
-			<Text>placeholder</Text>
+		<Row Tag="TXT_KEY_EA_SPELL_FIREBALL_HELP">
+			<Text>Gives the caster a range 2 attack with strength equal to the caster's Evocation Modifier.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_PLASMA_BOLT">
+			<Text>Plasma Bolt</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_PLASMA_BOLT_HELP">
+			<Text>Gives the caster a range 2 attack with strength equal to the caster's Evocation Modifier. The Plasma Bolt may stun the target rendering them immobile for one turn (chance to avoid stun is target level divided by caster Evocation Modifier).</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_BREACH">
 			<Text>Breach</Text>
@@ -93,18 +95,25 @@
 		<Row Tag="TXT_KEY_EA_SPELL_BREACH_HELP">
 			<Text>This spell creates a tear in the fabric of Éa, a breach from which blight spreads and demons spawn. The tear appears at the caster's position or, if cast from a Tower, at a distance up to the caster's Evocation Mod. The caster's Evocation Mod must overcome protection from Living Terrain and/or Protective Ward if these are present.</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_PLASMA_STORM">
+			<Text>Plasma Storm</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_PLASMA_STORM_HELP">
+			<Text>Plasma Bolts fire from the caster at all enemy units within 2-plot range, each acting with strength equal to the caster's Evocation Modifier and having a chance of stunning the target for 1 turn  (chance to avoid stun is target level divided by caster Evocation Modifier).</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_WISH">
 			<Text>Wish</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_WISH_HELP">
 			<Text>placeholder</Text>
 		</Row>
+
 		<Row Tag="TXT_KEY_EA_SPELL_SLOW">
 			<Text>Slow</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_SLOW_HELP">
 			<Text>placeholder</Text>
-		</Row>
+		</Row>		
 		<Row Tag="TXT_KEY_EA_SPELL_HASTE">
 			<Text>Haste</Text>
 		</Row>
@@ -129,11 +138,30 @@
 		<Row Tag="TXT_KEY_EA_SPELL_BLIGHT_HELP">
 			<Text>Blights a single plot, either at the caster's current position or, if cast from a Tower, at a distance up to the caster's Transmutation Mod. The caster's Transmutation Mod must overcome protection from Living Terrain and/or Protective Ward if these are present.</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_BURNING_HANDS">
+			<Text>Burning Hands</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_BURNING_HANDS_HELP">
+			<Text>Gives the caster a range 1 attack with strength equal to the caster's Transformation Modifier.</Text>
+		</Row>		
+
 		<Row Tag="TXT_KEY_EA_SPELL_HEX">
 			<Text>Hex</Text>
-		</Row>
+		</Row>	
 		<Row Tag="TXT_KEY_EA_SPELL_HEX_HELP">
 			<Text>Adds Hex to an adjacent enemy unit lowering strength by 20%. Chance of wearing off each turn is equal to 1 / caster's Conjuration Modifier.</Text>
+		</Row>		
+		<Row Tag="TXT_KEY_EA_SPELL_MAGE_SWORD">
+			<Text>Mage Sword</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_MAGE_SWORD_HELP">
+			<Text>placeholder</Text>
+		</Row>	
+		<Row Tag="TXT_KEY_EA_SPELL_MAGIC_MISSILE">
+			<Text>Magic Missiles</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_MAGIC_MISSILE_HELP">
+			<Text>Gives the caster a range 2 attack with strength equal to two-thirds of the caster's Conjuration Modifier. Magic Missiles can fly over obstructing terrain.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_CONJURE_MONSTER">
 			<Text>Conjure Monster</Text>
@@ -153,6 +181,13 @@
 		<Row Tag="TXT_KEY_EA_SPELL_PHASE_DOOR_HELP">
 			<Text>placeholder</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_HAIL_OF_PROJECTILES">
+			<Text>Hail of Projectiles</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_HAIL_OF_PROJECTILES_HELP">
+			<Text>Magic projectiles shoot out from the caster at all enemy units within two plots. Each projectile has strength equal to the caster's Conjuration Modifier and can fly over obstructing terrain.</Text>
+		</Row>
+		
 		<Row Tag="TXT_KEY_EA_SPELL_REANIMATE_DEAD">
 			<Text>Reanimate Dead</Text>
 		</Row>
@@ -195,6 +230,19 @@
 		<Row Tag="TXT_KEY_EA_SPELL_FINGER_OF_DEATH_HELP">
 			<Text>placeholder</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_DEATH_RAY">
+			<Text>Death Ray</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_DEATH_RAY_HELP">
+			<Text>A thin green ray connects caster with target (up to range two) killing or draining life energy from the target. The ray strikes with only strength 1, but will kill the target outright if the caster's Necromancy Modifier exceeds the target's power and experience. If the ray doesn't kill, it will drain experience from the target causing it to lose levels and random promotions accordingly. The caster gains all experience drained from the target.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_SEQUENCED_DEATH">
+			<Text>Sequenced Death</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_SEQUENCED_DEATH_HELP">
+			<Text>Causes multiple Death Rays to spring forth from the caster at all enemy targets within two plots. Each ray strikes with only strength 1, but will kill the target outright if the caster's Necromancy Modifier exceeds the target's power and experience. If the ray doesn't kill, it will drain experience from the target causing it to lose levels and random promotions accordingly. The caster gains all experience drained from all targets.</Text>
+		</Row>		
+		
 		<Row Tag="TXT_KEY_EA_SPELL_CHARM_MONSTER">
 			<Text>Charm Monster</Text>
 		</Row>
@@ -243,6 +291,7 @@
 		<Row Tag="TXT_KEY_EA_SPELL_GREATER_GEAS_HELP">
 			<Text>placeholder</Text>
 		</Row>
+		
 		<Row Tag="TXT_KEY_EA_SPELL_PRESTIDIGITATION">
 			<Text>Prestidigitation</Text>
 		</Row>
@@ -463,11 +512,11 @@
 		<Row Tag="TXT_KEY_EA_SPELL_CALL_ANIMALS_HELP">
 			<Text>Calls a number of animals with total power up to the caster's Spell Modifier. The Animals are bound to the caster such that the caster gains experience and uses mana each time they engage in combat.</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_SPELL_CALL_TREE_ENTS">
-			<Text>Call Tree-Ents</Text>
+		<Row Tag="TXT_KEY_EA_SPELL_CALL_TREE_ENT">
+			<Text>Call Tree-Ent</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_SPELL_CALL_TREE_ENTS_HELP">
-			<Text>Calls a number of Tree-Ents with total power up to the caster's Spell Modifier. The Tree-Ents are bound to the caster such that the caster gains experience and uses mana each time they engage in combat.</Text>
+		<Row Tag="TXT_KEY_EA_SPELL_CALL_TREE_ENT_HELP">
+			<Text>Calls a single Tree-Ent from a Forest or Jungle with minimum strength 18; the Tree-Ent's strength is taken from the Forest or Jungle. The Tree-Ent is bound to the caster such that the caster gains experience and uses mana each time they engage in combat.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_CALL_MAJOR_SPIRIT">
 			<Text>Call Major Spirit</Text>

@@ -200,15 +200,13 @@ local function PrintNewTurnForPlayer(iPlayer)
 	end
 end
 
-local function AfterEveryPlayerTurn(iPlayer)	-- Runs at begining of next player's turn (iPlayer is the last player)
+local function AfterEveryPlayerTurn(iPlayer)	-- Full civs only; runs at begining of next player's turn (iPlayer is the last player)
 	print("Running AfterEveryPlayerTurn ", iPlayer)
-	--if playerType[iPlayer] == "FullCiv" then
-		AnalyzeUnitClusters(iPlayer)			--may need for barbs too if they get really nasty
-		PeopleAfterTurn(iPlayer)
-		if not bFullCivAI[iPlayer] then
-			OnPlayerAdoptPolicyDelayedEffect()
-		end
-	--end
+	AnalyzeUnitClusters(iPlayer)			--may need for barbs too if they get really nasty
+	PeopleAfterTurn(iPlayer)
+	if not bFullCivAI[iPlayer] then
+		OnPlayerAdoptPolicyDelayedEffect()
+	end
 end
 
 -------------------------------------------------------------------------------------------------------

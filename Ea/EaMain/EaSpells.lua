@@ -1576,7 +1576,7 @@ local function ModelRanged_SetUI()
 			elseif g_eaActionID == EA_SPELL_HAIL_OF_PROJECTILES then
 				MapModData.text = "Cause a Hail of Projectiles to damage all hostile targets up to range 2; each projectile has strength " .. g_modSpell
 			elseif g_eaActionID == EA_SPELL_DEATH_RAY then
-				MapModData.text = "Drain life energy from one living unit up to range 2; may kill outright or will drain " .. g_modSpell .. " experience, transfering that amount to caster"
+				MapModData.text = "Drain life energy from one living unit up to range 2; will drain " .. g_modSpell .. " points first from target experence and then from target hit points, transfering that amount to caster experience"
 			elseif g_eaActionID == EA_SPELL_SEQUENCED_DEATH then
 				MapModData.text = "Cause Death Rays to shoot out at all hostile living units up to range 2; each will drain life energy from one unit, killing it outright or draining " .. g_modSpell .. " experience, transfering that amount to caster"
 			end			

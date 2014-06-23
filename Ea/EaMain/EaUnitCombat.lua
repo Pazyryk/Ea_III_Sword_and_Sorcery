@@ -464,18 +464,22 @@ local function OnCombatEnded(iAttackingPlayer, iAttackingUnit, attackerDamage, a
 				if bEnergyDrain and -1 < g_defendingUnitXP then
 					local mod = GetGPMod(iPerson, "EAMOD_NECROMANCY", nil)
 					print("Death Ray attack: mod, power, xp = ", mod, gg_baseUnitPower[g_defendingUnitTypeID], g_defendingUnitXP)
-					pts = g_defendingUnitXP < mod and g_defendingUnitXP or mod
 					if defendingUnit and not bDefenderKilled then
-						local bKill = g_defendingUnitXP < mod and gg_baseUnitPower[g_defendingUnitTypeID] < mod
-						if bKill then
-							MapModData.bBypassOnCanSaveUnit = true
-							defendingUnit:Kill(true, iAttackingPlayer)
-						else
-							if 0 < pts then
-								DrainExperience(defendingUnit, pts)
-							end
-							defendingUnit:GetPlot():AddFloatUpMessage(pts .. " experience was drained!", 2)
+						local xpDrain = g_defendingUnitXP < mod and g_defendingUnitXP or mod
+						if 0 < xpDrain then
+							DrainExperience(defendingUnit, xpDrain)
+							defendingUnit:GetPlot():AddFloatUpMessage(xpDrain .. " experience was drained!", 2)
 						end
+						local doDamage = mod - xpDrain
+						if 0 < doDamage then
+							local remainingHP = defenderMaxHP - defenderFinalDamage
+							doDamage = doDamage < remainingHP and doDamage or remainingHP
+							defendingUnit:GetPlot():AddFloatUpMessage(doDamage .. " hit points were drained!", 3)
+							defendingUnit:ChangeDamage(doDamage, iAttackingPlayer)
+						end
+						pts = xpDrain + doDamage
+					else
+						pts = 5		--killed by ranged strength 1 attack?
 					end
 				else
 					pts = CalculateXPManaForAttack(g_defendingUnitTypeID, defenderDamage, bDefenderKilled)

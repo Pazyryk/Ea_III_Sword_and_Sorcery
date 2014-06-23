@@ -234,7 +234,7 @@
 			<Text>Death Ray</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_DEATH_RAY_HELP">
-			<Text>A thin green ray connects caster with target (up to range two) killing or draining life energy from the target. The ray strikes with only strength 1, but will kill the target outright if the caster's Necromancy Modifier exceeds the target's power and experience. If the ray doesn't kill, it will drain experience from the target causing it to lose levels and random promotions accordingly. The caster gains all experience drained from the target.</Text>
+			<Text>A thin green ray connects caster with one living unit up to range 2, draining life energy from the target. The ray strikes with only strength 1, but drains the caster's Necromancy Modifier first from target experience and then (if target reduced to 0 experience) the target's hit points.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_SEQUENCED_DEATH">
 			<Text>Sequenced Death</Text>

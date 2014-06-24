@@ -190,6 +190,10 @@ function EaActionsInit(bNewGame)
 		if eaPerson.eaActionID > 0 then	
 			local player = Players[iPlayer]
 			local unit = player:GetUnitByID(eaPerson.iUnit)
+			if not unit then
+				--this is happening in player loads; better to kill gp so they report it
+				KillPerson(iPlayer, iPerson)
+			end
 			local iPlot = unit:GetPlot():GetPlotIndex()
 			print("-setting gg_playerPlotActionTargeted for eaActionID ", iPlayer, iPlot, eaPerson.eaActionID, iPerson)
 			gg_playerPlotActionTargeted[iPlayer][iPlot] = gg_playerPlotActionTargeted[iPlayer][iPlot] or {}

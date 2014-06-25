@@ -1285,17 +1285,7 @@ function KillPerson(iPlayer, iPerson, unit, iKillerPlayer, deathType)
 	--debug: test all units to make sure no one else has this person index
 
 
-
-	
 	--move person info we may want over to gDeadPeople; keep: eaPersonRowID, subclass, class1, class1, name, level
-	eaPerson.deathTurn = Game.GetGameTurn()
-	eaPerson.iUnit = nil
-	eaPerson.iUnitJoined = nil
-	eaPerson.progress = nil
-	eaPerson.eaActionID = nil
-	eaPerson.eaActionData = nil
-	eaPerson.gotoPlotIndex = nil
-	eaPerson.gotoEaActionID = nil
 
 	--creat dead person table and transfer data we may need later (not table pointers! they break TableSaverLoader!)
 	local eaDeadPerson = {}
@@ -1323,14 +1313,10 @@ function KillPerson(iPlayer, iPerson, unit, iKillerPlayer, deathType)
 		end
 	end
 
-	--promotions; TO DO: Can remove if test after next version (v5) - only needed for save compatibility
-	if eaPerson.promotions then
-		eaDeadPerson.promotions = {}
-		for k, v in pairs(eaPerson.promotions) do
-			eaDeadPerson.promotions[k] = v
-		end
+	eaDeadPerson.promotions = {}
+	for k, v in pairs(eaPerson.promotions) do
+		eaDeadPerson.promotions[k] = v
 	end
-
 
 	gDeadPeople[#gDeadPeople + 1] = eaDeadPerson
 	gPeople[iPerson] = nil

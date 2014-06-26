@@ -20,7 +20,6 @@ local GUESSED_GROWTH_EXPIRE_TURN = 50	--AI makes a guess at growth potential, bu
 
 --constants
 
-local MAX_MAJOR_CIVS =						GameDefines.MAX_MAJOR_CIVS					
 local HIGHEST_RELIGION_ID =					HIGHEST_RELIGION_ID
 
 local DOMAIN_LAND =							DomainTypes.DOMAIN_LAND
@@ -729,7 +728,8 @@ function CityPerCivTurn(iPlayer)		--Full civ only
 			local plot = GetPlotByIndex(iPlot)
 			local city = plot:GetPlotCity()
 			if not city then	--was raized to ground, delete from gCities
-				gCities[iPlot] = nil			
+				gCities[iPlot] = nil
+			
 			elseif city:GetOwner() ~= iPlayer then
 				error("eaCity owner disagrees with city owner", iPlayer, city:GetOwner(), city:GetName())
 				--Need to detect and fix if this happens for any reason (TO DO: edge case, one civ raizes and another builds on same plot same turn)
@@ -1071,23 +1071,13 @@ local function OnSetPopulation(x, y, oldPopulation, newPopulation)
 	--Warning! This fires before OnCityCaptureComplete. 
 	local plot = Map.GetPlot(x, y)
 	local city = plot:GetPlotCity()
-	print("Population change ", x, y, city:GetName(), oldPopulation, newPopulation, city:GetOwner(), Players[city:GetOwner()]:IsAlive())
+	print("Population change ", city:GetName(), oldPopulation, newPopulation)
 	local iOwner = city:GetOwner()
-
-	--This is our first indication of a resurected player
-	--owner:IsAlive()=false still but they must be coming back to life if newPopulation > 0
-	--dead player is detected in OnCityCaptureComplete
-
-	if 0 < newPopulation and not realCivs[iOwner] then
-		realCivs[iOwner] = gPlayers[iOwner]
-		if iOwner < MAX_MAJOR_CIVS then
-			fullCivs[iOwner] = gPlayers[iOwner]
-		else
-			cityStates[iOwner] = gPlayers[iOwner]
-		end
-	end
-
 	local owner = Players[iOwner]
+	if not owner:IsAlive() then		--can this happen from here?
+		print("!!!! Dead player detected from OnSetPopulation !!!!")
+		DeadPlayer(iPlayer)
+	end
 
 	if city:IsRazing() then
 		if newPopulation < oldPopulation then
@@ -1135,8 +1125,6 @@ GameEvents.SetPopulation.Add(function(x, y, oldPopulation, newPopulation) return
 local function OnCityCaptureComplete(iPlayer, bCapital, x, y, iNewOwner)
 
 	--what about city destroyed on conquest?
-
-	--On liberation, iPlayer is liberating player and iNewOwner is civ liberated to (which may be a resurection); there is no indication who captured from
 
 	local oldOwner = Players[iPlayer]
 	local newOwner = Players[iNewOwner]

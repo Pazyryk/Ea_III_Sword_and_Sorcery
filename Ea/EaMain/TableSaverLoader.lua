@@ -94,7 +94,6 @@ local idStrTable = {}	-- these 3 for string construction (reused/overwritten wit
 local typeStrTable = {}
 local textStrTable = {}
 
-
 --call TableSave() before game save and TableLoad() after game load
 function TableSave(globalTable, DBTablePrefix)
 	local timer = bKeepDBChangeInfo and os.clock()
@@ -389,7 +388,6 @@ DoDBInserts = function()
 		dbKey[id] = key
 		dbType[id] = varType
 		dbText[id] = varText
-		dbFoundDontDelete[id] = false
 		insertBuffer.parent[i] = nil
 		insertBuffer.key[i] = nil
 		insertBuffer.varType[i] = nil

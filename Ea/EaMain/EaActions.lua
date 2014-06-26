@@ -561,7 +561,7 @@ function TestEaActionForHumanUI(eaActionID, iPlayer, unit, iPerson, testX, testY
 		end
 	end
 
-	if not g_bEmbarked and SetUI[eaActionID] then
+	if SetUI[eaActionID] then
 		SetUI[eaActionID]()	--always set MapModData.bShow and MapModData.text together (need specific function if we want to show disabled button)
 	end
 

@@ -429,7 +429,7 @@ function TestEaSpellForHumanUI(eaActionID, iPlayer, unit, iPerson, testX, testY)
 		end
 	end
 
-	if SetUI[eaActionID] then
+	if not g_bEmbarked and SetUI[eaActionID] then
 		SetUI[eaActionID]()
 	end
 

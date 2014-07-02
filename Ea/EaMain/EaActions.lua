@@ -22,6 +22,8 @@ local EACIV_NEZELIBA =						GameInfoTypes.EACIV_NEZELIBA
 local IMPROVEMENT_ARCANE_TOWER =			GameInfoTypes.IMPROVEMENT_ARCANE_TOWER
 local INVISIBLE_SUBMARINE =					GameInfoTypes.INVISIBLE_SUBMARINE
 local LEADER_FAND =							GameInfoTypes.LEADER_FAND
+local ORDER_CONSTRUCT =						OrderTypes.ORDER_CONSTRUCT
+local ORDER_TRAIN =							OrderTypes.ORDER_TRAIN
 local RELIGION_ANRA =						GameInfoTypes.RELIGION_ANRA
 local RELIGION_AZZANDARAYASNA =				GameInfoTypes.RELIGION_AZZANDARAYASNA
 local RELIGION_THE_WEAVE_OF_EA =			GameInfoTypes.RELIGION_THE_WEAVE_OF_EA
@@ -190,6 +192,10 @@ function EaActionsInit(bNewGame)
 		if eaPerson.eaActionID > 0 then	
 			local player = Players[iPlayer]
 			local unit = player:GetUnitByID(eaPerson.iUnit)
+			if not unit then
+				--this is happening in player loads; better to kill gp so they report it
+				KillPerson(iPlayer, iPerson)
+			end
 			local iPlot = unit:GetPlot():GetPlotIndex()
 			print("-setting gg_playerPlotActionTargeted for eaActionID ", iPlayer, iPlot, eaPerson.eaActionID, iPerson)
 			gg_playerPlotActionTargeted[iPlayer][iPlot] = gg_playerPlotActionTargeted[iPlayer][iPlot] or {}
@@ -557,7 +563,7 @@ function TestEaActionForHumanUI(eaActionID, iPlayer, unit, iPerson, testX, testY
 		end
 	end
 
-	if SetUI[eaActionID] then
+	if not g_bEmbarked and SetUI[eaActionID] then
 		SetUI[eaActionID]()	--always set MapModData.bShow and MapModData.text together (need specific function if we want to show disabled button)
 	end
 
@@ -1387,10 +1393,10 @@ end
 TestTarget[GameInfoTypes.EA_ACTION_RENDER_SLAVES] = function()
 	--city must be constructing building or military unit
 	orderType, g_int1 = g_city:GetOrderFromQueue(0)		--orderType, id
-	if orderType == OrderTypes.ORDER_TRAIN then
+	if orderType == ORDER_TRAIN then
 		g_bool1 = true
 		return true
-	elseif orderType == OrderTypes.ORDER_CONSTRUCT then
+	elseif orderType == ORDER_CONSTRUCT then
 		g_bool1 = false
 		return true
 	end
@@ -1679,22 +1685,31 @@ end
 
 --EA_ACTION_BUILD
 TestTarget[GameInfoTypes.EA_ACTION_BUILD] = function()
-	g_int1 = Floor(g_mod * (g_city:GetBaseYieldRateModifier(YIELD_PRODUCTION)) / 200 + 0.5)
-	return true
-end
-
-SetUI[GameInfoTypes.EA_ACTION_BUILD] = function()
-	if g_bAllTestsPassed then
-		local cityProductionName = g_city:GetProductionNameKey()
-		if cityProductionName then
-			MapModData.text = "Provide " .. g_int1 .. " production per turn toward " .. Locale.ConvertTextKey(cityProductionName)
-		else
-			MapModData.text = "Provide " .. g_int1 .. " production per turn toward this city's next build selection"
-		end
+	local orderType, orderID = city:GetOrderFromQueue(0)
+	if orderType == ORDER_CONSTRUCT then
+		g_int1 = Floor(g_mod * (g_city:GetBaseYieldRateModifier(YIELD_PRODUCTION)) / 200 + 0.5)
+		return true		
+	else
+		g_testTargetSwitch = 1
+		return false
 	end
 end
 
-
+SetUI[GameInfoTypes.EA_ACTION_BUILD] = function()
+	if g_bNonTargetTestsPassed then
+		if g_bAllTestsPassed then
+			local cityProductionName = g_city:GetProductionNameKey()
+			if cityProductionName then
+				MapModData.text = "Provide " .. g_int1 .. " production per turn toward " .. Locale.ConvertTextKey(cityProductionName)
+			else
+				MapModData.text = "Provide " .. g_int1 .. " production per turn toward this city's next build selection"
+			end
+		elseif g_testTargetSwitch == 1 then
+			MapModData.bShow = true
+			MapModData.text = "[COLOR_WARNING_TEXT]City must be constucting a building[ENDCOLOR]"
+		end
+	end
+end
 
 SetAIValues[GameInfoTypes.EA_ACTION_BUILD] = function()
 	gg_aiOptionValues.b = g_int1	
@@ -1873,6 +1888,75 @@ Interrupt[GameInfoTypes.EA_ACTION_PERFORM] = function(iPlayer, iPerson)
 		end
 	end
 end
+
+--EA_ACTION_TRAIN
+TestTarget[GameInfoTypes.EA_ACTION_TRAIN] = function()
+	local orderType, orderID = city:GetOrderFromQueue(0)
+	if orderType == ORDER_TRAIN and gg_bNormalCombatUnit[orderID] then
+		g_int1 = Floor(g_mod * (g_city:GetBaseYieldRateModifier(YIELD_PRODUCTION)) / 200 + 0.5)
+		return true		
+	else
+		g_testTargetSwitch = 1
+		return false
+	end
+end
+
+SetUI[GameInfoTypes.EA_ACTION_TRAIN] = function()
+	if g_bNonTargetTestsPassed then
+		if g_bAllTestsPassed then
+			local cityProductionName = g_city:GetProductionNameKey()
+			if cityProductionName then
+				MapModData.text = "Provide " .. g_int1 .. " production and experience per turn toward " .. Locale.ConvertTextKey(cityProductionName)
+			end
+		elseif g_testTargetSwitch == 1 then
+			MapModData.bShow = true
+			MapModData.text = "[COLOR_WARNING_TEXT]City must be training a combat unit[ENDCOLOR]"
+		end
+	end
+end
+
+SetAIValues[GameInfoTypes.EA_ACTION_TRAIN] = function()
+	gg_aiOptionValues.b = g_int1	
+end
+
+Do[GameInfoTypes.EA_ACTION_TRAIN] = function()
+	g_eaCity.gpProduction = g_eaCity.gpProduction or {}
+	g_eaCity.gpProduction[g_iPerson] = g_int1
+	g_eaCity.gpTraining = g_eaCity.gpTraining or {}
+	g_eaCity.gpTraining[g_iPerson] = g_int1
+
+	g_eaPerson.eaActionData = g_iPlot
+	g_unit:ChangeExperience(g_int1)
+	if g_iPlayer == g_iActivePlayer then
+		UpdateCityYields(g_iPlayer, g_iCity, "Training")	--instant UI update for human
+	end
+	return true
+end
+
+Interrupt[GameInfoTypes.EA_ACTION_TRAIN] = function(iPlayer, iPerson)
+	local eaPerson = gPeople[iPerson]
+	local eaCityIndex = eaPerson.eaActionData
+	local eaCity = gCities[eaCityIndex]
+	eaPerson.eaActionData = -1
+	local bUpdateUI = false
+	if eaCity then
+		if eaCity.gpProduction then
+			eaCity.gpProduction[iPerson] = nil
+			bUpdateUI = true 
+		end
+		if eaCity.gpTraining then
+			eaCity.gpTraining[iPerson] = nil
+			bUpdateUI = true
+		end
+	end
+	if bUpdateUI and iPlayer == g_iActivePlayer then
+		local iCity = GetPlotByIndex(eaCityIndex):GetPlotCity():GetID()
+		UpdateCityYields(iPlayer, iCity, "Training")
+	end
+end
+
+
+
 
 --EA_ACTION_WORSHIP
 Test[GameInfoTypes.EA_ACTION_WORSHIP] = function()
@@ -2144,8 +2228,8 @@ Do[GameInfoTypes.EA_ACTION_RALLY_TROOPS] = function()
 	return true
 end
 
---EA_ACTION_TRAIN_UNIT
-TestTarget[GameInfoTypes.EA_ACTION_TRAIN_UNIT] = function()
+--EA_ACTION_FIELD_TRAINING_EXERCISES
+TestTarget[GameInfoTypes.EA_ACTION_FIELD_TRAINING_EXERCISES] = function()
 	--Must be combat unit at plot
 	local unitCount = g_plot:GetNumUnits()
 	for i = 0, unitCount - 1 do
@@ -2162,7 +2246,7 @@ TestTarget[GameInfoTypes.EA_ACTION_TRAIN_UNIT] = function()
 	return false
 end
 
-SetUI[GameInfoTypes.EA_ACTION_TRAIN_UNIT] = function()
+SetUI[GameInfoTypes.EA_ACTION_FIELD_TRAINING_EXERCISES] = function()
 	if g_bAllTestsPassed then
 		local unitText = Locale.ConvertTextKey(GameInfo.Units[g_int1].Description)
 		local xp = Floor(g_mod / 2)
@@ -2170,11 +2254,11 @@ SetUI[GameInfoTypes.EA_ACTION_TRAIN_UNIT] = function()
 	end
 end
 
-SetAIValues[GameInfoTypes.EA_ACTION_TRAIN_UNIT] = function()
+SetAIValues[GameInfoTypes.EA_ACTION_FIELD_TRAINING_EXERCISES] = function()
 	gg_aiOptionValues.i = g_mod * g_obj1:GetPower()			
 end
 
-Do[GameInfoTypes.EA_ACTION_TRAIN_UNIT] = function()
+Do[GameInfoTypes.EA_ACTION_FIELD_TRAINING_EXERCISES] = function()
 	local xp = Floor(g_mod / 2)	--give to unit and GP
 	g_obj1:ChangeExperience(xp)
 	g_unit:ChangeExperience(xp)

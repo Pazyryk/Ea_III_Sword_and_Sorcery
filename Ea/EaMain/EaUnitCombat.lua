@@ -117,7 +117,7 @@ end
 --TO DO: Depreciate Events hook below. Replace with new GameEvents.
 
 local function OnSerialEventUnitCreated(iPlayer, iUnit, hexVec, unitType, cultureType, civID, primaryColor, secondaryColor, unitFlagIndex, fogState, selected, military, notInvisible)
-	Dprint("Running SerialEventUnitCreated ", iPlayer, iUnit, hexVec, unitType, cultureType, civID, primaryColor, secondaryColor, unitFlagIndex, fogState, selected, military, notInvisible)
+	print("Running SerialEventUnitCreated ", iPlayer, iUnit, hexVec, unitType, cultureType, civID, primaryColor, secondaryColor, unitFlagIndex, fogState, selected, military, notInvisible)
 	--WARNINGS:
 	--unitType is not unitTypeID
 	--runs for embark, disembark
@@ -126,7 +126,7 @@ local function OnSerialEventUnitCreated(iPlayer, iUnit, hexVec, unitType, cultur
 	local player = Players[iPlayer]
 	local unit = player:GetUnitByID(iUnit)
 	if not unit then return end
-	Dprint("Actual unitTypeID = ", unit:GetUnitType())
+	print("Actual unitTypeID = ", unit:GetUnitType())
 
 	if iPlayer == BARB_PLAYER_INDEX then	--includes new spawns and captured slaves
 		if unit:IsGreatPerson() then

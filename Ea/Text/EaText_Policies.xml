@@ -112,13 +112,13 @@
 			<Text>Woods Lore</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_WOODS_LORE_HELP">
-			<Text>[COLOR_POSITIVE_TEXT]Woods Lore[ENDCOLOR][NEWLINE][ICON_BULLET]+1 [ICON_FOOD] Food and +1 [ICON_PRODUCTION] Production from Farms, Vineyards and Plantations</Text>
+			<Text>[COLOR_POSITIVE_TEXT]Woods Lore[ENDCOLOR][NEWLINE][ICON_BULLET]+1 [ICON_FOOD] Food and +1 [ICON_PRODUCTION] Production from Farms, Vineyards, Orchards, Textile Plantations and Exotics Plantations</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_FELLOWSHIP_OF_LEAVES">
 			<Text>Fellowship of Leaves</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_FELLOWSHIP_OF_LEAVES_HELP">
-			<Text>[COLOR_POSITIVE_TEXT]Fellowship of Leaves[ENDCOLOR][NEWLINE][ICON_BULLET]+1 [ICON_CULTURE] Culture and +1 [ICON_STAR] Mana from Farms, Vineyards and Plantations</Text>
+			<Text>[COLOR_POSITIVE_TEXT]Fellowship of Leaves[ENDCOLOR][NEWLINE][ICON_BULLET]+1 [ICON_CULTURE] Culture and +1 [ICON_STAR] Mana from Farms, Vineyards, Orchards, Textile Plantations and Exotics Plantations</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_FOREST_DOMINION">
 			<Text>Forest Dominion</Text>
@@ -130,13 +130,13 @@
 			<Text>Earth Lore</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_EARTH_LORE_HELP">
-			<Text>[COLOR_POSITIVE_TEXT]Earth Lore[ENDCOLOR][NEWLINE][ICON_BULLET]+1 [ICON_PRODUCTION] Production and +1 [ICON_GOLD] Gold from Mines and Quarries</Text>
+			<Text>[COLOR_POSITIVE_TEXT]Earth Lore[ENDCOLOR][NEWLINE][ICON_BULLET]+1 [ICON_GOLD] Gold and +1 [ICON_CULTURE] Culture from Mines, Quarries and Wells</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_MANA_VORTEXES">
 			<Text>Mana Vortexes</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_MANA_VORTEXES_HELP">
-			<Text>[COLOR_POSITIVE_TEXT]Mana Vortexes[ENDCOLOR][NEWLINE][ICON_BULLET]+1 [ICON_RESEARCH] Research and +2 [ICON_STAR] Mana from Mines and Quarries[NEWLINE][ICON_BULLET]Allows the [COLOR_POSITIVE_TEXT]Major Spirits' Tribute[ENDCOLOR] Process, which converts 25% of City [ICON_PRODUCTION] Production into [ICON_INFLUENCE] Influence divided among all Major Spirits of Éa that are friends or allies, or all contacted if none are currently friends or allies</Text>
+			<Text>[COLOR_POSITIVE_TEXT]Mana Vortexes[ENDCOLOR][NEWLINE][ICON_BULLET]+1 [ICON_RESEARCH] Research and +2 [ICON_STAR] Mana from Mines, Quarries and Wells[NEWLINE][ICON_BULLET]Allows the [COLOR_POSITIVE_TEXT]Major Spirits' Tribute[ENDCOLOR] Process, which converts 25% of City [ICON_PRODUCTION] Production into [ICON_INFLUENCE] Influence divided among all Major Spirits of Éa that are friends or allies, or all contacted if none are currently friends or allies</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_THROUGH_THE_VEIL">
 			<Text>Through the Veil</Text>

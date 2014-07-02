@@ -94,6 +94,7 @@ local idStrTable = {}	-- these 3 for string construction (reused/overwritten wit
 local typeStrTable = {}
 local textStrTable = {}
 
+
 --call TableSave() before game save and TableLoad() after game load
 function TableSave(globalTable, DBTablePrefix)
 	local timer = bKeepDBChangeInfo and os.clock()
@@ -132,6 +133,12 @@ function TableSave(globalTable, DBTablePrefix)
 		varBuffer.var[varBuffer.bottom], varBuffer.varText[varBuffer.bottom] = nil, nil
 	end
 	varBuffer.top, varBuffer.bottom = 0, 0	--ready for re-use (varBuffer empty now)
+
+	--do updates/inserts not already done in TableBuilder	
+	if #updateTypeTextIDBuffer > 0 then DoDBTypeTextUpdates() end
+	if #updateTextIDBuffer > 0 then DoDBTextUpdates() end
+	if #insertBuffer.parent > 0 then DoDBInserts() end
+		
 	--fill deleteIDBuffer with IDs not seen in this save
 	for id, bKeep in pairs(dbFoundDontDelete) do
 		if bKeep then
@@ -141,11 +148,10 @@ function TableSave(globalTable, DBTablePrefix)
 			deletes = deletes + 1
 		end
 	end
-	--do deletes/updates/inserts
+
+	--do deletes
 	if #deleteIDBuffer > 0 then DoDBDeletes() end
-	if #updateTypeTextIDBuffer > 0 then DoDBTypeTextUpdates() end
-	if #updateTextIDBuffer > 0 then DoDBTextUpdates() end
-	if #insertBuffer.parent > 0 then DoDBInserts() end
+
 	if bKeepDBChangeInfo then
 		local items = inserts + updates + unchangeds
 		DBChange("INSERT INTO ["..DBTableInfo.."] (turn, bCreateTables, bInitDBVars, items, inserts, deletes, updates, unchangeds, checksum, precedingSaveTime) VALUES ('"..Game.GetGameTurn().."','"..tostring(bCreateTables).."','"..tostring(bInitDBVars).."','"..items.."','"..inserts.."','"..deletes.."','"..updates.."','"..unchangeds.."','"..(checksum or "na").."','"..precedingSaveTime.."')")
@@ -361,7 +367,7 @@ DoDBDeletes = function()
 	--print("DoDBDeletes", #deleteIDBuffer)
 	local DBChange = DBChange
 	DBChange("delete from ["..DBTableData.."] where ID in ("..table.concat(deleteIDBuffer,",")..")")
-	-- make dbVars look like DB and clear out deleteIDBuffer for re-use
+	-- make dbVars look like DB (empty row)
 	for i = 1, #deleteIDBuffer do
 		local id = deleteIDBuffer[i]
 		dbParent[id] = nil
@@ -388,6 +394,7 @@ DoDBInserts = function()
 		dbKey[id] = key
 		dbType[id] = varType
 		dbText[id] = varText
+		dbFoundDontDelete[id] = true
 		insertBuffer.parent[i] = nil
 		insertBuffer.key[i] = nil
 		insertBuffer.varType[i] = nil

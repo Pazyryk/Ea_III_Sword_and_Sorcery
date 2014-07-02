@@ -218,7 +218,7 @@ for unitInfo in GameInfo.Units() do
 		elseif unitInfo.EaSpecial == "Archangel" then
 			firstArchangelID = firstArchangelID or unitInfo.ID
 		elseif unitInfo.EaSpecial == "MajorSpirit" then
-			local minorTypeID = GameInfoTypes[string.gsub(unitInfo.Type, "'UNIT_", "MINOR_CIV_")]
+			local minorTypeID = GameInfoTypes[string.gsub(unitInfo.Type, "UNIT_", "MINOR_CIV_")]
 			local iPlayer = gg_minorPlayerByTypeID[minorTypeID]		--nil if not in this game
 			if iPlayer then
 				godUnits[iPlayer] = unitInfo.ID
@@ -429,7 +429,7 @@ function TestEaSpellForHumanUI(eaActionID, iPlayer, unit, iPerson, testX, testY)
 		end
 	end
 
-	if SetUI[eaActionID] then
+	if not g_bEmbarked and SetUI[eaActionID] then
 		SetUI[eaActionID]()
 	end
 
@@ -1491,7 +1491,7 @@ end
 
 local function ModelRanged_TestTarget()	--TO DO: need better AI targeting logic (for now, value goes up with existing damage)
 	local range = 2
-	local bIndirectFire = true			--TO DO: most will be indirect, but that is harder
+	local bIndirectFire = false
 	local bAutoTargetAll = false
 	local bLivingOnly = false
 	local bAllowCity = true
@@ -1500,7 +1500,13 @@ local function ModelRanged_TestTarget()	--TO DO: need better AI targeting logic 
 	if g_eaActionID == EA_SPELL_BURNING_HANDS then
 		range = 1
 		bAllowCity = false
-	elseif g_eaActionID == EA_SPELL_PLASMA_STORM or g_eaActionID == EA_SPELL_HAIL_OF_PROJECTILES then
+	elseif g_eaActionID == EA_SPELL_MAGIC_MISSILE then
+		bIndirectFire = true
+	elseif g_eaActionID == EA_SPELL_PLASMA_STORM then
+		bAutoTargetAll = true
+		bIndirectFire = true
+	elseif g_eaActionID == EA_SPELL_HAIL_OF_PROJECTILES then
+		bIndirectFire = true
 		bAutoTargetAll = true
 	elseif g_eaActionID == EA_SPELL_DEATH_RAY then
 		bLivingOnly = true
@@ -1517,7 +1523,7 @@ local function ModelRanged_TestTarget()	--TO DO: need better AI targeting logic 
 	local maxValue, sumValue, count = 0, 0, 0								--Any target makes valid, but AI will value based on current target damage
 	for plot in PlotAreaSpiralIterator(g_plot, range, 1, false, false, false) do
 		if plot:IsCity() then
-			if bAllowCity and g_team:IsAtWar(Players[plot:GetOwner()]:GetTeam()) then
+			if bAllowCity and (bIndirectFire or g_plot:CanSeePlot(plot, g_iTeam, range, -1)) and g_team:IsAtWar(Players[plot:GetOwner()]:GetTeam()) then
 				count = count + 1
 				local value = plot:GetPlotCity():GetDamage()
 				if bAutoTargetAll then
@@ -1530,19 +1536,21 @@ local function ModelRanged_TestTarget()	--TO DO: need better AI targeting logic 
 			end
 		elseif plot:IsVisibleEnemyUnit(g_iPlayer) then
 			print("visible enemy unit")
-			local unitCount = plot:GetNumUnits()
-			for i = 0, unitCount - 1 do
-				local unit = plot:GetUnit(i)
-				if not bLivingOnly or livingUnitOrGP[unit:GetUnitType()] then
-					if g_team:IsAtWar(Players[unit:GetOwner()]:GetTeam()) then	--combat unit that we are at war with (need to cache at-war players for speed!)
-						count = count + 1
-						local value = unit:IsCombatUnit() and (bValueDamaged and 100 + unit:GetDamage() or 150) or 1
-						if bAutoTargetAll then
-							sumValue = sumValue + 1
-							g_table[count] = plot
-						elseif maxValue < value then	
-							maxValue = value
-							g_obj1 = plot
+			if bIndirectFire or g_plot:CanSeePlot(plot, g_iTeam, range, -1) then
+				local unitCount = plot:GetNumUnits()
+				for i = 0, unitCount - 1 do
+					local unit = plot:GetUnit(i)
+					if not bLivingOnly or livingUnitOrGP[unit:GetUnitType()] then
+						if g_team:IsAtWar(Players[unit:GetOwner()]:GetTeam()) then	--combat unit that we are at war with (need to cache at-war players for speed!)
+							count = count + 1
+							local value = unit:IsCombatUnit() and (bValueDamaged and 100 + unit:GetDamage() or 150) or 1
+							if bAutoTargetAll then
+								sumValue = sumValue + 1
+								g_table[count] = plot
+							elseif maxValue < value then	
+								maxValue = value
+								g_obj1 = plot
+							end
 						end
 					end
 				end

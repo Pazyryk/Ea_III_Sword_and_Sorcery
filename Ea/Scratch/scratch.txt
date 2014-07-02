@@ -1,4 +1,27 @@
 
+Elite Boarding Schools (Metaphysics) +5s.
+Public Schools (Cosmogony) +0.5s / population point
+
+Academy of Philosophy
+Academy of Logic
+Academy of Semiotics (Semiotics)
+Academy of Metaphysics (Metaphysics) +4s. +14% research (+28% with Academic Tradition)
+Academy of Cosmogony (Cosmogony) +5s. +16% research (+32% with Academic Tradition)
+Academy of Transcendence (Transcendental Thought) +6s. +20% research (+40% with Academic Tradition)
+* -33% reduced KM (Transcendental Thought)
+
+
+
+
+School of Divination (Thaumaturgy) +4s. +2 Divination Modifier for all Thaumaturges. Reveals 20 unexplored plots at the edge of your currently revealed map.
+School of Abjuration (Abjuration) +2s2m. +2 Abjuration Modifier for all Thaumaturges. Sets Protective Ward in 18 plots surrounding this city (spirals out skipping plots with existing glyphs, runes and wards).
+School of Transmutation (Transmutation) +2s2m. +2 Transmutation Modifier for all Thaumaturges. Provides one random metal resource.
+School of Conjuration (Conjuration) +2s2m. +2 Conjuration Modifier for all Thaumaturges. Conjures one random monster (a Giant Spider or Green Drake).
+School of Evocation (Evocation) +2s2m. +2 Evocation Modifier for all Thaumaturges. Sets Explosive Runes in 18 plots surrounding this city (spirals out skipping plots with existing glyphs, runes and wards).
+School of Necromancy (Necromancy) +2s2m. +2 Necromancy Modifier for all Thaumaturges. Raises Skeletons and Zombies.
+
+
+
 PLAYERCOLOR_AMERICA
 PLAYERCOLOR_ARABIA
 PLAYERCOLOR_AZTEC

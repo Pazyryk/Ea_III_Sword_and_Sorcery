@@ -172,11 +172,12 @@ UPDATE EaActions SET TurnsToComplete = 1, StayInvisible = 1 WHERE Type = 'EA_ACT
 
 --GP yield actions
 INSERT INTO EaActions (Type,			Description,							Help,										GPOnly,	NoGPNumLimit,	UIType,		AITarget,			GPClass,		City,		GPModType1,				TurnsToComplete,	ProgressHolder,	IconIndex,	IconAtlas				) VALUES
-('EA_ACTION_BUILD',						'TXT_KEY_EA_ACTION_BUILD',				'TXT_KEY_EA_ACTION_BUILD_HELP',				1,		1,				'Action',	'OwnClosestCity',	'Engineer',		'Own',		'EAMOD_CONSTRUCTION',	1000,				'Person',		5,			'TECH_ATLAS_1'			),
-('EA_ACTION_TRADE',						'TXT_KEY_EA_ACTION_TRADE',				'TXT_KEY_EA_ACTION_TRADE_HELP',				1,		1,				'Action',	'OwnClosestCity',	'Merchant',		'Own',		'EAMOD_TRADE',			1000,				'Person',		17,			'TECH_ATLAS_1'			),
-('EA_ACTION_RESEARCH',					'TXT_KEY_EA_ACTION_RESEARCH',			'TXT_KEY_EA_ACTION_RESEARCH_HELP',			1,		1,				'Action',	'OwnClosestCity',	'Sage',			'Own',		'EAMOD_SCHOLARSHIP',	1000,				'Person',		11,			'BW_ATLAS_1'			),
-('EA_ACTION_PERFORM',					'TXT_KEY_EA_ACTION_PERFORM',			'TXT_KEY_EA_ACTION_PERFORM_HELP',			1,		1,				'Action',	'OwnClosestCity',	'Artist',		'Own',		'EAMOD_BARDING',		1000,				'Person',		44,			'BW_ATLAS_1'			),
-('EA_ACTION_WORSHIP',					'TXT_KEY_EA_ACTION_WORSHIP',			'TXT_KEY_EA_ACTION_WORSHIP_HELP',			1,		1,				'Action',	'OwnClosestCity',	'Devout',		'Own',		'EAMOD_DEVOTION',		1000,				'Person',		17,			'BW_ATLAS_2'			),
+('EA_ACTION_BUILD',						'TXT_KEY_EA_ACTION_BUILD',				'TXT_KEY_EA_ACTION_BUILD_HELP',				1,		1,				'Action',	'OwnCities',		'Engineer',		'Own',		'EAMOD_CONSTRUCTION',	1000,				'Person',		5,			'TECH_ATLAS_1'			),
+('EA_ACTION_TRADE',						'TXT_KEY_EA_ACTION_TRADE',				'TXT_KEY_EA_ACTION_TRADE_HELP',				1,		1,				'Action',	'OwnCities',		'Merchant',		'Own',		'EAMOD_TRADE',			1000,				'Person',		17,			'TECH_ATLAS_1'			),
+('EA_ACTION_RESEARCH',					'TXT_KEY_EA_ACTION_RESEARCH',			'TXT_KEY_EA_ACTION_RESEARCH_HELP',			1,		1,				'Action',	'OwnCities',		'Sage',			'Own',		'EAMOD_SCHOLARSHIP',	1000,				'Person',		11,			'BW_ATLAS_1'			),
+('EA_ACTION_PERFORM',					'TXT_KEY_EA_ACTION_PERFORM',			'TXT_KEY_EA_ACTION_PERFORM_HELP',			1,		1,				'Action',	'OwnCities',		'Artist',		'Own',		'EAMOD_BARDING',		1000,				'Person',		44,			'BW_ATLAS_1'			),
+('EA_ACTION_TRAIN',						'TXT_KEY_EA_ACTION_TRAIN',				'TXT_KEY_EA_ACTION_TRAIN_HELP',				1,		1,				'Action',	'OwnCities',		'Warrior',		'Own',		'EAMOD_LEADERSHIP',		1000,				'Person',		5,			'BW_ATLAS_1'			),
+('EA_ACTION_WORSHIP',					'TXT_KEY_EA_ACTION_WORSHIP',			'TXT_KEY_EA_ACTION_WORSHIP_HELP',			1,		1,				'Action',	'OwnCities',		'Devout',		'Own',		'EAMOD_DEVOTION',		1000,				'Person',		17,			'BW_ATLAS_2'			),
 ('EA_ACTION_CHANNEL',					'TXT_KEY_EA_ACTION_CHANNEL',			'TXT_KEY_EA_ACTION_CHANNEL_HELP',			1,		1,				'Action',	'Tower',			'Thaumaturge',	'Not',		'EAMOD_EVOCATION',		1000,				'Person',		17,			'BW_ATLAS_2'			);
 
 UPDATE EaActions SET NotGPClass = 'Devout' WHERE Type = 'EA_ACTION_CHANNEL';
@@ -187,7 +188,7 @@ INSERT INTO EaActions (Type,			Description,							Help,										GPOnly,	UIType,
 ('EA_ACTION_LEAD_CHARGE',				'TXT_KEY_EA_ACTION_LEAD_CHARGE',		'TXT_KEY_EA_ACTION_LEAD_CHARGE_HELP',		1,		'Action',	'Warrior',		NULL,			'Any',			'EAMOD_COMBAT',			1,					1,				6,			'BW_ATLAS_1'	),
 ('EA_ACTION_RALLY_TROOPS',				'TXT_KEY_EA_ACTION_RALLY_TROOPS',		'TXT_KEY_EA_ACTION_RALLY_TROOPS_HELP',		1,		'Action',	'Warrior',		NULL,			'Any',			'EAMOD_LEADERSHIP',		1,					1,				33,			'TECH_ATLAS_1'	),
 --('EA_ACTION_FORTIFY_TROOPS',			'TXT_KEY_EA_ACTION_FORTIFY_TROOPS',		'TXT_KEY_EA_ACTION_FORTIFY_TROOPS_HELP',	1,		'Action',	'Warrior',		NULL,			'Any',			'EAMOD_LEADERSHIP',		1,					1,				6,			'BW_ATLAS_1'	),
-('EA_ACTION_TRAIN_UNIT',				'TXT_KEY_EA_ACTION_TRAIN_UNIT',			'TXT_KEY_EA_ACTION_TRAIN_UNIT_HELP',		1,		'Action',	'Warrior',		'OwnLandUnits',	NULL,			'EAMOD_LEADERSHIP',		1000,				1,				5,			'BW_ATLAS_1'	);
+('EA_ACTION_FIELD_TRAINING_EXERCISES',	'TXT_KEY_EA_ACTION_FIELD_TRAINING_EXERCISES','TXT_KEY_EA_ACTION_FIELD_TRAINING_EXERCISES_HELP',	1,'Action','Warrior',	'OwnLandUnits',	NULL,			'EAMOD_LEADERSHIP',		1000,				1,				5,			'BW_ATLAS_1'	);
 
 UPDATE EaActions SET FinishMoves = NULL WHERE Type = 'EA_ACTION_LEAD_CHARGE';
 

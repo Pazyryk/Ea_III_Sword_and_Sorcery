@@ -358,26 +358,29 @@ function UpdateCityYields(iPlayer, iSpecificCity, effectType, bPerTurnCall)
 
 			end
 
-			if effectType == nil or effectType == "LandXP" then
+			if effectType == nil or effectType == "LandXP" or effectType == "Training" then
 				local residentLandXP = eaCity.residentLandXP or 0
 				local leaderLandXP = eaPlayer.leaderLandXP or 0
-
-				local xp = Floor(residentLandXP + leaderLandXP + 0.5) 	--add everything and round to nearest 1%
-				local prevXP = city:GetNumBuilding(BUILDING_PLUS_1_LAND_XP)
-				if xp ~= prevXP then
-					city:SetNumRealBuilding(BUILDING_PLUS_1_LAND_XP, xp)
+				local xp = residentLandXP + leaderLandXP
+				if eaCity.gpTraining then
+					for iPerson, trainingXP in pairs(eaCity.gpTraining) do
+						xp = xp + trainingXP
+					end
 				end
+				local xp = Floor(xp + 0.5)				--round to nearest 1%
+				city:SetNumRealBuilding(BUILDING_PLUS_1_LAND_XP, Floor(xp + 0.5))
 			end
 
-			if effectType == nil or effectType == "SeaXP" then
+			if effectType == nil or effectType == "SeaXP" or effectType == "Training" then
 				local residentSeaXP = eaCity.residentSeaXP or 0
 				local leaderSeaXP = eaPlayer.leaderSeaXP or 0
-
-				local xp = Floor(residentSeaXP + leaderSeaXP + 0.5) 	--add everything and round to nearest 1%
-				local prevXP = city:GetNumBuilding(BUILDING_PLUS_1_SEA_XP)
-				if xp ~= prevXP then
-					city:SetNumRealBuilding(BUILDING_PLUS_1_SEA_XP, xp)
+				local xp = residentSeaXP + leaderSeaXP
+				if eaCity.gpTraining then
+					for iPerson, trainingXP in pairs(eaCity.gpTraining) do
+						xp = xp + trainingXP
+					end
 				end
+				city:SetNumRealBuilding(BUILDING_PLUS_1_SEA_XP, Floor(xp + 0.5))
 			end
 
 			if effectType == nil or effectType == "Food" then
@@ -400,7 +403,7 @@ function UpdateCityYields(iPlayer, iSpecificCity, effectType, bPerTurnCall)
 				end
 			end
 
-			if effectType == nil or effectType == "Production" then
+			if effectType == nil or effectType == "Production" or effectType == "Training" then
 				local newProduction = productionDistribution
 				if eaCity.gpProduction then
 					for iPerson, production in pairs(eaCity.gpProduction) do

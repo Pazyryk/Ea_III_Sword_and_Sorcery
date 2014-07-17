@@ -43,11 +43,11 @@ local Players =						Players
 local Teams =						Teams
 local gPlayers =					gPlayers
 local gEpics =						gEpics
-local bFullCivAI =					MapModData.bFullCivAI
 local fullCivs =					MapModData.fullCivs
 local cityStates =					MapModData.cityStates
 local gg_animalSpawnInhibitTeams =	gg_animalSpawnInhibitTeams
 local gg_slaveryPlayer =			gg_slaveryPlayer
+local gg_naturalWonders =			gg_naturalWonders
 
 --localized game and library functions
 local Floor = math.floor
@@ -171,10 +171,10 @@ function PolicyPerCivTurn(iPlayer)
 	print("DEBUG: eaPlayer.policyCount, player:GetNumRealPolicies = ", eaPlayer.policyCount, player:GetNumRealPolicies())
 
 	if eaPlayer.policyCount < Floor(eaPlayer.culturalLevel) then
-		if bFullCivAI[iPlayer] then
-			AIPickPolicy(iPlayer)
-		else
+		if player:IsHuman() then
 			player:ChangeNumFreePolicies(1)
+		else
+			AIPickPolicy(iPlayer)
 		end
 		eaPlayer.policyCount = eaPlayer.policyCount + 1
 	end
@@ -280,7 +280,7 @@ function OnPlayerAdoptPolicy(iPlayer, policyID)				--called by EaAICiv.lua for A
 	policyDelayedEffectID[policyDelayedEffectNum] = policyID
 	policyDelayedEffectPlayerIndex[policyDelayedEffectNum] = iPlayer
 	
-	if bFullCivAI[iPlayer] then
+	if not Players[iPlayer]:IsHuman() then
 		OnPlayerAdoptPolicyDelayedEffect()
 	end
 end

@@ -42,8 +42,8 @@ function GetCityHealthInfo(city, eaCity, size, followerReligion, aiGrowthPercent
 	end
 
 	local healthFromAIHandicap = 0
-	if aiGrowthPercent then			-- 160 (prince); 110 (warlord); 100 (prince); 60 (diety)
-		healthFromAIHandicap = healthFromAIHandicap + (110 - aiGrowthPercent) / 10
+	if aiGrowthPercent then			-- 160 (settler); 110 (warlord); 100 (prince); 60 (diety)
+		healthFromAIHandicap = healthFromAIHandicap + (aiGrowthPercent - 100) / 10
 	end
 
 	local healthFromAnra = (followerReligion == RELIGION_ANRA) and -2 or 0

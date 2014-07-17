@@ -244,6 +244,16 @@ function TestPlotAreaSweepIterator(pPlot, r, sector, anticlock, inwards, centre,
   end
 end
 
+
+function TestAdjacentPlotIterator(pPlot, bRandomize)
+  for pAreaPlot in AdjacentPlotIterator(pPlot, bRandomize) do
+    TestPlotHighlight(pAreaPlot, highlights.RED)
+  end
+end
+
+
+
+
 -- TestPlotRingIterator(Players[0]:GetCapitalCity():Plot(), 4, SECTOR_NORTH, DIRECTION_CLOCKWISE, highlights.RED)
 -- TestPlotAreaSpiralIterator(Players[0]:GetCapitalCity():Plot(), 3, SECTOR_SOUTH, DIRECTION_ANTICLOCKWISE, DIRECTION_OUTWARDS, CENTRE_INCLUDE)
 -- TestPlotAreaSweepIterator(Players[0]:GetCapitalCity():Plot(), 3, SECTOR_SOUTH, DIRECTION_ANTICLOCKWISE, DIRECTION_OUTWARDS, CENTRE_INCLUDE)

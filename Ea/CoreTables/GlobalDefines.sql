@@ -51,8 +51,6 @@ UPDATE Defines SET Value = 900 WHERE Name = 'RANGE_ATTACK_SAME_STRENGTH_POSSIBLE
 UPDATE Defines SET Value = -30 WHERE Name = 'STRATEGIC_RESOURCE_EXHAUSTED_PENALTY';		--changed from -50
 UPDATE Defines SET Value = 3 WHERE Name = 'RECON_VISIBILITY_RANGE';		--changed from 6
 
-
-
 --barbs
 UPDATE Defines SET Value = 100 WHERE Name = 'BARBARIAN_TECH_PERCENT';		--changed from 75
 
@@ -73,6 +71,7 @@ INSERT INTO PostDefines (Name, Key, "Table") VALUES
 ('ANIMALS_CIVILIZATION', 'CIVILIZATION_ANIMALS', 'Civilizations'),
 ('THE_FAY_CIVILIZATION', 'CIVILIZATION_THE_FAY', 'Civilizations');
 
+UPDATE PostDefines SET Key = 'CALENDAR_YEARS' WHERE Name = 'STANDARD_CALENDAR';	--
 
 
 INSERT INTO EaDebugTableCheck(FileName) SELECT 'GlobalDefines.sql';

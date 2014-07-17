@@ -20,6 +20,8 @@ local EAMOD_DEVOTION =					GameInfoTypes.EAMOD_DEVOTION
 local EA_EPIC_GRIMNISMAL =				GameInfoTypes.EA_EPIC_GRIMNISMAL
 local EA_WONDER_ARCANE_TOWER =			GameInfoTypes.EA_WONDER_ARCANE_TOWER
 
+local INVISIBLE_SUBMARINE =				GameInfoTypes.INVISIBLE_SUBMARINE
+
 local PROMOTION_SORCERER =				GameInfoTypes.PROMOTION_SORCERER
 local PROMOTION_PROPHET =				GameInfoTypes.PROMOTION_PROPHET
 local EA_ACTION_GO_TO_PLOT =			GameInfoTypes.EA_ACTION_GO_TO_PLOT
@@ -32,7 +34,6 @@ local YIELD_SCIENCE =					GameInfoTypes.YIELD_SCIENCE
 local YIELD_CULTURE = 					GameInfoTypes.YIELD_CULTURE
 local YIELD_FAITH = 					GameInfoTypes.YIELD_FAITH
 
-local bFullCivAI =						MapModData.bFullCivAI
 local fullCivs =						MapModData.fullCivs
 
 local gPlayers =			gPlayers
@@ -231,6 +232,73 @@ end
 -- Interface
 --------------------------------------------------------------
 
+
+local gpIndexes = {}
+
+function TestResyncGPIndexes()
+	print("TestResyncGPIndexes")
+	local errorString = ""
+	local gpIndexCount = 0
+	--Test all units for PersonIndex and update eaPerson.iUnit
+	for iPlayer = 0, BARB_PLAYER_INDEX do
+		local player = Players[iPlayer]
+		if player:IsAlive() then
+			for unit in player:Units() do
+				local iPerson = unit:GetPersonIndex()
+				if iPerson ~= -1 then
+					for i = 1, gpIndexCount do
+						if iPerson == gpIndexes[i] then
+							errorString = errorString .. " extra unit with iPerson = " .. iPerson .. ";"
+						end
+					end
+					gpIndexCount  = gpIndexCount + 1
+					gpIndexes[gpIndexCount] = iPerson
+					local eaPerson = gPeople[iPerson]
+					if not eaPerson then
+						if gDeadPeople[iPerson] then
+							print("!!!! ERROR: Found unit:GetPersonIndex() matching dead person; killing unit; iPerson, iUnit = ", iPerson, iUnit)
+							unit:Kill(false, -1)
+						else
+							error("unit:GetPersonIndex() did not match any iPerson living or dead: ", iPerson)
+						end
+					elseif eaPerson.iPlayer ~= iPlayer then
+						errorString = errorString .. " eaPerson.iPlayer / unit:Owner() mismatch, = " .. eaPerson.iPlayer .. "/" .. iPlayer .. ";"
+					else
+						local iUnit = unit:GetID()
+						if eaPerson.iUnit ~= iUnit then
+							print("!!!! WARNING: eaPerson.iUnit wrong, updating; old/new = ", eaPerson.iUnit, iUnit)
+							eaPerson.iUnit = iUnit
+						else
+							print(" -match iPlayer, iPerson, class1, class2, subclass, iUnit, unitType = ", iPlayer, iPerson, eaPerson.class1, eaPerson.class2, eaPerson.subclass, iUnit, GameInfo.Units[unit:GetUnitType()].Type)
+						end
+					end
+				end
+			end
+		end
+	end
+	--Look for orphan GPs
+	for iPerson, eaPerson in pairs(gPeople) do
+		if iPerson ~= 0 then
+			local bFound = false
+			for i = 1, gpIndexCount do
+				if iPerson == gpIndexes[i] then
+					bFound = true
+					break
+				end
+			end
+			if not bFound then
+				print("!!!! ERROR: found orphan GP not matched to any map unit, killing; iPlayer, iPerson, class1, class2, subclass = ", eaPerson.iPlayer, iPerson, eaPerson.class1, eaPerson.class2, eaPerson.subclass)
+				KillPerson(eaPerson.iPlayer, iPerson)
+			end
+		end
+	end
+	if errorString ~= "" then
+		error("Error(s) in TestResyncGPIndexes:" .. errorString)
+	end
+end
+
+
+
 local skipPeople = {}
 
 function PeoplePerCivTurn(iPlayer)
@@ -238,7 +306,7 @@ function PeoplePerCivTurn(iPlayer)
 	print("PeoplePerCivTurn")
 	local eaPlayer = gPlayers[iPlayer]
 	local player = Players[iPlayer]
-	local bHumanPlayer = not bFullCivAI[iPlayer]
+	local bHumanPlayer = player:IsHuman()
 	local classPoints = eaPlayer.classPoints
 	local gameTurn = Game.GetGameTurn()
 	local bLjosalfar = eaPlayer.eaCivNameID == EACIV_LJOSALFAR
@@ -377,9 +445,14 @@ end
 
 
 function SkipPeople()
-	if bFullCivAI[g_iActivePlayer] then return end	--autoplay
+	local player = Players[g_iActivePlayer]	
+	if not player:IsHuman() then return end	--autoplay
+	if MapModData.bAutoplay then
+		error("Fix this!")
+	end
+
     print("Running SkipPeople")
-	local player = Players[g_iActivePlayer]
+
 	for iPerson, boolean in pairs(skipPeople) do
 		if boolean then
 			local iUnit = gPeople[iPerson].iUnit
@@ -405,10 +478,11 @@ local g_iLastPlayerPeopleAfterTurn = -1
 function PeopleAfterTurn(iPlayer, bActionInfoPanelCall)
 	--Runs from ActionInfoPanel for human, and after turn for AI and human
 	print("Running PeopleAfterTurn ", iPlayer, bActionInfoPanelCall, g_iLastPlayerPeopleAfterTurn)
-	local bHumanPlayer = not bFullCivAI[iPlayer]
+	local player = Players[iPlayer]
+	local bHumanPlayer = player:IsHuman()
 	local bAllowHumanPlayerEndTurn = true	
 	local gameTurn = Game.GetGameTurn()
-	local player = Players[iPlayer]
+
 	local eaPlayer = gPlayers[iPlayer]				
 
 	for iPerson, eaPerson in pairs(gPeople) do
@@ -500,67 +574,62 @@ function GenerateGreatPerson(iPlayer, class, subclass, eaPersonRowID, bAsLeader,
 
 	local capital = player:GetCapitalCity()
 	if not capital then return end
-	local iUnit, iPerson
-	local unit = player:InitUnit(unitTypeID, capital:GetX(), capital:GetY())
-	if unit then
-		iUnit = unit:GetID()
-		iPerson = #gPeople + 1
-		local eaPerson = {	iPlayer = iPlayer,					-- !!!!!!!!!!!!!!!!  INIT NEW EaPerson HERE !!!!!!!!!!!!!!!!
-							iUnit = iUnit,						-- -1 means not on map
-							iUnitJoined = -1,
-							unitTypeID = unitTypeID,
-							subclass = subclass,
-							class1 = class1,
-							class2 = class2,
-							race = eaPlayer.race,		--takes civ race here; may change when ungenerisized (e.g., Heldeofol takes a subrace)
-							birthYear = Game.GetGameTurn() - 20,
-							disappearTurn = -1,	
-							eaActionID = -1,
-							eaActionData = -1,
-							gotoPlotIndex = -1,
-							gotoEaActionID = -1,
-							moves = 0,	
-							promotions = {},
-							progress = {},
-							modMemory = {}	}		
+
+	-- !!!!!!!!!!!!!!!!  INIT NEW EaPerson HERE !!!!!!!!!!!!!!!!
+
+	--do eaPerson stuff first
+	local iPerson = #gPeople + 1
+	local eaPerson = {	iPlayer = iPlayer,			
+						iUnit = -1,							-- need this!
+						iUnitJoined = -1,
+						unitTypeID = unitTypeID,
+						subclass = subclass,
+						class1 = class1,
+						class2 = class2,
+						level = 1,
+						race = eaPlayer.race,		--takes civ race here; may change when ungenerisized (e.g., Heldeofol takes a subrace)
+						birthYear = Game.GetGameTurn() - 20,
+						disappearTurn = -1,	
+						eaActionID = -1,
+						eaActionData = -1,
+						gotoPlotIndex = -1,
+						gotoEaActionID = -1,
+						moves = 0,	
+						promotions = {},
+						progress = {},
+						modMemory = {}	}		
 		
-		gPeople[iPerson] = eaPerson
-		RegisterGPActions(iPerson)		--only needs class1, class2 and subclass to work
+	gPeople[iPerson] = eaPerson
+	RegisterGPActions(iPerson)		--only needs class1, class2 and subclass to work
 
-		unit:SetPersonIndex(iPerson)
+	--init unit
+	local unit = InitGPUnit(iPlayer, iPerson, capital:GetX(), capital:GetY(), nil, unitTypeID)
+	local iUnit = unit:GetID()
+	eaPerson.iUnit = iUnit
 
-		UpdateGreatPersonStatsFromUnit(unit, eaPerson)		--x, y, moves, level, xp; filles promotions table
-		if class1 == "Warrior" or class2 == "Warrior" then
-			eaPerson.aiHasCombatRole = true
-			unit:SetGPAttackState(0)
-
-		end		
-		if class1 == "Devout" or class2 == "Devout" or class1 == "Thaumaturge" or class2 == "Thaumaturge" then
-			eaPerson.spells = {}		--presence of this table is cue that this is a spellcaster (used by AI and in level gains)
-			eaPerson.learningSpellID = -1
-			local spellID = FIRST_SPELL_ID
-			local spellInfo = GameInfo.EaActions[spellID]
-			while spellInfo do
-				if spellInfo.FreeSpellSubclass == subclass then
-					--eaPerson.spells[spellID] = true
-					eaPerson.spells[#eaPerson.spells + 1] = spellID
-					if spellInfo.AICombatRole then
-						eaPerson.aiHasCombatRole = true
-					end
+	UpdateGreatPersonStatsFromUnit(unit, eaPerson)		--x, y, moves, level, xp; fills promotions table
+	if class1 == "Warrior" or class2 == "Warrior" then
+		eaPerson.aiHasCombatRole = true
+	end		
+	if class1 == "Devout" or class2 == "Devout" or class1 == "Thaumaturge" or class2 == "Thaumaturge" then
+		eaPerson.spells = {}		--presence of this table is cue that this is a spellcaster (used by AI and in level gains)
+		eaPerson.learningSpellID = -1
+		local spellID = FIRST_SPELL_ID
+		local spellInfo = GameInfo.EaActions[spellID]
+		while spellInfo do
+			if spellInfo.FreeSpellSubclass == subclass then
+				--eaPerson.spells[spellID] = true
+				eaPerson.spells[#eaPerson.spells + 1] = spellID
+				if spellInfo.AICombatRole then
+					eaPerson.aiHasCombatRole = true
 				end
-				spellID = spellID + 1
-				spellInfo = GameInfo.EaActions[spellID]
 			end
+			spellID = spellID + 1
+			spellInfo = GameInfo.EaActions[spellID]
 		end
-		
-		unit:SetInvisibleType(GameInfoTypes.INVISIBLE_SUBMARINE)
-		unit:SetSeeInvisibleType(GameInfoTypes.INVISIBLE_SUBMARINE)
-
-	else
-		error("Failed to init gp unit")
 	end
-
-	if eaPersonRowID or not bFullCivAI[iPlayer] then
+		
+	if eaPersonRowID or player:IsHuman() then
 		UngenericizePerson(iPlayer, iPerson, eaPersonRowID)
 	else
 		ResetAgeOfDeath(iPerson)
@@ -572,7 +641,7 @@ function GenerateGreatPerson(iPlayer, class, subclass, eaPersonRowID, bAsLeader,
 		MakeLeader(iPlayer, iPerson)
 	end
 
-	if not bFullCivAI[iPlayer] then
+	if iPlayer == g_iActivePlayer then
 		local personType = bAsLeader and "NewPersonLeader" or "NewPerson"
 		LuaEvents.EaImagePopup({type = personType, id = iPerson, sound = "AS2D_EVENT_NOTIFICATION_GOOD"})
 	end
@@ -583,6 +652,28 @@ function GenerateGreatPerson(iPlayer, class, subclass, eaPersonRowID, bAsLeader,
 end
 --LuaEvents.EaPeopleGenerateGreatPerson.Add(GenerateGreatPerson)
 
+function InitGPUnit(iPlayer, iPerson, x, y, convertUnit, unitTypeID, invisibilityID, morale)	--only first 4 args required
+	local player = Players[iPlayer]
+	local eaPerson = gPeople[iPerson]
+	unitTypeID = unitTypeID or eaPerson.unitTypeID		--default if nil
+	local facingDirection = convertUnit and convertUnit:GetFacingDirection() or nil
+
+	local unit = player:InitUnit(unitTypeID, x, y, nil, facingDirection)
+	eaPerson.iUnit = unit:GetID()
+	unit:SetPersonIndex(iPerson)
+	unit:SetBaseCombatStrength(GetGPMod(iPerson, "EAMOD_COMBAT"))
+	unit:SetInvisibleType(INVISIBLE_SUBMARINE)
+	unit:SetSeeInvisibleType(INVISIBLE_SUBMARINE)
+	unit:SetMorale(morale or 0)
+	if eaPerson.class1 == "Warrior" or eaPerson.class2 == "Warrior" then
+		unit:SetGPAttackState(0)
+	end
+	if convertUnit then
+		MapModData.bBypassOnCanSaveUnit = true
+		unit:Convert(convertUnit, false)
+	end
+	return unit
+end
 
 function UpdateGreatPersonStatsFromUnit(unit, eaPerson)		--info we may need if unit dies (or for quick access without dll test)
 	eaPerson.x = unit:GetX()
@@ -898,7 +989,7 @@ function UpdateLeaderEffects(iPlayer)
 			end
 			if Map.PlotDistance(x, y, capitalX, capitalY) > 3 then
 				class1, class2, subclass = nil, nil, nil		--this will remove effects below
-				if not bFullCivAI[iPlayer] then
+				if iPlayer == g_iActivePlayer then
 					player:AddNotification(NotificationTypes.NOTIFICATION_GENERIC,  "Your leader is not in the capital area and is not providing leadership benefits", -1, -1)
 				end
 			end
@@ -1061,7 +1152,7 @@ function ResetPlayerGPMods(iPlayer)
 end
 
 function GetGPMod(iPerson, modType1, modType2)
-	--need unit or iPerson; modType2 is optional; assumes mod is valid for class/subclass
+	--modType2 is optional; assumes mod is valid for class/subclass
 
 	local eaPerson = gPeople[iPerson]
 	local level = eaPerson.level
@@ -1271,7 +1362,7 @@ function KillPerson(iPlayer, iPerson, unit, iKillerPlayer, deathType)
 
 		RemoveLeaderEffects(iPlayer)
 		UpdateGlobalYields(iPlayer)
-		if bFullCivAI[iPlayer] then
+		if not player:IsHuman() then
 			AIInturruptGPsForLeadershipOpportunity(iPlayer)
 		end
 	end

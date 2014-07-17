@@ -49,7 +49,6 @@ local FIRST_SPELL_ID =						FIRST_SPELL_ID
 local GameInfoTypes =						GameInfoTypes
 local MapModData =							MapModData
 local fullCivs =							MapModData.fullCivs
-local bFullCivAI =							MapModData.bFullCivAI
 local gpRegisteredActions =					MapModData.gpRegisteredActions
 local gWorld =								gWorld
 local gCities =								gCities
@@ -58,7 +57,6 @@ local gPeople =								gPeople
 local gReligions =							gReligions
 local gWonders =							gWonders
 local gg_aiOptionValues =					gg_aiOptionValues
-local gg_playerValues =						gg_playerValues
 local gg_bToCheapToHire =					gg_bToCheapToHire
 local gg_bNormalCombatUnit =				gg_bNormalCombatUnit
 local gg_bNormalLivingCombatUnit =			gg_bNormalLivingCombatUnit
@@ -635,7 +633,7 @@ function TestEaAction(eaActionID, iPlayer, unit, iPerson, testX, testY, bAINonTa
 		if g_eaPlayer.aiUniqueTargeted[eaActionID] and g_eaPlayer.aiUniqueTargeted[eaActionID] ~= iPerson then return false end	--ai specific exclude (someone on way to do this)
 		g_bAIControl = true
 	else
-		g_bAIControl = bFullCivAI[iPlayer]
+		g_bAIControl = not g_player:IsHuman()
 	end
 
 	g_unit = unit
@@ -1067,14 +1065,14 @@ function DoEaAction(eaActionID, iPlayer, unit, iPerson, targetX, targetY)
 	--Finish moves
 	if g_eaAction.FinishMoves and g_unit then
 		g_unit:FinishMoves()
-	end
-
-	--Don't get stuck on unit with no moves
-	if g_iPlayer == g_iActivePlayer then
-		if UI.GetHeadSelectedUnit() and UI.GetHeadSelectedUnit():MovesLeft() == 0 then
-			print("EaAction.lua forcing unit cycle")
-			Game.CycleUnits(true, true, false)	--move on to next unit
-		end
+	
+		--Don't get stuck on unit with no moves
+		if g_iPlayer == g_iActivePlayer then
+			if UI.GetHeadSelectedUnit() and UI.GetHeadSelectedUnit():MovesLeft() == 0 then
+				print("EaAction.lua forcing unit cycle")
+				Game.CycleUnits(true, true, false)	--move on to next unit
+			end
+		end	
 	end
 
 	--Ongoing actions with turnsToComplete > 0 (DoEaAction is called each turn of construction)
@@ -1685,7 +1683,7 @@ end
 
 --EA_ACTION_BUILD
 TestTarget[GameInfoTypes.EA_ACTION_BUILD] = function()
-	local orderType, orderID = city:GetOrderFromQueue(0)
+	local orderType, orderID = g_city:GetOrderFromQueue(0)
 	if orderType == ORDER_CONSTRUCT then
 		g_int1 = Floor(g_mod * (g_city:GetBaseYieldRateModifier(YIELD_PRODUCTION)) / 200 + 0.5)
 		return true		
@@ -1891,7 +1889,7 @@ end
 
 --EA_ACTION_TRAIN
 TestTarget[GameInfoTypes.EA_ACTION_TRAIN] = function()
-	local orderType, orderID = city:GetOrderFromQueue(0)
+	local orderType, orderID = g_city:GetOrderFromQueue(0)
 	if orderType == ORDER_TRAIN and gg_bNormalCombatUnit[orderID] then
 		g_int1 = Floor(g_mod * (g_city:GetBaseYieldRateModifier(YIELD_PRODUCTION)) / 200 + 0.5)
 		return true		
@@ -2983,7 +2981,7 @@ end
 --EA_ACTION_TOME_OF_EQUUS
 SetUI[GameInfoTypes.EA_ACTION_TOME_OF_EQUUS] = function()
 	if g_bAllTestsPassed then
-		MapModData.text = (g_mod * 2).."% faster research for Horseback Riding and War Horses[NEWLINE]"..Floor(g_mod/2).. "experience for horse-mounted units"
+		MapModData.text = (g_mod * 2).."% reduced research cost for Animal Husbandry, Stirrups, Animal Industry, Animal Breeding and War Horses[NEWLINE]"..Floor(g_mod/2).. "experience for horse-mounted units"
 	elseif g_bNonTargetTestsPassed then
 		MapModData.bShow = true
 		MapModData.text = "[COLOR_WARNING_TEXT]Tomes can be written in cities with a library[ENDCOLOR]"
@@ -3004,7 +3002,7 @@ end
 --EA_ACTION_TOME_OF_BEASTS
 SetUI[GameInfoTypes.EA_ACTION_TOME_OF_BEASTS] = function()
 	if g_bAllTestsPassed then
-		MapModData.text = (g_mod * 1.5).."% faster research for Mounted Elephants, War Elephants, Domestication, Animal Breeding, Tracking, Animal Mastery and Beast Breeding"
+		MapModData.text = (g_mod * 1.5).."% reduced research cost for Tracking & Trapping, Elephant Training, Gamekeeping, Animal Mastery, War Elephants, Beast Mastery and Mumakil Riding"
 	elseif g_bNonTargetTestsPassed then
 		MapModData.bShow = true
 		MapModData.text = "[COLOR_WARNING_TEXT]Tomes can be written in cities with a library[ENDCOLOR]"
@@ -3014,7 +3012,7 @@ end
 --EA_ACTION_TOME_OF_THE_LEVIATHAN
 SetUI[GameInfoTypes.EA_ACTION_TOME_OF_THE_LEVIATHAN] = function()
 	if g_bAllTestsPassed then
-		MapModData.text = (g_mod * 2).."% faster research for Harpoons, Sailing, Shipbuilding and Whaling[NEWLINE]+2 research from Whales"
+		MapModData.text = (g_mod * 2).."% reduced research cost for Sailing, Shipbuilding, Navigation, Beast Mastery, Whaling and Song of Leviathan[NEWLINE]+2 research from worked Whales"
 	elseif g_bNonTargetTestsPassed then
 		MapModData.bShow = true
 		MapModData.text = "[COLOR_WARNING_TEXT]Tomes can be written in cities with a library[ENDCOLOR]"
@@ -3024,7 +3022,7 @@ end
 --EA_ACTION_TOME_OF_HARVESTS
 SetUI[GameInfoTypes.EA_ACTION_TOME_OF_HARVESTS] = function()
 	if g_bAllTestsPassed then
-		MapModData.text = (g_mod * 2).."% faster research for Milling, Zymurgy, Irrigation, Calendar, Crop Rotation and Forestry[NEWLINE]+1 food from improved Wheat, Wine, Sugar and Citrus"
+		MapModData.text = (g_mod * 2).."% reduced research cost for Milling, Weaving, Zymurgy, Calendar, Forestry, Fine Textiles, Oenology and Crop Rotation"
 	elseif g_bNonTargetTestsPassed then
 		MapModData.bShow = true
 		MapModData.text = "[COLOR_WARNING_TEXT]Tomes can be written in cities with a library[ENDCOLOR]"
@@ -3034,7 +3032,7 @@ end
 --EA_ACTION_TOME_OF_TOMES
 SetUI[GameInfoTypes.EA_ACTION_TOME_OF_TOMES] = function()
 	if g_bAllTestsPassed then
-		MapModData.text = (g_mod * 2).."% faster research for Logic, Metaphysics and Transcendental Thought[NEWLINE]Provides 1/3 benifit from all other existing Tomes"
+		MapModData.text = "Gain 20% of the benefit of all other Tomes in the world, regardless of owner"
 	elseif g_bNonTargetTestsPassed then
 		MapModData.bShow = true
 		MapModData.text = "[COLOR_WARNING_TEXT]Tomes can be written in cities with a library[ENDCOLOR]"
@@ -3044,7 +3042,7 @@ end
 --EA_ACTION_TOME_OF_AESTHETICS
 SetUI[GameInfoTypes.EA_ACTION_TOME_OF_AESTHETICS] = function()
 	if g_bAllTestsPassed then
-		MapModData.text = (g_mod * 2).."% faster research for Drama, Literature, Music and Æsthetics[NEWLINE]+"..g_mod.."% culture in all cities"
+		MapModData.text = (g_mod * 2).."% reduced research cost for Philosophy, Mathematics, Literature, Music, Æsthetics, and Ethereal Architecture"
 	elseif g_bNonTargetTestsPassed then
 		MapModData.bShow = true
 		MapModData.text = "[COLOR_WARNING_TEXT]Tomes can be written in cities with a library[ENDCOLOR]"
@@ -3054,7 +3052,7 @@ end
 --EA_ACTION_TOME_OF_AXIOMS
 SetUI[GameInfoTypes.EA_ACTION_TOME_OF_AXIOMS] = function()
 	if g_bAllTestsPassed then
-		MapModData.text = (g_mod * 2).."% faster research for Mathematics, Physics, Chemistry, Astronomy, Alchemy and Medicine[NEWLINE]+5% research from Universities"
+		MapModData.text = (g_mod * 2).."% reduced research cost for Astronomy, Alchemy, Mechanics, Chemistry, Medicine, Machinery and Steam Power"
 	elseif g_bNonTargetTestsPassed then
 		MapModData.bShow = true
 		MapModData.text = "[COLOR_WARNING_TEXT]Tomes can be written in cities with a library"
@@ -3064,7 +3062,7 @@ end
 --EA_ACTION_TOME_OF_FORM
 SetUI[GameInfoTypes.EA_ACTION_TOME_OF_FORM] = function()
 	if g_bAllTestsPassed then
-		MapModData.text = (g_mod * 2).."% faster research for Masonry, Construction, Engineering and Architecture[NEWLINE]+"..g_mod.."% construction all buildings and wonders"
+		MapModData.text = (g_mod * 2).."% reduced research cost for Construction, Sanitation, Engineering, Metal Casting, Architecture, Machinery and Ethereal Architecture"
 	elseif g_bNonTargetTestsPassed then
 		MapModData.bShow = true
 		MapModData.text = "[COLOR_WARNING_TEXT]Tomes can be written in cities with a library[ENDCOLOR]"
@@ -3074,7 +3072,7 @@ end
 --EA_ACTION_TOME_OF_METALLURGY
 SetUI[GameInfoTypes.EA_ACTION_TOME_OF_METALLURGY] = function()
 	if g_bAllTestsPassed then
-		MapModData.text = (g_mod * 2).."% faster research for Bronze Working, Iron Working, Metal Casting and Mithril Working[NEWLINE]+1p from mined copper, iron, mithril[NEWLINE]+1g from mined silver, gold"
+		MapModData.text = (g_mod * 2).."% reduced research cost for Coinage, Iron Working, Metal Casting, Steel Working, Elemental Forging and Mithril Working"
 	elseif g_bNonTargetTestsPassed then
 		MapModData.bShow = true
 		MapModData.text = "[COLOR_WARNING_TEXT]Tomes can be written in cities with a library[ENDCOLOR]"

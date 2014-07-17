@@ -12,6 +12,8 @@ local Dprint = DEBUG_PRINT and print or function() end
 --------------------------------------------------------------
 
 --constants
+local MAX_MAJOR_CIVS =							GameDefines.MAX_MAJOR_CIVS	
+
 local EACIV_DAIRINE =							GameInfoTypes.EACIV_DAIRINE
 local EACIV_PARTHOLON =							GameInfoTypes.EACIV_PARTHOLON
 local EACIV_SKOGR =								GameInfoTypes.EACIV_SKOGR
@@ -51,6 +53,7 @@ local gWorld =		gWorld
 local gg_bHasPatronage = gg_bHasPatronage
 local gg_teamCanMeetGods = gg_teamCanMeetGods
 local gg_teamCanMeetFay = gg_teamCanMeetFay
+local gg_naturalWonders = gg_naturalWonders
 
 --state shared
 local fullCivs =	MapModData.fullCivs
@@ -184,7 +187,7 @@ function EaCivsInit(bNewGame)
 		fay:ChangeNumResourceTotal(GameInfoTypes.RESOURCE_IRON, 5) 
 		fay:ChangeNumResourceTotal(GameInfoTypes.RESOURCE_YEW, 5)
 
-		for iPlayer = GameDefines.MAX_MAJOR_CIVS, BARB_PLAYER_INDEX - 1 do
+		for iPlayer = MAX_MAJOR_CIVS, BARB_PLAYER_INDEX - 1 do
 			if playerType[iPlayer] == "God" then
 				local player = Players[iPlayer]
 				local minorCivID = player:GetMinorCivType()
@@ -227,8 +230,6 @@ end
 -- File Functions
 --------------------------------------------------------------
 
---gg_naturalWonders
-
 local OnNWFound = {}
 
 local function TestSetNaturalWonderEffects(iPlayer, x, y)	--if x, y nil then check all
@@ -268,6 +269,21 @@ end
 --------------------------------------------------------------
 -- Interface
 --------------------------------------------------------------
+
+function DeadPlayer(iPlayer)
+	realCivs[iPlayer] = nil
+	fullCivs[iPlayer] = nil
+	cityStates[iPlayer] = nil
+end
+
+function ResurectedPlayer(iPlayer)
+	realCivs[iPlayer] = gPlayers[iPlayer]
+	if iOwner < MAX_MAJOR_CIVS then
+		fullCivs[iPlayer] = gPlayers[iPlayer]
+	else
+		cityStates[iPlayer] = gPlayers[iPlayer]
+	end
+end
 
 function CityStatePerCivTurn(iPlayer)	-- called for true city states only
 	print("CityStatePerCivTurn ", iPlayer)

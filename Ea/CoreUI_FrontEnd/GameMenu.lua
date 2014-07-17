@@ -28,22 +28,6 @@ function OnEnter()
 		-- have the semaphore decremented on leaving the screen.
 		UI.incTurnTimerSemaphore();
 		g_bEntered = true;
-
-		--[[Paz add: undo mod hijack of autosave
-		local EaSetupDB = Modding.OpenUserData("EaSetupData", 1)
-		local eaAutoSaveFreq = EaSetupDB.GetValue("EA_AUTO_SAVE_FREQ")
-		print("Restoring base autosave frequency ", eaAutoSaveFreq)
-		if eaAutoSaveFreq then
-			if eaAutoSaveFreq == 999 then		--game crashed and we lost original value; set to 1 (better if mod players are confused than angry)
-				eaAutoSaveFreq = 1
-			end
-			OptionsManager.SetTurnsBetweenAutosave_Cached(eaAutoSaveFreq)	--restore to what it was
-			OptionsManager.CommitGameOptions()
-			print("restored cached value = ", OptionsManager.GetTurnsBetweenAutosave_Cached())
-		end
-
-		--end Paz add]]
-
 	end
 end
 
@@ -130,11 +114,6 @@ Controls.RetireButton:RegisterCallback(Mouse.eLClick, OnRetire);
 ----------------------------------------------------------------        
 ----------------------------------------------------------------        
 function OnReturn()
-
-	--Paz add: re-establish autosave hijack
-	--LuaEvents.EaMainAutoSaveHijack()
-	--end Paz add
-
 	OnLeave();
 	UIManager:DequeuePopup( ContextPtr );
 end

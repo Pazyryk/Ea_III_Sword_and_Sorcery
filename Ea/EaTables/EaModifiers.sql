@@ -14,13 +14,14 @@ INSERT INTO EaModifiers(ID,	Type, Description,			Class) VALUES
 
 
 INSERT INTO EaModifiers(Type,	Description,			Class,			PromotionPrefix					) VALUES
+('EAMOD_COMBAT',				'Combat',				'Warrior',		'PROMOTION_GP_COMBAT'			),
+('EAMOD_LOGISTICS',				'Logistics',			'Warrior',		'PROMOTION_LOGISTICS'			),
 ('EAMOD_CONSTRUCTION',			'Construction',			'Engineer',		'PROMOTION_CONSTRUCTION'		),
 ('EAMOD_COMBAT_ENGINEERING',	'Combat Engineering',	'Engineer',		'PROMOTION_COMBAT_ENGINEERING'	),
 ('EAMOD_TRADE',					'Trade',				'Merchant',		'PROMOTION_TRADE'				),
 ('EAMOD_ESPIONAGE',				'Espionage',			'Merchant',		'PROMOTION_ESPIONAGE'			),
 ('EAMOD_SCHOLARSHIP',			'Scholarship',			'Sage',			'PROMOTION_SCHOLARSHIP'			),
 ('EAMOD_BARDING',				'Barding',				'Artist',		'PROMOTION_BARDING'				),
-('EAMOD_COMBAT',				'Combat',				'Warrior',		'PROMOTION_COMBAT'				),
 ('EAMOD_PROSELYTISM',			'Proselytism',			'Devout',		'PROMOTION_PROSELYTISM'			),
 
 --Lua expects last 9 to be Devotion followed by 8 magic schools

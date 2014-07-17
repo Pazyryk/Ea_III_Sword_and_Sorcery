@@ -66,4 +66,5 @@ SELECT 'Unit No AI', Type FROM Units WHERE Type NOT IN (SELECT UnitType FROM Uni
 SELECT 'Unit No Flavor', Type FROM Units WHERE Type NOT IN (SELECT UnitType FROM Unit_Flavors) AND Cost != -1 AND EaNoTrain IS NULL AND Special IS NULL UNION ALL
 SELECT 'Building No Flavor', Type FROM Buildings WHERE Type NOT IN (SELECT BuildingType FROM Building_Flavors) AND Cost != -1;
 
+
 INSERT INTO EaDebugTableCheck(FileName) SELECT 'EaDebug.sql';

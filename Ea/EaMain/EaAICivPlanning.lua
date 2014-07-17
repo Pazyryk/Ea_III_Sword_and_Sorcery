@@ -63,7 +63,6 @@ local FALLEN_ID_SHIFT =				GameInfoTypes.POLICY_ANTI_THEISM - GameInfoTypes.POLI
 
 --localized game and global tables
 local fullCivs = MapModData.fullCivs
-local bFullCivAI = MapModData.bFullCivAI
 local civNamesByRace = MapModData.civNamesByRace
 local Players = Players
 local Teams = Teams
@@ -464,7 +463,7 @@ function AICivsPerGameTurn()
 	g_prioritizeUnholyPlan = gReligions[RELIGION_AZZANDARAYASNA] and not gReligions[RELIGION_ANRA]
 	if g_prioritizeHolyPlan or g_prioritizeUnholyPlan then		--this will shut off after a while so no overhead on late game
 		for iPlayer, eaPlayer in pairs(fullCivs) do
-			if bFullCivAI[iPlayer] then
+			if not Players[iPlayer]:IsHuman() then
 				for i = 1, numPlanSets do
 					local planSet = planSets[i]
 					local plans = eaPlayer[planSet]
@@ -784,7 +783,7 @@ function AICivRun(iPlayer)		--called per turn and re-called if free tech or plan
 		if player:GetCurrentResearch() == -1 then
 			AIPushTechsFromCivPlans(iPlayer, true)
 			if player:GetCurrentResearch() == -1 then
-				error("AI civ exiting AICivRun with GetCurrentResearch = " .. (player:GetCurrentResearch() or "nil"))
+				print("!!!! ERROR: AI civ exiting AICivRun with GetCurrentResearch = " .. (player:GetCurrentResearch() or "nil"))
 			end
 		end
 

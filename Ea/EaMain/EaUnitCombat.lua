@@ -48,6 +48,7 @@ local gg_bNormalLivingCombatUnit =	gg_bNormalLivingCombatUnit
 local gg_slaveryPlayer =			gg_slaveryPlayer
 local gg_gpTempType =				gg_gpTempType
 local gg_eaSpecial =				gg_eaSpecial
+local gg_sequencedAttacks =			gg_sequencedAttacks
 
 --localized functions
 local HandleError =					HandleError
@@ -56,7 +57,7 @@ local HandleError21 =				HandleError21
 local HandleError31 =				HandleError31
 local Floor =						math.floor
 local Rand =						Map.Rand
-
+local GetPlotFromXY =				Map.GetPlot
 
 --file control
 local g_bInitialized = false
@@ -128,36 +129,52 @@ local function OnSerialEventUnitCreated(iPlayer, iUnit, hexVec, unitType, cultur
 	if not unit then return end
 	print("Actual unitTypeID = ", unit:GetUnitType())
 
+	--TO DO: Mod dll so we can remove this Events hook!
+
 	if iPlayer == BARB_PLAYER_INDEX then	--includes new spawns and captured slaves
 		if unit:IsGreatPerson() then
 			error("Barb captured a GP?!")
 		end
 
-		--convert to slaves if spawned in or adjacent to border (i.e., rebels) and city has an internment camp
-		local plot = unit:GetPlot()
-		local city = plot:GetWorkingCity()
-		if not city then
-			for x, y in PlotToRadiusIterator(plot:GetX(), plot:GetY(), 1) do
-				city = Map.GetPlot(x, y):GetWorkingCity()
-				if city then break end
-			end
-		end
-		if city and city:GetNumBuilding(BUILDING_INTERNMENT_CAMP) == 1 then
+		--convert military units to slaves if spawned in or adjacent to border (i.e., rebels) and city has an internment camp
+		if unit:IsCombatUnit() then
 			local plot = unit:GetPlot()
-			MapModData.bBypassOnCanSaveUnit = true
-			unit:Kill(true, -1)
-			local raceID = GetCityRace(city)		--TO DO: make these unit race, not city race
-			local unitID
-			if raceID == EARACE_MAN then
-				unitID = UNIT_SLAVES_MAN
-			elseif raceID == EARACE_SIDHE then
-				unitID = UNIT_SLAVES_SIDHE
-			else 
-				unitID = UNIT_SLAVES_ORC
+			local city
+			local iPlotOwner = plot:GetOwner()
+			local bInternmentCamp = false
+			if iPlotOwner ~= -1 then
+				city = Players[iPlotOwner]:GetCityByID(plot:GetCityPurchaseID())
+				if city:GetNumBuilding(BUILDING_INTERNMENT_CAMP) == 1 then
+					bInternmentCamp = true
+				end
+			else
+				for adjPlot in AdjacentPlotIterator(plot) do
+					local iAdjPlotOwner = adjPlot:GetOwner()
+					if iAdjPlotOwner ~= -1 then
+						city = Players[iAdjPlotOwner]:GetCityByID(adjPlot:GetCityPurchaseID())
+						if city:GetNumBuilding(BUILDING_INTERNMENT_CAMP) == 1 then
+							bInternmentCamp = true
+							break
+						end
+					end
+				end
 			end
-			local newUnit = player:InitUnit(unitID, plot:GetX(), plot:GetY() )
-			newUnit:JumpToNearestValidPlot()
-			newUnit:SetHasPromotion(PROMOTION_SLAVE, true)
+			if bInternmentCamp then
+				MapModData.bBypassOnCanSaveUnit = true
+				unit:Kill(true, -1)
+				local raceID = GetCityRace(city)		--TO DO: make these unit race, not city race
+				local unitID
+				if raceID == EARACE_MAN then
+					unitID = UNIT_SLAVES_MAN
+				elseif raceID == EARACE_SIDHE then
+					unitID = UNIT_SLAVES_SIDHE
+				else 
+					unitID = UNIT_SLAVES_ORC
+				end
+				local newUnit = player:InitUnit(unitID, plot:GetX(), plot:GetY() )
+				newUnit:JumpToNearestValidPlot()
+				newUnit:SetHasPromotion(PROMOTION_SLAVE, true)
+			end
 		end
 	end
 end
@@ -228,16 +245,7 @@ local function ResetForcedSelectionUnit()		--resets temp attack unit if player f
 		local unitTypeID = unit:GetUnitType()
 		if gg_gpTempType[unitTypeID] then						--was Magic Missile unit or something similar
 			local iPerson = unit:GetPersonIndex()
-			local eaPerson = gPeople[iPerson]
-			local restoredUnitTypeID = eaPerson.unitTypeID
-			local restoredUnit = player:InitUnit(restoredUnitTypeID, unit:GetX(), unit:GetY(), nil, unit:GetFacingDirection())
-			MapModData.bBypassOnCanSaveUnit = true
-			restoredUnit:Convert(unit, false)
-			restoredUnit:SetPersonIndex(iPerson)
-			local iRestoredUnit = restoredUnit:GetID()
-			eaPerson.iUnit = iRestoredUnit
-			restoredUnit:SetMorale(0)
-			restoredUnit:SetInvisibleType(INVISIBLE_SUBMARINE)
+			InitGPUnit(iPlayer, iPerson, x, y, unit)
 		elseif unit:GetGPAttackState() == 1 then				--was a Warrior Lead Charge
 			unit:SetGPAttackState(0)
 			unit:SetInvisibleType(INVISIBLE_SUBMARINE)
@@ -274,6 +282,100 @@ end
 Events.SerialEventGameDataDirty.Add(DoForcedInterfaceMode)
 Events.SerialEventUnitInfoDirty.Add(DoForcedInterfaceMode)
 
+local function OnUnitSelectionChanged(...)
+	print("OnUnitSelectionChanged ", unpack(arg))
+	--iPlayer, iUnit, hexX, hexY, ?0, bSelected, ?false
+	--runs for unselected first, then new selected
+
+end
+Events.UnitSelectionChanged.Add(OnUnitSelectionChanged)
+
+local function OnRunCombatSim(...)
+	print("OnRunCombatSim ", unpack(arg))
+end
+Events.RunCombatSim.Add(OnRunCombatSim)
+
+local function OnEndCombatSim(...)
+	print("OnEndCombatSim ", unpack(arg))
+end
+Events.EndCombatSim.Add(OnEndCombatSim)
+
+function DoSequencedAttacks()	--called directly and at end of OnCombatEnded when another attack is possible
+	while 0 < gg_sequencedAttacks.pos do
+		--pop first attack from array
+		local attack = gg_sequencedAttacks[1]
+		local pos = gg_sequencedAttacks.pos
+		for i = 2, pos do
+			gg_sequencedAttacks[i - 1] = gg_sequencedAttacks[i]
+		end
+		gg_sequencedAttacks[pos] = nil
+		gg_sequencedAttacks.pos = pos - 1
+		--{attackingUnit, defendingPlot or defendingUnit [use plot unless must be unit], bRanged, bMoveIfNoEnemy, bEndAutoAttack}
+		print("DoSequencedAttacks; attackingUnit, defendingPlot, defendingUnit, bRanged, bMoveIfNoEnemy = ", attack.attackingUnit, attack.defendingPlot, attack.defendingUnit, attack.bRanged, attack.bMoveIfNoEnemy)
+		
+		local attackingUnit = attack.attackingUnit
+		if attackingUnit and not attackingUnit:IsDead() and not attackingUnit:IsDelayedDeath() then
+			local iAttackingPlayer = attackingUnit:GetOwner()
+			print("iAttackingPlayer, iAttackingUnit = ", iAttackingPlayer, attackingUnit:GetID())
+			--pre-attack
+			if attack.bEndAutoAttack then	--only GPs
+				local iPerson = attackingUnit:GetPersonIndex()
+				gPeople[iPerson].autoAttack = nil	--allows OnCombatEnded to restore normal GP unit
+			end
+			if attackingUnit:GetMoves() < 60 then
+				attackingUnit:SetMoves(60)
+			end
+			attackingUnit:SetMadeAttack(false)
+
+			--target
+			local plot
+			if attack.defendingPlot then
+				plot = attack.defendingPlot
+			elseif attack.defendingUnit and not attack.defendingUnit:IsDead() and not attack.defendingUnit:IsDelayedDeath() then
+				plot = attack.defendingUnit:GetPlot()
+			end
+
+			--try to do attack
+			if plot then
+				local x, y = plot:GetXY()
+				if attack.bRanged then
+					if attackingUnit:CanRangeStrikeAt(x, y, true, true) then
+						attackingUnit:RangeStrike(x, y)
+						return
+					end
+				elseif attack.bMoveIfNoEnemy or (plot:IsEnemyCity(attackingUnit) or plot:IsVisibleEnemyDefender(attackingUnit)) then
+					local bAllow = true
+					if attack.defendingUnit and not attack.bMoveIfNoEnemy then
+						if attack.defendingUnit:IsDead() or attack.defendingUnit:IsDelayedDeath() then
+							bAllow = false
+						elseif plot:GetBestDefender(attack.defendingUnit:GetOwner(), iAttackingPlayer, attackingUnit) ~= attack.defendingUnit then
+							print("DoSequencedAttacks wants to attack, but attack.defendingUnit is not the best defending unit")
+							bAllow = false
+						end
+					end
+
+					if bAllow and attackingUnit:CanMoveOrAttackInto(plot) then
+						attackingUnit:PushMission(MissionTypes.MISSION_MOVE_TO, x, y)
+						return
+					end
+				end
+			end
+
+			--post attack
+			--if iAttackingPlayer == g_iActivePlayer then
+			--	UI.SelectUnit(attackingUnit)
+			--	UI.LookAtSelectionPlot(0)
+			--end
+		end
+	end
+end
+
+
+--[[
+function CombatResolvedListener(iPlayer, id, bVictorious, bCityAttack)
+	print("CombatResolvedListener ", iPlayer, id, bVictorious, bCityAttack)
+end
+GameEvents.CombatResolved.Add(CombatResolvedListener)
 
 --Melee attack resulting from Lead Charge has to be delayed
 local function DoDelayedAttacks(iPlayer)	--called by OnPlayerPreAIUnitUpdate for AI or by a delayed timed event for human
@@ -332,7 +434,7 @@ local function OnPlayerPreAIUnitUpdate(iPlayer)	--this fires for AI players afte
 	DoDelayedAttacks(iPlayer)
 end
 GameEvents.PlayerPreAIUnitUpdate.Add(function(iPlayer) return HandleError10(OnPlayerPreAIUnitUpdate, iPlayer) end)
-
+]]
 
 local function WarriorLeadCharge(iPlayer, attackingUnit, targetX, targetY)
 	print("WarriorLeadCharge ", iPlayer, attackingUnit, targetX, targetY)
@@ -350,11 +452,20 @@ local function WarriorLeadCharge(iPlayer, attackingUnit, targetX, targetY)
 				unit:ChangeMorale(moraleBoost)
 				local floatUp = "+" .. moraleBoost .. " [ICON_HAPPINESS_1] Morale"
 				plot:AddFloatUpMessage(floatUp, 1)
+
+				--{attackingUnit = unit, defendingPlot = plot or defendingUnit = unit, bRanged, bMoveIfNoEnemy}			
+				gg_sequencedAttacks.pos = gg_sequencedAttacks.pos + 1
+				gg_sequencedAttacks[gg_sequencedAttacks.pos] = {attackingUnit = unit, defendingPlot = GetPlotFromXY(targetX, targetY), bMoveIfNoEnemy = true}
+				--above should happen from OnCombatEnded
+
+
+				--[[
 				g_delayedAttacks.pos = g_delayedAttacks.pos + 1
 				g_delayedAttacks[g_delayedAttacks.pos] = {iUnit = unit:GetID(), x = targetX, y = targetY, iPerson = iPerson}
 				if player:IsHuman() then
 					Events.LocalMachineAppUpdate.Add(TimeDelayForHumanMeleeCharge)
 				end
+				]]
 				break
 			end
 		end
@@ -380,6 +491,8 @@ local function UpdateWarriorPoints(iPlayer, bCombat, bBlockWarriorPts)
 
 	eaPlayer.classPoints[5] = newPoints
 end
+
+local g_bDelayedLeadCharge = false
 
 local function OnCombatResult(iAttackingPlayer, iAttackingUnit, attackerDamage, attackerFinalDamage, attackerMaxHP, iDefendingPlayer, iDefendingUnit, defenderDamage, defenderFinalDamage, defenderMaxHP, iInterceptingPlayer, iInterceptingUnit, interceptorDamage, targetX, targetY)
 	--As currently coded in dll, iAttackingPlayer = -1 for a city ranged attack
@@ -426,8 +539,6 @@ local function OnCombatResult(iAttackingPlayer, iAttackingUnit, attackerDamage, 
 			end
 		end
 	end
-
-
 end
 GameEvents.CombatResult.Add(function(iAttackingPlayer, iAttackingUnit, attackerDamage, attackerFinalDamage, attackerMaxHP, iDefendingPlayer, iDefendingUnit, defenderDamage, defenderFinalDamage, defenderMaxHP, iInterceptingPlayer, iInterceptingUnit, interceptorDamage, targetX, targetY) return HandleError(OnCombatResult, iAttackingPlayer, iAttackingUnit, attackerDamage, attackerFinalDamage, attackerMaxHP, iDefendingPlayer, iDefendingUnit, defenderDamage, defenderFinalDamage, defenderMaxHP, iInterceptingPlayer, iInterceptingUnit, interceptorDamage, targetX, targetY) end)
 
@@ -449,15 +560,11 @@ local function OnCombatEnded(iAttackingPlayer, iAttackingUnit, attackerDamage, a
 				local iPerson = attackingUnit:GetPersonIndex()
 				local eaPerson = gPeople[iPerson]
 				if not eaPerson.autoAttack then
-					local restoredUnitTypeID = eaPerson.unitTypeID
-					local restoredUnit = attackingPlayer:InitUnit(restoredUnitTypeID, attackingUnit:GetX(), attackingUnit:GetY(), nil, attackingUnit:GetFacingDirection())
-					MapModData.bBypassOnCanSaveUnit = true		--yikes!!! Check that this is OK if combat kill happens
-					restoredUnit:Convert(attackingUnit, false)
-					UI.SelectUnit(restoredUnit)
-					restoredUnit:SetPersonIndex(iPerson)
-					local iRestoredUnit = restoredUnit:GetID()
-					eaPerson.iUnit = iRestoredUnit
-					restoredUnit:SetMorale(0)
+					attackingUnit = InitGPUnit(iAttackingPlayer, iPerson, attackingUnit:GetX(), attackingUnit:GetY(), attackingUnit)
+					--if iAttackingPlayer == g_iActivePlayer then
+					--	UI.SelectUnit(attackingUnit)
+					--	UI.LookAtSelectionPlot(0)
+					--end
 				end
 				local bDefenderKilled = (g_defendingUnitTypeID ~= -1) and (not defendingUnit or defendingUnit:IsDelayedDeath())
 				local pts
@@ -549,6 +656,7 @@ local function OnCombatEnded(iAttackingPlayer, iAttackingUnit, attackerDamage, a
 		end
 	end
 
+	DoSequencedAttacks()
 end
 GameEvents.CombatEnded.Add(function(iAttackingPlayer, iAttackingUnit, attackerDamage, attackerFinalDamage, attackerMaxHP, iDefendingPlayer, iDefendingUnit, defenderDamage, defenderFinalDamage, defenderMaxHP, iInterceptingPlayer, iInterceptingUnit, interceptorDamage, plotX, plotY) return HandleError(OnCombatEnded, iAttackingPlayer, iAttackingUnit, attackerDamage, attackerFinalDamage, attackerMaxHP, iDefendingPlayer, iDefendingUnit, defenderDamage, defenderFinalDamage, defenderMaxHP, iInterceptingPlayer, iInterceptingUnit, interceptorDamage, plotX, plotY) end)
 

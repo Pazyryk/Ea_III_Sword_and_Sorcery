@@ -24,10 +24,6 @@ g_SelectedEntry = nil;		-- The currently selected entry.
 ----------------------------------------------------------------        
 ----------------------------------------------------------------
 function OnSave()
-	--Paz add
-	print("Running OnSave...")
-	LuaEvents.TableSaverLoaderSave(gT, "Ea")
-	--end Paz add
 	if(g_SelectedEntry == nil) then
 		local newSave = Controls.NameBox:GetText();
 		for i, v in ipairs(g_SavedGames) do
@@ -172,6 +168,7 @@ function SetSelected( entry )
     end
     
     g_SelectedEntry = entry;
+
     
     if( entry ~= nil) then
 		Controls.NameBox:SetText( entry.DisplayName );

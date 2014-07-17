@@ -28,7 +28,9 @@ for modInfo in GameInfo.EaModifiers() do
 	end
 end
 
-local spellList = {}
+--------------------------------------------------------------
+-- Interface
+--------------------------------------------------------------
 
 function AIPickGPPromotion(iPlayer, iPerson, unit)
 	print("Running AIPickGPPromotion ", iPlayer, iPerson, unit)

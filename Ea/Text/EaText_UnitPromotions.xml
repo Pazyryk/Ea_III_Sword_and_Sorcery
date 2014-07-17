@@ -354,59 +354,59 @@
 			<Text>Prophet</Text>
 		</Row>
 		
-		<Row Tag="TXT_KEY_EA_PROMOTION_LEADERSHIP_1">
-			<Text>Leadership I</Text>
+		<Row Tag="TXT_KEY_EA_PROMOTION_LOGISTICS_1">
+			<Text>Logistics I</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_PROMOTION_LEADERSHIP_2">
-			<Text>Leadership II</Text>
+		<Row Tag="TXT_KEY_EA_PROMOTION_LOGISTICS_2">
+			<Text>Logistics II</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_PROMOTION_LEADERSHIP_3">
-			<Text>Leadership III</Text>
+		<Row Tag="TXT_KEY_EA_PROMOTION_LOGISTICS_3">
+			<Text>Logistics III</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_PROMOTION_LEADERSHIP_4">
-			<Text>Leadership IV</Text>
+		<Row Tag="TXT_KEY_EA_PROMOTION_LOGISTICS_4">
+			<Text>Logistics IV</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_PROMOTION_LEADERSHIP_5">
-			<Text>Leadership V</Text>
+		<Row Tag="TXT_KEY_EA_PROMOTION_LOGISTICS_5">
+			<Text>Logistics V</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_PROMOTION_LEADERSHIP_6">
-			<Text>Leadership VI</Text>
+		<Row Tag="TXT_KEY_EA_PROMOTION_LOGISTICS_6">
+			<Text>Logistics VI</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_PROMOTION_LEADERSHIP_7">
-			<Text>Leadership VII</Text>
+		<Row Tag="TXT_KEY_EA_PROMOTION_LOGISTICS_7">
+			<Text>Logistics VII</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_PROMOTION_LEADERSHIP_8">
-			<Text>Leadership VIII</Text>
+		<Row Tag="TXT_KEY_EA_PROMOTION_LOGISTICS_8">
+			<Text>Logistics VIII</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_PROMOTION_LEADERSHIP_9">
-			<Text>Leadership IX</Text>
+		<Row Tag="TXT_KEY_EA_PROMOTION_LOGISTICS_9">
+			<Text>Logistics IX</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_PROMOTION_LEADERSHIP_10">
-			<Text>Leadership X</Text>
+		<Row Tag="TXT_KEY_EA_PROMOTION_LOGISTICS_10">
+			<Text>Logistics X</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_PROMOTION_LEADERSHIP_11">
-			<Text>Leadership XI</Text>
+		<Row Tag="TXT_KEY_EA_PROMOTION_LOGISTICS_11">
+			<Text>Logistics XI</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_PROMOTION_LEADERSHIP_12">
-			<Text>Leadership XII</Text>
+		<Row Tag="TXT_KEY_EA_PROMOTION_LOGISTICS_12">
+			<Text>Logistics XII</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_PROMOTION_LEADERSHIP_13">
-			<Text>Leadership XIII</Text>
+		<Row Tag="TXT_KEY_EA_PROMOTION_LOGISTICS_13">
+			<Text>Logistics XIII</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_PROMOTION_LEADERSHIP_14">
-			<Text>Leadership XIV</Text>
+		<Row Tag="TXT_KEY_EA_PROMOTION_LOGISTICS_14">
+			<Text>Logistics XIV</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_PROMOTION_LEADERSHIP_15">
-			<Text>Leadership XV</Text>
+		<Row Tag="TXT_KEY_EA_PROMOTION_LOGISTICS_15">
+			<Text>Logistics XV</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_PROMOTION_LEADERSHIP_16">
-			<Text>Leadership XVI</Text>
+		<Row Tag="TXT_KEY_EA_PROMOTION_LOGISTICS_16">
+			<Text>Logistics XVI</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_PROMOTION_LEADERSHIP_17">
-			<Text>Leadership XVII</Text>
+		<Row Tag="TXT_KEY_EA_PROMOTION_LOGISTICS_17">
+			<Text>Logistics XVII</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_PROMOTION_LEADERSHIP_18">
-			<Text>Leadership XVIII</Text>
+		<Row Tag="TXT_KEY_EA_PROMOTION_LOGISTICS_18">
+			<Text>Logistics XVIII</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_CONSTRUCTION_1">
 			<Text>Construction I</Text>

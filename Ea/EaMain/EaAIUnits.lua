@@ -8,9 +8,11 @@ local Dprint = DEBUG_PRINT and print or function() end
 
 
 local fullCivs = MapModData.fullCivs
-local gg_unitPositions = gg_unitPositions
 local gg_unitClusters = gg_unitClusters
 local gCities = gCities
+
+
+local g_unitPositions = {}
 
 --------------------------------------------------------------
 -- Init
@@ -18,14 +20,13 @@ local gCities = gCities
 
 function EaAIUnitsInit(bNewGame)
 	print("Running EaAIUnitsInit...")
-	if not bNewGame then
-		for iPlayer in pairs(fullCivs) do
+	for iPlayer in pairs(fullCivs) do
+		g_unitPositions[iPlayer] = {}
+		if not bNewGame then
 			AnalyzeUnitClusters(iPlayer)		--sets gg_unitClusters info for all players
 		end
 	end
 end
-
-
 
 
 --------------------------------------------------------------
@@ -40,7 +41,7 @@ function AnalyzeUnitClusters(iPlayer)	--called by AfterPlayerTurn
 	local player = Players[iPlayer]
 	local iTeam = player:GetTeam()
 	local team = Teams[iTeam]
-	local unitPositions = gg_unitPositions[iPlayer]
+	local unitPositions = g_unitPositions[iPlayer]
 	local count = 0
 	for unit in player:Units() do
 		if unit:IsCombatUnit() then

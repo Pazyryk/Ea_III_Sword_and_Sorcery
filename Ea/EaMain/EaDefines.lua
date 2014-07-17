@@ -18,7 +18,7 @@ end
 ENABLE_PRINT = true
 DEBUG_PRINT = false
 MapModData.DEBUG_PRINT = DEBUG_PRINT
-MapModData.bDebugShowHiddenBuildings = false
+MapModData.bDebugShowHiddenBuildings = true
 
 MapModData.bDisableEnabledPolicies = true
 
@@ -140,6 +140,7 @@ MAX_RANGE =			Map.PlotDistance(0, 0, math.floor(MAP_W / 2 + 0.5), MAP_H - 1)	--o
 ---------------------------------------------------------------
 -- Cached Tables
 ---------------------------------------------------------------
+
 gg_unitPrefixUnitIDs = {}
 gg_bToCheapToHire = {}
 gg_eaSpecial = {}
@@ -191,87 +192,22 @@ for row in GameInfo.EaCiv_Races() do
 end
 
 gg_naturalWonders = {}	--index by featureID; filled in EaPlots Init
-----------------------------------------------------------------------------------------------------------------------------
--- State Shared tables
-----------------------------------------------------------------------------------------------------------------------------
---players
-MapModData.playerType = MapModData.playerType or {}			-- index by iPlayer
-MapModData.bFullCivAI = MapModData.bFullCivAI or {}			-- index by iPlayer; tells us if under AI control (inclues human under autoplay when all is working)
-MapModData.bHidden = MapModData.bHidden or {}
-
-local playerType = MapModData.playerType
-local bFullCivAI = MapModData.bFullCivAI
-local bHidden = MapModData.bHidden
-gg_minorPlayerByTypeID = {}
-print("Player Types by ID at game init:")
-for iPlayer = 0, BARB_PLAYER_INDEX do
-	local player = Players[iPlayer]
-	if iPlayer == FAY_PLAYER_INDEX then
-		print(iPlayer, ": Fay")
-		playerType[iPlayer] = "Fay"
-		bHidden[iPlayer] = true
-	elseif iPlayer == ANIMALS_PLAYER_INDEX then
-		print(iPlayer, ": Animals")
-		playerType[iPlayer] = "Animals"
-		bHidden[iPlayer] = true
-	elseif iPlayer == BARB_PLAYER_INDEX then
-		print(iPlayer, ": Barbs")
-		playerType[iPlayer] = "Barbs"
-	elseif player and player:IsAlive() then
-		if iPlayer < GameDefines.MAX_MAJOR_CIVS then
-			print(iPlayer, ": FullCiv")
-			playerType[iPlayer] = "FullCiv"
-			bFullCivAI[iPlayer] = not (iPlayer == Game.GetActivePlayer())		--fix for multiplayer
-		elseif player:GetMinorCivTrait() == GameInfoTypes.MINOR_TRAIT_RELIGIOUS then
-			print(iPlayer, ": God")
-			playerType[iPlayer] = "God"
-			bHidden[iPlayer] = true
-			gg_minorPlayerByTypeID[player:GetMinorCivType()] = iPlayer
-		else
-			print(iPlayer, ": CityState")
-			playerType[iPlayer] = "CityState"
-			gg_minorPlayerByTypeID[player:GetMinorCivType()] = iPlayer
-		end
-	end
-end
-
---These are set in Init
-MapModData.realCivs = MapModData.realCivs or {}		--full plus CSs
-MapModData.fullCivs = MapModData.fullCivs or {}	
-MapModData.cityStates = MapModData.cityStates or {}
-MapModData.gods = MapModData.gods or {}
-
---Other shared tables
-MapModData.gpRegisteredActions = MapModData.gpRegisteredActions or {}
-
---yields for human UI
-MapModData.mercenaryNet = 0
-
---misc
-MapModData.forcedUnitSelection = -1
-MapModData.forcedInterfaceMode = -1
-MapModData.integer = 0
 
 ----------------------------------------------------------------------------------------------------------------------------
 -- Non-preserved globals 
 ----------------------------------------------------------------------------------------------------------------------------
 
 --tables indexed 1st by iPlayer
-gg_playerValues = {}
 gg_combatPointDiff = {}
-gg_unitPositions = {}
 gg_unitClusters = {}
 gg_mercHireRate = {}
-gg_cityLakesDistMatrix = {}
-gg_cityFishingDistMatrix = {}
-gg_cityWhalingDistMatrix = {}
-gg_cityCampResDistMatrix = {}
+gg_campRange = {}
 gg_fishingRange = {}
 gg_whalingRange = {}
-gg_campRange = {}
 gg_slaveryPlayer = {[BARB_PLAYER_INDEX] = true}
 gg_playerArcaneMod = {}
-
+gg_playerCityPlotIndexes = {}
+gg_cityRemoteImproveCount = {}	--index by iPlayer, iCity, type
 
 --other tables using iPlayer
 gg_eaNamePlayerTable = {}
@@ -279,10 +215,6 @@ gg_eaNamePlayerTable = {}
 --other tables
 gg_aiOptionValues = {}
 gg_peopleEverLivedByRowID = {}
-gg_lakes = {}				--each is table with .x, .y
-gg_fishingBoatResources = {}
-gg_whales = {}
-gg_campResources = {}
 gg_tradeAvailableTable = {}
 gg_bHasPatronage = {}
 gg_teamCanMeetGods = {}
@@ -295,6 +227,9 @@ gg_calledArchangel = {}				--as above
 gg_calledMajorSpirit = {}			--as above
 gg_undeadSpawnPlots = {pos = 0}
 gg_demonSpawnPlots = {pos = 0}
+gg_sequencedAttacks = {pos = 0}
+gg_cityPlotCoastalTest = {}
+gg_remoteImprovePlot = {}		--index by iPlot; = "Lake", "FishingRes", "HuntingRes", "WhalingRes" [, "Mountain"]
 
 --misc counts
 gg_counts = {	freshWaterAbzuFollowerCities = 0,
@@ -303,6 +238,21 @@ gg_counts = {	freshWaterAbzuFollowerCities = 0,
 				stallionsOfEpona = 0,
 				grapeAndSpiritsBuildingsBakkheiaFollowerCities = 0
 }
+
+----------------------------------------------------------------------------------------------------------------------------
+-- State Shared tables
+----------------------------------------------------------------------------------------------------------------------------
+
+--Other shared tables
+MapModData.gpRegisteredActions = MapModData.gpRegisteredActions or {}
+
+--yields for human UI
+MapModData.mercenaryNet = 0
+
+--misc
+MapModData.forcedUnitSelection = -1
+MapModData.forcedInterfaceMode = -1
+MapModData.integer = 0
 
 ----------------------------------------------------------------------------------------------------------------------------
 -- gT and referenced tables that are saved/restored through game save/loads
@@ -352,18 +302,61 @@ gT.gWonders = gWonders
 gT.gEpics = gEpics
 gT.gArtifacts = gArtifacts
 
+----------------------------------------------------------------------------------------------------------------------------
+-- Players
+----------------------------------------------------------------------------------------------------------------------------
 
+MapModData.playerType = MapModData.playerType or {}			-- index by iPlayer
+MapModData.bHidden = MapModData.bHidden or {}
+MapModData.realCivs = MapModData.realCivs or {}		--full plus CSs
+MapModData.fullCivs = MapModData.fullCivs or {}	
+MapModData.cityStates = MapModData.cityStates or {}
+MapModData.gods = MapModData.gods or {}
 
-
-
-
-
--- Init tables and define initial values
--- TableLoad will add/modify values if this is a loaded game, but not delete any values
-
-
-
-
-
-
-
+local playerType = MapModData.playerType
+local bHidden = MapModData.bHidden
+gg_minorPlayerByTypeID = {}
+print("Player Types by ID at game init:")
+for iPlayer = 0, BARB_PLAYER_INDEX do
+	local player = Players[iPlayer]
+	if iPlayer == FAY_PLAYER_INDEX then
+		print(iPlayer, ": Fay")
+		gPlayers[iPlayer] = {}
+		MapModData.playerType[iPlayer] = "Fay"
+		MapModData.bHidden[iPlayer] = true
+	elseif iPlayer == ANIMALS_PLAYER_INDEX then
+		print(iPlayer, ": Animals")
+		gPlayers[iPlayer] = {}
+		MapModData.playerType[iPlayer] = "Animals"
+		MapModData.bHidden[iPlayer] = true
+	elseif iPlayer == BARB_PLAYER_INDEX then
+		print(iPlayer, ": Barbs")
+		gPlayers[iPlayer] = {}
+		MapModData.playerType[iPlayer] = "Barbs"
+	elseif iPlayer < GameDefines.MAX_MAJOR_CIVS then
+		if player:GetStartingPlot() then
+			print(iPlayer, ": FullCiv")
+			local eaPlayer = {}
+			gPlayers[iPlayer] = eaPlayer
+			MapModData.playerType[iPlayer] = "FullCiv"
+			MapModData.fullCivs[iPlayer] = eaPlayer		--shortlist so we don't always have to cycle through the long gPlayers
+			MapModData.realCivs[iPlayer] = eaPlayer
+		end
+	elseif player:GetMinorCivTrait() == GameInfoTypes.MINOR_TRAIT_RELIGIOUS then
+		print(iPlayer, ": God")
+		local eaPlayer = {}
+		gPlayers[iPlayer] = eaPlayer
+		MapModData.playerType[iPlayer] = "God"
+		MapModData.bHidden[iPlayer] = true
+		MapModData.gods[iPlayer] = eaPlayer
+		gg_minorPlayerByTypeID[player:GetMinorCivType()] = iPlayer
+	elseif player:GetStartingPlot() then		--can't use IsEverAlive for CSs, but this works
+		print(iPlayer, ": CityState")
+		local eaPlayer = {}
+		gPlayers[iPlayer] = eaPlayer
+		MapModData.playerType[iPlayer] = "CityState"
+		MapModData.cityStates[iPlayer] = eaPlayer
+		MapModData.realCivs[iPlayer] = eaPlayer
+		gg_minorPlayerByTypeID[player:GetMinorCivType()] = iPlayer
+	end
+end

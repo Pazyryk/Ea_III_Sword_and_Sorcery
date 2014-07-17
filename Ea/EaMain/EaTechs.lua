@@ -39,7 +39,6 @@ local EA_ARTIFACT_TOME_OF_TOMES =		GameInfoTypes.EA_ARTIFACT_TOME_OF_TOMES
 
 --localized game and global tables
 local playerType = MapModData.playerType
-local bFullCivAI = MapModData.bFullCivAI
 local fullCivs = MapModData.fullCivs
 local realCivs =	MapModData.realCivs
 local gg_fishingRange = gg_fishingRange
@@ -361,7 +360,7 @@ function TechPerCivTurn(iPlayer)
 	local team = Teams[player:GetTeam()]
 	local teamTechs = team:GetTeamTechs()
 	local eaCivID = eaPlayer.eaCivNameID
-	local bAI = bFullCivAI[iPlayer]
+	local bAI = not player:IsHuman()
 	local gameTurn = Game.GetGameTurn()
 
 	--debug
@@ -409,7 +408,7 @@ function OnTeamTechResearched(iTeam, techID, _)
 				if player:GetTeam() == iTeam then
 					Dprint("Adding to techCount for iPlayer ", iPlayer, eaPlayer.techCount + 1)
 					eaPlayer.techCount = eaPlayer.techCount + 1
-					if bFullCivAI[iPlayer] then
+					if not player:IsHuman() then
 						if player:GetLengthResearchQueue() < 2 then			--still 1 in queue if just gained this one as free tech 
 							AIPushTechsFromCivPlans(iPlayer, false)
 						end

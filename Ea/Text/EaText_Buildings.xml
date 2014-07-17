@@ -130,7 +130,7 @@
 			<Text>Timberyard</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_TIMBERYARD_HELP">
-			<Text>+1 Timber[NEWLINE]+1 Timber from Sawmills near this City.[NEWLINE]+1 Timber for every 4 unimproved Forest and Jungle tiles for Pantheistic Civilizations.</Text>
+			<Text>+1 Timber[NEWLINE]+1 Timber per 2 Sawmills (non-Pantheistic civs) or +1 Timber per 8 unimproved forest or jungle (Pantheistic civs). Forestry tech doubles amount from sawmills or unimproved forests/jungles.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_COTTON_GIN">
 			<Text>Cotton Gin</Text>
@@ -531,6 +531,12 @@
 		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_DEEP_FARMS_HELP">
 			<Text>+3 [ICON_FOOD] Food from Mine improvements worked by this city.[NEWLINE]+3 [ICON_FOOD] Food and +2 [ICON_PRODUCTION] Production from Mountains worked by this city.</Text>
+		</Row>
+		<Row Tag="BUILDING_FLOATING_GARDENS">
+			<Text>Floating Gardens</Text>
+		</Row>
+		<Row Tag="BUILDING_FLOATING_GARDENS_HELP">
+			<Text>+1 [ICON_FOOD] Food[NEWLINE] +1 [ICON_FOOD] Food per improved Lake owned by this city (added via this building, not plot)[NEWLINE]City must have Cult of Abzu as majority religion and own one improved Lake to build.</Text>
 		</Row>
 		
 		<Row Tag="TXT_KEY_EA_BUILDING_FOUNDRY">

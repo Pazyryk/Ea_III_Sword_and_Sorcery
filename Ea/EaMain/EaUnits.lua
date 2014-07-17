@@ -71,7 +71,6 @@ local Players =						Players
 local Teams =						Teams
 local MapModData =					MapModData
 local playerType =					MapModData.playerType
-local bFullCivAI =					MapModData.bFullCivAI
 local bHidden =						MapModData.bHidden
 local realCivs =					MapModData.realCivs
 local fullCivs =					MapModData.fullCivs
@@ -79,10 +78,6 @@ local cityStates =					MapModData.cityStates
 local gg_bNormalCombatUnit =		gg_bNormalCombatUnit
 local gg_combatPointDiff =			gg_combatPointDiff
 local gg_unitPrefixUnitIDs =		gg_unitPrefixUnitIDs
-local gg_cityLakesDistMatrix =		gg_cityLakesDistMatrix
-local gg_cityFishingDistMatrix =	gg_cityFishingDistMatrix
-local gg_cityWhalingDistMatrix =	gg_cityWhalingDistMatrix
-local gg_cityCampResDistMatrix =	gg_cityCampResDistMatrix
 local gg_fishingRange =				gg_fishingRange
 local gg_whalingRange =				gg_whalingRange
 local gg_campRange =				gg_campRange
@@ -98,10 +93,6 @@ local PlotToRadiusIterator =	PlotToRadiusIterator
 local HandleError31 =			HandleError31
 
 --file functions
-local RemoveOwnedFishingResourcePlot
-local RemoveOwnedWhalePlot
-local RemoveOwnedLakePlot
-local RemoveOwnedCampPlot
 local UseUnit = {}
 local UseAIUnit = {}
 local SustainedPromotionDo = {}		--Function holder for sustained promotions (run each turn for each unit with promo)
@@ -377,7 +368,7 @@ function UnitPerCivTurn(iPlayer)	--runs for full civs and city states
 	local bBarbs = iPlayer == BARB_PLAYER_INDEX
 	local bAnimals = iPlayer == ANIMALS_PLAYER_INDEX
 	local bFullCiv = fullCivs[iPlayer] ~= nil
-	local bAI = bFullCivAI[iPlayer] or not bFullCiv
+	local bAI = not bFullCiv or not player:IsHuman()
 	local nameTraitID = bFullCiv and eaPlayer.eaCivNameID or -1
 	--local bMercenaryCityState = not bFullCiv and player:GetMinorCivTrait() == MINOR_TRAIT_MERCENARY
 
@@ -650,6 +641,7 @@ local function OnUnitTakingPromotion(iPlayer, iUnit, promotionID)
 			--eaPerson.promotions[promotionID] = true
 
 			SetTowerMods(iPlayer, iPerson)
+			unit:SetBaseCombatStrength(GetGPMod(iPerson, "EAMOD_COMBAT"))
 		end
 		return true		--allow whatever human player picks
 	else	--AI
@@ -663,6 +655,7 @@ local function OnUnitTakingPromotion(iPlayer, iUnit, promotionID)
 			--eaPerson.promotions[promotionID] = true
 
 			SetTowerMods(iPlayer, iPerson)
+			unit:SetBaseCombatStrength(GetGPMod(iPerson, "EAMOD_COMBAT"))
 			return false				--We are cancelling whatever dll picked for GP
 		else
 			return true
@@ -699,135 +692,153 @@ end
 -- File Functions
 --------------------------------------------------------------
 
---fishing and whaling boats
-UseUnit[GameInfoTypes.UNIT_FISHING_BOATS] = function(iPlayer, unit)
-	print("Running UseFishingBoats ", iPlayer, unit)
-	--priority is water resource w/in 3-radius, then lake w/in 3, then water resource (by distance)
-	local plot = unit:GetPlot()
-	local city = plot:GetPlotCity()
-	if not city then
-		error("Found fishing boat that was not in city")
-	end
-	local iCity = city:GetID()
-	local iPlot = plot:GetPlotIndex()
-	local eaCity = gCities[iPlot]
-	local fishingResources = gg_cityFishingDistMatrix[iPlayer][iCity]
-	local iNearestResourcePlot
-	local nearestResourceDist = 10000
-	if fishingResources then
-		for iPlot, distance in pairs(fishingResources) do
-			if distance < nearestResourceDist then
-				nearestResourceDist = distance
-				iNearestResourcePlot = iPlot
-			end
-		end
-	end
-	print("Nearest fishing resource distance = ", nearestResourceDist)
-	if 3 < nearestResourceDist and gg_cityLakesDistMatrix[iPlayer][iCity] then	--use available lake
-		print("Use lake instead")
-		local lakes = gg_cityLakesDistMatrix[iPlayer][iCity]
-		local iNearestLakePlot
-		local nearestDist = 4
-		for iPlot, distance in pairs(lakes) do
-			if distance < nearestDist then
-				nearestDist = distance
-				iNearestLakePlot = iPlot
-			end
-		end
-		print("Nearest lake distance = ", nearestDist)
-		local lakePlot = Map.GetPlotByIndex(iNearestLakePlot)
-		lakePlot:SetOwner(iPlayer, iCity)
-		lakePlot:SetImprovementType(IMPROVEMENT_FISHING_BOATS)
-		RemoveOwnedLakePlot(iNearestLakePlot, iPlayer, iCity)
-		--Do notification and special effect
-	elseif nearestResourceDist <= gg_fishingRange[iPlayer] then		--improve resource
-		local resourcePlot = Map.GetPlotByIndex(iNearestResourcePlot)
-		resourcePlot:SetOwner(iPlayer, iCity)
-		resourcePlot:SetImprovementType(IMPROVEMENT_FISHING_BOATS)
-		RemoveOwnedFishingResourcePlot(iNearestResourcePlot, iPlayer, iCity)
-		if 3 < nearestResourceDist then
-			eaCity.remotePlots[iNearestResourcePlot] = true
-		end
-		--Do notification and special effect
-
-	else
-		print("!!!! Warning: Fishingboats built but can't be used")
-	end
-	MapModData.bBypassOnCanSaveUnit = true
-	unit:Kill(true, -1)		--remove fishing boats unit
-end
-
-UseUnit[GameInfoTypes.UNIT_WHALING_BOATS] = function(iPlayer, unit)
-	print("Running UseWhalingBoats ", iPlayer, unit)
-	--priority is simply closest available by distance (there are no lake whales)
-	local plot = unit:GetPlot()
-	local city = plot:GetPlotCity()
-	if not city then
-		error("Found fishing boat that was not in city")
-	end
-	local iCity = city:GetID()
-	local iPlot = plot:GetPlotIndex()
-	local eaCity = gCities[iPlot]
-	local whales = gg_cityWhalingDistMatrix[iPlayer][iCity]
-	local iNearestWhalePlot
-	local nearestWhaleDist = 10000
-	if whales then
-		for iPlot, distance in pairs(whales) do
-			if distance < nearestWhaleDist then
-				nearestWhaleDist = distance
-				iNearestWhalePlot = iPlot
-			end
-		end
-	end
-	if nearestWhaleDist <= gg_whalingRange[iPlayer] then
-		local whalePlot = Map.GetPlotByIndex(iNearestWhalePlot)
-		whalePlot:SetOwner(iPlayer, iCity)
-		whalePlot:SetImprovementType(IMPROVEMENT_WHALING_BOATS)
-		RemoveOwnedWhalePlot(iNearestWhalePlot, iPlayer, iCity)
-		if 3 < nearestWhaleDist then
-			eaCity.remotePlots[iNearestWhalePlot] = true
-		end
-		--Do notification and special effect
-	else
-		print("!!!! Warning: Whaling Boats built but can't be used")
-	end
-	MapModData.bBypassOnCanSaveUnit = true
-	unit:Kill(true, -1)		--remove whaling boats unit
-end
-
 UseUnit[GameInfoTypes.UNIT_HUNTERS] = function(iPlayer, unit)
-	print("Running UseHunters ", iPlayer, unit)
+	print("Running Running UseUnit - Hunters ", iPlayer, unit)
 	--priority is closest available by distance
 	local plot = unit:GetPlot()
+	local iPlot = plot:GetPlotIndex()
 	local city = plot:GetPlotCity()
 	if not city then
 		error("Found Hunters that was not in city")
 	end
-	local iCity = city:GetID()
-	local iPlot = plot:GetPlotIndex()
-	local eaCity = gCities[iPlot]
-	local campResources = gg_cityCampResDistMatrix[iPlayer][iCity]
-	local iNearestCampResPlot
-	local nearestCampResDist = 10000
-	if campResources then
-		for iPlot, distance in pairs(campResources) do
-			if distance < nearestCampResDist then
-				nearestCampResDist = distance
-				iNearestCampResPlot = iPlot
-			end						--need to add prioritization or randomization for ties
+	local sector = Rand(6, "hello") + 1
+	local plotToImprove
+	for radius = 1, gg_campRange[iPlayer] do
+		for testPlot in PlotRingIterator(plot, radius, sector, false) do
+			local iTestPlot = testPlot:GetPlotIndex()
+			if gg_remoteImprovePlot[iTestPlot] == "HuntingRes" then
+				local iOwner = testPlot:GetOwner()
+				if iOwner == -1 then
+					testPlot:SetOwner(iPlayer, city:GetID())
+					plotToImprove = testPlot
+					break
+				elseif iOwner == iPlayer and testPlot:GetImprovementType() == -1 then
+					plotToImprove = testPlot
+					break
+				end
+				if radius < 4 then	--may steal plot if owner is remote
+					local iOwningCity = testPlot:GetCityPurchaseID()
+					local iPlotOwningCity = gg_playerCityPlotIndexes[iOwner][iOwningCity] or InitCityPlotIndexGlobals(iOwner, iOwningCity)			
+					local ownerDist = GetMemoizedPlotIndexDistance(iTestPlot, iPlotOwningCity)
+					if 3 < ownerDist then
+						if iOwner == iPlayer then
+							testPlot:SetOwner(iPlayer, city:GetID())	--transfer ownership to this city (should have happen elsewhere, but just in case)
+						else
+							testPlot:SetOwner(iPlayer, city:GetID())
+							plotToImprove = testPlot		--steal from remote owner city
+							break
+						end				
+					end
+				end
+			end
 		end
 	end
-	if nearestCampResDist <= gg_campRange[iPlayer] then
-		local campPlot = Map.GetPlotByIndex(iNearestCampResPlot)
-		campPlot:SetOwner(iPlayer, iCity)
-		campPlot:SetImprovementType(IMPROVEMENT_CAMP)
-		RemoveOwnedCampPlot(iNearestCampResPlot, iPlayer, iCity)
-		if 3 < nearestCampResDist then
-			eaCity.remotePlots[iNearestCampResPlot] = true
-		end
-		--Do notification and special effect
+	if plotToImprove then
+		plotToImprove:SetImprovementType(IMPROVEMENT_CAMP)
 	else
-		print("!!!! Warning: Hunters built but can't be used")
+		print("!!!! Warning: Hunters built but can't be used; killing unit")
+	end
+	MapModData.bBypassOnCanSaveUnit = true
+	unit:Kill(true, -1)		--remove unit
+end
+
+UseUnit[GameInfoTypes.UNIT_FISHING_BOATS] = function(iPlayer, unit)
+	print("Running UseUnit - Fishing Boats ", iPlayer, unit)
+	--priority is closest available by distance
+	local plot = unit:GetPlot()
+	local iPlot = plot:GetPlotIndex()
+	local city = plot:GetPlotCity()
+	if not city then
+		error("Found Whaling Boats that was not in city")
+	end
+	local bCoastal = gg_cityPlotCoastalTest[iPlot]
+	local range = bCoastal and gg_fishingRange[iPlayer] or 3
+	local sector = Rand(6, "hello") + 1
+	local plotToImprove
+	for radius = 1, range do
+		for testPlot in PlotRingIterator(plot, radius, sector, false) do
+			local iTestPlot = testPlot:GetPlotIndex()
+			if gg_remoteImprovePlot[iTestPlot] == "Lake" or (bCoastal and gg_remoteImprovePlot[iTestPlot] == "FishingRes") then
+				local iOwner = testPlot:GetOwner()
+				if iOwner == -1 then
+					testPlot:SetOwner(iPlayer, city:GetID())
+					plotToImprove = testPlot
+					break
+				elseif iOwner == iPlayer and testPlot:GetImprovementType() == -1 then
+					plotToImprove = testPlot
+					break
+				end
+				if radius < 4 and gg_remoteImprovePlot[iTestPlot] == "FishingRes" then	--may steal plot if owner is remote
+					local iOwningCity = testPlot:GetCityPurchaseID()
+					local iPlotOwningCity = gg_playerCityPlotIndexes[iOwner][iOwningCity] or InitCityPlotIndexGlobals(iOwner, iOwningCity)			
+					local ownerDist = GetMemoizedPlotIndexDistance(iTestPlot, iPlotOwningCity)
+					if 3 < ownerDist then
+						if iOwner == iPlayer then
+							testPlot:SetOwner(iPlayer, city:GetID())	--transfer ownership to this city (should have happen elsewhere, but just in case)
+						else
+							testPlot:SetOwner(iPlayer, city:GetID())
+							plotToImprove = testPlot		--steal from remote owner city
+							break
+						end				
+					end
+				end
+			end
+		end
+	end
+	if plotToImprove then
+		plotToImprove:SetImprovementType(IMPROVEMENT_FISHING_BOATS)
+	else
+		print("!!!! Warning: Whaling Boats built but can't be used; killing unit")
+	end
+	MapModData.bBypassOnCanSaveUnit = true
+	unit:Kill(true, -1)		--remove unit
+end
+
+UseUnit[GameInfoTypes.UNIT_WHALING_BOATS] = function(iPlayer, unit)
+	print("Running UseUnit - Whaling Boats ", iPlayer, unit)
+	--priority is closest available by distance
+	local plot = unit:GetPlot()
+	local iPlot = plot:GetPlotIndex()
+	local city = plot:GetPlotCity()
+	if not city then
+		error("Found Whaling Boats that was not in city")
+	end
+	local sector = Rand(6, "hello") + 1
+	local plotToImprove
+	for radius = 1, gg_whalingRange[iPlayer] do
+		for testPlot in PlotRingIterator(plot, radius, sector, false) do
+			local iTestPlot = testPlot:GetPlotIndex()
+			if gg_remoteImprovePlot[iTestPlot] == "WhalingRes" then
+				local iOwner = testPlot:GetOwner()
+				if iOwner == -1 then
+					testPlot:SetOwner(iPlayer, city:GetID())
+					plotToImprove = testPlot
+					break
+				elseif iOwner == iPlayer and testPlot:GetImprovementType() == -1 then
+					plotToImprove = testPlot
+					break
+				end
+				if radius < 4 then	--may steal plot if owner is remote
+					local iOwningCity = testPlot:GetCityPurchaseID()
+					local iPlotOwningCity = gg_playerCityPlotIndexes[iOwner][iOwningCity] or InitCityPlotIndexGlobals(iOwner, iOwningCity)		
+					local ownerDist = GetMemoizedPlotIndexDistance(iTestPlot, iPlotOwningCity)
+					if 3 < ownerDist then
+						if iOwner == iPlayer then
+							testPlot:SetOwner(iPlayer, city:GetID())	--transfer ownership to this city (should have happen elsewhere, but just in case)
+						else
+							testPlot:SetOwner(iPlayer, city:GetID())
+							plotToImprove = testPlot		--steal from remote owner city
+							break
+						end				
+					end
+				end
+			end
+		end
+	end
+	if plotToImprove then
+		plotToImprove:SetImprovementType(IMPROVEMENT_WHALING_BOATS)
+	else
+		print("!!!! Warning: Whaling Boats built but can't be used; killing unit")
 	end
 	MapModData.bBypassOnCanSaveUnit = true
 	unit:Kill(true, -1)		--remove unit
@@ -866,80 +877,6 @@ UseAIUnit[GameInfoTypes.UNIT_CARGO_SHIP] = function(iPlayer, unit)
 end
 ]]
 
-RemoveOwnedFishingResourcePlot = function(iPlot, iOwnerPlayer, iOwnerCity)
-	for iPlayer in pairs(realCivs) do
-		for city in Players[iPlayer]:Cities() do
-			local iCity = city:GetID()
-			local fishingResources = gg_cityFishingDistMatrix[iPlayer][iCity]
-			if fishingResources and fishingResources[iPlot] then
-				if 3 < fishingResources[iPlot] or (iPlayer == iOwnerPlayer and iCity == iOwnerCity) then
-					fishingResources[iPlot] = nil
-					if next(fishingResources) == nil then		--table empty
-						gg_cityFishingDistMatrix[iPlayer][iCity] = nil
-					end
-				end
-			end
-		end
-	end
-	for _, eaCity in pairs(gCities) do
-		eaCity.remotePlots[iPlot] = nil					--remove from all here; will be added to new owner after this function
-	end
-end
-
-RemoveOwnedWhalePlot = function(iPlot, iOwnerPlayer, iOwnerCity)
-	for iPlayer in pairs(realCivs) do
-		for city in Players[iPlayer]:Cities() do
-			local iCity = city:GetID()
-			local whales = gg_cityWhalingDistMatrix[iPlayer][iCity]
-			if whales and whales[iPlot] then
-				if 3 < whales[iPlot] or (iPlayer == iOwnerPlayer and iCity == iOwnerCity) then
-					whales[iPlot] = nil
-					if next(whales) == nil then		--table empty
-						gg_cityWhalingDistMatrix[iPlayer][iCity] = nil
-					end
-				end
-			end
-		end
-	end
-	for _, eaCity in pairs(gCities) do
-		eaCity.remotePlots[iPlot] = nil					--remove from all here; will be added to new owner after this function
-	end
-end
-
-RemoveOwnedLakePlot = function(iPlot, iOwnerPlayer, iOwnerCity)
-	for iPlayer in pairs(realCivs) do
-		for city in Players[iPlayer]:Cities() do
-			local iCity = city:GetID()
-			local lakes = gg_cityLakesDistMatrix[iPlayer][iCity]
-			if lakes and lakes[iPlot] then
-				lakes[iPlot] = nil
-				if next(lakes) == nil then		--table empty
-					gg_cityLakesDistMatrix[iPlayer][iCity] = nil
-				end
-			end
-		end
-	end
-end
-
-RemoveOwnedCampPlot = function(iPlot, iOwnerPlayer, iOwnerCity)
-	for iPlayer in pairs(realCivs) do
-		for city in Players[iPlayer]:Cities() do
-			local iCity = city:GetID()
-			local campResources = gg_cityCampResDistMatrix[iPlayer][iCity]
-			if campResources and campResources[iPlot] then
-				if 3 < campResources[iPlot] or (iPlayer == iOwnerPlayer and iCity == iOwnerCity) then
-					campResources[iPlot] = nil
-					if next(campResources) == nil then		--table empty
-						gg_cityCampResDistMatrix[iPlayer][iCity] = nil
-					end
-				end
-			end
-		end
-	end
-	for _, eaCity in pairs(gCities) do
-		eaCity.remotePlots[iPlot] = nil					--remove from all here; will be added to new owner after this function
-	end
-end
 
 --sustained promotion system
 

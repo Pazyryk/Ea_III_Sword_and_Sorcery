@@ -95,7 +95,6 @@ local UNHAPPINESS_PER_CAPTURED_CITY =			GameDefines.UNHAPPINESS_PER_CAPTURED_CIT
 --global tables
 local MapModData =	MapModData
 local playerType =	MapModData.playerType
-local bFullCivAI =	MapModData.bFullCivAI
 local realCivs =	MapModData.realCivs
 
 --localized functions
@@ -145,9 +144,6 @@ local currentProductionPercentAdjByPlayer = {}
 local currentGoldPercentAdjByPlayer = {}
 local currentSciencePercentAdjByPlayer = {}
 
-local gg_playerValues = gg_playerValues
-
-
 
 --Update functions called each turn and whenever something might have changed (so UI shows effect NOW). They can be called repeatedly without harm.
 
@@ -159,7 +155,7 @@ function UpdateGlobalYields(iPlayer, effectType, bPerTurnCall)	--City States onl
 	local eaPlayer = gPlayers[iPlayer]
 	local bFullCiv = playerType[iPlayer] == "FullCiv"
 	local eaCivID = bFullCiv and eaPlayer.eaCivNameID or -1
-	local bHuman = not bFullCivAI[iPlayer]
+	local bHuman = player:IsHuman()
 
 	if effectType == nil or effectType == "Gold" then
 		local mercenaryCost = 0
@@ -314,6 +310,7 @@ function UpdateCityYields(iPlayer, iSpecificCity, effectType, bPerTurnCall)
 			local population = city:GetPopulation()
 			local followerReligion = city:GetReligiousMajority()
 
+			--[[
 			if effectType == nil or effectType == "CityStateUpdate" or effectType == "RemoteResources" then
 				local remotePlots = eaCity.remotePlots
 				local numCampRes, numFishingRes, numWhales = 0, 0, 0
@@ -355,8 +352,8 @@ function UpdateCityYields(iPlayer, iSpecificCity, effectType, bPerTurnCall)
 
 			if effectType == nil or effectType == "CityStateUpdate" or effectType == "Trade" then
 
-
 			end
+			]]
 
 			if effectType == nil or effectType == "LandXP" or effectType == "Training" then
 				local residentLandXP = eaCity.residentLandXP or 0

@@ -22,7 +22,6 @@ function OnYes( )
 
 	--Paz add: undo hijacks
 	local EaSetupDB = Modding.OpenUserData("EaSetupData", 1)
-	--[[
 	local eaAutoSaveFreq = EaSetupDB.GetValue("EA_AUTO_SAVE_FREQ")
 	if eaAutoSaveFreq then
 		if eaAutoSaveFreq == 999 then		--game crashed and we lost original value; set to 1 (better if mod players are confused than angry)
@@ -30,10 +29,8 @@ function OnYes( )
 		end
 		print("Restoring base autosave frequency ", eaAutoSaveFreq)
 		OptionsManager.SetTurnsBetweenAutosave_Cached(eaAutoSaveFreq)	--restore to what it was
-
 		print("Cached = ", OptionsManager.GetTurnsBetweenAutosave_Cached())
 	end
-	]]
 	local autoUIAssets = EaSetupDB.GetValue("AUTO_UI_ASSETS_FOR_RESTORATION")
 	local smallUIAssets = EaSetupDB.GetValue("SMALL_UI_ASSETS_FOR_RESTORATION")
 	if autoUIAssets and smallUIAssets then

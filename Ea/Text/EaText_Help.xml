@@ -234,8 +234,11 @@
 		<Row Tag="TXT_KEY_EA_PROMOTION_DRUNKARD_HELP">
 			<Text>+10 morale; -15% attack and defense.</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_PROMOTION_LEADERSHIP_HELP">
-			<Text>Increases the effectiveness of your civilization’s Leader, of City Residents, and of actions that involve leadership including Rally Troops and Train Unit.</Text>
+		<Row Tag="TXT_KEY_EA_PROMOTION_GP_COMBAT_HELP">
+			<Text>Increases the fighting prowess of this Warrior.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_LOGISTICS_HELP">
+			<Text>Increases the ability of this Warrior to train, repair and organize military units in the field.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_CONSTRUCTION_HELP">
 			<Text>Increases the permanent effect of most Wonders built by this Great Person and production from the Build action.</Text>
@@ -250,7 +253,7 @@
 			<Text>placeholder</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_SCHOLARSHIP">
-			<Text>Increases the effect of Tomes written by this Great person and research from the Research action.</Text>
+			<Text>Increases the effect of Tomes written by this Great Person and research from the Research action.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_BARDING_HELP">
 			<Text>Increases the effect of Epics crafted by this Great Person and culture from the Perform action.</Text>
@@ -349,31 +352,31 @@
 		</Row>
 
 		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_EQUUS_HELP">
-			<Text>Speeds research for horse-mounted knowledge (Horseback Riding and War Horses)[NEWLINE]Provides experience for horse-mounted units</Text>
+			<Text>Lowers research cost for Animal Husbandry, Stirrups, Animal Industry, Animal Breeding and War Horses[NEWLINE]Provides experience for new and existing horse-mounted units</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_BEASTS_HELP">
-			<Text>Speeds research of Mounted Elephants, War Elephants, Domestication, Animal Breeding, Tracking, Animal Mastery and Beast Breeding</Text>
+			<Text>Lowers research cost for Tracking & Trapping, Elephant Training, Gamekeeping, Animal Mastery, War Elephants, Beast Mastery, Mumakil Riding</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_THE_LEVIATHAN_HELP">
-			<Text>Speeds research of Harpoons, Sailing, Shipbuilding and Whaling[NEWLINE]+2 research from whales</Text>
+			<Text>Lowers research cost for Sailing, Shipbuilding, Navigation, Beast Mastery, Whaling, and Song of Leviathan[NEWLINE]+2 research from whales</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_HARVESTS_HELP">
-			<Text>Speeds research of Milling, Zymurgy, Irrigation, Calendar, Crop Rotation and Forestry[NEWLINE]+1 food from improved wheat, grapes and sugarcane</Text>
+			<Text>Lowers research cost for Milling, Weaving, Zymurgy, Calendar, Forestry, Fine Textiles, Oenology, and Crop Rotation</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_TOMES_HELP">
-			<Text>Provides +1/3 benifit from all Tomes that exist in the world, regardless of owner</Text>
+			<Text>Gain 20% of the benefit of all other Tomes in the world, regardless of owner.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_AESTHETICS_HELP">
-			<Text>Speeds research of Drama, Literature, Music and Æsthetics[NEWLINE]Increases culture from all cities</Text>
+			<Text>Lowers research cost for Philosophy, Mathematics, Literature, Music, Æsthetics, and Ethereal Architecture</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_AXIOMS_HELP">
-			<Text>Speeds research of Mathematics, Physics, Chemistry, Astronomy, Alchemy and Medicine[NEWLINE]+5% research from universities</Text>
+			<Text>Lowers research cost for Astronomy, Alchemy, Mechanics, Chemistry, Medicine, Machinery and Steam Power</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_FORM_HELP">
-			<Text>Speeds research of Masonry, Construction, Engineering and Architecture; +mod% construction of all buildings[NEWLINE]Lowers production cost of all wonders</Text>
+			<Text>Lowers research cost for Construction, Sanitation, Engineering, Metal Casting, Architecture, Machinery and Ethereal Architecture</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_METALLURGY_HELP">
-			<Text>Speeds research of Bronze Working, Iron Working, Metal Casting and Mithril Working[NEWLINE]+1 production from mined copper, iron and mithril[NEWLINE]+1 gold from mined silver and gold</Text>
+			<Text>Lowers research cost for Coinage, Iron Working, Metal Casting, Steel Working, Elemental Forging and Mithril Working</Text>
 		</Row>
 
 		<Row Tag="TXT_KEY_EA_ACTION_FOUNDRY_HELP">

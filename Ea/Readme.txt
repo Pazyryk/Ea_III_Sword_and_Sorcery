@@ -21,6 +21,7 @@ ANIMAL_TEAM		(=62)
 --------------------------------------------------------------
 
 --CallHook
+GameSave()
 CombatResult(iAttackingPlayer, iAttackingUnit, attackerDamage, attackerFinalDamage, attackerMaxHP,iDefendingPlayer, iDefendingUnit, defenderDamage, defenderFinalDamage, defenderMaxHP, iInterceptingPlayer, iInterceptingUnit, interceptorDamage, plotX, plotY)
 CombatEnded(iAttackingPlayer, iAttackingUnit, attackerDamage, attackerFinalDamage, attackerMaxHP,iDefendingPlayer, iDefendingUnit, defenderDamage, defenderFinalDamage, defenderMaxHP, iInterceptingPlayer, iInterceptingUnit, interceptorDamage, plotX, plotY)
 UnitSetXYPlotEffect(iPlayer, iUnit, x, y, plotEffectID, plotEffectStrength, plotEffectPlayer, plotEffectCaster)
@@ -60,6 +61,7 @@ bool	CanCreateTradeRoute(pOriginCity, pDestCity, DomainTypes, TradeConnectionTyp
 int		GetCityResidentYieldBoost(int yieldTypeID)
 void	SetCityResidentYieldBoost(int yieldTypeID, iNewValue)
 void	SetNumFreeBuilding(BuildingTypes iIndex, int iNewValue)
+int		GetFaithPerTurnFromSpecialists()
 
 --------------------------------------------------------------
 -- Player
@@ -119,6 +121,7 @@ void				SetGPAttackState(int iIndex)
 void				TestPromotionReady()
 int					TurnsToReachTarget(Plot targetPlot, bool bReusePaths, bool bIgnoreUnits, bool bIgnoreStacking)		--0 means can reach with movement left; returns 2147483647 if no path
 int					GetPower()
+void				SetTurnProcessed(bool bValue)		--added by mistake (has something to do with AI processing)
 
 --------------------------------------------------------------
 API Notes:
@@ -159,17 +162,17 @@ Utilities		--contains utility Lua files that are safe to include from multiple s
 -----------------------------------------------------------------------------
 Lua naming conventions follow Firaxis in part, but are much more consist within the mod:
 
-BARB_PLAYER_INDEX		--constants (could be global or local; usually but not always integer)
+BARB_PLAYER_INDEX			--constants (could be global or local; usually but not always integer)
 iPlayer, iUnit, iPlot		--object index number (sometimes use "___Index" instead for clarity)
 buildingID, policyID		--IDs for DB items ("unitTypeID" used for additional disambiguation)
 buildingType, policyType	--Type string for DB items
 buildingInfo, policyInfo	--row from DB ID/Type table (sometimes violated by dropping "Info")
-g_player, g_iPlayer		--file level control structures (shared among functions in some files)
-gg_unitMorale			--global tables (not preserved so must be inited)
+g_player, g_iPlayer			--file level control structures (shared among functions in some files)
+gg_unitMorale				--global tables (not preserved so must be inited)
 gPlayers, gPeople, gCities	--global tables contained in gT so preserved through save/reload
 eaPlayer, eaPerson, eaCity	--an object from above (ideally, these should be collapsed into DLL objects)
-SetAIValue			--either a function or a table of functions (global or local)
-bFullCivAI			--either a boolean or a table of booleans
+SetAIValue					--either a function or a table of functions (global or local)
+bAllow						--either a boolean or a table of booleans
 player, row, name, i, x, y	--anything else; type is almost always self-evident
 
 -----------------------------------------------------------------------------

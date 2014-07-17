@@ -100,7 +100,6 @@ local BARB_PLAYER_INDEX = BARB_PLAYER_INDEX
 local Players = Players
 local gPlayers = gPlayers
 local playerType = MapModData.playerType
-local bFullCivAI = MapModData.bFullCivAI
 local fullCivs = MapModData.fullCivs
 
 --localized game and library functions
@@ -131,6 +130,7 @@ local MapModData = MapModData
 --file control
 local g_lastPlayerID = -1
 local g_lastTurn = 0		--this causes per turn functions to skip on turn 0 (so no animals)
+local g_bHumanOrFirstInAutoplayTurn = false
 local oldTime = Clock()
 local startHuman = 0
 local timerHuman = 0
@@ -161,7 +161,6 @@ local function PrintGameTurn(iPlayer, gameTurn)
 		print("")
 		print("------------------------------------------------------------------------------------------------------")
 		print("----------------------------------------- NEW GAME TURN: " .. gameTurn .. " ------------------------------------------")
-		--TableSave(gT, "Ea")	--moved here from OnEndTurn()
 		local newTime = Clock()
 		timerTurn = newTime - oldTime
 		oldTime = newTime
@@ -200,12 +199,19 @@ local function PrintNewTurnForPlayer(iPlayer)
 	end
 end
 
-local function AfterEveryPlayerTurn(iPlayer)	-- Full civs only; runs at begining of next player's turn (iPlayer is the last player)
-	print("Running AfterEveryPlayerTurn ", iPlayer)
-	AnalyzeUnitClusters(iPlayer)			--may need for barbs too if they get really nasty
-	PeopleAfterTurn(iPlayer)
-	if not bFullCivAI[iPlayer] then
-		OnPlayerAdoptPolicyDelayedEffect()
+local function AfterEveryPlayerTurn(iPlayer)
+	print("AfterEveryPlayerTurn ", iPlayer)
+
+	if playerType[iPlayer] == "FullCiv" then
+		AnalyzeUnitClusters(iPlayer)			--may need for barbs too if they get really nasty
+		PeopleAfterTurn(iPlayer)
+		if Players[iPlayer]:IsHuman() then
+			OnPlayerAdoptPolicyDelayedEffect()
+		end
+	end
+	if g_bHumanOrFirstInAutoplayTurn then
+		timerHuman = Clock() - startHuman
+		g_bHumanOrFirstInAutoplayTurn = false
 	end
 end
 
@@ -213,27 +219,32 @@ end
 -- Interface
 -------------------------------------------------------------------------------------------------------
 
-
-
-
 local function OnPlayerDoTurn(iPlayer)	-- Runs at begining of turn for all living players, starting at turn 1 for human and turn 2 for all AIs (depends on settler???)
+	AfterEveryPlayerTurn(g_lastPlayerID)
+	g_lastPlayerID = iPlayer
 	print("OnPlayerDoTurn ", iPlayer)
+
 	local gameTurn = Game.GetGameTurn()
-	
+
 	timerAllPerTurnFunctionsStart = Clock()
 	local player = Players[iPlayer]
 
 	if g_lastTurn < gameTurn then
-	-------------------------------------------------------------------------------------------------------
-	-- Per game turn functions
-	-------------------------------------------------------------------------------------------------------
 		g_lastTurn = gameTurn
+		--if gameTurn == 1 then
+		--	FindAndDeleteBadAutoSaves()
+		--end
+		-------------------------------------------------------------------------------------------------------
+		-- Pre-Lua per game turn functions
+		-------------------------------------------------------------------------------------------------------
 		if Game.GetAIAutoPlay() == 0 then
 			MapModData.bAutoplay = false
-			bFullCivAI[g_iActivePlayer] = false
+		else
+			g_bHumanOrFirstInAutoplayTurn = true
 		end
 		PrintGameTurn(iPlayer, gameTurn)
 		timerAllPerTurnFunctions = 0
+		TestResyncGPIndexes()
 		UpdateNIMBYTurn(gameTurn)
 		EaArmageddonPerTurn()
 		AICivsPerGameTurn()
@@ -245,19 +256,10 @@ local function OnPlayerDoTurn(iPlayer)	-- Runs at begining of turn for all livin
 		AnimalsPerTurn()
 		ReligionPerGameTurn()
 		CityStateFollowerCityCounting()
-
-	elseif iPlayer == 1 then
-		timerHuman = Clock() - startHuman
 	end
 
-	--if gameTurn < 2 then		--just plan on it not working first 2 turns
-	--	return
-	--end
+	g_bHumanOrFirstInAutoplayTurn = g_bHumanOrFirstInAutoplayTurn or iPlayer == g_iActivePlayer
 
-	if playerType[g_lastPlayerID] == "FullCiv" then 
-		AfterEveryPlayerTurn(g_lastPlayerID)
-	end
-	g_lastPlayerID = iPlayer
 	local startOtherPerTurn = Clock()
 	PrintNewTurnForPlayer(iPlayer)
 
@@ -275,7 +277,7 @@ local function OnPlayerDoTurn(iPlayer)	-- Runs at begining of turn for all livin
 		PolicyPerCivTurn(iPlayer)
 		TechPerCivTurn(iPlayer)
 		FullCivPerCivTurn(iPlayer)
-		if bFullCivAI[iPlayer] then
+		if not player:IsHuman() then
 			AICivRun(iPlayer)
 			AIMercenaryPerCivTurn(iPlayer)
 		end
@@ -312,11 +314,11 @@ local function OnPlayerDoTurn(iPlayer)	-- Runs at begining of turn for all livin
 		UnitPerCivTurn(iPlayer)
 	end
 	
-	if iPlayer == Game.GetActivePlayer() then		--won't autosave during Autoplay (TO DO: find out when autosave happens during Autoplay and fix!)
+	if g_bHumanOrFirstInAutoplayTurn then
 		--if gameTurn % g_autoSaveFreq == 0 then
 		--	EaAutoSave(gameTurn)
 		--end
-		startHuman = Clock()		
+		startHuman = Clock()
 	end
 	timerAllPerTurnFunctions = timerAllPerTurnFunctions - timerAllPerTurnFunctionsStart + Clock()
 
@@ -324,31 +326,14 @@ end
 GameEvents.PlayerDoTurn.Add(function(iPlayer) return HandleError10(OnPlayerDoTurn, iPlayer) end)
 
 ----------------------------------------------------------------
---AutoSave 
+--Save 
 ----------------------------------------------------------------
 
-
-local function OnCanAutoSave(bInitial, bPostTurn)
-	print("Intercepting base game autosave to preserve Lua data")
+local function OnGameSave()
+	print("OnGameSave")
 	TableSave(gT, "Ea")
-	local saveStr
-	if bInitial then
-		--saveStr = "auto/AutoSave_Initial_Ea Year " .. Game.GetGameTurn()
-		saveStr = "../../ModdedSaves/single/auto/AutoSave_Initial_Ea Year " .. Game.GetGameTurn()
-	else
-		--saveStr = "auto/AutoSave_Ea Year " .. Game.GetGameTurn()
-		saveStr = "../../ModdedSaves/single/auto/AutoSave_Ea Year " .. Game.GetGameTurn()
-	end
-	print("Saving game as ", saveStr)
-	UI.SaveGame(saveStr)
-	return false
 end
-GameEvents.CanAutoSave.Add(OnCanAutoSave)
-
-
---TO DO: The initial game engine autosaves are corrupt for mod data (and name wrong anyway); get rid of them.
---AutoSave_0000 BC-4000.Civ5Save
---AutoSave_Initial_0000 BC-4000.Civ5Save
+GameEvents.GameSave.Add(OnGameSave)
 
 ----------------------------------------------------------------
 -- Autoplay
@@ -357,7 +342,6 @@ GameEvents.CanAutoSave.Add(OnCanAutoSave)
 function Autoplay(turns)
 	turns = turns or 5
 	turns = turns > 0 and turns or 5
-	bFullCivAI[g_iActivePlayer] = true
 	print("Starting Autoplay; turns/returnAsPlayer = ", turns, gWorld.returnAsPlayer)
 	MapModData.bAutoplay = true
 	Game.SetAIAutoPlay(turns, gWorld.returnAsPlayer)
@@ -391,6 +375,5 @@ Events.GameplaySetActivePlayer.Add(OnActivePlayerChanged)
 ----------------------------------------------------------------
 -- Init
 ----------------------------------------------------------------
-HandleError10(OnLoadEaMain)
---OnLoadEaMain()		--in EaInit.lua
+HandleError10(OnLoadEaMain)		--in EaInit.lua
 bInitialized = true

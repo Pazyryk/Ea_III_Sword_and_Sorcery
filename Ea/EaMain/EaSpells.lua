@@ -60,7 +60,6 @@ local GameInfoTypes =						GameInfoTypes
 local MapModData =							MapModData
 local fullCivs =							MapModData.fullCivs
 local gods =								MapModData.gods
-local bFullCivAI =							MapModData.bFullCivAI
 local gWorld =								gWorld
 local gCities =								gCities
 local gPlayers =							gPlayers
@@ -68,7 +67,6 @@ local gPeople =								gPeople
 local gReligions =							gReligions
 local gWonders =							gWonders
 local gg_aiOptionValues =					gg_aiOptionValues
-local gg_playerValues =						gg_playerValues
 local gg_bToCheapToHire =					gg_bToCheapToHire
 local gg_bNormalCombatUnit =				gg_bNormalCombatUnit
 local gg_bNormalLivingCombatUnit =			gg_bNormalLivingCombatUnit
@@ -486,7 +484,7 @@ function TestEaSpell(eaActionID, iPlayer, unit, iPerson, testX, testY, bAINonTar
 		if g_eaPlayer.aiUniqueTargeted[eaActionID] and g_eaPlayer.aiUniqueTargeted[eaActionID] ~= iPerson then return false end	--ai specific exclude (someone on way to do this)
 		g_bAIControl = true
 	else
-		g_bAIControl = bFullCivAI[iPlayer]
+		g_bAIControl = not g_player:IsHuman()
 	end
 
 	g_unit = unit
@@ -811,13 +809,13 @@ function DoEaSpell(eaActionID, iPlayer, unit, iPerson, targetX, targetY)
 	--Finish moves
 	if g_eaAction.FinishMoves and g_unit then
 		g_unit:FinishMoves()
-	end
 
-	--Don't get stuck on unit with no moves
-	if g_iPlayer == g_iActivePlayer then
-		if UI.GetHeadSelectedUnit() and UI.GetHeadSelectedUnit():MovesLeft() == 0 then
-			print("EaAction.lua forcing unit cycle")
-			Game.CycleUnits(true, true, false)	--move on to next unit
+		--Don't get stuck on unit with no moves
+		if g_iPlayer == g_iActivePlayer then
+			if UI.GetHeadSelectedUnit() and UI.GetHeadSelectedUnit():MovesLeft() == 0 then
+				print("EaAction.lua forcing unit cycle")
+				Game.CycleUnits(true, true, false)	--move on to next unit
+			end
 		end
 	end
 
@@ -1628,42 +1626,41 @@ local function ModelRanged_Do()
 	end	
 
 	--init and convert to ranged attack unit
-	local direction = g_unit:GetFacingDirection()
-	local newUnit = g_player:InitUnit(newUnitTypeID, g_x, g_y, nil, direction)
-	MapModData.bBypassOnCanSaveUnit = true
-	newUnit:Convert(g_unit, false)
-	newUnit:SetPersonIndex(g_iPerson)
-	local iNewUnit = newUnit:GetID()
-	g_eaPerson.iUnit = iNewUnit
-	newUnit:SetMorale(modX10 - 100)			--Use morale to modify up or down from ranged strength 10 (can't change ranged strength)
+	g_unit = InitGPUnit(g_iPlayer, g_iPerson, g_x, g_y, g_unit, newUnitTypeID, -1, modX10 - 100)
 
-	if bAutoTargetAll then					--same for human and AI
-
-		--Sequenced attacks don't work yet. I think we need a hook on CvTacticalAI::CombatResolved so we can call next attack after last one resolved
-
-
+	if bAutoTargetAll then					--same for human and AI; targets already determined in ModelRanged_TestTarget
 		g_eaPerson.autoAttack = true
-		--for i = 1, g_count - 1 do
-		--	local x, y = g_table[i]:GetXY()
-		--	newUnit:RangeStrike(x, y)
-		--	newUnit:SetMoves(60)
-		--end
-		g_eaPerson.autoAttack = false		--allows OnCombatEnded to restore normal GP unit
-		local x, y = g_table[g_count]:GetXY()
-		newUnit:RangeStrike(x, y)
-		if newUnit:MovesLeft() > 0  then
-			error("AI GP has movement after Magic Missile! Did it not fire?")
+
+		local indexList = GetRandomizedArrayIndexes(g_count)
+
+		local pos = gg_sequencedAttacks.pos
+		for i = 1, g_count do
+			local plot = g_table[indexList[i] ]
+			gg_sequencedAttacks[pos + i] = {attackingUnit = g_unit, defendingPlot = plot, bRanged = true}
+		end
+		gg_sequencedAttacks[pos + g_count].bEndAutoAttack = true	--stop the madness!
+		gg_sequencedAttacks.pos = pos + g_count
+		g_unit:SetMoves(60 * g_count)
+		DoSequencedAttacks()
+
+		--TO DO: Sequenced attacks!
+		--{attackingUnit, defendingPlot or defendingUnit [use plot unless must be unit], bRanged, bMoveIfNoEnemy, bEndAutoAttack}
+
+		
+
+		if g_unit:MovesLeft() > 0  then
+			error("AI GP has movement after magic chained range attack!")
 		end
 	elseif g_bAIControl then		--Carry out attack
 		local x, y = g_obj1:GetXY()
-		newUnit:RangeStrike(x, y)
-		if newUnit:MovesLeft() > 0  then
-			error("AI GP has movement after Magic Missile! Did it not fire?")
+		g_unit:RangeStrike(x, y)
+		if g_unit:MovesLeft() > 0  then
+			error("AI GP has movement after magic ranged attack! Did it not fire?")
 		end
 	elseif g_iPlayer == g_iActivePlayer then
 		MapModData.forcedUnitSelection = iNewUnit
 		MapModData.forcedInterfaceMode = InterfaceModeTypes.INTERFACEMODE_RANGE_ATTACK
-		UI.SelectUnit(newUnit)
+		UI.SelectUnit(g_unit)
 		UI.LookAtSelectionPlot(0)
 	end
 	return true
@@ -1696,13 +1693,13 @@ Do[GameInfoTypes.EA_SPELL_PLASMA_BOLT] = ModelRanged_Do
 --EA_SPELL_PLASMA_STORM
 TestTarget[GameInfoTypes.EA_SPELL_PLASMA_STORM] = ModelRanged_TestTarget
 SetUI[GameInfoTypes.EA_SPELL_PLASMA_STORM] = ModelRanged_SetUI
---SetAIValues[GameInfoTypes.EA_SPELL_PLASMA_STORM] = ModelRanged_SetAIValues
+SetAIValues[GameInfoTypes.EA_SPELL_PLASMA_STORM] = ModelRanged_SetAIValues
 Do[GameInfoTypes.EA_SPELL_PLASMA_STORM] = ModelRanged_Do
 
 --EA_SPELL_HAIL_OF_PROJECTILES
 TestTarget[GameInfoTypes.EA_SPELL_HAIL_OF_PROJECTILES] = ModelRanged_TestTarget
 SetUI[GameInfoTypes.EA_SPELL_HAIL_OF_PROJECTILES] = ModelRanged_SetUI
---SetAIValues[GameInfoTypes.EA_SPELL_HAIL_OF_PROJECTILES] = ModelRanged_SetAIValues
+SetAIValues[GameInfoTypes.EA_SPELL_HAIL_OF_PROJECTILES] = ModelRanged_SetAIValues
 Do[GameInfoTypes.EA_SPELL_HAIL_OF_PROJECTILES] = ModelRanged_Do
 
 --EA_SPELL_DEATH_RAY
@@ -1714,7 +1711,7 @@ Do[GameInfoTypes.EA_SPELL_DEATH_RAY] = ModelRanged_Do
 --EA_SPELL_SEQUENCED_DEATH
 TestTarget[GameInfoTypes.EA_SPELL_SEQUENCED_DEATH] = ModelRanged_TestTarget
 SetUI[GameInfoTypes.EA_SPELL_SEQUENCED_DEATH] = ModelRanged_SetUI
---SetAIValues[GameInfoTypes.EA_SPELL_SEQUENCED_DEATH] = ModelRanged_SetAIValues
+SetAIValues[GameInfoTypes.EA_SPELL_SEQUENCED_DEATH] = ModelRanged_SetAIValues
 Do[GameInfoTypes.EA_SPELL_SEQUENCED_DEATH] = ModelRanged_Do
 
 
@@ -2435,93 +2432,6 @@ end
 --EA_SPELL_DISPEL_MAGIC
 --EA_SPELL_TIME_STOP
 
---[[ moved to model function
---EA_SPELL_MAGIC_MISSILE
-TestTarget[GameInfoTypes.EA_SPELL_MAGIC_MISSILE] = function()	--TO DO: need better AI targeting logic (for now, value goes up with existing damage)
-	print("TestTarget[GameInfoTypes.EA_SPELL_MAGIC_MISSILE]")
-	local maxValue = 0								--Any target makes valid, but AI will value based on current target damage
-	for x, y in PlotToRadiusIterator(g_x, g_y, 2, nil, nil, true) do	--excludes center
-		local plot = GetPlotFromXY(x, y)
-		if plot:IsCity() then
-			if g_team:IsAtWar(Players[plot:GetOwner()]:GetTeam()) then
-				local value = plot:GetPlotCity():GetDamage()
-				if maxValue < value then	
-					maxValue = value
-					g_obj1 = plot
-				end				
-			end
-		elseif plot:IsVisibleEnemyUnit(g_iPlayer) then
-			print("visible enemy unit")
-			local unitCount = plot:GetNumUnits()
-			for i = 0, unitCount - 1 do
-				local unit = plot:GetUnit(i)
-				local unitTypeID = unit:GetUnitType()
-				if g_team:IsAtWar(Players[unit:GetOwner()]:GetTeam()) then	--combat unit that we are at war with (need to cache at-war players for speed!)
-					local value = unit:IsCombatUnit() and 100 + unit:GetDamage() or 10
-					if maxValue < value then	
-						maxValue = value
-						g_obj1 = plot
-					end
-				end
-			end
-		end
-	end
-	if maxValue == 0 then return false end	--no targets found
-	--if target found, then g_obj1 now holds plot for best potential target for AI
-	g_value = maxValue
-	return true
-end
-
-SetUI[GameInfoTypes.EA_SPELL_MAGIC_MISSILE] = function()
-	if g_bNonTargetTestsPassed then
-		if g_bAllTestsPassed then
-			MapModData.text = "Magic Missile attack (ranged strength " .. Floor(20 * g_modSpell / 3) / 10 .. ")"
-		else
-			MapModData.text = "[COLOR_WARNING_TEXT]No valid target in range[ENDCOLOR]"
-		end
-	end
-end
-
-SetAIValues[GameInfoTypes.EA_SPELL_MAGIC_MISSILE] = function()
-	gg_aiOptionValues.i = g_value
-end
-
-Do[GameInfoTypes.EA_SPELL_MAGIC_MISSILE] = function()
-	print("Do[GameInfoTypes.EA_SPELL_MAGIC_MISSILE]")
-	--convert to ranged unit 
-	UpdateGreatPersonStatsFromUnit(g_unit, g_eaPerson)
-
-	local direction = g_unit:GetFacingDirection()
-	local newUnitTypeID = gpTempTypeUnits.MagicMissle[g_unit:GetUnitType()] or GameInfoTypes.UNIT_WIZARD_MAGIC_MISSLE	--fallback to wizard if we haven't added tempType unit yet
-
-	local newUnit = g_player:InitUnit(newUnitTypeID, g_x, g_y, nil, direction)
-	MapModData.bBypassOnCanSaveUnit = true
-	newUnit:Convert(g_unit, false)
-	newUnit:SetPersonIndex(g_iPerson)
-	local iNewUnit = newUnit:GetID()
-	g_eaPerson.iUnit = iNewUnit
-
-	newUnit:SetMorale(Floor(20 * g_modSpell / 3) - 100)	--Use morale to modify up or down from ranged strength 10 (can't change ranged strength)
-
-	if g_bAIControl then		--Carry out attack
-		print("CanRangeStrikeAt ", newUnit:CanRangeStrikeAt(g_obj1:GetX(), g_obj1:GetY()))
-		newUnit:RangeStrike(g_obj1:GetX(), g_obj1:GetY())
-		--newUnit:PushMission(MissionTypes.MISSION_RANGE_ATTACK, g_obj1:GetX(), g_obj1:GetY(), 0, 0, 1)
-		if newUnit:MovesLeft() > 0  then
-			error("AI GP has movement after Magic Missile! Did it not fire?")
-		end
-	elseif g_iPlayer == g_iActivePlayer then
-		MapModData.forcedUnitSelection = iNewUnit
-		MapModData.forcedInterfaceMode = InterfaceModeTypes.INTERFACEMODE_RANGE_ATTACK
-		UI.SelectUnit(newUnit)
-		UI.LookAtSelectionPlot(0)
-	end
-
-	return true
-end
-]]
-
-
 --EA_SPELL_MAGE_SWORD
 
 --EA_SPELL_BREACH
@@ -2814,14 +2724,11 @@ SetAIValues[GameInfoTypes.EA_SPELL_BECOME_LICH] = function()
 end
 
 Finish[GameInfoTypes.EA_SPELL_BECOME_LICH] = function()
+	local pts = g_unit:GetLevel() * 100
 	g_eaPerson.unitTypeID = UNIT_LICH
 	g_eaPerson.predestinedAgeOfDeath = nil
-	local lich = g_player:InitUnit(UNIT_LICH, g_x, g_y)
-	g_eaPerson.iUnit = lich:GetID()
-	lich:SetPersonIndex(g_iPerson)
-	MapModData.bBypassOnCanSaveUnit = true
-	lich:Convert(g_unit, false)
-	UseManaOrDivineFavor(g_iPlayer, g_iPerson, lich:GetLevel() * 100)
+	InitGPUnit(g_iPlayer, g_iPerson, g_x, g_y, g_unit, UNIT_LICH, -1)
+	UseManaOrDivineFavor(g_iPlayer, g_iPerson, pts * 100)
 	return true
 end
 

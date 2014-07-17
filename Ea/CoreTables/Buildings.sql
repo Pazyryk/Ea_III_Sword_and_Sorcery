@@ -40,10 +40,10 @@ INSERT INTO Buildings (Type,			Cost,	GoldMaintenance,	PrereqTech,					Happiness,
 ('BUILDING_SALTWORKS',					200,	1,					'TECH_MINING',				0,			0,				'ART_DEF_BUILDING_FORGE',	'NEW_BLDG_ATLAS2_DLC',			1,				0	),
 ('BUILDING_STABLE',						200,	1,					'TECH_HORSEBACK_RIDING',	0,			0,				'ART_DEF_BUILDING_STABLE',	'BW_ATLAS_1',					7,				0	),
 ('BUILDING_ELEPHANT_STOCKADE',			200,	1,					'TECH_ELEPHANT_LABOR',		0,			0,				'ART_DEF_BUILDING_GARDEN',	'EXPANSION2_BUILDING_ATLAS2',	0,				0	),
-('BUILDING_HUNTING_LODGE',				200,	1,					'TECH_TRACKING_TRAPPING',	0,			0,				'ART_DEF_BUILDING_GARDEN',	'BW_ATLAS_1',					24,				0	),
+('BUILDING_HUNTING_LODGE',				200,	0,					'TECH_TRACKING_TRAPPING',	0,			0,				'ART_DEF_BUILDING_GARDEN',	'BW_ATLAS_1',					24,				0	),
 ('BUILDING_ABATTOIR',					200,	1,					'TECH_ANIMAL_HUSBANDRY',	0,			0,				'ART_DEF_BUILDING_GARDEN',	'BW_ATLAS_1',					24,				0	),
 ('BUILDING_KNACKERY',					200,	1,					'TECH_ANIMAL_INDUSTRY',		0,			0,				'ART_DEF_BUILDING_GARDEN',	'BW_ATLAS_1',					24,				0	),
-('BUILDING_HARBOR',						200,	1,					'TECH_SAILING',				0,			0,				'HARBOR',					'BW_ATLAS_1',					26,				16	),
+('BUILDING_HARBOR',						200,	0,					'TECH_SAILING',				0,			0,				'HARBOR',					'BW_ATLAS_1',					26,				16	),
 ('BUILDING_TIMBERYARD',					200,	1,					'TECH_ALLOW_TIMBER_TRADE',	0,			0,				'ART_DEF_BUILDING_GARDEN',	'BW_ATLAS_1',					24,				0	),
 ('BUILDING_COTTON_GIN',					200,	1,					'TECH_WEAVING',				0,			0,				'ART_DEF_BUILDING_GARDEN',	'BW_ATLAS_1',					24,				0	),
 ('BUILDING_WINERY',						200,	1,					'TECH_OENOLOGY',			0,			0,				'ART_DEF_BUILDING_GARDEN',	'BW_ATLAS_1',					24,				0	),
@@ -89,7 +89,6 @@ INSERT INTO Buildings (Type,			Cost,	GoldMaintenance,	PrereqTech,					EaPrereqPo
 ('BUILDING_THEATRE',					300,	1,					'TECH_LITERATURE',			NULL,						NULL,			1,			'SPECIALIST_ARTISAN',	1,					0,				'THEATRE',						'BW_ATLAS_1',			20,				0		),
 ('BUILDING_OPERA_HOUSE',				300,	1,					'TECH_MUSIC',				NULL,						NULL,			1,			'SPECIALIST_ARTISAN',	1,					0,				'OPERA_HOUSE',					'BW_ATLAS_1',			49,				0		),
 ('BUILDING_MONASTERY',					400,	1,					'TECH_DIVINE_LITURGY',		NULL,						'Religious',	0,			'SPECIALIST_DISCIPLE',	0,					0,				'MONASTERY',					'BW_ATLAS_1',			38,				0		),
-('BUILDING_PORT',						400,	1,					'TECH_NAVIGATION',			NULL,						NULL,			0,			'SPECIALIST_TRADER',	1,					0,				'ART_DEF_BUILDING_SEAPORT',		'BW_ATLAS_1',			48,				0		),
 ('BUILDING_MUSEUM',						400,	1,					'TECH_AESTHETICS',			NULL,						NULL,			1,			'SPECIALIST_ARTISAN',	1,					0,				'MUSEUM',						'BW_ATLAS_1',			22,				0		);
 
 -- advanced resource
@@ -100,7 +99,8 @@ INSERT INTO Buildings (Type,			Cost,	GoldMaintenance,	PrereqTech,					EaSpecial,
 ('BUILDING_CHRYSOPOEIA_REACTOR',		300,	1,					'TECH_ALCHEMY',				'Arcane',		0,				'ART_DEF_BUILDING_LABORATORY',	'BW_ATLAS_1',			15,				0		),
 ('BUILDING_ARGENTOPOEIA_REACTOR',		300,	1,					'TECH_ALCHEMY',				'Arcane',		0,				'ART_DEF_BUILDING_LABORATORY',	'BW_ATLAS_1',			15,				0		),
 ('BUILDING_DISTILLERY',					300,	1,					'TECH_CHEMISTRY',			NULL,			0,				'ART_DEF_BUILDING_LABORATORY',	'BW_ATLAS_1',			15,				0		),
-('BUILDING_WHALERY',					400,	1,					'TECH_WHALING',				NULL,			0,				'ART_DEF_BUILDING_SEAPORT',		'BW_ATLAS_1',			48,				0		),
+('BUILDING_PORT',						400,	0,					'TECH_NAVIGATION',			NULL,			0,				'ART_DEF_BUILDING_SEAPORT',		'BW_ATLAS_1',			48,				0		),
+('BUILDING_WHALERY',					300,	0,					'TECH_WHALING',				NULL,			0,				'ART_DEF_BUILDING_SEAPORT',		'BW_ATLAS_1',			48,				0		),
 ('BUILDING_ARMORY',						300,	1,					'TECH_IRON_WORKING',		NULL,			0,				'ART_DEF_BUILDING_BARRACKS',	'BW_ATLAS_1',			6,				0		),
 ('BUILDING_ARSENAL',					400,	1,					'TECH_STEEL_WORKING',		NULL,			0,				'ART_DEF_BUILDING_BARRACKS',	'BW_ATLAS_1',			6,				0		),
 ('BUILDING_TEXTILE_MILL',				400,	1,					'TECH_FINE_TEXTILES',		NULL,			0,				'ART_DEF_BUILDING_FACTORY',		'BW_ATLAS_1',			3,				0		);
@@ -129,7 +129,8 @@ INSERT INTO Buildings (Type,			Cost,	GoldMaintenance,	PrereqTech,					Happiness,
 ('BUILDING_OBSERVATORY',				300,	1,					'TECH_ASTRONOMY',			0,			0,				'ART_DEF_BUILDING_OBSERVATORY',	'BW_ATLAS_1',					42,				0		),
 ('BUILDING_SHIPYARD',					300,	1,					'TECH_SHIP_BUILDING',		0,			0,				'ART_DEF_BUILDING_SEAPORT',		'BW_ATLAS_1',					48,				0		),
 ('BUILDING_HOSPITAL',					500,	1,					'TECH_MEDICINE',			0,			0,				'ART_DEF_BUILDING_HOSPITAL',	'BW_ATLAS_1',					45,				0		),
-('BUILDING_DEEP_FARMS',					300,	1,					'TECH_UNDERDARK_PATHS',		0,			1,				'ART_DEF_BUILDING_FORGE',		'NEW_BLDG_ATLAS2_DLC',			1,				0		);
+('BUILDING_DEEP_FARMS',					300,	0,					'TECH_UNDERDARK_PATHS',		0,			1,				'ART_DEF_BUILDING_FORGE',		'NEW_BLDG_ATLAS2_DLC',			1,				0		),
+('BUILDING_FLOATING_GARDENS',			200,	0,					NULL,						0,			1,				'ART_DEF_BUILDING_FORGE',		'NEW_BLDG_ATLAS2_DLC',			1,				0		);
 
 -- minor GP builds
 INSERT INTO Buildings (Type,			Cost,	Happiness,	NeverCapture,	ArtDefineTag,							IconAtlas,				PortraitIndex,	DisplayPosition) VALUES
@@ -184,11 +185,17 @@ INSERT INTO Buildings (Type,			Cost,	NeverCapture,	ArtDefineTag,	IconAtlas,		Por
 ('BUILDING_UUC_YABNAL_MOD',				-1,		1,				'MONUMENT',		'BW_ATLAS_1',	1,				NULL,			'Util'	),
 ('BUILDING_THE_LONG_WALL_MOD',			-1,		1,				'MONUMENT',		'BW_ATLAS_1',	1,				NULL,			'Util'	),
 ('BUILDING_CLOG_MOR_MOD',				-1,		1,				'MONUMENT',		'BW_ATLAS_1',	1,				NULL,			'Util'	),
-('BUILDING_DA_BAOEN_SI_MOD',			-1,		1,				'MONUMENT',		'BW_ATLAS_1',	1,				NULL,			'Util'	);
+('BUILDING_DA_BAOEN_SI_MOD',			-1,		1,				'MONUMENT',		'BW_ATLAS_1',	1,				NULL,			'Util'	),
+
+('BUILDING_HUNTING_LODGE_ENABLE',		-1,		1,				'MONUMENT',		'BW_ATLAS_1',	1,				NULL,			'Util'	),
+('BUILDING_PORT_ENABLE',				-1,		1,				'MONUMENT',		'BW_ATLAS_1',	1,				NULL,			'Util'	),
+('BUILDING_WHALERY_ENABLE',				-1,		1,				'MONUMENT',		'BW_ATLAS_1',	1,				NULL,			'Util'	),
+('BUILDING_FLOATING_GARDENS_ENABLE',	-1,		1,				'MONUMENT',		'BW_ATLAS_1',	1,				NULL,			'Util'	),
+('BUILDING_DEEP_FARMS_ENABLE',			-1,		1,				'MONUMENT',		'BW_ATLAS_1',	1,				NULL,			'Util'	);
 
 -- palaces
-INSERT INTO Buildings (Type,			Cost,	PrereqTech,		EaGreatPersonBuild,	Happiness,	NeverCapture,	ArtDefineTag,	IconAtlas,		PortraitIndex,	DisplayPosition,	ArtInfoCulturalVariation,	Defense,	Capital	) VALUES
-('BUILDING_PALACE',						0,		NULL,			NULL,				0,			1,				'PALACE',		'BW_ATLAS_1',	19,				32,					1,							200,		1		);
+INSERT INTO Buildings (Type,			Cost,	PrereqTech,		EaGreatPersonBuild,	Happiness,	NeverCapture,	ArtDefineTag,	IconAtlas,		PortraitIndex,	DisplayPosition,	ArtInfoCulturalVariation,	Capital	) VALUES
+('BUILDING_PALACE',						0,		NULL,			NULL,				0,			1,				'PALACE',		'BW_ATLAS_1',	19,				32,					1,							1		);
 
 --Build out the Buildings table for dependent strings
 UPDATE Buildings SET Description = 'TXT_KEY_EA_' || Type;
@@ -249,12 +256,12 @@ UPDATE Buildings SET MutuallyExclusiveGroup = 1 WHERE Type = 'BUILDING_FOREFATHE
 UPDATE Buildings SET NoOccupiedUnhappiness = 1 WHERE Type = 'BUILDING_FOREFATHERS_STATUE';
 UPDATE Buildings SET CityConnectionTradeRouteModifier = 20 WHERE Type = 'BUILDING_LIGHTHOUSE';	
 UPDATE Buildings SET Happiness = 1, EaOccupationUnhapReduction = 30 WHERE Type = 'BUILDING_COURTHOUSE';
-UPDATE Buildings SET Defense = 200 WHERE Type = 'BUILDING_PALACE';
-UPDATE Buildings SET Defense = 200, AllowsRangeStrike = 1 WHERE Type = 'BUILDING_ARMORY';
-UPDATE Buildings SET Defense = 200, AllowsRangeStrike = 1 WHERE Type = 'BUILDING_ARSENAL';
-UPDATE Buildings SET Defense = 500, AllowsRangeStrike = 1, CityWall = 1 WHERE Type = 'BUILDING_WALLS';
-UPDATE Buildings SET Defense = 700, AllowsRangeStrike = 1 WHERE Type = 'BUILDING_CASTLE';
-UPDATE Buildings SET Defense = 800, AllowsRangeStrike = 1 WHERE Type = 'BUILDING_STRONGHOLD';
+UPDATE Buildings SET Defense = 100 WHERE Type = 'BUILDING_PALACE';
+UPDATE Buildings SET Defense = 250, AllowsRangeStrike = 1, CityWall = 1 WHERE Type = 'BUILDING_WALLS';
+UPDATE Buildings SET Defense = 100, AllowsRangeStrike = 1 WHERE Type = 'BUILDING_ARMORY';
+UPDATE Buildings SET Defense = 100, AllowsRangeStrike = 1 WHERE Type = 'BUILDING_ARSENAL';
+UPDATE Buildings SET Defense = 350, AllowsRangeStrike = 1 WHERE Type = 'BUILDING_CASTLE';
+UPDATE Buildings SET Defense = 400, AllowsRangeStrike = 1 WHERE Type = 'BUILDING_STRONGHOLD';
 UPDATE Buildings SET AllowsWaterRoutes = 1 WHERE Type = 'BUILDING_HARBOR';
 UPDATE Buildings SET EaHealth = 2 WHERE Type = 'BUILDING_APOTHECARY';
 UPDATE Buildings SET EaHealth = 4 WHERE Type = 'BUILDING_AQUEDUCT';
@@ -320,7 +327,7 @@ UPDATE BuildingClasses SET ID =	( SELECT IDRemapper.id-1 FROM IDRemapper WHERE B
 DROP TABLE IDRemapper;
 
 -------------------------------------------------------------------------------
---Added subtable
+--Added subtables
 -------------------------------------------------------------------------------
 
 CREATE TABLE Building_EaConvertImprovedResource (	'BuildingType' TEXT DEFAULT NULL,
@@ -336,6 +343,25 @@ INSERT INTO Building_EaConvertImprovedResource (BuildingType,	ImprovedResource,	
 ('BUILDING_IVORYWORKS',			'RESOURCE_WHALE',		'RESOURCE_IVORY'	),
 ('BUILDING_DISTILLERY',			'RESOURCE_SUGAR',		'RESOURCE_SPIRITS'	),
 ('BUILDING_DISTILLERY',			'RESOURCE_BANANA',		'RESOURCE_SPIRITS'	);
+
+
+
+CREATE TABLE Building_EaRemoteImproveTypes  (	'BuildingType' TEXT DEFAULT NULL,
+												'EnablingBuildingType' TEXT DEFAULT NULL,
+												'RemoteImproveType' TEXT DEFAULT NULL);
+
+INSERT INTO Building_EaRemoteImproveTypes (BuildingType,	EnablingBuildingType,	RemoteImproveType) VALUES
+('BUILDING_HUNTING_LODGE',		'BUILDING_HUNTING_LODGE_ENABLE',	'HuntingRes'	),
+('BUILDING_HARBOR',				NULL,								'FishingRes'	),	--1st two columns should be consistent if appearing in >1 row
+('BUILDING_HARBOR',				NULL,								'WhalingRes'	),
+('BUILDING_PORT',				'BUILDING_PORT_ENABLE',				'FishingRes'	),
+('BUILDING_PORT',				'BUILDING_PORT_ENABLE',				'WhalingRes'	),
+('BUILDING_WHALERY',			'BUILDING_WHALERY_ENABLE',			'WhalingRes'	),
+('BUILDING_FLOATING_GARDENS',	'BUILDING_FLOATING_GARDENS_ENABLE',	'Lake'			),
+('BUILDING_DEEP_FARMS',			'BUILDING_DEEP_FARMS_ENABLE',		'Mountain'		);
+
+
+--Remember to add this to Building_ClassesNeededInCity!
 
 -------------------------------------------------------------------------------
 --Building subtables
@@ -387,7 +413,12 @@ INSERT INTO Building_ResourceQuantity (BuildingType, ResourceType, Quantity) VAL
 
 DELETE FROM Building_ClassesNeededInCity;
 INSERT INTO Building_ClassesNeededInCity (BuildingType, BuildingClassType) VALUES
-('BUILDING_HUNTING_LODGE',		'BUILDINGCLASS_SMOKEHOUSE'		),
+--first batch from Building_EaRemoteImproveTypes table
+('BUILDING_HUNTING_LODGE',		'BUILDINGCLASS_HUNTING_LODGE_ENABLE'	),
+('BUILDING_PORT',				'BUILDINGCLASS_PORT_ENABLE'				),
+('BUILDING_WHALERY',			'BUILDINGCLASS_WHALERY_ENABLE'			),
+('BUILDING_FLOATING_GARDENS',	'BUILDINGCLASS_FLOATING_GARDENS_ENABLE'	),
+
 ('BUILDING_FACTORY',			'BUILDINGCLASS_FORGE'			),
 ('BUILDING_UNIVERSITY',			'BUILDINGCLASS_LIBRARY'			),
 ('BUILDING_THEATRE',			'BUILDINGCLASS_AMPHITHEATER'	),
@@ -446,11 +477,12 @@ INSERT INTO Building_Flavors (BuildingType,	FlavorType,	Flavor) VALUES
 ('BUILDING_STABLE',				'FLAVOR_PRODUCTION',		10 ),
 ('BUILDING_ELEPHANT_STOCKADE',	'FLAVOR_MILITARY_TRAINING',	30 ),
 ('BUILDING_ELEPHANT_STOCKADE',	'FLAVOR_PRODUCTION',		10 ),
-('BUILDING_HUNTING_LODGE',		'FLAVOR_GROWTH',			50 ),
+('BUILDING_HUNTING_LODGE',		'FLAVOR_GROWTH',			30 ),
 ('BUILDING_HUNTING_LODGE',		'FLAVOR_GOLD',				20 ),
 ('BUILDING_ABATTOIR',			'FLAVOR_GROWTH',			40 ),
 ('BUILDING_KNACKERY',			'FLAVOR_PRODUCTION',		40 ),
-('BUILDING_HARBOR',				'FLAVOR_GROWTH',			40 ),
+('BUILDING_HARBOR',				'FLAVOR_GROWTH',			30 ),
+('BUILDING_HARBOR',				'FLAVOR_GOLD',				20 ),
 ('BUILDING_HARBOR',				'FLAVOR_WATER_CONNECTION',	20 ),
 ('BUILDING_TIMBERYARD',			'FLAVOR_PRODUCTION',		20 ),
 ('BUILDING_TIMBERYARD',			'FLAVOR_NAVAL',				40 ),
@@ -503,9 +535,6 @@ INSERT INTO Building_Flavors (BuildingType,	FlavorType,	Flavor) VALUES
 ('BUILDING_FACTORY',			'FLAVOR_GREAT_PEOPLE',		10 ),
 ('BUILDING_BANK',				'FLAVOR_GOLD',				30 ),
 ('BUILDING_BANK',				'FLAVOR_GREAT_PEOPLE',		10 ),
-('BUILDING_PORT',				'FLAVOR_GOLD',				30 ),
-('BUILDING_PORT',				'FLAVOR_GROWTH',			30 ),
-('BUILDING_PORT',				'FLAVOR_GREAT_PEOPLE',		10 ),
 ('BUILDING_UNIVERSITY',			'FLAVOR_SCIENCE',			30 ),
 ('BUILDING_UNIVERSITY',			'FLAVOR_GREAT_PEOPLE',		10 ),
 ('BUILDING_LABORATORY',			'FLAVOR_SCIENCE',			30 ),
@@ -528,7 +557,9 @@ INSERT INTO Building_Flavors (BuildingType,	FlavorType,	Flavor) VALUES
 ('BUILDING_BOWYER',				'FLAVOR_MILITARY_TRAINING',	20 ),
 ('BUILDING_DISTILLERY',			'FLAVOR_HAPPINESS',			20 ),
 ('BUILDING_DISTILLERY',			'FLAVOR_CULTURE',			10 ),
-('BUILDING_WHALERY',			'FLAVOR_GROWTH',			20 ),
+('BUILDING_PORT',				'FLAVOR_GOLD',				30 ),
+('BUILDING_PORT',				'FLAVOR_GROWTH',			30 ),
+('BUILDING_WHALERY',			'FLAVOR_GOLD',				20 ),
 ('BUILDING_WHALERY',			'FLAVOR_PRODUCTION',		20 ),
 ('BUILDING_ARMORY',				'FLAVOR_MILITARY_TRAINING',	20 ),
 ('BUILDING_ARMORY',				'FLAVOR_PRODUCTION',		20 ),
@@ -578,7 +609,8 @@ INSERT INTO Building_Flavors (BuildingType,	FlavorType,	Flavor) VALUES
 ('BUILDING_SHIPYARD',			'FLAVOR_PRODUCTION',		20 ),
 ('BUILDING_SHIPYARD',			'FLAVOR_NAVAL',				20 ),
 ('BUILDING_HOSPITAL',			'FLAVOR_GROWTH',			40 ),
-('BUILDING_DEEP_FARMS',			'FLAVOR_GROWTH',			50 );
+('BUILDING_DEEP_FARMS',			'FLAVOR_GROWTH',			40 ),
+('BUILDING_FLOATING_GARDENS',	'FLAVOR_GROWTH',			30 );
 
 DELETE FROM Building_GlobalYieldModifiers;		--adds straight yield, not percent
 
@@ -704,14 +736,6 @@ INSERT INTO Building_ResourceYieldChanges (BuildingType, ResourceType, YieldType
 ('BUILDING_SALTWORKS',		'RESOURCE_SALT',			'YIELD_GOLD',		1	),
 ('BUILDING_STABLE',			'RESOURCE_HORSE',			'YIELD_PRODUCTION',	1	),
 ('BUILDING_ELEPHANT_STOCKADE','RESOURCE_ELEPHANT',		'YIELD_PRODUCTION',	1	),
-('BUILDING_HUNTING_LODGE',	'RESOURCE_DEER',			'YIELD_FOOD',		1	),
-('BUILDING_HUNTING_LODGE',	'RESOURCE_DEER',			'YIELD_GOLD',		1	),
-('BUILDING_HUNTING_LODGE',	'RESOURCE_BOARS',			'YIELD_FOOD',		1	),
-('BUILDING_HUNTING_LODGE',	'RESOURCE_BOARS',			'YIELD_GOLD',		1	),
-('BUILDING_HUNTING_LODGE',	'RESOURCE_FUR',				'YIELD_FOOD',		1	),
-('BUILDING_HUNTING_LODGE',	'RESOURCE_FUR',				'YIELD_GOLD',		1	),
-('BUILDING_HUNTING_LODGE',	'RESOURCE_ELEPHANT',		'YIELD_FOOD',		1	),
-('BUILDING_HUNTING_LODGE',	'RESOURCE_ELEPHANT',		'YIELD_GOLD',		1	),
 ('BUILDING_ABATTOIR',		'RESOURCE_COW',				'YIELD_FOOD',		1	),
 ('BUILDING_ABATTOIR',		'RESOURCE_HORSE',			'YIELD_FOOD',		1	),
 ('BUILDING_ABATTOIR',		'RESOURCE_WOOL',			'YIELD_FOOD',		1	),
@@ -724,10 +748,6 @@ INSERT INTO Building_ResourceYieldChanges (BuildingType, ResourceType, YieldType
 ('BUILDING_BREEDING_PEN',	'RESOURCE_COW',				'YIELD_PRODUCTION',	1	),
 ('BUILDING_BREEDING_PEN',	'RESOURCE_HORSE',			'YIELD_PRODUCTION',	1	),
 ('BUILDING_BREEDING_PEN',	'RESOURCE_WOOL',			'YIELD_PRODUCTION',	1	),
-('BUILDING_HARBOR',			'RESOURCE_FISH',			'YIELD_FOOD',		1	),
-('BUILDING_HARBOR',			'RESOURCE_PEARLS',			'YIELD_FOOD',		1	),
-('BUILDING_HARBOR',			'RESOURCE_CRAB',			'YIELD_FOOD',		1	),
-('BUILDING_HARBOR',			'RESOURCE_WHALE',			'YIELD_FOOD',		1	),
 ('BUILDING_COTTON_GIN',		'RESOURCE_COTTON',			'YIELD_PRODUCTION',	1	),
 ('BUILDING_WINERY',			'RESOURCE_WINE',			'YIELD_GOLD',		1	),
 ('BUILDING_BREWERY',		'RESOURCE_WHEAT',			'YIELD_CULTURE',	1	),
@@ -747,22 +767,12 @@ INSERT INTO Building_ResourceYieldChanges (BuildingType, ResourceType, YieldType
 ('BUILDING_STONE_WORKS',	'RESOURCE_STONE',			'YIELD_CULTURE',	1	), 
 ('BUILDING_STONE_WORKS',	'RESOURCE_MARBLE',			'YIELD_PRODUCTION', 1	),
 ('BUILDING_STONE_WORKS',	'RESOURCE_MARBLE',			'YIELD_CULTURE',	1	),
-('BUILDING_PORT',			'RESOURCE_FISH',			'YIELD_FOOD',		1	),
-('BUILDING_PORT',			'RESOURCE_PEARLS',			'YIELD_FOOD',		1	),
-('BUILDING_PORT',			'RESOURCE_CRAB',			'YIELD_FOOD',		1	),
-('BUILDING_PORT',			'RESOURCE_WHALE',			'YIELD_FOOD',		1	),
-('BUILDING_PORT',			'RESOURCE_FISH',			'YIELD_GOLD',		1	),
-('BUILDING_PORT',			'RESOURCE_PEARLS',			'YIELD_GOLD',		1	),
-('BUILDING_PORT',			'RESOURCE_CRAB',			'YIELD_GOLD',		1	),
-('BUILDING_PORT',			'RESOURCE_WHALE',			'YIELD_GOLD',		1	),
 ('BUILDING_MONASTERY',		'RESOURCE_WINE',			'YIELD_CULTURE',	1	),
 ('BUILDING_MONASTERY',		'RESOURCE_INCENCE',			'YIELD_CULTURE',	1	),
 ('BUILDING_BOWYER',			'RESOURCE_YEW',				'YIELD_PRODUCTION',	1	),
 ('BUILDING_BOWYER',			'RESOURCE_YEW',				'YIELD_CULTURE',	1	),
 ('BUILDING_DISTILLERY',		'RESOURCE_SUGAR',			'YIELD_CULTURE',	1	),
 ('BUILDING_DISTILLERY',		'RESOURCE_BANANA',			'YIELD_CULTURE',	1	),
-('BUILDING_WHALERY',		'RESOURCE_WHALE',			'YIELD_FOOD',		1	),
-('BUILDING_WHALERY',		'RESOURCE_WHALE',			'YIELD_PRODUCTION',	1	),
 ('BUILDING_ARMORY',			'RESOURCE_COPPER',			'YIELD_PRODUCTION',	1	),
 ('BUILDING_ARMORY',			'RESOURCE_IRON',			'YIELD_PRODUCTION',	1	),
 ('BUILDING_ARMORY',			'RESOURCE_MITHRIL',			'YIELD_PRODUCTION',	1	),
@@ -953,6 +963,11 @@ INSERT INTO Building_YieldChanges (BuildingType,	YieldType,	Yield) VALUES
 ('BUILDING_SHRINE',						'YIELD_FAITH',		2	),
 ('BUILDING_MAGE_SCHOOL',				'YIELD_FAITH',		2	),
 ('BUILDING_PHARMAKEIA',					'YIELD_FAITH',		2	),
+('BUILDING_HUNTING_LODGE',				'YIELD_FOOD',		1	),
+('BUILDING_HUNTING_LODGE',				'YIELD_GOLD',		1	),
+('BUILDING_HARBOR',						'YIELD_FOOD',		1	),
+('BUILDING_HARBOR',						'YIELD_GOLD',		1	),
+
 ('BUILDING_MOUNDS',						'YIELD_FAITH',		2	),
 ('BUILDING_RIVER_DOCK',					'YIELD_FOOD',		1	),
 ('BUILDING_RIVER_DOCK',					'YIELD_PRODUCTION',	1	),
@@ -984,6 +999,10 @@ INSERT INTO Building_YieldChanges (BuildingType,	YieldType,	Yield) VALUES
 ('BUILDING_SLAVE_KNACKERY',				'YIELD_PRODUCTION',	2	),
 ('BUILDING_SLAVE_STOCKADE',				'YIELD_PRODUCTION',	2	),
 ('BUILDING_SLAVE_BREEDING_PEN',			'YIELD_FOOD',		2	),
+('BUILDING_PORT',						'YIELD_FOOD',		1	),
+('BUILDING_PORT',						'YIELD_GOLD',		1	),
+('BUILDING_WHALERY',					'YIELD_PRODUCTION',	1	),
+('BUILDING_WHALERY',					'YIELD_GOLD',		1	),
 ('BUILDING_INTERNMENT_CAMP',			'YIELD_PRODUCTION',	2	),
 ('BUILDING_PAPERMILL',					'YIELD_SCIENCE',	2	),
 ('BUILDING_PAPERMILL',					'YIELD_CULTURE',	2	),
@@ -996,6 +1015,8 @@ INSERT INTO Building_YieldChanges (BuildingType,	YieldType,	Yield) VALUES
 ('BUILDING_COLOSSEUM',					'YIELD_CULTURE',	1	),
 ('BUILDING_PRINTING_PRESS',				'YIELD_SCIENCE',	4	),
 ('BUILDING_OBSERVATORY',				'YIELD_SCIENCE',	6	),
+('BUILDING_DEEP_FARMS',					'YIELD_FOOD',		2	),
+('BUILDING_FLOATING_GARDENS',			'YIELD_FOOD',		1	),
 ('BUILDING_FOUNDRY',					'YIELD_PRODUCTION',	3	),
 ('BUILDING_ACADEMY',					'YIELD_SCIENCE',	3	),
 ('BUILDING_FESTIVAL',					'YIELD_CULTURE',	3	),

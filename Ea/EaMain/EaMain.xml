@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-
-<!-- This is just a transparent screen that consumes mouse; used to lock-out player for various special effects -->
-
-<Context ColorSet="Beige_Black_Alpha" Font="EaTwCnMT16" FontStyle="Shadow">
-	<Box Anchor="C,C" Size="Full,Full" Color="0,0,0,0" ConsumeMouse="1" Hidden="1"/>
-</Context>

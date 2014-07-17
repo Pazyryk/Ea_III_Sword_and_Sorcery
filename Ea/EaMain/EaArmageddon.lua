@@ -211,7 +211,7 @@ function EOTW(iDestroyerPlayer)
 	local maxRadius = bDestroyerIsActivePlayer and viewRadius or PlotDistance(destroyerCapital:GetX(), destroyerCapital:GetY(), cameraX, cameraY) + Floor(viewRadius / 2)
 	g_minRadius = bDestroyerIsActivePlayer and 0 or maxRadius - viewRadius
 
-	ContextPtr:SetHide(false)					--lockout the active player so they can't move the camera
+	--ContextPtr:SetHide(false)					--lockout the active player so they can't move the camera XXXXX - DON'T DO IT IN EAMAIN CONTEXT!
 	UI.LookAt(cameraCenterPlot, 2)				--look at capital, zoom out
 
 	for radius = maxRadius, 1, -1 do
@@ -239,7 +239,7 @@ function DelayedEOTW()
 	if g_radius == 0 then
 		local x, y = g_destroyerCapitalPlot:GetXY()
 		DoDummyUnitRangedAttack(BARB_PLAYER_INDEX, x, y, nil, GameInfoTypes.UNIT_DUMMY_NUKE)
-		ContextPtr:SetHide(false)	--we're done
+		--ContextPtr:SetHide(false)	--we're done
 	else
 		for plot in PlotRingIterator(g_destroyerCapitalPlot, g_radius, 1, false) do
 			if plot:IsCity() then
@@ -257,7 +257,7 @@ function DelayedEOTW()
 			g_bEOTWInitClock = true
 			Events.LocalMachineAppUpdate.Add(EOTWRingDelay)	
 		else
-			ContextPtr:SetHide(false)		--we're done
+			--ContextPtr:SetHide(false)		--we're done
 		end
 	end
 end

@@ -9,6 +9,7 @@ local iW, iH = Map.GetGridSize()
 local GetPlotByXY = Map.GetPlot
 local Rand = Map.Rand
 local Floor = math.floor
+local PlotDistance = Map.PlotDistance
 
 function GetPlotIndexFromXY(x, y)
 	return y * iW + x
@@ -18,7 +19,23 @@ function GetXYFromPlotIndex(iPlot)
 	return iPlot % iW, Floor(iPlot / iW)
 end
 
-local bWrapX, bWrapY = Map.IsWrapX(), false			--sorry, no donought worlds
+local cachePlotIndexDistances = {size = 0}
+function GetMemoizedPlotIndexDistance(iPlot1, iPlot2)		--memoized and could grow very large; so use only for distances checked repetatively (e.g., between cities and resources)
+	local cacheDist = (cachePlotIndexDistances[iPlot1] and cachePlotIndexDistances[iPlot1][iPlot2]) or (cachePlotIndexDistances[iPlot2] and cachePlotIndexDistances[iPlot2][iPlot1])
+	if cacheDist then
+		return cacheDist
+	end
+	cachePlotIndexDistances.size = cachePlotIndexDistances.size + 1
+	if cachePlotIndexDistances.size % 1000 == 0 then
+		print("cachePlotIndexDistances.size = ", cachePlotIndexDistances.size)
+	end
+	local dist = PlotDistance(iPlot1 % iW, Floor(iPlot1 / iW), iPlot2 % iW, Floor(iPlot2 / iW))
+	cachePlotIndexDistances[iPlot1] = cachePlotIndexDistances[iPlot1] or {}
+	cachePlotIndexDistances[iPlot1][iPlot2] = dist
+	return dist
+end
+
+local bWrapX, bWrapY = Map.IsWrapX(), false			--sorry, no doughnut worlds
 
 local yIsOddAdjOffsets = {{0, 1},{1, 1},{1, 0},{1, -1},{0, -1},{-1, 0}}
 local yIsEvenAdjOffsets = {{-1, 1},{0, 1},{1, 0},{0, -1},{-1, -1},{-1, 0}}

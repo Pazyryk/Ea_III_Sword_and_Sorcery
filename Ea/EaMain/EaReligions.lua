@@ -454,19 +454,6 @@ function BecomeFallen(iPlayer)		--this could happen before, during or after the 
 				print("Converting spellcaster")
 				local unit = player:GetUnitByID(eaPerson.iUnit)
 				unit:SetHasPromotion(PROMOTION_SORCERER, true)
-				--convert spells
-				--local numConvert = 0
-				--for spellID in pairs(eaPerson.spells) do
-				--	local alt = GameInfo.EaActions[spellID].FallenAltSpell
-				--	if alt and alt ~= "IsFallen" then
-				--		numConvert = numConvert + 1
-				--		integers[numConvert] = spellID
-				--		eaPerson.spells[GameInfoTypes[alt] ] = true
-				--	end
-				--end
-				--for j = 1, numConvert do
-				--	eaPerson.spells[integers[j] ] = nil
-				--end
 
 				--convert spells "in-place"
 				local spells = eaPerson.spells
@@ -479,26 +466,19 @@ function BecomeFallen(iPlayer)		--this could happen before, during or after the 
 					end
 				end
 
-				--convert subclass
+				--convert subclass and reinit unit
 				if eaPerson.subclass == "Priest" then
 					eaPerson.subclass = "FallenPriest"
+					eaPerson.class1 = "Devout"
 					eaPerson.class2 = "Thaumaturge"
 					RegisterGPActions(iPerson)
 					eaPerson.unitTypeID = GameInfoTypes.UNIT_FALLENPRIEST
-					local newUnit = player:InitUnit(GameInfoTypes.UNIT_FALLENPRIEST, unit:GetX(), unit:GetY())
-					MapModData.bBypassOnCanSaveUnit = true
-					newUnit:Convert(unit, false)
-					newUnit:SetPersonIndex(iPerson)
-					eaPerson.iUnit = newUnit:GetID()
+					InitGPUnit(iPlayer, iPerson, unit:GetX(), unit:GetY(), unit)
 				elseif eaPerson.subclass == "Paladin" then
 					eaPerson.subclass = "Eidolon"
 					RegisterGPActions(iPerson)
 					eaPerson.unitTypeID = GameInfoTypes.UNIT_EIDOLON
-					local newUnit = player:InitUnit(GameInfoTypes.UNIT_EIDOLON, unit:GetX(), unit:GetY())
-					MapModData.bBypassOnCanSaveUnit = true
-					newUnit:Convert(unit, false)
-					newUnit:SetPersonIndex(iPerson)
-					eaPerson.iUnit = newUnit:GetID()
+					InitGPUnit(iPlayer, iPerson, unit:GetX(), unit:GetY(), unit)
 				end
 			end
 		end

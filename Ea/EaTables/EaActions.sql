@@ -304,7 +304,7 @@ INSERT INTO EaActions (Type,			Description,								Help,											GPOnly,	TechR
 --Items
 INSERT INTO EaActions (Type,			Description,								Help,											GPOnly,	TechReq,					AndTechReq,		BuildingReq,		UIType,		FinishXP,	AITarget,					AIAdHocValue,	GPClass,	City,	GPModType1,				TurnsToComplete,	ProgressHolder,	UniqueType,	EaArtifact,							IconIndex,	IconAtlas							) VALUES
 ('EA_ACTION_TOME_OF_EQUUS',				'TXT_KEY_EA_ACTION_TOME_OF_EQUUS',			'TXT_KEY_EA_ACTION_TOME_OF_EQUUS_HELP',			1,		'TECH_HORSEBACK_RIDING',	'TECH_WRITING',	'BUILDING_LIBRARY',	'Build',	100,		'OwnClosestLibraryCity',	1000,			'Sage',		'Own',	'EAMOD_SCHOLARSHIP',	25,					'Person',		'World',	'EA_ARTIFACT_TOME_OF_EQUUS',		2,			'EXPANSION_SCEN_TECH_ATLAS'			),
-('EA_ACTION_TOME_OF_BEASTS',			'TXT_KEY_EA_ACTION_TOME_OF_BEASTS',			'TXT_KEY_EA_ACTION_TOME_OF_BEASTS_HELP',		1,		'TECH_ELEPHANT_TRAINING',	'TECH_WRITING',	'BUILDING_LIBRARY',	'Build',	100,		'OwnClosestLibraryCity',	1000,			'Sage',		'Own',	'EAMOD_SCHOLARSHIP',	25,					'Person',		'World',	'EA_ARTIFACT_TOME_OF_BEASTS',		2,			'EXPANSION_SCEN_TECH_ATLAS'			),
+('EA_ACTION_TOME_OF_BEASTS',			'TXT_KEY_EA_ACTION_TOME_OF_BEASTS',			'TXT_KEY_EA_ACTION_TOME_OF_BEASTS_HELP',		1,		'TECH_ELEPHANT_LABOR',		'TECH_WRITING',	'BUILDING_LIBRARY',	'Build',	100,		'OwnClosestLibraryCity',	1000,			'Sage',		'Own',	'EAMOD_SCHOLARSHIP',	25,					'Person',		'World',	'EA_ARTIFACT_TOME_OF_BEASTS',		2,			'EXPANSION_SCEN_TECH_ATLAS'			),
 ('EA_ACTION_TOME_OF_THE_LEVIATHAN',		'TXT_KEY_EA_ACTION_TOME_OF_THE_LEVIATHAN',	'TXT_KEY_EA_ACTION_TOME_OF_THE_LEVIATHAN_HELP',	1,		'TECH_HARPOONS',			'TECH_WRITING',	'BUILDING_LIBRARY',	'Build',	100,		'OwnClosestLibraryCity',	1000,			'Sage',		'Own',	'EAMOD_SCHOLARSHIP',	25,					'Person',		'World',	'EA_ARTIFACT_TOME_OF_THE_LEVIATHAN',2,			'EXPANSION_SCEN_TECH_ATLAS'			),
 ('EA_ACTION_TOME_OF_HARVESTS',			'TXT_KEY_EA_ACTION_TOME_OF_HARVESTS',		'TXT_KEY_EA_ACTION_TOME_OF_HARVESTS_HELP',		1,		'TECH_IRRIGATION',			'TECH_WRITING',	'BUILDING_LIBRARY',	'Build',	100,		'OwnClosestLibraryCity',	1000,			'Sage',		'Own',	'EAMOD_SCHOLARSHIP',	25,					'Person',		'World',	'EA_ARTIFACT_TOME_OF_HARVESTS',		2,			'EXPANSION_SCEN_TECH_ATLAS'			),
 ('EA_ACTION_TOME_OF_TOMES',				'TXT_KEY_EA_ACTION_TOME_OF_TOMES',			'TXT_KEY_EA_ACTION_TOME_OF_TOMES_HELP',			1,		'TECH_PHILOSOPHY',			'TECH_WRITING',	'BUILDING_LIBRARY',	'Build',	100,		'OwnClosestLibraryCity',	1000,			'Sage',		'Own',	'EAMOD_SCHOLARSHIP',	25,					'Person',		'World',	'EA_ARTIFACT_TOME_OF_TOMES',		2,			'EXPANSION_SCEN_TECH_ATLAS'			),
@@ -371,7 +371,7 @@ INSERT INTO EaActions (Type,			SpellClass,	GPModType1,				TechReq,						City,	AI
 ('EA_SPELL_FIREBALL',					'Arcane',	'EAMOD_EVOCATION',		'TECH_EVOCATION',				NULL,	NULL,				'Any',			1,					0,			NULL,			0,			'EA_SPELLS_ATLAS'	),
 ('EA_SPELL_PLASMA_BOLT',				'Arcane',	'EAMOD_EVOCATION',		'TECH_INVOCATION',				NULL,	NULL,				'Any',			1,					0,			NULL,			0,			'EA_SPELLS_ATLAS'	),
 ('EA_SPELL_BREACH',						'Arcane',	'EAMOD_EVOCATION',		'TECH_BREACH',					'Not',	'TowerToWide',		NULL,			10,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
-('EA_SPELL_PLASMA_STORM',				'Arcane',	'EAMOD_EVOCATION',		'TECH_ESOTERIC_ARCANA',			NULL,	NULL,				NULL,			1,					0,			NULL,			0,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_PLASMA_STORM',				'Arcane',	'EAMOD_EVOCATION',		'TECH_ESOTERIC_ARCANA',			NULL,	NULL,				'Any',			1,					0,			NULL,			0,			'EA_SPELLS_ATLAS'	),
 ('EA_SPELL_WISH',						'Arcane',	'EAMOD_EVOCATION',		'TECH_ESOTERIC_ARCANA',			NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
 
 ('EA_SPELL_SLOW',						'Arcane',	'EAMOD_TRANSMUTATION',	'TECH_TRANSMUTATION',			NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
@@ -387,7 +387,7 @@ INSERT INTO EaActions (Type,			SpellClass,	GPModType1,				TechReq,						City,	AI
 ('EA_SPELL_CONJURE_MONSTER',			'Arcane',	'EAMOD_CONJURATION',	'TECH_CONJURATION',				NULL,	'SelfTowerTemple',	NULL,			3,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
 ('EA_SPELL_TELEPORT',					'Arcane',	'EAMOD_CONJURATION',	'TECH_CONJURATION',				NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
 ('EA_SPELL_PHASE_DOOR',					'Arcane',	'EAMOD_CONJURATION',	'TECH_INVOCATION',				NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
-('EA_SPELL_HAIL_OF_PROJECTILES',		'Arcane',	'EAMOD_CONJURATION',	'TECH_GREATER_ARCANA',			NULL,	NULL,				NULL,			1,					0,			NULL,			0,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_HAIL_OF_PROJECTILES',		'Arcane',	'EAMOD_CONJURATION',	'TECH_GREATER_ARCANA',			NULL,	NULL,				'Any',			1,					0,			NULL,			0,			'EA_SPELLS_ATLAS'	),
 
 ('EA_SPELL_REANIMATE_DEAD',				'Arcane',	'EAMOD_NECROMANCY',		'TECH_REANIMATION',				NULL,	'SelfTowerTemple',	NULL,			2,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
 ('EA_SPELL_RAISE_DEAD',					'Arcane',	'EAMOD_NECROMANCY',		'TECH_NECROMANCY',				NULL,	'SelfTowerTemple',	NULL,			3,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
@@ -397,7 +397,7 @@ INSERT INTO EaActions (Type,			SpellClass,	GPModType1,				TechReq,						City,	AI
 ('EA_SPELL_BECOME_LICH',				'Arcane',	'EAMOD_NECROMANCY',		'TECH_SOUL_BINDING',			'Not',	'Tower',			NULL,			15,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
 ('EA_SPELL_FINGER_OF_DEATH',			'Arcane',	'EAMOD_NECROMANCY',		'TECH_SOUL_BINDING',			NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
 ('EA_SPELL_DEATH_RAY',					'Arcane',	'EAMOD_NECROMANCY',		'TECH_SOUL_BINDING',			NULL,	NULL,				'Any',			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
-('EA_SPELL_SEQUENCED_DEATH',			'Arcane',	'EAMOD_NECROMANCY',		'TECH_ARMAGEDDON_RITUALS',		NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_SEQUENCED_DEATH',			'Arcane',	'EAMOD_NECROMANCY',		'TECH_ARMAGEDDON_RITUALS',		NULL,	NULL,				'Any',			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
 
 ('EA_SPELL_CHARM_MONSTER',				'Arcane',	'EAMOD_ENCHANTMENT',	'TECH_MUSIC',					NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
 ('EA_SPELL_CAUSE_FEAR',					'Arcane',	'EAMOD_ENCHANTMENT',	'TECH_ENCHANTMENT',				NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
@@ -414,7 +414,7 @@ INSERT INTO EaActions (Type,			SpellClass,	GPModType1,				TechReq,						City,	AI
 ('EA_SPELL_SIMULACRUM',					'Arcane',	'EAMOD_ILLUSION',		'TECH_GREATER_ILLUSION',		NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
 ('EA_SPELL_PHANTASMAGORIA',				'Arcane',	'EAMOD_ILLUSION',		'TECH_PHANTASMAGORIA',			NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	);
 
-UPDATE EaActions SET FinishMoves = NULL WHERE Type = 'EA_SPELL_SCRYING';
+UPDATE EaActions SET FinishMoves = NULL WHERE Type IN ('EA_SPELL_SCRYING', 'EA_SPELL_PLASMA_STORM', 'EA_SPELL_HAIL_OF_PROJECTILES', 'EA_SPELL_SEQUENCED_DEATH');
 
 --Both Arcane and Divine
 INSERT INTO EaActions (Type,			SpellClass,	GPModType1,				TechReq,						City,	AITarget,			AICombatRole,	FallenAltSpell,					TurnsToComplete,	FixedFaith,	HumanVisibleFX,	IconIndex,	IconAtlas			) VALUES

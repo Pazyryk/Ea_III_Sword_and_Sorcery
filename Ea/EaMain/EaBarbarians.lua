@@ -370,7 +370,7 @@ function InitUpgradeEncampment(iPlot, x, y, plot, upgradeTechID)	--called from P
 	local prevEncampmentID = gWorld.encampments[iPlot]
 
 	--score all encampment types
-	local bCoastal = plot:IsCoastalLand()
+	local bCoastal = plot:IsCoastalLand(10)
 	for loopX, loopY in PlotToRadiusIterator(x, y, 3) do
 		local loopPlot = GetPlotFromXY(loopX, loopY)
 		local plotTypeID = loopPlot:GetPlotType()

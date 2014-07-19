@@ -125,20 +125,6 @@ function SetEaRequiredOptions()
 	OptionsManager.CommitGameOptions()
 end
 
-local randNumber = 0
-function GetPseudoRand10000()					--middle square
-	randNumber = randNumber > 1000 and randNumber or os.clock() * 100
-	print("GetPseudoRand10000; seed = ", randNumber)
-	while randNumber < 1000 do
-		randNumber = (randNumber + 11) ^ 2
-	end
-	randNumber = randNumber ^ 2
-	randNumber = math.floor(randNumber / 100)
-	randNumber = randNumber % 10000
-	print("result = ", randNumber)
-	return randNumber
-end
-
 local function GetNextAvailablePlayerTeamIndexes()		
 	for iPlayer = 1, GameDefines.MAX_MAJOR_CIVS - 1 do
 		if PreGame.GetSlotStatus(iPlayer) == SlotStatus.SS_OBSERVER then
@@ -152,17 +138,13 @@ end
 
 function SetEaCivs()
 	print("Running SetEaCivs...")
-	print("Player slots before SetEaCivs (iPlayer/GetSlotStatus/GetSlotClaim/GetCivilization):")
-	for i = 0, GameDefines.MAX_PLAYERS - 1 do
-		print(i, PreGame.GetSlotStatus(i), PreGame.GetSlotClaim(i), PreGame.GetCivilization(i))
-	end
 
 	local EaSetupDB = Modding.OpenUserData("EaSetupData", 1)
 
 	--this will give us more Man than Sidhe but with some slots left random
-	--local eaRandCivAddOrder = {0, 1, -1,  0, -1,  0, 1,  0, -1,  0, 1,  0, -1,  0, 1,  0, -1,  0, 1,  0, -1,  0, 1,  0, -1,  0, 1} -- 0 Man; 1 Sidhe; -1 Random
-	--local eaRandCivAddOrder = {0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0} -- 0 Man; 1 Sidhe; -1 Random
-	--local randCivNum = 0
+	local randCivAddOrder = {0, 1, -1,  0, -1,  0, 1,  0, -1,  0, 1,  0, -1,  0, 1,  0, -1,  0, 1,  0, -1,  0, 1,  0, -1,  0, 1} -- 0 Man; 1 Sidhe; -1 Random
+
+	local randCivNum = 0
 
 	for iPlayer = 0, GameDefines.MAX_MAJOR_CIVS - 1 do
 		PreGame.SetTeam(iPlayer, iPlayer)
@@ -171,15 +153,17 @@ function SetEaCivs()
 		end
 
 		if PreGame.GetSlotStatus(iPlayer) == SlotStatus.SS_COMPUTER then
+			
 			if PreGame.GetCivilization(iPlayer) == -1 then
-				local civID = 0						--Man
-				local rand = GetPseudoRand10000()
-				if rand < 3333 then
-					civID = 1						--Sidhe
+				randCivNum = randCivNum + 1
+				local civID = randCivAddOrder[randCivNum]
+				if civID == -1 then
+					civID = (math.random(3) == 1) and 1 or 0
 				end
-				print("Ea start picking civ for random slot: ", iPlayer, civID)
+				print("Mod picking civ for random slot: ", iPlayer, civID)
 				PreGame.SetCivilization(iPlayer, civID)
 			end
+
 			local civID = PreGame.GetCivilization(iPlayer)
 			if civID == 0 then
 				PreGame.SetCivilizationDescription(iPlayer, "TXT_KEY_EA_MAN_TRIBE")
@@ -194,13 +178,9 @@ function SetEaCivs()
 				PreGame.SetCivilizationShortDescription(iPlayer, "TXT_KEY_EA_HELDEOFOL_TRIBE")
 				PreGame.SetCivilizationAdjective(iPlayer, "TXT_KEY_EA_HELDEOFOL")
 			end
-			PreGame.SetLeaderName(iPlayer, "TXT_KEY_EA_NO_LEADER")
-		--elseif PreGame.GetSlotStatus(iPlayer) == SlotStatus.SS_OBSERVER then
-			--Add The Fay player here and move up observer; always one more civ than the player or map asks for
-
-		--	break		
+	
+			PreGame.SetLeaderName(iPlayer, "TXT_KEY_EA_NO_LEADER")	
 		end
-
 	end
 
 	--The Fay
@@ -215,18 +195,7 @@ function SetEaCivs()
 	PreGame.SetCivilizationAdjective(iPlayer, "TXT_KEY_EA_CIV_THE_FAY")
 	PreGame.SetLeaderName(iPlayer, "TXT_KEY_EAPERSON_FAND")
 
-	--Animals
-	--[[ Added in dll
-	local iPlayer, iTeam = GetNextAvailablePlayerTeamIndexes()
-	EaSetupDB.SetValue("ANIMALS_PLAYER_INDEX", iPlayer)
-	PreGame.SetSlotStatus(iPlayer, SlotStatus.SS_COMPUTER)
-	PreGame.SetCivilization(iPlayer, 4)			--This will be the Animals 
-	PreGame.SetSlotClaim(iPlayer, SlotClaim.SLOTCLAIM_ASSIGNED)	--matters?
-	PreGame.SetCivilizationDescription(iPlayer, "TXT_KEY_EA_NOTSHOWN")
-	PreGame.SetCivilizationShortDescription(iPlayer, "TXT_KEY_EA_NOTSHOWN")
-	PreGame.SetCivilizationAdjective(iPlayer, "TXT_KEY_EA_NOTSHOWN")
-	PreGame.SetLeaderName(iPlayer, "TXT_KEY_THE_LION_KING")
-	]]
+	--Animals are added by dll
 
 	print("Player slots after SetEaCivs (iPlayer/GetSlotStatus/GetSlotClaim/GetCivilization):")
 	for i = 0, GameDefines.MAX_PLAYERS - 1 do

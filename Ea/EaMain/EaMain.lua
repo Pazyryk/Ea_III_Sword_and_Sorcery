@@ -174,7 +174,7 @@ local function PrintGameTurn(iPlayer, gameTurn)
 		print("------------------------------------------------------------------------------------------------------")
 end
 
-local function PrintNewTurnForPlayer(iPlayer)
+local function PrintNewTurnForPlayer(iPlayer, gameTurn)
 	-------------------------------------------------------------------------------------------------------
 	-- "New turn for player..."
 	-------------------------------------------------------------------------------------------------------
@@ -225,15 +225,14 @@ local function OnPlayerDoTurn(iPlayer)	-- Runs at begining of turn for all livin
 	print("OnPlayerDoTurn ", iPlayer)
 
 	local gameTurn = Game.GetGameTurn()
+	if gameTurn == 0 then return end
 
 	timerAllPerTurnFunctionsStart = Clock()
 	local player = Players[iPlayer]
 
 	if g_lastTurn < gameTurn then
 		g_lastTurn = gameTurn
-		--if gameTurn == 1 then
-		--	FindAndDeleteBadAutoSaves()
-		--end
+
 		-------------------------------------------------------------------------------------------------------
 		-- Pre-Lua per game turn functions
 		-------------------------------------------------------------------------------------------------------
@@ -260,7 +259,7 @@ local function OnPlayerDoTurn(iPlayer)	-- Runs at begining of turn for all livin
 	g_bHumanOrFirstInAutoplayTurn = g_bHumanOrFirstInAutoplayTurn or iPlayer == g_iActivePlayer
 
 	local startOtherPerTurn = Clock()
-	PrintNewTurnForPlayer(iPlayer)
+	PrintNewTurnForPlayer(iPlayer, gameTurn)
 
 	-------------------------------------------------------------------------------------------------------
 	-- Per turn functions

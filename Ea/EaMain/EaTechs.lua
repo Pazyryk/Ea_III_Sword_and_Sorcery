@@ -22,22 +22,25 @@ local FAVORED_TECH_COST_REDUCTION = -20
 local BARB_PLAYER_INDEX =				BARB_PLAYER_INDEX	
 local AI_FREE_TECHS =					GameInfo.HandicapInfos[Game:GetHandicapType()].EaAIFreeTechs
 
+local GameInfoTypes =					GameInfoTypes
+local BUILDING_HARBOR =					GameInfoTypes.BUILDING_HARBOR
+local EACIV_SISUKAS =					GameInfoTypes.EACIV_SISUKAS
 local EARACE_MAN =						GameInfoTypes.EARACE_MAN
 local EARACE_SIDHE =					GameInfoTypes.EARACE_SIDHE
 local EARACE_HELDEOFOL =				GameInfoTypes.EARACE_HELDEOFOL
-local EACIV_SISUKAS =					GameInfoTypes.EACIV_SISUKAS
 local EA_WONDER_GREAT_LIBRARY =			GameInfoTypes.EA_WONDER_GREAT_LIBRARY
+local EA_ARTIFACT_TOME_OF_TOMES =		GameInfoTypes.EA_ARTIFACT_TOME_OF_TOMES
 local EA_EPIC_VAFTHRUTHNISMAL =			GameInfoTypes.EA_EPIC_VAFTHRUTHNISMAL
 
 local POLICY_PANTHEISM =				GameInfoTypes.POLICY_PANTHEISM
 local POLICY_SCHOLASTICISM = 			GameInfoTypes.POLICY_SCHOLASTICISM
 local POLICY_ACADEMIC_TRADITION = 		GameInfoTypes.POLICY_ACADEMIC_TRADITION
 local POLICY_RATIONALISM = 				GameInfoTypes.POLICY_RATIONALISM
-local BUILDING_HARBOR =					GameInfoTypes.BUILDING_HARBOR
 
-local EA_ARTIFACT_TOME_OF_TOMES =		GameInfoTypes.EA_ARTIFACT_TOME_OF_TOMES
 
 --localized game and global tables
+local Players = Players
+local gPlayers = gPlayers
 local playerType = MapModData.playerType
 local fullCivs = MapModData.fullCivs
 local realCivs =	MapModData.realCivs
@@ -45,6 +48,8 @@ local gg_fishingRange = gg_fishingRange
 local gg_whalingRange = gg_whalingRange
 local gg_campRange = gg_campRange
 local gg_playerArcaneMod = gg_playerArcaneMod
+local gg_regularCombatType = gg_regularCombatType
+local gg_unitTier = gg_unitTier
 
 
 --localized functions
@@ -487,7 +492,21 @@ OnMajorPlayerTechLearned[GameInfoTypes.TECH_METAL_CASTING] = function(iPlayer)
 	end
 end
 
+OnMajorPlayerTechLearned[GameInfoTypes.TECH_STEEL_WORKING] = function(iPlayer)
+	local player = Players[iPlayer]
+	for unit in player:Units() do
+		local unitTypeID = unit:GetUnitType()
+		if gg_regularCombatType[unitTypeID] == "troops" and 2 < gg_unitTier[unitTypeID] then
+			if not unit:IsHasPromotion(GameInfoTypes.PROMOTION_STEEL_WEAPONS) and not unit:IsHasPromotion(GameInfoTypes.PROMOTION_MITHRIL_WEAPONS) then
+				unit:SetBaseCombatStrength(unit:GetBaseCombatStrength() + 2)
+				unit:SetHasPromotion(GameInfoTypes.PROMOTION_STEEL_WEAPONS, true)
+			end
+		end
+	end
+end
+
 OnMajorPlayerTechLearned[GameInfoTypes.TECH_MITHRIL_WORKING] = function(iPlayer)
+	local player = Players[iPlayer]
 	if gPlayers[iPlayer].eaCivNameID == EACIV_SISUKAS then
 		local race = eaPlayer.race
 		local unitTypeID
@@ -498,12 +517,24 @@ OnMajorPlayerTechLearned[GameInfoTypes.TECH_MITHRIL_WORKING] = function(iPlayer)
 		elseif race == EARACE_HELDEOFOL then
 			unitTypeID = GameInfoTypes.UUNIT_IMMORTALS_ORC
 		end
-		local player = Players[iPlayer]
 		local capital = player:GetCapitalCity()
 		player:InitUnit(unitTypeID, capital:GetX(), capital:GetY())
 	end
+	for unit in player:Units() do
+		local unitTypeID = unit:GetUnitType()
+		if gg_regularCombatType[unitTypeID] == "troops" and 4 < gg_unitTier[unitTypeID] then
+			if not unit:IsHasPromotion(GameInfoTypes.PROMOTION_MITHRIL_WEAPONS) then
+				if unit:IsHasPromotion(GameInfoTypes.PROMOTION_STEEL_WEAPONS) then
+					unit:SetHasPromotion(GameInfoTypes.PROMOTION_STEEL_WEAPONS, false)
+					unit:SetBaseCombatStrength(unit:GetBaseCombatStrength() + 2)
+				else
+					unit:SetBaseCombatStrength(unit:GetBaseCombatStrength() + 4)
+				end
+				unit:SetHasPromotion(GameInfoTypes.PROMOTION_MITHRIL_WEAPONS, true)
+			end
+		end
+	end
 end
-
 
 OnMajorPlayerTechLearned[GameInfoTypes.TECH_SAILING] = function(iPlayer)
 	local player = Players[iPlayer]

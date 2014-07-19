@@ -3,68 +3,6 @@
 -- DateCreated: 3/24/2014 10:02:52 AM
 --------------------------------------------------------------
 
---Listener tests
-
-
---[[
-function ListenerTest1(...)
-	print("GameplayFX", unpack(arg))
-end
-Events.GameplayFX.Add(ListenerTest1)
-
-function ListenerTest2(...)
-	print("UnitStateChangeDetected", unpack(arg))
-end
-Events.UnitStateChangeDetected.Add(ListenerTest2)
-
-]]
-
-local i = 0
-
-
-
-local function OnNewGameTurn(...)
-	i = i + 1
-	print("turnEventTest NewGameTurn", unpack(arg), i)
-end
-Events.NewGameTurn.Add(OnNewGameTurn)
-
-local function OnActivePlayerTurnStart(...)
-	i = i + 1
-	print("turnEventTest ActivePlayerTurnStart", unpack(arg), i)
-end
-Events.ActivePlayerTurnStart.Add(OnActivePlayerTurnStart)
-
-local function OnPlayerDoTurn(...)
-	i = i + 1
-	print("turnEventTest PlayerDoTurn", unpack(arg), i)
-end
-GameEvents.PlayerDoTurn.Add(OnPlayerDoTurn)
-
-local function OnPlayerPreAIUnitUpdate(...)
-	i = i + 1
-	print("turnEventTest PlayerPreAIUnitUpdate", unpack(arg), i)
-end
-GameEvents.PlayerPreAIUnitUpdate.Add(OnPlayerPreAIUnitUpdate)
-
-local function OnAIProcessingEndedForPlayer(...)
-	i = i + 1
-	print("turnEventTest AIProcessingEndedForPlayer", unpack(arg), i)
-end
-Events.AIProcessingEndedForPlayer.Add(OnAIProcessingEndedForPlayer)
-
-local function OnActivePlayerTurnEnd(...)
-	i = i + 1
-	print("turnEventTest ActivePlayerTurnEnd", unpack(arg), i)
-end
-Events.ActivePlayerTurnEnd.Add(OnActivePlayerTurnEnd)
-
-local function OnGameCoreTestVictory(...)
-	i = i + 1
-	print("turnEventTest GameCoreTestVictory", unpack(arg), i)
-end
-GameEvents.GameCoreTestVictory.Add(OnGameCoreTestVictory)
-
 
 
 local bHidden =			MapModData.bHidden
@@ -136,19 +74,76 @@ end
 
 
 
-
-
-
-
+--Listener tests
 
 
 --[[
+function ListenerTest1(...)
+	print("GameplayFX", unpack(arg))
+end
+Events.GameplayFX.Add(ListenerTest1)
 
-GameInfo.Units[Map.GetPlot(53,32):GetUnit(0):GetUnitType()].Type
+function ListenerTest2(...)
+	print("UnitStateChangeDetected", unpack(arg))
+end
+Events.UnitStateChangeDetected.Add(ListenerTest2)
 
 
 
+local i = 0
 
+local function OnNewGameTurn(...)
+	i = i + 1
+	print("turnEventTest NewGameTurn", unpack(arg), i)
+end
+Events.NewGameTurn.Add(OnNewGameTurn)
+
+local function OnActivePlayerTurnStart(...)
+	i = i + 1
+	print("turnEventTest ActivePlayerTurnStart", unpack(arg), i)
+end
+Events.ActivePlayerTurnStart.Add(OnActivePlayerTurnStart)
+
+local function OnPlayerDoTurn(...)
+	i = i + 1
+	print("turnEventTest PlayerDoTurn", unpack(arg), i)
+end
+GameEvents.PlayerDoTurn.Add(OnPlayerDoTurn)
+
+local function OnPlayerPreAIUnitUpdate(...)
+	i = i + 1
+	print("turnEventTest PlayerPreAIUnitUpdate", unpack(arg), i)
+end
+GameEvents.PlayerPreAIUnitUpdate.Add(OnPlayerPreAIUnitUpdate)
+
+local function OnAIProcessingEndedForPlayer(...)
+	i = i + 1
+	print("turnEventTest AIProcessingEndedForPlayer", unpack(arg), i)
+end
+Events.AIProcessingEndedForPlayer.Add(OnAIProcessingEndedForPlayer)
+
+local function OnActivePlayerTurnEnd(...)
+	i = i + 1
+	print("turnEventTest ActivePlayerTurnEnd", unpack(arg), i)
+end
+Events.ActivePlayerTurnEnd.Add(OnActivePlayerTurnEnd)
+
+local function OnGameCoreTestVictory(...)
+	i = i + 1
+	print("turnEventTest GameCoreTestVictory", unpack(arg), i)
+end
+GameEvents.GameCoreTestVictory.Add(OnGameCoreTestVictory)
+
+
+local function OnRunCombatSim(...)
+	print("OnRunCombatSim ", unpack(arg))
+end
+Events.RunCombatSim.Add(OnRunCombatSim)
+
+local function OnEndCombatSim(...)
+	print("OnEndCombatSim ", unpack(arg))
+end
+Events.EndCombatSim.Add(OnEndCombatSim)
 
 
 ]]

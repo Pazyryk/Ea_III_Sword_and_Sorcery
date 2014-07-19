@@ -28,6 +28,7 @@ INSERT INTO Civilizations (ID, Type,	EaCivString,	EaRace,				Description,				EaR
 
 --note: These four IDs are hardcoded in EaSetupFunctions.lua! (FrontEnd can't reference tables so needs hard-coded IDs)
 
+
 --Build out the table from EaCivs and EaCiv_Races
 INSERT INTO Civilizations (Type, Description, ShortDescription, Adjective, CivilopediaTag, EaCivName, EaRace, EaCivString, DefaultPlayerColor)
 SELECT REPLACE(Type, 'EACIV_', 'CIVILIZATION_') || REPLACE(EaRace, 'EARACE_', '_'), Description, ShortDescription, Adjective, CivilopediaTag, Type, EaRace, EaCivString, DefaultPlayerColor
@@ -50,7 +51,8 @@ UPDATE Civilizations SET ArtDefineTag = 'BLANKLEADER_Scene', ArtStyleType = 'ART
 
 UPDATE Civilizations SET DawnOfManQuote = 'TXT_KEY_CIV5_DAWN_UNITEDSTATES_TEXT', DawnOfManImage = 'DOM_Washington.dds' WHERE Type NOT IN (SELECT Type FROM TempBaseKeepList);
 
-
+--below line CTDs on start; Civ5 seems to need all of these to be 'selectable' to work, so disabled selection in UI and override random slots using PRNG
+--UPDATE Civilizations SET Playable = 0, AIPlayable = 0 WHERE Type NOT IN ('CIVILIZATION_GENERIC_MAN', 'CIVILIZATION_GENERIC_SIDHE');
 
 --Fixinator
 CREATE TABLE IDRemapper ( id INTEGER PRIMARY KEY AUTOINCREMENT, Type TEXT );

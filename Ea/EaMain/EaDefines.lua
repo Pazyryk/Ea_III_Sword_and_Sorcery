@@ -148,6 +148,7 @@ gg_baseUnitPower = {}
 gg_normalizedUnitPower = {}
 gg_gpTempType = {}
 gg_regularCombatType = {}		--"troops", "ship", "construct" (siege, landship, dirigible); these are all regular units
+gg_unitTier = {}
 
 for unitInfo in GameInfo.Units() do
 	for i = 1, #UNIT_SUFFIXES do
@@ -156,14 +157,21 @@ for unitInfo in GameInfo.Units() do
 		if count == 1 then
 			--print(unitPrefix, unitInfo.Type)
 			gg_unitPrefixUnitIDs[unitPrefix] = gg_unitPrefixUnitIDs[unitPrefix] or {}
-				gg_unitPrefixUnitIDs[unitPrefix][#gg_unitPrefixUnitIDs[unitPrefix] + 1] = unitInfo.ID
+			gg_unitPrefixUnitIDs[unitPrefix][#gg_unitPrefixUnitIDs[unitPrefix] + 1] = unitInfo.ID
 			break
 		end
 	end
 	local unitType = unitInfo.Type
 	if string.find(unitType, "UNIT_WARRIORS") or string.find(unitType, "UNIT_SCOUTS") then
 		gg_bToCheapToHire[unitInfo.ID] = true
+		gg_unitTier[unitInfo.ID] = 1
 	end
+	if unitInfo.PrereqTech then
+		local techInfo = GameInfo.Technologies[unitInfo.PrereqTech]
+		gg_unitTier[unitInfo.ID] = techInfo.GridX + 1
+	end
+
+
 	gg_eaSpecial[unitInfo.ID] = unitInfo.EaSpecial
 	gg_baseUnitPower[unitInfo.ID] = Game.GetUnitPower(unitInfo.ID)
 	gg_normalizedUnitPower[unitInfo.ID] = math.floor(gg_baseUnitPower[unitInfo.ID] ^ 0.6667)
@@ -179,6 +187,7 @@ for unitInfo in GameInfo.Units() do
 		end
 	end
 end
+
 
 MapModData.civNamesByRace = MapModData.civNamesByRace or {}
 local civNamesByRace = MapModData.civNamesByRace

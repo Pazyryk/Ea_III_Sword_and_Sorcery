@@ -49,8 +49,11 @@ local PROMOTION_EXTENDED_RANGE =					GameInfoTypes.PROMOTION_EXTENDED_RANGE
 local PROMOTION_DRUNKARD =							GameInfoTypes.PROMOTION_DRUNKARD
 local PROMOTION_STALLIONS_OF_EPONA =				GameInfoTypes.PROMOTION_STALLIONS_OF_EPONA
 local PROMOTION_STUNNED =							GameInfoTypes.PROMOTION_STUNNED
+local PROMOTION_STEEL_WEAPONS =						GameInfoTypes.PROMOTION_STEEL_WEAPONS
+local PROMOTION_MITHRIL_WEAPONS =					GameInfoTypes.PROMOTION_MITHRIL_WEAPONS
 local RELIGION_CULT_OF_EPONA =						GameInfoTypes.RELIGION_CULT_OF_EPONA
 local RESOURCE_CITRUS =								GameInfoTypes.RESOURCE_CITRUS
+local TECH_STEEL_WORKING = 							GameInfoTypes.TECH_STEEL_WORKING
 local UNITCOMBAT_MOUNTED = 							GameInfoTypes.UNITCOMBAT_MOUNTED
 local UNITCOMBAT_NAVAL =							GameInfoTypes.UNITCOMBAT_NAVAL
 local UNIT_FISHING_BOATS =							GameInfoTypes.UNIT_FISHING_BOATS
@@ -82,6 +85,7 @@ local gg_fishingRange =				gg_fishingRange
 local gg_whalingRange =				gg_whalingRange
 local gg_campRange =				gg_campRange
 local gg_eaSpecial =				gg_eaSpecial
+local gg_unitTier =					gg_unitTier
 
 --localized functions
 local Rand = Map.Rand
@@ -379,7 +383,8 @@ function UnitPerCivTurn(iPlayer)	--runs for full civs and city states
 	local bHorseMountedXP = nameTraitID == EACIV_IKKOS
 	local bHorseMountedStrongMerc = nameTraitID == EACIV_HIPPUS
 	local bRemoveOceanBlock = bFullCiv and eaPlayer.eaCivNameID == EACIV_FOMHOIRE
-
+	local bHasSteelWorking = team:IsHasTech(TECH_STEEL_WORKING)
+	local bHasMithrilWorking = team:IsHasTech(TECH_MITHRIL_WORKING)
 	local iLongWallOwner = gWonders[EA_WONDER_THE_LONG_WALL] and Map.GetPlotByIndex(gWonders[EA_WONDER_THE_LONG_WALL].iPlot):GetOwner()
 	local bMayBeSlowedByLongWall = iLongWallOwner and team:IsAtWar(Players[iLongWallOwner]:GetTeam())
 	local longWallMod = iLongWallOwner and gWonders[EA_WONDER_THE_LONG_WALL].mod
@@ -515,6 +520,26 @@ function UnitPerCivTurn(iPlayer)	--runs for full civs and city states
 					--	unit:Kill(true, -1)
 					--	plot:AddFloatUpMessage("Unbound dead has un-animated", 1)
 					end				
+				end
+			end
+
+			--Steel/Mithril Weopons
+			if bHasSteelWorking and gg_regularCombatType[unitTypeID] == "troops" then
+				if bHasMithrilWorking and 4 < gg_unitTier[unitTypeID] then
+					if not unit:IsHasPromotion(PROMOTION_MITHRIL_WEAPONS) then
+						if unit:IsHasPromotion(PROMOTION_STEEL_WEAPONS) then
+							unit:SetHasPromotion(PROMOTION_STEEL_WEAPONS, false)
+							unit:SetBaseCombatStrength(unit:GetBaseCombatStrength() + 2)
+						else
+							unit:SetBaseCombatStrength(unit:GetBaseCombatStrength() + 4)
+						end
+						unit:SetHasPromotion(PROMOTION_MITHRIL_WEAPONS, true)
+					end
+				elseif 2 < gg_unitTier[unitTypeID] then
+					if not unit:IsHasPromotion(PROMOTION_STEEL_WEAPONS) and not unit:IsHasPromotion(PROMOTION_MITHRIL_WEAPONS) then
+						unit:SetBaseCombatStrength(unit:GetBaseCombatStrength() + 2)
+						unit:SetHasPromotion(PROMOTION_STEEL_WEAPONS, true)
+					end
 				end
 			end
 

@@ -4,7 +4,7 @@
 --------------------------------------------------------------
 print("Loading EaInit.lua...")
 
-local function InitPersistedValuesForNewGame()
+local function InitForNewGame()
 
 	--gWorld
 	gWorld.sumOfAllMana =				MapModData.STARTING_SUM_OF_ALL_MANA
@@ -20,7 +20,6 @@ local function InitPersistedValuesForNewGame()
 	gWorld.calledMajorSpirits =			{}
 	gWorld.panCivsEver =				0
 	
-
 	--gRaceDiploMatrix; index by player1 (observer), player2 (subject); these are start values modified through game by city razing
 	for row in GameInfo.EaRaces_InitialHatreds() do
 		local observerRaceID = GameInfoTypes[row.ObserverRace]
@@ -160,7 +159,7 @@ function OnLoadEaMain()   --Called from the bottom of EaMain after all included 
 
 	if bNewGame then
 		print("Initializiing for new game...")
-		InitPersistedValuesForNewGame()
+		InitForNewGame()
 	else
 		print("Initializing for loaded game...")	
 	end

@@ -608,8 +608,9 @@ function CheckCapitalBuildings(iPlayer)
 end
 
 function UpdateFaithFromEaCityStatesForUI()
-	Dprint("UpdateFaithFromEaCityStatesForUI")
-	MapModData.faithFromCityStates = GetFaithFromEaCityStates(g_iActivePlayer)
+	if fullCivs(g_iActivePlayer) then
+		MapModData.faithFromCityStates = GetFaithFromEaCityStates(g_iActivePlayer)
+	end
 end
 LuaEvents.EaCivsUpdateFaithFromEaCityStatesForUI.Add(UpdateFaithFromEaCityStatesForUI)	--called when Arcane or Holy CS popup closed
 

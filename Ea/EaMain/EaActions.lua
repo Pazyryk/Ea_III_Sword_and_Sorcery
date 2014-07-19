@@ -1744,6 +1744,7 @@ Do[GameInfoTypes.EA_ACTION_BUILD] = function()
 		g_eaPerson.activePlayerEndTurnXP = g_int1
 	else
 		g_unit:ChangeExperience(g_int1)
+		g_unit:FinishMoves()
 	end
 	return true
 end
@@ -1955,6 +1956,7 @@ Do[GameInfoTypes.EA_ACTION_RECRUIT] = function()
 		g_eaPerson.activePlayerEndTurnXP = g_int1
 	else
 		g_unit:ChangeExperience(g_int1)
+		g_unit:FinishMoves()
 	end
 	return true
 end

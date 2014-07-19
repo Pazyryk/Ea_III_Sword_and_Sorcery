@@ -52,10 +52,19 @@
 		<Row Tag="TXT_KEY_EA_PROMOTION_GREAT_BOMBARDE_HELP">
 			<Text>+100% city attack.</Text>
 		</Row>
-		
+
 
 		<Row Tag="TXT_KEY_EA_PROMOTION_STEEL_WEAPONS">
 			<Text>Steel Weopons</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_STEEL_WEAPONS_HELP">
+			<Text>+2 Combat Strength; +15% Ranged Strength (if applicable)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_MITHRIL_WEAPONS">
+			<Text>Mithril Weopons</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_MITHRIL_WEAPONS_HELP">
+			<Text>+4 Combat Strength; +30% Ranged Strength (if applicable)</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_METAL_CLAD">
 			<Text>Metal-Clad</Text>

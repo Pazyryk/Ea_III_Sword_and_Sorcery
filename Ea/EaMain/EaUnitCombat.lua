@@ -119,7 +119,7 @@ end
 --TO DO: Depreciate Events hook below. Replace with new GameEvents.
 
 local function OnSerialEventUnitCreated(iPlayer, iUnit, hexVec, unitType, cultureType, civID, primaryColor, secondaryColor, unitFlagIndex, fogState, selected, military, notInvisible)
-	print("Running SerialEventUnitCreated ", iPlayer, iUnit, hexVec, unitType, cultureType, civID, primaryColor, secondaryColor, unitFlagIndex, fogState, selected, military, notInvisible)
+	--print("Running SerialEventUnitCreated ", iPlayer, iUnit, hexVec, unitType, cultureType, civID, primaryColor, secondaryColor, unitFlagIndex, fogState, selected, military, notInvisible)
 	--WARNINGS:
 	--unitType is not unitTypeID
 	--runs for embark, disembark
@@ -128,7 +128,7 @@ local function OnSerialEventUnitCreated(iPlayer, iUnit, hexVec, unitType, cultur
 	local player = Players[iPlayer]
 	local unit = player:GetUnitByID(iUnit)
 	if not unit then return end
-	print("Actual unitTypeID = ", unit:GetUnitType())
+	--print("Actual unitTypeID = ", unit:GetUnitType())
 
 	--TO DO: Mod dll so we can remove this Events hook!
 
@@ -235,8 +235,8 @@ end
 GameEvents.UnitCaptured.Add(function(iPlayer, iUnit) return HandleError21(OnUnitCaptured, iPlayer, iUnit) end)
 
 --Forced interface mode: The Active player must do some something specific (e.g., use Magic Missile) or drop this interface mode and reset unit
-local function ResetForcedSelectionUnit()		--resets temp attack unit if player fiddles around rather than attacking
-	print("ResetForcedSelectionUnit")
+local function ResetForcedInterfaceUnit()		--resets temp attack unit if player fiddles around rather than attacking
+	print("ResetForcedInterfaceUnit")
 	local iUnit = MapModData.forcedUnitSelection
 	local player = Players[g_iActivePlayer]
 	local unit = player:GetUnitByID(iUnit)
@@ -254,43 +254,38 @@ local function ResetForcedSelectionUnit()		--resets temp attack unit if player f
 	end
 
 end
-LuaEvents.EaUnitCombatResetForcedSelectionUnit.Add(function() return HandleError10(ResetForcedSelectionUnit) end)
+LuaEvents.EaUnitCombatResetForcedSelectionUnit.Add(function() return HandleError10(ResetForcedInterfaceUnit) end)
 
-local function DoForcedInterfaceMode()
-	Dprint("DoForcedInterfaceMode")
+local function ForceInterfaceMode()
 	if MapModData.forcedUnitSelection == -1 then return end
 	if not Players[g_iActivePlayer]:IsTurnActive() then return end
-	--need active player current turn check?
-	--if UI.GetInterfaceMode() == MapModData.forcedInterfaceMode then return end	--unlikely we have jumped to another unit and gotten into the same interface
 
-	print("Running DoForcedInterfaceMode")
+	print("Running ForceInterfaceMode")
 
 	local unit = Players[g_iActivePlayer]:GetUnitByID(MapModData.forcedUnitSelection)
 	if unit then
 		if unit ~= UI.GetHeadSelectedUnit() then
 			print("!!!! Warning: Selected unit is not forcedUnitSelection; cancelling")
-			ResetForcedSelectionUnit()
+			ResetForcedInterfaceUnit()
 		elseif UI.GetInterfaceMode() ~= MapModData.forcedInterfaceMode then
 			print("Setting interface mode")
 			UI.SetInterfaceMode(MapModData.forcedInterfaceMode)
 		end
 	else
 		print("!!!! ERROR: failed to obtain unit object from MapModData.forcedUnitSelection")
-		ResetForcedSelectionUnit()
+		ResetForcedInterfaceUnit()
 	end
 
 end
-Events.SerialEventGameDataDirty.Add(DoForcedInterfaceMode)
-Events.SerialEventUnitInfoDirty.Add(DoForcedInterfaceMode)
+Events.SerialEventGameDataDirty.Add(ForceInterfaceMode)
+Events.SerialEventUnitInfoDirty.Add(ForceInterfaceMode)
 
-local function OnUnitSelectionChanged(iPlayer, iUnit, hexX, hexY, iUnknown, bSelected, bUnknown)
-	print("OnUnitSelectionChanged ", iPlayer, iUnit, hexX, hexY, iUnknown, bSelected, bUnknown)
+local function ForceUnitSelection(iPlayer, iUnit, hexX, hexY, iUnknown, bSelected, bUnknown)
+	--print("ForceUnitSelection ", iPlayer, iUnit, hexX, hexY, iUnknown, bSelected, bUnknown)
 	--iPlayer, iUnit, hexX, hexY, ?0, bSelected, ?false
 	--runs for unselected first, then new selected
 
-	if iPlayer ~= g_iActivePlayer then
-		error("What?!")
-	end
+	--Time Stop unit
 	if gg_bActivePlayerTimeStop and not bSelected then
 		local bFoundTimeStopUnit = false
 		for iPerson, eaPerson in pairs(gPeople) do
@@ -308,8 +303,9 @@ local function OnUnitSelectionChanged(iPlayer, iUnit, hexX, hexY, iUnknown, bSel
 			gg_bActivePlayerTimeStop = false
 		end
 	end
+
 end
-Events.UnitSelectionChanged.Add(OnUnitSelectionChanged)
+Events.UnitSelectionChanged.Add(ForceUnitSelection)
 
 function CheckTimeStopUnit(unit, eaPerson)
 	if unit:GetMoves() <= 0 then
@@ -323,15 +319,6 @@ function CheckTimeStopUnit(unit, eaPerson)
 	end
 end
 
-local function OnRunCombatSim(...)
-	print("OnRunCombatSim ", unpack(arg))
-end
-Events.RunCombatSim.Add(OnRunCombatSim)
-
-local function OnEndCombatSim(...)
-	print("OnEndCombatSim ", unpack(arg))
-end
-Events.EndCombatSim.Add(OnEndCombatSim)
 
 function DoSequencedAttacks()	--called directly and at end of OnCombatEnded when another attack is possible
 	while 0 < gg_sequencedAttacks.pos do

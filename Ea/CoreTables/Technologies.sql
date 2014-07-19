@@ -194,7 +194,9 @@ INSERT INTO Technology_EaTechButtonIncludeSpecials (TechType, SpecialText) VALUE
 ('TECH_BEAST_MASTERY',		'TXT_KEY_EA_TECH_BEAST_MASTERY_SPECIAL'		),
 ('TECH_WHALING',			'TXT_KEY_EA_TECH_WHALING_SPECIAL'			),
 ('TECH_NAVIGATION',			'TXT_KEY_EA_TECH_NAVIGATION_SPECIAL'		),
-('TECH_ANIMAL_MASTERY',		'TXT_KEY_EA_TECH_ANIMAL_MASTERY_SPECIAL'	);
+('TECH_ANIMAL_MASTERY',		'TXT_KEY_EA_TECH_ANIMAL_MASTERY_SPECIAL'	),
+('TECH_STEEL_WORKING',		'TXT_KEY_EA_TECH_STEEL_WORKING_SPECIAL'		),
+('TECH_MITHRIL_WORKING',	'TXT_KEY_EA_TECH_MITHRIL_WORKING_SPECIAL'	);
 
 
 INSERT INTO Technology_EaTechButtonIncludeSpecials (TechType, SpecialText,	IconAtlas,			IconIndex	) VALUES
@@ -205,6 +207,8 @@ INSERT INTO Technology_EaTechButtonIncludeSpecials (TechType, SpecialText,	IconA
 DELETE FROM Technology_Flavors;				--not needed: mod controls all tech choices
 DELETE FROM Technology_ORPrereqTechs;		--not used in base
 DELETE FROM Technology_DomainExtraMoves;	--not used in base
+DELETE FROM Technology_FreePromotions;		--Works if promo added to UnitPromotions_UnitCombats!
+
 
 DELETE FROM Technology_PrereqTechs;
 INSERT INTO Technology_PrereqTechs (PrereqTech, TechType) VALUES	--flipped for easy reading
@@ -359,10 +363,6 @@ INSERT INTO Technology_PrereqTechs (PrereqTech, TechType) VALUES	--flipped for e
 
 --utility techs
 INSERT INTO Technology_PrereqTechs (PrereqTech, TechType) SELECT 'TECH_NEVER', Type FROM Technologies WHERE Utility = 1;
-
-DELETE FROM Technology_FreePromotions;
-INSERT INTO Technology_FreePromotions (TechType, PromotionType) VALUES
-('TECH_STEEL_WORKING', 'PROMOTION_STEEL_WEAPONS');
 
 
 INSERT INTO EaDebugTableCheck(FileName) SELECT 'Technologies.sql';

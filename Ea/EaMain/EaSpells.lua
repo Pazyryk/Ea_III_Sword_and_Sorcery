@@ -964,9 +964,11 @@ function InterruptEaSpell(iPlayer, iPerson)
 	print("end of InterruptEaSpell")								
 end
 
-function TestSpellLearnable(iPlayer, iPerson, spellID, spellClass)		--iPerson = nil to generate civ list; spellClass is optional restriction (used for separate UI panels)
+function TestSpellLearnable(iPlayer, iPerson, spellID, spellClass, bSuppressMinimumModToLearn)		--iPerson = nil to generate civ list; spellClass is optional restriction (used for separate UI panels)
 	
 	if not SetAIValues[spellID] then return false end	--Not really added yet, even if in table
+
+	--MinimumModToLearn
 
 	local spellInfo = EaActionsInfo[spellID]
 	if spellClass and spellClass ~= spellInfo.SpellClass and spellInfo.SpellClass ~= "Both" then return false end

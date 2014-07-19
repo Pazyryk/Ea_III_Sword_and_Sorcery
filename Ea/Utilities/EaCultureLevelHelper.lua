@@ -12,10 +12,11 @@ local gT = MapModData.gT
 --------------------------------------------------------------
 --Settings
 --------------------------------------------------------------
-local POLICY_MULTIPLIER = 5									--Max policies as a function of culture generation / population
-local POLICY_DENOMINATOR_ADD = 100 * MapModData.GAME_SPEED		--how quickly we move toward max policies (lower is faster)
+local POLICY_MULTIPLIER = 5										--policies as a function of culture generation / population
+local POLICY_ADD = 0											--extra policies you would get with no culture
+--local POLICY_DENOMINATOR_ADD = 100 * MapModData.GAME_SPEED		--how quickly we move toward max policies (lower is faster)
 
-
+local CL_APPROACH_FACTOR = -0.02 / MapModData.GAME_SPEED		-- -0.02 gives CL very close to ApproachCL by turn 200
 --------------------------------------------------------------
 --File Locals
 --------------------------------------------------------------
@@ -25,17 +26,21 @@ local EA_EPIC_VOLUSPA =		GameInfoTypes.EA_EPIC_VOLUSPA
 --Localized tables and methods
 local Players = Players
 local Floor = math.floor
-
+local exp = math.exp
 
 --aveCulturePerPop should be read as ave(CulturePerPop); so turn with 1 pop counts as much as turn with 100 pop
 
-local function CL(aveCulturePerPop, gameTurn)
-	return POLICY_MULTIPLIER * aveCulturePerPop * gameTurn / (gameTurn + POLICY_DENOMINATOR_ADD)
+
+local function ApproachCL(aveCulturePerPop)
+	return POLICY_MULTIPLIER * aveCulturePerPop + POLICY_ADD
 end
 
-local function CeilingCL(aveCulturePerPop)
-	return POLICY_MULTIPLIER * aveCulturePerPop
+local function CL(aveCulturePerPop, gameTurn)
+	--return (POLICY_MULTIPLIER * aveCulturePerPop + POLICY_ADD) * gameTurn / (gameTurn + POLICY_DENOMINATOR_ADD)
+	return ApproachCL(aveCulturePerPop) * (1 - exp(CL_APPROACH_FACTOR * gameTurn))
 end
+
+-- math.exp(myval) 
 
 -- Per turn update (runs each turn after turn 0 from EaPolicies.lua)
 function UpdateCulturalLevel(iPlayer, eaPlayer)
@@ -83,6 +88,6 @@ function UpdateCultureLevelInfoForUI(iActivePlayer)
 	end
 
 	MapModData.estCultureLevelChange = estNextTurn - MapModData.cultureLevel
-	MapModData.approachingCulturalLevel = CeilingCL(eaPlayer.aveCulturePerPop)
+	MapModData.approachingCulturalLevel = ApproachCL(eaPlayer.aveCulturePerPop)
 
 end

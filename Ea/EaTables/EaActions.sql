@@ -31,6 +31,7 @@ CREATE TABLE EaActions ('ID' INTEGER PRIMARY KEY AUTOINCREMENT,
 						'SpellClass' TEXT DEFAULT NULL,	--'Divine', 'Arcane', 'Both' or NULL
 						'FreeSpellSubclass' TEXT DEFAULT NULL,
 						'FallenAltSpell' TEXT DEFAULT NULL,
+						--'MinimumModToLearn' INTEGER DEFAULT 0,	--spells only
 						--Civ or world reqs
 						'TechReq' TEXT DEFAULT NULL,
 						'OrTechReq' TEXT DEFAULT NULL,
@@ -86,7 +87,6 @@ CREATE TABLE EaActions ('ID' INTEGER PRIMARY KEY AUTOINCREMENT,
 						'NoGPNumLimit' BOOLEAN DEFAULT NULL,
 						'FinishMoves' BOOLEAN DEFAULT 1,
 						'StayInvisible' BOOLEAN DEFAULT NULL,
-						--'Disappear' BOOLEAN DEFAULT NULL,		--DEPRECIATED
 						'TurnsToComplete' INTEGER DEFAULT 1,	--1 immediate; >1 will run until done; 1000 means run forever for human (changes to 8 for AI; so resident will wake up and look around)
 						'ProgressHolder' TEXT DEFAULT NULL,			--Person, City or CityCiv or Plot
 						'BuildType' TEXT DEFAULT NULL,				--if above is Plot then this should be a valid BuildType
@@ -415,6 +415,8 @@ INSERT INTO EaActions (Type,			SpellClass,	GPModType1,				TechReq,						City,	AI
 --('EA_SPELL_PHANTASMAGORIA',				'Arcane',	'EAMOD_ILLUSION',		'TECH_PHANTASMAGORIA',			NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	);
 
 UPDATE EaActions SET FinishMoves = NULL WHERE Type IN ('EA_SPELL_SCRYING', 'EA_SPELL_PLASMA_STORM', 'EA_SPELL_HAIL_OF_PROJECTILES', 'EA_SPELL_MASS_ENERGY_DRAIN', 'EA_SPELL_TIME_STOP');
+
+--UPDATE EaActions SET MinimumModToLearn = 15 WHERE Type = 'EA_SPELL_TIME_STOP';
 
 --Both Arcane and Divine
 INSERT INTO EaActions (Type,			SpellClass,	GPModType1,				TechReq,						City,	AITarget,			AICombatRole,	FallenAltSpell,					TurnsToComplete,	FixedFaith,	HumanVisibleFX,	IconIndex,	IconAtlas			) VALUES

@@ -396,6 +396,14 @@
 		<Row Tag="TXT_KEY_EA_TECH_ANIMAL_MASTERY_SPECIAL">
 			<Text>+2 range at which Hunters can establish Camps</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_STEEL_WORKING_SPECIAL">
+			<Text>All regular troops of tier 3 and higher gain +2 Combat Strength</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_MITHRIL_WORKING_SPECIAL">
+			<Text>All regular troops of tier 5 and higher gain +4 Combat Strength</Text>
+		</Row>
+
+		
 
 	</Language_en_US>
 

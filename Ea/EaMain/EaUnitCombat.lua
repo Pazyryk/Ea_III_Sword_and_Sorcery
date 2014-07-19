@@ -44,11 +44,12 @@ local gPlayers =					gPlayers
 local gPeople =						gPeople
 local Players =						Players
 local fullCivs =					MapModData.fullCivs
-local gg_bNormalLivingCombatUnit =	gg_bNormalLivingCombatUnit
+
 local gg_slaveryPlayer =			gg_slaveryPlayer
 local gg_gpTempType =				gg_gpTempType
 local gg_eaSpecial =				gg_eaSpecial
 local gg_sequencedAttacks =			gg_sequencedAttacks
+local gg_regularCombatType =		gg_regularCombatType
 
 --localized functions
 local HandleError =					HandleError
@@ -282,13 +283,45 @@ end
 Events.SerialEventGameDataDirty.Add(DoForcedInterfaceMode)
 Events.SerialEventUnitInfoDirty.Add(DoForcedInterfaceMode)
 
-local function OnUnitSelectionChanged(...)
-	print("OnUnitSelectionChanged ", unpack(arg))
+local function OnUnitSelectionChanged(iPlayer, iUnit, hexX, hexY, iUnknown, bSelected, bUnknown)
+	print("OnUnitSelectionChanged ", iPlayer, iUnit, hexX, hexY, iUnknown, bSelected, bUnknown)
 	--iPlayer, iUnit, hexX, hexY, ?0, bSelected, ?false
 	--runs for unselected first, then new selected
 
+	if iPlayer ~= g_iActivePlayer then
+		error("What?!")
+	end
+	if gg_bActivePlayerTimeStop and not bSelected then
+		local bFoundTimeStopUnit = false
+		for iPerson, eaPerson in pairs(gPeople) do
+			if eaPerson.timeStop then
+				bFoundTimeStopUnit = true
+				UI.ClearSelectionList()
+				local timeStopUnit = Players[iPlayer]:GetUnitByID(eaPersoniUnit)
+				if timeStopUnit then
+					UI.SelectUnit(timeStopUnit)
+					CheckTimeStopUnit(timeStopUnit, eaPerson)
+				end
+			end
+		end
+		if not bFoundTimeStopUnit then
+			gg_bActivePlayerTimeStop = false
+		end
+	end
 end
 Events.UnitSelectionChanged.Add(OnUnitSelectionChanged)
+
+function CheckTimeStopUnit(unit, eaPerson)
+	if unit:GetMoves() <= 0 then
+		eaPerson.timeStop = eaPerson.timeStop - 1
+		if eaPerson.timeStop == 0 then
+			eaPerson.timeStop = nil
+			gg_bActivePlayerTimeStop = false
+		end
+		unit:SetMoves(120)
+		unit:SetMadeAttack(false)
+	end
+end
 
 local function OnRunCombatSim(...)
 	print("OnRunCombatSim ", unpack(arg))
@@ -370,72 +403,6 @@ function DoSequencedAttacks()	--called directly and at end of OnCombatEnded when
 	end
 end
 
-
---[[
-function CombatResolvedListener(iPlayer, id, bVictorious, bCityAttack)
-	print("CombatResolvedListener ", iPlayer, id, bVictorious, bCityAttack)
-end
-GameEvents.CombatResolved.Add(CombatResolvedListener)
-
---Melee attack resulting from Lead Charge has to be delayed
-local function DoDelayedAttacks(iPlayer)	--called by OnPlayerPreAIUnitUpdate for AI or by a delayed timed event for human
-	if g_delayedAttacks.pos == 0 then return end
-	print("DoDelayedAttacks iPlayer")
-	local player = Players[iPlayer]
-	for i = 1, g_delayedAttacks.pos do
-		local delayedAttack = g_delayedAttacks[i]
-		local unit = player:GetUnitByID(delayedAttack.iUnit)
-		if unit then
-
-			local x, y = unit:GetX(), unit:GetY()
-			print(unit:GetX(), unit:GetY(), delayedAttack.x, delayedAttack.y)
-			unit:PushMission(MissionTypes.MISSION_MOVE_TO, delayedAttack.x, delayedAttack.y)
-			local newX, newY = unit:GetX(), unit:GetY()
-
-			--Reset Warrior
-			local iPerson = delayedAttack.iPerson
-			local eaPerson = gPeople[iPerson]
-			if eaPerson then
-				local iPersonUnit = eaPerson.iUnit
-				local personUnit = player:GetUnitByID(iPersonUnit)
-				if personUnit and not personUnit:IsDelayedDeath() then
-					personUnit:SetGPAttackState(0)
-					personUnit:SetInvisibleType(INVISIBLE_SUBMARINE)
-					if newX ~= x or newY ~= y then
-						print("teleporting GP to follow melee unit")
-						personUnit:SetXY(newX, newY)
-					end
-				end
-			end
-		end
-	end
-	g_delayedAttacks.pos = 0
-end
-
-local MELEE_ATTACK_AFTER_THOUSANDTHS_SECONDS = 500
-local g_bStart = false
-local g_tickStart = 0
-function TimeDelayForHumanMeleeCharge(tickCount, timeIncrement)		--DON'T LOCALIZE! Causes CTD with RemoveAll
-	if g_bStart then
-		if MELEE_ATTACK_AFTER_THOUSANDTHS_SECONDS < tickCount - g_tickStart then
-			Events.LocalMachineAppUpdate.RemoveAll()	--also removes tutorial checks (good riddence!)
-			print("TimeDelayForHumanMeleeCharge; delay in sec/1000 = ", tickCount - g_tickStart)
-			print("os.clock() / tickCount : ", os.clock(), tickCount)
-			DoDelayedAttacks(Game.GetActivePlayer())
-		end
-	else
-		g_tickStart = tickCount
-		g_bStart = true
-	end
-end
-
-local function OnPlayerPreAIUnitUpdate(iPlayer)	--this fires for AI players after PlayerDoTurn (before unit orders I think)
-	print("OnPlayerPreAIUnitUpdate ", iPlayer)
-	DoDelayedAttacks(iPlayer)
-end
-GameEvents.PlayerPreAIUnitUpdate.Add(function(iPlayer) return HandleError10(OnPlayerPreAIUnitUpdate, iPlayer) end)
-]]
-
 local function WarriorLeadCharge(iPlayer, attackingUnit, targetX, targetY)
 	print("WarriorLeadCharge ", iPlayer, attackingUnit, targetX, targetY)
 	local player = Players[iPlayer]
@@ -445,10 +412,10 @@ local function WarriorLeadCharge(iPlayer, attackingUnit, targetX, targetY)
 		local unit = plot:GetUnit(i)
 		if unit ~= attackingUnit and unit:GetOwner() == iPlayer and not unit:IsOnlyDefensive() then
 			local unitTypeID = unit:GetUnitType()
-			if gg_bNormalLivingCombatUnit[unitTypeID] then
+			if gg_regularCombatType[unitTypeID] == "troops" then
 				print("Found melee unit for Warrior charge ", unitTypeID)
 				local iPerson = attackingUnit:GetPersonIndex()
-				local moraleBoost = 2 * GetGPMod(iPerson, "EAMOD_COMBAT", nil)
+				local moraleBoost = 2 * GetGPMod(iPerson, "EAMOD_LEADERSHIP")
 				unit:ChangeMorale(moraleBoost)
 				local floatUp = "+" .. moraleBoost .. " [ICON_HAPPINESS_1] Morale"
 				plot:AddFloatUpMessage(floatUp, 1)

@@ -12,9 +12,8 @@ local gT = MapModData.gT
 --------------------------------------------------------------
 --Settings
 --------------------------------------------------------------
-local POLICY_MULTIPLIER = 10			--Max policies as a function of culture generation / population
-local POLICY_CULTURE_EXPONENT = 0.7
-local POLICY_DENOMINATOR_ADD = 1300		--how quickly we move toward max policies (lower is faster)
+local POLICY_MULTIPLIER = 5									--Max policies as a function of culture generation / population
+local POLICY_DENOMINATOR_ADD = 100 * MapModData.GAME_SPEED		--how quickly we move toward max policies (lower is faster)
 
 
 --------------------------------------------------------------
@@ -27,18 +26,37 @@ local EA_EPIC_VOLUSPA =		GameInfoTypes.EA_EPIC_VOLUSPA
 local Players = Players
 local Floor = math.floor
 
--- Per turn stats update (all full civs from EaPolicies.lua)
+
+--aveCulturePerPop should be read as ave(CulturePerPop); so turn with 1 pop counts as much as turn with 100 pop
+
+local function CL(aveCulturePerPop, gameTurn)
+	return POLICY_MULTIPLIER * aveCulturePerPop * gameTurn / (gameTurn + POLICY_DENOMINATOR_ADD)
+end
+
+local function CeilingCL(aveCulturePerPop)
+	return POLICY_MULTIPLIER * aveCulturePerPop
+end
+
+-- Per turn update (runs each turn after turn 0 from EaPolicies.lua)
 function UpdateCulturalLevel(iPlayer, eaPlayer)
+	local gameTurn = Game.GetGameTurn()
 	local player = Players[iPlayer]
-	local lastCulturalLevel = eaPlayer.culturalLevel
-	eaPlayer.cumPopTurns = eaPlayer.cumPopTurns + player:GetTotalPopulation()
-	local culturalLevel = POLICY_MULTIPLIER * (((player:GetJONSCulture() + eaPlayer.cumPopTurns) / (eaPlayer.cumPopTurns + POLICY_DENOMINATOR_ADD)) ^ POLICY_CULTURE_EXPONENT)
+	local population = player:GetTotalPopulation()
+	local aveCulturePerPopLastTurn = eaPlayer.aveCulturePerPop
+	local cumCultureLastTurn = eaPlayer.cumCulture
+	local culturalLevelLastTurn = eaPlayer.culturalLevel
+	local cumCulture = player:GetJONSCulture()
+	local culturePerPopThisTurn = (cumCulture - cumCultureLastTurn) / population
+	eaPlayer.cumCulture = cumCulture 
+	eaPlayer.aveCulturePerPop = (aveCulturePerPopLastTurn * (gameTurn - 1) + culturePerPopThisTurn) / gameTurn
+	local culturalLevel = CL(eaPlayer.aveCulturePerPop, gameTurn)
+
 	--Voluspa
 	if gT.gEpics[EA_EPIC_VOLUSPA] and gT.gEpics[EA_EPIC_VOLUSPA].iPlayer == iPlayer then
 		culturalLevel = culturalLevel + gT.gEpics[EA_EPIC_VOLUSPA].mod / 10
 	end
 	eaPlayer.culturalLevel = culturalLevel
-	eaPlayer.culturalLevelChange = culturalLevel - lastCulturalLevel		--used by AI (not UI)
+	eaPlayer.culturalLevelChange = culturalLevel - culturalLevelLastTurn		--used by AI (not UI)
 end
 
 -- UI for active player
@@ -49,19 +67,22 @@ MapModData.approachingCulturalLevel = 0
 MapModData.cultureRate = 0
 
 function UpdateCultureLevelInfoForUI(iActivePlayer)
+	local gameTurn = Game.GetGameTurn()
 	local player = Players[iActivePlayer]
 	local eaPlayer = gT.gPlayers[iActivePlayer]
 	if not eaPlayer then return end
 	local population = player:GetTotalPopulation()
 
-	MapModData.cultureRate = player:GetTotalJONSCulturePerTurn() + (eaPlayer.cultureManaFromWildlands or 0)	--more?
-
 	MapModData.cultureLevel = eaPlayer.culturalLevel
-	MapModData.nextCultureLevel = eaPlayer.policyCount + 1 - player:GetNumFreePolicies()
-	local estNextTurn = POLICY_MULTIPLIER * (((player:GetJONSCulture() + MapModData.cultureRate + eaPlayer.cumPopTurns + population) / (eaPlayer.cumPopTurns + POLICY_DENOMINATOR_ADD + population)) ^ POLICY_CULTURE_EXPONENT)
+	MapModData.nextCultureLevel = eaPlayer.policyCount + 1
+	MapModData.cultureRate = player:GetTotalJONSCulturePerTurn() + (eaPlayer.cultureManaFromWildlands or 0)
+	local culturePerPopNextTurn = MapModData.cultureRate / population
+	local estNextTurn = CL((eaPlayer.aveCulturePerPop * gameTurn + culturePerPopNextTurn) / (gameTurn + 1), gameTurn + 1)
 	if gT.gEpics[EA_EPIC_VOLUSPA] and gT.gEpics[EA_EPIC_VOLUSPA].iPlayer == iActivePlayer then	--Voluspa
 		estNextTurn = estNextTurn + gT.gEpics[EA_EPIC_VOLUSPA].mod / 10
 	end
+
 	MapModData.estCultureLevelChange = estNextTurn - MapModData.cultureLevel
-	MapModData.approachingCulturalLevel = POLICY_MULTIPLIER * (((MapModData.cultureRate + population) / population) ^ POLICY_CULTURE_EXPONENT)
+	MapModData.approachingCulturalLevel = CeilingCL(eaPlayer.aveCulturePerPop)
+
 end

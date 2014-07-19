@@ -13,6 +13,8 @@ local Dprint = DEBUG_PRINT and print or function() end
 
 local MANA_CONSUMED_PER_ANRA_FOLLOWER_PER_TURN =	1
 local GUESSED_GROWTH_EXPIRE_TURN = 50	--AI makes a guess at growth potential, but uses real size instead this many turns after city founding
+local RACE_HATRED_FOR_RAZED_POP = 1 / (GAME_SPEED_MULTIPLIER + MAP_SIZE_MULTIPLIER)	--eg, 0.5 for standard/standard
+
 
 --------------------------------------------------------------
 -- File Locals
@@ -142,6 +144,7 @@ local Teams =						Teams
 local gPlayers =					gPlayers
 local gCities =						gCities
 local gWorld =						gWorld
+local gRaceDiploMatrix =			gRaceDiploMatrix
 local gg_unitPrefixUnitIDs =		gg_unitPrefixUnitIDs
 local gg_playerCityPlotIndexes =	gg_playerCityPlotIndexes
 local gg_cityPlotCoastalTest =		gg_cityPlotCoastalTest
@@ -171,7 +174,7 @@ local GetPlotByIndex =		Map.GetPlotByIndex
 --file control
 local bInitialized = false
 local g_gameTurn = Game.GetGameTurn()
-local g_handicapAIGrowthBonus = {}
+local g_handicapAIGrowthPercent = {}
 local g_riverDockByPlotIndex = {}
 local integers = {}
 
@@ -261,7 +264,7 @@ function EaCityInit(bNewGame)
 	for iPlayer, eaPlayer in pairs(fullCivs) do
 		local player = Players[iPlayer]
 		local playerHandicapID = player:GetHandicapType()
-		g_handicapAIGrowthBonus[iPlayer] = GameInfo.HandicapInfos[playerHandicapID].AIGrowthPercent	--will only apply to AI players
+		g_handicapAIGrowthPercent[iPlayer] = GameInfo.HandicapInfos[playerHandicapID].AIGrowthPercent	--will only apply to AI players
 	end
 	for iPlayer, eaPlayer in pairs(realCivs) do
 		gg_playerCityPlotIndexes[iPlayer] = {}
@@ -326,7 +329,7 @@ end
 
 function GetNewOwnerCityForPlot(iPlayer, iPlot, requiredReligionID)
 	local plot = GetPlotByIndex(iPlot)
-	for radius = 1, 30 do
+	for radius = 1, 100 do
 		local bestCity
 		local biggestSize = 0
 		for testPlot in PlotRingIterator(plot, radius, 1, false) do
@@ -343,7 +346,7 @@ function GetNewOwnerCityForPlot(iPlayer, iPlot, requiredReligionID)
 			return bestCity
 		end
 	end
-	error("Could not find city within 30 plots")
+	error("Could not find city within 100 plots")
 end
 
 
@@ -621,12 +624,14 @@ function CityPerCivTurn(iPlayer)		--Full civ only		TO DO: must be real civs so t
 	local eaPlayer = gPlayers[iPlayer]
 	local player = Players[iPlayer]
 	local team = Teams[player:GetTeam()]
-	local classPoints = eaPlayer.classPoints
-	local bIsPantheistic = player:HasPolicy(POLICY_PANTHEISM)
-	local bAI = not player:IsHuman()
+	local bFullCiv = fullCivs[iPlayer]
+	local bActivePlayer = iPlayer == g_iActivePlayer
+	local classPoints = bFullCiv and eaPlayer.classPoints
+	local bIsPantheistic = bFullCiv and player:HasPolicy(POLICY_PANTHEISM)
+	local bAI = not bFullCiv or not player:IsHuman()
 	local bAnraFounded = gReligions[RELIGION_ANRA] ~= nil
 	local bCheckWindy = team:IsHasTech(TECH_MILLING)
-	local aiGrowthPercent = bAI and g_handicapAIGrowthBonus[iPlayer] or nil
+	local aiGrowthPercent = (bFullCiv and bAI) and g_handicapAIGrowthPercent[iPlayer] or nil
 	local playerRemoteImproveCount = gg_cityRemoteImproveCount[iPlayer]
 
 	local cityCount = 0
@@ -650,10 +655,9 @@ function CityPerCivTurn(iPlayer)		--Full civ only		TO DO: must be real civs so t
 				local iCity = city:GetID()
 				cityCount = cityCount + 1
 
-
-
 				local size = city:GetPopulation()	
-				local followerReligion = city:GetReligiousMajority()			
+				local followerReligion = city:GetReligiousMajority()	
+				local cityRaceID = GetCityRace(city)		
 
 				--Disease/Plague: +values represent turns remaining for disease, -values represents turns remaining for plague
 				if eaCity.disease == 0 then
@@ -670,13 +674,13 @@ function CityPerCivTurn(iPlayer)		--Full civ only		TO DO: must be real civs so t
 						size = size - 1
 					end
 					if eaCity.disease < 0 then
-						if iPlayer == g_iActivePlayer then
+						if bActivePlayer then
 							local str = "Plague ravages " .. city:GetName() .. ". The city will lose one population point per turn for the next " .. -eaCity.disease .. " turn(s)"
 							player:AddNotification(NotificationTypes.NOTIFICATION_GENERIC, str, -1, -1)
 						end
 						eaCity.disease = eaCity.disease + 1
 					else
-						if iPlayer == g_iActivePlayer then
+						if bActivePlayer then
 							local str = "Disease ravages " .. city:GetName() .. ". The city will lose one population point per turn for the next " .. eaCity.disease .. " turn(s)"
 							player:AddNotification(NotificationTypes.NOTIFICATION_GENERIC, str, -1, -1)
 						end
@@ -833,44 +837,57 @@ function CityPerCivTurn(iPlayer)		--Full civ only		TO DO: must be real civs so t
 					end
 				end
 
-				--GP point counting
-				classPoints[1] = classPoints[1] + city:GetSpecialistCount(SPECIALIST_SMITH) * 2
-				classPoints[2] = classPoints[2] + city:GetSpecialistCount(SPECIALIST_TRADER) * 2
-				classPoints[3] = classPoints[3] + city:GetSpecialistCount(SPECIALIST_SCRIBE) * 2
-				classPoints[4] = classPoints[4] + city:GetSpecialistCount(SPECIALIST_ARTISAN) * 2
-				classPoints[6] = classPoints[6] + city:GetSpecialistCount(SPECIALIST_DISCIPLE) * 2
-				classPoints[7] = classPoints[7] + city:GetSpecialistCount(SPECIALIST_ADEPT) * 2
+				--Race hatreds grow based on city razing
+				if city:IsRazing() then
+					if cityRaceID ~= eaPlayer.race then
+						local addHate = RACE_HATRED_FOR_RAZED_POP
+						gRaceDiploMatrix[cityRaceID][eaPlayer.race] = gRaceDiploMatrix[cityRaceID][eaPlayer.race] + addHate
+					end
+				end
+				----gRaceDiploMatrix[observerRaceID][subjectRaceID]  RACE_HATRED_FOR_RAZED_POP
 
-				--update residence status and effects if GP walks away or dies
-				if eaCity.resident ~= -1 then
-					local x, y = city:GetX(), city:GetY()
-					local iPerson = eaCity.resident
-					local eaPerson = gPeople[iPerson]
-					if eaPerson then
-						local iUnit = eaPerson.iUnit
-						if iUnit ~= -1 then
-							local unit = player:GetUnitByID(iUnit)
-							if unit then
-								local personX, personY = unit:GetX(), unit:GetY()
-								if personX ~= x or personY ~= y then
-									InterruptEaAction(iPlayer, iPerson)
+				--Full civ only
+				if bFullCiv then
+
+					--GP point counting
+					classPoints[1] = classPoints[1] + city:GetSpecialistCount(SPECIALIST_SMITH) * 2
+					classPoints[2] = classPoints[2] + city:GetSpecialistCount(SPECIALIST_TRADER) * 2
+					classPoints[3] = classPoints[3] + city:GetSpecialistCount(SPECIALIST_SCRIBE) * 2
+					classPoints[4] = classPoints[4] + city:GetSpecialistCount(SPECIALIST_ARTISAN) * 2
+					classPoints[6] = classPoints[6] + city:GetSpecialistCount(SPECIALIST_DISCIPLE) * 2
+					classPoints[7] = classPoints[7] + city:GetSpecialistCount(SPECIALIST_ADEPT) * 2
+
+					--update residence status and effects if GP walks away or dies
+					if eaCity.resident ~= -1 then
+						local x, y = city:GetX(), city:GetY()
+						local iPerson = eaCity.resident
+						local eaPerson = gPeople[iPerson]
+						if eaPerson then
+							local iUnit = eaPerson.iUnit
+							if iUnit ~= -1 then
+								local unit = player:GetUnitByID(iUnit)
+								if unit then
+									local personX, personY = unit:GetX(), unit:GetY()
+									if personX ~= x or personY ~= y then
+										InterruptEaAction(iPlayer, iPerson)
+									end
+								else
+									error("No unit for GP")
 								end
 							else
-								error("No unit for GP")
+								InterruptEaAction(iPlayer, iPerson)
 							end
-						else
-							InterruptEaAction(iPlayer, iPerson)
+						else		--Person died, update city for no resident
+							eaCity.resident = -1
+							RemoveResidentEffects(city)
 						end
-					else		--Person died, update city for no resident
-						eaCity.resident = -1
-						RemoveResidentEffects(city)
+
 					end
 
-				end
-
-				--auto-indenture
-				if eaCity.autoIndenturePop and eaCity.autoIndenturePop < size and eaCity.conscriptTurn ~= gameTurn then
-					AutoIndenture(city, eaCity, size, gameTurn)
+					--auto-indenture
+					if eaCity.autoIndenturePop and eaCity.autoIndenturePop < size and eaCity.conscriptTurn ~= gameTurn then
+						AutoIndenture(city, eaCity, size, gameTurn)
+					end
 				end
 			end
 		end
@@ -883,37 +900,6 @@ function CityPerCivTurn(iPlayer)		--Full civ only		TO DO: must be real civs so t
 	end
 	if debugCityCount ~= cityCount then
 		error("City count error; gCities may be corrupt")
-	end
-end
-
-
-function CityStateFollowerCityCounting()			--once per turn after plots (takes care of counting done for full civs above)
-	print("Running CityStateFollowerCityCounting")
-	local bAnraFounded = gReligions[RELIGION_ANRA] ~= nil
-	for iPlayer, eaPlayer in pairs(cityStates) do
-		local player = Players[iPlayer]
-		for city in player:Cities() do
-			if bAnraFounded then
-				local consumedMana = city:GetNumFollowers(RELIGION_ANRA) * MANA_CONSUMED_PER_ANRA_FOLLOWER_PER_TURN
-				if 0 < consumedMana then
-					gWorld.sumOfAllMana = gWorld.sumOfAllMana - consumedMana
-					city:Plot():AddFloatUpMessage(Locale.Lookup("TXT_KEY_EA_CONSUMED_MANA", consumedMana))	
-				end
-			end
-
-			local followerReligion = city:GetReligiousMajority()
-			if followerReligion == RELIGION_CULT_OF_ABZU then
-				if city:Plot():IsFreshWater() then
-					gg_counts.freshWaterAbzuFollowerCities = gg_counts.freshWaterAbzuFollowerCities + 1
-				end
-			elseif followerReligion == RELIGION_CULT_OF_AEGIR then
-				if city:IsCoastal(10) then
-					gg_counts.coastalAegirFollowerCities = gg_counts.coastalAegirFollowerCities + 1
-				end
-			elseif followerReligion == RELIGION_CULT_OF_BAKKHEIA then
-				gg_counts.grapeAndSpiritsBuildingsBakkheiaFollowerCities = gg_counts.grapeAndSpiritsBuildingsBakkheiaFollowerCities + city:GetNumBuilding(BUILDING_WINERY) + city:GetNumBuilding(BUILDING_BREWERY) + city:GetNumBuilding(BUILDING_DISTILLERY)
-			end
-		end
 	end
 end
 
@@ -1439,7 +1425,7 @@ TestCityCanTrain[GameInfoTypes.UNIT_HUNTERS] = function(iPlayer, iCity)
 					local ownerDist = GetMemoizedPlotIndexDistance(iPlot, iPlotOwningCity)
 					if 3 < ownerDist then
 						if iOwner == iPlayer then
-							plot:SetOwner(iPlayer, iCity)	--transfer ownership to this city (should have happen elsewhere, but just in case)
+							plot:SetOwner(iPlayer, iCity)	--transfer ownership to this city (should have happened elsewhere, but just in case)
 						else
 							return true		--steal from remote owner city
 						end				

@@ -78,6 +78,11 @@ int		GetHappinessFromMod()						--persisted happy and unhappy from mod
 void	SetHappinessFromMod(int)
 int		GetUnhappinessFromMod()
 void	SetUnhappinessFromMod(int)
+int		GetWarmongerModifier()		--returns the penalty to warmonger levels OTHER players gain for taking actions against THIS player (default 0)
+void	SetWarmongerModifier(int)	--100 means actions against this player create NO warmonger effect for anyone
+
+
+
 
 --------------------------------------------------------------
 -- Plots

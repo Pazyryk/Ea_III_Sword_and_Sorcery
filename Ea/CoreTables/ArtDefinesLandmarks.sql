@@ -58,7 +58,7 @@ INSERT INTO ArtDefine_Landmarks (Era, State, Scale,	ImprovementType,					LayoutH
 ('Ancient',	'Pillaged',			1.0,				'ART_DEF_IMPROVEMENT_MINE',			'SNAPSHOT',		'ART_DEF_RESOURCE_LUBORIC',		'pl_med_mine_luboric.fxsxml',		1	),
 ('Any',		'Any',				1.0,				'ART_DEF_IMPROVEMENT_NONE',			'SNAPSHOT',		'ART_DEF_RESOURCE_TIN',			'tin.fxsxml',						1	),
 ('Ancient',	'UnderConstruction',1.0,				'ART_DEF_IMPROVEMENT_MINE',			'SNAPSHOT',		'ART_DEF_RESOURCE_TIN',			'hb_med_tin_mine.fxsxml',			1	),
-('Ancient',	'Constructed',		1.0,				'ART_DEF_IMPROVEMENT_MINE',			'SNAPSHOT',		'ART_DEF_RESOURCE_TIN',			'med_tin_mine.fxsxml',				1	),
+('Ancient',	'Constructed',		1.0,				'ART_DEF_IMPROVEMENT_MINE',			'SNAPSHOT',		'ART_DEF_RESOURCE_TIN',			'med_mine_tin.fxsxml',				1	),
 ('Ancient',	'Pillaged',			1.0,				'ART_DEF_IMPROVEMENT_MINE',			'SNAPSHOT',		'ART_DEF_RESOURCE_TIN',			'pl_med_mine_tin.fxsxml',			1	),
 --alt farm graphic since base farm is hardcoded to "IMPROVEMENT_FARM"
 ('Any', 'UnderConstruction',	1.35,  				'ART_DEF_IMPROVEMENT_FARM_FIX',		'RANDOM',		'ART_DEF_RESOURCE_WHEAT',		'HBfarmfix01.fxsxml',				1	),

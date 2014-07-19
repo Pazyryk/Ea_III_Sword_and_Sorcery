@@ -16,9 +16,13 @@ local Dprint = DEBUG_PRINT and print or function() end
 local EACIV_MAMONAS =							GameInfoTypes.EACIV_MAMONAS
 local EACIV_MOR =								GameInfoTypes.EACIV_MOR
 
+local ORDER_CONSTRUCT =							OrderTypes.ORDER_CONSTRUCT
 local ORDER_MAINTAIN =							OrderTypes.ORDER_MAINTAIN
+local ORDER_TRAIN =								OrderTypes.ORDER_TRAIN
 local CITY_UPDATE_TYPE_PRODUCTION =				CityUpdateTypes.CITY_UPDATE_TYPE_PRODUCTION
 
+local EA_ACTION_BUILD =							GameInfoTypes.EA_ACTION_BUILD
+local EA_ACTION_RECRUIT =							GameInfoTypes.EA_ACTION_RECRUIT
 
 local PROCESS_INDUSTRIAL_AGRICULTURE =			GameInfoTypes.PROCESS_INDUSTRIAL_AGRICULTURE
 local PROCESS_AZZANDARAS_TRIBUTE =				GameInfoTypes.PROCESS_AZZANDARAS_TRIBUTE
@@ -96,6 +100,8 @@ local UNHAPPINESS_PER_CAPTURED_CITY =			GameDefines.UNHAPPINESS_PER_CAPTURED_CIT
 local MapModData =	MapModData
 local playerType =	MapModData.playerType
 local realCivs =	MapModData.realCivs
+
+local gg_regularCombatType = gg_regularCombatType
 
 --localized functions
 local GetPlotByIndex = Map.GetPlotByIndex
@@ -400,7 +406,7 @@ function UpdateCityYields(iPlayer, iSpecificCity, effectType, bPerTurnCall)
 				end
 			end
 
-			if effectType == nil or effectType == "Production" or effectType == "Training" then
+			if effectType == nil or effectType == "Production" then
 				local newProduction = productionDistribution
 				if eaCity.gpProduction then
 					for iPerson, production in pairs(eaCity.gpProduction) do
@@ -543,31 +549,34 @@ function UpdateCityYields(iPlayer, iSpecificCity, effectType, bPerTurnCall)
 		end
 
 	end
-	if iPlayer == g_iActivePlayer and not iCity then			--Top Panel info for active player; run only for all-city update (iCity = nil)
-		MapModData.faithFromGPs = faithFromGPs
-		MapModData.faithFromAzzTribute = faithFromAzzTribute
-		MapModData.faithFromToAhrimanTribute = faithFromToAhrimanTribute
+	if iPlayer == g_iActivePlayer then
+		if not bPerTurnCall then
+			Events.SerialEventCityInfoDirty()	--update city banner if production changed
+		end
+		if not iCity then			--Top Panel info for active player; run only for all-city update (iCity = nil)
+			MapModData.faithFromGPs = faithFromGPs
+			MapModData.faithFromAzzTribute = faithFromAzzTribute
+			MapModData.faithFromToAhrimanTribute = faithFromToAhrimanTribute
+		end
 	end
 end
 
 --------------------------------------------------------------
 -- Event functions
 --------------------------------------------------------------
-local prevProcessOrderType = {}	--index by iCity, use to know if changed
-local prevProcessOrderID = {}
-local function UpdateUIForProcessChange(iPlayer, iCity, updateTypeID)
-	if iPlayer == g_iActivePlayer and updateTypeID == CITY_UPDATE_TYPE_PRODUCTION then	-- This provides immediate UI feedback when a city changes processes
-		Dprint("UpdateUIForProcessChange ", iPlayer, iCity, updateTypeID)		
-		--print("UpdateUIForProcessChange ", iPlayer, iCity, updateTypeID)
-		local city = Players[iPlayer]:GetCityByID(iCity)
+local prevOrderType = {}	--index by iCity, use to know if changed
+local prevOrderID = {}
+local function ActivePlayerCityBuildQueueChange(iPlayer, iCity, updateTypeID)
+	if iPlayer == g_iActivePlayer and updateTypeID == CITY_UPDATE_TYPE_PRODUCTION then	-- This provides immediate UI feedback when a city changes processes		
+		local player = Players[iPlayer]
+		local city = player:GetCityByID(iCity)
 		if city then
 			local orderType, orderID = city:GetOrderFromQueue(0)
-			print(orderType, orderID)
-			if orderType ~= prevProcessOrderType[iCity] or orderID ~= prevProcessOrderID[iCity] then	--changed
-				--if (orderType == ORDER_MAINTAIN and orderID == PROCESS_INDUSTRIAL_AGRICULTURE) or (prevProcessOrderType[iCity] == ORDER_MAINTAIN and prevProcessOrderID[iCity] == PROCESS_INDUSTRIAL_AGRICULTURE) then
-				--	UpdateCityYields(iPlayer, iCity, "Food")
-				--end
+			print("CityBuildQueueChange ", orderType, orderID)
 
+			if orderType ~= prevOrderType[iCity] or orderID ~= prevOrderID[iCity] then	--changed
+
+				--process changes
 				if orderType == ORDER_MAINTAIN then
 					if orderID == PROCESS_INDUSTRIAL_AGRICULTURE then
 						UpdateCityYields(iPlayer, iCity, "Food")
@@ -578,23 +587,47 @@ local function UpdateUIForProcessChange(iPlayer, iCity, updateTypeID)
 					end
 
 				end
-				if prevProcessOrderType[iCity] == ORDER_MAINTAIN then
-					if prevProcessOrderID[iCity] == PROCESS_INDUSTRIAL_AGRICULTURE then
+				if prevOrderType[iCity] == ORDER_MAINTAIN then
+					if prevOrderID[iCity] == PROCESS_INDUSTRIAL_AGRICULTURE then
 						UpdateCityYields(iPlayer, iCity, "Food")
-					elseif prevProcessOrderID[iCity] == PROCESS_THE_ARTS then
+					elseif prevOrderID[iCity] == PROCESS_THE_ARTS then
 						UpdateCityYields(iPlayer, iCity, "Culture")
-					elseif prevProcessOrderID[iCity] == PROCESS_AZZANDARAS_TRIBUTE or orderID == PROCESS_AHRIMANS_TRIBUTE then
+					elseif prevOrderID[iCity] == PROCESS_AZZANDARAS_TRIBUTE or orderID == PROCESS_AHRIMANS_TRIBUTE then
 						UpdateCityYields(iPlayer, iCity, "Faith")
 					end
 				end
 
-				prevProcessOrderType[iCity] = orderType
-				prevProcessOrderID[iCity] = orderID
+				--change that invalidates Engineer Build or Warrior Train action (wake GP for new orders)
+				local iPlot = city:Plot():GetPlotIndex()
+				for iPerson, eaPerson in pairs(gPeople) do
+					if eaPerson.eaActionData == iPlot then
+						local bInterrupt = false
+						if eaPerson.eaActionID == EA_ACTION_BUILD then
+							if orderType ~= ORDER_CONSTRUCT and (orderType ~= ORDER_TRAIN or gg_regularCombatType[orderID] ~= "construct") then
+								bInterrupt = true
+							end
+						elseif eaPerson.eaActionID == EA_ACTION_RECRUIT then
+							if orderType ~= ORDER_TRAIN or gg_regularCombatType[orderID] ~= "troops" then
+								bInterrupt = true
+							end
+						end
+						if bInterrupt then
+							InterruptEaAction(eaPerson.iPlayer, iPerson)	--this will call UpdateCityYields
+							local unit = player:GetUnitByID(eaPerson.iUnit)
+							if unit then
+								UI.SelectUnit(unit)
+							end
+						end
+					end
+				end
+
+				prevOrderType[iCity] = orderType
+				prevOrderID[iCity] = orderID
 			end
 		end
 	end
 end
-Events.SpecificCityInfoDirty.Add(UpdateUIForProcessChange)
+Events.SpecificCityInfoDirty.Add(ActivePlayerCityBuildQueueChange)
 
 
 ----------------------------------------------------------------

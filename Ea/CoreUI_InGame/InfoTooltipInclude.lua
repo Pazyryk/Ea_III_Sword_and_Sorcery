@@ -741,10 +741,16 @@ function GetFaithTooltip(pCity)
 		end
 
 		--Paz add
+
+		-- Faith from Specialists
+		local iFaithFromSpecialists = pCity:GetFaithPerTurnFromSpecialists()
+		if (iFaithFromSpecialists ~= 0) then
+			table.insert(faithTips, "[ICON_BULLET]" .. Locale.ConvertTextKey("TXT_KEY_EA_FAITH_FROM_SPECIALISTS", iFaithFromSpecialists));
+		end
+
 		--Faith from GPs 
 		local iFaithFromGPs = pCity:GetBaseYieldRateFromMisc(YieldTypes.YIELD_FAITH)
 		if (iFaithFromGPs ~= 0) then
-				
 			table.insert(faithTips, "[ICON_BULLET]" .. Locale.ConvertTextKey("TXT_KEY_EA_FAITH_FROM_GPS", iFaithFromGPs));
 		end
 
@@ -828,7 +834,13 @@ function GetManaTooltip(pCity)
 				
 			table.insert(faithTips, "[ICON_BULLET]" .. Locale.ConvertTextKey("TXT_KEY_FAITH_FROM_RELIGION", iFaithFromReligion));
 		end
-		
+
+		-- Faith from Specialists
+		local iFaithFromSpecialists = pCity:GetFaithPerTurnFromSpecialists()
+		if (iFaithFromSpecialists ~= 0) then
+			table.insert(faithTips, "[ICON_BULLET]" .. Locale.ConvertTextKey("TXT_KEY_EA_FAITH_FROM_SPECIALISTS", iFaithFromSpecialists));
+		end
+	
 		-- Faith from GPs ()
 		local iFaithFromGPs = pCity:GetBaseYieldRateFromMisc(YieldTypes.YIELD_FAITH)
 		if (iFaithFromGPs ~= 0) then

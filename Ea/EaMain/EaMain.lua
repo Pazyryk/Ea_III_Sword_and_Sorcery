@@ -255,7 +255,6 @@ local function OnPlayerDoTurn(iPlayer)	-- Runs at begining of turn for all livin
 		BarbSpawnPerTurn()
 		AnimalsPerTurn()
 		ReligionPerGameTurn()
-		CityStateFollowerCityCounting()
 	end
 
 	g_bHumanOrFirstInAutoplayTurn = g_bHumanOrFirstInAutoplayTurn or iPlayer == g_iActivePlayer
@@ -282,14 +281,9 @@ local function OnPlayerDoTurn(iPlayer)	-- Runs at begining of turn for all livin
 			AIMercenaryPerCivTurn(iPlayer)
 		end
 		if not eaPlayer.eaCivNameID then
-			if TestAllCivNamingConditions(iPlayer) then
-				--g_lastPlayerID = -1
-				--print("TestAllCivNamingConditions returned true; aborting OnPlayerDoTurn (we should never see this iPlayer again)")
-				--return
-			end
+			TestAllCivNamingConditions(iPlayer)
 		end
-
-
+		DiploPerCivTurn(iPlayer)
 		PeoplePerCivTurn(iPlayer)					--needs to be before global and city updates
 		UpdateGlobalYields(iPlayer, nil, true)		--for now, only GP effects so only full players
 		UpdateCityYields(iPlayer, nil, nil, true)
@@ -302,6 +296,7 @@ local function OnPlayerDoTurn(iPlayer)	-- Runs at begining of turn for all livin
 	elseif playerType[iPlayer] == "CityState" then
 		--City states
 		UnitPerCivTurn(iPlayer)
+		CityPerCivTurn(iPlayer)
 		UpdateCivReligion(iPlayer, true)
 		CityStatePerCivTurn(iPlayer)
 		AIMercenaryPerCivTurn(iPlayer)
@@ -362,6 +357,23 @@ function Autoplay(turns)
 end
 LuaEvents.EaAutoplay.Add(Autoplay)
 
+----------------------------------------------------------------
+-- Input Handler
+----------------------------------------------------------------
+
+local KeyEvents = KeyEvents
+local Keys = Keys
+
+function InputHandler(uiMsg, wParam, lParam)
+	if uiMsg == KeyEvents.KeyDown then
+		if wParam == Keys.VK_RETURN then
+			print("Main context InputHandler is calling ActionInfoPanelOnEndTurnClicked")
+			LuaEvents.ActionInfoPanelOnEndTurnClicked()
+			return true
+		end
+	end
+end
+ContextPtr:SetInputHandler(InputHandler)
 
 ----------------------------------------------------------------
 -- Player change

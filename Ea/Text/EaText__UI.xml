@@ -255,6 +255,9 @@
 		<Row Tag="TXT_KEY_EA_FAITH_FROM_GPS">
 			<Text>{1_Num} [ICON_PEACE] from Great People</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_FAITH_FROM_SPECIALISTS">
+			<Text>{1_Num} [ICON_PEACE] from Specialists</Text>
+		</Row>
 
 		<!-- Info Tooltip and Dll hard-coded -->
 		<Row Tag="TXT_KEY_EA_PRODMOD_YIELD_LEADER">

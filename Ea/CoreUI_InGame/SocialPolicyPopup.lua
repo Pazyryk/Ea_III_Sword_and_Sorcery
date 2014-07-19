@@ -308,22 +308,6 @@ function UpdateDisplay()
 	Controls.CulturePerTurnLabel:SetText(Locale.ConvertTextKey("TXT_KEY_EA_CULTURE_LEVEL_CHANGE") .. txtColor .. string.format(" %+.2f", MapModData.estCultureLevelChange) .. "[ENDCOLOR]")
 	Controls.NextPolicyTurnLabel:SetText(Locale.ConvertTextKey("TXT_KEY_EA_NEXT_CULTURE_LEVEL") .. " [COLOR_POSITIVE_TEXT]" .. MapModData.nextCultureLevel .. "[ENDCOLOR]")
 
-	--[[old
-	Controls.NextCost:SetText(string.format("Cultural Level: %.2f", eaPlayer.culturalLevel))
-	--local cultPerPop = player:GetTotalJONSCulturePerTurn() / player:GetTotalPopulation()
-	--szText = "Culture per Pop. (x".. MapModData.POLICY_MULTIPLIER .."): "..(math.floor(cultPerPop * MapModData.POLICY_MULTIPLIER * 100 + 0.5)/100)
-	local approachingCL = MapModData.POLICY_MULTIPLIER * ((player:GetTotalJONSCulturePerTurn() / player:GetTotalPopulation()) ^ MapModData.POLICY_CULTURE_EXPONENT)
-	Controls.CurrentCultureLabel:SetText(string.format("Approaching C.L.: %.2f", approachingCL))
-	local estimatedCultLevelNextTurn = MapModData.POLICY_MULTIPLIER * (((player:GetJONSCulture() + player:GetTotalJONSCulturePerTurn()) / (eaPlayer.cumPopTurns + MapModData.POLICY_DENOMINATOR_ADD + player:GetTotalPopulation())) ^ MapModData.POLICY_CULTURE_EXPONENT)
-	if gT.gEpics[EA_EPIC_VOLUSPA] and gT.gEpics[EA_EPIC_VOLUSPA].iPlayer == iPlayer then
-		estimatedCultLevelNextTurn = estimatedCultLevelNextTurn + gT.gEpics[EA_EPIC_VOLUSPA].mod / 10
-	end
-	local estChange = estimatedCultLevelNextTurn - eaPlayer.culturalLevel
-	Controls.CulturePerTurnLabel:SetText(string.format("Estimated change next turn: %+.2f", estChange))
-	local nextPolicyAtLevel = eaPlayer.policyCount + 1 - player:GetNumFreePolicies()
-	Controls.NextPolicyTurnLabel:SetText(string.format("Next Policy at Level: %.0f", nextPolicyAtLevel))
-	]]
-	
 	local eaPlayer = gT.gPlayers[iPlayer]
 	if not eaPlayer then return end
 	local bIsFallen = eaPlayer.bIsFallen	--used below for Theism branch swap

@@ -40,7 +40,7 @@ local bWrapX, bWrapY = Map.IsWrapX(), false			--sorry, no doughnut worlds
 local yIsOddAdjOffsets = {{0, 1},{1, 1},{1, 0},{1, -1},{0, -1},{-1, 0}}
 local yIsEvenAdjOffsets = {{-1, 1},{0, 1},{1, 0},{0, -1},{-1, -1},{-1, 0}}
 
-function AdjacentPlotIterator(plot, bRandomize)		--this is so common I give it a special function for speed
+function AdjacentPlotIterator(plot, bRandomize, bIncludeCenter)		--this is so common I give it a special function for speed
 	local x, y = plot:GetXY()
 	local offsets = (y % 2 == 0) and yIsEvenAdjOffsets or yIsOddAdjOffsets
 	if bRandomize then
@@ -56,8 +56,12 @@ function AdjacentPlotIterator(plot, bRandomize)		--this is so common I give it a
 			offsets[i], offsets[d6] = offsets[d6], offsets[i]
 		end
 	end
-	local i = 0
+	local i = bIncludeCenter and -1 or 0
 	return function()
+		if i == -1 then		--note always first, not randomized (for now)
+			i = 0
+			return plot
+		end
 		while i < 6 do
 			i = i + 1
 			local adjY = y + offsets[i][2]

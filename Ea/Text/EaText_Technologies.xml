@@ -379,6 +379,11 @@
 		<Row Tag="TXT_KEY_EA_TECH_CHEMISTRY_SPECIAL">
 			<Text>Required for all gunpowder units: Arquebussmen, Great Bombarde, Cannons, Carracks, Galleons & Ironclads</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_MEDICINE_SPECIAL">
+			<Text>All units heal 5% faster</Text>
+		</Row>
+		
+		
 		<Row Tag="TXT_KEY_EA_TECH_BEAST_BREEDING_SPECIAL">
 			<Text>Mûmakil spawn near existing Elephant - !! NOT YET IMPLEMENTED; MUMAKIL CURRENTLY USE ELEPHANT RESOURCE !!</Text>
 		</Row>

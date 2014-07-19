@@ -829,6 +829,8 @@ function ChangeResource(plot, resourceID, number)	--modified from IGE (use resou
 			end
 		end
 
+		local iOwningCity = plot:GetCityPurchaseID()
+
 		plot:SetOwner(-1)
 
 		if resourceID == -1 then
@@ -838,7 +840,7 @@ function ChangeResource(plot, resourceID, number)	--modified from IGE (use resou
 			plot:SetResourceType(resourceID, number)
 		end
 
-		plot:SetOwner(iOwner)
+		plot:SetOwner(iOwner, iOwningCity)
 
 		if bWorking then
 			if bForced then
@@ -872,12 +874,6 @@ function ChangeResource(plot, resourceID, number)	--modified from IGE (use resou
 			gg_remoteImprovePlot[plot:GetPlotIndex()] = nil
 		end
 	end
-end
-
-function ChangePlotOwner(plot, iPlayer, iCity)
-	print("Running ChangePlotOwner ", plot, iPlayer, iCity)
-	plot:SetOwner(iPlayer, iCity)		--seems to be OK if iCity is nil
-	--do we need to do something with resource dist matrixes?
 end
 
 function ChangeLivingTerrainStrengthWorldWide(changeValue, iPlayer)		--leave iPlayer nil if no one deserves credit or blame
@@ -1144,7 +1140,8 @@ function PlotsPerTurn()
 							end
 							if iNewOwner ~= -1 then
 								print("Forest Dominion plot takeover; iPlot/iNewOwner/iOldOwner", iPlot, iNewOwner, iOwner)
-								ChangePlotOwner(plot, iNewOwner, nil)
+								local newOwnerCity = GetNewOwnerCityForPlot(iNewOwner, iPlot)
+								plot:SetOwner(iNewOwner, newOwnerCity:GetID())
 							end
 						end
 					end

@@ -75,7 +75,7 @@ local bHidden =						MapModData.bHidden
 local realCivs =					MapModData.realCivs
 local fullCivs =					MapModData.fullCivs
 local cityStates =					MapModData.cityStates
-local gg_bNormalCombatUnit =		gg_bNormalCombatUnit
+local gg_regularCombatType =		gg_regularCombatType
 local gg_combatPointDiff =			gg_combatPointDiff
 local gg_unitPrefixUnitIDs =		gg_unitPrefixUnitIDs
 local gg_fishingRange =				gg_fishingRange
@@ -367,7 +367,7 @@ function UnitPerCivTurn(iPlayer)	--runs for full civs and city states
 	local team = Teams[player:GetTeam()]
 	local bBarbs = iPlayer == BARB_PLAYER_INDEX
 	local bAnimals = iPlayer == ANIMALS_PLAYER_INDEX
-	local bFullCiv = fullCivs[iPlayer] ~= nil
+	local bFullCiv = fullCivs[iPlayer]
 	local bAI = not bFullCiv or not player:IsHuman()
 	local nameTraitID = bFullCiv and eaPlayer.eaCivNameID or -1
 	--local bMercenaryCityState = not bFullCiv and player:GetMinorCivTrait() == MINOR_TRAIT_MERCENARY
@@ -396,13 +396,13 @@ function UnitPerCivTurn(iPlayer)	--runs for full civs and city states
 		local iPlot = plot:GetPlotIndex()
 		local iPlotOwner = plot:GetOwner()
 		local unitTypeID = unit:GetUnitType()
+		local iPerson = unit:GetPersonIndex()	-- -1 if not a GP
 
 		--Debug
 		if unitTypeID == 0 then
 			error("Found an ID=0 unit; most likely there was a player:UnitInit() with an invalid unitTypeID")
 		end
-		if unit:IsGreatPerson() and not unit:IsDelayedDeath() then
-			local iPerson = unit:GetPersonIndex()
+		if iPerson ~= -1 and not unit:IsDelayedDeath() then
 			if not gPeople[iPerson] then
 				error("!!!! WARNING: Found an orphan GP; iPlayer, unitTypeID, iPlot = " .. iPlayer .. ", " .. GameInfo.Units[unitTypeID].Type .. ", " .. iPlot)
 			end
@@ -413,7 +413,32 @@ function UnitPerCivTurn(iPlayer)	--runs for full civs and city states
 			unit:FinishMoves()
 			unit:SetHasPromotion(PROMOTION_STUNNED, false)
 		end
-		
+
+		--Warrior gains best movement from adjacent/same-plot "troops" units (TO DO: this will become an automatic conversion to mounted GP unit)
+		if iPerson ~= -1 then
+			local eaPerson = gPeople[iPerson]
+			if eaPerson.class1 == "Warrior" or eaPerson.class2 == "Warrior" then
+				local bestMoves = 120
+				for loopPlot in AdjacentPlotIterator(plot, false, true) do
+					local unitCount = loopPlot:GetNumUnits()
+					for i = 0, unitCount - 1 do
+						local loopUnit = loopPlot:GetUnit(i)
+						local loopUnitTypeID = loopUnit:GetUnitType()
+						if gg_regularCombatType[loopUnitTypeID] == "troops" then
+							local moves = loopUnit:GetMoves()
+							if bestMoves < moves then
+								bestMoves = moves
+							end
+						end
+					end
+				end
+				if bestMoves > 120 and unit:GetMoves() >= 120 then	--make sure GP has normal movement at turn start (isn't restricted by some spell)
+					print("Giving Warrior extra movement from troops ", bestMoves)
+					unit:SetMoves(bestMoves)
+				end
+			end
+		end
+	
 		if bAnimals then
 			--
 		elseif bBarbs then
@@ -429,7 +454,7 @@ function UnitPerCivTurn(iPlayer)	--runs for full civs and city states
 			local bSlave
 			local bMercenary
 
-			if gg_bNormalCombatUnit[unitTypeID] then
+			if gg_regularCombatType[unitTypeID] then
 				countCombatUnits = countCombatUnits + 1
 
 				bSlave = unit:IsHasPromotion(PROMOTION_SLAVE)
@@ -608,7 +633,7 @@ function UnitPerCivTurn(iPlayer)	--runs for full civs and city states
 				print("Adding XP to combat units for Training Exercises Process and/or Militarism Finisher (#units / unitXP): ", countCombatUnits, distributeXP)
 				for unit in player:Units() do
 					local unitTypeID = unit:GetUnitType()
-					if gg_bNormalCombatUnit[unitTypeID] then
+					if gg_regularCombatType[unitTypeID] then
 						unit:ChangeExperience(distributeXP)
 					end
 				end				

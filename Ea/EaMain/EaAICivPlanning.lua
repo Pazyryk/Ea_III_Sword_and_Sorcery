@@ -616,6 +616,7 @@ function AIPickPolicy(iPlayer)	--called from EaPolicies.lua
 										player:SetPolicyBranchUnlocked(branchIDForOpener, true)
 										player:SetHasPolicy(policyID, true)
 										OnPlayerAdoptPolicyBranch(iPlayer, branchIDForOpener)
+										print("AI picked policy; iPlayer, turn, policy = ", iPlayer, Game.GetGameTurn(), GameInfo.Policies[policyID].Type)
 										return
 									end
 								else
@@ -624,6 +625,7 @@ function AIPickPolicy(iPlayer)	--called from EaPolicies.lua
 										player:ChangeNumFreePolicies(-1)
 										player:SetHasPolicy(policyID, true)
 										OnPlayerAdoptPolicy(iPlayer, policyID)
+										print("AI picked policy; iPlayer, turn, policy = ", iPlayer, Game.GetGameTurn(), GameInfo.Policies[policyID].Type)
 										return
 									end
 								end

@@ -146,9 +146,8 @@ gg_bToCheapToHire = {}
 gg_eaSpecial = {}
 gg_baseUnitPower = {}
 gg_normalizedUnitPower = {}
-gg_bNormalCombatUnit = {}
-gg_bNormalLivingCombatUnit = {}
 gg_gpTempType = {}
+gg_regularCombatType = {}		--"troops", "ship", "construct" (siege, landship, dirigible); these are all regular units
 
 for unitInfo in GameInfo.Units() do
 	for i = 1, #UNIT_SUFFIXES do
@@ -171,9 +170,12 @@ for unitInfo in GameInfo.Units() do
 	if unitInfo.EaGPTempRole then
 		gg_gpTempType[unitInfo.ID] = unitInfo.EaGPTempRole
 	elseif not unitInfo.Special and not unitInfo.EaSpecial and unitInfo.CombatLimit == 100 then
-		gg_bNormalCombatUnit[unitInfo.ID] = true
 		if unitInfo.EaLiving then
-			gg_bNormalLivingCombatUnit[unitInfo.ID] = true
+			gg_regularCombatType[unitInfo.ID] = "troops"
+		elseif unitInfo.Domain == "DOMAIN_SEA" then
+			gg_regularCombatType[unitInfo.ID] = "ship"
+		else
+			gg_regularCombatType[unitInfo.ID] = "construct"
 		end
 	end
 end
@@ -261,34 +263,17 @@ MapModData.integer = 0
 MapModData.gT = MapModData.gT or {} --use these 2 lines in any other state that needs gT so that run order doesn't matter
 gT = MapModData.gT
 
-gWorld = {	sumOfAllMana =				MapModData.STARTING_SUM_OF_ALL_MANA,
-			armageddonStage =			0,
-			armageddonSap =				0,
-			bAllCivsHaveNames =			false,
-			returnAsPlayer =			Game.GetActivePlayer(),
-			encampments =				{},
-			azzConvertNum =				0,
-			anraConvertNum =			0,
-			weaveConvertNum =			0,
-			livingTerrainConvertStr =	0,
-			calledMajorSpirits =		{},
-			panCivsEver =				0
-			}
-
-
-
+gWorld = {}
 gPlayers = {}			--idx by iPlayer
 gPeople = {}			--arbitrary index
 gDeadPeople = {}
 gReligions = {}			--index by religionID (holds a table if founded; empty for now...)
 gCities = {}			--arbitrary but unique index
 gWorldUniqueAction = {}		--index by eaActionID; holds iPlayer while actively under construction, then -1 after built
-gWonders = {[GameInfoTypes.EA_WONDER_ARCANE_TOWER] =	{}		--index by EaWonders ID;	= nil or {mod, iPlot} for built wonders
-			
-			}	
-
+gWonders = {}	
 gEpics = {}				--index by EaEpics ID;		= nil or {mod, iPlayer} for created epics
-gArtifacts = {}				--index by EaItmes ID;		= nil or {mod, iPlayer, locationType, locationIndex}, where locationType = "iPlot", "iPerson", or "iUnit"
+gArtifacts = {}			--index by EaItmes ID;		= nil or {mod, iPlayer, locationType, locationIndex}, where locationType = "iPlot", "iPerson", or "iUnit"
+gRaceDiploMatrix = {}	--index by player1 (observer), player2 (subject)
 
 
 gT.gWorld = gWorld
@@ -301,6 +286,7 @@ gT.gWorldUniqueAction = gWorldUniqueAction
 gT.gWonders = gWonders
 gT.gEpics = gEpics
 gT.gArtifacts = gArtifacts
+gT.gRaceDiploMatrix = gRaceDiploMatrix
 
 ----------------------------------------------------------------------------------------------------------------------------
 -- Players

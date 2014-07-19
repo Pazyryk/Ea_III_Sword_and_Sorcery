@@ -5,9 +5,6 @@
 
 		<!-- UnitPromotions -->
 
-		<Row Tag="TXT_KEY_EA_PROMOTION_LEARN_SPELL">
-			<Text>Learn Spell</Text>
-		</Row>
 
 		<Row Tag="TXT_KEY_EA_PROMOTION_RECON">
 			<Text>Recon</Text>
@@ -15,11 +12,20 @@
 		<Row Tag="TXT_KEY_EA_PROMOTION_INFANTRY">
 			<Text>Infantry</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_INFANTRY_HELP">
+			<Text>+33% city attack.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_UNMOUNTED_ARCHER">
 			<Text>Unmounted Archer</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_UNMOUNTED_ARCHER_HELP">
+			<Text>+20% defense in rough terrain.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_HORSE_MOUNTED">
 			<Text>Horse-Mounted</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_HORSE_MOUNTED_HELP">
+			<Text>Can move after attack.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_ELEPHANT">
 			<Text>Elephant</Text>
@@ -37,83 +43,152 @@
 		<Row Tag="TXT_KEY_EA_PROMOTION_CITY_SIEGE">
 			<Text>City Siege</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_CITY_SIEGE_HELP">
+			<Text>+50% city attack.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_GREAT_BOMBARDE">
 			<Text>Great Bombarde</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_GREAT_BOMBARDE_HELP">
+			<Text>+100% city attack.</Text>
+		</Row>
+		
 
-
+		<Row Tag="TXT_KEY_EA_PROMOTION_STEEL_WEAPONS">
+			<Text>Steel Weopons</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_METAL_CLAD">
 			<Text>Metal-Clad</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_EXTENDED_RANGE">
 			<Text>Extended Range</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_EXTENDED_RANGE_HELP">
+			<Text>+1 range.</Text>
+		</Row>
 
 		<Row Tag="TXT_KEY_EA_PROMOTION_STRONG_INFANTRY">
 			<Text>Strong Infantry</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_STRONG_INFANTRY_HELP">
+			<Text>+30% attack/defense.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_STRONG_ARCHER">
 			<Text>Strong Archer</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_STRONG_ARCHER_HELP">
+			<Text>+30% attack/defense.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_STRONG_CAVALRY">
 			<Text>Strong Cavalry</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_STRONG_CAVALRY_HELP">
+			<Text>+30% attack/defense.</Text>
 		</Row>
 
 		<Row Tag="TXT_KEY_EA_PROMOTION_PIERCING_1">
 			<Text>Piercing I</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_PIERCING_1_HELP">
+			<Text>+20% versus melee.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_PIERCING_2">
 			<Text>Piercing II</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_PIERCING_2_HELP">
+			<Text>+40% versus melee.</Text>
 		</Row>
 
 		<Row Tag="TXT_KEY_EA_PROMOTION_FOR_HIRE">
 			<Text>For Hire</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_FOR_HIRE_HELP">
+			<Text>This unit has been put up for hire.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_MERCENARY">
 			<Text>Mercenary</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_MERCENARY_HELP">
+			<Text>This unit is a hired mercenary.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_STRONG_MERCENARY">
-			<Text>+20% attack and defence if this unit is a hired mercenary</Text>
+			<Text>Strong Mercenary</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_STRONG_MERCENARY_HELP">
+			<Text>+20% attack/defense if this unit is a hired mercenary</Text>
 		</Row>
 
 		<Row Tag="TXT_KEY_EA_PROMOTION_SLAVERAIDER">
 			<Text>Slave Raider</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_SLAVERAIDER_HELP">
+			<Text>Captures enemy military units and conquered city population as Slaves.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_SLAVEMAKER">
 			<Text>Slave Maker</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_PROMOTION_SLAVETAKER">
-			<Text>Slave Taker</Text>
+		<Row Tag="TXT_KEY_EA_PROMOTION_SLAVEMAKER_HELP">
+			<Text>Captures enemy military units as slave military units.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_SLAVE">
 			<Text>Slave</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_SLAVE_HELP">
+			<Text>Base morale is -30%, not affected by civilization happiness; -50% experience.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_HEX">
 			<Text>Hex</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_HEX_HELP">
+			<Text>-20% attack and defense.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_BLESSED">
 			<Text>Blessed</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_BLESSED_HELP">
+			<Text>+10% natural healing.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_PROTECTION_FROM_EVIL">
 			<Text>Protection from Evil</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_PROTECTION_FROM_EVIL_HELP">
+			<Text>Protected from evil-effect spells such as Hex, Curse and Evil-Eye; +5% natural healing.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_CURSED">
 			<Text>Cursed</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_CURSED_HELP">
+			<Text>No natural healing.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_EVIL_EYE">
 			<Text>Evil-Eye</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_EVIL_EYE_HELP">
+			<Text>Cannot be Blessed or gain Protection from Evil; -5% natural healing.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_RIDE_LIKE_THE_WINDS">
 			<Text>Ride Like the Winds</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_RIDE_LIKE_THE_WINDS_HELP">
+			<Text>+2 movement.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_FAIR_WINDS">
 			<Text>Fair Winds</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_FAIR_WINDS_HELP">
+			<Text>+1 movement.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_STALLIONS_OF_EPONA">
 			<Text>Stallions of Epona</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_STALLIONS_OF_EPONA_HELP">
+			<Text>+20% flanking attack; +5% healing.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_DRUNKARD">
 			<Text>Drunkard</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_DRUNKARD_HELP">
+			<Text>+10 morale; -15% attack and defense.</Text>
 		</Row>
 
 		<Row Tag="TXT_KEY_EA_PROMOTION_COMBAT_1">
@@ -152,6 +227,31 @@
 		<Row Tag="TXT_KEY_EA_PROMOTION_COMBAT_12">
 			<Text>Combat XII</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_COMBAT_13">
+			<Text>Combat XIII</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_COMBAT_14">
+			<Text>Combat XIV</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_COMBAT_15">
+			<Text>Combat XV</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_COMBAT_16">
+			<Text>Combat XVI</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_COMBAT_17">
+			<Text>Combat XVII</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_COMBAT_18">
+			<Text>Combat XVIII</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_COMBAT_HELP">
+			<Text>+10% attack and ranged per level; increases the fighting prowess of Great Warriors.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_GP_COMBAT_HELP">
+			<Text>Increases the fighting prowess of this Warrior.</Text>
+		</Row>
+		
 		<Row Tag="TXT_KEY_EA_PROMOTION_FORMATION_1">
 			<Text>Formation I</Text>
 		</Row>
@@ -169,6 +269,9 @@
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_FORMATION_6">
 			<Text>Formation VI</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_FORMATION_HELP">
+			<Text>+20% against horse-mounted per level per level.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_FORTIFICATION_1">
 			<Text>Fortification I</Text>
@@ -188,6 +291,9 @@
 		<Row Tag="TXT_KEY_EA_PROMOTION_FORTIFICATION_6">
 			<Text>Fortification VI</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_FORTIFICATION_HELP">
+			<Text>+20% defense, +10% ranged defense per level.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_SIEGE_1">
 			<Text>Siege I</Text>
 		</Row>
@@ -205,6 +311,9 @@
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_SIEGE_6">
 			<Text>Siege VI</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_SIEGE_HELP">
+			<Text>+20% against cities per level.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_FLANKING_1">
 			<Text>Flanking I</Text>
@@ -224,6 +333,9 @@
 		<Row Tag="TXT_KEY_EA_PROMOTION_FLANKING_6">
 			<Text>Flanking VI</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_FLANKING_HELP">
+			<Text>+20% flank attack per level.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_SHOCK_1">
 			<Text>Shock I</Text>
 		</Row>
@@ -241,6 +353,9 @@
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_SHOCK_6">
 			<Text>Shock VI</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_SHOCK_HELP">
+			<Text>+20% attack per level.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_NAVAL_1">
 			<Text>Naval I</Text>
@@ -260,6 +375,9 @@
 		<Row Tag="TXT_KEY_EA_PROMOTION_NAVAL_6">
 			<Text>Naval VI</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_NAVAL_HELP">
+			<Text>+20% against naval or embarked units per level.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_RAIDER_1">
 			<Text>Raider I</Text>
 		</Row>
@@ -278,15 +396,26 @@
 		<Row Tag="TXT_KEY_EA_PROMOTION_RAIDER_6">
 			<Text>Raider VI</Text>
 		</Row>
-
+		<Row Tag="TXT_KEY_EA_PROMOTION_RAIDER_HELP">
+			<Text>+10% city attack, +20% plunder from city attack per level.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_SURVIVALISM">
 			<Text>Survivalism</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_SURVIVALISM_HELP">
+			<Text>+5% healing, +10% defense.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_EAGLE_EYES">
 			<Text>Eagle Eyes</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_EAGLE_EYES_HELP">
+			<Text>+1 visibility.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_PATH_FINDER">
 			<Text>Path Finder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_PATH_FINDER_HELP">
+			<Text>Ignores terrain movement cost.</Text>
 		</Row>
 
 		<Row Tag="TXT_KEY_EA_PROMOTION_ENGINEER">
@@ -350,8 +479,14 @@
 		<Row Tag="TXT_KEY_EA_PROMOTION_MANA_EATER">
 			<Text>Mana Eater</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_MANA_EATER_HELP">
+			<Text>This Great Person consumes Mana.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_PROPHET">
 			<Text>Prophet</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_PROPHET_HELP">
+			<Text>This Great Person has made a Prophecy and has +4 Devotion and Proselytizing.</Text>
 		</Row>
 		
 		<Row Tag="TXT_KEY_EA_PROMOTION_LOGISTICS_1">
@@ -408,6 +543,9 @@
 		<Row Tag="TXT_KEY_EA_PROMOTION_LOGISTICS_18">
 			<Text>Logistics XVIII</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_LOGISTICS_HELP">
+			<Text>Increases the ability of this Warrior to train, repair and organize military units in the field.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_CONSTRUCTION_1">
 			<Text>Construction I</Text>
 		</Row>
@@ -461,6 +599,9 @@
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_CONSTRUCTION_18">
 			<Text>Construction XVIII</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_CONSTRUCTION_HELP">
+			<Text>Increases the permanent effect of most Wonders built by this Great Person and production from the Build action.</Text>
 		</Row>
 
 		<Row Tag="TXT_KEY_EA_PROMOTION_COMBAT_ENGINEERING_1">
@@ -517,6 +658,9 @@
 		<Row Tag="TXT_KEY_EA_PROMOTION_COMBAT_ENGINEERING_18">
 			<Text>Combat Engineering XVIII</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_COMBAT_ENGINEERING_HELP">
+			<Text>placeholder</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_TRADE_1">
 			<Text>Trade I</Text>
 		</Row>
@@ -570,6 +714,9 @@
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_TRADE_18">
 			<Text>Trade XVIII</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_TRADE_HELP">
+			<Text>Increases the bonus from Trade Houses and Trade Missions established by this Great Person and gold from the Trade action.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_ESPIONAGE_1">
 			<Text>Espionage I</Text>
@@ -625,6 +772,9 @@
 		<Row Tag="TXT_KEY_EA_PROMOTION_ESPIONAGE_18">
 			<Text>Espionage XVIII</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_ESPIONAGE_HELP">
+			<Text>placeholder</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_SCHOLARSHIP_1">
 			<Text>Scholarship I</Text>
 		</Row>
@@ -678,6 +828,9 @@
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_SCHOLARSHIP_18">
 			<Text>Scholarship XVIII</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_SCHOLARSHIP">
+			<Text>Increases the effect of Tomes written by this Great Person and research from the Research action.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_BARDING_1">
 			<Text>Barding I</Text>
@@ -733,6 +886,9 @@
 		<Row Tag="TXT_KEY_EA_PROMOTION_BARDING_18">
 			<Text>Barding XVIII</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_BARDING_HELP">
+			<Text>Increases the effect of Epics crafted by this Great Person and culture from the Perform action.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_PROSELYTISM_1">
 			<Text>Proselytism I</Text>
 		</Row>
@@ -786,6 +942,9 @@
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_PROSELYTISM_18">
 			<Text>Proselytism XVIII</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_PROSELYTISM_HELP">
+			<Text>Increases religious conversion by the Proselytize action.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_DEVOTION_1">
 			<Text>Devotion I</Text>
@@ -841,6 +1000,9 @@
 		<Row Tag="TXT_KEY_EA_PROMOTION_DEVOTION_18">
 			<Text>Devotion XVIII</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_DEVOTION_HELP">
+			<Text>Increases the effect or duration of all Divine Spells and Mana or Divine Favor from the Worship action.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_DIVINATION_1">
 			<Text>Divination I</Text>
 		</Row>
@@ -894,6 +1056,9 @@
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_DIVINATION_18">
 			<Text>Divination XVIII</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_DIVINATION_HELP">
+			<Text>Increases the effect or duration of all Divination spells.</Text>
 		</Row>
 
 		<Row Tag="TXT_KEY_EA_PROMOTION_ABJURATION_1">
@@ -950,6 +1115,9 @@
 		<Row Tag="TXT_KEY_EA_PROMOTION_ABJURATION_18">
 			<Text>Abjuration XVIII</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_ABJURATION_HELP">
+			<Text>Increases the effect or duration of all Abjuration spells.</Text>
+		</Row>
 
 		<Row Tag="TXT_KEY_EA_PROMOTION_EVOCATION_1">
 			<Text>Evocation I</Text>
@@ -1004,6 +1172,9 @@
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_EVOCATION_18">
 			<Text>Evocation XVIII</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_EVOCATION_HELP">
+			<Text>Increases the effect or duration of all Evocation spells.</Text>
 		</Row>
 
 		<Row Tag="TXT_KEY_EA_PROMOTION_TRANSMUTATION_1">
@@ -1060,6 +1231,9 @@
 		<Row Tag="TXT_KEY_EA_PROMOTION_TRANSMUTATION_18">
 			<Text>Transmutation XVIII</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_TRANSMUTATION_HELP">
+			<Text>Increases the effect or duration of all Transmutation spells.</Text>
+		</Row>
 
 		<Row Tag="TXT_KEY_EA_PROMOTION_CONJURATION_1">
 			<Text>Conjuration I</Text>
@@ -1114,6 +1288,9 @@
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_CONJURATION_18">
 			<Text>Conjuration XVIII</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_CONJURATION_HELP">
+			<Text>Increases the effect or duration of all Conjuration spells.</Text>
 		</Row>
 
 		<Row Tag="TXT_KEY_EA_PROMOTION_NECROMANCY_1">
@@ -1170,6 +1347,9 @@
 		<Row Tag="TXT_KEY_EA_PROMOTION_NECROMANCY_18">
 			<Text>Necromancy XVIII</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_NECROMANCY_HELP">
+			<Text>Increases the effect or duration of all Necromancy spells.</Text>
+		</Row>
 
 		<Row Tag="TXT_KEY_EA_PROMOTION_ENCHANTMENT_1">
 			<Text>Enchantment I</Text>
@@ -1225,6 +1405,9 @@
 		<Row Tag="TXT_KEY_EA_PROMOTION_ENCHANTMENT_18">
 			<Text>Enchantment XVIII</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_ENCHANTMENT_HELP">
+			<Text>Increases the effect or duration of all Enchantment spells.</Text>
+		</Row>
 
 		<Row Tag="TXT_KEY_EA_PROMOTION_ILLUSION_1">
 			<Text>Illusion I</Text>
@@ -1279,6 +1462,9 @@
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_ILLUSION_18">
 			<Text>Illusion XVIII</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_ILLUSION_HELP">
+			<Text>Increases the effect or duration of all Illusion spells.</Text>
 		</Row>
 
 

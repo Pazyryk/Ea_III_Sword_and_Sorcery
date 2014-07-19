@@ -94,6 +94,14 @@ for eaCivInfo in GameInfo.EaCivs() do
 	end
 end
 
+local nonTransferableGPPromos = {}
+local numNonTransferableGPPromos = 0
+for promoInfo in GameInfo.UnitPromotions() do
+	if promoInfo.EaGPNonTransferable then
+		numNonTransferableGPPromos = numNonTransferableGPPromos + 1
+		nonTransferableGPPromos[numNonTransferableGPPromos] = promoInfo.ID
+	end
+end
 --------------------------------------------------------------
 -- Local Functions
 --------------------------------------------------------------
@@ -299,7 +307,7 @@ end
 
 
 
-local skipPeople = {}
+local g_skipActivePlayerPeople = {}
 
 function PeoplePerCivTurn(iPlayer)
 	--DebugFunctionExitTest("PeoplePerCivTurn", true)
@@ -391,17 +399,17 @@ function PeoplePerCivTurn(iPlayer)
 						local eaActionID = eaPerson.eaActionID
 						print("About to TestEaAction for human", eaActionID, iPlayer, unit, iPerson)
 						if eaActionID == 0 then
-							skipPeople[iPerson] = true
+							g_skipActivePlayerPeople[iPerson] = true
 						elseif eaActionID < FIRST_SPELL_ID then
 							if TestEaAction(eaActionID, iPlayer, unit, iPerson) then
-								skipPeople[iPerson] = true
+								g_skipActivePlayerPeople[iPerson] = true
 							else
 								print("Human GP failed TestEaAction at start of turn")
 								InterruptEaAction(iPlayer, iPerson)
 							end
 						else
 							if TestEaSpell(eaActionID, iPlayer, unit, iPerson) then
-								skipPeople[iPerson] = true
+								g_skipActivePlayerPeople[iPerson] = true
 							else
 								print("Human GP failed TestEaSpell at start of turn")
 								InterruptEaSpell(iPlayer, iPerson)
@@ -430,7 +438,7 @@ function PeoplePerCivTurn(iPlayer)
 
 						--!!!! POSSIBLE INFINITE LOOP !!!!
 						--If it happens, then it most likely due to a particular EaAction that is repeatable and does not reduce movement (which must be fixed)
-						if debugLoopCount < 10 then
+						if debugLoopCount < 20 then
 							debugLoopCount = debugLoopCount + 1
 						else
 							error("Possible infinite loop in AIGPDoSomething call")
@@ -444,22 +452,22 @@ function PeoplePerCivTurn(iPlayer)
 end
 
 
-function SkipPeople()
+local function SkipActivePlayerPeople()
 	local player = Players[g_iActivePlayer]	
 	if not player:IsHuman() then return end	--autoplay
 	if MapModData.bAutoplay then
 		error("Fix this!")
 	end
 
-    print("Running SkipPeople")
+    print("SkipActivePlayerPeople")
 
-	for iPerson, boolean in pairs(skipPeople) do
-		if boolean then
+	for iPerson, bSkip in pairs(g_skipActivePlayerPeople) do
+		if bSkip then
 			local iUnit = gPeople[iPerson].iUnit
 			local unit = player:GetUnitByID(iUnit)
 			if unit then
 				print("GP Moves before = ", unit:GetMoves())
-				skipPeople[iPerson] = false
+				g_skipActivePlayerPeople[iPerson] = false
 				unit:PopMission()
 				unit:PushMission(MissionTypes.MISSION_SKIP, unit:GetX(), unit:GetY(), 0, 0, 1) --, MissionTypes.MISSION_SKIP, unit:GetPlot(), unit)
 				print("GP Moves after skip = ", unit:GetMoves())
@@ -467,7 +475,7 @@ function SkipPeople()
 		end
 	end
 end
-Events.ActivePlayerTurnStart.Add(SkipPeople)
+Events.ActivePlayerTurnStart.Add(SkipActivePlayerPeople)
 
 
 --TO DO: This could be done much better with new turn blocking types in dll
@@ -497,20 +505,21 @@ function PeopleAfterTurn(iPlayer, bActionInfoPanelCall)
 					if unit:GetMoves() > 0 then
 						local eaActionID = eaPerson.eaActionID
 						if eaActionID ~= -1 then
+							local bActionSuccess
 							if eaActionID < FIRST_SPELL_ID then
-								DoEaAction(eaActionID, iPlayer, unit, iPerson)
+								bActionSuccess = DoEaAction(eaActionID, iPlayer, unit, iPerson)
 							else
-								DoEaSpell(eaActionID, iPlayer, unit, iPerson)
+								bActionSuccess = DoEaSpell(eaActionID, iPlayer, unit, iPerson)
 							end
-							if unit and unit:GetMoves() > 0 and not unit:IsDelayedDeath() and not unit:IsDead() then
+							if bActionSuccess and eaPerson.activePlayerEndTurnXP and unit then
+								unit:ChangeExperience(eaPerson.activePlayerEndTurnXP)
+								eaPerson.activePlayerEndTurnXP = nil
+							end
+
+							if not bActionSuccess and unit and unit:GetMoves() > 0 and not unit:IsDelayedDeath() and not unit:IsDead() then
 								print("PeopleAfterTurn blocking human end turn (if it's not too late) for GP with movement", eaActionID, iPlayer, iPerson)
 								bAllowHumanPlayerEndTurn = false
 							end
-						--else
-							--clear whatever this unit thought it was doing (including skip)
-						--	print("GP with moves and eaActionID = -1 at PeopleAfterTurn; blocking human end turn", iPerson)
-						--	unit:PopMission()
-						--	bAllowHumanPlayerEndTurn = false
 						end
 					end
 				end
@@ -669,6 +678,9 @@ function InitGPUnit(iPlayer, iPerson, x, y, convertUnit, unitTypeID, invisibilit
 		unit:SetGPAttackState(0)
 	end
 	if convertUnit then
+		for i = 1, numNonTransferableGPPromos do
+			convertUnit:SetHasPromotion(nonTransferablePromos[i] , false)
+		end
 		MapModData.bBypassOnCanSaveUnit = true
 		unit:Convert(convertUnit, false)
 	end
@@ -1338,7 +1350,7 @@ function KillPerson(iPlayer, iPerson, unit, iKillerPlayer, deathType)
 	end
 
 	--housekeeping
-	skipPeople[iPerson] = nil
+	g_skipActivePlayerPeople[iPerson] = nil
 	if eaPerson.gotoEaActionID ~= -1 then
 		eaPlayer.aiUniqueTargeted[eaPerson.gotoEaActionID] = nil
 	end

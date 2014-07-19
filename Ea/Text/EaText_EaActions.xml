@@ -55,8 +55,8 @@
 		<Row Tag="TXT_KEY_EA_ACTION_PERFORM">
 			<Text>Perform</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_ACTION_TRAIN">
-			<Text>Train</Text>
+		<Row Tag="TXT_KEY_EA_ACTION_RECRUIT">
+			<Text>Recruit</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_WORSHIP">
 			<Text>Worship</Text>
@@ -71,8 +71,8 @@
 		<Row Tag="TXT_KEY_EA_ACTION_RALLY_TROOPS">
 			<Text>Rally Troops</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_ACTION_FIELD_TRAINING_EXERCISES">
-			<Text>Field Training Exercises</Text>
+		<Row Tag="TXT_KEY_EA_ACTION_TRAIN">
+			<Text>Train</Text>
 		</Row>
 		
 		<Row Tag="TXT_KEY_EA_ACTION_LEARN_SPELL">

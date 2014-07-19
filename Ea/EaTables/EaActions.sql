@@ -172,25 +172,25 @@ UPDATE EaActions SET TurnsToComplete = 1, StayInvisible = 1 WHERE Type = 'EA_ACT
 
 --GP yield actions
 INSERT INTO EaActions (Type,			Description,							Help,										GPOnly,	NoGPNumLimit,	UIType,		AITarget,			GPClass,		City,		GPModType1,				TurnsToComplete,	ProgressHolder,	IconIndex,	IconAtlas				) VALUES
-('EA_ACTION_BUILD',						'TXT_KEY_EA_ACTION_BUILD',				'TXT_KEY_EA_ACTION_BUILD_HELP',				1,		1,				'Action',	'OwnCities',		'Engineer',		'Own',		'EAMOD_CONSTRUCTION',	1000,				'Person',		5,			'TECH_ATLAS_1'			),
+('EA_ACTION_BUILD',						'TXT_KEY_EA_ACTION_BUILD',				'TXT_KEY_EA_ACTION_BUILD_HELP',				1,		1,				'Action',	'OwnCities',		'Engineer',		'Own',		NULL,					1000,				'Person',		5,			'TECH_ATLAS_1'			),
 ('EA_ACTION_TRADE',						'TXT_KEY_EA_ACTION_TRADE',				'TXT_KEY_EA_ACTION_TRADE_HELP',				1,		1,				'Action',	'OwnCities',		'Merchant',		'Own',		'EAMOD_TRADE',			1000,				'Person',		17,			'TECH_ATLAS_1'			),
 ('EA_ACTION_RESEARCH',					'TXT_KEY_EA_ACTION_RESEARCH',			'TXT_KEY_EA_ACTION_RESEARCH_HELP',			1,		1,				'Action',	'OwnCities',		'Sage',			'Own',		'EAMOD_SCHOLARSHIP',	1000,				'Person',		11,			'BW_ATLAS_1'			),
 ('EA_ACTION_PERFORM',					'TXT_KEY_EA_ACTION_PERFORM',			'TXT_KEY_EA_ACTION_PERFORM_HELP',			1,		1,				'Action',	'OwnCities',		'Artist',		'Own',		'EAMOD_BARDING',		1000,				'Person',		44,			'BW_ATLAS_1'			),
-('EA_ACTION_TRAIN',						'TXT_KEY_EA_ACTION_TRAIN',				'TXT_KEY_EA_ACTION_TRAIN_HELP',				1,		1,				'Action',	'OwnCities',		'Warrior',		'Own',		'EAMOD_LEADERSHIP',		1000,				'Person',		5,			'BW_ATLAS_1'			),
+('EA_ACTION_RECRUIT',					'TXT_KEY_EA_ACTION_RECRUIT',			'TXT_KEY_EA_ACTION_RECRUIT_HELP',			1,		1,				'Action',	'OwnCities',		'Warrior',		'Own',		'EAMOD_LOGISTICS',		1000,				'Person',		5,			'BW_ATLAS_1'			),
 ('EA_ACTION_WORSHIP',					'TXT_KEY_EA_ACTION_WORSHIP',			'TXT_KEY_EA_ACTION_WORSHIP_HELP',			1,		1,				'Action',	'OwnCities',		'Devout',		'Own',		'EAMOD_DEVOTION',		1000,				'Person',		17,			'BW_ATLAS_2'			),
 ('EA_ACTION_CHANNEL',					'TXT_KEY_EA_ACTION_CHANNEL',			'TXT_KEY_EA_ACTION_CHANNEL_HELP',			1,		1,				'Action',	'Tower',			'Thaumaturge',	'Not',		'EAMOD_EVOCATION',		1000,				'Person',		17,			'BW_ATLAS_2'			);
 
 UPDATE EaActions SET NotGPClass = 'Devout' WHERE Type = 'EA_ACTION_CHANNEL';
-
+UPDATE EaActions SET FinishMoves = NULL WHERE Type IN ('EA_ACTION_BUILD', 'EA_ACTION_RECRUIT');
 
 --Warrior actions
 INSERT INTO EaActions (Type,			Description,							Help,										GPOnly,	UIType,		GPClass,		AITarget,		AICombatRole,	GPModType1,				TurnsToComplete,	HumanVisibleFX,	IconIndex,	IconAtlas		) VALUES
 ('EA_ACTION_LEAD_CHARGE',				'TXT_KEY_EA_ACTION_LEAD_CHARGE',		'TXT_KEY_EA_ACTION_LEAD_CHARGE_HELP',		1,		'Action',	'Warrior',		NULL,			'Any',			'EAMOD_COMBAT',			1,					1,				6,			'BW_ATLAS_1'	),
 ('EA_ACTION_RALLY_TROOPS',				'TXT_KEY_EA_ACTION_RALLY_TROOPS',		'TXT_KEY_EA_ACTION_RALLY_TROOPS_HELP',		1,		'Action',	'Warrior',		NULL,			'Any',			'EAMOD_LEADERSHIP',		1,					1,				33,			'TECH_ATLAS_1'	),
---('EA_ACTION_FORTIFY_TROOPS',			'TXT_KEY_EA_ACTION_FORTIFY_TROOPS',		'TXT_KEY_EA_ACTION_FORTIFY_TROOPS_HELP',	1,		'Action',	'Warrior',		NULL,			'Any',			'EAMOD_LEADERSHIP',		1,					1,				6,			'BW_ATLAS_1'	),
-('EA_ACTION_FIELD_TRAINING_EXERCISES',	'TXT_KEY_EA_ACTION_FIELD_TRAINING_EXERCISES','TXT_KEY_EA_ACTION_FIELD_TRAINING_EXERCISES_HELP',	1,'Action','Warrior',	'OwnLandUnits',	NULL,			'EAMOD_LEADERSHIP',		1000,				1,				5,			'BW_ATLAS_1'	);
+--('EA_ACTION_FORTIFY_TROOPS',			'TXT_KEY_EA_ACTION_FORTIFY_TROOPS',		'TXT_KEY_EA_ACTION_FORTIFY_TROOPS_HELP',	1,		'Action',	'Warrior',		NULL,			'Any',			'EAMOD_LOGISTICS',		1,					1,				6,			'BW_ATLAS_1'	),
+('EA_ACTION_TRAIN',						'TXT_KEY_EA_ACTION_TRAIN',				'TXT_KEY_EA_ACTION_TRAIN_HELP',				1,		'Action',	'Warrior',		'OwnLandUnits',	NULL,			'EAMOD_LOGISTICS',		1000,				1,				5,			'BW_ATLAS_1'	);
 
-UPDATE EaActions SET FinishMoves = NULL WHERE Type = 'EA_ACTION_LEAD_CHARGE';
+UPDATE EaActions SET FinishMoves = NULL, GPModType2 = 'EAMOD_LEADERSHIP' WHERE Type = 'EA_ACTION_LEAD_CHARGE';
 
 --Misc actions
 INSERT INTO EaActions (Type,			Description,							Help,										GPOnly,	UIType,		GPClass,		OwnTerritory,	AITarget,		AICombatRole,	GPModType1,				TurnsToComplete,	ProgressHolder,	HumanVisibleFX,	IconIndex,	IconAtlas					) VALUES
@@ -365,7 +365,7 @@ INSERT INTO EaActions (Type,			SpellClass,	GPModType1,				TechReq,						City,	AI
 ('EA_SPELL_BANISH',						'Arcane',	'EAMOD_ABJURATION',		'TECH_ABJURATION',				NULL,	'Self',				NULL,			2,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
 ('EA_SPELL_PROTECTIVE_WARD',			'Arcane',	'EAMOD_ABJURATION',		'TECH_ABJURATION',				'Not',	'HomelandProtection',NULL,			2,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
 ('EA_SPELL_DISPEL_MAGIC',				'Arcane',	'EAMOD_ABJURATION',		'TECH_INVOCATION',				NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
-('EA_SPELL_TIME_STOP',					'Arcane',	'EAMOD_ABJURATION',		'TECH_GREATER_ARCANA',			NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_TIME_STOP',					'Arcane',	'EAMOD_ABJURATION',		'TECH_GREATER_ARCANA',			NULL,	NULL,				'Any',			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
 
 ('EA_SPELL_EXPLOSIVE_RUNE',				'Arcane',	'EAMOD_EVOCATION',		'TECH_EVOCATION',				'Not',	'HomelandProtection',NULL,			2,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
 ('EA_SPELL_FIREBALL',					'Arcane',	'EAMOD_EVOCATION',		'TECH_EVOCATION',				NULL,	NULL,				'Any',			1,					0,			NULL,			0,			'EA_SPELLS_ATLAS'	),
@@ -396,25 +396,25 @@ INSERT INTO EaActions (Type,			SpellClass,	GPModType1,				TechReq,						City,	AI
 ('EA_SPELL_DEATH_STAY',					'Arcane',	'EAMOD_NECROMANCY',		'TECH_NECROMANCY',				NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
 ('EA_SPELL_BECOME_LICH',				'Arcane',	'EAMOD_NECROMANCY',		'TECH_SOUL_BINDING',			'Not',	'Tower',			NULL,			15,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
 ('EA_SPELL_FINGER_OF_DEATH',			'Arcane',	'EAMOD_NECROMANCY',		'TECH_SOUL_BINDING',			NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
-('EA_SPELL_DEATH_RAY',					'Arcane',	'EAMOD_NECROMANCY',		'TECH_SOUL_BINDING',			NULL,	NULL,				'Any',			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
-('EA_SPELL_SEQUENCED_DEATH',			'Arcane',	'EAMOD_NECROMANCY',		'TECH_ARMAGEDDON_RITUALS',		NULL,	NULL,				'Any',			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_ENERGY_DRAIN',				'Arcane',	'EAMOD_NECROMANCY',		'TECH_SOUL_BINDING',			NULL,	NULL,				'Any',			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_MASS_ENERGY_DRAIN',			'Arcane',	'EAMOD_NECROMANCY',		'TECH_ARMAGEDDON_RITUALS',		NULL,	NULL,				'Any',			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
 
-('EA_SPELL_CHARM_MONSTER',				'Arcane',	'EAMOD_ENCHANTMENT',	'TECH_MUSIC',					NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
-('EA_SPELL_CAUSE_FEAR',					'Arcane',	'EAMOD_ENCHANTMENT',	'TECH_ENCHANTMENT',				NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
-('EA_SPELL_CAUSE_DISPAIR',				'Arcane',	'EAMOD_ENCHANTMENT',	'TECH_ENCHANTMENT',				NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
-('EA_SPELL_SLEEP',						'Arcane',	'EAMOD_ENCHANTMENT',	'TECH_ENCHANTMENT',				NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
-('EA_SPELL_DREAM',						'Arcane',	'EAMOD_ENCHANTMENT',	'TECH_ENCHANTMENT',				NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
-('EA_SPELL_NIGHTMARE',					'Arcane',	'EAMOD_ENCHANTMENT',	'TECH_ENCHANTMENT',				NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
-('EA_SPELL_LESSER_GEAS',				'Arcane',	'EAMOD_ENCHANTMENT',	'TECH_ENCHANTMENT',				NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
-('EA_SPELL_GREATER_GEAS',				'Arcane',	'EAMOD_ENCHANTMENT',	'TECH_ENCHANTMENT',				NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
+('EA_SPELL_CHARM_MONSTER',				'Arcane',	'EAMOD_ENCHANTMENT',	'TECH_MUSIC',					NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	);
+--('EA_SPELL_CAUSE_FEAR',					'Arcane',	'EAMOD_ENCHANTMENT',	'TECH_ENCHANTMENT',				NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
+--('EA_SPELL_CAUSE_DISPAIR',				'Arcane',	'EAMOD_ENCHANTMENT',	'TECH_ENCHANTMENT',				NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
+--('EA_SPELL_SLEEP',						'Arcane',	'EAMOD_ENCHANTMENT',	'TECH_ENCHANTMENT',				NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
+--('EA_SPELL_DREAM',						'Arcane',	'EAMOD_ENCHANTMENT',	'TECH_ENCHANTMENT',				NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
+--('EA_SPELL_NIGHTMARE',					'Arcane',	'EAMOD_ENCHANTMENT',	'TECH_ENCHANTMENT',				NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
+--('EA_SPELL_LESSER_GEAS',				'Arcane',	'EAMOD_ENCHANTMENT',	'TECH_ENCHANTMENT',				NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
+--('EA_SPELL_GREATER_GEAS',				'Arcane',	'EAMOD_ENCHANTMENT',	'TECH_ENCHANTMENT',				NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
 
-('EA_SPELL_PRESTIDIGITATION',			'Arcane',	'EAMOD_ILLUSION',		'TECH_ILLUSION',				NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
-('EA_SPELL_OBSCURE_TERRAIN',			'Arcane',	'EAMOD_ILLUSION',		'TECH_ILLUSION',				NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
-('EA_SPELL_FOG_OF_WAR',					'Arcane',	'EAMOD_ILLUSION',		'TECH_GREATER_ILLUSION',		NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
-('EA_SPELL_SIMULACRUM',					'Arcane',	'EAMOD_ILLUSION',		'TECH_GREATER_ILLUSION',		NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
-('EA_SPELL_PHANTASMAGORIA',				'Arcane',	'EAMOD_ILLUSION',		'TECH_PHANTASMAGORIA',			NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	);
+--('EA_SPELL_PRESTIDIGITATION',			'Arcane',	'EAMOD_ILLUSION',		'TECH_ILLUSION',				NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
+--('EA_SPELL_OBSCURE_TERRAIN',			'Arcane',	'EAMOD_ILLUSION',		'TECH_ILLUSION',				NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
+--('EA_SPELL_FOG_OF_WAR',					'Arcane',	'EAMOD_ILLUSION',		'TECH_GREATER_ILLUSION',		NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
+--('EA_SPELL_SIMULACRUM',					'Arcane',	'EAMOD_ILLUSION',		'TECH_GREATER_ILLUSION',		NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	),
+--('EA_SPELL_PHANTASMAGORIA',				'Arcane',	'EAMOD_ILLUSION',		'TECH_PHANTASMAGORIA',			NULL,	NULL,				NULL,			1,					0,			1,				0,			'EA_SPELLS_ATLAS'	);
 
-UPDATE EaActions SET FinishMoves = NULL WHERE Type IN ('EA_SPELL_SCRYING', 'EA_SPELL_PLASMA_STORM', 'EA_SPELL_HAIL_OF_PROJECTILES', 'EA_SPELL_SEQUENCED_DEATH');
+UPDATE EaActions SET FinishMoves = NULL WHERE Type IN ('EA_SPELL_SCRYING', 'EA_SPELL_PLASMA_STORM', 'EA_SPELL_HAIL_OF_PROJECTILES', 'EA_SPELL_MASS_ENERGY_DRAIN', 'EA_SPELL_TIME_STOP');
 
 --Both Arcane and Divine
 INSERT INTO EaActions (Type,			SpellClass,	GPModType1,				TechReq,						City,	AITarget,			AICombatRole,	FallenAltSpell,					TurnsToComplete,	FixedFaith,	HumanVisibleFX,	IconIndex,	IconAtlas			) VALUES

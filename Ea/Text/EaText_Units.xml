@@ -81,6 +81,15 @@
 			<Text>Great Bombarde</Text>
 		</Row>
 		
+		<Row Tag="TXT_KEY_EA_UNIT_LANDSHIPS">
+			<Text>Landships</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_AIRSHIPS">
+			<Text>Airships</Text>
+		</Row>
+		
+		
+		
 		<Row Tag="TXT_KEY_EA_UNIT_MOUNTED_ELEPHANTS">
 			<Text>Mounted Elephants</Text>
 		</Row>

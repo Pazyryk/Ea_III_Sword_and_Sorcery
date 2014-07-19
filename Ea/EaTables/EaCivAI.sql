@@ -63,7 +63,7 @@ INSERT INTO EaCivPlans (Type,		Function,		TechModule,					PolicyModule,				Build
 ('EACIVPLAN_VINCA',					'Naming',		'TECH_BRONZE_WORKING',		NULL,						NULL,						50	),
 ('EACIVPLAN_GOBANN',				'Naming',		'TECH_BRONZE_WORKING',		NULL,						NULL,						50	),
 ('EACIVPLAN_UR',					'Naming',		'TECH_DEEP_MINING',			NULL,						NULL,						0	),
-('EACIVPLAN_ORKAHAUGR',				'Naming',		'TECH_DEEP_ROADS',			NULL,						NULL,						0	),
+--('EACIVPLAN_ORKAHAUGR',				'Naming',		'TECH_DEEP_ROADS',			NULL,						NULL,						0	),
 
 ('EACIVPLAN_REYNES',				'Naming',		NULL,						'POLICY_ARISTOCRACY',		NULL,						0	),
 ('EACIVPLAN_BJARMALAND',			'Naming',		NULL,						'POLICY_GUILDS',			NULL,						0	),
@@ -1138,7 +1138,7 @@ INSERT INTO EaCivPlans_TechModules (TechModule, TechType) VALUES
 ('Transcendentals',		'TECH_ARCHITECTURE'				),
 ('Transcendentals',		'TECH_MACHINERY'				),
 ('Transcendentals',		'TECH_STEAM_POWER'				),
-('Transcendentals',		'TECH_ETHEREAL_ARCHITECTURE'	),
+--('Transcendentals',		'TECH_ETHEREAL_ARCHITECTURE'	),
 ('Transcendentals',		'TECH_MITHRIL_WORKING'			),
 
 ('Writers',				'TECH_PHILOSOPHY'				),
@@ -1149,8 +1149,8 @@ INSERT INTO EaCivPlans_TechModules (TechModule, TechType) VALUES
 ('Musicians',			'TECH_AESTHETICS'				),
 
 ('Illusionists',		'TECH_DRAMA'					),
-('Illusionists',		'TECH_ILLUSION'					),
-('Illusionists',		'TECH_PHANTASMAGORIA'			),
+--('Illusionists',		'TECH_ILLUSION'					),
+--('Illusionists',		'TECH_PHANTASMAGORIA'			),
 
 ('Scientists',			'TECH_MATHEMATICS'				),
 ('Scientists',			'TECH_PHILOSOPHY'				),

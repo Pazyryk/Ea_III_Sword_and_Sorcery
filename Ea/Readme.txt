@@ -191,8 +191,8 @@ File Locals. Defines new locals and localizes global values (of any kind) that w
 
 	local BARB_PLAYER_INDEX = BARB_PLAYER_INDEX		--localized global constant
 	local UNIT_WORKBOAT = GameInfoTypes.UNIT_WORKBOAT	--only what we need often in this file
-	local Distance = Map.PlotDistance
-	local Floor = math.floor
+	local PlotDistance = Map.PlotDistance
+	local floor = math.floor
 	local gPlayers = gPlayers
 	local Players = Players		--Players and Teams keep Firaxis format so violate mod naming conventions
 	local policyPrereqs = {}	--cached DB values filled in next section below

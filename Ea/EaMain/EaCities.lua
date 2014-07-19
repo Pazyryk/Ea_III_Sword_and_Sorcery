@@ -155,9 +155,9 @@ local gg_remoteImprovePlot =		gg_remoteImprovePlot
 local gg_cityRemoteImproveCount =	gg_cityRemoteImproveCount
 
 --localized game and library functions
-local StrSubstitute =		string.gsub
+local gsub =		string.gsub
 local Rand =				Map.Rand
-local Floor =				math.floor
+local floor =				math.floor
 
 --localized global functions
 local HandleError =			HandleError
@@ -166,7 +166,7 @@ local HandleError31 =		HandleError31
 local HandleError41 =		HandleError41
 local HandleError61 =		HandleError61
 local GetMemoizedPlotIndexDistance = GetMemoizedPlotIndexDistance
-local Distance =			Map.PlotDistance
+local PlotDistance =			Map.PlotDistance
 local GetPlotFromXY =		Map.GetPlot
 local GetPlotByIndex =		Map.GetPlotByIndex
 --local FindOpenTradeRoute =	FindOpenTradeRoute		--in EaTrade.lua
@@ -449,7 +449,7 @@ function ConvertUnitProductionByMatch(iPlayer, fromStr, toStr)
 			local unitProd = city:GetUnitProduction(unitTypeID)
 			if 0 < unitProd then
 				local unitType = GameInfo.Units[unitTypeID].Type
-				local newUnitType = StrSubstitute(unitType, fromStr, toStr)
+				local newUnitType = gsub(unitType, fromStr, toStr)
 				local newUnitTypeID = GameInfoTypes[newUnitType]
 				city:SetUnitProduction(newUnitTypeID, unitProd)
 				city:SetUnitProduction(unitTypeID, 0)
@@ -581,7 +581,7 @@ function TestSetEligibleCityCults(city, eaCity, feedbackCultID)
 
 	if feedbackCultID then	--for human UI test, only shows for disallowed cults after generic reasons exhausted (not city, holy city)
 		if feedbackCultID == RELIGION_CULT_OF_EPONA then
-			return "Must have 3 Horse plots, or 2 Horse plots and 50% open flatland (grass or plains); city has " .. totalHorses .. " Horses plots and " .. Floor(100 * totalGoodFlatland / totalLand) .. "% qualified flatland"
+			return "Must have 3 Horse plots, or 2 Horse plots and 50% open flatland (grass or plains); city has " .. totalHorses .. " Horses plots and " .. floor(100 * totalGoodFlatland / totalLand) .. "% qualified flatland"
 		elseif  feedbackCultID == RELIGION_CULT_OF_BAKKHEIA then
 			return "Must have 2 Wine or 2 spirits buildings (Winery, Brewery or Distillery); city has " .. totalWine .. " Wine and " .. boozeBuildings .. " spirits buildings"
 		end
@@ -600,15 +600,15 @@ function TestSetEligibleCityCults(city, eaCity, feedbackCultID)
 			end
 		else
 			if feedbackCultID == RELIGION_CULT_OF_LEAVES then
-				return "Surrounding land must include 60% unimproved forests or jungles; city has " .. Floor(100 * totalUnimprovedForestJungle / totalLand) .. "%"
+				return "Surrounding land must include 60% unimproved forests or jungles; city has " .. floor(100 * totalUnimprovedForestJungle / totalLand) .. "%"
 			elseif feedbackCultID == RELIGION_CULT_OF_ABZU then
-				return "Surrounding land must include 35% fresh water plots; city has " .. Floor(100 * totalFreshWater / totalLand) .. "%"
+				return "Surrounding land must include 35% fresh water plots; city has " .. floor(100 * totalFreshWater / totalLand) .. "%"
 			elseif feedbackCultID == RELIGION_CULT_OF_PLOUTON then
-				return "Surrounding land must include 40% hills or mountains; city has " .. Floor(100 * totalFreshWater / totalLand) .. "%"
+				return "Surrounding land must include 40% hills or mountains; city has " .. floor(100 * totalFreshWater / totalLand) .. "%"
 			elseif feedbackCultID == RELIGION_CULT_OF_CAHRA then
-				return "Surrounding land must include 50% desert; city has " .. Floor(100 * totalDesert / totalLand) .. "%"
+				return "Surrounding land must include 50% desert; city has " .. floor(100 * totalDesert / totalLand) .. "%"
 			elseif feedbackCultID == RELIGION_CULT_OF_AEGIR then
-				return "Must have >60% surrounding sea; city has " .. Floor(100 * (1 - totalLand / totalPlots)) .. "%"
+				return "Must have >60% surrounding sea; city has " .. floor(100 * (1 - totalLand / totalPlots)) .. "%"
 			end
 		end
 		return "REPORT AS BUG"
@@ -617,7 +617,7 @@ end
 local TestSetEligibleCityCults = TestSetEligibleCityCults
 
 function CityPerCivTurn(iPlayer)		--Full civ only		TO DO: must be real civs so that remote plot system works
-	local Floor = math.floor
+	local floor = math.floor
 	print("CityPerCivTurn; City info (Name/Size/BuildQueue):")
 
 	local gameTurn = Game.GetGameTurn()
@@ -663,9 +663,9 @@ function CityPerCivTurn(iPlayer)		--Full civ only		TO DO: must be real civs so t
 				if eaCity.disease == 0 then
 					local health, diseaseChance, plagueChance = GetCityHealthInfo(city, eaCity, size, followerReligion, aiGrowthPercent, false)
 					if 0 < plagueChance and Rand(100, "plague role") < plagueChance then
-						eaCity.disease = -Rand(Floor(0.66 * size), "hello") - 1
+						eaCity.disease = -Rand(floor(0.66 * size), "hello") - 1
 					elseif 0 < diseaseChance and Rand(100, "disease role") < diseaseChance then
-						eaCity.disease = Rand(Floor(0.33 * size), "hello") + 1
+						eaCity.disease = Rand(floor(0.33 * size), "hello") + 1
 					end
 				end
 				if eaCity.disease ~= 0 then
@@ -743,8 +743,8 @@ function CityPerCivTurn(iPlayer)		--Full civ only		TO DO: must be real civs so t
 				end
 
 				--desertCahraFollower
-				city:SetNumRealBuilding(BUILDING_CULT_LEAVES_1F1C, (followerReligion == RELIGION_CULT_OF_LEAVES) and Floor(eaCity.unimprovedForestJungle / 3) or 0)
-				city:SetNumRealBuilding(BUILDING_CULT_CAHRA_1F, (followerReligion == RELIGION_CULT_OF_CAHRA) and Floor(eaCity.desertCahraFollower / 3) or 0)
+				city:SetNumRealBuilding(BUILDING_CULT_LEAVES_1F1C, (followerReligion == RELIGION_CULT_OF_LEAVES) and floor(eaCity.unimprovedForestJungle / 3) or 0)
+				city:SetNumRealBuilding(BUILDING_CULT_CAHRA_1F, (followerReligion == RELIGION_CULT_OF_CAHRA) and floor(eaCity.desertCahraFollower / 3) or 0)
 
 				if followerReligion == RELIGION_CULT_OF_ABZU then
 					if plot:IsFreshWater() then
@@ -780,7 +780,7 @@ function CityPerCivTurn(iPlayer)		--Full civ only		TO DO: must be real civs so t
 					elseif orderID == PROCESS_TRAINING_EXERCISES then	
 						eaPlayer.trainingXP = (eaPlayer.trainingXP or 0) + productionYieldRate / 4
 					--elseif orderID == PROCESS_AHRIMANS_TRIBUTE then	
-					--	local manaBurn = Floor(productionYieldRate / 4)
+					--	local manaBurn = floor(productionYieldRate / 4)
 					--	gWorld.sumOfAllMana = gWorld.sumOfAllMana - manaBurn
 					--	eaPlayer.manaConsumed = (eaPlayer.manaConsumed or 0) + manaBurn
 					end
@@ -805,7 +805,7 @@ function CityPerCivTurn(iPlayer)		--Full civ only		TO DO: must be real civs so t
 						end
 					end
 					reduction = reduction < 100 and reduction or 100
-					city:SetNumRealBuilding(BUILDING_OCCUPIED_PLUS_1_HAPPY, Floor(occupationUnhappiness * reduction / 100))
+					city:SetNumRealBuilding(BUILDING_OCCUPIED_PLUS_1_HAPPY, floor(occupationUnhappiness * reduction / 100))
 				else
 					city:SetNumRealBuilding(BUILDING_OCCUPIED_PLUS_1_HAPPY, 0)
 				end
@@ -1121,7 +1121,7 @@ local function OnCityCaptureComplete(iPlayer, bCapital, x, y, iNewOwner)
 				unitID = UNIT_SLAVES_ORC
 			end
 			if eaNewOwner.eaCivNameID == EACIV_GAZIYA then
-				popKilled = Floor(popKilled / 3 + 0.5)
+				popKilled = floor(popKilled / 3 + 0.5)
 			end
 
 			for j = 1, popKilled do

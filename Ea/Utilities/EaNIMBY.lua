@@ -13,10 +13,10 @@ local realCivs = MapModData.realCivs
 local fullCivs = MapModData.fullCivs
 
 local PlotDistance = Map.PlotDistance
-local Floor = math.floor
+local floor = math.floor
 
 local iW, iH = Map.GetGridSize()
-local iW5, iH5 = Floor(iW/5) + 1, Floor(iH/5) + 1
+local iW5, iH5 = floor(iW/5) + 1, floor(iH/5) + 1
 
 local g_playerCacheTurn = {}
 local g_malus = {}
@@ -88,7 +88,7 @@ local function UpdateNIMBY(iPlayer)
 			nimbyGrid[x5][y5] = 0
 			for iPlot, eaCity in pairs(gCities) do
 			
-				local x, y = iPlot % iW, Floor(iPlot / iW)
+				local x, y = iPlot % iW, floor(iPlot / iW)
 				local dist = PlotDistance(x, y, (x5-1)*5, (y5-1)*5)
 				nimbyGrid[x5][y5] = nimbyGrid[x5][y5] + g_malus[eaCity.iOwner] * eaCity.size / (dist + 3)
 			
@@ -107,7 +107,7 @@ function GetNIMBY(iPlayer, x, y)
 		InitPlayerNIMBY(iPlayer)
 		UpdateNIMBY(iPlayer)
 	end
-	local nimby = g_playerNimbyGrids[iPlayer][Floor(x/5) + 1][Floor(y/5) + 1]
+	local nimby = g_playerNimbyGrids[iPlayer][floor(x/5) + 1][floor(y/5) + 1]
 	if not nimby then
 		error("nimby = nil")
 	end

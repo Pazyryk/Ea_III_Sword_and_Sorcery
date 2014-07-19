@@ -8,7 +8,7 @@ local gT = MapModData.gT
 
 local RELIGION_ANRA =		GameInfoTypes.RELIGION_ANRA
 
-local Floor =		math.floor
+local floor =		math.floor
 
 local BASE_HEALTH_FROM_HANDICAP = 5		--TO DO: Add to handicap table 
 
@@ -50,7 +50,7 @@ function GetCityHealthInfo(city, eaCity, size, followerReligion, aiGrowthPercent
 
 	local healthFromArmageddon = (gT.gWorld.armageddonStage < 3) and 0 or -gT.gWorld.armageddonSap
 
-	local health = Floor(BASE_HEALTH_FROM_HANDICAP + healthFromAIHandicap + healthFromBuildings + healthFromAnra + healthFromArmageddon - size)
+	local health = floor(BASE_HEALTH_FROM_HANDICAP + healthFromAIHandicap + healthFromBuildings + healthFromAnra + healthFromArmageddon - size)
 
 	local diseaseChance = -health
 	local plagueChance = diseaseChance - 5

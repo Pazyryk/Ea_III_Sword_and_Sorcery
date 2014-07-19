@@ -55,7 +55,7 @@ local gg_unitTier = gg_unitTier
 --localized functions
 local HandleError21 = HandleError21
 local HandleError31 = HandleError31
-local Floor = math.floor
+local floor = math.floor
 
 --file function tables
 local OnTeamTechLearned = {}
@@ -199,7 +199,7 @@ function ResetTechCostMods(iPlayer)
 		kmPerTechPerCitizen = kmPerTechPerCitizen * (100 + kmModifiers[eaCivID]) / 100
 	end
 	local totalPopulationForKM = player:GetTotalPopulation()
-	g_playerKM[iPlayer] = Floor(kmPerTechPerCitizen * techCount * totalPopulationForKM + 0.5)
+	g_playerKM[iPlayer] = floor(kmPerTechPerCitizen * techCount * totalPopulationForKM + 0.5)
 
 	--Active player TopPanel UI info
 	if iPlayer == g_iActivePlayer then
@@ -225,7 +225,7 @@ function ResetTechCostMods(iPlayer)
 			local tomeMod = artifact.iPlayer == iPlayer and artifact.mod or 0
 			if tomeMod ~= 0 or tomeOfTomesMod ~= 0 then
 				for techID, costChange in pairs(tomeTechs[artifactID]) do
-					tomeMods[techID] = (tomeMods[techID] or 0) + Floor(costChange * (tomeOfTomesMod * 0.2 + tomeMod) + 0.5)
+					tomeMods[techID] = (tomeMods[techID] or 0) + floor(costChange * (tomeOfTomesMod * 0.2 + tomeMod) + 0.5)
 				end
 			end
 		end
@@ -254,12 +254,12 @@ local function GetCostHelpForTech(iPlayer, techID)
 					for testTechID, costChange in pairs(tomeTechs[artifactID]) do
 						if testTechID == techID then
 							if tomeMod ~= 0 then
-								local costModFromTome = Floor(costChange * tomeMod + 0.5)
+								local costModFromTome = floor(costChange * tomeMod + 0.5)
 								local tomeName = Locale.Lookup(GameInfo.EaArtifacts[artifactID].Description)
 								str = str .. "[NEWLINE][ICON_BULLET]" .. tomeName .. ": [COLOR_POSITIVE_TEXT]" .. costModFromTome .. "%[ENDCOLOR]"
 							end
 							if tomeOfTomesMod ~= 0 then
-								local costModFromTomeOfTomes = Floor(costChange * (tomeOfTomesMod * 0.2) + 0.5)
+								local costModFromTomeOfTomes = floor(costChange * (tomeOfTomesMod * 0.2) + 0.5)
 								local tomeOfTomesName = Locale.Lookup(GameInfo.EaArtifacts[EA_ARTIFACT_TOME_OF_TOMES].Description)
 								local tomeName = Locale.Lookup(GameInfo.EaArtifacts[artifactID].Description)
 								tomeOfTomesStr = tomeOfTomesStr .. "[NEWLINE][ICON_BULLET]" .. tomeOfTomesName .. " (" .. tomeName .. "): [COLOR_POSITIVE_TEXT]" .. costModFromTomeOfTomes .. "%[ENDCOLOR]"
@@ -349,7 +349,7 @@ function OnPlayerTechCostMod(iPlayer, techID)		--Ea API
 	end
 
 	if mod < -50 then
-		mod = -50 - Floor(50 * (mod + 50) / mod)		--below -50 becomes asymptotic to -100 (& dll sets min to -90)
+		mod = -50 - floor(50 * (mod + 50) / mod)		--below -50 becomes asymptotic to -100 (& dll sets min to -90)
 	end
 
 	return mod
@@ -359,7 +359,7 @@ GameEvents.PlayerTechCostMod.Add(OnPlayerTechCostMod)
 
 function TechPerCivTurn(iPlayer)
 	print("TechPerCivTurn")
-	local Floor = math.floor
+	local floor = math.floor
 	local player = Players[iPlayer]
 	local eaPlayer = gPlayers[iPlayer]
 	local team = Teams[player:GetTeam()]

@@ -7,8 +7,8 @@
 
 local fullCivs =			MapModData.fullCivs
 
-local Floor =				math.floor
-local Sort =				table.sort
+local floor =				math.floor
+local sort =				table.sort
 
 local g_playerScores = {}
 local g_sortedScores = {}
@@ -154,13 +154,13 @@ function UpdateFayScore(iPlayer)
 	for i = nPlayers + 1, #g_sortedScores do
 		g_sortedScores[i] = nil
 	end
-	Sort(g_sortedScores)
-	local n = Floor(nPlayers / 2 + 1)	--half living civs rounded up
+	sort(g_sortedScores)
+	local n = floor(nPlayers / 2 + 1)	--half living civs rounded up
 	local sum = 0
 	for i = nPlayers - n + 1, nPlayers do	--top n scores
 		sum = sum + g_sortedScores[i]
 	end
-	local fayScore = Floor(sum / n)
+	local fayScore = floor(sum / n)
 
 	--TO DO: Adjust this down for land development and mana depletion
 

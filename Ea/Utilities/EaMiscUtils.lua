@@ -5,7 +5,7 @@
 
 local DOMAIN_SEA = GameInfoTypes.DOMAIN_SEA
 
-local Floor = math.floor
+local floor = math.floor
 
 function GetUnitAIPowerEa(unit)		--modified from below (skip morale and don't compound!)	NOT CHANGED YET!
 	local power = unit:GetBaseCombatStrength() ^ 1.5
@@ -83,8 +83,8 @@ function GetMercenaryCosts(unit, power, discountLevel)		--supply either unit or 
 	elseif discountLevel == 2 then
 		totalCost = totalCost * 0.8
 	end
-	local gpt = Floor((totalCost + 30) / 60)
-	local upFront = Floor(totalCost - gpt * 30)
+	local gpt = floor((totalCost + 30) / 60)
+	local upFront = floor(totalCost - gpt * 30)
 	return totalCost, upFront, gpt
 end
 

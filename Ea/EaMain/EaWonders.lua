@@ -36,7 +36,7 @@ local fullCivs = MapModData.fullCivs
 
 --localized functions
 local GetPlotByIndex =		Map.GetPlotByIndex
-local Floor =				math.floor
+local floor =				math.floor
 
 --file control
 local DoPerTurnUniqueWonder = {}
@@ -195,7 +195,7 @@ function UpdateUniqueWonder(iPlayer, wonderID, bPerTurnCall)	--full Civ only
 		if wonderID >= EA_WONDER_TEMPLE_FAGUS then	--Pan temple so update mod from relationship
 			local iGod = iGodPlayerByWonderID[wonderID]
 			local friendship = Players[iGod]:GetMinorCivFriendshipWithMajor(iPlayer)
-			local mod = Floor(friendship ^ 0.333333)	--cube root
+			local mod = floor(friendship ^ 0.333333)	--cube root
 			local temple = gWonders[wonderID]
 			if mod ~= temple.mod then			--update mod and all magic schools
 				temple.mod = mod

@@ -33,7 +33,7 @@ local GetPlotByXY =			Map.GetPlot
 local GetPlotIndexFromXY =	GetPlotIndexFromXY
 local PlotDistance =		Map.PlotDistance
 local Rand =				Map.Rand
-local Floor =				math.floor
+local floor =				math.floor
 local Vector2 =				Vector2
 local ToHexFromGrid =		ToHexFromGrid
 local HandleError21 =		HandleError21
@@ -111,7 +111,7 @@ function UseManaOrDivineFavor(iPlayer, iPerson, pts, bNoDrain, consumedFloatUpPl
 			if unit then
 				local xp = pts
 				if xpBoostFromManaUse[eaPlayer.eaCivNameID] then
-					xp = xp + Floor(pts * xpBoostFromManaUse[eaPlayer.eaCivNameID] / 100)
+					xp = xp + floor(pts * xpBoostFromManaUse[eaPlayer.eaCivNameID] / 100)
 				end
 				unit:ChangeExperience(xp)
 				if eaPlayer.bIsFallen then

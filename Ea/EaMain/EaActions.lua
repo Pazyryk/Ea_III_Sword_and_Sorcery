@@ -64,7 +64,7 @@ local gg_playerPlotActionTargeted =			gg_playerPlotActionTargeted
 local gg_regularCombatType =				gg_regularCombatType
 
 --localized functions
-local Floor =								math.floor
+local floor =								math.floor
 local GetPlotByIndex =						Map.GetPlotByIndex
 local GetPlotFromXY =						Map.GetPlot
 local PlotDistance =						Map.PlotDistance
@@ -366,7 +366,7 @@ local function FinishEaAction(eaActionID)		--only called from DoEaAction so file
 			for i = -1, HIGHEST_RELIGION_ID do
 				if g_tablePointer[i] > 0 then
 					--need percentage (round up or down???)
-					local convertPercent = Floor(1 + 100 * g_tablePointer[i] / g_city:GetNumFollowers(i))
+					local convertPercent = floor(1 + 100 * g_tablePointer[i] / g_city:GetNumFollowers(i))
 					g_city:ConvertPercentFollowers(cultID, i, convertPercent)
 				end
 			end
@@ -1701,11 +1701,11 @@ TestTarget[GameInfoTypes.EA_ACTION_BUILD] = function()
 	local orderType, orderID = g_city:GetOrderFromQueue(0)
 	if orderType == ORDER_CONSTRUCT then
 		local mod = GetGPMod(g_iPerson, "EAMOD_CONSTRUCTION")
-		g_int1 = Floor(mod * (g_city:GetBaseYieldRateModifier(YIELD_PRODUCTION)) / 200 + 0.5)
+		g_int1 = floor(mod * (g_city:GetBaseYieldRateModifier(YIELD_PRODUCTION)) / 200 + 0.5)
 		return true		
 	elseif orderType == ORDER_TRAIN and gg_regularCombatType[orderID] == "construct" then
 		local mod = GetGPMod(g_iPerson, "EAMOD_COMBAT_ENGINEERING")
-		g_int1 = Floor(mod * (g_city:GetBaseYieldRateModifier(YIELD_PRODUCTION)) / 200 + 0.5)
+		g_int1 = floor(mod * (g_city:GetBaseYieldRateModifier(YIELD_PRODUCTION)) / 200 + 0.5)
 		return true		
 	else
 		g_testTargetSwitch = 1
@@ -1768,7 +1768,7 @@ end
 
 --EA_ACTION_TRADE
 TestTarget[GameInfoTypes.EA_ACTION_TRADE] = function()
-	g_int1 = Floor(g_mod * (g_city:GetBaseYieldRateModifier(YIELD_GOLD)) / 200 + 0.5)
+	g_int1 = floor(g_mod * (g_city:GetBaseYieldRateModifier(YIELD_GOLD)) / 200 + 0.5)
 	return true
 end
 
@@ -1812,12 +1812,12 @@ TestTarget[GameInfoTypes.EA_ACTION_RESEARCH] = function()
 	local scienceModifier = g_city:GetBaseYieldRateModifier(YIELD_SCIENCE)
 	if scienceModifier >= 50 then
 		g_bool1 = true
-		g_int1 = Floor(g_mod * scienceModifier / 200 + 0.5)
+		g_int1 = floor(g_mod * scienceModifier / 200 + 0.5)
 	else
 		g_int2 = g_player:GetCurrentResearch()
 		if g_int2 == -1 then return false end
 		g_bool1 = false
-		g_int1 = Floor(g_mod / 4) + 1
+		g_int1 = floor(g_mod / 4) + 1
 	end
 	return true
 end
@@ -1876,7 +1876,7 @@ end
 
 --EA_ACTION_PERFORM
 TestTarget[GameInfoTypes.EA_ACTION_PERFORM] = function()
-	g_int1 = Floor(g_mod * (g_city:GetCultureRateModifier() + 100) / 200 + 0.5)
+	g_int1 = floor(g_mod * (g_city:GetCultureRateModifier() + 100) / 200 + 0.5)
 	return true
 end
 
@@ -1919,7 +1919,7 @@ end
 TestTarget[GameInfoTypes.EA_ACTION_RECRUIT] = function()
 	local orderType, orderID = g_city:GetOrderFromQueue(0)
 	if orderType == ORDER_TRAIN and gg_regularCombatType[orderID] == "troops" then
-		g_int1 = Floor(g_mod * (g_city:GetBaseYieldRateModifier(YIELD_PRODUCTION)) / 200 + 0.5)
+		g_int1 = floor(g_mod * (g_city:GetBaseYieldRateModifier(YIELD_PRODUCTION)) / 200 + 0.5)
 		return true		
 	else
 		g_testTargetSwitch = 1
@@ -1986,18 +1986,18 @@ end
 
 SetUI[GameInfoTypes.EA_ACTION_WORSHIP] = function()
 	if g_bAllTestsPassed then
-		local pts = Floor(g_mod / 2)
+		local pts = floor(g_mod / 2)
 		local yieldText = g_eaPlayer.bUsesDivineFavor and "Divine Favor" or "Mana"
 		MapModData.text = "Provide " .. pts .. " " .. yieldText .. " per turn"
 	end
 end
 
 SetAIValues[GameInfoTypes.EA_ACTION_WORSHIP] = function()
-	gg_aiOptionValues.b = Floor(g_mod / 2) * g_value
+	gg_aiOptionValues.b = floor(g_mod / 2) * g_value
 end
 
 Do[GameInfoTypes.EA_ACTION_WORSHIP] = function()
-	local pts = Floor(g_mod / 2)
+	local pts = floor(g_mod / 2)
 	g_eaCity.gpFaith = g_eaCity.gpFaith or {}
 	g_eaCity.gpFaith[g_iPerson] = pts
 	g_eaPerson.eaActionData = g_iPlot
@@ -2036,7 +2036,7 @@ SetUI[GameInfoTypes.EA_ACTION_CHANNEL] = function()
 	if g_bNonTargetTestsPassed then		--has spell so show it
 		MapModData.bShow = true
 		if g_bAllTestsPassed then
-			local pts = Floor(g_mod / 2)
+			local pts = floor(g_mod / 2)
 			local iCity = g_plot:GetCityPurchaseID()
 			local city = g_player:GetCityByID(iCity)
 			local cityName = city:GetName()
@@ -2048,11 +2048,11 @@ SetUI[GameInfoTypes.EA_ACTION_CHANNEL] = function()
 end
 
 SetAIValues[GameInfoTypes.EA_ACTION_CHANNEL] = function()
-	gg_aiOptionValues.b = Floor(g_mod / 2) * g_value
+	gg_aiOptionValues.b = floor(g_mod / 2) * g_value
 end
 
 Do[GameInfoTypes.EA_ACTION_CHANNEL] = function()
-	local pts = Floor(g_mod / 2)
+	local pts = floor(g_mod / 2)
 	local iCity = g_plot:GetCityPurchaseID()
 	local city = g_player:GetCityByID(iCity)
 	local eaCity = gCities[city:Plot():GetPlotIndex()]
@@ -2240,7 +2240,7 @@ Do[GameInfoTypes.EA_ACTION_RALLY_TROOPS] = function()
 		unit:GetPlot():AddFloatUpMessage(floatUp, 1)
 		unit:ChangeMorale(g_mod)
 	end
-	local xp = Floor(g_mod * g_value / 1000)
+	local xp = floor(g_mod * g_value / 1000)
 	g_unit:ChangeExperience(xp)
 	g_specialEffectsPlot = g_plot
 	return true
@@ -2267,7 +2267,7 @@ end
 SetUI[GameInfoTypes.EA_ACTION_TRAIN] = function()
 	if g_bAllTestsPassed then
 		local unitText = Locale.ConvertTextKey(GameInfo.Units[g_int1].Description)
-		local xp = Floor(g_mod / 2)
+		local xp = floor(g_mod / 2)
 		MapModData.text = "Provide " .. unitText .. " with " .. xp .. " experience per turn"
 	end
 end
@@ -2277,7 +2277,7 @@ SetAIValues[GameInfoTypes.EA_ACTION_TRAIN] = function()
 end
 
 Do[GameInfoTypes.EA_ACTION_TRAIN] = function()
-	local xp = Floor(g_mod / 2)	--give to unit and GP
+	local xp = floor(g_mod / 2)	--give to unit and GP
 	g_obj1:ChangeExperience(xp)
 	g_unit:ChangeExperience(xp)
 	return true
@@ -3001,7 +3001,7 @@ end
 --EA_ACTION_TOME_OF_EQUUS
 SetUI[GameInfoTypes.EA_ACTION_TOME_OF_EQUUS] = function()
 	if g_bAllTestsPassed then
-		MapModData.text = (g_mod * 2).."% reduced research cost for Animal Husbandry, Stirrups, Animal Industry, Animal Breeding and War Horses[NEWLINE]"..Floor(g_mod/2).. "experience for horse-mounted units"
+		MapModData.text = (g_mod * 2).."% reduced research cost for Animal Husbandry, Stirrups, Animal Industry, Animal Breeding and War Horses[NEWLINE]"..floor(g_mod/2).. "experience for horse-mounted units"
 	elseif g_bNonTargetTestsPassed then
 		MapModData.bShow = true
 		MapModData.text = "[COLOR_WARNING_TEXT]Tomes can be written in cities with a library[ENDCOLOR]"
@@ -3010,7 +3010,7 @@ end
 
 Finish[GameInfoTypes.EA_ACTION_TOME_OF_EQUUS] = function()
 	--Creator gets xp boost for existing horse-mounted (thereafter, only given for new units)
-	local xpChange = Floor(g_mod/2)
+	local xpChange = floor(g_mod/2)
 	for unit in g_player:Units() do
 		if unit:GetUnitCombatType() == UNITCOMBAT_MOUNTED then
 			unit:ChangeExperience(xpChange)
@@ -3498,7 +3498,7 @@ Finish[GameInfoTypes.EA_ACTION_PROSELYTIZE] = function()
 		if g_tablePointer[i] > 0 then
 			print("about to convert", i, g_tablePointer[i])
 			--need percentage (round up or down???)
-			local convertPercent = Floor(1 + 100 * g_tablePointer[i] / g_city:GetNumFollowers(i))
+			local convertPercent = floor(1 + 100 * g_tablePointer[i] / g_city:GetNumFollowers(i))
 			g_city:ConvertPercentFollowers(RELIGION_AZZANDARAYASNA, i, convertPercent)
 		end
 	end
@@ -3555,7 +3555,7 @@ Finish[GameInfoTypes.EA_ACTION_ANTIPROSELYTIZE] = function()
 	for i = -1, HIGHEST_RELIGION_ID do
 		if g_tablePointer[i] > 0 then
 			--need percentage (round up or down???)
-			local convertPercent = Floor(1 + 100 * g_tablePointer[i] / g_city:GetNumFollowers(i))
+			local convertPercent = floor(1 + 100 * g_tablePointer[i] / g_city:GetNumFollowers(i))
 			g_city:ConvertPercentFollowers(RELIGION_ANRA, i, convertPercent)
 		end
 	end

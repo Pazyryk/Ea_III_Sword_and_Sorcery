@@ -2,17 +2,18 @@
 -- Author: Pazyryk
 -- DateCreated: 12/11/2012 9:07:12 PM
 --------------------------------------------------------------
+local PlotDistance = Map.PlotDistance
 
 function GetDistanceMatrix(pts, pts2)
 	print("Running GetDistanceMatrix", pts, #pts, pts2, pts2 and #pts2)
 	--returns distance matrix; if pts2 == nil then returns a symmetric matrix with zero diagonal
-	local Distance = Map.PlotDistance
+
 	local dMatrix = {}
 	if pts2 then	--asymmetric matrix
 		for i = 1, #pts do
 			dMatrix[i] = {}
 			for j = 1, #pts2 do
-				dMatrix[i][j] = Distance(pts[i].x, pts[i].y, pts2[j].x, pts2[j].y)
+				dMatrix[i][j] = PlotDistance(pts[i].x, pts[i].y, pts2[j].x, pts2[j].y)
 			end
 		end
 	else			--symmetric matrix
@@ -25,7 +26,7 @@ function GetDistanceMatrix(pts, pts2)
 				elseif dMatrix[j] and dMatrix[j][i] then
 					dMatrix[i][j] = dMatrix[j][i]
 				else
-					dMatrix[i][j] = Distance(pts[i].x, pts[i].y, pts[j].x, pts[j].y)
+					dMatrix[i][j] = PlotDistance(pts[i].x, pts[i].y, pts[j].x, pts[j].y)
 				end
 			end
 		end

@@ -34,7 +34,7 @@ local fullCivs = MapModData.fullCivs
 
 --functions
 local HandleError21 = HandleError21
-local Floor = math.floor
+local floor = math.floor
 local Ln = math.log
 local GetNumPoliciesInBranch = GetNumPoliciesInBranch
 
@@ -53,7 +53,7 @@ local g_admirationBonus = 0		--calculated in OnGetScenarioDiploModifier1; return
 function DiploPerCivTurn(iPlayer)	--full civs only
 	local eaPlayer = gPlayers[iPlayer]
 	if 0 < gWorld.armageddonStage and eaPlayer.manaConsumed and (eaPlayer.race == EARACE_MAN or eaPlayer.race == EARACE_SIDHE) then	--Heldeofol are already fully discounted for warmonger penalty, so can't get worse
-		local iWarmongerDiscout = Floor(300 * eaPlayer.manaConsumed / STARTING_SUM_OF_ALL_MANA)
+		local iWarmongerDiscout = floor(300 * eaPlayer.manaConsumed / STARTING_SUM_OF_ALL_MANA)
 		iWarmongerDiscout = iWarmongerDiscout < 100 and iWarmongerDiscout or 100
 		player:SetWarmongerModifier(iWarmongerDiscout)
 	end
@@ -139,16 +139,16 @@ local function OnGetScenarioDiploModifier1(iPlayer1, iPlayer2)	--player2 is the 
 	end
 
 	--racial adjustments
-	g_yourKindPenalty = Floor(g_yourKindPenalty + gRaceDiploMatrix[eaPlayer1.race][eaPlayer2.race])
+	g_yourKindPenalty = floor(g_yourKindPenalty + gRaceDiploMatrix[eaPlayer1.race][eaPlayer2.race])
 	if iPlayer1 == FAY_PLAYER_INDEX and eaPlayer2.eaCivNameID == EACIV_SKOGR then
 		g_yourKindPenalty = g_yourKindPenalty - 2		--negates normal penalty for Man from The Fay
 	end
 
 	--high culture admiration for high culture
-	g_admirationBonus = Floor(g_admirationBonus + eaPlayer2.culturalLevel * Ln(eaPlayer1.culturalLevel) / 10)
+	g_admirationBonus = floor(g_admirationBonus + eaPlayer2.culturalLevel * Ln(eaPlayer1.culturalLevel) / 10)
 	g_admirationBonus = g_admirationBonus < 0 and 0 or g_admirationBonus
 
-	evilPenalty = Floor(evilPenalty)
+	evilPenalty = floor(evilPenalty)
 
 	print("DiploModifier1: You are evil: ", iPlayer1, iPlayer2, evilPenalty)
 

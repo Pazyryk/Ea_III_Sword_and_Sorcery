@@ -16,7 +16,7 @@ local MapModData = MapModData
 local fullCivs =			MapModData.fullCivs
 
 
-local Floor = math.floor
+local floor = math.floor
 
 local Gain = {}		-- Function holders (indexed by artifactID)
 local Lose = {}
@@ -81,7 +81,7 @@ local equusTomePolicyID = {	GameInfoTypes.POLICY_EQUUS_TOME_XP_0064,
 
 Gain[GameInfoTypes.EA_ARTIFACT_TOME_OF_EQUUS] = function(iPlayer, mod)
 	--give mod/2 xp for horse-mounted
-	mod = Floor(mod/2)
+	mod = floor(mod/2)
 	if mod > 0 then
 		local player = Players[iPlayer]
 		for i = 1, 7 do

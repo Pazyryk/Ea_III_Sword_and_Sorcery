@@ -40,7 +40,7 @@ local bHidden = MapModData.bHidden
 local playerType = MapModData.playerType
 
 --functions
-local Floor = math.floor
+local floor = math.floor
 local Rand = Map.Rand
 
 --localized tables
@@ -304,7 +304,7 @@ function CityStatePerCivTurn(iPlayer)	-- called for true city states only
 				local atheists = city:GetNumFollowers(-1)
 				if 0 < atheists then
 					print("Converting 1 citizen in Holy City State")
-					local convertPercent = Floor(100 / atheists + 1)
+					local convertPercent = floor(100 / atheists + 1)
 					city:ConvertPercentFollowers(RELIGION_AZZANDARAYASNA, -1, convertPercent)
 				end
 			end
@@ -386,10 +386,10 @@ function FullCivPerCivTurn(iPlayer)		-- called for full civs only
 		end
 		if 0 < numCSContacted then
 			if bPatronageDistributionFriendsOnly then
-				patronageDistribution = Floor(eaPlayer.cityStatePatronage / numCSFriends)
+				patronageDistribution = floor(eaPlayer.cityStatePatronage / numCSFriends)
 				eaPlayer.cityStatePatronage = eaPlayer.cityStatePatronage - patronageDistribution * numCSFriends
 			else
-				patronageDistribution = Floor(eaPlayer.cityStatePatronage / numCSContacted)
+				patronageDistribution = floor(eaPlayer.cityStatePatronage / numCSContacted)
 				eaPlayer.cityStatePatronage = eaPlayer.cityStatePatronage - patronageDistribution * numCSContacted
 			end
 		end
@@ -430,7 +430,7 @@ function FullCivPerCivTurn(iPlayer)		-- called for full civs only
 		cultFounderMana = cultFounderMana + eaPlayer.manaForCultOfAegirFounder
 	end
 	if gReligions[RELIGION_CULT_OF_PLOUTON] and iPlayer == gReligions[RELIGION_CULT_OF_PLOUTON].founder then
-		eaPlayer.manaForCultOfPloutonFounder = Floor(gg_counts.earthResWorkedByPloutonFollower / 2)
+		eaPlayer.manaForCultOfPloutonFounder = floor(gg_counts.earthResWorkedByPloutonFollower / 2)
 		cultFounderMana = cultFounderMana + eaPlayer.manaForCultOfPloutonFounder
 	end
 	if gReligions[RELIGION_CULT_OF_EPONA] and iPlayer == gReligions[RELIGION_CULT_OF_EPONA].founder then
@@ -472,10 +472,10 @@ function FullCivPerCivTurn(iPlayer)		-- called for full civs only
 		end
 		if 0 < numContacted then
 			if bTributeDistributionFriendsOnly then
-				tributeDistribution = Floor(eaPlayer.majorSpiritsTribute / numFriends)
+				tributeDistribution = floor(eaPlayer.majorSpiritsTribute / numFriends)
 				eaPlayer.majorSpiritsTribute = eaPlayer.majorSpiritsTribute - tributeDistribution * numFriends
 			else
-				tributeDistribution = Floor(eaPlayer.majorSpiritsTribute / numContacted)
+				tributeDistribution = floor(eaPlayer.majorSpiritsTribute / numContacted)
 				eaPlayer.majorSpiritsTribute = eaPlayer.majorSpiritsTribute - tributeDistribution * numContacted
 			end
 		end
@@ -512,7 +512,7 @@ function FullCivPerCivTurn(iPlayer)		-- called for full civs only
 		for i = beginTurn, gameTurn do
 			sum = sum + (eaPlayer.faerieTribute[i] or 0)
 		end
-		eaPlayer.faerieTribute.ave = Floor(sum / (gameTurn - beginTurn))		--used in EaDiplomacy.lua
+		eaPlayer.faerieTribute.ave = floor(sum / (gameTurn - beginTurn))		--used in EaDiplomacy.lua
 	end
 
 	--Natural Wonders

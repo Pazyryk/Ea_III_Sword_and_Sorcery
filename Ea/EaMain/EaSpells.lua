@@ -75,7 +75,7 @@ local gg_eaSpecial =						gg_eaSpecial
 local gg_regularCombatType =				gg_regularCombatType
 
 --localized functions
-local Floor =								math.floor
+local floor =								math.floor
 local GetPlotByIndex =						Map.GetPlotByIndex
 local GetPlotFromXY =						Map.GetPlot
 local PlotDistance =						Map.PlotDistance
@@ -1278,7 +1278,7 @@ local function ModelSummon_SetUI()
 		elseif g_testTargetSwitch == 3 then
 			MapModData.text = "[COLOR_WARNING_TEXT]Not enough mana to " .. verb .. " additional " .. unitPlurStr .. "[ENDCOLOR]"
 		elseif g_testTargetSwitch == 4 then
-			MapModData.text = "[COLOR_WARNING_TEXT]Your current spell modifier (" .. g_modSpell .. ") is insufficient to " .. verb .. " any " .. unitPlurStr .. " (need " .. Floor(g_int2 * g_modSpell / g_modSpellTimesTurns + 0.9999) .. ")[ENDCOLOR]"
+			MapModData.text = "[COLOR_WARNING_TEXT]Your current spell modifier (" .. g_modSpell .. ") is insufficient to " .. verb .. " any " .. unitPlurStr .. " (need " .. floor(g_int2 * g_modSpell / g_modSpellTimesTurns + 0.9999) .. ")[ENDCOLOR]"
 		elseif g_testTargetSwitch == 6 then
 			MapModData.text = "[COLOR_WARNING_TEXT]You cannont " .. verb .. " onto current or adjacent plots[ENDCOLOR]"
 		elseif g_testTargetSwitch == 20 then
@@ -1584,7 +1584,7 @@ local function ModelRanged_SetUI()
 			if g_eaActionID == EA_SPELL_BURNING_HANDS then
 				MapModData.text = "Use Burning Hands on adjacent unit with ranged strength " .. g_modSpell
 			elseif g_eaActionID == EA_SPELL_MAGIC_MISSILE then
-				MapModData.text = "Fire Magic Missiles up to range 2 with strength " .. Floor(20 * g_modSpell / 3) / 10
+				MapModData.text = "Fire Magic Missiles up to range 2 with strength " .. floor(20 * g_modSpell / 3) / 10
 			elseif g_eaActionID == EA_SPELL_FIREBALL then
 				MapModData.text = "Shoot Fireball up to range 2 with strength " .. g_modSpell
 			elseif g_eaActionID == EA_SPELL_PLASMA_BOLT then
@@ -1619,7 +1619,7 @@ local function ModelRanged_Do()
 		newUnitTypeID = gpTempTypeUnits.BurningHands[oldUnitTypeID] or GameInfoTypes.UNIT_WIZARD_BURNING_HANDS
 	elseif g_eaActionID == EA_SPELL_MAGIC_MISSILE then
 		newUnitTypeID = gpTempTypeUnits.MagicMissle[oldUnitTypeID] or GameInfoTypes.UNIT_WIZARD_MAGIC_MISSLE	--fallback to wizard if we haven't added tempType unit yet
-		modX10 = Floor(2 * modX10 / 3)
+		modX10 = floor(2 * modX10 / 3)
 	elseif g_eaActionID == EA_SPELL_FIREBALL then
 		newUnitTypeID = gpTempTypeUnits.Fireball[oldUnitTypeID] or GameInfoTypes.UNIT_WIZARD_FIREBALL
 	elseif g_eaActionID == EA_SPELL_PLASMA_BOLT then
@@ -1749,7 +1749,7 @@ end
 SetUI[GameInfoTypes.EA_SPELL_SEEING_EYE_GLYPH] = function()
 	if g_bNonTargetTestsPassed then
 		if g_bAllTestsPassed then
-			MapModData.text = "Inscribe a Seeing Eye Glyph on this plot (will provide visibility to range " .. Floor(g_modSpell / 5) .. ")"
+			MapModData.text = "Inscribe a Seeing Eye Glyph on this plot (will provide visibility to range " .. floor(g_modSpell / 5) .. ")"
 		elseif g_testTargetSwitch == 2 then
 			MapModData.text = "[COLOR_WARNING_TEXT]Your civilization has already placed a Glyph, Rune or Ward on this plot[ENDCOLOR]"
 		elseif g_testTargetSwitch == 3 then
@@ -1759,7 +1759,7 @@ SetUI[GameInfoTypes.EA_SPELL_SEEING_EYE_GLYPH] = function()
 end
 
 SetAIValues[GameInfoTypes.EA_SPELL_SEEING_EYE_GLYPH] = function()
-	local range = Floor(g_modSpell / 5)
+	local range = floor(g_modSpell / 5)
 	local addedVisibility = g_plot:IsVisible(g_iTeam) and 0 or 1
 	for radius = 1, range do
 		for plot in PlotRingIterator(g_plot, radius, 1, false) do
@@ -2078,7 +2078,7 @@ SetUI[GameInfoTypes.EA_SPELL_BANISH] = function()
 		if g_bAllTestsPassed then
 			MapModData.text = "Banish one or more nearby conjured, summoned or called units"
 		elseif g_testTargetSwitch == 1 then
-			local modNeeded = Floor(g_int1 * g_modSpell / g_modSpellTimesTurns + 0.5)
+			local modNeeded = floor(g_int1 * g_modSpell / g_modSpellTimesTurns + 0.5)
 			MapModData.text = "[COLOR_WARNING_TEXT]There are conjured, summoned or called units nearby, but you do not have sufficient Abjuration Mod to Banish them (need " .. modNeeded .. ")[ENDCOLOR]"
 		else
 			MapModData.text = "[COLOR_WARNING_TEXT]There are no conjured, summoned or called units nearby[ENDCOLOR]"
@@ -2142,7 +2142,7 @@ SetUI[GameInfoTypes.EA_SPELL_BANISH_UNDEAD] = function()
 		if g_bAllTestsPassed then
 			MapModData.text = "Banish one or more nearby undead"
 		elseif g_testTargetSwitch == 1 then
-			local modNeeded = Floor(g_int1 * g_modSpell / g_modSpellTimesTurns + 0.5)
+			local modNeeded = floor(g_int1 * g_modSpell / g_modSpellTimesTurns + 0.5)
 			MapModData.text = "[COLOR_WARNING_TEXT]There are undead nearby, but you do not have sufficient Spell Modifier to Banish them (need " .. modNeeded .. ")[ENDCOLOR]"
 		else
 			MapModData.text = "[COLOR_WARNING_TEXT]There are no undead units nearby[ENDCOLOR]"
@@ -2206,7 +2206,7 @@ SetUI[GameInfoTypes.EA_SPELL_TURN_UNDEAD] = function()
 		if g_bAllTestsPassed then
 			MapModData.text = "Turn one or more nearby undead"
 		elseif g_testTargetSwitch == 1 then
-			local modNeeded = Floor(g_int1 * g_modSpell / g_modSpellTimesTurns + 0.5)
+			local modNeeded = floor(g_int1 * g_modSpell / g_modSpellTimesTurns + 0.5)
 			MapModData.text = "[COLOR_WARNING_TEXT]There are undead nearby, but you do not have sufficient Spell Modifier to Turn them (need " .. modNeeded .. ")[ENDCOLOR]"
 		else
 			MapModData.text = "[COLOR_WARNING_TEXT]There are no undead units nearby[ENDCOLOR]"
@@ -2280,7 +2280,7 @@ SetUI[GameInfoTypes.EA_SPELL_BANISH_DEMONS] = function()
 		if g_bAllTestsPassed then
 			MapModData.text = "Banish one or more nearby demons"
 		elseif g_testTargetSwitch == 1 then
-			local modNeeded = Floor(g_int1 * g_modSpell / g_modSpellTimesTurns + 0.5)
+			local modNeeded = floor(g_int1 * g_modSpell / g_modSpellTimesTurns + 0.5)
 			MapModData.text = "[COLOR_WARNING_TEXT]There are demons nearby, but you do not have sufficient Spell Modifier to Banish them (need " .. modNeeded .. ")[ENDCOLOR]"
 		else
 			MapModData.text = "[COLOR_WARNING_TEXT]There are no demons nearby[ENDCOLOR]"
@@ -2344,7 +2344,7 @@ SetUI[GameInfoTypes.EA_SPELL_BANISH_ANGELS] = function()
 		if g_bAllTestsPassed then
 			MapModData.text = "Banish one or more nearby angels"
 		elseif g_testTargetSwitch == 1 then
-			local modNeeded = Floor(g_int1 * g_modSpell / g_modSpellTimesTurns + 0.5)
+			local modNeeded = floor(g_int1 * g_modSpell / g_modSpellTimesTurns + 0.5)
 			MapModData.text = "[COLOR_WARNING_TEXT]There are angels nearby, but you do not have sufficient Spell Modifier to Banish them (need " .. modNeeded .. ")[ENDCOLOR]"
 		else
 			MapModData.text = "[COLOR_WARNING_TEXT]There are no angels nearby[ENDCOLOR]"
@@ -2452,7 +2452,7 @@ TestTarget[GameInfoTypes.EA_SPELL_TIME_STOP] = function()
 		g_testTargetSwitch = 1
 		return false
 	end
-	g_int1 = Floor(g_modSpell / 15)
+	g_int1 = floor(g_modSpell / 15)
 	if g_int1 < 1 then
 		g_testTargetSwitch = 2
 		return false
@@ -3445,7 +3445,7 @@ TestTarget[GameInfoTypes.EA_SPELL_PURIFY] = function()
 	--g_obj1 = unit
 	--g_value = unit cost for AI
 	local pts = g_modSpell < g_faith and g_modSpell or g_faith
-	local healHP = Floor(pts * 0.667)
+	local healHP = floor(pts * 0.667)
 	local bestValue = 0
 	for x, y in PlotToRadiusIterator(g_x, g_y, 1) do	--includes center
 		local plot = GetPlotFromXY(x, y)
@@ -3486,7 +3486,7 @@ SetUI[GameInfoTypes.EA_SPELL_PURIFY] = function()
 			local unitText = Locale.ConvertTextKey(unitTypeInfo.Description)
 			--recalculate what we need as above
 			local pts = g_modSpell < g_faith and g_modSpell or g_faith
-			local healHP = Floor(pts * 0.667)
+			local healHP = floor(pts * 0.667)
 			local damage = g_obj1:GetDamage()
 			local hpHealed = healHP < damage and healHP or damage
 			local healText = ""
@@ -3528,7 +3528,7 @@ end
 
 Do[GameInfoTypes.EA_SPELL_PURIFY] = function()
 	local pts = g_modSpell < g_faith and g_modSpell or g_faith
-	local healHP = Floor(pts * 0.667)
+	local healHP = floor(pts * 0.667)
 	local damage = g_obj1:GetDamage()
 	local hpHealed = healHP < damage and healHP or damage
 	g_obj1:SetDamage(g_obj1:GetDamage() - hpHealed, -1)
@@ -3611,7 +3611,7 @@ end
 SetUI[GameInfoTypes.EA_SPELL_REVELRY] = function()
 	if g_bNonTargetTestsPassed then
 		if g_bAllTestsPassed then
-			local pts = Floor(g_modSpell / 2)
+			local pts = floor(g_modSpell / 2)
 			pts = pts < g_int1 and pts or g_int1
 			MapModData.text = "Increase happiness by " .. pts
 		elseif g_bIsCity and g_iOwner == g_iPlayer then
@@ -3623,13 +3623,13 @@ SetUI[GameInfoTypes.EA_SPELL_REVELRY] = function()
 end
 
 SetAIValues[GameInfoTypes.EA_SPELL_REVELRY] = function()
-	local pts = Floor(g_modSpell / 2)
+	local pts = floor(g_modSpell / 2)
 	pts = pts < g_int1 and pts or g_int1
 	gg_aiOptionValues.b = pts
 end
 
 Do[GameInfoTypes.EA_SPELL_REVELRY] = function()
-	local pts = Floor(g_modSpell / 2)
+	local pts = floor(g_modSpell / 2)
 	pts = pts < g_int1 and pts or g_int1
 	g_eaCity.gpHappiness = g_eaCity.gpHappiness or {}
 	g_eaCity.gpHappiness[g_iPerson] = pts

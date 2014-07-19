@@ -14,8 +14,8 @@ include("EaErrorHandler.lua")
 MapModData.gT = MapModData.gT or {}
 local gT = MapModData.gT
 
-local Floor = math.floor
-local Sort = table.sort
+local floor = math.floor
+local sort = table.sort
 local Format = string.format
 
 local g_scores = {}
@@ -136,11 +136,11 @@ function PopulateDestroyer()
 	if sumOfAllMana < 10000 then
 		strSumOfAllMana = tostring(sumOfAllMana)
 	elseif sumOfAllMana < 99500 then
-		strSumOfAllMana = (Floor(sumOfAllMana / 100 + 0.5) / 10) .. "K"
+		strSumOfAllMana = (floor(sumOfAllMana / 100 + 0.5) / 10) .. "K"
 	elseif sumOfAllMana < 999500 then
-		strSumOfAllMana = (Floor(sumOfAllMana / 1000 + 0.5)) .. "K"
+		strSumOfAllMana = (floor(sumOfAllMana / 1000 + 0.5)) .. "K"
 	else
-		strSumOfAllMana = (Floor(sumOfAllMana / 1000000 + 0.5)) .. "M"
+		strSumOfAllMana = (floor(sumOfAllMana / 1000000 + 0.5)) .. "M"
 	end
 
 	Controls.DestroyerA:SetText(Format("%d", manaConsumed))

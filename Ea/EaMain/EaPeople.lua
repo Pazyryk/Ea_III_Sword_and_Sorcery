@@ -39,7 +39,7 @@ local fullCivs =						MapModData.fullCivs
 local gPlayers =			gPlayers
 local gPeople =				gPeople
 
-local Floor =				math.floor
+local floor =				math.floor
 local Rand =				Map.Rand
 local GetPlotFromXY =		Map.GetPlot
 local PlotDistance =		Map.PlotDistance
@@ -564,7 +564,7 @@ function GenerateGreatPerson(iPlayer, class, subclass, eaPersonRowID, bAsLeader,
 				class = gpClassTable[i]
 				--reduce GP points for class
 				local currentPts = eaPlayer.classPoints[i]
-				local ptsReduction = Floor(currentPts / 2) + 50
+				local ptsReduction = floor(currentPts / 2) + 50
 				ptsReduction = currentPts < ptsReduction and currentPts or ptsReduction
 				eaPlayer.classPoints[i] = currentPts - ptsReduction
 				if i == 5 then	--Warrior
@@ -729,11 +729,11 @@ function ResetAgeOfDeath(iPerson)
 	local ancientChance = raceInfo.AncientDeathChance
 	
 	if ageDeathReduction ~= 0 then
-		veryOldChance = Floor(veryOldChance * (100 - ageDeathReduction) / 100 + 0.5)
-		ancientChance = Floor(ancientChance * (100 - ageDeathReduction) / 100 + 0.5)
+		veryOldChance = floor(veryOldChance * (100 - ageDeathReduction) / 100 + 0.5)
+		ancientChance = floor(ancientChance * (100 - ageDeathReduction) / 100 + 0.5)
 	end
 
-	local age = Floor(0.85 * nominalLifeSpan + 0.5)	--starts at "Very Old" (85% of nominal life span)
+	local age = floor(0.85 * nominalLifeSpan + 0.5)	--starts at "Very Old" (85% of nominal life span)
 
 	if 0 < veryOldChance then
 		while age < nominalLifeSpan do
@@ -1229,7 +1229,7 @@ function GetGPMod(iPerson, modType1, modType2)
 		end
 	end
 
-	totalMod = Floor(totalMod)
+	totalMod = floor(totalMod)
 
 	cachedGPMod[iPerson][modType1][modType2 or "nil"] = totalMod
 	return totalMod
@@ -1260,7 +1260,7 @@ function SetTowerMods(iPlayer, iPerson)
 		tower[i] = newMod
 		modSum = modSum + newMod
 	end
-	local newMod = Floor(modSum / 8 + 0.5)		--average used for mana generation
+	local newMod = floor(modSum / 8 + 0.5)		--average used for mana generation
 	if newMod ~= tower.mod then
 		tower.mod = newMod
 		UpdateInstanceWonder(iPlayer, EA_WONDER_ARCANE_TOWER)

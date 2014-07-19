@@ -50,7 +50,7 @@ local gg_slaveryPlayer =			gg_slaveryPlayer
 local gg_naturalWonders =			gg_naturalWonders
 
 --localized game and library functions
-local Floor = math.floor
+local floor = math.floor
 
 --localized global functions
 local HandleError21 =	HandleError21
@@ -170,7 +170,7 @@ function PolicyPerCivTurn(iPlayer)
 
 	print("DEBUG: eaPlayer.policyCount, player:GetNumRealPolicies = ", eaPlayer.policyCount, player:GetNumRealPolicies())
 
-	if eaPlayer.policyCount < Floor(eaPlayer.culturalLevel) then
+	if eaPlayer.policyCount < floor(eaPlayer.culturalLevel) then
 		if player:IsHuman() then
 			player:ChangeNumFreePolicies(1)
 		else

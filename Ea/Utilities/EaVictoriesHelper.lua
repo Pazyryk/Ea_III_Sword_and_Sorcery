@@ -6,7 +6,7 @@
 MapModData.gT = MapModData.gT or {}
 local gT = MapModData.gT
 
-local Floor = math.floor
+local floor = math.floor
 
 --Note: bVictory does not always mean THIS player wins. TestUpdateVictory tests other players in cases where score could determine winner.
 
@@ -37,7 +37,7 @@ function GetDestroyerVictoryData(iPlayer)
 	local sumOfAllMana = gT.gWorld.sumOfAllMana
 
 	--Generate score
-	local score = Floor(manaConsumed ^ 0.5)
+	local score = floor(manaConsumed ^ 0.5)
 
 	--Test victory conditions (< 1% mana remaining)
 	local bVictory = score > 0 and gT.gWorld.armageddonStage == 12
@@ -56,7 +56,7 @@ function GetRestorerVictoryData(iPlayer)
 
 
 	--Generate score
-	local score = Floor(livingTerrainAdded + livingTerrainStrengthAdded / 5)
+	local score = floor(livingTerrainAdded + livingTerrainStrengthAdded / 5)
 
 	--Test victory conditions
 	local bVictory = score > 0 and harmonicMean >= hmNeeded
@@ -75,7 +75,7 @@ function GetSubduerVictoryData(iPlayer)
 	
 
 	--Generate score
-	local score = Floor(playerPopulation + 10 * worldLand)
+	local score = floor(playerPopulation + 10 * worldLand)
 
 	--Test victory conditions
 	local bVictory = worldPopulation > 70 and worldLand > 40 and aveWorldLivingTerrainStrength < 1 

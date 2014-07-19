@@ -94,12 +94,11 @@ local gg_naturalWonders =			gg_naturalWonders
 
 --localized functions
 local Rand = Map.Rand
-local Distance = Map.PlotDistance
+local PlotDistance = Map.PlotDistance
 local GetPlotFromXY = Map.GetPlot
 local GetPlotByIndex = Map.GetPlotByIndex
 local GetPlotIndexFromXY = GetPlotIndexFromXY
-local Floor = math.floor
-local StrChar = string.char
+local floor = math.floor
 local HandleError41 = HandleError41
 local HandleError = HandleError
 
@@ -212,7 +211,7 @@ local function DoLivingTerrainSpreadOrStrengthTransfer(plot, type, strength)
 				elseif livTerFeatureIDByType[type] == adjFeatureID then		--spread some strength
 					local transferStrength = 1
 					if 5 < strength then
-						transferStrength = Rand(Floor(strength / 3), "hello") + 1
+						transferStrength = Rand(floor(strength / 3), "hello") + 1
 					end
 					plot:SetLivingTerrainStrength(strength - transferStrength)
 					adjPlot:SetLivingTerrainStrength(adjPlot:GetLivingTerrainStrength() + transferStrength)
@@ -226,7 +225,7 @@ end
 
 local function UseAccumulatedLivingTerrainEffects()
 	-- strengthen random unimproved Living Terrain for conversion process or other accumulated effects (this is behind conversion accumulation by 1 turn and for new growth by 2 but doesn't matter)
-	local strengthPoints = Floor(gWorld.livingTerrainConvertStr)
+	local strengthPoints = floor(gWorld.livingTerrainConvertStr)
 	if 0 < strengthPoints then
 		local pointsUsed = 0
 		local numPlots = 0
@@ -324,13 +323,12 @@ function EaPlotsInit(bNewGame)
 	--new map stuff
 	if bNewGame then 
 		local GetPlotByIndex = GetPlotByIndex
-		local Distance = Map.PlotDistance
+		local PlotDistance = Map.PlotDistance
 
 		local livingTerrainTypes = {[GameInfoTypes.FEATURE_FOREST] = 1,	--"forest",
 									[GameInfoTypes.FEATURE_JUNGLE] = 2,	--"jungle",
 									[GameInfoTypes.FEATURE_MARSH] = 3	}	--"marsh"
 
-		local Distance = Map.PlotDistance
 		local validForestJunglePlots = 0
 		local originalForestJunglePlots = 0
 		local ownablePlots = 0
@@ -375,7 +373,7 @@ function EaPlotsInit(bNewGame)
 				local startingPlot = player:GetStartingPlot()
 				local startX, startY = startingPlot:GetX(), startingPlot:GetY()
 				for x, y in PlotToRadiusIterator(startX, startY, 3) do
-					local distance = Distance(x, y, startX, startY)
+					local distance = PlotDistance(x, y, startX, startY)
 					local plot = GetPlotFromXY(x, y)
 					local featureID = plot:GetFeatureType()
 					if featureID == FEATURE_FOREST or featureID == FEATURE_JUNGLE or featureID == FEATURE_MARSH then
@@ -471,7 +469,7 @@ function EaPlotsInit(bNewGame)
 		end
 	end
 	
-	MapModData.totalLivingTerrainStrength = Floor(totalLivingTerrainStrength)
+	MapModData.totalLivingTerrainStrength = floor(totalLivingTerrainStrength)
 	MapModData.harmonicMeanDenominator = harmonicMeanDenominator
 	--print("Lakes, FishingResources, Whales, CampResources ", lakeCounter, fishingCounter, whaleCounter, campCounter)
 end
@@ -784,9 +782,9 @@ function PlaceResourceNearCity(city, resourceID, bWater)
 			if plot:CanHaveResource(resourceID, false) then		--works???
 				plotScore = plotScore + 1000
 			end
-			plotScore = plotScore + 3 - Distance(x, y, cityX, cityY)	--closer to city, all else equal
+			plotScore = plotScore + 3 - PlotDistance(x, y, cityX, cityY)	--closer to city, all else equal
 			for i = 1, numSameResource do
-				local dist = Distance(x, y, integers1[i], integers2[i])
+				local dist = PlotDistance(x, y, integers1[i], integers2[i])
 				plotScore = plotScore + distancePref[dist]
 			end
 		else
@@ -952,7 +950,7 @@ local function DoVariousPlotUpdates()
 	for iPlayer, eaPlayer in pairs(realCivs) do
 		local player = Players[iPlayer]
 		for resourceID, number in pairs(g_addResource[iPlayer]) do
-			number = Floor(number)
+			number = floor(number)
 			local change = number - (eaPlayer.addedResources[resourceID] or 0)
 			if change ~= 0 then
 				player:ChangeNumResourceTotal(resourceID, change)
@@ -960,13 +958,13 @@ local function DoVariousPlotUpdates()
 			end
 		end
 		if iPlayer == iCultOfLeavesFounder then
-			eaPlayer.manaForCultOfLeavesFounder = Floor(totalUnimprovedForestJungle / 10)
+			eaPlayer.manaForCultOfLeavesFounder = floor(totalUnimprovedForestJungle / 10)
 		end
 		if iPlayer == iCultOfCahraFounder then
-			eaPlayer.manaForCultOfCahraFounder = Floor(totalDesertCahraFollower / 10)
+			eaPlayer.manaForCultOfCahraFounder = floor(totalDesertCahraFollower / 10)
 		end
 		if g_wildlandsCountCommuneWithNature[iPlayer] then
-			eaPlayer.cultureManaFromWildlands = Floor(g_wildlandsCountCommuneWithNature[iPlayer] / 4)
+			eaPlayer.cultureManaFromWildlands = floor(g_wildlandsCountCommuneWithNature[iPlayer] / 4)
 		end
 
 	end
@@ -1290,7 +1288,7 @@ function PlotsPerTurn()
 
 	-- housekeeping
 	gg_animalSpawnPlots.pos = numAnimalSpawnPlots
-	MapModData.totalLivingTerrainStrength = Floor(totalLivingTerrainStrength)
+	MapModData.totalLivingTerrainStrength = floor(totalLivingTerrainStrength)
 	MapModData.harmonicMeanDenominator = harmonicMeanDenominator
 
 	gg_counts.grapeAndSpiritsBuildingsBakkheiaFollowerCities = gg_counts.grapeAndSpiritsBuildingsBakkheiaFollowerCities + grapesWorkedByBakkeiaFollower

@@ -105,7 +105,7 @@ local gg_regularCombatType = gg_regularCombatType
 
 --localized functions
 local GetPlotByIndex = Map.GetPlotByIndex
-
+local floor = math.floor
 
 --file control
 local g_iActivePlayer = Game.GetActivePlayer()
@@ -155,7 +155,6 @@ local currentSciencePercentAdjByPlayer = {}
 
 function UpdateGlobalYields(iPlayer, effectType, bPerTurnCall)	--City States only call effectType = "Gold"
 	--function call can specify effectType or (if nil) all effectTypes are updated
-	local Floor = math.floor
 	print("UpdateGlobalYields", iPlayer, effectType)
 	local player = Players[iPlayer]
 	local eaPlayer = gPlayers[iPlayer]
@@ -201,8 +200,8 @@ function UpdateGlobalYields(iPlayer, effectType, bPerTurnCall)	--City States onl
 				end
 			end
 			if eaCivID == EACIV_MOR then
-				mercenaryCost = Floor(0.67 * mercenaryCost + 0.5)
-				mercenaryIncome = Floor(1.33 * mercenaryIncome + 0.5)
+				mercenaryCost = floor(0.67 * mercenaryCost + 0.5)
+				mercenaryIncome = floor(1.33 * mercenaryIncome + 0.5)
 			end
 
 		elseif player:GetMinorCivTrait() == MINOR_TRAIT_MERCENARY then
@@ -239,7 +238,6 @@ function UpdateCityYields(iPlayer, iSpecificCity, effectType, bPerTurnCall)
 	--function call can specify iSpecificCity or (if nil) all cities are updated
 	--function call can specify effectType or (if nil) all effectTypes are updated
 	print("UpdateCityYields", iPlayer, iSpecificCity, effectType, bPerTurnCall)
-	local Floor = math.floor
 	local player = Players[iPlayer]
 	local eaPlayer = gPlayers[iPlayer]
 	local bFullCiv = playerType[iPlayer] == "FullCiv"
@@ -274,7 +272,7 @@ function UpdateCityYields(iPlayer, iSpecificCity, effectType, bPerTurnCall)
 			if player:HasPolicy(POLICY_DOMINIONISM_FINISHER) then
 				food = food + player:GetTotalJONSCulturePerTurn() / 3
 			end		
-			foodDistribution = Floor(food / numCities)
+			foodDistribution = floor(food / numCities)
 			if bPerTurnCall then										--no change if this is just a UI update
 				eaPlayer.foodDistributionCarryover = food % numCities
 			end
@@ -285,21 +283,21 @@ function UpdateCityYields(iPlayer, iSpecificCity, effectType, bPerTurnCall)
 			unhappiness = unhappiness < 0 and 0 or unhappiness
 			local production = (eaPlayer.productionDistributionCarryover or 0) + unhappiness
 			if player:HasPolicy(POLICY_SLAVERY_FINISHER) then
-				production = production + Floor(player:GetTotalJONSCulturePerTurn() / 3)
+				production = production + floor(player:GetTotalJONSCulturePerTurn() / 3)
 			end
-			productionDistribution = Floor(production / numCities)
+			productionDistribution = floor(production / numCities)
 			eaPlayer.productionDistributionCarryover = bPerTurnCall and production % numCities or eaPlayer.productionDistributionCarryover	--dump remainder into unhappiness account even if it is from culture
 		end
 
 		if player:HasPolicy(POLICY_TRADITION_FINISHER) then
-			local science = (eaPlayer.scienceDistributionCarryover or 0) + Floor(player:GetTotalJONSCulturePerTurn() / 3)
-			scienceDistribution = Floor(science / numCities)
+			local science = (eaPlayer.scienceDistributionCarryover or 0) + floor(player:GetTotalJONSCulturePerTurn() / 3)
+			scienceDistribution = floor(science / numCities)
 			eaPlayer.scienceDistributionCarryover = bPerTurnCall and science % numCities or eaPlayer.scienceDistributionCarryover	--no change if this is just a UI update
 		end
 	
 		if player:HasPolicy(POLICY_COMMERCE_FINISHER) then
-			local gold = (eaPlayer.goldDistributionCarryover or 0) + Floor(player:GetTotalJONSCulturePerTurn() / 3)
-			goldDistribution = Floor(gold / numCities)
+			local gold = (eaPlayer.goldDistributionCarryover or 0) + floor(player:GetTotalJONSCulturePerTurn() / 3)
+			goldDistribution = floor(gold / numCities)
 			eaPlayer.goldDistributionCarryover = bPerTurnCall and gold % numCities or eaPlayer.goldDistributionCarryover	--no change if this is just a UI update
 		end
 	end
@@ -370,8 +368,8 @@ function UpdateCityYields(iPlayer, iSpecificCity, effectType, bPerTurnCall)
 						xp = xp + trainingXP
 					end
 				end
-				local xp = Floor(xp + 0.5)				--round to nearest 1%
-				city:SetNumRealBuilding(BUILDING_PLUS_1_LAND_XP, Floor(xp + 0.5))
+				local xp = floor(xp + 0.5)				--round to nearest 1%
+				city:SetNumRealBuilding(BUILDING_PLUS_1_LAND_XP, floor(xp + 0.5))
 			end
 
 			if effectType == nil or effectType == "SeaXP" or effectType == "Training" then
@@ -383,7 +381,7 @@ function UpdateCityYields(iPlayer, iSpecificCity, effectType, bPerTurnCall)
 						xp = xp + trainingXP
 					end
 				end
-				city:SetNumRealBuilding(BUILDING_PLUS_1_SEA_XP, Floor(xp + 0.5))
+				city:SetNumRealBuilding(BUILDING_PLUS_1_SEA_XP, floor(xp + 0.5))
 			end
 
 			if effectType == nil or effectType == "Food" then
@@ -396,7 +394,7 @@ function UpdateCityYields(iPlayer, iSpecificCity, effectType, bPerTurnCall)
 					elseif playerHappiness < 0 then
 						foodLost = city:FoodDifferenceTimes100() / (100 + UNHAPPY_GROWTH_PENALTY)
 					end
-					newFood = newFood + Floor(foodLost / 2 + 0.5)
+					newFood = newFood + floor(foodLost / 2 + 0.5)
 				end
 				--local prevFood = eaCity.foodBoost
 				local prevFood = city:GetBaseYieldRateFromMisc(YIELD_FOOD)
@@ -444,10 +442,10 @@ function UpdateCityYields(iPlayer, iSpecificCity, effectType, bPerTurnCall)
 					end
 				end
 				if 0 < city:GetNumBuilding(BUILDING_NATIONAL_TREASURY) then
-					newGold = newGold + Floor(player:GetGold() * city:GetNumBuilding(BUILDING_NATIONAL_TREASURY) / 2000 + 0.5)
+					newGold = newGold + floor(player:GetGold() * city:GetNumBuilding(BUILDING_NATIONAL_TREASURY) / 2000 + 0.5)
 				end
 				if nameTrait == EACIV_MAMONAS and city == capital then
-					newGold = newGold + Floor(player:GetGold() * 0.005 + 0.5)
+					newGold = newGold + floor(player:GetGold() * 0.005 + 0.5)
 				end
 				--local prevGold = eaCity.goldBoost
 				local prevGold = city:GetBaseYieldRateFromMisc(YIELD_GOLD)
@@ -461,7 +459,7 @@ function UpdateCityYields(iPlayer, iSpecificCity, effectType, bPerTurnCall)
 				local newCulture = cultureDistribution
 				local orderType, orderID = city:GetOrderFromQueue(0)
 				if orderType == ORDER_MAINTAIN and orderID == PROCESS_THE_ARTS then
-					newCulture = newCulture + Floor(city:GetYieldRate(YIELD_PRODUCTION) / 4)
+					newCulture = newCulture + floor(city:GetYieldRate(YIELD_PRODUCTION) / 4)
 				end
 				if eaCity.gpCulture then
 					for iPerson, culture in pairs(eaCity.gpCulture) do
@@ -482,11 +480,11 @@ function UpdateCityYields(iPlayer, iSpecificCity, effectType, bPerTurnCall)
 				local orderType, orderID = city:GetOrderFromQueue(0)
 				if orderType == ORDER_MAINTAIN then
 					if orderID == PROCESS_AZZANDARAS_TRIBUTE then
-						local tribute = Floor(city:GetYieldRate(YIELD_PRODUCTION) / 4)
+						local tribute = floor(city:GetYieldRate(YIELD_PRODUCTION) / 4)
 						newFaith = newFaith + tribute
 						faithFromAzzTribute = faithFromAzzTribute + tribute
 					elseif orderID == PROCESS_AHRIMANS_TRIBUTE then	
-						local manaBurn = Floor(city:GetYieldRate(YIELD_PRODUCTION) / 4)		--does not change faith because it is imediately consummed
+						local manaBurn = floor(city:GetYieldRate(YIELD_PRODUCTION) / 4)		--does not change faith because it is imediately consummed
 						faithFromToAhrimanTribute = faithFromToAhrimanTribute + manaBurn
 						if bPerTurnFullCivUpdate then
 							gWorld.sumOfAllMana = gWorld.sumOfAllMana - manaBurn
@@ -528,13 +526,13 @@ function UpdateCityYields(iPlayer, iSpecificCity, effectType, bPerTurnCall)
 						end
 					end
 					reduction = reduction < 100 and reduction or 100
-					happiness = happiness + Floor(occupationUnhappiness * reduction / 100)
+					happiness = happiness + floor(occupationUnhappiness * reduction / 100)
 				end
 
 				--Anra followers
 				if gReligions[RELIGION_ANRA] and gReligions[RELIGION_ANRA].founder ~= iPlayer then
 					local anraFollowers = city:GetNumFollowers(RELIGION_ANRA)
-					happiness = happiness - (eaPlayer.religionID == RELIGION_AZZANDARAYASNA and anraFollowers or Floor(anraFollowers / 2))
+					happiness = happiness - (eaPlayer.religionID == RELIGION_AZZANDARAYASNA and anraFollowers or floor(anraFollowers / 2))
 				end
 
 				if happiness < 0 then

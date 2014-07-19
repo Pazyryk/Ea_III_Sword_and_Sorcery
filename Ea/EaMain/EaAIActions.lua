@@ -66,7 +66,7 @@ local DoEaAction =							DoEaAction
 local TestEaSpell =							TestEaSpell
 local TestEaSpellTarget =					TestEaSpellTarget
 local DoEaSpell =							DoEaSpell
-local Distance =							Map.PlotDistance
+local PlotDistance =							Map.PlotDistance
 local GetPlotFromXY =						Map.GetPlot
 local Format =								string.format
 local GetXYFromPlotIndex =					GetXYFromPlotIndex
@@ -337,7 +337,7 @@ local function AddCombatOptions(rallyX, rallyY)
 	--if supplied, rallyX and rallyY used for tiebreaker
 	print("Running AddCombatOptions ", rallyX, rallyY)
 	local PlotToRadiusIterator = PlotToRadiusIterator
-	local Distance = Map.PlotDistance
+	local PlotDistance = Map.PlotDistance
 	local GetPlotIndexFromXY = GetPlotIndexFromXY
 	local GetPlotFromXY = Map.GetPlot
 	local TestAddOption = TestAddOption
@@ -358,7 +358,7 @@ local function AddCombatOptions(rallyX, rallyY)
 			if bTest then
 				print("AI: Non-target tests passed for ", GameInfo.EaActions[g_eaActionID].Type)
 				for x, y in PlotToRadiusIterator(g_gpX, g_gpY, 5) do
-					local tieBreaker = rallyX and 5 / Distance(x, y, rallyX, rallyY) or 0
+					local tieBreaker = rallyX and 5 / PlotDistance(x, y, rallyX, rallyY) or 0
 					local iPlot = GetPlotIndexFromXY(x, y)
 					local plot = GetPlotFromXY(x, y)
 					TestAddOption("Plot", x, y, tieBreaker, nil)
@@ -1037,7 +1037,7 @@ function AIGPTestCombatInterrupt(iPlayer, iPerson, unit)		--called each turn (un
 		return false
 	end
 
-	local Distance = Map.PlotDistance
+	local PlotDistance = Map.PlotDistance
 	local GetPlotFromXY = Map.GetPlot
 
 	print("GP has combat role and is not currently doing combat action")
@@ -1075,7 +1075,7 @@ function AIGPTestCombatInterrupt(iPlayer, iPerson, unit)		--called each turn (un
 			if iLoopPlayer == iPlayer then		--Our unit cluster (maybe we are on the move)
 				if not bIsConstrainedLeader and cluster.iPlayerTarget then
 					if cluster.intent == "Hostile" then
-						if Distance(gpX, gpY, cluster.x, cluster.y) < 24 then	--"pre-screen" here to prevent excessive AStar pathfinding
+						if PlotDistance(gpX, gpY, cluster.x, cluster.y) < 24 then	--"pre-screen" here to prevent excessive AStar pathfinding
 							--local tt = EaPersonAStarTurns(iPlayer, iPerson, gpX, gpY, cluster.x, cluster.y)
 							local tt = unit:TurnsToReachTarget(GetPlotFromXY(cluster.x, cluster.y), 1, 1, 1)
 							if tt < nearestHostileDist then
@@ -1084,7 +1084,7 @@ function AIGPTestCombatInterrupt(iPlayer, iPerson, unit)		--called each turn (un
 							end
 						end
 					else
-						if Distance(gpX, gpY, cluster.x, cluster.y) < 12 then
+						if PlotDistance(gpX, gpY, cluster.x, cluster.y) < 12 then
 							--local tt = EaPersonAStarTurns(iPlayer, iPerson, gpX, gpY, cluster.x, cluster.y)
 							local tt = unit:TurnsToReachTarget(GetPlotFromXY(cluster.x, cluster.y), 1, 1, 1)
 							if tt < nearestSneakDist then
@@ -1096,7 +1096,7 @@ function AIGPTestCombatInterrupt(iPlayer, iPerson, unit)		--called each turn (un
 				end
 			elseif cluster.iPlayerTarget == iPlayer then			--Threat to us
 				if cluster.intent == "Hostile" then
-					if Distance(gpX, gpY, cluster.x, cluster.y) < 24 then
+					if PlotDistance(gpX, gpY, cluster.x, cluster.y) < 24 then
 						--local tt = EaPersonAStarTurns(iPlayer, iPerson, gpX, gpY, cluster.x, cluster.y)
 						local tt = unit:TurnsToReachTarget(GetPlotFromXY(cluster.x, cluster.y), 1, 1, 1)
 						if tt < nearestHostileDist then
@@ -1105,7 +1105,7 @@ function AIGPTestCombatInterrupt(iPlayer, iPerson, unit)		--called each turn (un
 						end
 					end
 				else
-					if Distance(gpX, gpY, cluster.x, cluster.y) < 12 then
+					if PlotDistance(gpX, gpY, cluster.x, cluster.y) < 12 then
 						--local tt = EaPersonAStarTurns(iPlayer, iPerson, gpX, gpY, cluster.x, cluster.y)
 						local tt = unit:TurnsToReachTarget(GetPlotFromXY(cluster.x, cluster.y), 1, 1, 1)
 						if tt < nearestSneakDist then
@@ -1170,7 +1170,7 @@ function AIGPTestCombatInterrupt(iPlayer, iPerson, unit)		--called each turn (un
 	end
 
 	--No combat action was done so move toward rallyPlot
-	if 4 < Distance(gpX, gpY, rallyX, rallyY) then
+	if 4 < PlotDistance(gpX, gpY, rallyX, rallyY) then
 		print("GP is >3 plots from rally plot; will now attempt to move to it")
 		--ClearActionPlotTargetedForPerson(iPlayer, iPerson)
 		DoEaAction(EA_ACTION_GO_TO_PLOT, iPlayer, unit, iPerson, rallyX, rallyY) 	--will interrupt whatever GP was doing before

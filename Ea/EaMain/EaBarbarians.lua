@@ -71,7 +71,7 @@ local gg_undeadSpawnPlots =			gg_undeadSpawnPlots
 local gg_demonSpawnPlots =			gg_demonSpawnPlots
 
 local Rand =					Map.Rand
-local Floor =					math.floor
+local floor =					math.floor
 local GetPlotFromXY =			Map.GetPlot
 local GetPlotByIndex =			Map.GetPlotByIndex
 local GetXYFromPlotIndex =		GetXYFromPlotIndex
@@ -177,7 +177,7 @@ end
 
 local techAwardByTurn = {}
 for row in GameInfo.EaEncampments_TechAwardByTurn() do
-	local adjTurn = Floor(row.Turn * GAME_SPEED_MULTIPLIER * MAP_SIZE_MULTIPLIER)
+	local adjTurn = floor(row.Turn * GAME_SPEED_MULTIPLIER * MAP_SIZE_MULTIPLIER)
 	techAwardByTurn[GameInfoTypes[row.TechType]] = adjTurn
 end
 

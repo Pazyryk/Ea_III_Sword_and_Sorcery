@@ -25,7 +25,7 @@ local EA_EPIC_VOLUSPA =		GameInfoTypes.EA_EPIC_VOLUSPA
 
 --Localized tables and methods
 local Players = Players
-local Floor = math.floor
+local floor = math.floor
 local exp = math.exp
 
 --aveCulturePerPop should be read as ave(CulturePerPop); so turn with 1 pop counts as much as turn with 100 pop

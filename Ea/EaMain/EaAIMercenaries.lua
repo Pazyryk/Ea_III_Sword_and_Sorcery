@@ -39,9 +39,9 @@ local gg_mercHireRate =		gg_mercHireRate
 local gg_bToCheapToHire =	gg_bToCheapToHire
 
 --localized functions
-local Floor = math.floor
-local Distance = Map.PlotDistance
-local Sort = table.sort
+local floor = math.floor
+local PlotDistance = Map.PlotDistance
+local sort = table.sort
 
 --file control
 local g_relativeMight = {}
@@ -165,7 +165,7 @@ function AIMercenaryPerCivTurn(iPlayer)					--controls hiring and putting up for
 				if relMight < 0.5 then break end
 			end
 		end
-		local numToHireOut = 0.5 < relMight and Floor(player:GetNumMilitaryUnits() * (relMight - 0.5)) or 0		--put units up for hire to 1/2 ave city state might
+		local numToHireOut = 0.5 < relMight and floor(player:GetNumMilitaryUnits() * (relMight - 0.5)) or 0		--put units up for hire to 1/2 ave city state might
 		print("Merc supplier putting units up for hire; number = ", numToHireOut)
 		local numForHire = 0
 		for unit in player:Units() do
@@ -291,7 +291,7 @@ function AIMercenaryPerCivTurn(iPlayer)					--controls hiring and putting up for
 					for i = #g_mercDisbandConsideration, disbandConsiderNum + 1, -1 do
 						g_mercDisbandConsideration = nil
 					end
-					Sort(g_mercDisbandConsideration, function(a, b) return g_mercSortingScore[a] < g_mercSortingScore[b] end)	--low score first
+					sort(g_mercDisbandConsideration, function(a, b) return g_mercSortingScore[a] < g_mercSortingScore[b] end)	--low score first
 					--Disband by resource first (if that is a problem), then gpt
 					if bResourceShortfall then
 						for i = 1, disbandConsiderNum do
@@ -379,7 +379,7 @@ function AISetAvailableMercenariesForHire(iPlayer, x, y, maxDist)
 		if bMayHaveMercs then
 			for unit in loopPlayer:Units() do
 				if unit:IsHasPromotion(PROMOTION_FOR_HIRE) then
-					local dist = Distance(x, y, unit:GetX(), unit:GetY())
+					local dist = PlotDistance(x, y, unit:GetX(), unit:GetY())
 					if dist <= maxDist then
 						numMercs = numMercs + 1
 						g_mercsForHire[numMercs] = unit
@@ -398,7 +398,7 @@ function AISetAvailableMercenariesForHire(iPlayer, x, y, maxDist)
 		g_mercsForHire[i] = nil
 	end
 
-	Sort(g_mercsForHire, function(a, b) return g_mercModDistTable[a] < g_mercModDistTable[b] end)
+	sort(g_mercsForHire, function(a, b) return g_mercModDistTable[a] < g_mercModDistTable[b] end)
 
 	return numMercs
 end

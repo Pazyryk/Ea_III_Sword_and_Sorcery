@@ -18,7 +18,7 @@ local ARMAGEDDON_SOUND =				"AS2D_EVENT_NOTIFICATION_VERY_BAD"
 local gWorld =			gWorld
 
 --functions
-local Floor =			math.floor
+local floor =			math.floor
 
 
 --------------------------------------------------------------
@@ -67,7 +67,7 @@ function EaArmageddonPerTurn()
 			LuaEvents.EaImagePopup({type = "Generic", textKey = "TXT_KEY_EA_ARMAGEDDON_3", imageInfo = ARMAGEDDON_IMAGE_INFO, sound = ARMAGEDDON_SOUND})
 		end
 	end
-	gWorld.armageddonSap = Floor(0.225 * (80 - manaPercent) + 2)	--health sap applied in EaCities.lua and happiness sap in EaCivs.lua
+	gWorld.armageddonSap = floor(0.225 * (80 - manaPercent) + 2)	--health sap applied in EaCities.lua and happiness sap in EaCivs.lua
 
 	-- Blight begins to spread from already blighted plots, and breach from already breached
 	-- plots. Blight spreads outward from existing blight (inhibited to some extent by living
@@ -208,7 +208,7 @@ function EOTW(iDestroyerPlayer)
 	local cameraCenterPlot = bDestroyerIsActivePlayer and destroyerCapitalPlot or g_activePlayer:GetCapitalCity():Plot()
 	local cameraX, cameraY = cameraCenterPlot:GetXY()
 	local viewRadius = 10	--TO DO: calculate this
-	local maxRadius = bDestroyerIsActivePlayer and viewRadius or PlotDistance(destroyerCapital:GetX(), destroyerCapital:GetY(), cameraX, cameraY) + Floor(viewRadius / 2)
+	local maxRadius = bDestroyerIsActivePlayer and viewRadius or PlotDistance(destroyerCapital:GetX(), destroyerCapital:GetY(), cameraX, cameraY) + floor(viewRadius / 2)
 	g_minRadius = bDestroyerIsActivePlayer and 0 or maxRadius - viewRadius
 
 	--ContextPtr:SetHide(false)					--lockout the active player so they can't move the camera XXXXX - DON'T DO IT IN EAMAIN CONTEXT!

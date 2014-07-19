@@ -53,7 +53,7 @@ local gg_animalSpawnInhibitTeams =			gg_animalSpawnInhibitTeams
 
 local Rand =								Map.Rand
 local GetPlotByIndex =						Map.GetPlotByIndex
-local Floor =								math.floor
+local floor =								math.floor
 
 local g_prefScoreByAnimal = {}
 
@@ -218,7 +218,7 @@ function AnimalsPerTurn()	--Runs after PlotsPerTurn() so we have current info in
 	end
 
 	-- Pick plots from gg_animalSpawnPlots randomly, then figure out what to spawn by local geography
-	local maxSpawnSpacing = Floor(ANIMAL_SPAWN_SPACER * (numAnimals + 10) ^ 3 / 1000)
+	local maxSpawnSpacing = floor(ANIMAL_SPAWN_SPACER * (numAnimals + 10) ^ 3 / 1000)
 	print("Number available spawn plots / number animals / maxSpawnSpacing = ", numAnimalSpawnPlots, numAnimals, maxSpawnSpacing)
 
 	local plotNumber = Rand(maxSpawnSpacing, "hello") + 1

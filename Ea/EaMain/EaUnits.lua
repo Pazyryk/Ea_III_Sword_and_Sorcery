@@ -89,9 +89,9 @@ local gg_unitTier =					gg_unitTier
 
 --localized functions
 local Rand = Map.Rand
-local Floor = math.floor
-local Distance = Map.PlotDistance
-local StrSubstitute = string.gsub
+local floor = math.floor
+local PlotDistance = Map.PlotDistance
+local gsub = string.gsub
 local GetPlotFromXY =			Map.GetPlot
 local PlotToRadiusIterator =	PlotToRadiusIterator
 local HandleError31 =			HandleError31
@@ -260,7 +260,7 @@ function ConvertUnitsByMatch(iPlayer, fromStr, toStr)	--preserves race (e.g., UN
 		end
 		if bConvert then
 			local unitType = GameInfo.Units[unitTypeID].Type
-			local newUnitType = StrSubstitute(unitType, fromStr, toStr)
+			local newUnitType = gsub(unitType, fromStr, toStr)
 			local newUnitTypeID = GameInfoTypes[newUnitType]
 			local newUnit = player:InitUnit(newUnitTypeID, unit:GetX(), unit:GetY())
 			MapModData.bBypassOnCanSaveUnit = true
@@ -365,7 +365,7 @@ LuaEvents.EaUnitsDismissMercenary.Add(DismissMercenary)
 function UnitPerCivTurn(iPlayer)	--runs for full civs and city states
 	print("UnitPerCivTurn")
 	local Rand = Rand
-	local Floor = Floor
+	local floor = floor
 	local player = Players[iPlayer]
 	local eaPlayer = gPlayers[iPlayer]
 	local team = Teams[player:GetTeam()]
@@ -479,7 +479,7 @@ function UnitPerCivTurn(iPlayer)	--runs for full civs and city states
 					elseif bHasWarspirit then
 						baselineMoral = baselineMoral + 10
 						if bHasBerserkerRage then
-							baselineMoral = baselineMoral + Floor(unit:GetDamage() / 2)
+							baselineMoral = baselineMoral + floor(unit:GetDamage() / 2)
 						end
 					end
 					if unit:IsHasPromotion(PROMOTION_DRUNKARD) then
@@ -653,7 +653,7 @@ function UnitPerCivTurn(iPlayer)	--runs for full civs and city states
 			eaPlayer.trainingXP = (eaPlayer.trainingXP or 0) + player:GetTotalJONSCulturePerTurn() / 3
 		end
 		if eaPlayer.trainingXP and 10 < eaPlayer.trainingXP and 0 < countCombatUnits then
-			local distributeXP = Floor(eaPlayer.trainingXP / countCombatUnits)
+			local distributeXP = floor(eaPlayer.trainingXP / countCombatUnits)
 			if 0 < distributeXP then
 				print("Adding XP to combat units for Training Exercises Process and/or Militarism Finisher (#units / unitXP): ", countCombatUnits, distributeXP)
 				for unit in player:Units() do
@@ -685,7 +685,7 @@ local function OnUnitTakingPromotion(iPlayer, iUnit, promotionID)
 				eaPerson[prefix] = level
 			end
 			if eaPerson.assumedLeadershipTurn then
-				eaPerson.leaderLevel = Floor((Game.GetGameTurn() - eaPerson.assumedLeadershipTurn) / 20)	--intentional that this only updates w/ leveling (game interest and works better for mod caching)
+				eaPerson.leaderLevel = floor((Game.GetGameTurn() - eaPerson.assumedLeadershipTurn) / 20)	--intentional that this only updates w/ leveling (game interest and works better for mod caching)
 			end
 			eaPerson.level = unit:GetLevel()
 			--eaPerson.promotions[promotionID] = true
@@ -699,7 +699,7 @@ local function OnUnitTakingPromotion(iPlayer, iUnit, promotionID)
 			local eaPerson = gPeople[iPerson]
 			promotionID = AIPickGPPromotion(iPlayer, iPerson, unit)
 			if eaPerson.assumedLeadershipTurn then
-				eaPerson.leaderLevel = Floor((Game.GetGameTurn() - eaPerson.assumedLeadershipTurn) / 20)
+				eaPerson.leaderLevel = floor((Game.GetGameTurn() - eaPerson.assumedLeadershipTurn) / 20)
 			end
 			eaPerson.level = unit:GetLevel()
 			--eaPerson.promotions[promotionID] = true
@@ -967,7 +967,7 @@ SustainedPromotionDo[GameInfoTypes.PROMOTION_RIDE_LIKE_THE_WINDS] = function(pla
 	if not eaPerson then return false end	--caster died
 	local mod = GetGPMod(iCaster, "EAMOD_DEVOTION", "EAMOD_CONJURATION")
 	local caster = Players[eaPerson.iPlayer]:GetUnitByID(eaPerson.iUnit)
-	if mod < Distance(caster:GetX(), caster:GetY(), unit:GetX(), unit:GetY()) then return false end
+	if mod < PlotDistance(caster:GetX(), caster:GetY(), unit:GetX(), unit:GetY()) then return false end
 	return UseManaOrDivineFavor(eaPerson.iPlayer, iCaster, 1)
 end
 

@@ -56,7 +56,7 @@ local HandleError =					HandleError
 local HandleError10 =				HandleError10
 local HandleError21 =				HandleError21
 local HandleError31 =				HandleError31
-local Floor =						math.floor
+local floor =						math.floor
 local Rand =						Map.Rand
 local GetPlotFromXY =				Map.GetPlot
 
@@ -107,7 +107,7 @@ end
 
 function CalculateXPManaForAttack(unitTypeId, damage, bKill)
 	local basePower = gg_normalizedUnitPower[unitTypeId] or 18			--city treated as unit with power 18
-	return Floor((damage + (bKill and 50 or 0)) * basePower / 18)		-- 1 pt per 2 hp for a Warriors unit; kill is worth an additional 33 hp
+	return floor((damage + (bKill and 50 or 0)) * basePower / 18)		-- 1 pt per 2 hp for a Warriors unit; kill is worth an additional 33 hp
 end
 
 
@@ -551,7 +551,7 @@ local function OnCombatEnded(iAttackingPlayer, iAttackingUnit, attackerDamage, a
 						power = power < g_defendingUnitXP and g_defendingUnitXP or power
 						local bStun = mod >= power
 						if not bStun then
-							if Floor(power, "hello") < mod then
+							if floor(power, "hello") < mod then
 								bStun = true
 							end
 						end

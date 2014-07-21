@@ -44,7 +44,7 @@ local gPlayers =					gPlayers
 local gPeople =						gPeople
 local Players =						Players
 local fullCivs =					MapModData.fullCivs
-
+local gg_init =						gg_init
 local gg_slaveryPlayer =			gg_slaveryPlayer
 local gg_gpTempType =				gg_gpTempType
 local gg_eaSpecial =				gg_eaSpecial
@@ -61,7 +61,6 @@ local Rand =						Map.Rand
 local GetPlotFromXY =				Map.GetPlot
 
 --file control
-local g_bInitialized = false
 local g_iActivePlayer = Game.GetActivePlayer()
 local g_delayedAttacks = {pos = 0}
 local g_iDefendingPlayer = -1
@@ -98,7 +97,7 @@ end
 -- Init
 --------------------------------------------------------------
 function EaUnitCombatInit(bNewGame)
-	g_bInitialized = true
+
 end
 
 --------------------------------------------------------------
@@ -124,7 +123,7 @@ local function OnSerialEventUnitCreated(iPlayer, iUnit, hexVec, unitType, cultur
 	--unitType is not unitTypeID
 	--runs for embark, disembark
 	
-	if not g_bInitialized then return end
+	if not gg_init.bEnteredGame then return end
 	local player = Players[iPlayer]
 	local unit = player:GetUnitByID(iUnit)
 	if not unit then return end

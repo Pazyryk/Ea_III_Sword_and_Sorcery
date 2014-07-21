@@ -225,13 +225,15 @@ function RegisterGPActions(iPerson)
 	local number = 1
 	for id = FIRST_GP_ACTION, FIRST_SPELL_ID - 1 do
 		local eaAction = EaActionsInfo[id]
-		if not eaAction.GPSubclass or eaAction.GPSubclass == subclass or (subclass and eaAction.OrGPSubclass == subclass) then
-			if not eaAction.GPClass or eaAction.GPClass == class1 or eaAction.GPClass == class2 or (eaAction.OrGPClass and (eaAction.OrGPClass == class1 or eaAction.OrGPClass == class2)) then
-				if not eaAction.ExcludeGPSubclass or eaAction.ExcludeGPSubclass ~= subclass then
-					if not eaAction.NotGPClass or (eaAction.NotGPClass ~= class1 and eaAction.NotGPClass ~= class1) then
-						actions[number] = id
-						number = number + 1
-					end
+		if not (eaAction.GPClass or eaAction.OrGPClass or eaAction.GPSubclass or eaAction.OrGPSubclass)				--pass if no class/subclass listed
+					or (eaAction.GPClass and (eaAction.GPClass == class1 or eaAction.GPClass == class2))			--pass if any class or subclass matches
+					or (eaAction.OrGPClass and (eaAction.OrGPClass == class1 or eaAction.OrGPClass == class2))
+					or (eaAction.GPSubclass and eaAction.GPSubclass == subclass)
+					or (eaAction.OrGPSubclass and eaAction.OrGPSubclass == subclass) then
+			if not eaAction.ExcludeGPSubclass or eaAction.ExcludeGPSubclass ~= subclass then
+				if not eaAction.NotGPClass or (eaAction.NotGPClass ~= class1 and eaAction.NotGPClass ~= class1) then
+					actions[number] = id
+					number = number + 1
 				end
 			end
 		end
@@ -1000,7 +1002,7 @@ function DoEaAction(eaActionID, iPlayer, unit, iPerson, targetX, targetY)
 
 	if eaActionID == 0 then		--special go to plot function; just do or fail and skip the rest of this method
 		unit:SetInvisibleType(INVISIBLE_SUBMARINE)
-		local bSuccess DoGotoPlot(iPlayer, unit, iPerson, targetX, targetY) 	--if targetX, Y == nil, then destination is from eaPerson.gotoPlotIndex
+		local bSuccess = DoGotoPlot(iPlayer, unit, iPerson, targetX, targetY) 	--if targetX, Y == nil, then destination is from eaPerson.gotoPlotIndex
 
 		if gPeople[iPerson].timeStop and g_unit then
 			CheckTimeStopUnit(unit, gPeople[iPerson])
@@ -1485,7 +1487,7 @@ Do[GameInfoTypes.EA_ACTION_TAKE_LEADERSHIP] = function()
 	return true
 end
 
---EA_ACTION_TAKE_RESIDENCE
+--[[EA_ACTION_TAKE_RESIDENCE
 local classYields = {Warrior = -1, Engineer = YIELD_PRODUCTION, Merchant = YIELD_GOLD, Sage = YIELD_SCIENCE, Artist = YIELD_CULTURE, Devout = YIELD_FAITH, Thaumaturge = YIELD_FAITH}
 
 TestTarget[GameInfoTypes.EA_ACTION_TAKE_RESIDENCE] = function()
@@ -1647,6 +1649,7 @@ Interrupt[GameInfoTypes.EA_ACTION_TAKE_RESIDENCE] = function(iPlayer, iPerson)
 		end
 	end
 end
+]]
 
 --EA_ACTION_HEAL	(This is for AI only, since active player can just press Heal button)
 Test[GameInfoTypes.EA_ACTION_HEAL] = function()
@@ -1678,7 +1681,7 @@ TestTarget[GameInfoTypes.EA_ACTION_HEAL] = function()
 end
 
 SetAIValues[GameInfoTypes.EA_ACTION_HEAL] = function()
-	local value = g_int5 * g_int1 / 10
+	local value = g_int5 * g_int1 / 20
 	if g_unitX ~= g_x or g_unitY ~= g_y or g_bool1 then		--not this plot this turn
 		value = value - 20
 	end
@@ -1932,7 +1935,7 @@ SetUI[GameInfoTypes.EA_ACTION_RECRUIT] = function()
 		if g_bAllTestsPassed then
 			local cityProductionName = g_city:GetProductionNameKey()
 			if cityProductionName then
-				MapModData.text = "Provide " .. g_int1 .. " production and experience per turn toward " .. Locale.ConvertTextKey(cityProductionName)
+				MapModData.text = "Provide " .. g_int1 .. " production per turn toward " .. Locale.ConvertTextKey(cityProductionName)
 			end
 		elseif g_testTargetSwitch == 1 then
 			MapModData.bShow = true
@@ -2196,7 +2199,6 @@ end
 
 
 --EA_ACTION_RALLY_TROOPS
---TO DO: make this a single plot action
 TestTarget[GameInfoTypes.EA_ACTION_RALLY_TROOPS] = function()
 	--Must be melee attack unit with enemy in range in same or adjacent plot
 	local numQualifiedUnits = 0
@@ -2246,6 +2248,221 @@ Do[GameInfoTypes.EA_ACTION_RALLY_TROOPS] = function()
 	return true
 end
 
+--EA_ACTION_SHRUG_OFF_INJURIES
+Test[GameInfoTypes.EA_ACTION_SHRUG_OFF_INJURIES] = function()		--gain additional effect of healing if not moved yet
+	if not g_bAIControl then return false end
+	g_int1 = g_unit:GetDamage()
+	if 0 < g_int1 then
+		g_int2 = FRIENDLY_HEAL_RATE + g_unit:GetExtraFriendlyHeal()
+		g_int3 = NEUTRAL_HEAL_RATE + g_unit:GetExtraNeutralHeal()
+		g_bool1 = g_unit:HasMoved()
+		g_int4 = g_int1 < g_mod and g_int1 or g_mod		--amount to shrug off
+		g_int5 = g_int1 - g_int4						--ramainder to possibly heal
+		return true
+	end
+	return false 
+end
+
+TestTarget[GameInfoTypes.EA_ACTION_SHRUG_OFF_INJURIES] = function()
+	if g_int5 > g_int3 then
+		local bFriendlyHeal = false
+		if g_iOwner == g_iPlayer then
+			bFriendlyHeal = true
+		elseif g_iOwner ~= -1 then
+			if g_iOwner < MAX_MAJOR_CIVS then
+				bFriendlyHeal = Teams[Players[g_iOwner]:GetTeam()]:IsAllowsOpenBordersToTeam(g_iTeam)
+			else
+				bFriendlyHeal = Players[g_iOwner]:IsFriends(g_iPlayer)
+			end
+		end
+		if bFriendlyHeal then
+			g_int5 = g_int5 < g_int2 and g_int5 or g_int2
+		else
+			g_int5 = g_int3
+		end
+	end
+	return true
+end
+
+SetUI[GameInfoTypes.EA_ACTION_SHRUG_OFF_INJURIES] = function()
+	if g_bAllTestsPassed then
+		if g_bool1 or g_int5 < 1 then
+			MapModData.text = "Shrug off " .. g_int4 .. " hit points from current damage"
+		else
+			MapModData.text = "Shrug off " .. g_int4 .. " hit points from current damage (and heal normal " .. g_int5 .. "hit points)"
+		end
+	end
+end
+
+SetAIValues[GameInfoTypes.EA_ACTION_SHRUG_OFF_INJURIES] = function()	--unlike heal, AI is only looking at self plot
+	local value = g_int4
+	if not g_bool1 then
+		value = value + g_int5
+	end
+	gg_aiOptionValues.i = value * g_int1 / 20
+end
+
+Do[GameInfoTypes.EA_ACTION_SHRUG_OFF_INJURIES] = function()
+	local heal = g_int4 + (g_bool1 and 0 or g_int5)
+	g_unit:ChangeDamage(-heal, -1)
+	g_unit:ChangeExperience(g_int4)
+	return true
+end
+
+--EA_ACTION_RESTORE_TROOPS
+TestTarget[GameInfoTypes.EA_ACTION_RESTORE_TROOPS] = function()
+	--Must be combat unit at plot
+	local unitCount = g_plot:GetNumUnits()
+	for i = 0, unitCount - 1 do
+		local unit = g_plot:GetUnit(i)
+		if unit:GetOwner() == g_iPlayer then
+			local unitTypeID = unit:GetUnitType()
+			if gg_regularCombatType[unitTypeID] == "troops" then
+				g_int1 = unit:GetDamage()
+				if 0 < g_int1 then
+					g_obj1 = unit
+					g_int2 = unitTypeID
+					g_int3 = g_int1 < g_mod and g_int1 or g_mod
+					return true
+				end
+			end
+		end
+	end
+	return false
+end
+
+SetUI[GameInfoTypes.EA_ACTION_RESTORE_TROOPS] = function()
+	if g_bAllTestsPassed then
+		local unitText = Locale.ConvertTextKey(GameInfo.Units[g_int2].Description)
+		MapModData.text = "Restore " .. g_int3 .. " hit points to same-plot " .. unitText
+	end
+end
+
+SetAIValues[GameInfoTypes.EA_ACTION_RESTORE_TROOPS] = function()
+	gg_aiOptionValues.i = g_int3 * g_obj1:GetPower() * g_int1 / 2000			
+end
+
+Do[GameInfoTypes.EA_ACTION_RESTORE_TROOPS] = function()
+	g_obj1:ChangeDamage(-g_int3, -1)
+	g_unit:ChangeExperience(g_int3)
+	return true
+end
+
+--EA_ACTION_REPAIR_WAR_CONSTRUCTS
+TestTarget[GameInfoTypes.EA_ACTION_REPAIR_WAR_CONSTRUCTS] = function()
+	--Must be combat unit at plot
+	local unitCount = g_plot:GetNumUnits()
+	for i = 0, unitCount - 1 do
+		local unit = g_plot:GetUnit(i)
+		if unit:GetOwner() == g_iPlayer then
+			local unitTypeID = unit:GetUnitType()
+			if gg_regularCombatType[unitTypeID] == "construct" then
+				g_int1 = unit:GetDamage()
+				if 0 < g_int1 then
+					g_obj1 = unit
+					g_int2 = unitTypeID
+					g_int3 = g_int1 < g_mod and g_int1 or g_mod
+					return true
+				end
+			end
+		end
+	end
+	return false
+end
+
+SetUI[GameInfoTypes.EA_ACTION_REPAIR_WAR_CONSTRUCTS] = function()
+	if g_bAllTestsPassed then
+		local unitText = Locale.ConvertTextKey(GameInfo.Units[g_int2].Description)
+		MapModData.text = "Restore " .. g_int3 .. " hit points to same-plot " .. unitText
+	end
+end
+
+SetAIValues[GameInfoTypes.EA_ACTION_REPAIR_WAR_CONSTRUCTS] = function()
+	gg_aiOptionValues.i = g_int3 * g_obj1:GetPower() * g_int1 / 2000			
+end
+
+Do[GameInfoTypes.EA_ACTION_REPAIR_WAR_CONSTRUCTS] = function()
+	g_obj1:ChangeDamage(-g_int3, -1)
+	g_unit:ChangeExperience(g_int3)
+	return true
+end
+
+
+--EA_ACTION_REPAIR_SHIPS
+TestTarget[GameInfoTypes.EA_ACTION_REPAIR_SHIPS] = function()
+	--Must be combat unit at plot
+	local unitCount = g_plot:GetNumUnits()
+	for i = 0, unitCount - 1 do
+		local unit = g_plot:GetUnit(i)
+		if unit:GetOwner() == g_iPlayer then
+			local unitTypeID = unit:GetUnitType()
+			if gg_regularCombatType[unitTypeID] == "ship" then
+				g_int1 = unit:GetDamage()
+				if 0 < g_int1 then
+					g_obj1 = unit
+					g_int2 = unitTypeID
+					g_int3 = g_int1 < g_mod and g_int1 or g_mod
+					return true
+				end
+			end
+		end
+	end
+	return false
+end
+
+SetUI[GameInfoTypes.EA_ACTION_REPAIR_SHIPS] = function()
+	if g_bAllTestsPassed then
+		local unitText = Locale.ConvertTextKey(GameInfo.Units[g_int2].Description)
+		MapModData.text = "Restore " .. g_int3 .. " hit points to same-plot " .. unitText
+	end
+end
+
+SetAIValues[GameInfoTypes.EA_ACTION_REPAIR_SHIPS] = function()
+	gg_aiOptionValues.i = g_int3 * g_obj1:GetPower() * g_int1 / 2000			
+end
+
+Do[GameInfoTypes.EA_ACTION_REPAIR_SHIPS] = function()
+	g_obj1:ChangeDamage(-g_int3, -1)
+	g_unit:ChangeExperience(g_int3)
+	return true
+end
+
+--EA_ACTION_TRAIN
+TestTarget[GameInfoTypes.EA_ACTION_TRAIN] = function()
+	--Must be combat unit at plot
+	local unitCount = g_plot:GetNumUnits()
+	for i = 0, unitCount - 1 do
+		local unit = g_plot:GetUnit(i)
+		if unit:GetOwner() == g_iPlayer and unit:GetDamage() == 0 then
+			local unitTypeID = unit:GetUnitType()
+			if gg_regularCombatType[unitTypeID] == "troops" then
+				g_obj1 = unit
+				g_int1 = unitTypeID
+				return true
+			end
+		end
+	end
+	return false
+end
+
+SetUI[GameInfoTypes.EA_ACTION_TRAIN] = function()
+	if g_bAllTestsPassed then
+		local unitText = Locale.ConvertTextKey(GameInfo.Units[g_int1].Description)
+		local xp = floor(g_mod / 2)
+		MapModData.text = "Provide " .. unitText .. " with " .. xp .. " experience per turn"
+	end
+end
+
+SetAIValues[GameInfoTypes.EA_ACTION_TRAIN] = function()
+	gg_aiOptionValues.i = g_mod * g_obj1:GetPower()			
+end
+
+Do[GameInfoTypes.EA_ACTION_TRAIN] = function()
+	local xp = floor(g_mod / 2)	--give to unit and GP
+	g_obj1:ChangeExperience(xp)
+	g_unit:ChangeExperience(xp)
+	return true
+end
 --EA_ACTION_TRAIN
 TestTarget[GameInfoTypes.EA_ACTION_TRAIN] = function()
 	--Must be combat unit at plot
@@ -2949,6 +3166,11 @@ SetUI[GameInfoTypes.EA_ACTION_EPIC_VOLUSPA] = function()
 	if g_bAllTestsPassed then
 		MapModData.text = "Increases Cultural Level by " .. g_mod/10
 	end
+end
+
+Finish[GameInfoTypes.EA_ACTION_EPIC_VOLUSPA] = function()
+	g_eaPlayer.culturalLevel = g_eaPlayer.culturalLevel + g_mod/10
+	return true
 end
 
 --EA_ACTION_EPIC_HAVAMAL

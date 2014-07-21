@@ -105,13 +105,7 @@ function EaPoliciesInit(bNewGame)
 				gg_teamCanMeetGods[iTeam] = true
 				if player:HasPolicy(GameInfoTypes.POLICY_THROUGH_THE_VEIL) then
 					gg_teamCanMeetFay[iTeam] = true
-				end
-			
-				--v3 save compatibility patch (remove later)
-				if bV3PatchHack then
-					gWorld.panCivsEver = gWorld.panCivsEver + 1
-				end		
-					
+				end					
 			end
 			if not player:HasPolicy(GameInfoTypes.POLICY_FERAL_BOND) then
 				NRArrayAdd(gg_animalSpawnInhibitTeams, player:GetTeam())

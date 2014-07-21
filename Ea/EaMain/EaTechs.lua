@@ -176,7 +176,7 @@ function EaTechsInit(bNewGame)
 		end
 	end
 
-	ResetTechCostMods(g_iActivePlayer)
+	--ResetTechCostMods(g_iActivePlayer)
 end
 
 
@@ -188,6 +188,7 @@ function ResetTechCostMods(iPlayer)
 	print("ResetTechCostMods ", iPlayer)
 	if not fullCivs[iPlayer] then return end
 	local player = Players[iPlayer]
+	if not player:IsFoundedFirstCity() then return end
 	local eaPlayer = gPlayers[iPlayer]
 	if not eaPlayer then return end
 

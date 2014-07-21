@@ -419,184 +419,193 @@ function UnitPerCivTurn(iPlayer)	--runs for full civs and city states
 			unit:SetHasPromotion(PROMOTION_STUNNED, false)
 		end
 
-		--Warrior gains best movement from adjacent/same-plot "troops" units (TO DO: this will become an automatic conversion to mounted GP unit)
 		if iPerson ~= -1 then
+
+			--GP stuff
 			local eaPerson = gPeople[iPerson]
-			if eaPerson.class1 == "Warrior" or eaPerson.class2 == "Warrior" then
-				local bestMoves = 120
-				for loopPlot in AdjacentPlotIterator(plot, false, true) do
-					local unitCount = loopPlot:GetNumUnits()
-					for i = 0, unitCount - 1 do
-						local loopUnit = loopPlot:GetUnit(i)
-						local loopUnitTypeID = loopUnit:GetUnitType()
-						if gg_regularCombatType[loopUnitTypeID] == "troops" then
-							local moves = loopUnit:GetMoves()
-							if bestMoves < moves then
-								bestMoves = moves
+			if not eaPerson then
+				MissingEaPersonHasUnit(iPerson, unit)
+			else
+
+				--Warrior gains best movement from adjacent/same-plot "troops" units (TO DO: this will become an automatic conversion to mounted GP unit)
+				if eaPerson.class1 == "Warrior" or eaPerson.class2 == "Warrior" then
+					local bestMoves = 120
+					for loopPlot in AdjacentPlotIterator(plot, false, true) do
+						local unitCount = loopPlot:GetNumUnits()
+						for i = 0, unitCount - 1 do
+							local loopUnit = loopPlot:GetUnit(i)
+							local loopUnitTypeID = loopUnit:GetUnitType()
+							if gg_regularCombatType[loopUnitTypeID] == "troops" then
+								local moves = loopUnit:GetMoves()
+								if bestMoves < moves then
+									bestMoves = moves
+								end
 							end
 						end
 					end
-				end
-				if bestMoves > 120 and unit:GetMoves() >= 120 then	--make sure GP has normal movement at turn start (isn't restricted by some spell)
-					print("Giving Warrior extra movement from troops ", bestMoves)
-					unit:SetMoves(bestMoves)
+					if bestMoves > 120 and unit:GetMoves() >= 120 then	--make sure GP has normal movement at turn start (isn't restricted by some spell)
+						print("Giving Warrior extra movement from troops ", bestMoves)
+						unit:SetMoves(bestMoves)
+					end
 				end
 			end
-		end
+		else
 	
-		if bAnimals then
+			--non-GP stuff
+			if bAnimals then
 			--
-		elseif bBarbs then
-			if faithMaintenance[unitTypeID] then
-				UseManaOrDivineFavor(BARB_PLAYER_INDEX, nil, faithMaintenance[unitTypeID], true, plot)
-			end
-		else	--Full civs and city states
-			if faithMaintenance[unitTypeID] then
-				UseManaOrDivineFavor(iPlayer, nil, faithMaintenance[unitTypeID], false, plot)
-			end
+			elseif bBarbs then
+				if faithMaintenance[unitTypeID] then
+					UseManaOrDivineFavor(BARB_PLAYER_INDEX, nil, faithMaintenance[unitTypeID], true, plot)
+				end
+			else	--Full civs and city states
+				if faithMaintenance[unitTypeID] then
+					UseManaOrDivineFavor(iPlayer, nil, faithMaintenance[unitTypeID], false, plot)
+				end
 
 
-			local bSlave
-			local bMercenary
+				local bSlave
+				local bMercenary
 
-			if gg_regularCombatType[unitTypeID] then
-				countCombatUnits = countCombatUnits + 1
+				if gg_regularCombatType[unitTypeID] then
+					countCombatUnits = countCombatUnits + 1
 
-				bSlave = unit:IsHasPromotion(PROMOTION_SLAVE)
-				bMercenary = unit:IsHasPromotion(PROMOTION_MERCENARY)
+					bSlave = unit:IsHasPromotion(PROMOTION_SLAVE)
+					bMercenary = unit:IsHasPromotion(PROMOTION_MERCENARY)
 
-				--Morale decays toward baseline (= civ happiness; -30 for slaves; 0 for mercenary; -20 for merc at war with original owner)
-				local baselineMoral = playerHappiness
-				if bSlave then
-					baselineMoral = -30
-				else
-					if bMercenary then
-						if team:IsAtWar(Players[unit:GetOriginalOwner()]:GetTeam()) then	--TO DO: check that this is safe for killed civ
-							baselineMoral = -20
-						else
-							baselineMoral = 0
+					--Morale decays toward baseline (= civ happiness; -30 for slaves; 0 for mercenary; -20 for merc at war with original owner)
+					local baselineMoral = playerHappiness
+					if bSlave then
+						baselineMoral = -30
+					else
+						if bMercenary then
+							if team:IsAtWar(Players[unit:GetOriginalOwner()]:GetTeam()) then	--TO DO: check that this is safe for killed civ
+								baselineMoral = -20
+							else
+								baselineMoral = 0
+							end
+						elseif bHasWarspirit then
+							baselineMoral = baselineMoral + 10
+							if bHasBerserkerRage then
+								baselineMoral = baselineMoral + floor(unit:GetDamage() / 2)
+							end
 						end
-					elseif bHasWarspirit then
-						baselineMoral = baselineMoral + 10
-						if bHasBerserkerRage then
-							baselineMoral = baselineMoral + floor(unit:GetDamage() / 2)
+						if unit:IsHasPromotion(PROMOTION_DRUNKARD) then
+							baselineMoral = baselineMoral + 10
 						end
 					end
-					if unit:IsHasPromotion(PROMOTION_DRUNKARD) then
-						baselineMoral = baselineMoral + 10
+					if bMoraleFloor and baselineMoral < -15 then
+						baselineMoral = -15
 					end
-				end
-				if bMoraleFloor and baselineMoral < -15 then
-					baselineMoral = -15
-				end
 				
-				unit:DecayMorale(baselineMoral)
+					unit:DecayMorale(baselineMoral)
 
-				--combat unit level promotions
-				if unitTypeID == UNIT_GREAT_BOMBARDE and 4 < unit:GetLevel() then
-					unit:SetHasPromotion(PROMOTION_EXTENDED_RANGE, true)
+					--combat unit level promotions
+					if unitTypeID == UNIT_GREAT_BOMBARDE and 4 < unit:GetLevel() then
+						unit:SetHasPromotion(PROMOTION_EXTENDED_RANGE, true)
+					end
+				elseif gg_eaSpecial[unitTypeID] == "Undead" then
+					local iSummoner = unit:GetSummonerIndex()
+					if iSummoner == -99 or not gPeople[iSummoner] then
+						local dice = Rand(15, "hello")
+						if dice == 0 then
+							local spawnPlot = GetPlotForSpawn(plot, BARB_PLAYER_INDEX, 2, false, false, false, false, false, false, unit)
+							if spawnPlot then
+								local x, y = spawnPlot:GetXY()
+								MapModData.bBypassOnCanSaveUnit = true
+								local newUnit = Players[BARB_PLAYER_INDEX]:InitUnit(unitTypeID, x, y)
+								newUnit:Convert(unit, false)
+								iUnit = newUnit:GetID()
+								unit = newUnit			
+								spawnPlot:AddFloatUpMessage("Unbound dead has gone hostile!", 1)
+							else
+								MapModData.bBypassOnCanSaveUnit = true
+								unit:Kill(true, -1)
+								plot:AddFloatUpMessage("Unbound dead has un-animated", 1)						
+							end
+						--elseif dice < 3 then
+						--	MapModData.bBypassOnCanSaveUnit = true
+						--	unit:Kill(true, -1)
+						--	plot:AddFloatUpMessage("Unbound dead has un-animated", 1)
+						end				
+					end
 				end
-			elseif gg_eaSpecial[unitTypeID] == "Undead" then
-				local iSummoner = unit:GetSummonerIndex()
-				if iSummoner == -99 or not gPeople[iSummoner] then
-					local dice = Rand(15, "hello")
-					if dice == 0 then
-						local spawnPlot = GetPlotForSpawn(plot, BARB_PLAYER_INDEX, 2, false, false, false, false, false, false, unit)
-						if spawnPlot then
-							local x, y = spawnPlot:GetXY()
-							MapModData.bBypassOnCanSaveUnit = true
-							local newUnit = Players[BARB_PLAYER_INDEX]:InitUnit(unitTypeID, x, y)
-							newUnit:Convert(unit, false)
-							iUnit = newUnit:GetID()
-							unit = newUnit			
-							spawnPlot:AddFloatUpMessage("Unbound dead has gone hostile!", 1)
-						else
-							MapModData.bBypassOnCanSaveUnit = true
-							unit:Kill(true, -1)
-							plot:AddFloatUpMessage("Unbound dead has un-animated", 1)						
+
+				--Steel/Mithril Weopons
+				if bHasSteelWorking and gg_regularCombatType[unitTypeID] == "troops" then
+					if bHasMithrilWorking and 4 < gg_unitTier[unitTypeID] then
+						if not unit:IsHasPromotion(PROMOTION_MITHRIL_WEAPONS) then
+							if unit:IsHasPromotion(PROMOTION_STEEL_WEAPONS) then
+								unit:SetHasPromotion(PROMOTION_STEEL_WEAPONS, false)
+								unit:SetBaseCombatStrength(unit:GetBaseCombatStrength() + 2)
+							else
+								unit:SetBaseCombatStrength(unit:GetBaseCombatStrength() + 4)
+							end
+							unit:SetHasPromotion(PROMOTION_MITHRIL_WEAPONS, true)
 						end
-					--elseif dice < 3 then
-					--	MapModData.bBypassOnCanSaveUnit = true
-					--	unit:Kill(true, -1)
-					--	plot:AddFloatUpMessage("Unbound dead has un-animated", 1)
-					end				
-				end
-			end
-
-			--Steel/Mithril Weopons
-			if bHasSteelWorking and gg_regularCombatType[unitTypeID] == "troops" then
-				if bHasMithrilWorking and 4 < gg_unitTier[unitTypeID] then
-					if not unit:IsHasPromotion(PROMOTION_MITHRIL_WEAPONS) then
-						if unit:IsHasPromotion(PROMOTION_STEEL_WEAPONS) then
-							unit:SetHasPromotion(PROMOTION_STEEL_WEAPONS, false)
+					elseif 2 < gg_unitTier[unitTypeID] then
+						if not unit:IsHasPromotion(PROMOTION_STEEL_WEAPONS) and not unit:IsHasPromotion(PROMOTION_MITHRIL_WEAPONS) then
 							unit:SetBaseCombatStrength(unit:GetBaseCombatStrength() + 2)
-						else
-							unit:SetBaseCombatStrength(unit:GetBaseCombatStrength() + 4)
+							unit:SetHasPromotion(PROMOTION_STEEL_WEAPONS, true)
 						end
-						unit:SetHasPromotion(PROMOTION_MITHRIL_WEAPONS, true)
-					end
-				elseif 2 < gg_unitTier[unitTypeID] then
-					if not unit:IsHasPromotion(PROMOTION_STEEL_WEAPONS) and not unit:IsHasPromotion(PROMOTION_MITHRIL_WEAPONS) then
-						unit:SetBaseCombatStrength(unit:GetBaseCombatStrength() + 2)
-						unit:SetHasPromotion(PROMOTION_STEEL_WEAPONS, true)
 					end
 				end
-			end
 
-			--unit type or civ effects
-			local unitDomainTypeID = unit:GetDomainType()
-			if UseUnit[unitTypeID] then							--functions for units that are used up (like caravans, fishing boats, etc)
-				UseUnit[unitTypeID](iPlayer, unit)
-			elseif UseAIUnit[unitTypeID] then	
-				if bAI then		
-					UseAIUnit[unitTypeID](iPlayer, unit)
-				end
-			elseif unitDomainTypeID == DOMAIN_SEA then
-				--scurvy
-				if bNoCitrus then
-					local bScurvy = true
-					if iPlotOwner ~= -1 then
-						if iPlotOwner == iPlayer then
-							bScurvy = false
-						elseif fullCivs[iPlotOwner] then	--friendship
-							if player:IsFriends(iPlotOwner) then bScurvy = false end
-						elseif cityStates[iPlotOwner] then		--CS ally
-							if Players[iPlotOwner]:GetAlly() == iPlayer then bScurvy = false end
+				--unit type or civ effects
+				local unitDomainTypeID = unit:GetDomainType()
+				if UseUnit[unitTypeID] then							--functions for units that are used up (like caravans, fishing boats, etc)
+					UseUnit[unitTypeID](iPlayer, unit)
+				elseif UseAIUnit[unitTypeID] then	
+					if bAI then		
+						UseAIUnit[unitTypeID](iPlayer, unit)
+					end
+				elseif unitDomainTypeID == DOMAIN_SEA then
+					--scurvy
+					if bNoCitrus then
+						local bScurvy = true
+						if iPlotOwner ~= -1 then
+							if iPlotOwner == iPlayer then
+								bScurvy = false
+							elseif fullCivs[iPlotOwner] then	--friendship
+								if player:IsFriends(iPlotOwner) then bScurvy = false end
+							elseif cityStates[iPlotOwner] then		--CS ally
+								if Players[iPlotOwner]:GetAlly() == iPlayer then bScurvy = false end
+							end	
 						end	
-					end	
-					if bScurvy and Rand(100, "scurvy") < 15 then	--15% chance for damage (but never reduced below 1 hp)
-						unit:GetPlot():AddFloatUpMessage("Damaged by Scurvy!", 2)
-						local currentHP = unit:GetCurrHitPoints()
-						if currentHP < 11 then
-							unit:SetDamage(unit:GetDamage() + currentHP - 1, -1)	--, iPlayer, true?
-						else
-							unit:SetDamage(10, -1)
+						if bScurvy and Rand(100, "scurvy") < 15 then	--15% chance for damage (but never reduced below 1 hp)
+							unit:GetPlot():AddFloatUpMessage("Damaged by Scurvy!", 2)
+							local currentHP = unit:GetCurrHitPoints()
+							if currentHP < 11 then
+								unit:SetDamage(unit:GetDamage() + currentHP - 1, -1)	--, iPlayer, true?
+							else
+								unit:SetDamage(10, -1)
+							end
 						end
 					end
-				end
-				if unitCombatTypeID == UNITCOMBAT_NAVAL then
-					if bRemoveOceanBlock then
-						unit:SetHasPromotion(PROMOTION_OCEAN_IMPASSABLE_UNTIL_ASTRONOMY, false)
-						unit:SetHasPromotion(PROMOTION_OCEAN_IMPASSABLE, false)
+					if unitCombatTypeID == UNITCOMBAT_NAVAL then
+						if bRemoveOceanBlock then
+							unit:SetHasPromotion(PROMOTION_OCEAN_IMPASSABLE_UNTIL_ASTRONOMY, false)
+							unit:SetHasPromotion(PROMOTION_OCEAN_IMPASSABLE, false)
+						end
+					end
+				elseif bHorseMounted[unitTypeID] then
+					if unit:IsHasPromotion(PROMOTION_STALLIONS_OF_EPONA) then
+						gg_counts.stallionsOfEpona = gg_counts.stallionsOfEpona + 1
+					end
+					if bHorseMountedXP then
+						local dice = Rand(5, "hello there!")
+						if dice == 0 then
+							unit:ChangeExperience(1)
+							print("IKKOS applied xp to mounted")
+							eaPlayer.classPoints[5] = eaPlayer.classPoints[5] + 1		--Warrior
+						end
+					end
+					if bHorseMountedStrongMerc and not (bSlave or bMercenary) then
+						unit:SetHasPromotion(PROMOTION_STRONG_MERCENARY_INACTIVE, true)
 					end
 				end
-			elseif bHorseMounted[unitTypeID] then
-				if unit:IsHasPromotion(PROMOTION_STALLIONS_OF_EPONA) then
-					gg_counts.stallionsOfEpona = gg_counts.stallionsOfEpona + 1
-				end
-				if bHorseMountedXP then
-					local dice = Rand(5, "hello there!")
-					if dice == 0 then
-						unit:ChangeExperience(1)
-						print("IKKOS applied xp to mounted")
-						eaPlayer.classPoints[5] = eaPlayer.classPoints[5] + 1		--Warrior
-					end
-				end
-				if bHorseMountedStrongMerc and not (bSlave or bMercenary) then
-					unit:SetHasPromotion(PROMOTION_STRONG_MERCENARY_INACTIVE, true)
-				end
-			end
 
+			end
 		end
 
 

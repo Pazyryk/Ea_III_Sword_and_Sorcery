@@ -27,6 +27,9 @@ local HIGHLIGHT_COLOR = {
   BLACK =	{x=0.0, y=0.0, z=0.0, w=1.0}
 }
 
+--localized tables
+local fullCivs = MapModData.fullCivs
+
 --localized functions
 local GetPlotByIndex =		Map.GetPlotByIndex
 local GetPlotByXY =			Map.GetPlot
@@ -56,6 +59,30 @@ local xpBoostFromManaUse = {}
 for eaCivInfo in GameInfo.EaCivs() do
 	if eaCivInfo.XPBoostFromManaUse ~= 0 then
 		xpBoostFromManaUse[eaCivInfo.ID] = eaCivInfo.XPBoostFromManaUse
+	end
+end
+
+--------------------------------------------------------------
+-- Init
+--------------------------------------------------------------
+
+function EaMagicInit(bNewGame)
+	if not bNewGame then
+		for iPlayer, eaPlayer in pairs(fullCivs) do
+			local player = Players[iPlayer]
+			for unit in player:Units() do
+				local unitTypeID = unit:GetUnitType()
+				if eaSpecialUnit[unitTypeID] then
+					if eaSpecialUnit[unitTypeID] == "Archdemon" then
+						gg_summonedArchdemon[iPlayer] = unitTypeID
+					elseif eaSpecialUnit[unitTypeID] == "Archangel" then
+						gg_calledArchangel[iPlayer] = unitTypeID
+					elseif eaSpecialUnit[unitTypeID] == "MajorSpirit" then
+						gg_calledMajorSpirit[iPlayer] = unitTypeID
+					end
+				end
+			end
+		end
 	end
 end
 

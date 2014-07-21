@@ -21,7 +21,7 @@ local TRAVEL_TURNS_WITHIN_AREA = 4
 --constants
 local EA_ACTION_GO_TO_PLOT =				GameInfoTypes.EA_ACTION_GO_TO_PLOT		-- always = 0
 local EA_ACTION_TAKE_LEADERSHIP =			GameInfoTypes.EA_ACTION_TAKE_LEADERSHIP
-local EA_ACTION_TAKE_RESIDENCE =			GameInfoTypes.EA_ACTION_TAKE_RESIDENCE
+--local EA_ACTION_TAKE_RESIDENCE =			GameInfoTypes.EA_ACTION_TAKE_RESIDENCE
 local EA_ACTION_LAND_TRADE_ROUTE =			GameInfoTypes.EA_ACTION_LAND_TRADE_ROUTE
 local EA_ACTION_SEA_TRADE_ROUTE =			GameInfoTypes.EA_ACTION_SEA_TRADE_ROUTE
 local BUILDING_LIBRARY =					GameInfoTypes.BUILDING_LIBRARY
@@ -617,29 +617,37 @@ AITarget.NearbyStrongWoods = function()
 	end
 end
 
-AITarget.OwnLandUnits = function()
-	print("AddNonCombatOptions testing OwnLandUnits")
+AITarget.OwnTroops = function()
 	for loopUnit in g_player:Units() do
-		local unitDomain = loopUnit:GetDomainType()
-		if unitDomain == DOMAIN_LAND then
-
-		--
-
+		local unitTypeID = loopUnit:GetUnitType()
+		if gg_regularCombatType[unitTypeID] == "troops" then
+			local x, y = loopUnit:GetPlot():GetXY()
+			TestAddOption("Plot", x, y, 0, nil)
 		end
 	end
 end
 
-AITarget.OwnNavalUnits = function()
-	print("AddNonCombatOptions testing OwnLandUnits")
+AITarget.OwnConstructs = function()
 	for loopUnit in g_player:Units() do
-		local unitDomain = loopUnit:GetDomainType()
-		if unitDomain == DOMAIN_SEA then
-
-		--
-
+		local unitTypeID = loopUnit:GetUnitType()
+		if gg_regularCombatType[unitTypeID] == "construct" then
+			local x, y = loopUnit:GetPlot():GetXY()
+			TestAddOption("Plot", x, y, 0, nil)
 		end
 	end
 end
+
+AITarget.OwnShips = function()
+	for loopUnit in g_player:Units() do
+		local unitTypeID = loopUnit:GetUnitType()
+		if gg_regularCombatType[unitTypeID] == "ship" then
+			local x, y = loopUnit:GetPlot():GetXY()
+			TestAddOption("Plot", x, y, 0, nil)
+		end
+	end
+end
+
+
 
 local testedCityList = {}
 --setmetatable(testedCityList, WeakKeyMetatable)

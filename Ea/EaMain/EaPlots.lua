@@ -83,6 +83,7 @@ local playerType =	MapModData.playerType
 local bHidden =		MapModData.bHidden
 local fullCivs =	MapModData.fullCivs
 local realCivs =	MapModData.realCivs
+local gg_init =						gg_init
 local gg_animalSpawnPlots =			gg_animalSpawnPlots
 local gg_animalSpawnInhibitTeams =	gg_animalSpawnInhibitTeams
 local gg_undeadSpawnPlots =			gg_undeadSpawnPlots
@@ -126,7 +127,6 @@ local integers1 = {}
 local integers2 = {}
 local g_plotList = {}
 
-local bInitialized = false
 
 --------------------------------------------------------------
 -- Cached Tables
@@ -472,10 +472,6 @@ function EaPlotsInit(bNewGame)
 	MapModData.totalLivingTerrainStrength = floor(totalLivingTerrainStrength)
 	MapModData.harmonicMeanDenominator = harmonicMeanDenominator
 	--print("Lakes, FishingResources, Whales, CampResources ", lakeCounter, fishingCounter, whaleCounter, campCounter)
-end
-
-function EaPlotsInitialized()	--delay until player in game
-	bInitialized = true
 end
 
 --------------------------------------------------------------
@@ -1324,7 +1320,7 @@ end
 GameEvents.CityCanAcquirePlot.Add(OnCityCanAcquirePlot)
 
 function ListenerSerialEventHexCultureChanged(hexX, hexY, iPlayer, bUnknown)	--fires for all owned plots at game init too
-	if bInitialized and iPlayer ~= -1 then
+	if gg_init.bEnteredGame and iPlayer ~= -1 then
 		--print(string.format("Hex ownership change at hex coordinates: %d, %d for player: %d", hexX, hexY, iPlayer))
 
 		--Use this Events to make sure certain resources are owned by nearby city (if exists) rather than same-civ remote city; timing is not critical

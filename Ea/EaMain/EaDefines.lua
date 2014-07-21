@@ -208,6 +208,8 @@ gg_naturalWonders = {}	--index by featureID; filled in EaPlots Init
 -- Non-preserved globals 
 ----------------------------------------------------------------------------------------------------------------------------
 
+gg_init = {}
+
 --tables indexed 1st by iPlayer
 gg_combatPointDiff = {}
 gg_unitClusters = {}

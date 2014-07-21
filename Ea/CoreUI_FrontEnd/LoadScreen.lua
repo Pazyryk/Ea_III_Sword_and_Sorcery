@@ -20,7 +20,7 @@ local RETURN_MUSIC_VOLUME_THOUSANDTHS_SECONDS = 1000
 
 local bStart = false
 local g_tickStart = 0
-local function LocalMachineAppUpdateListener(tickCount, timeIncrement)
+function LocalMachineAppUpdateListener(tickCount, timeIncrement)
 	if bStart then
 		if RETURN_MUSIC_VOLUME_THOUSANDTHS_SECONDS < tickCount - tickStart then
 			print("LoadScreen.lua is restoring music volume; delay in sec/1000 = ", tickCount - tickStart)
@@ -160,6 +160,7 @@ function OnActivateButtonClicked ()
 		Game.SetPausePlayer(-1);
 	end
 	--Paz add
+	print("Adding LocalMachineAppUpdateListener for sound control")
 	Events.LocalMachineAppUpdate.Add(LocalMachineAppUpdateListener)
 	--end Paz add
 	--UI.SetNextGameState( GameStates.MainGameView, g_iAIPlayer );

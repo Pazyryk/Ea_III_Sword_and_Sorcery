@@ -271,6 +271,7 @@ end
 --------------------------------------------------------------
 
 function DeadPlayer(iPlayer)
+	print("DeadPlayer ", iPlayer)
 	realCivs[iPlayer] = nil
 	fullCivs[iPlayer] = nil
 	cityStates[iPlayer] = nil
@@ -608,7 +609,7 @@ function CheckCapitalBuildings(iPlayer)
 end
 
 function UpdateFaithFromEaCityStatesForUI()
-	if fullCivs(g_iActivePlayer) then
+	if fullCivs[g_iActivePlayer] then
 		MapModData.faithFromCityStates = GetFaithFromEaCityStates(g_iActivePlayer)
 	end
 end

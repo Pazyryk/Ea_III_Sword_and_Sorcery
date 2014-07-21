@@ -12,11 +12,14 @@ local gT = MapModData.gT
 --------------------------------------------------------------
 --Settings
 --------------------------------------------------------------
-local POLICY_MULTIPLIER = 5										--policies as a function of culture generation / population
-local POLICY_ADD = 0											--extra policies you would get with no culture
---local POLICY_DENOMINATOR_ADD = 100 * MapModData.GAME_SPEED		--how quickly we move toward max policies (lower is faster)
+local POLICY_MULTIPLIER = 5												--policies as a function of culture generation / population
+local POLICY_ADD = 4													--extra policies you would get with no culture
 
-local CL_APPROACH_FACTOR = -0.02 / MapModData.GAME_SPEED		-- -0.02 gives CL very close to ApproachCL by turn 200
+local CL_APPROACH_FACTOR = 0.006 / MapModData.GAME_SPEED_MULTIPLIER		--try to approach steady state level by this fraction of the difference each turn
+local CL_TARGET_CHANGE = 0.06 / MapModData.GAME_SPEED_MULTIPLIER		--reduce or increase per turn change toward this level
+local CL_CHANGE_DAMPING_EXPONENT = 1/2									--lower value pushes per turn change toward target change
+
+
 --------------------------------------------------------------
 --File Locals
 --------------------------------------------------------------
@@ -26,21 +29,28 @@ local EA_EPIC_VOLUSPA =		GameInfoTypes.EA_EPIC_VOLUSPA
 --Localized tables and methods
 local Players = Players
 local floor = math.floor
-local exp = math.exp
 
 --aveCulturePerPop should be read as ave(CulturePerPop); so turn with 1 pop counts as much as turn with 100 pop
 
 
-local function ApproachCL(aveCulturePerPop)
+local function SteadyStateCL(aveCulturePerPop)
 	return POLICY_MULTIPLIER * aveCulturePerPop + POLICY_ADD
 end
 
-local function CL(aveCulturePerPop, gameTurn)
-	--return (POLICY_MULTIPLIER * aveCulturePerPop + POLICY_ADD) * gameTurn / (gameTurn + POLICY_DENOMINATOR_ADD)
-	return ApproachCL(aveCulturePerPop) * (1 - exp(CL_APPROACH_FACTOR * gameTurn))
-end
 
--- math.exp(myval) 
+local function GetCLChange(currentCL, steadyStateCL)
+	local diff = steadyStateCL - currentCL
+	local change = CL_APPROACH_FACTOR * diff
+	change = change / CL_TARGET_CHANGE											--normalize to 1
+	if 0 < change then
+		change = (change ^ CL_CHANGE_DAMPING_EXPONENT) * CL_TARGET_CHANGE		--dampen toward 1, then un-normalize
+		change = change < diff and change or diff								--don't overshoot
+	else
+		change = -(-change ^ CL_CHANGE_DAMPING_EXPONENT) * CL_TARGET_CHANGE
+		change = diff < change and change or diff
+	end
+	return change
+end
 
 -- Per turn update (runs each turn after turn 0 from EaPolicies.lua)
 function UpdateCulturalLevel(iPlayer, eaPlayer)
@@ -54,12 +64,15 @@ function UpdateCulturalLevel(iPlayer, eaPlayer)
 	local culturePerPopThisTurn = (cumCulture - cumCultureLastTurn) / population
 	eaPlayer.cumCulture = cumCulture 
 	eaPlayer.aveCulturePerPop = (aveCulturePerPopLastTurn * (gameTurn - 1) + culturePerPopThisTurn) / gameTurn
-	local culturalLevel = CL(eaPlayer.aveCulturePerPop, gameTurn)
 
+	local steadyStateCL = SteadyStateCL(eaPlayer.aveCulturePerPop)
 	--Voluspa
 	if gT.gEpics[EA_EPIC_VOLUSPA] and gT.gEpics[EA_EPIC_VOLUSPA].iPlayer == iPlayer then
-		culturalLevel = culturalLevel + gT.gEpics[EA_EPIC_VOLUSPA].mod / 10
+		steadyStateCL = steadyStateCL + gT.gEpics[EA_EPIC_VOLUSPA].mod / 10
 	end
+
+	local culturalLevel = culturalLevelLastTurn + GetCLChange(culturalLevelLastTurn, steadyStateCL)
+
 	eaPlayer.culturalLevel = culturalLevel
 	eaPlayer.culturalLevelChange = culturalLevel - culturalLevelLastTurn		--used by AI (not UI)
 end
@@ -77,17 +90,20 @@ function UpdateCultureLevelInfoForUI(iActivePlayer)
 	local eaPlayer = gT.gPlayers[iActivePlayer]
 	if not eaPlayer then return end
 	local population = player:GetTotalPopulation()
+	local cultureChange = player:GetTotalJONSCulturePerTurn() + (player:GetJONSCulture() - eaPlayer.cumCulture) + (eaPlayer.cultureManaFromWildlands or 0)
+	local culturePerPopNextTurn = cultureChange / population
+	local aveCulturePerPopNextTurn = (eaPlayer.aveCulturePerPop * gameTurn + culturePerPopNextTurn) / (gameTurn + 1)
+
+	local steadyStateCL = SteadyStateCL(aveCulturePerPopNextTurn)
+	if gT.gEpics[EA_EPIC_VOLUSPA] and gT.gEpics[EA_EPIC_VOLUSPA].iPlayer == iActivePlayer then	--Voluspa
+		steadyStateCL = steadyStateCL + gT.gEpics[EA_EPIC_VOLUSPA].mod / 10
+	end
+
+	local estimatedCLNextTurn = eaPlayer.culturalLevel + GetCLChange(eaPlayer.culturalLevel, steadyStateCL)
 
 	MapModData.cultureLevel = eaPlayer.culturalLevel
 	MapModData.nextCultureLevel = eaPlayer.policyCount + 1
-	MapModData.cultureRate = player:GetTotalJONSCulturePerTurn() + (eaPlayer.cultureManaFromWildlands or 0)
-	local culturePerPopNextTurn = MapModData.cultureRate / population
-	local estNextTurn = CL((eaPlayer.aveCulturePerPop * gameTurn + culturePerPopNextTurn) / (gameTurn + 1), gameTurn + 1)
-	if gT.gEpics[EA_EPIC_VOLUSPA] and gT.gEpics[EA_EPIC_VOLUSPA].iPlayer == iActivePlayer then	--Voluspa
-		estNextTurn = estNextTurn + gT.gEpics[EA_EPIC_VOLUSPA].mod / 10
-	end
-
-	MapModData.estCultureLevelChange = estNextTurn - MapModData.cultureLevel
-	MapModData.approachingCulturalLevel = ApproachCL(eaPlayer.aveCulturePerPop)
-
+	MapModData.cultureRate = cultureChange
+	MapModData.estCultureLevelChange = estimatedCLNextTurn - eaPlayer.culturalLevel
+	MapModData.approachingCulturalLevel = steadyStateCL
 end

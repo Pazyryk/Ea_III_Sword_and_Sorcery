@@ -178,15 +178,16 @@ function OnLoadEaMain()   --Called from the bottom of EaMain after all included 
 	EaAIUnitsInit(bNewGame)
 	EaUnitCombatInit(bNewGame)
 	EaUnitsInit(bNewGame)
+	EaMagicInit(bNewGame)
 	AIMercInit(bNewGame)
 	EaWondersInit(bNewGame)
 	EaActionsInit(bNewGame)
+
+	gg_init.bModInited = true
 end
 
 local function OnEnterGame()   --Runs when Begin or Countinue Your Journey pressed
 	print("Player entering game ...")
-	EaPlotsInitialized()
-	LuaEvents.TopPanelInfoDirty()
 
 	--trim dead players (after file inits in case someone is resurected)
 	for iPlayer in pairs(MapModData.realCivs) do
@@ -194,5 +195,8 @@ local function OnEnterGame()   --Runs when Begin or Countinue Your Journey press
 			DeadPlayer(iPlayer)
 		end
 	end
+
+	gg_init.bEnteredGame = true
+	print("Debug - end of OnEnterGame")
 end
 Events.LoadScreenClose.Add(OnEnterGame)

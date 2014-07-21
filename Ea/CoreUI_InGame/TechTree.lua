@@ -621,7 +621,11 @@ function RefreshDisplay()
 	--end Paz add
 
 	for tech in GameInfo.Technologies() do
-		RefreshDisplayOfSpecificTech( tech );
+		--Paz modified below: RefreshDisplayOfSpecificTech( tech );
+		if not tech.Utility then
+			RefreshDisplayOfSpecificTech( tech )
+		end
+		--end Paz modified
 	end
 	
 	--[[Paz disable: 
@@ -655,9 +659,6 @@ function RefreshDisplay()
 	end
 	]]
 	g_NeedsFullRefresh = false;
-	--Paz add
-	--MapModData.bRequestPlayerScienceUpdate = true
-	--end Paz add
 end
 Events.SerialEventResearchDirty.Add(RefreshDisplay);
 

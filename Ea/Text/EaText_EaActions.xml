@@ -71,6 +71,20 @@
 		<Row Tag="TXT_KEY_EA_ACTION_RALLY_TROOPS">
 			<Text>Rally Troops</Text>
 		</Row>
+		
+		<Row Tag="TXT_KEY_EA_ACTION_SHRUG_OFF_INJURIES">
+			<Text>Shrug Off Injuries</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_RESTORE_TROOPS">
+			<Text>Restore Troops</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_REPAIR_WAR_CONSTRUCTS">
+			<Text>Repair War Constructs</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_REPAIR_SHIPS">
+			<Text>Repair Ships</Text>
+		</Row>
+		
 		<Row Tag="TXT_KEY_EA_ACTION_TRAIN">
 			<Text>Train</Text>
 		</Row>

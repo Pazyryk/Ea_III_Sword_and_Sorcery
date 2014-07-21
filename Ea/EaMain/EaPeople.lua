@@ -240,6 +240,14 @@ end
 -- Interface
 --------------------------------------------------------------
 
+function MissingEaPersonHasUnit(iPerson, unit)
+	if gDeadPeople[iPerson] then
+		print("!!!! ERROR: Found unit:GetPersonIndex() matching dead person; killing unit; iPerson, iUnit = ", iPerson, unit:GetID())
+		unit:Kill(false, -1)
+	else
+		error("unit:GetPersonIndex() did not match any iPerson living or dead: ", iPerson)
+	end
+end
 
 local gpIndexes = {}
 
@@ -263,12 +271,7 @@ function TestResyncGPIndexes()
 					gpIndexes[gpIndexCount] = iPerson
 					local eaPerson = gPeople[iPerson]
 					if not eaPerson then
-						if gDeadPeople[iPerson] then
-							print("!!!! ERROR: Found unit:GetPersonIndex() matching dead person; killing unit; iPerson, iUnit = ", iPerson, iUnit)
-							unit:Kill(false, -1)
-						else
-							error("unit:GetPersonIndex() did not match any iPerson living or dead: ", iPerson)
-						end
+						MissingEaPersonHasUnit(iPerson, unit)
 					elseif eaPerson.iPlayer ~= iPlayer then
 						errorString = errorString .. " eaPerson.iPlayer / unit:Owner() mismatch, = " .. eaPerson.iPlayer .. "/" .. iPlayer .. ";"
 					else

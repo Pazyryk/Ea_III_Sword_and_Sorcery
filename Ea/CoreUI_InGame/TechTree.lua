@@ -623,9 +623,9 @@ function RefreshDisplay()
 
 	for tech in GameInfo.Technologies() do
 		--Paz modified below: RefreshDisplayOfSpecificTech( tech );
-		if not tech.Utility then
+		--if not tech.Utility then
 			RefreshDisplayOfSpecificTech( tech )
-		end
+		--end
 		--end Paz modified
 	end
 	

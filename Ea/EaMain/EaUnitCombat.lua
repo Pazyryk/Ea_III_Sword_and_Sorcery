@@ -50,6 +50,7 @@ local gg_gpTempType =				gg_gpTempType
 local gg_eaSpecial =				gg_eaSpecial
 local gg_sequencedAttacks =			gg_sequencedAttacks
 local gg_regularCombatType =		gg_regularCombatType
+local gg_eaSpecial =				gg_eaSpecial
 
 --localized functions
 local HandleError =					HandleError
@@ -83,13 +84,9 @@ for promoInfo in GameInfo.UnitPromotions() do
 end
 
 local dummyUnit = {}
-local eaSpecialUnit = {}
 for unitInfo in GameInfo.Units() do
 	if string.find(unitInfo.Type, "UNIT_DUMMY_") == 1 then
 		dummyUnit[unitInfo.ID] = true
-	end
-	if unitInfo.EaSpecial then
-		eaSpecialUnit[unitInfo.ID] = unitInfo.EaSpecial
 	end
 end
 
@@ -636,16 +633,16 @@ local function OnCanSaveUnit(iPlayer, iUnit, bDelay)	--fires for combat and non-
 				end
 			end
 			local unitTypeID = unit:GetUnitType()
-			if eaSpecialUnit[unitTypeID] then
-				if eaSpecialUnit[unitTypeID] == "Archdemon" then
+			if gg_eaSpecial[unitTypeID] then
+				if gg_eaSpecial[unitTypeID] == "Archdemon" then
 					if gg_summonedArchdemon[iPlayer] == unitTypeID then
 						gg_summonedArchdemon[iPlayer] = nil			--opens it up so they can summon another
 					end
-				elseif eaSpecialUnit[unitTypeID] == "Archangel" then
+				elseif gg_eaSpecial[unitTypeID] == "Archangel" then
 					if gg_calledArchangel[iPlayer] == unitTypeID then
 						gg_calledArchangel[iPlayer] = nil
 					end
-				elseif eaSpecialUnit[unitTypeID] == "MajorSpirit" then
+				elseif gg_eaSpecial[unitTypeID] == "MajorSpirit" then
 					if gg_calledMajorSpirit[iPlayer] == unitTypeID then
 						gg_calledMajorSpirit[iPlayer] = nil
 					end

@@ -284,8 +284,14 @@ function TableLoad(masterTable, DBTablePrefix)
 					value = currentTable[key] or {}
 				else
 					value = tonumber(valueString)	--numbers have no prefix byte
-					if not value then	
-						error("TableSaverLoader did not understand valueString from DB; row = " .. row.ID .. "; valueString = " .. tostring(valueString))
+					if not value then
+						if valueString == "1.#INF" then
+							value = 1/0
+						elseif valueString == "-1.#INF" then
+							value = -1/0
+						else
+							error("TableSaverLoader did not understand valueString from DB; row = " .. row.ID .. "; valueString = " .. tostring(valueString))
+						end
 					end
 				end
 				currentTable[key] = value

@@ -54,8 +54,13 @@ end
 
 -- Per turn update (runs each turn after turn 0 from EaPolicies.lua)
 function UpdateCulturalLevel(iPlayer, eaPlayer)
-	local gameTurn = Game.GetGameTurn()
 	local player = Players[iPlayer]
+	if not player:IsFoundedFirstCity() then return end
+	local gameTurn = Game.GetGameTurn()
+	if eaPlayer.cumCulture == 0 and 1 < gameTurn then	--player didn't settle on first turn; make sure they don't take a culture hit for that 
+		eaPlayer.aveCulturePerPop = 2	--what a player gets from newly founded capital
+	end
+
 	local population = player:GetTotalPopulation()
 	local aveCulturePerPopLastTurn = eaPlayer.aveCulturePerPop
 	local cumCultureLastTurn = eaPlayer.cumCulture
@@ -79,14 +84,15 @@ end
 
 -- UI for active player
 MapModData.cultureLevel = 0
-MapModData.nextCultureLevel = 0
+MapModData.nextCultureLevel = 1
 MapModData.estCultureLevelChange = 0
 MapModData.approachingCulturalLevel = 0
 MapModData.cultureRate = 0
 
 function UpdateCultureLevelInfoForUI(iActivePlayer)
-	local gameTurn = Game.GetGameTurn()
 	local player = Players[iActivePlayer]
+	if not player:IsFoundedFirstCity() then return end
+	local gameTurn = Game.GetGameTurn()
 	local eaPlayer = gT.gPlayers[iActivePlayer]
 	if not eaPlayer then return end
 	local population = player:GetTotalPopulation()

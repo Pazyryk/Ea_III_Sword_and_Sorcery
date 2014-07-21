@@ -42,6 +42,8 @@ local ToHexFromGrid =		ToHexFromGrid
 local HandleError21 =		HandleError21
 local HandleError31 =		HandleError31
 
+local gg_eaSpecial =		gg_eaSpecial
+
 --file functions
 local OnPlotEffect = {}
 
@@ -72,12 +74,12 @@ function EaMagicInit(bNewGame)
 			local player = Players[iPlayer]
 			for unit in player:Units() do
 				local unitTypeID = unit:GetUnitType()
-				if eaSpecialUnit[unitTypeID] then
-					if eaSpecialUnit[unitTypeID] == "Archdemon" then
+				if gg_eaSpecial[unitTypeID] then
+					if gg_eaSpecial[unitTypeID] == "Archdemon" then
 						gg_summonedArchdemon[iPlayer] = unitTypeID
-					elseif eaSpecialUnit[unitTypeID] == "Archangel" then
+					elseif gg_eaSpecial[unitTypeID] == "Archangel" then
 						gg_calledArchangel[iPlayer] = unitTypeID
-					elseif eaSpecialUnit[unitTypeID] == "MajorSpirit" then
+					elseif gg_eaSpecial[unitTypeID] == "MajorSpirit" then
 						gg_calledMajorSpirit[iPlayer] = unitTypeID
 					end
 				end

@@ -59,12 +59,13 @@ end
 function GatherInfoAboutUniqueStuff( civType )
 	
 	--Paz add
-	local civRaceType = ""
+	local civRaceType = "EARACE_MAN"
 	if gT.gPlayers then
 		local eaPlayer = gT.gPlayers[g_iActivePlayer]
-		if not eaPlayer then return end
-		local civRace = eaPlayer.race
-		civRaceType = GameInfo.EaRaces[civRace].Type
+		if eaPlayer then
+			local civRace = eaPlayer.race
+			civRaceType = GameInfo.EaRaces[civRace].Type
+		end
 	end
 	--end Paz add
 

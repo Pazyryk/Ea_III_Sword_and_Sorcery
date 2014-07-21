@@ -237,75 +237,77 @@ LuaEvents.EaTechsResetTechCostMods.Add(ResetTechCostMods)
 
 local function GetCostHelpForTech(iPlayer, techID)
 	local str = ""
+	if fullCivs[iPlayer] then	--allows tech tree view in autoplay
 
-	--Favored Techs
-	if g_playerFavoredTechMods[iPlayer][techID] then
-		str = str .. "[NEWLINE][ICON_BULLET]Favored Tech: [COLOR_POSITIVE_TEXT]" .. g_playerFavoredTechMods[iPlayer][techID] .. "%[ENDCOLOR]"
-	end
+		--Favored Techs
+		if g_playerFavoredTechMods[iPlayer][techID] then
+			str = str .. "[NEWLINE][ICON_BULLET]Favored Tech: [COLOR_POSITIVE_TEXT]" .. g_playerFavoredTechMods[iPlayer][techID] .. "%[ENDCOLOR]"
+		end
 
-	--Tomes (complicated here to separate out Tome of Tomes)
-	local tomeMods = g_playerTomeMods[iPlayer]
-	if tomeMods[techID] and tomeMods[techID] ~= 0 then
-		local tomeOfTomesStr = ""
-		local tomeOfTomesMod = (gArtifacts[EA_ARTIFACT_TOME_OF_TOMES] and gArtifacts[EA_ARTIFACT_TOME_OF_TOMES].iPlayer == iPlayer) and gArtifacts[EA_ARTIFACT_TOME_OF_TOMES].mod or 0
-		for artifactID, artifact in pairs(gArtifacts) do
-			if tomeTechs[artifactID] then
-				local tomeMod = artifact.iPlayer == iPlayer and artifact.mod or 0
-				if tomeMod ~= 0 or tomeOfTomesMod ~= 0 then
-					for testTechID, costChange in pairs(tomeTechs[artifactID]) do
-						if testTechID == techID then
-							if tomeMod ~= 0 then
-								local costModFromTome = floor(costChange * tomeMod + 0.5)
-								local tomeName = Locale.Lookup(GameInfo.EaArtifacts[artifactID].Description)
-								str = str .. "[NEWLINE][ICON_BULLET]" .. tomeName .. ": [COLOR_POSITIVE_TEXT]" .. costModFromTome .. "%[ENDCOLOR]"
+		--Tomes (complicated here to separate out Tome of Tomes)
+		local tomeMods = g_playerTomeMods[iPlayer]
+		if tomeMods[techID] and tomeMods[techID] ~= 0 then
+			local tomeOfTomesStr = ""
+			local tomeOfTomesMod = (gArtifacts[EA_ARTIFACT_TOME_OF_TOMES] and gArtifacts[EA_ARTIFACT_TOME_OF_TOMES].iPlayer == iPlayer) and gArtifacts[EA_ARTIFACT_TOME_OF_TOMES].mod or 0
+			for artifactID, artifact in pairs(gArtifacts) do
+				if tomeTechs[artifactID] then
+					local tomeMod = artifact.iPlayer == iPlayer and artifact.mod or 0
+					if tomeMod ~= 0 or tomeOfTomesMod ~= 0 then
+						for testTechID, costChange in pairs(tomeTechs[artifactID]) do
+							if testTechID == techID then
+								if tomeMod ~= 0 then
+									local costModFromTome = floor(costChange * tomeMod + 0.5)
+									local tomeName = Locale.Lookup(GameInfo.EaArtifacts[artifactID].Description)
+									str = str .. "[NEWLINE][ICON_BULLET]" .. tomeName .. ": [COLOR_POSITIVE_TEXT]" .. costModFromTome .. "%[ENDCOLOR]"
+								end
+								if tomeOfTomesMod ~= 0 then
+									local costModFromTomeOfTomes = floor(costChange * (tomeOfTomesMod * 0.2) + 0.5)
+									local tomeOfTomesName = Locale.Lookup(GameInfo.EaArtifacts[EA_ARTIFACT_TOME_OF_TOMES].Description)
+									local tomeName = Locale.Lookup(GameInfo.EaArtifacts[artifactID].Description)
+									tomeOfTomesStr = tomeOfTomesStr .. "[NEWLINE][ICON_BULLET]" .. tomeOfTomesName .. " (" .. tomeName .. "): [COLOR_POSITIVE_TEXT]" .. costModFromTomeOfTomes .. "%[ENDCOLOR]"
+								end
+								break
 							end
-							if tomeOfTomesMod ~= 0 then
-								local costModFromTomeOfTomes = floor(costChange * (tomeOfTomesMod * 0.2) + 0.5)
-								local tomeOfTomesName = Locale.Lookup(GameInfo.EaArtifacts[EA_ARTIFACT_TOME_OF_TOMES].Description)
-								local tomeName = Locale.Lookup(GameInfo.EaArtifacts[artifactID].Description)
-								tomeOfTomesStr = tomeOfTomesStr .. "[NEWLINE][ICON_BULLET]" .. tomeOfTomesName .. " (" .. tomeName .. "): [COLOR_POSITIVE_TEXT]" .. costModFromTomeOfTomes .. "%[ENDCOLOR]"
-							end
-							break
 						end
 					end
 				end
 			end
+			str = str .. tomeOfTomesStr
 		end
-		str = str .. tomeOfTomesStr
-	end
 
-	--Arcane bonuses
-	if arcaneTechs[techID] then
-		local player = Players[iPlayer]
-		local eaPlayer = gPlayers[iPlayer]
-		if player:HasPolicy(GameInfoTypes.POLICY_ARCANE_LORE) then
-			str = str .. "[NEWLINE][ICON_BULLET]Arcane Lore: [COLOR_POSITIVE_TEXT]" .. -10 .. "%[ENDCOLOR]"
-		end
-		if player:HasPolicy(GameInfoTypes.POLICY_ARCANE_RESEARCH) then
-			str = str .. "[NEWLINE][ICON_BULLET]Arcane Research: [COLOR_POSITIVE_TEXT]" .. -20 .. "%[ENDCOLOR]"
-		end
-		if eaPlayer.eaCivNameID == GameInfoTypes.EACIV_LEMURIA then
-			str = str .. "[NEWLINE][ICON_BULLET]Arcane Tech (Lemuria): [COLOR_POSITIVE_TEXT]" .. -20 .. "%[ENDCOLOR]"
-		end
+		--Arcane bonuses
+		if arcaneTechs[techID] then
+			local player = Players[iPlayer]
+			local eaPlayer = gPlayers[iPlayer]
+			if player:HasPolicy(GameInfoTypes.POLICY_ARCANE_LORE) then
+				str = str .. "[NEWLINE][ICON_BULLET]Arcane Lore: [COLOR_POSITIVE_TEXT]" .. -10 .. "%[ENDCOLOR]"
+			end
+			if player:HasPolicy(GameInfoTypes.POLICY_ARCANE_RESEARCH) then
+				str = str .. "[NEWLINE][ICON_BULLET]Arcane Research: [COLOR_POSITIVE_TEXT]" .. -20 .. "%[ENDCOLOR]"
+			end
+			if eaPlayer.eaCivNameID == GameInfoTypes.EACIV_LEMURIA then
+				str = str .. "[NEWLINE][ICON_BULLET]Arcane Tech (Lemuria): [COLOR_POSITIVE_TEXT]" .. -20 .. "%[ENDCOLOR]"
+			end
 	
-	--Epic non-arcane bonus
-	elseif gEpics[EA_EPIC_VAFTHRUTHNISMAL] and gEpics[EA_EPIC_VAFTHRUTHNISMAL].iPlayer == iPlayer then
-		local epicName = Locale.Lookup(GameInfo.EaEpics[EA_EPIC_VAFTHRUTHNISMAL].Description)
-		local costMod = - gEpics[EA_EPIC_VAFTHRUTHNISMAL].mod
-		str = str .. "[NEWLINE][ICON_BULLET]" .. epicName .. ": [COLOR_POSITIVE_TEXT]" .. costMod .. "%[ENDCOLOR]"
-	end
+		--Epic non-arcane bonus
+		elseif gEpics[EA_EPIC_VAFTHRUTHNISMAL] and gEpics[EA_EPIC_VAFTHRUTHNISMAL].iPlayer == iPlayer then
+			local epicName = Locale.Lookup(GameInfo.EaEpics[EA_EPIC_VAFTHRUTHNISMAL].Description)
+			local costMod = - gEpics[EA_EPIC_VAFTHRUTHNISMAL].mod
+			str = str .. "[NEWLINE][ICON_BULLET]" .. epicName .. ": [COLOR_POSITIVE_TEXT]" .. costMod .. "%[ENDCOLOR]"
+		end
 
-	--Great Library
-	if gWonders[EA_WONDER_GREAT_LIBRARY] and gWonders[EA_WONDER_GREAT_LIBRARY].iPlayer == iPlayer then
-		local wonderName = Locale.Lookup(GameInfo.EaWonders[EA_WONDER_GREAT_LIBRARY].Description)
-		local costMod = -gWonders[EA_WONDER_GREAT_LIBRARY].mod
-		str = str .. "[NEWLINE][ICON_BULLET]" .. wonderName .. ": [COLOR_POSITIVE_TEXT]" .. costMod .. "%[ENDCOLOR]"
-	end
+		--Great Library
+		if gWonders[EA_WONDER_GREAT_LIBRARY] and gWonders[EA_WONDER_GREAT_LIBRARY].iPlayer == iPlayer then
+			local wonderName = Locale.Lookup(GameInfo.EaWonders[EA_WONDER_GREAT_LIBRARY].Description)
+			local costMod = -gWonders[EA_WONDER_GREAT_LIBRARY].mod
+			str = str .. "[NEWLINE][ICON_BULLET]" .. wonderName .. ": [COLOR_POSITIVE_TEXT]" .. costMod .. "%[ENDCOLOR]"
+		end
 
-	--Total tech cost mod
-	local totalTechCostMod = OnPlayerTechCostMod(iPlayer, techID)
-	local colorCode = 0 < totalTechCostMod and "[COLOR_NEGATIVE_TEXT]" or "[COLOR_POSITIVE_TEXT]"
-	str = str .. "[NEWLINE][ICON_BULLET]Total cost modifier including KM: " .. colorCode .. totalTechCostMod .. "%[ENDCOLOR]"
+		--Total tech cost mod
+		local totalTechCostMod = OnPlayerTechCostMod(iPlayer, techID)
+		local colorCode = 0 < totalTechCostMod and "[COLOR_NEGATIVE_TEXT]" or "[COLOR_POSITIVE_TEXT]"
+		str = str .. "[NEWLINE][ICON_BULLET]Total cost modifier including KM: " .. colorCode .. totalTechCostMod .. "%[ENDCOLOR]"
+	end
 
 	MapModData.costHelpForTech = str
 end

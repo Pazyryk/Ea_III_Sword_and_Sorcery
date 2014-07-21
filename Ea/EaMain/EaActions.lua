@@ -2170,7 +2170,7 @@ SetAIValues[GameInfoTypes.EA_ACTION_LEAD_CHARGE] = function()
 	elseif g_eaPlayer.race == EARACE_HELDEOFOL then
 		raceMultiplier = 2
 	end
-	gg_aiOptionValues.i = raceMultiplier * (g_mod * g_int3 * g_int4 * g_int5 / 10000 + g_int2)	
+	gg_aiOptionValues.i = raceMultiplier * (g_mod * g_int3 * g_int4 * g_int5 * g_int2 / 10000000)	
 end
 
 Do[GameInfoTypes.EA_ACTION_LEAD_CHARGE] = function()
@@ -2250,7 +2250,7 @@ end
 
 --EA_ACTION_SHRUG_OFF_INJURIES
 Test[GameInfoTypes.EA_ACTION_SHRUG_OFF_INJURIES] = function()		--gain additional effect of healing if not moved yet
-	if not g_bAIControl then return false end
+
 	g_int1 = g_unit:GetDamage()
 	if 0 < g_int1 then
 		g_int2 = FRIENDLY_HEAL_RATE + g_unit:GetExtraFriendlyHeal()
@@ -2339,7 +2339,7 @@ SetUI[GameInfoTypes.EA_ACTION_RESTORE_TROOPS] = function()
 end
 
 SetAIValues[GameInfoTypes.EA_ACTION_RESTORE_TROOPS] = function()
-	gg_aiOptionValues.i = g_int3 * g_obj1:GetPower() * g_int1 / 2000			
+	gg_aiOptionValues.i = g_int3 * g_obj1:GetPower() * g_int1 / 500			
 end
 
 Do[GameInfoTypes.EA_ACTION_RESTORE_TROOPS] = function()
@@ -2454,43 +2454,7 @@ SetUI[GameInfoTypes.EA_ACTION_TRAIN] = function()
 end
 
 SetAIValues[GameInfoTypes.EA_ACTION_TRAIN] = function()
-	gg_aiOptionValues.i = g_mod * g_obj1:GetPower()			
-end
-
-Do[GameInfoTypes.EA_ACTION_TRAIN] = function()
-	local xp = floor(g_mod / 2)	--give to unit and GP
-	g_obj1:ChangeExperience(xp)
-	g_unit:ChangeExperience(xp)
-	return true
-end
---EA_ACTION_TRAIN
-TestTarget[GameInfoTypes.EA_ACTION_TRAIN] = function()
-	--Must be combat unit at plot
-	local unitCount = g_plot:GetNumUnits()
-	for i = 0, unitCount - 1 do
-		local unit = g_plot:GetUnit(i)
-		if unit:GetOwner() == g_iPlayer and unit:GetDamage() == 0 then
-			local unitTypeID = unit:GetUnitType()
-			if gg_regularCombatType[unitTypeID] == "troops" then
-				g_obj1 = unit
-				g_int1 = unitTypeID
-				return true
-			end
-		end
-	end
-	return false
-end
-
-SetUI[GameInfoTypes.EA_ACTION_TRAIN] = function()
-	if g_bAllTestsPassed then
-		local unitText = Locale.ConvertTextKey(GameInfo.Units[g_int1].Description)
-		local xp = floor(g_mod / 2)
-		MapModData.text = "Provide " .. unitText .. " with " .. xp .. " experience per turn"
-	end
-end
-
-SetAIValues[GameInfoTypes.EA_ACTION_TRAIN] = function()
-	gg_aiOptionValues.i = g_mod * g_obj1:GetPower()			
+	gg_aiOptionValues.i = g_mod * g_obj1:GetPower() / 100
 end
 
 Do[GameInfoTypes.EA_ACTION_TRAIN] = function()

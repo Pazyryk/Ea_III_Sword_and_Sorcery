@@ -618,6 +618,7 @@ function RefreshDisplay()
 
 	--Paz add
 	LuaEvents.EaTechsResetTechCostMods(Game.GetActivePlayer())
+	print("after EaTechsResetTechCostMods from RefreshDisplay")
 	--end Paz add
 
 	for tech in GameInfo.Technologies() do

@@ -97,6 +97,7 @@ function OnDisplay(popupInfo)
 
 	--Paz add
 	LuaEvents.EaTechsResetTechCostMods(Game.GetActivePlayer())
+	print("after EaTechsResetTechCostMods from OnDisplay")
 	--end Paz add
   	
 	OnTechPanelUpdated();

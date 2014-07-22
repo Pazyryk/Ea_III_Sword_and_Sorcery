@@ -154,7 +154,7 @@ function OnInitScreen()
 end      
 
 function OnActivateButtonClicked ()
-	--print("Activate button clicked!");
+	print("Activate button clicked!");		--Paz re-enabled for debugging
 	Events.LoadScreenClose();
 	if (not PreGame.IsMultiplayerGame() and not PreGame.IsHotSeatGame()) then
 		Game.SetPausePlayer(-1);
@@ -190,6 +190,10 @@ function HideBackgrounds ()
 end
 
 function OnSequenceGameInitComplete ()
+
+	--Paz debug
+	print("OnSequenceGameInitComplete")
+	--end Paz debug
 	
 	g_bLoadComplete = true;	
 	
@@ -209,6 +213,7 @@ function OnSequenceGameInitComplete ()
 		HideBackgrounds();
         UIManager:SetUICursor( 0 );	
         
+		--[[Paz disabled
         -- Update Icons to now have tooltips.
         local civIndex = PreGame.GetCivilization( Game:GetActivePlayer() );
         local civ = GameInfo.Civilizations[civIndex];
@@ -222,6 +227,7 @@ function OnSequenceGameInitComplete ()
 			 -- Sets Bonus Icons
 			local bonusText = PopulateUniqueBonuses( Controls, civ, leader, true, false);
 		end
+		]]
 	end
 end
 

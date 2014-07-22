@@ -129,6 +129,7 @@ function GetHelpTextForBuilding(iBuildingID, bExcludeName, bExcludeHeader, bNoMa
 	local number = 1
 	if pCity then
 		number = pCity:GetNumBuilding(iBuildingID)
+		number = number < 1 and 1 or number
 	end
 	--end Paz add
 

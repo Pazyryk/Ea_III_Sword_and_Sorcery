@@ -447,7 +447,7 @@
 			<Text>Merchant Navy</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_MERCHANT_NAVY_HELP">
-			<Text>[COLOR_POSITIVE_TEXT]Merchant Navy[ENDCOLOR][NEWLINE][ICON_BULLET]+1 [ICON_MOVES] Movement at sea[NEWLINE][ICON_BULLET]+15% [ICON_GOLD] Gold from Ports[NEWLINE][ICON_BULLET]+1 [ICON_GOLD] Gold from all coastal buildings (Harbor, Port, Shipyard, etc.)</Text>
+			<Text>[COLOR_POSITIVE_TEXT]Merchant Navy[ENDCOLOR][NEWLINE][ICON_BULLET]+1 [ICON_MOVES] Movement at sea[NEWLINE][ICON_BULLET]+1 [ICON_GOLD] Gold from all coastal buildings: Harbor, Lighthouse, Shipyard, Port & Whalery[NEWLINE][ICON_BULLET]Harbor and Port provide an additional +1 [ICON_GOLD] Gold from each owned sea resource[NEWLINE][ICON_BULLET]Whalery provides an additional +1 [ICON_GOLD] Gold from each owned Whaling Boats</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_MERCHANT_NAVY_TEXT">
 			<Text>placeholder</Text>

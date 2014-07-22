@@ -18,7 +18,7 @@ end
 ENABLE_PRINT = true
 DEBUG_PRINT = false
 MapModData.DEBUG_PRINT = DEBUG_PRINT
-MapModData.bDebugShowHiddenBuildings = true
+MapModData.bDebugShowHiddenBuildings = false
 
 MapModData.bDisableEnabledPolicies = true
 

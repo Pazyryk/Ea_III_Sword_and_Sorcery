@@ -791,6 +791,7 @@ UseUnit[GameInfoTypes.UNIT_HUNTERS] = function(iPlayer, unit)
 				end
 			end
 		end
+		if plotToImprove then break end
 	end
 	if plotToImprove then
 		plotToImprove:SetImprovementType(IMPROVEMENT_CAMP)
@@ -817,7 +818,7 @@ UseUnit[GameInfoTypes.UNIT_FISHING_BOATS] = function(iPlayer, unit)
 	for radius = 1, range do
 		for testPlot in PlotRingIterator(plot, radius, sector, false) do
 			local iTestPlot = testPlot:GetPlotIndex()
-			if gg_remoteImprovePlot[iTestPlot] == "Lake" or (bCoastal and gg_remoteImprovePlot[iTestPlot] == "FishingRes") then
+			if (bCoastal and gg_remoteImprovePlot[iTestPlot] == "FishingRes") or (radius < 4 and gg_remoteImprovePlot[iTestPlot] == "Lake") then
 				local iOwner = testPlot:GetOwner()
 				if iOwner == -1 then
 					testPlot:SetOwner(iPlayer, city:GetID())
@@ -843,6 +844,7 @@ UseUnit[GameInfoTypes.UNIT_FISHING_BOATS] = function(iPlayer, unit)
 				end
 			end
 		end
+		if plotToImprove then break end
 	end
 	if plotToImprove then
 		plotToImprove:SetImprovementType(IMPROVEMENT_FISHING_BOATS)
@@ -893,6 +895,7 @@ UseUnit[GameInfoTypes.UNIT_WHALING_BOATS] = function(iPlayer, unit)
 				end
 			end
 		end
+		if plotToImprove then break end
 	end
 	if plotToImprove then
 		plotToImprove:SetImprovementType(IMPROVEMENT_WHALING_BOATS)

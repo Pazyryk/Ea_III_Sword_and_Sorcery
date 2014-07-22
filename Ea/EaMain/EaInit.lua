@@ -184,6 +184,10 @@ function OnLoadEaMain()   --Called from the bottom of EaMain after all included 
 	EaActionsInit(bNewGame)
 
 	gg_init.bModInited = true
+
+	TableSave(gT, "Ea")		--first run is hardest with DB disk lag, so do it now rather than at first autosave (which can hang the game)
+
+	--This is the last thing to run at file load. Next to run is the function below when player enters the game.
 end
 
 local function OnEnterGame()   --Runs when Begin or Countinue Your Journey pressed
@@ -198,5 +202,7 @@ local function OnEnterGame()   --Runs when Begin or Countinue Your Journey press
 
 	gg_init.bEnteredGame = true
 	print("Debug - end of OnEnterGame")
+
+	--There is a game.exe autosave right after this
 end
 Events.LoadScreenClose.Add(OnEnterGame)

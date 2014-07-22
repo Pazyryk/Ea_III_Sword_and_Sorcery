@@ -54,8 +54,14 @@
 		<Row Tag="TXT_KEY_EA_BUILDING_MAGE_SCHOOL">
 			<Text>Mage School</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_MAGE_SCHOOL_SCHOOL">
+			<Text>Increases the likelihood that a Thaumaturge will appear.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_PHARMAKEIA">
 			<Text>Pharmakeia</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_PHARMAKEIA_SCHOOL">
+			<Text>Increases the likelihood that a Thaumaturge will appear.</Text>
 		</Row>
 		
 		<Row Tag="TXT_KEY_EA_BUILDING_SMOKEHOUSE">
@@ -80,7 +86,7 @@
 			<Text>Granary</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_GRANARY_HELP">
-			<Text>10% of [ICON_FOOD] Food is carried over after growth.[NEWLINE]+2 [ICON_FOOD] Food from Wheat worked by this city.</Text>
+			<Text>10% of [ICON_FOOD] Food is carried over after growth.[NEWLINE]+1 [ICON_FOOD] Food from Wheat worked by this city.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_SALTWORKS">
 			<Text>Saltworks</Text>
@@ -105,7 +111,7 @@
 			<Text>Hunting Lodge</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_HUNTING_LODGE_HELP">
-			<Text>+1 [ICON_FOOD] Food and +1 [ICON_GOLD] Gold from [ICON_RES_DEER] Deer, [ICON_RES_TRUFFLES] Boars, [ICON_RES_FUR] Small Game and [ICON_RES_IVORY] Elephants worked by this city.[NEWLINE][NEWLINE]Each camp-improved resource owned by this city that is remote (>3 plots from city) provides +1 Food [ICON_FOOD] and +1 [ICON_GOLD] Gold through this building.</Text>
+			<Text>Provides an additional +1 [ICON_FOOD] Food and +1 [ICON_GOLD] Gold for each Camp improvement owned by this city at any distance (yield added via this building, not plot)[NEWLINE][NEWLINE]City must own one Camp improvement to build.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_ABATTOIR">
 			<Text>Abattoir</Text>
@@ -124,13 +130,13 @@
 			<Text>Harbor</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_HARBOR_HELP">
-			<Text>Allows the city to form [ICON_CONNECTED] Trade Routes across water.[NEWLINE]+1 [ICON_FOOD] Food from [ICON_RES_FISH] Fish, [ICON_RES_CRAB] Crabs, [ICON_RES_PEARLS] Oysters and [ICON_RES_WHALE] Whales worked by this city.[NEWLINE][NEWLINE]Each sea resource owned by this city that is remote (>3 plots from city) provides +1 Food [ICON_FOOD] through this building.[NEWLINE][NEWLINE]City must be coastal.</Text>
+			<Text>Provides an additional +1 [ICON_FOOD] Food and +1 [ICON_GOLD] Gold for every improved sea resource owned by this city at any distance (yield added via this building, not plot)[NEWLINE][NEWLINE]Allows the city to form [ICON_CONNECTED] Trade Routes across water.[NEWLINE][NEWLINE]City must be coastal to build.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_TIMBERYARD">
 			<Text>Timberyard</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_TIMBERYARD_HELP">
-			<Text>+1 Timber[NEWLINE]+1 Timber per 2 Sawmills (non-Pantheistic civs) or +1 Timber per 8 unimproved forest or jungle (Pantheistic civs). Forestry tech doubles amount from sawmills or unimproved forests/jungles.</Text>
+			<Text>Provides 1 additional Timber for every 2 sawmills (non-Pantheistic civilizations) or 1 Timber for every 8 unimproved forest or jungle (Pantheistic civilizations)[NEWLINE][NEWLINE]Forestry tech doubles Timber from sawmills or unimproved forests/jungles[NEWLINE][NEWLINE]Requires Sailing, Archery or Mathematics and an owned Forest or Jungle in city radius to build.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_COTTON_GIN">
 			<Text>Cotton Gin</Text>
@@ -347,12 +353,7 @@
 		<Row Tag="TXT_KEY_EA_BUILDING_MONASTERY_HELP">
 			<Text>+1 [ICON_CULTURE] from Wine and Incense resources worked by this city. Increases the likelihood that a Devout will appear.</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_PORT">
-			<Text>Port</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_PORT_HELP">
-			<Text>+1 [ICON_FOOD] Food and +1 [ICON_GOLD] Gold from each [ICON_RES_FISH] Fish, [ICON_RES_CRAB] Crabs, [ICON_RES_PEARLS] Oysters and [ICON_RES_WHALE] Whales worked by this city.[NEWLINE][NEWLINE]Each sea resource owned by this city that is remote (>3 plots from city) provides +1 Food [ICON_FOOD] and +1 [ICON_GOLD] Gold through this building.[NEWLINE][NEWLINE]City must be coastal and have a Harbor.[NEWLINE][NEWLINE]+15% [ICON_GOLD] Gold with the [COLOR_POSITIVE_TEXT]Merchant Navy[ENDCOLOR] Social Policy.</Text>
-		</Row>
+
 		<Row Tag="TXT_KEY_EA_BUILDING_MUSEUM">
 			<Text>Museum</Text>
 		</Row>
@@ -384,13 +385,20 @@
 			<Text>Distillery</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_DISTILLERY_HELP">
-			<Text>+1 [ICON_CULTURE] Culture and +1 Spirits resources from Sugar resources worked by this city.[NEWLINE][NEWLINE]City must have an improved source of Yew nearby.</Text>
+			<Text>+1 [ICON_CULTURE] Culture and +1 Spirits resources from Sugar resources worked by this city.[NEWLINE][NEWLINE]City must have an improved source of Yew nearby to build.</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_PORT">
+			<Text>Port</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_PORT_HELP">
+			<Text>Provides an additional +1 [ICON_FOOD] Food and +1 [ICON_GOLD] Gold for every improved sea resource owned by this city at any distance (yield added via this building, not plot)[NEWLINE][NEWLINE]City must own one improved sea resource to build[NEWLINE][NEWLINE]City must be coastal and own a Harbor to build</Text>
+		</Row>
+		
 		<Row Tag="TXT_KEY_EA_BUILDING_WHALERY">
 			<Text>Whalery</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_WHALERY_HELP">
-			<Text>+1 [ICON_FOOD] Food and +1 [ICON_PRODUCTION] Production from [ICON_RES_WHALE] Whales worked by this city.[NEWLINE][NEWLINE]Each Whale owned by this city that is remote (>3 plots from city) provides +1 Food [ICON_FOOD] and +1 [ICON_PRODUCTION] Production through this building.[NEWLINE][NEWLINE]City must be coastal and have a Harbor.</Text>
+			<Text>Provides an additional +1 [ICON_PRODUCTION] Production and +1 [ICON_GOLD] Gold for every Whaling Boats improvement owned by this city at any distance (yield added via this building, not plot)[NEWLINE][NEWLINE]City must own one Whaling Boats improvement to build[NEWLINE][NEWLINE]City must be coastal and own a Harbor to build</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_ARMORY">
 			<Text>Armory</Text>
@@ -536,7 +544,7 @@
 			<Text>Floating Gardens</Text>
 		</Row>
 		<Row Tag="BUILDING_FLOATING_GARDENS_HELP">
-			<Text>+1 [ICON_FOOD] Food[NEWLINE] +1 [ICON_FOOD] Food per improved Lake owned by this city (added via this building, not plot)[NEWLINE]City must have Cult of Abzu as majority religion and own one improved Lake to build.</Text>
+			<Text>Provides an additional +1 [ICON_FOOD] Food[NEWLINE] for every improved Lake owned by this city (added via this building, not plot)[NEWLINE]City must have Cult of Abzu as majority religion and own one improved Lake to build.</Text>
 		</Row>
 		
 		<Row Tag="TXT_KEY_EA_BUILDING_FOUNDRY">

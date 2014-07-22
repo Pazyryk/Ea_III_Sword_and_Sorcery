@@ -285,10 +285,10 @@
 			<Text>The Sum of All Mana has been depleted to 66%. Blight begins to spread from already blighted plots, and breach from already breached plots. The rate of spread increases as the Sum of All Mana depletes to zero.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ARMAGEDDON_5">
-			<Text>The Sum of All Mana has been depleted to 50%. All mana accumulative processes are reduced by 33% (and reduced further toward 90% as the Sum of All Mana depletes to zero). This does not affect divine favor.</Text>
+			<Text>The Sum of All Mana has been depleted to 50%. The world is corrupted by a surge of blight affecting 1 out of every 20 plots. All mana accumulative processes are reduced by 33% (and reduced further toward 90% as the Sum of All Mana depletes to zero).</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ARMAGEDDON_6">
-			<Text>The Sum of All Mana has been depleted to 33%. Blight begins to appear spontaneously (0.5% chance per unaffected plot per turn increasing to 2% as the Sum of All Mana depletes to zero).</Text>
+			<Text>The Sum of All Mana has been depleted to 33%. The fabric of the world begins to tear: 1 out of every 40 plots become Breached. Blight begins to appear spontaneously (2.5% chance per unaffected plot per turn increasing to 10% as the Sum of All Mana depletes to zero).</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ARMAGEDDON_7">
 			<Text>The Sum of All Mana has been depleted to 25%. Pestilence, the first of the Four Horsemen, arrives riding a White Horse. He carries the Sickening Bow and the Plague Crown which cause (respectively) sickness in all units and plague in all cities that he attacks.</Text>

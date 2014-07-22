@@ -768,10 +768,12 @@ UseUnit[GameInfoTypes.UNIT_HUNTERS] = function(iPlayer, unit)
 			if gg_remoteImprovePlot[iTestPlot] == "HuntingRes" then
 				local iOwner = testPlot:GetOwner()
 				if iOwner == -1 then
+					print("-gaining/improving unowned plot ", testPlot:GetID())
 					testPlot:SetOwner(iPlayer, city:GetID())
 					plotToImprove = testPlot
 					break
 				elseif iOwner == iPlayer and testPlot:GetImprovementType() == -1 then
+					print("-improving already owned plot ", testPlot:GetID())
 					plotToImprove = testPlot
 					break
 				end
@@ -781,8 +783,10 @@ UseUnit[GameInfoTypes.UNIT_HUNTERS] = function(iPlayer, unit)
 					local ownerDist = GetMemoizedPlotIndexDistance(iTestPlot, iPlotOwningCity)
 					if 3 < ownerDist then
 						if iOwner == iPlayer then
+							print("-transfering ownership of plot from distant to nearby city ", testPlot:GetID())
 							testPlot:SetOwner(iPlayer, city:GetID())	--transfer ownership to this city (should have happen elsewhere, but just in case)
 						else
+							print("-stealing plot from distant foreign city to nearby own city ", testPlot:GetID())
 							testPlot:SetOwner(iPlayer, city:GetID())
 							plotToImprove = testPlot		--steal from remote owner city
 							break
@@ -809,7 +813,7 @@ UseUnit[GameInfoTypes.UNIT_FISHING_BOATS] = function(iPlayer, unit)
 	local iPlot = plot:GetPlotIndex()
 	local city = plot:GetPlotCity()
 	if not city then
-		error("Found Whaling Boats that was not in city")
+		error("Found Fishing Boats that was not in city")
 	end
 	local bCoastal = gg_cityPlotCoastalTest[iPlot]
 	local range = bCoastal and gg_fishingRange[iPlayer] or 3
@@ -821,10 +825,12 @@ UseUnit[GameInfoTypes.UNIT_FISHING_BOATS] = function(iPlayer, unit)
 			if (bCoastal and gg_remoteImprovePlot[iTestPlot] == "FishingRes") or (radius < 4 and gg_remoteImprovePlot[iTestPlot] == "Lake") then
 				local iOwner = testPlot:GetOwner()
 				if iOwner == -1 then
+					print("-gaining/improving unowned plot ", testPlot:GetID())
 					testPlot:SetOwner(iPlayer, city:GetID())
 					plotToImprove = testPlot
 					break
 				elseif iOwner == iPlayer and testPlot:GetImprovementType() == -1 then
+					print("-improving already owned plot ", testPlot:GetID())
 					plotToImprove = testPlot
 					break
 				end
@@ -834,8 +840,10 @@ UseUnit[GameInfoTypes.UNIT_FISHING_BOATS] = function(iPlayer, unit)
 					local ownerDist = GetMemoizedPlotIndexDistance(iTestPlot, iPlotOwningCity)
 					if 3 < ownerDist then
 						if iOwner == iPlayer then
+							print("-transfering ownership of plot from distant to nearby city ", testPlot:GetID())
 							testPlot:SetOwner(iPlayer, city:GetID())	--transfer ownership to this city (should have happen elsewhere, but just in case)
 						else
+							print("-stealing plot from distant foreign city to nearby own city ", testPlot:GetID())
 							testPlot:SetOwner(iPlayer, city:GetID())
 							plotToImprove = testPlot		--steal from remote owner city
 							break
@@ -872,10 +880,12 @@ UseUnit[GameInfoTypes.UNIT_WHALING_BOATS] = function(iPlayer, unit)
 			if gg_remoteImprovePlot[iTestPlot] == "WhalingRes" then
 				local iOwner = testPlot:GetOwner()
 				if iOwner == -1 then
+					print("-gaining/improving unowned plot ", testPlot:GetID())
 					testPlot:SetOwner(iPlayer, city:GetID())
 					plotToImprove = testPlot
 					break
 				elseif iOwner == iPlayer and testPlot:GetImprovementType() == -1 then
+					print("-improving already owned plot ", testPlot:GetID())
 					plotToImprove = testPlot
 					break
 				end
@@ -885,8 +895,10 @@ UseUnit[GameInfoTypes.UNIT_WHALING_BOATS] = function(iPlayer, unit)
 					local ownerDist = GetMemoizedPlotIndexDistance(iTestPlot, iPlotOwningCity)
 					if 3 < ownerDist then
 						if iOwner == iPlayer then
+							print("-transfering ownership of plot from distant to nearby city ", testPlot:GetID())
 							testPlot:SetOwner(iPlayer, city:GetID())	--transfer ownership to this city (should have happen elsewhere, but just in case)
 						else
+							print("-stealing plot from distant foreign city to nearby own city ", testPlot:GetID())
 							testPlot:SetOwner(iPlayer, city:GetID())
 							plotToImprove = testPlot		--steal from remote owner city
 							break

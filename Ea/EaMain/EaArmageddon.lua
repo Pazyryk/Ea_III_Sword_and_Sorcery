@@ -18,6 +18,8 @@ local ARMAGEDDON_SOUND =				"AS2D_EVENT_NOTIFICATION_VERY_BAD"
 local gWorld =			gWorld
 
 --functions
+local GetPlotByIndex =	Map.GetPlotByIndex
+local Rand =			Map.Rand
 local floor =			math.floor
 
 
@@ -83,8 +85,9 @@ function EaArmageddonPerTurn()
 			LuaEvents.EaImagePopup({type = "Generic", textKey = "TXT_KEY_EA_ARMAGEDDON_4", imageInfo = ARMAGEDDON_IMAGE_INFO, sound = ARMAGEDDON_SOUND})
 		end
 	end
-	-- effect added in EaPlots.lua
+	-- Spread stats changed in EaPlots.lua
 
+	-- The world is corrupted by a surge of blight, affecting 1 out of every 20 plots.
 	-- All mana accumulative processes are reduced by 33%, and reduced further toward 90% as
 	-- the Sum of All Mana depletes to zero. (This does not affect divine favor.)
 	if 50 < manaPercent then return end
@@ -95,11 +98,18 @@ function EaArmageddonPerTurn()
 		if eaPlayer then			--will skip if autoplay
 			LuaEvents.EaImagePopup({type = "Generic", textKey = "TXT_KEY_EA_ARMAGEDDON_5", imageInfo = ARMAGEDDON_IMAGE_INFO, sound = ARMAGEDDON_SOUND})
 		end
+		--blight surge
+		for iPlot = 0, Map.GetNumPlots() - 1 do
+			if Rand(20, "hello") == 0 then
+				BlightPlot(GetPlotByIndex(iPlot))
+			end
+		end
 	end
-	-- TO DO: Implement!
+	-- TO DO: Implement mana effect!
 
-	-- Blight begins to appear spontaneously. 0.5% chance per unaffected plot per turn increasing
-	-- to 2% as the Sum of All Mana depletes to zero.
+	-- The fabric of the world begins to tear: 1 out of every 40 plots becomes Breached.
+	-- Blight begins to appear spontaneously. 2.5% chance per unaffected plot per turn increasing
+	-- to 10% as the Sum of All Mana depletes to zero.
 	if 33 < manaPercent then return end
 	if armageddonStage < 6 then
 		gWorld.armageddonStage = 6
@@ -108,8 +118,14 @@ function EaArmageddonPerTurn()
 		if eaPlayer then			--will skip if autoplay
 			LuaEvents.EaImagePopup({type = "Generic", textKey = "TXT_KEY_EA_ARMAGEDDON_6", imageInfo = ARMAGEDDON_IMAGE_INFO, sound = ARMAGEDDON_SOUND})
 		end
+		--breach surge
+		for iPlot = 0, Map.GetNumPlots() - 1 do
+			if Rand(40, "hello") == 0 then
+				BreachPlot(GetPlotByIndex(iPlot))
+			end
+		end
 	end
-	-- effect added in EaPlots.lua
+	-- Spread stats changed in EaPlots.lua
 
 	-- Pestilence, the first of the Four Horsemen, arrives riding a White Horse. He carries the
 	-- Sickening Bow and the Plague Crown which cause (respectively) sickness in all units and

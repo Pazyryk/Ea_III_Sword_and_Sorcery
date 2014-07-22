@@ -3,6 +3,7 @@
 -- DateCreated: 8/16/2011 7:17:51 PM
 --------------------------------------------------------------
 
+local HOTFIX = "c"
 local EA_MEDIA_PACK_MIN_VERSION = 5
 
 include("EaErrorHandler.lua")
@@ -24,6 +25,8 @@ for key, modInfo in pairs(unsortedInstalledMods) do
 		print("Disabled: " .. modInfo.Name .. " (v " .. modInfo.Version .. ") " .. modInfo.ID)	
 	end
 end
+print("")
+print("hotfix " .. HOTFIX)
 print("****************************************************************")
 print("")
 

@@ -243,6 +243,7 @@ end
 function MissingEaPersonHasUnit(iPerson, unit)
 	if gDeadPeople[iPerson] then
 		print("!!!! ERROR: Found unit:GetPersonIndex() matching dead person; killing unit; iPerson, iUnit = ", iPerson, unit:GetID())
+		MapModData.bBypassOnCanSaveUnit = true
 		unit:Kill(false, -1)
 	else
 		error("unit:GetPersonIndex() did not match any iPerson living or dead: ", iPerson)
@@ -262,25 +263,31 @@ function TestResyncGPIndexes()
 			for unit in player:Units() do
 				local iPerson = unit:GetPersonIndex()
 				if iPerson ~= -1 then
+					local bNotRedundant = true
 					for i = 1, gpIndexCount do
 						if iPerson == gpIndexes[i] then
-							errorString = errorString .. " extra unit with iPerson = " .. iPerson .. ";"
+							print("!!!! ERROR: found extra unit with taken PersonIndex; killing unit ", iPerson)
+							MapModData.bBypassOnCanSaveUnit = true
+							unit:Kill(false, -1)
+							bNotRedundant = false
 						end
 					end
-					gpIndexCount  = gpIndexCount + 1
-					gpIndexes[gpIndexCount] = iPerson
-					local eaPerson = gPeople[iPerson]
-					if not eaPerson then
-						MissingEaPersonHasUnit(iPerson, unit)
-					elseif eaPerson.iPlayer ~= iPlayer then
-						errorString = errorString .. " eaPerson.iPlayer / unit:Owner() mismatch, = " .. eaPerson.iPlayer .. "/" .. iPlayer .. ";"
-					else
-						local iUnit = unit:GetID()
-						if eaPerson.iUnit ~= iUnit then
-							print("!!!! WARNING: eaPerson.iUnit wrong, updating; old/new = ", eaPerson.iUnit, iUnit)
-							eaPerson.iUnit = iUnit
+					if bNotRedundant then
+						gpIndexCount  = gpIndexCount + 1
+						gpIndexes[gpIndexCount] = iPerson
+						local eaPerson = gPeople[iPerson]
+						if not eaPerson then
+							MissingEaPersonHasUnit(iPerson, unit)
+						elseif eaPerson.iPlayer ~= iPlayer then
+							errorString = errorString .. " eaPerson.iPlayer / unit:Owner() mismatch, = " .. eaPerson.iPlayer .. "/" .. iPlayer .. ";"
 						else
-							print(" -match iPlayer, iPerson, class1, class2, subclass, iUnit, unitType = ", iPlayer, iPerson, eaPerson.class1, eaPerson.class2, eaPerson.subclass, iUnit, GameInfo.Units[unit:GetUnitType()].Type)
+							local iUnit = unit:GetID()
+							if eaPerson.iUnit ~= iUnit then
+								print("!!!! WARNING: eaPerson.iUnit wrong, updating; old/new = ", eaPerson.iUnit, iUnit)
+								eaPerson.iUnit = iUnit
+							else
+								print(" -match iPlayer, iPerson, class1, class2, subclass, iUnit, unitType = ", iPlayer, iPerson, eaPerson.class1, eaPerson.class2, eaPerson.subclass, iUnit, GameInfo.Units[unit:GetUnitType()].Type)
+							end
 						end
 					end
 				end
@@ -589,7 +596,7 @@ function GenerateGreatPerson(iPlayer, class, subclass, eaPersonRowID, bAsLeader,
 
 	-- !!!!!!!!!!!!!!!!  INIT NEW EaPerson HERE !!!!!!!!!!!!!!!!
 
-	--do eaPerson stuff first
+	--do eaPerson stuff first!, then init unit after EVERYTHING is ready
 	local iPerson = #gPeople + 1
 	local eaPerson = {	iPlayer = iPlayer,			
 						iUnit = -1,							-- need this!
@@ -614,12 +621,6 @@ function GenerateGreatPerson(iPlayer, class, subclass, eaPersonRowID, bAsLeader,
 	gPeople[iPerson] = eaPerson
 	RegisterGPActions(iPerson)		--only needs class1, class2 and subclass to work
 
-	--init unit
-	local unit = InitGPUnit(iPlayer, iPerson, capital:GetX(), capital:GetY(), nil, unitTypeID)
-	local iUnit = unit:GetID()
-	eaPerson.iUnit = iUnit
-
-	UpdateGreatPersonStatsFromUnit(unit, eaPerson)		--x, y, moves, level, xp; fills promotions table
 	if class1 == "Warrior" or class2 == "Warrior" then
 		eaPerson.aiHasCombatRole = true
 	end		
@@ -640,6 +641,12 @@ function GenerateGreatPerson(iPlayer, class, subclass, eaPersonRowID, bAsLeader,
 			spellInfo = GameInfo.EaActions[spellID]
 		end
 	end
+
+	--init unit
+	local unit = InitGPUnit(iPlayer, iPerson, capital:GetX(), capital:GetY(), nil, unitTypeID)
+	local iUnit = unit:GetID()
+	eaPerson.iUnit = iUnit
+	UpdateGreatPersonStatsFromUnit(unit, eaPerson)		--x, y, moves, level, xp; fills promotions table
 		
 	if eaPersonRowID or player:IsHuman() then
 		UngenericizePerson(iPlayer, iPerson, eaPersonRowID)
@@ -682,7 +689,7 @@ function InitGPUnit(iPlayer, iPerson, x, y, convertUnit, unitTypeID, invisibilit
 	end
 	if convertUnit then
 		for i = 1, numNonTransferableGPPromos do
-			convertUnit:SetHasPromotion(nonTransferablePromos[i] , false)
+			convertUnit:SetHasPromotion(nonTransferableGPPromos[i] , false)
 		end
 		MapModData.bBypassOnCanSaveUnit = true
 		unit:Convert(convertUnit, false)

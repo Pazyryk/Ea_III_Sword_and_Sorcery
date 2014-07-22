@@ -499,7 +499,7 @@ OnMajorPlayerTechLearned[GameInfoTypes.TECH_STEEL_WORKING] = function(iPlayer)
 	local player = Players[iPlayer]
 	for unit in player:Units() do
 		local unitTypeID = unit:GetUnitType()
-		if gg_regularCombatType[unitTypeID] == "troops" and 2 < gg_unitTier[unitTypeID] then
+		if gg_regularCombatType[unitTypeID] == "troops" and gg_unitTier[unitTypeID] and 2 < gg_unitTier[unitTypeID] then
 			if not unit:IsHasPromotion(GameInfoTypes.PROMOTION_STEEL_WEAPONS) and not unit:IsHasPromotion(GameInfoTypes.PROMOTION_MITHRIL_WEAPONS) then
 				unit:SetBaseCombatStrength(unit:GetBaseCombatStrength() + 2)
 				unit:SetHasPromotion(GameInfoTypes.PROMOTION_STEEL_WEAPONS, true)
@@ -525,7 +525,7 @@ OnMajorPlayerTechLearned[GameInfoTypes.TECH_MITHRIL_WORKING] = function(iPlayer)
 	end
 	for unit in player:Units() do
 		local unitTypeID = unit:GetUnitType()
-		if gg_regularCombatType[unitTypeID] == "troops" and 4 < gg_unitTier[unitTypeID] then
+		if gg_regularCombatType[unitTypeID] == "troops" and gg_unitTier[unitTypeID] and 4 < gg_unitTier[unitTypeID] then
 			if not unit:IsHasPromotion(GameInfoTypes.PROMOTION_MITHRIL_WEAPONS) then
 				if unit:IsHasPromotion(GameInfoTypes.PROMOTION_STEEL_WEAPONS) then
 					unit:SetHasPromotion(GameInfoTypes.PROMOTION_STEEL_WEAPONS, false)

@@ -202,9 +202,10 @@ local function DoLivingTerrainSpreadOrStrengthTransfer(plot, type, strength)
 			if adjPlotTypeID == PLOT_LAND or adjPlotTypeID == PLOT_HILLS then
 				local adjFeatureID = adjPlot:GetFeatureType()
 				if adjFeatureID == -1 then									--may grow new feature if plot is suitable
+					local adjTerrainType = adjPlot:GetTerrainType()
 					if (type == 1 and (adjTerrainType == TERRAIN_GRASS or adjTerrainType == TERRAIN_PLAINS or adjTerrainType == TERRAIN_TUNDRA))
-						or (type == 2 and adjTerrainType == TERRAIN_GRASS)
-						or (type == 3 and adjTerrainType == TERRAIN_GRASS and adjPlotTypeID == PLOT_LAND) then
+								or (type == 2 and adjTerrainType == TERRAIN_GRASS)
+								or (type == 3 and adjTerrainType == TERRAIN_GRASS and adjPlotTypeID == PLOT_LAND) then
 						DoLivingTerrainSpread(plot, adjPlot, type, strength)
 						break
 					end	
@@ -912,11 +913,11 @@ local function GetArmageddonPlotStats()
 	local breachSpawn = 0
 	if 10 < armageddonStage then
 		blightBreachSpread = 100 * manaDepletion 
-		blightSpawn = 2 * (manaDepletion - 0.6667) + 0.5
-		breachSpawn = 2 * blightSpawn 
+		blightSpawn = 10 * (manaDepletion - 0.6667) + 2.5	--2.5% to 10%
+		breachSpawn = 2 * blightSpawn						--20% (but only qualified plots)
 	elseif 5 < armageddonStage then
 		blightBreachSpread = 30 * manaDepletion
-		blightSpawn = 2 * (manaDepletion - 0.6667) + 0.5	--0.5% to 2%
+		blightSpawn = 10 * (manaDepletion - 0.6667) + 2.5	--2.5% to 10%
 	elseif 3 < armageddonStage then
 		blightBreachSpread = 30 * manaDepletion 
 	end

@@ -138,13 +138,14 @@ SELECT 'CIVILIZATION_MINOR', Class, NULL FROM Units WHERE EaNoTrain IS NOT NULL;
 INSERT INTO Civilization_UnitClassOverrides (CivilizationType, UnitClassType, UnitType)
 SELECT Civilizations.Type, Units.Class, NULL FROM Civilizations, Units WHERE EaNoTrain IS NOT NULL AND Civilizations.EaRace IN ('EARACE_MAN', 'EARACE_SIDHE', 'EARACE_HELDEOFOL');
 
---Fay, Barbs and Animals (cannot train any units! - all spawns by Lua)
+--Fay and Animals can't train any units! - all spawns by Lua
 INSERT INTO Civilization_UnitClassOverrides (CivilizationType, UnitType, UnitClassType)
-SELECT 'CIVILIZATION_BARBARIAN', NULL, Type FROM UnitClasses UNION ALL
 SELECT 'CIVILIZATION_THE_FAY', NULL, Type FROM UnitClasses UNION ALL
 SELECT 'CIVILIZATION_ANIMALS', NULL, Type FROM UnitClasses;	
 
-
+--Barbs can't train any units (spawns by Lua), but are allowed Slaves for capture
+INSERT INTO Civilization_UnitClassOverrides (CivilizationType, UnitType, UnitClassType)
+SELECT 'CIVILIZATION_BARBARIAN', NULL, Type FROM UnitClasses WHERE Type NOT GLOB 'UNITCLASS_SLAVES_*';
 
 DELETE FROM Civilization_CityNames;
 --Generics and fake names

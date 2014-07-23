@@ -51,10 +51,12 @@ local g_admirationBonus = 0		--calculated in OnGetScenarioDiploModifier1; return
 -- Interface
 --------------------------------------------------------------
 function DiploPerCivTurn(iPlayer)	--full civs only
+
 	local eaPlayer = gPlayers[iPlayer]
 	if 0 < gWorld.armageddonStage and eaPlayer.manaConsumed and (eaPlayer.race == EARACE_MAN or eaPlayer.race == EARACE_SIDHE) then	--Heldeofol are already fully discounted for warmonger penalty, so can't get worse
 		local iWarmongerDiscout = floor(300 * eaPlayer.manaConsumed / STARTING_SUM_OF_ALL_MANA)
 		iWarmongerDiscout = iWarmongerDiscout < 100 and iWarmongerDiscout or 100
+		print("SetWarmongerModifier; iPlayer, iWarmongerDiscout = ", iPlayer, iWarmongerDiscout)
 		player:SetWarmongerModifier(iWarmongerDiscout)
 	end
 end

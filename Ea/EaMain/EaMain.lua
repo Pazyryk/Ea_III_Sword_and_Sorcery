@@ -3,7 +3,7 @@
 -- DateCreated: 8/16/2011 7:17:51 PM
 --------------------------------------------------------------
 
-local HOTFIX = "c"
+local HOTFIX = "d"
 local EA_MEDIA_PACK_MIN_VERSION = 5
 
 include("EaErrorHandler.lua")

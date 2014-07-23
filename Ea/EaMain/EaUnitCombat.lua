@@ -187,6 +187,7 @@ local function OnUnitCaptured(iPlayer, iUnit)
 	local unitTypeID = unit:GetUnitType()
 	print("OnUnitCaptured ", iPlayer, iUnit, GameInfo.Units[unitTypeID].Type)
 	if unit:IsCombatUnit() then
+		print("-combat")
 		if unit:GetDomainType() == DOMAIN_LAND then	--must be captured land combat unit (only Slave Maker can do this)
 			print("Captured combat land unit")
 			unit:SetHasPromotion(PROMOTION_FOR_HIRE , false)
@@ -198,6 +199,7 @@ local function OnUnitCaptured(iPlayer, iUnit)
 			unit:SetHasPromotion(nonTransferablePromos[i] , false)
 		end
 	else	--civilian
+		print("-civilian")
 		local iOriginalOwner = unit:GetOriginalOwner()
 		if iOriginalOwner == iPlayer then
 			print("Recaptured a civilian")

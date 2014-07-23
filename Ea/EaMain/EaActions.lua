@@ -2182,7 +2182,8 @@ Do[GameInfoTypes.EA_ACTION_LEAD_CHARGE] = function()
 		local targetX, targetY = g_obj1:GetX(), g_obj1:GetY()
 		g_unit:PushMission(MissionTypes.MISSION_MOVE_TO, targetX, targetY)		--, 0, 0, 1)
 		if g_unit and g_unit:MovesLeft() > 0  then
-			error("AI GP has movement after Lead Charge! Did it not attack?")
+			print("!!!! ERROR: AI GP has movement after Lead Charge! Did it not attack?", g_unit:MovesLeft())
+			g_unit:SetMoves(0)
 		end
 		--follow-up melee attack and GPAttackState reset will happen from OnCombatEnded
 

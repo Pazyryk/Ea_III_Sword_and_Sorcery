@@ -49,8 +49,6 @@
 			<Text>[COLOR_LIGHT_GREY]Demons spawn from Breach[ENDCOLOR]</Text>
 		</Row>
 
-		
-
 		<!-- Notifications -->
 		<Row Tag="TXT_KEY_EA_RELIGIOUS_CONVERSION">
 			<Text>Your civilization has gained [COLOR_POSITIVE_TEXT]{1_religion}[ENDCOLOR] as its dominant religion.</Text>
@@ -122,9 +120,7 @@
 		<Row Tag="TXT_KEY_EA_TP_UNHAPPINESS_FROM_HAVAMAL_EPIC">
 			<Text>{1_Num} from the Hávamál Epic.</Text>
 		</Row>
-
 		
-
 		<Row Tag="TXT_KEY_EA_TP_DIVINE_FAVOR">
 			<Text>You have accumulated [COLOR_POSITIVE_TEXT]{1_Num}[ENDCOLOR] [ICON_PEACE] Divine Favor. Only those pursuing the worship of Azzandara accumulate [ICON_PEACE] Divine Favor.</Text>
 		</Row>
@@ -257,6 +253,12 @@
 		</Row>
 		<Row Tag="TXT_KEY_EA_FAITH_FROM_SPECIALISTS">
 			<Text>{1_Num} [ICON_PEACE] from Specialists</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PRODUCTION_BUILDING_DIVINE_FAVOR">
+			<Text>[ICON_PEACE] Divine Favor: +{1_Num}</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PRODUCTION_BUILDING_MANA">
+			<Text>[ICON_STAR] Mana: +{1_Num}</Text>
 		</Row>
 
 		<!-- Info Tooltip and Dll hard-coded -->

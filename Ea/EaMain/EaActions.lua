@@ -2109,7 +2109,7 @@ TestTarget[GameInfoTypes.EA_ACTION_LEAD_CHARGE] = function()
 	local unitCount = g_plot:GetNumUnits()
 	for i = 0, unitCount - 1 do
 		local unit = g_plot:GetUnit(i)
-		if unit ~= g_unit and unit:GetOwner() == g_iPlayer and not unit:IsOnlyDefensive() then
+		if unit ~= g_unit and unit:GetOwner() == g_iPlayer and not unit:IsOnlyDefensive() and 0 < unit:GetMoves() then
 			local unitTypeID = unit:GetUnitType()
 			if gg_regularCombatType[unitTypeID] == "troops" then
 				print("EA_ACTION_LEAD_CHARGE has a same-plot melee unit")

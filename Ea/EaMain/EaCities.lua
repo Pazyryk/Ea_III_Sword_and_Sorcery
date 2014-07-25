@@ -453,8 +453,15 @@ function ConvertUnitProductionByMatch(iPlayer, fromStr, toStr)
 				local newUnitTypeID = GameInfoTypes[newUnitType]
 				city:SetUnitProduction(newUnitTypeID, unitProd)
 				city:SetUnitProduction(unitTypeID, 0)
-
-				--force queue change??????
+			end
+			--force queue change
+			local qLength = city:GetOrderQueueLength()
+			for i = 0, qLength - 1 do
+				local orderType, orderID = city:GetOrderFromQueue(i)
+				if orderType == OrderTypes.ORDER_TRAIN and orderID == unitTypeID then
+					print("Attempting to force queue change; iCity, position, unitTypeID, newUnitTypeID = ", city:GetID(), i, unitTypeID, newUnitTypeID)
+					Game.CityPushOrder(city, orderType, newUnitTypeID, false, false, true)
+				end
 			end
 		end
 	end

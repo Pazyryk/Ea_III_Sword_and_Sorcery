@@ -4,6 +4,13 @@
 
 --Paz: modified from G&K; roughly updated for BNW (added Processes but skipped Tourism)
 
+--Paz add
+if MapModData then			--skips this from game setup, but works when file included from in-game UI
+	MapModData.gT = MapModData.gT or {}
+	gT = MapModData.gT
+end
+--end Paz add
+
 
 -- UNIT
 function GetHelpTextForUnit(iUnitID, bIncludeRequirementsInfo)
@@ -131,6 +138,16 @@ function GetHelpTextForBuilding(iBuildingID, bExcludeName, bExcludeHeader, bNoMa
 		number = pCity:GetNumBuilding(iBuildingID)
 		number = number < 1 and 1 or number
 	end
+	local bUseDivineFavor = false
+	if gT and gT.gPlayers then
+		local eaPlayer
+		if pCity then
+			eaPlayer = gT.gPlayers[pCity:GetOwner()]
+		else
+			eaPlayer = gT.gPlayers[Game.GetActivePlayer()]
+		end
+		bUseDivineFavor = eaPlayer.bUseDivineFavor
+	end
 	--end Paz add
 
 	--Paz modified code below by adding "* number" to most items
@@ -196,7 +213,13 @@ function GetHelpTextForBuilding(iBuildingID, bExcludeName, bExcludeHeader, bNoMa
 		iFaith = iFaith + pCity:GetReligionBuildingClassYieldChange(buildingClassID, YieldTypes.YIELD_FAITH) + pActivePlayer:GetPlayerBuildingClassYieldChange(buildingClassID, YieldTypes.YIELD_FAITH);
 	end
 	if (iFaith ~= nil and iFaith ~= 0) then
-		table.insert(lines, Locale.ConvertTextKey("TXT_KEY_PRODUCTION_BUILDING_FAITH", iFaith * number));
+		--Paz modified below: table.insert(lines, Locale.ConvertTextKey("TXT_KEY_PRODUCTION_BUILDING_FAITH", iFaith * number));
+		if bUseDivineFavor then
+			table.insert(lines, Locale.ConvertTextKey("TXT_KEY_EA_PRODUCTION_BUILDING_DIVINE_FAVOR", iFaith * number))
+		else
+			table.insert(lines, Locale.ConvertTextKey("TXT_KEY_EA_PRODUCTION_BUILDING_MANA", iFaith * number))
+		end
+		--end Paz modified
 	end
 	
 	-- Defense

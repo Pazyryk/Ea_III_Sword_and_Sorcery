@@ -5,6 +5,11 @@ include("IconSupport");
 include("InstanceManager");
 include("InfoTooltipInclude");
 
+--Paz add
+MapModData.gT = MapModData.gT or {}
+local gT = MapModData.gT
+--end Paz add
+
 local g_UnitInstanceManager = InstanceManager:new( "ProdButton", "Button", Controls.UnitButtonStack );
 local g_BuildingInstanceManager = InstanceManager:new( "ProdButton", "Button", Controls.BuildingButtonStack );
 local g_WonderInstanceManager = InstanceManager:new( "ProdButton", "Button", Controls.WonderButtonStack );
@@ -289,7 +294,8 @@ function UpdateWindow( city )
 	end
     
     if( g_IsProductionMode ) then
-        Controls.PurchaseIcon:SetText( "[ICON_GOLD]/[ICON_PEACE]" );
+        --Paz modified below: Controls.PurchaseIcon:SetText( "[ICON_GOLD]/[ICON_PEACE]" );
+		Controls.PurchaseIcon:SetText( "[ICON_GOLD]" );
         Controls.PurchaseString:LocalizeAndSetText( "TXT_KEY_CITYVIEW_PURCHASE_BUTTON" );
         Controls.PurchaseButton:LocalizeAndSetToolTip( "TXT_KEY_CITYVIEW_PURCHASE_TT" );
     else
@@ -343,7 +349,16 @@ function UpdateWindow( city )
     Controls.Science:SetText( "[ICON_RESEARCH]" ..  scienceYield);
     Controls.Gold:SetText( "[ICON_GOLD]" .. city:GetYieldRate( YieldTypes.YIELD_GOLD ) );
     Controls.Culture:SetText( "[ICON_CULTURE]" .. city:GetJONSCulturePerTurn() );
-	Controls.Faith:SetText( "[ICON_PEACE]" .. city:GetFaithPerTurn() );
+	--Paz modified below: Controls.Faith:SetText( "[ICON_PEACE]" .. city:GetFaithPerTurn() );
+	local iconStr = "[ICON_STAR] "
+	if gT.gPlayers then
+		local eaPlayer = gT.gPlayers[city:GetOwner()]
+		if eaPlayer and eaPlayer.bUsesDivineFavor then
+			iconStr = "[ICON_PEACE] "
+		end
+	end
+	Controls.Faith:SetText( iconStr .. city:GetFaithPerTurn() )
+	--end Paz modified
     Controls.CityButton:SetVoids( city:GetX(), city:GetY() );
 
 	local cityGrowth = city:GetFoodTurnsLeft();			

@@ -533,7 +533,7 @@ function UnitPerCivTurn(iPlayer)	--runs for full civs and city states
 
 				--Steel/Mithril Weopons
 				if bHasSteelWorking and gg_regularCombatType[unitTypeID] == "troops" then
-					if bHasMithrilWorking and 4 < gg_unitTier[unitTypeID] then
+					if bHasMithrilWorking and gg_unitTier[unitTypeID] and 4 < gg_unitTier[unitTypeID] then
 						if not unit:IsHasPromotion(PROMOTION_MITHRIL_WEAPONS) then
 							if unit:IsHasPromotion(PROMOTION_STEEL_WEAPONS) then
 								unit:SetHasPromotion(PROMOTION_STEEL_WEAPONS, false)
@@ -543,7 +543,7 @@ function UnitPerCivTurn(iPlayer)	--runs for full civs and city states
 							end
 							unit:SetHasPromotion(PROMOTION_MITHRIL_WEAPONS, true)
 						end
-					elseif 2 < gg_unitTier[unitTypeID] then
+					elseif gg_unitTier[unitTypeID] and 2 < gg_unitTier[unitTypeID] then
 						if not unit:IsHasPromotion(PROMOTION_STEEL_WEAPONS) and not unit:IsHasPromotion(PROMOTION_MITHRIL_WEAPONS) then
 							unit:SetBaseCombatStrength(unit:GetBaseCombatStrength() + 2)
 							unit:SetHasPromotion(PROMOTION_STEEL_WEAPONS, true)

@@ -57,7 +57,7 @@ function DiploPerCivTurn(iPlayer)	--full civs only
 		local iWarmongerDiscout = floor(300 * eaPlayer.manaConsumed / STARTING_SUM_OF_ALL_MANA)
 		iWarmongerDiscout = iWarmongerDiscout < 100 and iWarmongerDiscout or 100
 		print("SetWarmongerModifier; iPlayer, iWarmongerDiscout = ", iPlayer, iWarmongerDiscout)
-		player:SetWarmongerModifier(iWarmongerDiscout)
+		Players[iPlayer]:SetWarmongerModifier(iWarmongerDiscout)
 	end
 end
 

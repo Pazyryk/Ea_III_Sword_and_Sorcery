@@ -286,10 +286,13 @@ function TableLoad(masterTable, DBTablePrefix)
 					value = tonumber(valueString)	--numbers have no prefix byte
 					if not value then
 						if valueString == "1.#INF" then
-							value = 1/0
+							value = 1/0						--yes, these are valid "numbers" in Lua even though tonumber doesn't recognize them
 						elseif valueString == "-1.#INF" then
 							value = -1/0
+						elseif valueString == "-1.#IND" then
+							value = 0/0		
 						else
+							--Can only get here if x ~= tonumber(tostring(x)) where type(x) == "number", and not caught by elseif's above
 							error("TableSaverLoader did not understand valueString from DB; row = " .. row.ID .. "; valueString = " .. tostring(valueString))
 						end
 					end

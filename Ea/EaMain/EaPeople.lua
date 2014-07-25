@@ -246,7 +246,7 @@ function MissingEaPersonHasUnit(iPerson, unit)
 		MapModData.bBypassOnCanSaveUnit = true
 		unit:Kill(false, -1)
 	else
-		error("unit:GetPersonIndex() did not match any iPerson living or dead: ", iPerson)
+		error("unit:GetPersonIndex() did not match any iPerson living or dead: " .. (iPerson or "nil") .. " " .. (unit and unit:GetID() or "nil"))
 	end
 end
 

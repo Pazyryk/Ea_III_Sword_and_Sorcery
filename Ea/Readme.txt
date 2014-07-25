@@ -21,7 +21,7 @@ ANIMAL_TEAM		(=62)
 --------------------------------------------------------------
 
 --CallHook
-GameSave()
+GameSave()	--must set Game.SetGameEventsSaveGame(true) before this will fire
 CombatResult(iAttackingPlayer, iAttackingUnit, attackerDamage, attackerFinalDamage, attackerMaxHP,iDefendingPlayer, iDefendingUnit, defenderDamage, defenderFinalDamage, defenderMaxHP, iInterceptingPlayer, iInterceptingUnit, interceptorDamage, plotX, plotY)
 CombatEnded(iAttackingPlayer, iAttackingUnit, attackerDamage, attackerFinalDamage, attackerMaxHP,iDefendingPlayer, iDefendingUnit, defenderDamage, defenderFinalDamage, defenderMaxHP, iInterceptingPlayer, iInterceptingUnit, interceptorDamage, plotX, plotY)
 UnitSetXYPlotEffect(iPlayer, iUnit, x, y, plotEffectID, plotEffectStrength, plotEffectPlayer, plotEffectCaster)
@@ -38,6 +38,10 @@ UnitTakingPromotion(iPlayer, iUnit, promotionID)
 CanCaptureCivilian(iPlayer, iUnit)				--not used because it won't allow recapture & civilian returns (used UnitCaptured instead)
 CanChangeExperience(iPlayer, iUnit, iSummoner, iExperience, iMax, bFromCombat, bInBorders, bUpdateGlobal)	--false prevents xp change to summoned unit
 CanCreateTradeRoute(iOriginPlot, iDestPlot, iDestPlayer, eDomain, eConnectionType)
+
+--CallTestAny
+CityConnections		// whoward69's river connection system
+CityConnected
 
 --CallAccumulator
 PlayerTechCostMod(iPlayer, techID)

@@ -3,7 +3,7 @@
 -- DateCreated: 8/16/2011 7:17:51 PM
 --------------------------------------------------------------
 
-local HOTFIX = "d"
+local HOTFIX = "e"
 local EA_MEDIA_PACK_MIN_VERSION = 5
 
 include("EaErrorHandler.lua")
@@ -326,8 +326,8 @@ GameEvents.PlayerDoTurn.Add(function(iPlayer) return HandleError10(OnPlayerDoTur
 --Save 
 ----------------------------------------------------------------
 
-local function OnGameSave()
-	print("OnGameSave")
+local function OnGameSave(bResult)
+	print("OnGameSave ", bResult)
 	TableSave(gT, "Ea")
 end
 GameEvents.GameSave.Add(OnGameSave)

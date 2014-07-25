@@ -88,7 +88,8 @@ function ListenerTest2(...)
 end
 Events.UnitStateChangeDetected.Add(ListenerTest2)
 
-
+]]
+--[[
 
 local i = 0
 
@@ -116,6 +117,12 @@ local function OnPlayerPreAIUnitUpdate(...)
 end
 GameEvents.PlayerPreAIUnitUpdate.Add(OnPlayerPreAIUnitUpdate)
 
+local function OnAIProcessingStartedForPlayer(...)
+	i = i + 1
+	print("turnEventTest AIProcessingStartedForPlayer", unpack(arg), i)
+end
+Events.AIProcessingStartedForPlayer.Add(OnAIProcessingStartedForPlayer)
+
 local function OnAIProcessingEndedForPlayer(...)
 	i = i + 1
 	print("turnEventTest AIProcessingEndedForPlayer", unpack(arg), i)
@@ -134,7 +141,14 @@ local function OnGameCoreTestVictory(...)
 end
 GameEvents.GameCoreTestVictory.Add(OnGameCoreTestVictory)
 
+]]
 
+
+
+--Events.ParticleEffectReloadRequested, ParticleEffectStatsRequested, ParticleEffectStatsResponse
+
+
+--[[
 local function OnRunCombatSim(...)
 	print("OnRunCombatSim ", unpack(arg))
 end
@@ -144,6 +158,5 @@ local function OnEndCombatSim(...)
 	print("OnEndCombatSim ", unpack(arg))
 end
 Events.EndCombatSim.Add(OnEndCombatSim)
-
-
 ]]
+

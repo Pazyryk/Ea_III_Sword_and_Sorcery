@@ -167,7 +167,7 @@ local function PrintGameTurn(iPlayer, gameTurn)
 		local newTime = Clock()
 		timerTurn = newTime - oldTime
 		oldTime = newTime
-		print("Lua memory = ", collectgarbage("count"))
+		print("Lua memory (Mb) = ", collectgarbage("count") / 1000)
 		print("AIAutoPlay = ", Game.GetAIAutoPlay())
 		print("Turn timers:")
 		print("Turn,         ", timerTurn)

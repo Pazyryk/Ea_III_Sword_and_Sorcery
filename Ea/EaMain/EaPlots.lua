@@ -27,6 +27,7 @@ local TERRAIN_PLAINS =						GameInfoTypes.TERRAIN_PLAINS
 local TERRAIN_TUNDRA =						GameInfoTypes.TERRAIN_TUNDRA
 local TERRAIN_DESERT =						GameInfoTypes.TERRAIN_DESERT
 
+local FEATURE_ATOLL =						GameInfoTypes.FEATURE_ATOLL
 local FEATURE_ICE =							GameInfoTypes.FEATURE_ICE
 local FEATURE_FOREST = 						GameInfoTypes.FEATURE_FOREST
 local FEATURE_JUNGLE = 						GameInfoTypes.FEATURE_JUNGLE
@@ -595,6 +596,7 @@ function BlightPlot(plot, iPlayer, iPerson, strength, bTestCanCast)		--last 4 ar
 	print("BlightPlot ", plot, iPlayer, iPerson, strength, bTestCanCast)
 	local featureID = plot:GetFeatureType()
 	if featureID == FEATURE_BLIGHT or featureID == FEATURE_FALLOUT or featureID >= FEATURE_CRATER or plot:IsCity() then return false end
+	if plot:IsWater() and featureID ~= FEATURE_ATOLL and not plot:IsLake() and plot:GetResourceType(-1) == -1 and not plot:IsAdjacentToLand() then return false end
 
 	if bTestCanCast then return true end
 
@@ -654,6 +656,7 @@ function BlightPlot(plot, iPlayer, iPerson, strength, bTestCanCast)		--last 4 ar
 		plot:AddFloatUpMessage(Locale.Lookup("TXT_KEY_EA_CONSUMED_MANA", manaConsumed), 1)
 	end
 
+	print("Blighting iPlot ", plot:GetPlotIndex())
 	plot:SetFeatureType(FEATURE_BLIGHT)
 	return true
 end
@@ -738,6 +741,7 @@ function BreachPlot(plot, iPlayer, iPerson, strength, bTestCanBreach)		--last 4 
 		plot:AddFloatUpMessage(Locale.Lookup("TXT_KEY_EA_CONSUMED_MANA", manaConsumed), 1)
 	end
 
+	print("Breaching iPlot ", plot:GetPlotIndex())
 	plot:SetFeatureType(FEATURE_FALLOUT)
 	plot:SetPlotEffectData(-1,-1,-1,-1)	--just cancel out any spell effects
 

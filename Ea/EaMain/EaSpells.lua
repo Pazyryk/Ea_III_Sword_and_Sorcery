@@ -1670,7 +1670,7 @@ local function ModelRanged_Do()
 			error("AI GP has movement after magic ranged attack! Did it not fire?")
 		end
 	elseif g_iPlayer == g_iActivePlayer then
-		MapModData.forcedUnitSelection = iNewUnit
+		MapModData.forcedUnitSelection = g_unit:GetID()
 		MapModData.forcedInterfaceMode = InterfaceModeTypes.INTERFACEMODE_RANGE_ATTACK
 		UI.SelectUnit(g_unit)
 		UI.LookAtSelectionPlot(0)

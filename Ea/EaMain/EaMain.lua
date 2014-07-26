@@ -3,7 +3,7 @@
 -- DateCreated: 8/16/2011 7:17:51 PM
 --------------------------------------------------------------
 
-local HOTFIX = "e"
+local HOTFIX = "g"		--forgot f so don't yell at testers
 local EA_MEDIA_PACK_MIN_VERSION = 5
 
 include("EaErrorHandler.lua")
@@ -167,6 +167,7 @@ local function PrintGameTurn(iPlayer, gameTurn)
 		local newTime = Clock()
 		timerTurn = newTime - oldTime
 		oldTime = newTime
+		print("Lua memory = ", collectgarbage("count"))
 		print("AIAutoPlay = ", Game.GetAIAutoPlay())
 		print("Turn timers:")
 		print("Turn,         ", timerTurn)
@@ -187,18 +188,18 @@ local function PrintNewTurnForPlayer(iPlayer, gameTurn)
 		local raceInfo = GameInfo.EaRaces[eaPlayer.race]
 		local nameTrait = eaPlayer.eaCivNameID
 		if nameTrait then
-			print("------------------------  New turn for player ".. iPlayer .. ", " .. Locale.ConvertTextKey(PreGame.GetCivilizationShortDescription(iPlayer)) .. " ("..Locale.ConvertTextKey(raceInfo.Description).."), Leader: " .. leaderName  .. " ------------------------")
+			print("------------------------  New turn for player ".. iPlayer .. ", " .. Locale.ConvertTextKey(PreGame.GetCivilizationShortDescription(iPlayer)) .. " ("..Locale.ConvertTextKey(raceInfo.Description).."), Leader: " .. leaderName  .. " (turn " .. gameTurn .. ") --------------")
 		else
-			print("------------------------  New turn for player ".. iPlayer .. ", " .. Locale.ConvertTextKey(PreGame.GetCivilizationShortDescription(iPlayer))  .. " ------------------------")
+			print("------------------------  New turn for player ".. iPlayer .. ", " .. Locale.ConvertTextKey(PreGame.GetCivilizationShortDescription(iPlayer))  .. " (turn " .. gameTurn .. ") --------------")
 		end
 	elseif playerType[iPlayer] == "CityState" then
 		local player = Players[iPlayer]
-		print("------------------------  New turn for player ".. iPlayer .. ", City State: " .. player:GetName() .. " ------------------------")
+		print("------------------------  New turn for player ".. iPlayer .. ", City State: " .. player:GetName() .. " (turn " .. gameTurn .. ") --------------")
 	elseif playerType[iPlayer] == "God" then
 		local player = Players[iPlayer]
-		print("------------------------  New turn for player ".. iPlayer .. ", God: " .. player:GetName() .. " ------------------------")
+		print("------------------------  New turn for player ".. iPlayer .. ", God: " .. player:GetName() .. " (turn " .. gameTurn .. ") --------------")
 	elseif playerType[iPlayer] == "Barbs" then
-		print("------------------------  New turn for player ".. iPlayer .. ", Barbarians ------------------------")
+		print("------------------------  New turn for player ".. iPlayer .. ", Barbarians (turn " .. gameTurn .. ") --------------")
 	end
 end
 
@@ -326,8 +327,8 @@ GameEvents.PlayerDoTurn.Add(function(iPlayer) return HandleError10(OnPlayerDoTur
 --Save 
 ----------------------------------------------------------------
 
-local function OnGameSave(bResult)
-	print("OnGameSave ", bResult)
+local function OnGameSave()
+	print("OnGameSave ")
 	TableSave(gT, "Ea")
 end
 GameEvents.GameSave.Add(OnGameSave)

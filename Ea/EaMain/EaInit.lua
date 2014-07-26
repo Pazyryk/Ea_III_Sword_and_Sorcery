@@ -203,19 +203,8 @@ local function OnEnterGame()   --Runs when Begin or Countinue Your Journey press
 	gg_init.bEnteredGame = true
 	print("Debug - end of OnEnterGame")
 
-	--There is a exe autosave right after this
+	--There is a exe autosave right after this, but GameEvents.GameSave is specifically disabled (in dll)
+	--for first save since it causes an intermittent game hang in new games
 end
 Events.LoadScreenClose.Add(OnEnterGame)
 
---[[
-function AfterEnterGameListener()
-	print("AfterEnterGameListener", gg_init.bEnteredGame, gg_init.bAfterEnteredGame)
-	if gg_init.bEnteredGame and not gg_init.bAfterEnteredGame then
-		gg_init.bAfterEnteredGame = true
-		Events.SerialEventGameDataDirty.Remove(AfterEnterGameListener)
-		print("AfterEnterGameListener Game.SetGameEventsSaveGame(true)")
-		Game.SetGameEventsSaveGame(true)
-	end
-end
-Events.SerialEventGameDataDirty.Add(AfterEnterGameListener)
-]]

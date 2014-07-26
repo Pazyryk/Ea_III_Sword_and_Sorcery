@@ -1003,6 +1003,11 @@ function PlotsPerTurn()
 	for iPlot = 0, Map.GetNumPlots() - 1 do
 		local x, y = GetXYFromPlotIndex(iPlot)
 		local plot = GetPlotByIndex(iPlot)
+		local bIsCity = plot:IsCity()
+		local bIsWater = plot:IsWater()
+		local bIsImpassable = plot:IsImpassable()
+
+		--be careful to update any below if changed so subsequent processes are acting on correct info
 		local type, present, strength, turnChopped = plot:GetLivingTerrainData()
 		local plotTypeID = plot:GetPlotType()
 		local terrainID = plot:GetTerrainType()
@@ -1010,9 +1015,6 @@ function PlotsPerTurn()
 		local improvementID = plot:GetImprovementType()
 		local resourceID = plot:GetResourceType(-1)
 		local iOwner = plot:GetOwner()
-		local bIsCity = plot:IsCity()
-		local bIsWater = plot:IsWater()
-		local bIsImpassable = plot:IsImpassable()
 
 		--Breach/Blight effects
 		if featureID == FEATURE_FALLOUT then
@@ -1140,26 +1142,31 @@ function PlotsPerTurn()
 							if iNewOwner ~= -1 then
 								print("Forest Dominion plot takeover; iPlot/iNewOwner/iOldOwner", iPlot, iNewOwner, iOwner)
 								local newOwnerCity = GetNewOwnerCityForPlot(iNewOwner, iPlot)
-								plot:SetOwner(iNewOwner, newOwnerCity:GetID())
+								if newOwnerCity then
+									plot:SetOwner(iNewOwner, newOwnerCity:GetID())
+									iOwner = iNewOwner
+								end
 							end
 						end
 					end
 				end
 			else	--currently not present (ie, was remvoed in the past, will it regenerate?)
 				if bIsCity then		--permanently remove
-					plot:SetLivingTerrainData(-1, false, 0, -100)
+					type, present, strength, turnChopped = -1, false, 0, -100
+					plot:SetLivingTerrainData(type, present, strength, turnChopped)
 					print("Living terrain removed for city", iPlot)
 				elseif featureID == -1 and 0 < strength and Rand(SPREAD_CHANCE_DENOMINATOR, "hello") < strength	then	--it's back!
 					LivingTerrainGrowHere(iPlot, type)
-					plot:SetLivingTerrainData(type, true, strength, turnChopped)
-					print("Living terrain has regenerated on its own: ", iPlot, type, true, strength, turnChopped)
+					present = true
+					plot:SetLivingTerrainData(type, present, strength, turnChopped)
+					print("Living terrain has regenerated on its own: ", iPlot, type, present, strength, turnChopped)
 				end
 			end
 
 		end
 
-		--track unimproved living terrain (just reassess after changes above)
-		featureID = plot:GetFeatureType()
+		--track unimproved living terrain
+		featureID = plot:GetFeatureType()		--just reassess after possible changes above
 		if livTerTypeByID[featureID] and improvementID == -1 then
 			g_nonImprovedLivingTerrainStr[iPlot] = plot:GetLivingTerrainStrength()
 		else
@@ -1168,121 +1175,113 @@ function PlotsPerTurn()
 
 		--improvement and resource counting
 		if iOwner ~= -1 then
+
 			local eaOwner = gPlayers[iOwner]
 			local owner = Players[iOwner]
-			local iOwnerTeam = owner:GetTeam()	
-			--local resourceID = plot:GetResourceType(iOwnerTeam)		--visable only
-			--local improvementID = plot:GetImprovementType()
-
-			-- plot special used for AI
-			local resourceID = plot:GetResourceType(-1)
-			if resourceID ~= -1 and not g_bNotVisibleByResourceID[iOwner][resourceID] and not g_bBlockedByFeatureID[iOwner][resourceID] then		--visible test is now useless???
-				eaOwner.resourcesInBorders[resourceID] = (eaOwner.resourcesInBorders[resourceID] or 0) + 1
-			end
-			local bFreshWater = plot:IsFreshWater()
-			local plotSpecial
-			if plotTypeID == PlotTypes.PLOT_OCEAN then
-				if featureID ~= FEATURE_ICE then plotSpecial = "Sea" end
-			elseif plotTypeID == PlotTypes.PLOT_MOUNTAIN then
-				plotSpecial = "Mountain"
-			elseif featureID == FEATURE_FOREST then
-				plotSpecial = "Forest"
-			elseif featureID == FEATURE_JUNGLE then
-				plotSpecial = "Jungle"
-			elseif featureID == FEATURE_MARSH then
-				plotSpecial = "Marsh"
-			elseif featureID == -1 then
-				if plotTypeID == PlotTypes.PLOT_HILLS then
-					plotSpecial = "Hill"
-				elseif bFreshWater and plotTypeID == PlotTypes.PLOT_LAND then
-					plotSpecial = "Irrigable"
-				end
-			end
-			if plotSpecial then
-				eaOwner.plotSpecialsInBorders[plotSpecial] = (eaOwner.plotSpecialsInBorders[plotSpecial] or 0) + 1
-				--Error on line above probably means a hidden civ aquired land somehow
-			end
-
-			if improvementID == -1 then
-				g_wildlandsCountCommuneWithNature[iOwner] = g_wildlandsCountCommuneWithNature[iOwner] and g_wildlandsCountCommuneWithNature[iOwner] + 1
-			else
-				-- add to player count
-				eaOwner.ImprovementsByID[improvementID] = (eaOwner.ImprovementsByID[improvementID] or 0) + 1
-			end
-
-			--owning city counts
 			local iOwningCity = plot:GetCityPurchaseID()
-
-			if gg_remoteImprovePlot[iPlot] then		--increment count for owning city
-				local cityRemoteImproveCount = gg_cityRemoteImproveCount[iOwner][iOwningCity] or InitCityRemoteImproveCount(iOwner, iOwningCity)
-				local type = gg_remoteImprovePlot[iPlot]
-				cityRemoteImproveCount[type] = cityRemoteImproveCount[type] + 1
-			end
-
 			local owningCity = owner:GetCityByID(iOwningCity)
-			g_cityFollowerReligion[owningCity] = g_cityFollowerReligion[owningCity] or owningCity:GetReligiousMajority()
-			if featureID == FEATURE_FOREST or featureID == FEATURE_JUNGLE then
-				--timber and timberyard
-				if owningCity:GetNumBuilding(BUILDING_TIMBERYARD) == 1 then
-					if improvementID == IMPROVEMENT_LUMBERMILL then
-						g_addResource[iOwner][RESOURCE_TIMBER] = (g_addResource[iOwner][RESOURCE_TIMBER] or 0) + (g_hasTechForestry[iOwner] and 1 or 0.5)
-					elseif g_bIsPantheistic[iOwner] then
-						g_addResource[iOwner][RESOURCE_TIMBER] = (g_addResource[iOwner][RESOURCE_TIMBER] or 0) + (g_hasTechForestry[iOwner] and 0.25 or 0.125)
+			if owningCity then
+
+				-- plot special used for AI
+				local resourceID = plot:GetResourceType(-1)
+				if resourceID ~= -1 and not g_bNotVisibleByResourceID[iOwner][resourceID] and not g_bBlockedByFeatureID[iOwner][resourceID] then		--visible test is now useless???
+					eaOwner.resourcesInBorders[resourceID] = (eaOwner.resourcesInBorders[resourceID] or 0) + 1
+				end
+				local bFreshWater = plot:IsFreshWater()
+				local plotSpecial
+				if plotTypeID == PlotTypes.PLOT_OCEAN then
+					if featureID ~= FEATURE_ICE then plotSpecial = "Sea" end
+				elseif plotTypeID == PlotTypes.PLOT_MOUNTAIN then
+					plotSpecial = "Mountain"
+				elseif featureID == FEATURE_FOREST then
+					plotSpecial = "Forest"
+				elseif featureID == FEATURE_JUNGLE then
+					plotSpecial = "Jungle"
+				elseif featureID == FEATURE_MARSH then
+					plotSpecial = "Marsh"
+				elseif featureID == -1 then
+					if plotTypeID == PlotTypes.PLOT_HILLS then
+						plotSpecial = "Hill"
+					elseif bFreshWater and plotTypeID == PlotTypes.PLOT_LAND then
+						plotSpecial = "Irrigable"
 					end
+				end
+				if plotSpecial then
+					eaOwner.plotSpecialsInBorders[plotSpecial] = (eaOwner.plotSpecialsInBorders[plotSpecial] or 0) + 1
+					--Error on line above probably means a hidden civ aquired land somehow
+				end
+
+				if improvementID == -1 then
+					g_wildlandsCountCommuneWithNature[iOwner] = g_wildlandsCountCommuneWithNature[iOwner] and g_wildlandsCountCommuneWithNature[iOwner] + 1
 				else
-					owningCity:SetNumRealBuilding(BUILDING_TIMBERYARD_ALLOW, 1)
+					-- add to player count
+					eaOwner.ImprovementsByID[improvementID] = (eaOwner.ImprovementsByID[improvementID] or 0) + 1
 				end
-			end
-			if improvementID == IMPROVEMENT_VINEYARD then
-				if g_cityFollowerReligion[owningCity] == RELIGION_CULT_OF_BAKKHEIA then
-					grapesWorkedByBakkeiaFollower = grapesWorkedByBakkeiaFollower + 1
-				end
-			end
-			if resourceID ~= -1 and resourceClass[resourceID] == "Earth" then
-				if g_cityFollowerReligion[owningCity] == RELIGION_CULT_OF_PLOUTON then
-					earthResWorkedByPloutonFollower = earthResWorkedByPloutonFollower + 1
-				end
-			end
-			
-			--Cult effects for owned plots
-			if terrainID == TERRAIN_DESERT then
-				local iOwningCity = plot:GetCityPurchaseID()
-				local owningCity = owner:GetCityByID(iOwningCity)
-				if not owningCity then
-					error("Plot is owned but no owningCity")		--I don't think this can happen
-				end
-				g_cityFollowerReligion[owningCity] = g_cityFollowerReligion[owningCity] or owningCity:GetReligiousMajority()
-				if g_cityFollowerReligion[owningCity] == RELIGION_CULT_OF_CAHRA then
-					g_cityDesertCahraFollower[owningCity] = (g_cityDesertCahraFollower[owningCity] or 0) + 1
-				end
-			elseif (featureID == FEATURE_FOREST or featureID == FEATURE_JUNGLE) and improvementID == -1 then
-				local iOwningCity = plot:GetCityPurchaseID()
-				local owningCity = owner:GetCityByID(iOwningCity)
-				if not owningCity then
-					error("Plot is owned but no owningCity")		--I don't think this can happen
-				end
-				g_cityFollowerReligion[owningCity] = g_cityFollowerReligion[owningCity] or owningCity:GetReligiousMajority()
-				if g_cityFollowerReligion[owningCity] == RELIGION_CULT_OF_LEAVES then
-					g_cityUnimprovedForestJungle[owningCity] = (g_cityUnimprovedForestJungle[owningCity] or 0) + 1
-				end
-			end
 
-			--timber from recent chop
-			if turnChopped and turnChopped > gameTurn - 20 then		--integer here sets the durration of a "timber pile"
-				g_addResource[iOwner][RESOURCE_TIMBER] = (g_addResource[iOwner][RESOURCE_TIMBER] or 0) + (g_hasTechForestry[iOwner] and 2 or 1)
-			end
+				--owning city counts
+				if gg_remoteImprovePlot[iPlot] then		--increment count for owning city
+					local cityRemoteImproveCount = gg_cityRemoteImproveCount[iOwner][iOwningCity] or InitCityRemoteImproveCount(iOwner, iOwningCity)
+					local type = gg_remoteImprovePlot[iPlot]
+					cityRemoteImproveCount[type] = cityRemoteImproveCount[type] + 1
+				end
 
-			if resourceID ~= -1 and (improvementID ~= -1 or bIsCity) then
-				eaOwner.ImprovedResourcesByID[resourceID] = (eaOwner.ImprovedResourcesByID[resourceID] or 0) + 1				-- add to player count
-				
-				--building conversion (replace ivory counting below)
-				local resourceConvert = resourceBuildingConverts[resourceID]
-				if resourceConvert then
-					if owningCity:GetNumBuilding(resourceConvert.building) > 0 then
-						local newResourceID = resourceConvert.resource
-						g_addResource[iOwner][newResourceID] = (g_addResource[iOwner][newResourceID] or 0) + 1
+
+				g_cityFollowerReligion[owningCity] = g_cityFollowerReligion[owningCity] or owningCity:GetReligiousMajority()
+				if featureID == FEATURE_FOREST or featureID == FEATURE_JUNGLE then
+					--timber and timberyard
+					if owningCity:GetNumBuilding(BUILDING_TIMBERYARD) == 1 then
+						if improvementID == IMPROVEMENT_LUMBERMILL then
+							g_addResource[iOwner][RESOURCE_TIMBER] = (g_addResource[iOwner][RESOURCE_TIMBER] or 0) + (g_hasTechForestry[iOwner] and 1 or 0.5)
+						elseif g_bIsPantheistic[iOwner] then
+							g_addResource[iOwner][RESOURCE_TIMBER] = (g_addResource[iOwner][RESOURCE_TIMBER] or 0) + (g_hasTechForestry[iOwner] and 0.25 or 0.125)
+						end
+					else
+						owningCity:SetNumRealBuilding(BUILDING_TIMBERYARD_ALLOW, 1)
 					end
-				end				
+				end
+				if improvementID == IMPROVEMENT_VINEYARD then
+					if g_cityFollowerReligion[owningCity] == RELIGION_CULT_OF_BAKKHEIA then
+						grapesWorkedByBakkeiaFollower = grapesWorkedByBakkeiaFollower + 1
+					end
+				end
+				if resourceID ~= -1 and resourceClass[resourceID] == "Earth" then
+					if g_cityFollowerReligion[owningCity] == RELIGION_CULT_OF_PLOUTON then
+						earthResWorkedByPloutonFollower = earthResWorkedByPloutonFollower + 1
+					end
+				end
+			
+				--Cult effects for owned plots
+				if terrainID == TERRAIN_DESERT then
+					g_cityFollowerReligion[owningCity] = g_cityFollowerReligion[owningCity] or owningCity:GetReligiousMajority()
+					if g_cityFollowerReligion[owningCity] == RELIGION_CULT_OF_CAHRA then
+						g_cityDesertCahraFollower[owningCity] = (g_cityDesertCahraFollower[owningCity] or 0) + 1
+					end
+				elseif (featureID == FEATURE_FOREST or featureID == FEATURE_JUNGLE) and improvementID == -1 then
+					g_cityFollowerReligion[owningCity] = g_cityFollowerReligion[owningCity] or owningCity:GetReligiousMajority()
+					if g_cityFollowerReligion[owningCity] == RELIGION_CULT_OF_LEAVES then
+						g_cityUnimprovedForestJungle[owningCity] = (g_cityUnimprovedForestJungle[owningCity] or 0) + 1
+					end
+				end
+
+				--timber from recent chop
+				if turnChopped and turnChopped > gameTurn - 20 then		--integer here sets the durration of a "timber pile"
+					g_addResource[iOwner][RESOURCE_TIMBER] = (g_addResource[iOwner][RESOURCE_TIMBER] or 0) + (g_hasTechForestry[iOwner] and 2 or 1)
+				end
+
+				if resourceID ~= -1 and (improvementID ~= -1 or bIsCity) then
+					eaOwner.ImprovedResourcesByID[resourceID] = (eaOwner.ImprovedResourcesByID[resourceID] or 0) + 1				-- add to player count
+				
+					--building conversion (replace ivory counting below)
+					local resourceConvert = resourceBuildingConverts[resourceID]
+					if resourceConvert then
+						if owningCity:GetNumBuilding(resourceConvert.building) > 0 then
+							local newResourceID = resourceConvert.resource
+							g_addResource[iOwner][newResourceID] = (g_addResource[iOwner][newResourceID] or 0) + 1
+						end
+					end				
+				end
+			else
+				print("!!!! ERROR: owned plot appears to have no owning city! ", iOwner, plot:GetOwner())
 			end
 		end
 	end		--end of main plot loop

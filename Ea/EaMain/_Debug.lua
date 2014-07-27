@@ -3,18 +3,7 @@
 -- DateCreated: 3/24/2014 10:02:52 AM
 --------------------------------------------------------------
 
-
-
 local bHidden =			MapModData.bHidden
-
---function OnCanStartMission(iPlayer, iUnit, missionID)
---	print("CanStartMission ", iPlayer, iUnit, missionID)
---	return true
---end
---GameEvents.CanStartMission.Add(OnCanStartMission)
-
-
-
 
 local tableByOrderType = {	[OrderTypes.ORDER_TRAIN] = "Units",
 							[OrderTypes.ORDER_CONSTRUCT] = "Buildings",
@@ -59,7 +48,29 @@ local function DebugOnPlayerPreAIUnitUpdate(iPlayer)
 end
 GameEvents.PlayerPreAIUnitUpdate.Add(function(iPlayer) return HandleError10(DebugOnPlayerPreAIUnitUpdate, iPlayer) end)
 
+local function OnRunCombatSim(attackerPlayerID, attackerUnitID, attackerUnitDamage, attackerFinalUnitDamage, attackerMaxHitPoints, defenderPlayerID, defenderUnitID, defenderUnitDamage, defenderFinalUnitDamage, defenderMaxHitPoints,  bContinuation, attackerX, attackerY, defenderX, defenderY)
+	print("RunCombatSim ", attackerPlayerID, attackerUnitID, attackerUnitDamage, attackerFinalUnitDamage, attackerMaxHitPoints, defenderPlayerID, defenderUnitID, defenderUnitDamage, defenderFinalUnitDamage, defenderMaxHitPoints,  bContinuation, attackerX, attackerY, defenderX, defenderY)	
+	local attackerPlayer = Players[attackerPlayerID]
+	local attackerUnit = attackerPlayer:GetUnitByID(attackerUnitID)
+	local attackerUnitType = attackerUnit and GameInfo.Units[attackerUnit:GetUnitType()].Type or "nil"
+	local defenderPlayer = Players[defenderPlayerID]
+	local defenderUnit = defenderPlayer:GetUnitByID(defenderUnitID)
+	local defenderUnitType = defenderUnit and GameInfo.Units[defenderUnit:GetUnitType()].Type or "nil"
+	print("Attacker: " .. attackerUnitType .. "; Defender: " .. defenderUnitType)
+end
+Events.RunCombatSim.Add(OnRunCombatSim)
 
+local function OnEndCombatSim(attackerPlayerID, attackerUnitID, attackerUnitDamage, attackerFinalUnitDamage, attackerMaxHitPoints, defenderPlayerID, defenderUnitID, defenderUnitDamage, defenderFinalUnitDamage, defenderMaxHitPoints, attackerX, attackerY, defenderX, defenderY)
+	print("EndCombatSim ", attackerPlayerID, attackerUnitID, attackerUnitDamage, attackerFinalUnitDamage, attackerMaxHitPoints, defenderPlayerID, defenderUnitID, defenderUnitDamage, defenderFinalUnitDamage, defenderMaxHitPoints, attackerX, attackerY, defenderX, defenderY)
+	local attackerPlayer = Players[attackerPlayerID]
+	local attackerUnit = attackerPlayer:GetUnitByID(attackerUnitID)
+	local attackerUnitType = attackerUnit and GameInfo.Units[attackerUnit:GetUnitType()].Type or "nil"
+	local defenderPlayer = Players[defenderPlayerID]
+	local defenderUnit = defenderPlayer:GetUnitByID(defenderUnitID)
+	local defenderUnitType = defenderUnit and GameInfo.Units[defenderUnit:GetUnitType()].Type or "nil"
+	print("Attacker: " .. attackerUnitType .. "; Defender: " .. defenderUnitType)
+end
+Events.EndCombatSim.Add(OnEndCombatSim)
 
 function DebugSpellCaster()
 	local iCaster = GenerateGreatPerson(0, nil, "Druid", nil, false)
@@ -72,9 +83,16 @@ function DebugSpellCaster()
 end
 
 
-
-
 --Listener tests
+
+--function OnCanStartMission(iPlayer, iUnit, missionID)
+--	print("CanStartMission ", iPlayer, iUnit, missionID)
+--	return true
+--end
+--GameEvents.CanStartMission.Add(OnCanStartMission)
+
+
+
 
 
 --[[
@@ -149,14 +167,6 @@ GameEvents.GameCoreTestVictory.Add(OnGameCoreTestVictory)
 
 
 --[[
-local function OnRunCombatSim(...)
-	print("OnRunCombatSim ", unpack(arg))
-end
-Events.RunCombatSim.Add(OnRunCombatSim)
 
-local function OnEndCombatSim(...)
-	print("OnEndCombatSim ", unpack(arg))
-end
-Events.EndCombatSim.Add(OnEndCombatSim)
 ]]
 

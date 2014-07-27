@@ -208,7 +208,7 @@ INSERT INTO Buildings (Type,			Cost,	PrereqTech,		EaGreatPersonBuild,	Happiness,
 ('BUILDING_MEGALOS_FAROS',				300,	NULL,			'Engineer',			0,			0,				100,			'MONUMENT',						'BW_ATLAS_2',	5,				0				),
 ('BUILDING_HANGING_GARDENS',			300,	NULL,			'Engineer',			0,			0,				100,			'MONUMENT',						'BW_ATLAS_2',	3,				0				),
 ('BUILDING_UUC_YABNAL',					300,	NULL,			'Engineer',			0,			0,				100,			'MONUMENT',						'BW_ATLAS_2',	12,				0				),
-('BUILDING_THE_LONG_WALL',				300,	NULL,			'Engineer',			0,			0,				100,			'ART_DEF_BUILDING_GREAT_WALL',	'BW_ATLAS_2',	7,				2				),
+('BUILDING_THE_LONG_WALL',				300,	NULL,			'Engineer',			0,			0,				100,			'MONUMENT',						'BW_ATLAS_2',	7,				0				),
 ('BUILDING_CLOG_MOR',					300,	NULL,			'Engineer',			0,			0,				100,			'MONUMENT',						'BW_ATLAS_2',	19,				0				),
 ('BUILDING_DA_BAOEN_SI',				300,	NULL,			'Engineer',			0,			0,				100,			'MONUMENT',						'BW_ATLAS_2',	16,				0				),
 -- plot wonders
@@ -245,7 +245,8 @@ UPDATE Buildings SET Help = 'TXT_KEY_EA_NOTSHOWN', Civilopedia = 'TXT_KEY_EA_NOT
 UPDATE Buildings SET BuildingClass = REPLACE(Type, 'BUILDING_', 'BUILDINGCLASS_');
 UPDATE Buildings SET BuildingClass = 'BUILDINGCLASS_CASTLE' WHERE Type = 'BUILDING_STRONGHOLD';
 
-
+UPDATE Buildings SET ArtInfoCulturalVariation = 1 WHERE Type IN ('BUILDING_COLOSSEUM', 'BUILDING_CASTLE', 'BUILDING_PALACE');
+UPDATE Buildings SET ArtInfoEraVariation = 1 WHERE Type IN ('BUILDING_HARBOR', 'BUILDING_LIGHTHOUSE');
 UPDATE Buildings SET MinAreaSize = -1;
 UPDATE Buildings SET MinAreaSize = 10 WHERE Type IN ('BUILDING_HARBOR', 'BUILDING_LIGHTHOUSE', 'BUILDING_PORT', 'BUILDING_WHALERY', 'BUILDING_SHIPYARD');
 UPDATE Buildings SET Water = 1 WHERE Type IN ('BUILDING_HARBOR', 'BUILDING_LIGHTHOUSE', 'BUILDING_PORT', 'BUILDING_WHALERY', 'BUILDING_SHIPYARD');

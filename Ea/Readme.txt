@@ -86,7 +86,7 @@ int		GetWarmongerModifier()		--returns the penalty to warmonger levels OTHER pla
 void	SetWarmongerModifier(int)	--100 means actions against this player create NO warmonger effect for anyone
 
 
-
+Need to add player:SetEndTurn(bool)	so we can interupt active player turn without Lua hacks
 
 --------------------------------------------------------------
 -- Plots

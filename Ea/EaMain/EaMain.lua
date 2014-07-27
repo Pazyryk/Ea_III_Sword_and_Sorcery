@@ -6,7 +6,16 @@
 local HOTFIX = "h"		--forgot f so don't yell at testers
 local EA_MEDIA_PACK_MIN_VERSION = 5
 
+
+
+-------------------------------------------------------------------------------------------------------
+
 include("EaErrorHandler.lua")
+
+if not Defines.EA_DLL_VERSION then
+	error("Mod could not determine modded dll version. Is this a Mac? (Macs can't play dll mods)")
+end
+
 
 print("Loading EaMain.lua...")
 print("")
@@ -26,7 +35,7 @@ for key, modInfo in pairs(unsortedInstalledMods) do
 	end
 end
 print("")
-print("hotfix " .. HOTFIX)
+print("hotfix: " .. HOTFIX)
 print("****************************************************************")
 print("")
 

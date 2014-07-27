@@ -70,7 +70,7 @@ end
 --Modifier3: "We admire your accomplishments" combines all positives including shared high culture, shared religion and some policy/tech positives
 
 local function OnGetScenarioDiploModifier1(iPlayer1, iPlayer2)	--player2 is the "subject" (human or AI); player1 is the "observer" (always AI)
-	Dprint("OnGetScenarioDiploModifier1 ", iPlayer1, iPlayer2)
+	--print("OnGetScenarioDiploModifier1 ", iPlayer1, iPlayer2)
 	--Calculate all modifiers here; save values for OnGetScenarioDiploModifier2 and 3 in file locals
 	--print("Diplomacy modifiers for player " .. iPlayer1 .. " toward player " .. iPlayer2 .. ":")
 
@@ -98,18 +98,18 @@ local function OnGetScenarioDiploModifier1(iPlayer1, iPlayer2)	--player2 is the 
 		local fallenInteger = eaPlayer2.bIsFallen and 1 or 0
 		local antiTheismPolicies = GetNumPoliciesInBranch(player2, POLICY_BRANCH_ANTI_THEISM)
 		local thaumaturgyTechs = team2:IsHasTech(TECH_MALEFICIUM) and 1 or 0
-		print("player1 is Azzandarayasna ", azzandarayasnaInteger,anraInteger,pantheismPolicies,theismPolicies,divineLiturgyTechs,maleficiumTechs,fallenInteger,antiTheismPolicies,thaumaturgyTechs)
+		--print("player1 is Azzandarayasna ", azzandarayasnaInteger,anraInteger,pantheismPolicies,theismPolicies,divineLiturgyTechs,maleficiumTechs,fallenInteger,antiTheismPolicies,thaumaturgyTechs)
 		evilPenalty = 16 * anraInteger + 8 * fallenInteger + 4 * (antiTheismPolicies + maleficiumTechs) + 2 * manaEaterPts
 		g_yourKindPenalty = thaumaturgyTechs + 2 * pantheismPolicies
 		g_admirationBonus = 3 * azzandarayasnaInteger + theismPolicies + divineLiturgyTechs
 	elseif eaPlayer1.religionID == RELIGION_ANRA then											--observer is Anra
 		local fallenInteger = eaPlayer2.bIsFallen and 1 or 0
 		local antiTheismPolicies = GetNumPoliciesInBranch(player2, POLICY_BRANCH_ANTI_THEISM)
-		print("player1 is Anra ", azzandarayasnaInteger,anraInteger,pantheismPolicies,theismPolicies,divineLiturgyTechs,maleficiumTechs,fallenInteger,antiTheismPolicies)
+		--print("player1 is Anra ", azzandarayasnaInteger,anraInteger,pantheismPolicies,theismPolicies,divineLiturgyTechs,maleficiumTechs,fallenInteger,antiTheismPolicies)
 		g_yourKindPenalty = 8 * azzandarayasnaInteger + 2 * (theismPolicies + divineLiturgyTechs) + pantheismPolicies
 		g_admirationBonus = 3 * anraInteger + 0.5 * (antiTheismPolicies + fallenInteger + maleficiumTechs)
 	elseif eaPlayer1.bIsFallen then																--observer is Fallen (not Anra)
-		print("player1 is Fallen ", azzandarayasnaInteger,anraInteger,pantheismPolicies,theismPolicies,divineLiturgyTechs,maleficiumTechs)
+		--print("player1 is Fallen ", azzandarayasnaInteger,anraInteger,pantheismPolicies,theismPolicies,divineLiturgyTechs,maleficiumTechs)
 		evilPenalty = 0.5 * manaEaterPts
 		g_yourKindPenalty = 8 * azzandarayasnaInteger + 2 * (theismPolicies + divineLiturgyTechs) + 0.5 * pantheismPolicies
 		g_admirationBonus = 0.5 * maleficiumTechs
@@ -117,7 +117,7 @@ local function OnGetScenarioDiploModifier1(iPlayer1, iPlayer2)	--player2 is the 
 		local fallenInteger = eaPlayer2.bIsFallen and 1 or 0
 		local antiTheismPolicies = GetNumPoliciesInBranch(player2, POLICY_BRANCH_ANTI_THEISM)
 		local agPolicies = GetNumPoliciesInBranch(player2, POLICY_BRANCH_DOMINIONISM)
-		print("player1 is Pantheistic ", azzandarayasnaInteger,anraInteger,pantheismPolicies,theismPolicies,divineLiturgyTechs,maleficiumTechs,fallenInteger,antiTheismPolicies,agPolicies)
+		--print("player1 is Pantheistic ", azzandarayasnaInteger,anraInteger,pantheismPolicies,theismPolicies,divineLiturgyTechs,maleficiumTechs,fallenInteger,antiTheismPolicies,agPolicies)
 		evilPenalty = 12 * anraInteger + 6 * fallenInteger + 2 * (antiTheismPolicies + maleficiumTechs + manaEaterPts)
 		g_yourKindPenalty = 4 * azzandarayasnaInteger + agPolicies + theismPolicies + divineLiturgyTechs
 		g_admirationBonus = pantheismPolicies
@@ -127,7 +127,7 @@ local function OnGetScenarioDiploModifier1(iPlayer1, iPlayer2)	--player2 is the 
 	else																						--observer is none of the above
 		local antiTheismPolicies = GetNumPoliciesInBranch(player2, POLICY_BRANCH_ANTI_THEISM)
 		local thaumaturgyTechs = team2:IsHasTech(TECH_MALEFICIUM) and 1 or 0
-		print("player1 is none of the above ", azzandarayasnaInteger,anraInteger,pantheismPolicies,theismPolicies,divineLiturgyTechs,maleficiumTechs,antiTheismPolicies,thaumaturgyTechs)
+		--print("player1 is none of the above ", azzandarayasnaInteger,anraInteger,pantheismPolicies,theismPolicies,divineLiturgyTechs,maleficiumTechs,antiTheismPolicies,thaumaturgyTechs)
 		evilPenalty = 8 * anraInteger + antiTheismPolicies + maleficiumTechs + 0.5 * manaEaterPts
 		g_yourKindPenalty = 0.5 * (azzandarayasnaInteger + pantheismPolicies + theismPolicies + divineLiturgyTechs + thaumaturgyTechs)
 		g_admirationBonus = 0
@@ -152,20 +152,18 @@ local function OnGetScenarioDiploModifier1(iPlayer1, iPlayer2)	--player2 is the 
 
 	evilPenalty = floor(evilPenalty)
 
-	print("DiploModifier1: You are evil: ", iPlayer1, iPlayer2, evilPenalty)
+	print("DiploModifiers: iPlayer1 " .. iPlayer1 .. "; iPlayer2 " .. iPlayer2 .. "; You are evil " .. evilPenalty .. "; We don't like your kind " .. g_yourKindPenalty .. "; We admire your accomplishments " .. -g_admirationBonus)
 
 	return evilPenalty
 end
 GameEvents.GetScenarioDiploModifier1.Add(OnGetScenarioDiploModifier1)
 
 local function OnGetScenarioDiploModifier2(iPlayer1, iPlayer2)
-	print("DiploModifier2: We don't like your kind: ", iPlayer1, iPlayer2, g_yourKindPenalty)
 	return g_yourKindPenalty
 end
 GameEvents.GetScenarioDiploModifier2.Add(OnGetScenarioDiploModifier2)
 
 local function OnGetScenarioDiploModifier3(iPlayer1, iPlayer2)
-	print("DiploModifier3: We admire your accomplishments: ", iPlayer1, iPlayer2, g_admirationBonus)
 	return -g_admirationBonus
 end
 GameEvents.GetScenarioDiploModifier3.Add(OnGetScenarioDiploModifier3)

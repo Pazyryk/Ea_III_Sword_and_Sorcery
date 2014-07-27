@@ -900,7 +900,7 @@ local function DoOrGotoBestOption(bestVoption)
 
 	if targetPlotIndex then
 		if targetPlotIndex == g_gpPlotIndex then	--GP is here so do it
-			print("AI GP at target; attempting to do option:", bestVoption, bestV)
+			print("AI GP at target; attempting to do option:", bestVoption)
 			if option.eaActionID < FIRST_SPELL_ID then
 				bSuccess = DoEaAction(option.eaActionID, g_iPlayer, g_unit, g_iPerson)
 			else

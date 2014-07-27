@@ -1332,6 +1332,9 @@ end
 function OnClose()
     --UIManager:DequeuePopup( ContextPtr );
     ContextPtr:SetHide( true );
+	--Paz add
+	Events.SerialEventUnitInfoDirty()	--update GP actions that require specific city production
+	--end Paz add
 end
 Controls.CloseButton:RegisterCallback( Mouse.eLClick, OnClose );
 Events.SerialEventExitCityScreen.Add( OnClose );

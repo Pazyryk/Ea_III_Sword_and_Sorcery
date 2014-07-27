@@ -244,13 +244,12 @@ local function ResetForcedInterfaceUnit()		--resets temp attack unit if player f
 		local unitTypeID = unit:GetUnitType()
 		if gg_gpTempType[unitTypeID] then						--was Magic Missile unit or something similar
 			local iPerson = unit:GetPersonIndex()
-			InitGPUnit(iPlayer, iPerson, x, y, unit)
+			InitGPUnit(g_iActivePlayer, iPerson, unit:GetX(), unit:GetY(), unit)
 		elseif unit:GetGPAttackState() == 1 then				--was a Warrior Lead Charge
 			unit:SetGPAttackState(0)
 			unit:SetInvisibleType(INVISIBLE_SUBMARINE)
 		end
 	end
-
 end
 LuaEvents.EaUnitCombatResetForcedSelectionUnit.Add(function() return HandleError10(ResetForcedInterfaceUnit) end)
 
@@ -458,7 +457,12 @@ local function OnCombatResult(iAttackingPlayer, iAttackingUnit, attackerDamage, 
 	local attackingUnit = attackingPlayer:GetUnitByID(iAttackingUnit)	--unit will be nil if dead
 	local defendingPlayer = Players[iDefendingPlayer]
 	local defendingUnit = defendingPlayer:GetUnitByID(iDefendingUnit)
-	print("attackerX, Y = ", attackingUnit and attackingUnit:GetX(), attackingUnit and attackingUnit:GetY())
+
+	--print
+	local attackerUnitType = attackingUnit and GameInfo.Units[attackingUnit:GetUnitType()].Type or "nil"
+	local defenderUnitType = defendingUnit and GameInfo.Units[defendingUnit:GetUnitType()].Type or "nil"
+	print("Attacker: " .. attackerUnitType .. "; Defender: " .. defenderUnitType)
+	--print("attackerX, Y = ", attackingUnit and attackingUnit:GetX(), attackingUnit and attackingUnit:GetY())
 
 	g_defendingUnitTypeID = -1
 	g_defendingUnitXP = -1
@@ -501,6 +505,11 @@ local function OnCombatEnded(iAttackingPlayer, iAttackingUnit, attackerDamage, a
 	local attackingUnit = attackingPlayer:GetUnitByID(iAttackingUnit)	--unit will be nil if dead
 	local defendingPlayer = Players[iDefendingPlayer]
 	local defendingUnit = defendingPlayer:GetUnitByID(iDefendingUnit)
+
+	--print
+	local attackerUnitType = attackingUnit and GameInfo.Units[attackingUnit:GetUnitType()].Type or "nil"
+	local defenderUnitType = defendingUnit and GameInfo.Units[defendingUnit:GetUnitType()].Type or "nil"
+	print("Attacker: " .. attackerUnitType .. "; Defender: " .. defenderUnitType)
 
 	if fullCivs[iAttackingPlayer] then	--if full civ then do various functions
 		if attackingUnit then

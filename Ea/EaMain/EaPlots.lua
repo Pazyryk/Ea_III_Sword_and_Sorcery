@@ -174,7 +174,8 @@ local function DoLivingTerrainSpread(fromPlot, toPlot, fromType, fromStrength)
 	if toType == -1 or toStrength < 5 then	
 		LivingTerrainGrowHere(toPlot:GetPlotIndex(), fromType)
 		toPlot:SetLivingTerrainData(fromType, true, 1, -100)
-		fromPlot:SetLivingTerrainData(fromStrength - 1)
+		fromStrength = fromStrength - 1
+		fromPlot:SetLivingTerrainData(fromStrength)
 		print("Living terrain has spread to an adjacent (non-living or not very strong) tile ", fromPlot:GetPlotIndex(), toPlot:GetPlotIndex())
 	else
 		--may have conflict between spread type and old (currently absent) type; don't want to kill a stronger terrain that was just chopped, so regrow it as own type
@@ -185,14 +186,14 @@ local function DoLivingTerrainSpread(fromPlot, toPlot, fromType, fromStrength)
 		else	--type must be consistent with current feature or chops get very messy
 			LivingTerrainGrowHere(toPlot:GetPlotIndex(), fromType)	
 			toPlot:SetLivingTerrainData(fromType, true, toStrength + 1, toTurnChopped)
-			fromPlot:SetLivingTerrainData(fromStrength - 1)
+			fromStrength = fromStrength - 1
+			fromPlot:SetLivingTerrainData(fromStrength)
 			print("Living terrain has awakened and converted an adjacent (currently absent) living tile ", fromPlot:GetPlotIndex(), toPlot:GetPlotIndex())
 			print("Was, ", toType, true, toStrength, toTurnChopped)
 			print("Is now: ", fromType, true, toStrength+1, toTurnChopped)
 		end
-		
 	end
-
+	return fromStrength
 end
 
 local function DoLivingTerrainSpreadOrStrengthTransfer(plot, type, strength)
@@ -207,7 +208,7 @@ local function DoLivingTerrainSpreadOrStrengthTransfer(plot, type, strength)
 					if (type == 1 and (adjTerrainType == TERRAIN_GRASS or adjTerrainType == TERRAIN_PLAINS or adjTerrainType == TERRAIN_TUNDRA))
 								or (type == 2 and adjTerrainType == TERRAIN_GRASS)
 								or (type == 3 and adjTerrainType == TERRAIN_GRASS and adjPlotTypeID == PLOT_LAND) then
-						DoLivingTerrainSpread(plot, adjPlot, type, strength)
+						strength = DoLivingTerrainSpread(plot, adjPlot, type, strength)
 						break
 					end	
 				elseif livTerFeatureIDByType[type] == adjFeatureID then		--spread some strength
@@ -215,7 +216,8 @@ local function DoLivingTerrainSpreadOrStrengthTransfer(plot, type, strength)
 					if 5 < strength then
 						transferStrength = Rand(floor(strength / 3), "hello") + 1
 					end
-					plot:SetLivingTerrainStrength(strength - transferStrength)
+					strength = strength - transferStrength
+					plot:SetLivingTerrainStrength(strength)
 					adjPlot:SetLivingTerrainStrength(adjPlot:GetLivingTerrainStrength() + transferStrength)
 					print("A living terrain transfered strength", iPlot, adjPlot:GetPlotIndex(), type, transferStrength)
 					break
@@ -223,6 +225,7 @@ local function DoLivingTerrainSpreadOrStrengthTransfer(plot, type, strength)
 			end
 		end
 	end
+	return strength
 end
 
 local function UseAccumulatedLivingTerrainEffects()
@@ -1007,7 +1010,7 @@ function PlotsPerTurn()
 		local bIsWater = plot:IsWater()
 		local bIsImpassable = plot:IsImpassable()
 
-		--be careful to update any below if changed so subsequent processes are acting on correct info
+		--be careful to update any below if changed so subsequent operations are acting on correct info
 		local type, present, strength, turnChopped = plot:GetLivingTerrainData()
 		local plotTypeID = plot:GetPlotType()
 		local terrainID = plot:GetTerrainType()
@@ -1124,7 +1127,7 @@ function PlotsPerTurn()
 
 				elseif improvementID == -1 or (improvementID ~= IMPROVEMENT_LUMBERMILL and improvementID ~= IMPROVEMENT_FARM) or plot:IsImprovementPillaged() then	--these suppress living terrain
 					if Rand(SPREAD_CHANCE_DENOMINATOR, "living terrain spread") < strength then	  --spread or transfer strength		
-						DoLivingTerrainSpreadOrStrengthTransfer(plot, type, strength)
+						strength = DoLivingTerrainSpreadOrStrengthTransfer(plot, type, strength)
 					end
 					--Possible take-over by adjacent player with Forest Dominion policy
 					if (featureID == FEATURE_FOREST or featureID == FEATURE_JUNGLE) and plot:IsAdjacentOwned() then
@@ -1135,7 +1138,7 @@ function PlotsPerTurn()
 								if iOwner == iFDPlayer then
 									iNewOwner = -1			--owner can defend with Forest Dominion
 									break
-								elseif plot:IsAdjacentPlayer(iFDPlayer, true) then		-- WORKS ????
+								elseif plot:IsAdjacentPlayer(iFDPlayer, true) then
 									iNewOwner = iFDPlayer
 								end
 							end

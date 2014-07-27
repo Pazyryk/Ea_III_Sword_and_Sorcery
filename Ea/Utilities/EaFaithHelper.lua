@@ -23,6 +23,7 @@ local floor = math.floor
 MapModData.faithFromCityStates = 0
 MapModData.faithFromGPs = 0
 MapModData.faithFromAzzTribute = 0
+MapModData.faithFromToAhrimanTribute = 0
 
 
 function GetTotalFaithPerTurnForUI(iPlayer)

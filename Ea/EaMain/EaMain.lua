@@ -12,7 +12,7 @@ local EA_MEDIA_PACK_MIN_VERSION = 5
 
 include("EaErrorHandler.lua")
 
-if not Defines.EA_DLL_VERSION then
+if not GameDefines.EA_DLL_VERSION then
 	error("Mod could not determine modded dll version. Is this a Mac? (Macs can't play dll mods)")
 end
 

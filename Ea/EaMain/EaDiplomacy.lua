@@ -51,14 +51,14 @@ function EaDiplomacyInit(bNewGame)
 		g_cachedDiploModifiers[iPlayer1] = {}
 		for iPlayer2 in pairs(fullCivs) do
 			if iPlayer1 ~= iPlayer2 then
-				g_cachedDiploModifiers[iPlayer1][iPlayer2] = {0, 0, 0, gameTurn = -1}
+				g_cachedDiploModifiers[iPlayer1][iPlayer2] = {0, 0, 0, 0}
 			end
 		end
-		g_cachedDiploModifiers[iPlayer1][FAY_PLAYER_INDEX] = {0, 0, 0, gameTurn = -1}
+		g_cachedDiploModifiers[iPlayer1][FAY_PLAYER_INDEX] = {0, 0, 0, 0}
 	end
 	g_cachedDiploModifiers[FAY_PLAYER_INDEX] = {}
 	for iPlayer2 in pairs(fullCivs) do
-		g_cachedDiploModifiers[FAY_PLAYER_INDEX][iPlayer2] = {0, 0, 0, gameTurn = -1}
+		g_cachedDiploModifiers[FAY_PLAYER_INDEX][iPlayer2] = {0, 0, 0, 0}
 	end
 	if not bNewGame then
 		g_gameTurn = Game.GetGameTurn()
@@ -173,18 +173,18 @@ local function CalculateDiploModifiers(iPlayer1, iPlayer2)
 
 	g_evilPenalty = floor(g_evilPenalty)
 
-	print("DiploModifiers (player " .. iPlayer1 .. " for " .. iPlayer2 .. "): You are evil " .. g_evilPenalty .. "; We don't like your kind " .. g_yourKindPenalty .. "; We admire your accomplishments " .. -g_admirationBonus)
+	print("DiploModifiers (player " .. iPlayer1 .. " for " .. iPlayer2 .. "): You are evil " .. g_evilPenalty .. "; We don't like your kind " .. g_yourKindPenalty .. "; We admire your accomplishments " .. g_admirationBonus)
 end
 
 local function OnGetScenarioDiploModifier1(iPlayer1, iPlayer2)	--player2 is the "subject" (human or AI); player1 is the "observer" (always AI)
 	local cachedDiploMods = g_cachedDiploModifiers[iPlayer1][iPlayer2]
-	if cachedDiploMods.gameTurn == g_gameTurn then
+	if cachedDiploMods[4] == g_gameTurn then
 		g_evilPenalty = cachedDiploMods[1]
 		g_yourKindPenalty = cachedDiploMods[2]
 		g_admirationBonus = cachedDiploMods[3]
 	else
 		CalculateDiploModifiers(iPlayer1, iPlayer2)
-		cachedDiploMods.gameTurn = g_gameTurn
+		cachedDiploMods[4] = g_gameTurn
 		cachedDiploMods[1] = g_evilPenalty
 		cachedDiploMods[2] = g_yourKindPenalty
 		cachedDiploMods[3] = g_admirationBonus

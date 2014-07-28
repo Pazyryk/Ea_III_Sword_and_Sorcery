@@ -197,7 +197,7 @@ local function DoLivingTerrainSpread(fromPlot, toPlot, fromType, fromStrength)
 end
 
 local function DoLivingTerrainSpreadOrStrengthTransfer(plot, type, strength)
-	print("Living Terrain wants to spread; iPlot, type, strength ", iPlot, type, strength)
+	print("Living Terrain wants to spread; iPlot, type, strength ", plot:GetPlotIndex(), type, strength)
 	for adjPlot in AdjacentPlotIterator(plot, true) do	--randomized order
 		if not adjPlot:IsCity() and adjPlot:GetImprovementType() == -1 then
 			local adjPlotTypeID = adjPlot:GetPlotType()
@@ -219,7 +219,7 @@ local function DoLivingTerrainSpreadOrStrengthTransfer(plot, type, strength)
 					strength = strength - transferStrength
 					plot:SetLivingTerrainStrength(strength)
 					adjPlot:SetLivingTerrainStrength(adjPlot:GetLivingTerrainStrength() + transferStrength)
-					print("A living terrain transfered strength", iPlot, adjPlot:GetPlotIndex(), type, transferStrength)
+					print("A living terrain transfered strength", plot:GetPlotIndex(), adjPlot:GetPlotIndex(), type, transferStrength)
 					break
 				end
 			end

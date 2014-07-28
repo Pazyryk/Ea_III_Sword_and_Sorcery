@@ -260,6 +260,12 @@
 		<Row Tag="TXT_KEY_EA_PRODUCTION_BUILDING_MANA">
 			<Text>[ICON_STAR] Mana: +{1_Num}</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_PRODUCTION_BUILDING_HEALTH_POSITIVE">
+			<Text>[ICON_HEALTH] Health: +{1_Num}</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PRODUCTION_BUILDING_HEALTH_NEGATIVE">
+			<Text>[ICON_UNHEALTH] Health: {1_Num}</Text>
+		</Row>
 
 		<!-- Info Tooltip and Dll hard-coded -->
 		<Row Tag="TXT_KEY_EA_PRODMOD_YIELD_LEADER">

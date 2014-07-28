@@ -37,7 +37,7 @@
 			<Text>Workshop</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_WORKSHOP_HELP">
-			<Text>+10% [ICON_PRODUCTION] Production towards Buildings and Siege units. +2 [ICON_PRODUCTION] Production from Blasting Powder. Increases the likelihood that an Engineer will appear.</Text>
+			<Text>+10% [ICON_PRODUCTION] Production towards Buildings and Siege units. Increases the likelihood that an Engineer will appear.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_FORGE">
 			<Text>Forge</Text>
@@ -245,6 +245,10 @@
 		<Row Tag="TXT_KEY_EA_BUILDING_SILOS">
 			<Text>Silos</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_SILOS_HELP">
+			<Text>Allows [ICON_FOOD] Food to be moved from this city along trade routes inside your civilization.</Text>
+		</Row>
+
 		<Row Tag="TXT_KEY_EA_BUILDING_COURTHOUSE">
 			<Text>Courthouse</Text>
 		</Row>
@@ -491,6 +495,11 @@
 		<Row Tag="TXT_KEY_EA_BUILDING_WAREHOUSES">
 			<Text>Warehouses</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_WAREHOUSES_HELP">
+			<Text>Allows [ICON_PRODUCTION] Production to be moved from this city along trade routes inside your civilization.</Text>
+		</Row>
+
+		
 		<Row Tag="TXT_KEY_EA_BUILDING_PUBLIC_BATHS">
 			<Text>Public Baths</Text>
 		</Row>
@@ -540,10 +549,10 @@
 		<Row Tag="TXT_KEY_EA_BUILDING_DEEP_FARMS_HELP">
 			<Text>+3 [ICON_FOOD] Food from Mine improvements worked by this city.[NEWLINE]+3 [ICON_FOOD] Food and +2 [ICON_PRODUCTION] Production from Mountains worked by this city.</Text>
 		</Row>
-		<Row Tag="BUILDING_FLOATING_GARDENS">
+		<Row Tag="TXT_KEY_EA_BUILDING_FLOATING_GARDENS">
 			<Text>Floating Gardens</Text>
 		</Row>
-		<Row Tag="BUILDING_FLOATING_GARDENS_HELP">
+		<Row Tag="TXT_KEY_EA_BUILDING_FLOATING_GARDENS_HELP">
 			<Text>Provides an additional +1 [ICON_FOOD] Food[NEWLINE] for every improved Lake owned by this city (added via this building, not plot)[NEWLINE]City must have Cult of Abzu as majority religion and own one improved Lake to build.</Text>
 		</Row>
 		

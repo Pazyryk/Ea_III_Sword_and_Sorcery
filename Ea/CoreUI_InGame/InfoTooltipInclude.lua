@@ -291,6 +291,16 @@ function GetHelpTextForBuilding(iBuildingID, bExcludeName, bExcludeHeader, bNoMa
 	if (iProd ~= nil and iProd ~= 0) then
 		table.insert(lines, Locale.ConvertTextKey("TXT_KEY_PRODUCTION_BUILDING_PRODUCTION_CHANGE", iProd * number));
 	end
+
+	--Paz add: Health
+	local iHealth = pBuildingInfo.EaHealth
+	if iHealth > 0 then
+		table.insert(lines, Locale.ConvertTextKey("TXT_KEY_EA_PRODUCTION_BUILDING_HEALTH_POSITIVE", iHealth * number))
+	elseif iHealth < 0 then
+		table.insert(lines, Locale.ConvertTextKey("TXT_KEY_EA_PRODUCTION_BUILDING_HEALTH_NEGATIVE", iHealth * number))
+	end
+
+	--end Paz add
 	
 	-- Great People
 	local specialistType = pBuildingInfo.SpecialistType;

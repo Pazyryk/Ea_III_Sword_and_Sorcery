@@ -182,6 +182,7 @@ function OnLoadEaMain()   --Called from the bottom of EaMain after all included 
 	AIMercInit(bNewGame)
 	EaWondersInit(bNewGame)
 	EaActionsInit(bNewGame)
+	EaDiplomacyInit(bNewGame)
 
 	gg_init.bModInited = true
 

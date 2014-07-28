@@ -708,7 +708,7 @@ function CityPerCivTurn(iPlayer)		--Full civ only		TO DO: must be real civs so t
 						local improveType = improveTypes[i]
 						count = count + cityRemoteImproveCount[improveType]
 					end
-					print("RemoteImproves Building/Count = ", GameInfo.Buildings[buildingID].Type, count)
+					--print("RemoteImproves Building/Count = ", GameInfo.Buildings[buildingID].Type, count)
 					if 0 < city:GetNumFreeBuilding(buildingID) then	--true if ever given for free
 						city:SetNumFreeBuilding(buildingID, count + 1)
 						city:SetNumRealBuilding(buildingID, 0)

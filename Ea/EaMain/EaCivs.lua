@@ -559,7 +559,7 @@ end
 GameEvents.PlayerMinorFriendshipAnchor.Add(OnPlayerMinorFriendshipAnchor)
 
 local function OnPlayerMinorFriendshipDecayMod(iMajorPlayer, iMinorPlayer)
-	print("OnPlayerMinorFriendshipDecayMod ", iMajorPlayer, iMinorPlayer)
+	--print("OnPlayerMinorFriendshipDecayMod ", iMajorPlayer, iMinorPlayer)
 	if cityStates[iMinorPlayer] then	--City States
 		if gg_bHasPatronage[iMajorPlayer] then
 			return -50
@@ -576,7 +576,7 @@ end
 GameEvents.PlayerMinorFriendshipDecayMod.Add(OnPlayerMinorFriendshipDecayMod)
 
 local function OnPlayerMinorFriendshipRecoveryMod(iMajorPlayer, iMinorPlayer)
-	print("OnPlayerMinorFriendshipRecoveryMod ", iMajorPlayer, iMinorPlayer)
+	--print("OnPlayerMinorFriendshipRecoveryMod ", iMajorPlayer, iMinorPlayer)
 	if cityStates[iMinorPlayer] then	--City States
 		if gg_bHasPatronage[iMajorPlayer] then
 			return 50

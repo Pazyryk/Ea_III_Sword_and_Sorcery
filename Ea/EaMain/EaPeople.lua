@@ -433,12 +433,13 @@ function PeoplePerCivTurn(iPlayer)
 						else
 							DoEaSpell(eaPerson.eaActionID, iPlayer, unit, iPerson)
 						end
+						--gPeople[iPerson] could be nil after this if GP killed doing action
 						print("eaPerson.gotoPlotIndex, .gotoEaActionID = ", eaPerson.gotoPlotIndex, eaPerson.gotoEaActionID)
 					end
 				end
 
 				--Make AI do something if unit on map with movement
-				if eaPerson.iUnit ~= -1 and not bHumanPlayer then
+				if gPeople[iPerson] and eaPerson.iUnit ~= -1 and not bHumanPlayer then
 					unit = player:GetUnitByID(eaPerson.iUnit)
 					local debugLoopCount = 0
 					while unit and unit:GetMoves() > 0 and not unit:IsDead() and not unit:IsDelayedDeath() do					--repeat call since not all actions use movement or all movement

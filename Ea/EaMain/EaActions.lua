@@ -1004,7 +1004,7 @@ function DoEaAction(eaActionID, iPlayer, unit, iPerson, targetX, targetY)
 		unit:SetInvisibleType(INVISIBLE_SUBMARINE)
 		local bSuccess = DoGotoPlot(iPlayer, unit, iPerson, targetX, targetY) 	--if targetX, Y == nil, then destination is from eaPerson.gotoPlotIndex
 
-		if gPeople[iPerson].timeStop and g_unit then
+		if gPeople[iPerson] and gPeople[iPerson].timeStop and g_unit then
 			CheckTimeStopUnit(unit, gPeople[iPerson])
 		end
 
@@ -1035,6 +1035,8 @@ function DoEaAction(eaActionID, iPlayer, unit, iPerson, targetX, targetY)
 			return false		--Warning! AI might go into infinite loop if Test keeps passing true (fail from Do only possible for DoMoveToPlot at this time)
 		end
 	end
+
+	if not g_unit or g_unit:IsDead() or g_unit:IsDelayedDeath() then return true end	--nothing else we ned to do
 
 	if g_bGreatPerson then
 		--memory for AI specialization

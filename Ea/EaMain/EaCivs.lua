@@ -734,19 +734,11 @@ local function OnCanMeetTeam(iTeam1, iTeam2)
 end
 GameEvents.CanMeetTeam.Add(OnCanMeetTeam)
 
-local function WarStateChangedHandler(iTeam1, iTeam2, bWar)
+local function WarStateChangedHandler(iTeam1, iTeam2, bWar)		--works even if player hasn't met either teem
 	--just testing for now
 	print("WarStateChangedHandler", iTeam1, iTeam2, bWar)
-	local iActiveTeam = Game.GetActiveTeam()
-	if iTeam1 ~= iActiveTeam and iTeam2 ~= iActiveTeam then
-		print("Neither team was the active team!")
-		local activeTeam = Teams[iActiveTeam]
-		if not activeTeam:IsHasMet(iTeam1) and not activeTeam:IsHasMet(iTeam1) then
-			print("Neither team has met the active team!")
-		end
-	end
 
-	--EaTradeDataDirty()
+
 end
 Events.WarStateChanged.Add(WarStateChangedHandler)
 

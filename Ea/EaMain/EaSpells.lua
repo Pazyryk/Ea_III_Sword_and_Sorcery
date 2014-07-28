@@ -782,6 +782,11 @@ function DoEaSpell(eaActionID, iPlayer, unit, iPerson, targetX, targetY)
 		end
 	end
 
+	--TO DO: g_unit needs to be maintained in all Do's that transform!
+
+
+	if not g_unit or g_unit:IsDead() or g_unit:IsDelayedDeath() then return true end	--nothing else we ned to do
+
 	if g_bGreatPerson then
 		--memory for AI specialization
 		if g_eaAction.GPModType1 then

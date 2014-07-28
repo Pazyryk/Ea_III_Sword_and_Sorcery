@@ -307,7 +307,7 @@ INSERT INTO ArtDefine_UnitMemberInfos (Type,		Scale,	Domain,		Model,								Mate
 ('ART_DEF_UNIT_MEMBER_STONESKIN_OGRE_2',			0.2,	'',			'stoneskin_ogre_short.fxsxml',		'CLOTH',			'FLESH'			),
 
 ('ART_DEF_UNIT_MEMBER_NAGA_GREEN',					0.14,	'',			'Naga_Green.fxsxml',				'CLOTH',			'FLESH'			),
-('ART_DEF_UNIT_MEMBER_NAGA_BLUE',					0.14,	'',			'Naga_Blue.dds',					'CLOTH',			'FLESH'			),
+('ART_DEF_UNIT_MEMBER_NAGA_BLUE',					0.14,	'',			'Naga_Blue.fxsxml',					'CLOTH',			'FLESH'			),
 --regulars
 ('ART_DEF_UNIT_MEMBER_MAN_CHARIOT',					0.13,	'',			'Chariot_Viking.fxsxml',			'CLOTH',			'WOODSM'		),
 
@@ -316,7 +316,7 @@ INSERT INTO ArtDefine_UnitMemberInfos (Type,		Scale,	Domain,		Model,								Mate
 ('ART_DEF_UNIT_MEMBER_ELF_SWORDMAN',				0.14,	'',			'elf_swordsman.fxsxml',				'CLOTH',			'FLESH'			),
 ('ART_DEF_UNIT_MEMBER_ELF_LONGSWORD',				0.14,	'',			'elf_longsword.fxsxml',				'CLOTH',			'FLESH'			),
 ('ART_DEF_UNIT_MEMBER_ELF_HEAVY_SWORDMAN_GOLD',		0.14,	'',			'elf_heavy_swordsman_gold.fxsxml',	'ARMOR',			'ARMOR'			),
-('ART_DEF_UNIT_MEMBER_ELF_HEAVY_SWORDMAN_SILVER',	0.14,	'',			'elf_heavy_swordsman_silver.fxsxml','ARMOR',		'ARMOR'			),
+('ART_DEF_UNIT_MEMBER_ELF_HEAVY_SWORDMAN_SILVER',	0.14,	'',			'elf_heavy_swordsman_silver.fxsxml','ARMOR',			'ARMOR'			),
 ('ART_DEF_UNIT_MEMBER_ELF_HORSEMAN',				0.14,	'',			'elf_horseman.fxsxml',				'CLOTH',			'FLESH'			),
 ('ART_DEF_UNIT_MEMBER_ELF_ARCHER',					0.14,	'',			'elf_archer.fxsxml',				'CLOTH',			'FLESH'			),
 ('ART_DEF_UNIT_MEMBER_ELF_MUSKETMAN',				0.14,	'',			'elf_musketman.fxsxml',				'CLOTH',			'FLESH'			),

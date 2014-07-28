@@ -3,7 +3,7 @@
 -- DateCreated: 8/16/2011 7:17:51 PM
 --------------------------------------------------------------
 
-local HOTFIX = "h"		--forgot f so don't yell at testers
+local HOTFIX = "i"		--forgot f so don't yell at testers
 local EA_MEDIA_PACK_MIN_VERSION = 5
 
 

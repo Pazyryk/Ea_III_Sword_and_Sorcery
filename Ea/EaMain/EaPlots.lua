@@ -918,14 +918,14 @@ local function GetArmageddonPlotStats()
 	local blightBreachSpread = 0
 	local blightSpawn = 0
 	local breachSpawn = 0
-	if 10 < armageddonStage then
+	if 10 < armageddonStage then		--11
 		blightBreachSpread = 100 * manaDepletion 
-		blightSpawn = 10 * (manaDepletion - 0.6667) + 2.5	--2.5% to 10%
-		breachSpawn = 2 * blightSpawn						--20% (but only qualified plots)
-	elseif 5 < armageddonStage then
+		blightSpawn = 12.5 * (manaDepletion - 0.4) + 2.5	--2.5% to 10%
+		breachSpawn = 2 * blightSpawn						--2x above but only on qualified plots
+	elseif 5 < armageddonStage then		--6
 		blightBreachSpread = 30 * manaDepletion
-		blightSpawn = 10 * (manaDepletion - 0.6667) + 2.5	--2.5% to 10%
-	elseif 3 < armageddonStage then
+		blightSpawn = 12.5 * (manaDepletion - 0.4) + 2.5	--2.5% to 10%
+	elseif 3 < armageddonStage then		--4
 		blightBreachSpread = 30 * manaDepletion 
 	end
 	print("blightBreachSpread, blightSpawn, breachSpawn = ", blightBreachSpread, blightSpawn, breachSpawn)

@@ -2794,15 +2794,10 @@ Finish[GameInfoTypes.EA_SPELL_BECOME_LICH] = function()
 	local pts = g_unit:GetLevel() * 100
 	g_eaPerson.unitTypeID = UNIT_LICH
 	g_eaPerson.predestinedAgeOfDeath = nil
-	InitGPUnit(g_iPlayer, g_iPerson, g_x, g_y, g_unit, UNIT_LICH, -1)
+	g_unit = InitGPUnit(g_iPlayer, g_iPerson, g_x, g_y, g_unit, UNIT_LICH, -1)
 	UseManaOrDivineFavor(g_iPlayer, g_iPerson, pts * 100)
 	return true
 end
-
-
-
-
-
 
 --EA_SPELL_FINGER_OF_DEATH
 --EA_SPELL_CHARM_MONSTER

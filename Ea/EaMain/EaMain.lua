@@ -3,17 +3,16 @@
 -- DateCreated: 8/16/2011 7:17:51 PM
 --------------------------------------------------------------
 
-local HOTFIX = "i"		--forgot f so don't yell at testers
+local HOTFIX = "-"
+local DLL_COMMIT = "f4fb21f"
 local EA_MEDIA_PACK_MIN_VERSION = 5
-
-
 
 -------------------------------------------------------------------------------------------------------
 
 include("EaErrorHandler.lua")
 
 if not GameDefines.EA_DLL_VERSION then
-	error("Mod could not determine modded dll version. Is this a Mac? (Macs can't play dll mods)")
+	error("Mod does not see modded dll for some reason.")
 end
 
 
@@ -36,6 +35,7 @@ for key, modInfo in pairs(unsortedInstalledMods) do
 end
 print("")
 print("hotfix: " .. HOTFIX)
+print("dll   : " .. DLL_COMMIT)
 print("****************************************************************")
 print("")
 

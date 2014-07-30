@@ -850,7 +850,7 @@ function OnCityDestroyed(hexPos, playerID, cityID, newPlayerID)
 	local active_team = Players[Game.GetActivePlayer()]:GetTeam();
 	local team = Players[playerID]:GetTeam();
 	
-	if(active_team ~= team) 
+	if(active_team ~= team and Game.GetAIAutoPlay() == 0)		--Paz added autoplay check 
 	then
 	    g_OtherIM:ReleaseInstance( banner.SubControls );
     else

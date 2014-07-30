@@ -215,6 +215,11 @@ INSERT INTO Buildings (Type,			Cost,	PrereqTech,		EaGreatPersonBuild,	Happiness,
 ('BUILDING_MOD_STANHENCG',				-1,		NULL,			'Druid',			0,			1,				0,				'MONUMENT',						'BW_ATLAS_2',	2,				0				),
 ('BUILDING_PYRAMID',					-1,		NULL,			'Engineer',			0,			1,				0,				'MONUMENT',						'BW_ATLAS_2',	0,				0				),
 ('BUILDING_GREAT_LIBRARY',				-1,		NULL,			'Sage',				0,			1,				0,				'MONUMENT',						'BW_ATLAS_2',	1,				0				),
+('BUILDING_ACADEMY_PHILOSOPHY',			-1,		NULL,			'Sage',				0,			1,				0,				'MONUMENT',						'BW_ATLAS_2',	1,				0				),
+('BUILDING_ACADEMY_LOGIC',				-1,		NULL,			'Sage',				0,			1,				0,				'MONUMENT',						'BW_ATLAS_2',	1,				0				),
+('BUILDING_ACADEMY_SEMIOTICS',			-1,		NULL,			'Sage',				0,			1,				0,				'MONUMENT',						'BW_ATLAS_2',	1,				0				),
+('BUILDING_ACADEMY_METAPHYSICS',		-1,		NULL,			'Sage',				0,			1,				0,				'MONUMENT',						'BW_ATLAS_2',	1,				0				),
+('BUILDING_ACADEMY_TRANS_THOUGHT',		-1,		NULL,			'Sage',				0,			1,				0,				'MONUMENT',						'BW_ATLAS_2',	1,				0				),
 
 ('BUILDING_MOD_ARCANE_TOWER',			-1,		NULL,			'Thaumaturge',		0,			1,				0,				'MONUMENT',						'BW_ATLAS_2',	1,				0				),
 ('BUILDING_TEMPLE_AZZANDARA_1',			-1,		NULL,			'Devout',			0,			1,				0,				'MONUMENT',						'BW_ATLAS_1',	37,				0				),
@@ -257,12 +262,12 @@ UPDATE Buildings SET MutuallyExclusiveGroup = 1 WHERE Type = 'BUILDING_FOREFATHE
 UPDATE Buildings SET NoOccupiedUnhappiness = 1 WHERE Type = 'BUILDING_FOREFATHERS_STATUE';
 UPDATE Buildings SET CityConnectionTradeRouteModifier = 20 WHERE Type = 'BUILDING_LIGHTHOUSE';	
 UPDATE Buildings SET Happiness = 1, EaOccupationUnhapReduction = 30 WHERE Type = 'BUILDING_COURTHOUSE';
-UPDATE Buildings SET Defense = 100 WHERE Type = 'BUILDING_PALACE';
-UPDATE Buildings SET Defense = 250, AllowsRangeStrike = 1, CityWall = 1 WHERE Type = 'BUILDING_WALLS';
-UPDATE Buildings SET Defense = 100, AllowsRangeStrike = 1 WHERE Type = 'BUILDING_ARMORY';
-UPDATE Buildings SET Defense = 100, AllowsRangeStrike = 1 WHERE Type = 'BUILDING_ARSENAL';
-UPDATE Buildings SET Defense = 350, AllowsRangeStrike = 1 WHERE Type = 'BUILDING_CASTLE';
-UPDATE Buildings SET Defense = 400, AllowsRangeStrike = 1 WHERE Type = 'BUILDING_STRONGHOLD';
+UPDATE Buildings SET Defense = 200 WHERE Type = 'BUILDING_PALACE';
+UPDATE Buildings SET Defense = 500, AllowsRangeStrike = 1, CityWall = 1 WHERE Type = 'BUILDING_WALLS';
+UPDATE Buildings SET Defense = 200, AllowsRangeStrike = 1 WHERE Type = 'BUILDING_ARMORY';
+UPDATE Buildings SET Defense = 200, AllowsRangeStrike = 1 WHERE Type = 'BUILDING_ARSENAL';
+UPDATE Buildings SET Defense = 700, AllowsRangeStrike = 1 WHERE Type = 'BUILDING_CASTLE';
+UPDATE Buildings SET Defense = 800, AllowsRangeStrike = 1 WHERE Type = 'BUILDING_STRONGHOLD';
 UPDATE Buildings SET AllowsWaterRoutes = 1 WHERE Type = 'BUILDING_HARBOR';
 UPDATE Buildings SET EaHealth = 2 WHERE Type = 'BUILDING_APOTHECARY';
 UPDATE Buildings SET EaHealth = 4 WHERE Type = 'BUILDING_AQUEDUCT';
@@ -317,7 +322,7 @@ INSERT INTO BuildingClasses (Type, DefaultBuilding, Description) SELECT Building
 
 UPDATE BuildingClasses SET MaxPlayerInstances = 1 WHERE Type = 'BUILDINGCLASS_PALACE';
 UPDATE BuildingClasses SET MaxGlobalInstances = 1 WHERE Type IN ('BUILDINGCLASS_KOLOSSOS', 'BUILDINGCLASS_MEGALOS_FAROS', 'BUILDINGCLASS_HANGING_GARDENS', 'BUILDINGCLASS_UUC_YABNAL', 'BUILDINGCLASS_THE_LONG_WALL', 'BUILDINGCLASS_CLOG_MOR', 'BUILDINGCLASS_DA_BAOEN_SI');
---'BUILDINGCLASS_STANHENCG', , 'BUILDINGCLASS_GREAT_LIBRARY'
+--TO DO: Add plot wonders if we know they are safe (for score) 'BUILDINGCLASS_STANHENCG', , 'BUILDINGCLASS_GREAT_LIBRARY'
 
 DELETE FROM BuildingClass_VictoryThresholds;
 

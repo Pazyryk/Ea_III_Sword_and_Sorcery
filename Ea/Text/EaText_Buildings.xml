@@ -590,7 +590,7 @@
 			<Text>Palace</Text>
 		</Row>
 
-		<!-- Wonders -->
+		<!-- Wonders (plot wonders use TXT_KEY_EA_WONDER_ and defined in EaText_EaCreations.xml) -->
 		<Row Tag="TXT_KEY_EA_BUILDING_STANHENCG">
 			<Text>Stânhencg</Text>
 		</Row>
@@ -614,9 +614,6 @@
 		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_DA_BAOEN_SI">
 			<Text>Da Bao'en Si</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_GREAT_LIBRARY">
-			<Text>Great Library</Text>
 		</Row>
 
 		<!-- Hidden Buildings (only seen in debug mode) -->

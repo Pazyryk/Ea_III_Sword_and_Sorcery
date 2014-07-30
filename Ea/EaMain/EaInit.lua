@@ -56,11 +56,11 @@ local function InitForNewGame()
 			eaPlayer.culturalLevel = 0
 			eaPlayer.cumCulture = 0
 			eaPlayer.aveCulturePerPop = 0
-			eaPlayer.culturalLevelChange = 0
 			eaPlayer.policyCount = 0
-
+			--eaPlayer.culturalLevelChange = 0
 			--eaPlayer.cumPopTurns = 0
-			eaPlayer.techCount = 0
+			--eaPlayer.techCount = 0
+			eaPlayer.techs = {}
 			eaPlayer.rpFromDiffusion = 0
 			eaPlayer.rpFromConquest = 0
 			eaPlayer.tradeTotals = {}	--index by other iPlayer; holds only base trade so we can calculate Trade Mission value
@@ -165,7 +165,7 @@ function OnLoadEaMain()   --Called from the bottom of EaMain after all included 
 	end
 
 	--init Lua files
-	TestResyncGPIndexes()
+	--TestResyncGPIndexes()
 	EaEncampmentsInit(bNewGame)
 	EaCivsInit(bNewGame)
 	EaCivNamingInit(bNewGame)

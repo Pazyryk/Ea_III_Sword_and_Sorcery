@@ -3058,14 +3058,14 @@ SetUI[GameInfoTypes.EA_ACTION_STANHENCG] = function()
 	end
 end
 
---EA_WONDER_PYRAMID
-SetAIValues[GameInfoTypes.EA_WONDER_PYRAMID] = function()
+--EA_ACTION_PYRAMID
+SetAIValues[GameInfoTypes.EA_ACTION_PYRAMID] = function()
 	gg_aiOptionValues.p = g_mod		--proxy
 end
 
-SetUI[GameInfoTypes.EA_WONDER_PYRAMID] = function()
+SetUI[GameInfoTypes.EA_ACTION_PYRAMID] = function()
 	if g_bAllTestsPassed then
-		MapModData.text = "Increases the apparent size of your civilization and military might by "..g_mod.."%"
+		MapModData.text = "Increases the apparent size of your civilization and military might by "..g_mod.."% (will affect other civilizations interactions with you and counts toward Domination Victory Condition)"
 	end
 end
 
@@ -3077,6 +3077,61 @@ end
 SetUI[GameInfoTypes.EA_ACTION_GREAT_LIBRARY] = function()
 	if g_bAllTestsPassed then
 		MapModData.text = "Reduces research cost of all techs by "..g_mod.."%"
+	end
+end
+
+--EA_ACTION_ACADEMY_PHILOSOPHY
+SetAIValues[GameInfoTypes.EA_ACTION_ACADEMY_PHILOSOPHY] = function()
+	gg_aiOptionValues.p = g_mod + 1		--proxy
+end
+
+SetUI[GameInfoTypes.EA_ACTION_ACADEMY_PHILOSOPHY] = function()
+	if g_bAllTestsPassed then
+		MapModData.text = "Reduces knowledge maintanence from all tier 2 techs and research cost of all tier 3 techs by ".. (g_mod * 2) .."%"
+	end
+end
+
+--EA_ACTION_ACADEMY_LOGIC
+SetAIValues[GameInfoTypes.EA_ACTION_ACADEMY_LOGIC] = function()
+	gg_aiOptionValues.p = g_mod + 1		--proxy
+end
+
+SetUI[GameInfoTypes.EA_ACTION_ACADEMY_LOGIC] = function()
+	if g_bAllTestsPassed then
+		MapModData.text = "Reduces knowledge maintanence from all tier 3 techs and research cost of all tier 4 techs by ".. (g_mod * 2) .."%"
+	end
+end
+
+--EA_ACTION_ACADEMY_SEMIOTICS
+SetAIValues[GameInfoTypes.EA_ACTION_ACADEMY_SEMIOTICS] = function()
+	gg_aiOptionValues.p = g_mod + 1		--proxy
+end
+
+SetUI[GameInfoTypes.EA_ACTION_ACADEMY_SEMIOTICS] = function()
+	if g_bAllTestsPassed then
+		MapModData.text = "Reduces knowledge maintanence from all tier 4 techs and research cost of all tier 5 techs by ".. (g_mod * 2) .."%"
+	end
+end
+
+--EA_ACTION_ACADEMY_METAPHYSICS
+SetAIValues[GameInfoTypes.EA_ACTION_ACADEMY_METAPHYSICS] = function()
+	gg_aiOptionValues.p = g_mod + 1		--proxy
+end
+
+SetUI[GameInfoTypes.EA_ACTION_ACADEMY_METAPHYSICS] = function()
+	if g_bAllTestsPassed then
+		MapModData.text = "Reduces knowledge maintanence from all tier 5 techs and research cost of all tier 6 techs by ".. (g_mod * 2) .."%"
+	end
+end
+
+--EA_ACTION_ACADEMY_TRANS_THOUGHT
+SetAIValues[GameInfoTypes.EA_ACTION_ACADEMY_TRANS_THOUGHT] = function()
+	gg_aiOptionValues.p = g_mod + 1		--proxy
+end
+
+SetUI[GameInfoTypes.EA_ACTION_ACADEMY_TRANS_THOUGHT] = function()
+	if g_bAllTestsPassed then
+		MapModData.text = "Reduces knowledge maintanence from all tier 6 techs and research cost of all tier 7 techs by ".. (g_mod * 2) .."%"
 	end
 end
 

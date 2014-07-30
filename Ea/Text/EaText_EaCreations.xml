@@ -37,6 +37,22 @@
 		<Row Tag="TXT_KEY_EA_WONDER_GREAT_LIBRARY">
 			<Text>Great Library</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_ACADEMY_PHILOSOPHY">
+			<Text>Academy of Philosophy</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_ACADEMY_LOGIC">
+			<Text>Academy of Logic</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_ACADEMY_SEMIOTICS">
+			<Text>Academy of Semiotics</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_ACADEMY_METAPHYSICS">
+			<Text>Academy of Metaphysics</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_WONDER_ACADEMY_TRANS_THOUGHT">
+			<Text>Academy of Transcendental Thought</Text>
+		</Row>
+		
 		<Row Tag="TXT_KEY_EA_WONDER_ARCANE_TOWER">
 			<Text>Arcane Tower</Text>
 		</Row>

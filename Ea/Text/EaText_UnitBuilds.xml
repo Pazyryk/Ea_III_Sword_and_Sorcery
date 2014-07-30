@@ -78,6 +78,21 @@
 		<Row Tag="TXT_KEY_EA_BUILD_GREAT_LIBRARY">
 			<Text>Build Great Library (Sage)</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_BUILD_ACADEMY_PHILOSOPHY">
+			<Text>Build Academy of Philosophy (Sage)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILD_ACADEMY_LOGIC">
+			<Text>Build Academy of Logic (Sage)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILD_ACADEMY_SEMIOTICS">
+			<Text>Build Academy of Semiotics (Sage)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILD_ACADEMY_METAPHYSICS">
+			<Text>Build Academy of Metaphysics (Sage)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILD_ACADEMY_TRANS_THOUGHT">
+			<Text>Build Academy of Transcendental Thought (Sage)</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_BUILD_ARCANE_TOWER">
 			<Text>Build Arcane Tower (Thaumaturge)</Text>
 		</Row>

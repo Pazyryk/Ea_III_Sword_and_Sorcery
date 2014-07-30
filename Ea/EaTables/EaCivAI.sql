@@ -79,9 +79,9 @@ INSERT INTO EaCivPlans (Type,		Function,		TechModule,					PolicyModule,				Build
 ('EACIVPLAN_O',						'Naming',		NULL,						'POLICY_ARCANE_TRADITION',	NULL,						200	),
 ('EACIVPLAN_MU',					'Naming',		NULL,						'POLICY_ARCANE_TRADITION',	NULL,						200	),
 ('EACIVPLAN_GRAEAE',				'Naming',		NULL,						'POLICY_WITCHCRAFT',		NULL,						200	),
-('EACIVPLAN_NEZELIBA',				'Naming',		NULL,						'POLICY_SLAVE_TRADE',		NULL,						300	),
-('EACIVPLAN_GAZIYA',				'Naming',		NULL,						'POLICY_SLAVE_RAIDERS',		NULL,						300	),
-('EACIVPLAN_NEMEDIA',				'Naming',		NULL,						'POLICY_DISCIPLINE',		NULL,						280	),
+('EACIVPLAN_NEZELIBA',				'Naming',		NULL,						'POLICY_SLAVE_TRADE',		NULL,						1000	),	--300
+('EACIVPLAN_GAZIYA',				'Naming',		NULL,						'POLICY_SLAVE_RAIDERS',		NULL,						1000	),	--300
+('EACIVPLAN_NEMEDIA',				'Naming',		NULL,						'POLICY_DISCIPLINE',		NULL,						1000	),	--300
 ('EACIVPLAN_MILESIA',				'Naming',		NULL,						'POLICY_WARCRAFT',			NULL,						280	),
 ('EACIVPLAN_ULFHETHNAR',			'Naming',		NULL,						'POLICY_WARSPIRIT',			NULL,						280	),
 ('EACIVPLAN_MORRIGNA',				'Naming',		NULL,						'POLICY_DISCIPLINE',		NULL,						280	),
@@ -1131,7 +1131,6 @@ INSERT INTO EaCivPlans_TechModules (TechModule, TechType) VALUES
 ('Transcendentals',		'TECH_METAPHYSICS'				),
 ('Transcendentals',		'TECH_CHEMISTRY'				),
 ('Transcendentals',		'TECH_ASTRONOMY'				),
-('Transcendentals',		'TECH_COSMOGONY'				),
 ('Transcendentals',		'TECH_NAVIGATION'				),
 ('Transcendentals',		'TECH_MEDICINE'					),
 ('Transcendentals',		'TECH_TRANSCENDENTAL_THOUGHT'	),

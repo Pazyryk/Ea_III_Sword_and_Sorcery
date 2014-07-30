@@ -38,8 +38,8 @@ function GetHelpTextForTech( iTechID )
 	end
 
 	--Paz add: tech cost modifiers
-	LuaEvents.EaTechsGetCostHelpForTech(Game.GetActivePlayer(), iTechID)
-	strHelpText = strHelpText .. MapModData.costHelpForTech
+	LuaEvents.EaTechsGetTechCostHelp(Game.GetActivePlayer(), iTechID, pTeamTechs:HasTech(iTechID))
+	strHelpText = strHelpText .. MapModData.techCostHelp
 	--end Paz add
 	
 	-- Leads to...

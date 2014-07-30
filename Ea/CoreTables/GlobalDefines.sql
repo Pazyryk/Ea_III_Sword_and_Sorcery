@@ -39,10 +39,15 @@ UPDATE Defines SET Value = -75 WHERE Name = 'VERY_UNHAPPY_GROWTH_PENALTY';
 UPDATE Defines SET Value = 0 WHERE Name = 'VERY_UNHAPPY_COMBAT_PENALTY_PER_UNHAPPY';
 UPDATE Defines SET Value = 0 WHERE Name = 'VERY_UNHAPPY_MAX_COMBAT_PENALTY';
 
+--city defense
+UPDATE Defines SET Value = 1 WHERE Name = 'CITY_ATTACK_RANGE';				--2
+UPDATE Defines SET Value = 0 WHERE Name = 'CITY_STRENGTH_TECH_BASE';		--5.5
+UPDATE Defines SET Value = 0 WHERE Name = 'CITY_STRENGTH_TECH_EXPONENT';	--2.8
+UPDATE Defines SET Value = 0 WHERE Name = 'CITY_STRENGTH_TECH_MULTIPLIER';	--1
+
 --other city stuff
-UPDATE Defines SET Value = 1 WHERE Name = 'CITY_ATTACK_RANGE';
-UPDATE Defines SET Value = 1 WHERE Name = 'MIN_CITY_RANGE';
-UPDATE Defines SET Value = 1 WHERE Name = 'CAN_WORK_WATER_FROM_GAME_START';
+UPDATE Defines SET Value = 1 WHERE Name = 'MIN_CITY_RANGE';					--3
+UPDATE Defines SET Value = 1 WHERE Name = 'CAN_WORK_WATER_FROM_GAME_START';		--I don't think this does anything
 
 --units & combat
 UPDATE Defines SET Value = 100 WHERE Name = 'RANGE_ATTACK_RANGED_DEFENDER_MOD';						--changed from 125 in G&K (was 100 in vanilla)
@@ -52,7 +57,7 @@ UPDATE Defines SET Value = -30 WHERE Name = 'STRATEGIC_RESOURCE_EXHAUSTED_PENALT
 UPDATE Defines SET Value = 3 WHERE Name = 'RECON_VISIBILITY_RANGE';		--changed from 6
 
 --barbs
-UPDATE Defines SET Value = 100 WHERE Name = 'BARBARIAN_TECH_PERCENT';		--changed from 75
+UPDATE Defines SET Value = 75 WHERE Name = 'BARBARIAN_TECH_PERCENT';		--75
 
 --AI
 UPDATE Defines SET Value = 5 WHERE Name = 'NUM_POLICY_BRANCHES_ALLOWED';	--this should not matter

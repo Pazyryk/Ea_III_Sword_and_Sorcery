@@ -328,9 +328,6 @@
 		<Row Tag="TXT_KEY_EA_TECH_ESOTERIC_ARCANA">
 			<Text>Esoteric Arcana</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_TECH_COSMOGONY">
-			<Text>Cosmogony</Text>
-		</Row>
 
 		<Row Tag="TXT_KEY_EA_TECH_UNDERDARK_LORE">
 			<Text>Underdark Lore</Text>

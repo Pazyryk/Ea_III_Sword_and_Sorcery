@@ -81,8 +81,19 @@
 		<Row Tag="TXT_KEY_EA_TP_KNOWLEDGE_MAINT">
 			<Text>Knowledge Maintenance is currently [COLOR_NEGATIVE_TEXT]{1_Num}%[ENDCOLOR] based on [COLOR_POSITIVE_TEXT]{2_Num}[ENDCOLOR] known techs x [COLOR_POSITIVE_TEXT]{3_Pop}[ENDCOLOR] total [ICON_CITIZEN] Citizens x [COLOR_NEGATIVE_TEXT]{4_Num}%[ENDCOLOR] KM per known tech per citizen{5_InsertTxt}. KM is used together with tech-specific modifiers (if any) to calculate research cost for discovering new technologies.</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_TP_KNOWLEDGE_MAINT_ADJUSMENT_INSERT">
-			<Text> (the later value is reduced for [COLOR_POSITIVE_TEXT]{1_Civ}[ENDCOLOR] from base [COLOR_NEGATIVE_TEXT]{2_Num}%[ENDCOLOR])</Text>
+
+		
+		<Row Tag="TXT_KEY_EA_TP_KNOWLEDGE_MAINT_CIV_INSERT">
+			<Text>[COLOR_POSITIVE_TEXT]{1_Percent}%[ENDCOLOR] for [COLOR_POSITIVE_TEXT]{2_Civ}[ENDCOLOR]</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TP_AND">
+			<Text>and</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TP_KNOWLEDGE_MAINT_GREAT_LIBRARY_INSERT">
+			<Text>[COLOR_POSITIVE_TEXT]{1_Percent}%[ENDCOLOR] for [COLOR_POSITIVE_TEXT]Great Library[ENDCOLOR]</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TP_KNOWLEDGE_MAINT_MOD_INSERT">
+			<Text>(reduced {1_Text})</Text>
 		</Row>
 		
 		<Row Tag="TXT_KEY_EA_TP_GOLD_FROM_LEADER">

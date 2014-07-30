@@ -13,6 +13,7 @@ local Dprint = DEBUG_PRINT and print or function() end
 --------------------------------------------------------------
 local CONTINGENCY_THRESHOLD = 40				--Lower makes it easier to add contingency plan
 local CONTINGENCY_TURN_INTERVAL = 5
+local EXPECTED_CL_CHANGE = 0.06 / MapModData.GAME_SPEED_MULTIPLIER		--This should exactly match CL_TARGET_CHANGE in EaCultureLevelHelper.lua
 
 --------------------------------------------------------------
 -- File Locals
@@ -1576,13 +1577,7 @@ PickBestAvailableNamingPlan = function(iPlayer)
 					local policyID = GameInfoTypes[traitInfo.AdoptedPolicy]
 					local policy2ID = traitInfo.AndAdoptedPolicy and GameInfoTypes[traitInfo.AndAdoptedPolicy] or nil
 					local cultureLevelNeeded = GetCultureLevelNeededForPolicyList(iPlayer, {policyID, policy2ID})
-					local cultureChange = eaPlayer.culturalLevelChange or 0.02	--may be nil at game start
-					if cultureChange < 0.0001 then
-						cultureChange = 0.0001
-					elseif cultureChange > 0.4 then	--don't beleive it; probably just popped a culture goody
-						cultureChange = 0.05
-					end
-					turnsForPolicy = cultureLevelNeeded / cultureChange
+					turnsForPolicy = cultureLevelNeeded / EXPECTED_CL_CHANGE
 				end
 				print("  ...estimated turns for policy(s):", turnsForPolicy)
 

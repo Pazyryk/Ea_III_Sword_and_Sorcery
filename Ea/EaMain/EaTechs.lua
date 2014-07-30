@@ -28,9 +28,14 @@ local EACIV_SISUKAS =					GameInfoTypes.EACIV_SISUKAS
 local EARACE_MAN =						GameInfoTypes.EARACE_MAN
 local EARACE_SIDHE =					GameInfoTypes.EARACE_SIDHE
 local EARACE_HELDEOFOL =				GameInfoTypes.EARACE_HELDEOFOL
-local EA_WONDER_GREAT_LIBRARY =			GameInfoTypes.EA_WONDER_GREAT_LIBRARY
 local EA_ARTIFACT_TOME_OF_TOMES =		GameInfoTypes.EA_ARTIFACT_TOME_OF_TOMES
 local EA_EPIC_VAFTHRUTHNISMAL =			GameInfoTypes.EA_EPIC_VAFTHRUTHNISMAL
+local EA_WONDER_GREAT_LIBRARY =			GameInfoTypes.EA_WONDER_GREAT_LIBRARY
+local EA_WONDER_ACADEMY_PHILOSOPHY =	GameInfoTypes.EA_WONDER_ACADEMY_PHILOSOPHY
+local EA_WONDER_ACADEMY_LOGIC =			GameInfoTypes.EA_WONDER_ACADEMY_LOGIC
+local EA_WONDER_ACADEMY_SEMIOTICS =		GameInfoTypes.EA_WONDER_ACADEMY_SEMIOTICS
+local EA_WONDER_ACADEMY_METAPHYSICS =	GameInfoTypes.EA_WONDER_ACADEMY_METAPHYSICS
+local EA_WONDER_ACADEMY_TRANS_THOUGHT =	GameInfoTypes.EA_WONDER_ACADEMY_TRANS_THOUGHT
 
 local POLICY_PANTHEISM =				GameInfoTypes.POLICY_PANTHEISM
 local POLICY_SCHOLASTICISM = 			GameInfoTypes.POLICY_SCHOLASTICISM
@@ -53,35 +58,36 @@ local gg_unitTier = gg_unitTier
 
 
 --localized functions
+local HandleError10 = HandleError10
 local HandleError21 = HandleError21
 local HandleError31 = HandleError31
 local floor = math.floor
-
---file function tables
-local OnTeamTechLearned = {}
-local OnMajorPlayerTechLearned = {}
-local TechReq = {}
 
 --file shared
 local g_iActivePlayer = Game.GetActivePlayer()
 
 --file tables
 local g_playerKM = {}					--index by iPlayer
+local g_kmByTech = {}					--index by iPlayer, techID
 local g_playerTomeMods = {}				--index by iPlayer, techID
 local g_playerFavoredTechMods = {}		--index by iPlayer, techID
-
+local g_playerTechTierModifiers = {}	--index by iPlayer, tier
 
 --------------------------------------------------------------
 -- Cached Tables
 --------------------------------------------------------------
+local techTier = {}
 local arcaneTechs = {}
 for techInfo in GameInfo.Technologies() do
+	if not techInfo.Utility then
+		techTier[techInfo.ID] = techInfo.GridX + 1
+	end
 	if techInfo.EaArcane then
 		arcaneTechs[techInfo.ID] = true
 	end
 end
 
-local tomeTechs = {}
+local tomeTechs = {}		--index by artifactID, techIC
 for row in GameInfo.EaArtifacts_TomeTechs() do
 	local artifactID = GameInfoTypes[row.ArtifactType]
 	local techID = GameInfoTypes[row.TechType]
@@ -89,12 +95,182 @@ for row in GameInfo.EaArtifacts_TomeTechs() do
 	tomeTechs[artifactID][techID] = row.Change
 end
 
-local kmModifiers = {}
+local eaCivKMModifiers = {}		--index by eaCivID
 for eaCivInfo in GameInfo.EaCivs() do
 	if eaCivInfo.KnowlMaintModifier ~= 0 then
-		kmModifiers[eaCivInfo.ID] = eaCivInfo.KnowlMaintModifier
+		eaCivKMModifiers[eaCivInfo.ID] = eaCivInfo.KnowlMaintModifier
 	end
 end
+
+--------------------------------------------------------------
+-- Local Functions
+--------------------------------------------------------------
+
+local function ResetTechCosts(iPlayer)		--stores both km and research cost effects in file tables (for lookup when asked)
+	print("ResetTechCosts ", iPlayer)
+	if not fullCivs[iPlayer] then return end
+	local player = Players[iPlayer]
+	if not player:IsFoundedFirstCity() then return end
+	local eaPlayer = gPlayers[iPlayer]
+	if not eaPlayer then return end
+	local bActivePlayer = iPlayer == g_iActivePlayer
+
+	--global KM effects
+	local population = player:GetTotalPopulation()
+	local kmPerTech = KM_PER_TECH_PER_CITIZEN * population
+
+	local civKMPercent = 0
+	local civKMReduction = 0
+	if eaCivKMModifiers[eaPlayer.eaCivNameID] then
+		civKMPercent = -eaCivKMModifiers[eaPlayer.eaCivNameID]
+		civKMReduction = kmPerTech * civKMPercent / 100
+	end
+
+	local greatLibraryKMPercent = 0
+	local greatLibraryKMReduction = 0
+	if gWonders[EA_WONDER_GREAT_LIBRARY] and gWonders[EA_WONDER_GREAT_LIBRARY].iPlayer == iPlayer then
+		greatLibraryKMPercent = gWonders[EA_WONDER_GREAT_LIBRARY].mod
+		greatLibraryKMReduction = kmPerTech * greatLibraryKMPercent / 100
+	end
+
+	local kmByTech = g_kmByTech[iPlayer]
+	local favoredTechMods = g_playerFavoredTechMods[iPlayer]
+
+	--tech counting and initial KM
+	local techCount = 0
+	for techID in pairs(eaPlayer.techs) do
+		techCount = techCount + 1
+		if favoredTechMods[techID] then
+			kmByTech[techID] = kmPerTech * (100 + favoredTechMods[techID]) / 100 - civKMReduction - greatLibraryKMReduction
+		else
+			kmByTech[techID] = kmPerTech - civKMReduction - greatLibraryKMReduction
+		end
+	end
+
+	--Academies
+	local techTierModifiers = g_playerTechTierModifiers[iPlayer]
+	if gWonders[EA_WONDER_ACADEMY_PHILOSOPHY] and gWonders[EA_WONDER_ACADEMY_PHILOSOPHY].iPlayer == iPlayer then
+		local percentReduction = gWonders[EA_WONDER_ACADEMY_PHILOSOPHY].mod * 2
+		techTierModifiers[3] = -percentReduction										--reduced tech cost for tier 3
+		local kmPerTechReduction = kmPerTech * percentReduction / 100 
+		for techID in pairs(eaPlayer.techs) do
+			if techTier[techID] == 2 then												--reduced km for tier 2
+				kmByTech[techID] = kmByTech[techID] - kmPerTechReduction
+			end
+		end
+	end
+	if gWonders[EA_WONDER_ACADEMY_LOGIC] and gWonders[EA_WONDER_ACADEMY_LOGIC].iPlayer == iPlayer then
+		local percentReduction = gWonders[EA_WONDER_ACADEMY_LOGIC].mod * 2
+		techTierModifiers[4] = -percentReduction										--reduced tech cost for tier 4
+		local kmPerTechReduction = kmPerTech * percentReduction / 100 
+		for techID in pairs(eaPlayer.techs) do
+			if techTier[techID] == 3 then												--reduced km for tier 3
+				kmByTech[techID] = kmByTech[techID] - kmPerTechReduction
+			end
+		end
+	end
+	if gWonders[EA_WONDER_ACADEMY_SEMIOTICS] and gWonders[EA_WONDER_ACADEMY_SEMIOTICS].iPlayer == iPlayer then
+		local percentReduction = gWonders[EA_WONDER_ACADEMY_SEMIOTICS].mod * 2
+		techTierModifiers[5] = -percentReduction										--reduced tech cost for tier 5
+		local kmPerTechReduction = kmPerTech * percentReduction / 100 
+		for techID in pairs(eaPlayer.techs) do
+			if techTier[techID] == 4 then												--reduced km for tier 4
+				kmByTech[techID] = kmByTech[techID] - kmPerTechReduction
+			end
+		end
+	end
+	if gWonders[EA_WONDER_ACADEMY_METAPHYSICS] and gWonders[EA_WONDER_ACADEMY_METAPHYSICS].iPlayer == iPlayer then
+		local percentReduction = gWonders[EA_WONDER_ACADEMY_METAPHYSICS].mod * 2
+		techTierModifiers[6] = -percentReduction										--reduced tech cost for tier 6
+		local kmPerTechReduction = kmPerTech * percentReduction / 100 
+		for techID in pairs(eaPlayer.techs) do
+			if techTier[techID] == 5 then												--reduced km for tier 5
+				kmByTech[techID] = kmByTech[techID] - kmPerTechReduction
+			end
+		end
+	end
+	if gWonders[EA_WONDER_ACADEMY_TRANS_THOUGHT] and gWonders[EA_WONDER_ACADEMY_TRANS_THOUGHT].iPlayer == iPlayer then
+		local percentReduction = gWonders[EA_WONDER_ACADEMY_TRANS_THOUGHT].mod * 2
+		techTierModifiers[7] = -percentReduction										--reduced tech cost for tier 7
+		local kmPerTechReduction = kmPerTech * percentReduction / 100 
+		for techID in pairs(eaPlayer.techs) do
+			if techTier[techID] == 6 then												--reduced km for tier 6
+				kmByTech[techID] = kmByTech[techID] - kmPerTechReduction
+			end
+		end
+	end
+
+	--Tomes
+	local tomeMods = g_playerTomeMods[iPlayer]
+	for techID in pairs(tomeMods) do
+		tomeMods[techID] = 0
+	end
+	local tomeOfTomesMod = (gArtifacts[EA_ARTIFACT_TOME_OF_TOMES] and gArtifacts[EA_ARTIFACT_TOME_OF_TOMES].iPlayer == iPlayer) and gArtifacts[EA_ARTIFACT_TOME_OF_TOMES].mod or 0
+	for artifactID, artifact in pairs(gArtifacts) do
+		if tomeTechs[artifactID] then
+			local tomeMod = artifact.iPlayer == iPlayer and artifact.mod or 0
+			if tomeMod ~= 0 or tomeOfTomesMod ~= 0 then
+				for techID, costChange in pairs(tomeTechs[artifactID]) do
+					local percentReduction = -costChange * (tomeMod + 0.2 * tomeOfTomesMod)
+					tomeMods[techID] = (tomeMods[techID] or 0) - floor(percentReduction + 0.5)		--reduced tech cost
+					if eaPlayer.techs[techID] then
+						local kmPerTechReduction = kmPerTech * percentReduction / 100
+						kmByTech[techID] = kmByTech[techID] - kmPerTechReduction					--reduced km
+					end
+				end
+			end
+		end
+	end
+
+	--sum up individual tech km's
+	local totalKM = 0
+	for techID in pairs(eaPlayer.techs) do
+		totalKM = totalKM + kmByTech[techID]
+	end
+	totalKM = floor(totalKM + 0.5)
+
+	g_playerKM[iPlayer] = totalKM
+
+	--Active player TopPanel UI info
+	if iPlayer == g_iActivePlayer then
+		MapModData.knowlMaint = totalKM
+		MapModData.techCount = techCount
+		MapModData.totalPopulationForKM = population
+		MapModData.kmPerTechPerCitizen = KM_PER_TECH_PER_CITIZEN
+		MapModData.civKMPercent = civKMPercent
+		MapModData.greatLibraryKMPercent = greatLibraryKMPercent
+	
+	end
+end
+LuaEvents.EaTechsResetTechCosts.Add(function(iPlayer) return HandleError10(ResetTechCosts, iPlayer) end)
+
+local function OnPlayerTechCostMod(iPlayer, techID)		--Ea API
+	--print("OnPlayerTechCostMod ", iPlayer, techID)
+	if not fullCivs[iPlayer] then return 0 end
+	local mod = g_playerKM[iPlayer]
+	if g_playerFavoredTechMods[iPlayer][techID] then
+		mod = mod + g_playerFavoredTechMods[iPlayer][techID]
+	end
+	if g_playerTomeMods[iPlayer][techID] then
+		mod = mod + g_playerTomeMods[iPlayer][techID]
+	end
+	if arcaneTechs[techID] then
+		mod = mod + gg_playerArcaneMod[iPlayer]					--arcane techs
+	elseif gEpics[EA_EPIC_VAFTHRUTHNISMAL] and gEpics[EA_EPIC_VAFTHRUTHNISMAL].iPlayer == iPlayer then
+		mod = mod - gEpics[EA_EPIC_VAFTHRUTHNISMAL].mod			--non-arcane techs only
+	end
+
+	if g_playerTechTierModifiers[iPlayer][techTier[techID]] then
+		mod = mod + g_playerTechTierModifiers[iPlayer][techTier[techID]]
+	end
+
+	if mod < -50 then
+		mod = -50 - floor(50 * (mod + 50) / mod)		--below -50 becomes asymptotic to -100 (& dll sets min to -90)
+	end
+
+	return mod
+end
+GameEvents.PlayerTechCostMod.Add(OnPlayerTechCostMod)
 
 --------------------------------------------------------------
 -- Init
@@ -105,8 +281,10 @@ function EaTechsInit(bNewGame)
 	for iPlayer, eaPlayer in pairs(fullCivs) do
 		g_playerKM[iPlayer] = 0
 		gg_playerArcaneMod[iPlayer] = 0
+		g_kmByTech[iPlayer] = {}
 		g_playerTomeMods[iPlayer] = {}
 		g_playerFavoredTechMods[iPlayer] = {}
+		g_playerTechTierModifiers[iPlayer] = {}
 	end
 	if bNewGame then
 		for iPlayer, eaPlayer in pairs(realCivs) do
@@ -122,7 +300,8 @@ function EaTechsInit(bNewGame)
 					player:SetNumFreeTechs(1) --  works but without notification
 					team:SetHasTech(GameInfoTypes.TECH_ALLOW_HORSE_TRADE, true)
 				elseif eaPlayer.race == EARACE_SIDHE then
-					eaPlayer.techCount = 2			-- 2 free given for race
+					eaPlayer.techs[GameInfoTypes.TECH_HUNTING] = true			-- 2 initial free techs don't fire OnTeamTechResearched, so set here
+					eaPlayer.techs[GameInfoTypes.TECH_WRITING] = true
 					team:SetHasTech(GameInfoTypes.TECH_ALLOW_HORSE_TRADE, true)
 				end
 			end
@@ -176,142 +355,39 @@ function EaTechsInit(bNewGame)
 		end
 	end
 
-	--ResetTechCostMods(g_iActivePlayer)
+	--ResetTechCosts(g_iActivePlayer)
 end
-
 
 --------------------------------------------------------------
 -- Interface
 --------------------------------------------------------------
 
-function ResetTechCostMods(iPlayer)
-	print("ResetTechCostMods ", iPlayer)
-	if not fullCivs[iPlayer] then return end
+function TechPerCivTurn(iPlayer)
+	print("TechPerCivTurn")
+	local floor = math.floor
 	local player = Players[iPlayer]
-	if not player:IsFoundedFirstCity() then return end
 	local eaPlayer = gPlayers[iPlayer]
-	if not eaPlayer then return end
-
-	--KM
-	local techCount = eaPlayer.techCount
+	local team = Teams[player:GetTeam()]
+	local teamTechs = team:GetTeamTechs()
 	local eaCivID = eaPlayer.eaCivNameID
-	local kmPerTechPerCitizen = KM_PER_TECH_PER_CITIZEN
-	if kmModifiers[eaCivID] then
-		kmPerTechPerCitizen = kmPerTechPerCitizen * (100 + kmModifiers[eaCivID]) / 100
-	end
-	local totalPopulationForKM = player:GetTotalPopulation()
-	g_playerKM[iPlayer] = floor(kmPerTechPerCitizen * techCount * totalPopulationForKM + 0.5)
+	local bAI = not player:IsHuman()
+	local gameTurn = Game.GetGameTurn()
 
-	--Active player TopPanel UI info
-	if iPlayer == g_iActivePlayer then
-		MapModData.knowlMaint = g_playerKM[iPlayer]
-		MapModData.techCount = techCount
-		MapModData.kmPerTechPerCitizen = kmPerTechPerCitizen
-		MapModData.totalPopulationForKM = totalPopulationForKM
-		if kmPerTechPerCitizen ~= KM_PER_TECH_PER_CITIZEN then
-			MapModData.KM_PER_TECH_PER_CITIZEN = KM_PER_TECH_PER_CITIZEN
-		else
-			MapModData.KM_PER_TECH_PER_CITIZEN = nil
+
+	--zeroing
+	eaPlayer.rpFromDiffusion = 0	--these are only used for display
+	eaPlayer.rpFromConquest = 0
+
+	if bAI then
+		if (gameTurn + 1) % 50 == 0 and gameTurn / 50 <= AI_FREE_TECHS then	--1 free tech at turn 49, 99, 149,... until all free techs given
+			
+			player:SetNumFreeTechs(1)		--TO DO: Prevent high tier techs? Mod isn't compatible with unlimited free
 		end
 	end
 
-	--Tomes
-	local tomeMods = g_playerTomeMods[iPlayer]
-	for techID in pairs(tomeMods) do
-		tomeMods[techID] = 0
-	end
-	local tomeOfTomesMod = (gArtifacts[EA_ARTIFACT_TOME_OF_TOMES] and gArtifacts[EA_ARTIFACT_TOME_OF_TOMES].iPlayer == iPlayer) and gArtifacts[EA_ARTIFACT_TOME_OF_TOMES].mod or 0
-	for artifactID, artifact in pairs(gArtifacts) do
-		if tomeTechs[artifactID] then
-			local tomeMod = artifact.iPlayer == iPlayer and artifact.mod or 0
-			if tomeMod ~= 0 or tomeOfTomesMod ~= 0 then
-				for techID, costChange in pairs(tomeTechs[artifactID]) do
-					tomeMods[techID] = (tomeMods[techID] or 0) + floor(costChange * (tomeOfTomesMod * 0.2 + tomeMod) + 0.5)
-				end
-			end
-		end
-	end
+	ResetTechCosts(iPlayer)
+
 end
-LuaEvents.EaTechsResetTechCostMods.Add(ResetTechCostMods)
-
-
-local function GetCostHelpForTech(iPlayer, techID)
-	local str = ""
-	if fullCivs[iPlayer] then	--allows tech tree view in autoplay
-
-		--Favored Techs
-		if g_playerFavoredTechMods[iPlayer][techID] then
-			str = str .. "[NEWLINE][ICON_BULLET]Favored Tech: [COLOR_POSITIVE_TEXT]" .. g_playerFavoredTechMods[iPlayer][techID] .. "%[ENDCOLOR]"
-		end
-
-		--Tomes (complicated here to separate out Tome of Tomes)
-		local tomeMods = g_playerTomeMods[iPlayer]
-		if tomeMods[techID] and tomeMods[techID] ~= 0 then
-			local tomeOfTomesStr = ""
-			local tomeOfTomesMod = (gArtifacts[EA_ARTIFACT_TOME_OF_TOMES] and gArtifacts[EA_ARTIFACT_TOME_OF_TOMES].iPlayer == iPlayer) and gArtifacts[EA_ARTIFACT_TOME_OF_TOMES].mod or 0
-			for artifactID, artifact in pairs(gArtifacts) do
-				if tomeTechs[artifactID] then
-					local tomeMod = artifact.iPlayer == iPlayer and artifact.mod or 0
-					if tomeMod ~= 0 or tomeOfTomesMod ~= 0 then
-						for testTechID, costChange in pairs(tomeTechs[artifactID]) do
-							if testTechID == techID then
-								if tomeMod ~= 0 then
-									local costModFromTome = floor(costChange * tomeMod + 0.5)
-									local tomeName = Locale.Lookup(GameInfo.EaArtifacts[artifactID].Description)
-									str = str .. "[NEWLINE][ICON_BULLET]" .. tomeName .. ": [COLOR_POSITIVE_TEXT]" .. costModFromTome .. "%[ENDCOLOR]"
-								end
-								if tomeOfTomesMod ~= 0 then
-									local costModFromTomeOfTomes = floor(costChange * (tomeOfTomesMod * 0.2) + 0.5)
-									local tomeOfTomesName = Locale.Lookup(GameInfo.EaArtifacts[EA_ARTIFACT_TOME_OF_TOMES].Description)
-									local tomeName = Locale.Lookup(GameInfo.EaArtifacts[artifactID].Description)
-									tomeOfTomesStr = tomeOfTomesStr .. "[NEWLINE][ICON_BULLET]" .. tomeOfTomesName .. " (" .. tomeName .. "): [COLOR_POSITIVE_TEXT]" .. costModFromTomeOfTomes .. "%[ENDCOLOR]"
-								end
-								break
-							end
-						end
-					end
-				end
-			end
-			str = str .. tomeOfTomesStr
-		end
-
-		--Arcane bonuses
-		if arcaneTechs[techID] then
-			local player = Players[iPlayer]
-			local eaPlayer = gPlayers[iPlayer]
-			if player:HasPolicy(GameInfoTypes.POLICY_ARCANE_LORE) then
-				str = str .. "[NEWLINE][ICON_BULLET]Arcane Lore: [COLOR_POSITIVE_TEXT]" .. -10 .. "%[ENDCOLOR]"
-			end
-			if player:HasPolicy(GameInfoTypes.POLICY_ARCANE_RESEARCH) then
-				str = str .. "[NEWLINE][ICON_BULLET]Arcane Research: [COLOR_POSITIVE_TEXT]" .. -20 .. "%[ENDCOLOR]"
-			end
-			if eaPlayer.eaCivNameID == GameInfoTypes.EACIV_LEMURIA then
-				str = str .. "[NEWLINE][ICON_BULLET]Arcane Tech (Lemuria): [COLOR_POSITIVE_TEXT]" .. -20 .. "%[ENDCOLOR]"
-			end
-	
-		--Epic non-arcane bonus
-		elseif gEpics[EA_EPIC_VAFTHRUTHNISMAL] and gEpics[EA_EPIC_VAFTHRUTHNISMAL].iPlayer == iPlayer then
-			local epicName = Locale.Lookup(GameInfo.EaEpics[EA_EPIC_VAFTHRUTHNISMAL].Description)
-			local costMod = - gEpics[EA_EPIC_VAFTHRUTHNISMAL].mod
-			str = str .. "[NEWLINE][ICON_BULLET]" .. epicName .. ": [COLOR_POSITIVE_TEXT]" .. costMod .. "%[ENDCOLOR]"
-		end
-
-		--Great Library
-		if gWonders[EA_WONDER_GREAT_LIBRARY] and gWonders[EA_WONDER_GREAT_LIBRARY].iPlayer == iPlayer then
-			local wonderName = Locale.Lookup(GameInfo.EaWonders[EA_WONDER_GREAT_LIBRARY].Description)
-			local costMod = -gWonders[EA_WONDER_GREAT_LIBRARY].mod
-			str = str .. "[NEWLINE][ICON_BULLET]" .. wonderName .. ": [COLOR_POSITIVE_TEXT]" .. costMod .. "%[ENDCOLOR]"
-		end
-
-		--Total tech cost mod
-		local totalTechCostMod = OnPlayerTechCostMod(iPlayer, techID)
-		local colorCode = 0 < totalTechCostMod and "[COLOR_NEGATIVE_TEXT]" or "[COLOR_POSITIVE_TEXT]"
-		str = str .. "[NEWLINE][ICON_BULLET]Total cost modifier including KM: " .. colorCode .. totalTechCostMod .. "%[ENDCOLOR]"
-	end
-
-	MapModData.costHelpForTech = str
-end
-LuaEvents.EaTechsGetCostHelpForTech.Add(GetCostHelpForTech)
 
 function ResetPlayerFavoredTechs(iPlayer)	--only need at game load and once at naming, so no caching
 	print("ResetPlayerFavoredTechs ", iPlayer)
@@ -331,65 +407,108 @@ function ResetPlayerFavoredTechs(iPlayer)	--only need at game load and once at n
 	end
 end
 
-function OnPlayerTechCostMod(iPlayer, techID)		--Ea API
-	--print("OnPlayerTechCostMod ", iPlayer, techID)
-	if not fullCivs[iPlayer] then return 0 end
-	local mod = g_playerKM[iPlayer]
-	if g_playerFavoredTechMods[iPlayer][techID] then
-		mod = mod + g_playerFavoredTechMods[iPlayer][techID]
-	end
-	if g_playerTomeMods[iPlayer][techID] then
-		mod = mod + g_playerTomeMods[iPlayer][techID]
-	end
-	if arcaneTechs[techID] then
-		mod = mod + gg_playerArcaneMod[iPlayer]
-	elseif gEpics[EA_EPIC_VAFTHRUTHNISMAL] and gEpics[EA_EPIC_VAFTHRUTHNISMAL].iPlayer == iPlayer then
-		mod = mod - gEpics[EA_EPIC_VAFTHRUTHNISMAL].mod
-	end
-	local greatLibrary = gWonders[EA_WONDER_GREAT_LIBRARY]
-	if greatLibrary and greatLibrary.iPlayer == iPlayer then
-		mod = mod - greatLibrary.mod
-	end
+--------------------------------------------------------------
+-- UI Interface
+--------------------------------------------------------------
 
-	if mod < -50 then
-		mod = -50 - floor(50 * (mod + 50) / mod)		--below -50 becomes asymptotic to -100 (& dll sets min to -90)
-	end
+local function GetTechCostHelp(iPlayer, techID, bKnown)
+	--print("GetTechCostHelp ", iPlayer, techID, bKnown, g_kmByTech[iPlayer][techID])
 
-	return mod
-end
-GameEvents.PlayerTechCostMod.Add(OnPlayerTechCostMod)
+	local str = ""
+	if fullCivs[iPlayer] then	--allows tech tree view in autoplay
 
+		if bKnown then			--show Knowledge Maintenance resulting from this tech
+			if g_kmByTech[iPlayer][techID] then									--might not exist yet if player took free tech while in screen
+				local km = floor(100 * g_kmByTech[iPlayer][techID]) / 100
+				str = "[NEWLINE][ICON_BULLET]Knowledge Maintenance (this tech): [COLOR_NEGATIVE_TEXT]" .. km .. "%[ENDCOLOR]"
+			end
+		else					--show research cost modifiers in detail
 
-function TechPerCivTurn(iPlayer)
-	print("TechPerCivTurn")
-	local floor = math.floor
-	local player = Players[iPlayer]
-	local eaPlayer = gPlayers[iPlayer]
-	local team = Teams[player:GetTeam()]
-	local teamTechs = team:GetTeamTechs()
-	local eaCivID = eaPlayer.eaCivNameID
-	local bAI = not player:IsHuman()
-	local gameTurn = Game.GetGameTurn()
+			--Favored Techs
+			if g_playerFavoredTechMods[iPlayer][techID] then
+				str = str .. "[NEWLINE][ICON_BULLET]Favored Tech: [COLOR_POSITIVE_TEXT]" .. g_playerFavoredTechMods[iPlayer][techID] .. "%[ENDCOLOR]"
+			end
 
-	--debug
-	print("DEBUG: eaPlayer.techCount, teamTechs:GetNumRealTechsKnown() = ", eaPlayer.techCount, teamTechs:GetNumRealTechsKnown())
+			--Tomes (complicated here to separate out Tome of Tomes)
+			local tomeMods = g_playerTomeMods[iPlayer]
+			if tomeMods[techID] and tomeMods[techID] ~= 0 then
+				local tomeOfTomesStr = ""
+				local tomeOfTomesMod = (gArtifacts[EA_ARTIFACT_TOME_OF_TOMES] and gArtifacts[EA_ARTIFACT_TOME_OF_TOMES].iPlayer == iPlayer) and gArtifacts[EA_ARTIFACT_TOME_OF_TOMES].mod or 0
+				for artifactID, artifact in pairs(gArtifacts) do
+					if tomeTechs[artifactID] then
+						local tomeMod = artifact.iPlayer == iPlayer and artifact.mod or 0
+						if tomeMod ~= 0 or tomeOfTomesMod ~= 0 then
+							for testTechID, costChange in pairs(tomeTechs[artifactID]) do
+								if testTechID == techID then
+									if tomeMod ~= 0 then
+										local costModFromTome = floor(costChange * tomeMod + 0.5)
+										local tomeName = Locale.Lookup(GameInfo.EaArtifacts[artifactID].Description)
+										str = str .. "[NEWLINE][ICON_BULLET]" .. tomeName .. ": [COLOR_POSITIVE_TEXT]" .. costModFromTome .. "%[ENDCOLOR]"
+									end
+									if tomeOfTomesMod ~= 0 then
+										local costModFromTomeOfTomes = floor(costChange * (tomeOfTomesMod * 0.2) + 0.5)
+										local tomeOfTomesName = Locale.Lookup(GameInfo.EaArtifacts[EA_ARTIFACT_TOME_OF_TOMES].Description)
+										local tomeName = Locale.Lookup(GameInfo.EaArtifacts[artifactID].Description)
+										tomeOfTomesStr = tomeOfTomesStr .. "[NEWLINE][ICON_BULLET]" .. tomeOfTomesName .. " (" .. tomeName .. "): [COLOR_POSITIVE_TEXT]" .. costModFromTomeOfTomes .. "%[ENDCOLOR]"
+									end
+									break
+								end
+							end
+						end
+					end
+				end
+				str = str .. tomeOfTomesStr
+			end
 
-	--zeroing
-	eaPlayer.rpFromDiffusion = 0	--these are only used for display
-	eaPlayer.rpFromConquest = 0
+			--Arcane bonuses
+			if arcaneTechs[techID] then
+				local player = Players[iPlayer]
+				local eaPlayer = gPlayers[iPlayer]
+				if player:HasPolicy(GameInfoTypes.POLICY_ARCANE_LORE) then
+					str = str .. "[NEWLINE][ICON_BULLET]Arcane Lore: [COLOR_POSITIVE_TEXT]" .. -10 .. "%[ENDCOLOR]"
+				end
+				if player:HasPolicy(GameInfoTypes.POLICY_ARCANE_RESEARCH) then
+					str = str .. "[NEWLINE][ICON_BULLET]Arcane Research: [COLOR_POSITIVE_TEXT]" .. -20 .. "%[ENDCOLOR]"
+				end
+				if eaPlayer.eaCivNameID == GameInfoTypes.EACIV_LEMURIA then
+					str = str .. "[NEWLINE][ICON_BULLET]Arcane Tech (Lemuria): [COLOR_POSITIVE_TEXT]" .. -20 .. "%[ENDCOLOR]"
+				end
+	
+			--Epic non-arcane bonus
+			elseif gEpics[EA_EPIC_VAFTHRUTHNISMAL] and gEpics[EA_EPIC_VAFTHRUTHNISMAL].iPlayer == iPlayer then
+				local epicName = Locale.Lookup(GameInfo.EaEpics[EA_EPIC_VAFTHRUTHNISMAL].Description)
+				local costMod = - gEpics[EA_EPIC_VAFTHRUTHNISMAL].mod
+				str = str .. "[NEWLINE][ICON_BULLET]" .. epicName .. ": [COLOR_POSITIVE_TEXT]" .. costMod .. "%[ENDCOLOR]"
+			end
 
-	if bAI then
-		if (gameTurn + 1) % 50 == 0 and gameTurn / 50 <= AI_FREE_TECHS then	--1 free tech at turn 49, 99, 149,... until all free techs given
-			
-			player:SetNumFreeTechs(1)		--TO DO: Prevent high tier techs? Mod isn't compatible with unlimited free
+			--Great Library
+			if gWonders[EA_WONDER_GREAT_LIBRARY] and gWonders[EA_WONDER_GREAT_LIBRARY].iPlayer == iPlayer then
+				local wonderName = Locale.Lookup(GameInfo.EaWonders[EA_WONDER_GREAT_LIBRARY].Description)
+				local costMod = -gWonders[EA_WONDER_GREAT_LIBRARY].mod
+				str = str .. "[NEWLINE][ICON_BULLET]" .. wonderName .. ": [COLOR_POSITIVE_TEXT]" .. costMod .. "%[ENDCOLOR]"
+			end
+
+			--Total tech cost mod
+			local totalTechCostMod = OnPlayerTechCostMod(iPlayer, techID)
+			local colorCode = 0 < totalTechCostMod and "[COLOR_NEGATIVE_TEXT]" or "[COLOR_POSITIVE_TEXT]"
+			str = str .. "[NEWLINE][ICON_BULLET]Total cost modifier including KM: " .. colorCode .. totalTechCostMod .. "%[ENDCOLOR]"
 		end
 	end
 
-	ResetTechCostMods(iPlayer)
-
+	MapModData.techCostHelp = str
 end
+LuaEvents.EaTechsGetTechCostHelp.Add(function(iPlayer, techID, bKnown) return HandleError31(GetTechCostHelp, iPlayer, techID, bKnown) end)
 
-function OnTeamTechResearched(iTeam, techID, _)
+--------------------------------------------------------------
+-- GameEvents
+--------------------------------------------------------------
+
+-- On tech dicovery
+
+local OnTeamTechLearned = {}
+local OnMajorPlayerTechLearned = {}
+
+local function OnTeamTechResearched(iTeam, techID, _)
 	print("Running OnTeamTechResearched ", iTeam, techID, _)
 
 	if iTeam == BARB_PLAYER_INDEX then
@@ -408,14 +527,12 @@ function OnTeamTechResearched(iTeam, techID, _)
 		end
 
 		--count non-utility techs for Research Maint and scoring
-		local techInfo = GameInfo.Technologies[techID]
-		if not techInfo.Utility then
+		if techTier[techID] then		--must be non-Utility
 			--faster to cycle through players here then all techs every player turn
 			for iPlayer, eaPlayer in pairs(fullCivs) do
 				local player = Players[iPlayer]
 				if player:GetTeam() == iTeam then
-					Dprint("Adding to techCount for iPlayer ", iPlayer, eaPlayer.techCount + 1)
-					eaPlayer.techCount = eaPlayer.techCount + 1
+					eaPlayer.techs[techID] = true
 					if not player:IsHuman() then
 						if player:GetLengthResearchQueue() < 2 then			--still 1 in queue if just gained this one as free tech 
 							AIPushTechsFromCivPlans(iPlayer, false)
@@ -428,18 +545,7 @@ function OnTeamTechResearched(iTeam, techID, _)
 end
 GameEvents.TeamTechResearched.Add(function(iTeam, techID, _) return HandleError31(OnTeamTechResearched, iTeam, techID, _) end)
 
-local function OnPlayerCanEverResearch(iPlayer, techTypeID)
-	if not gPlayers[iPlayer] then return true end		--observer player during autoplay
-	if TechReq[techTypeID] and not TechReq[techTypeID](iPlayer) then return false end
-	return true
-end
-GameEvents.PlayerCanEverResearch.Add(function(iPlayer, techTypeID) return HandleError21(OnPlayerCanEverResearch, iPlayer, techTypeID) end)
 
---Use this?:
---GameEvents.PlayerCanResearch(playerID, techTypeID); (TestAll)
---------------------------------------------------------------
--- File Functions
---------------------------------------------------------------
 
 OnTeamTechLearned[GameInfoTypes.TECH_SAILING] = function(iTeam)
 	local team = Teams[iTeam]
@@ -569,7 +675,16 @@ OnMajorPlayerTechLearned[GameInfoTypes.TECH_ANIMAL_MASTERY] = function(iPlayer)
 end
 
 
+-- Tech prereq control
 
+local TechReq = {}
+
+local function OnPlayerCanEverResearch(iPlayer, techTypeID)
+	if not gPlayers[iPlayer] then return true end		--observer player during autoplay
+	if TechReq[techTypeID] and not TechReq[techTypeID](iPlayer) then return false end
+	return true
+end
+GameEvents.PlayerCanEverResearch.Add(function(iPlayer, techTypeID) return HandleError21(OnPlayerCanEverResearch, iPlayer, techTypeID) end)
 
 TechReq[GameInfoTypes.TECH_DIVINE_LITURGY] = function(iPlayer)
 	local eaPlayer = gPlayers[iPlayer]
@@ -589,6 +704,8 @@ TechReq[GameInfoTypes.TECH_UNDERDARK_PATHS] = function(iPlayer)
 	return false	--Disabled for now...
 end
 
+--Use this?:
+--GameEvents.PlayerCanResearch(playerID, techTypeID); (TestAll)
 --------------------------------------------------
 -- Active Player change
 --------------------------------------------------

@@ -160,8 +160,6 @@ function PolicyPerCivTurn(iPlayer)
 
 	UpdateCulturalLevel(iPlayer, eaPlayer)
 
-	print("Level / policies / change / pop turns: ", eaPlayer.culturalLevel, eaPlayer.policyCount, eaPlayer.culturalLevelChange, eaPlayer.cumPopTurns)
-
 	print("DEBUG: eaPlayer.policyCount, player:GetNumRealPolicies = ", eaPlayer.policyCount, player:GetNumRealPolicies())
 
 	if eaPlayer.policyCount < floor(eaPlayer.culturalLevel) then

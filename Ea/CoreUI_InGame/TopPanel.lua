@@ -567,14 +567,29 @@ function ScienceTipHandler( control )
 		end
 
 		--Knowledge Maintenance blurb
-		local civInsert = ""
-		if MapModData.KM_PER_TECH_PER_CITIZEN then
+		local kmPerTechPerCitizen = MapModData.kmPerTechPerCitizen
+		local kmReduction = 0
+		local reductionInsert = ""
+		--" (reduced xx% for <civ name> and xx% for Great Library)"
+		if MapModData.civKMPercent ~= 0 then
+			kmReduction = kmReduction + MapModData.civKMPercent
 			local civName = Locale.Lookup(PreGame.GetCivilizationShortDescription(iPlayerID))
-			local baseKMString = string.format("%.3f", MapModData.KM_PER_TECH_PER_CITIZEN)
-			civInsert = " " .. Locale.Lookup("TXT_KEY_EA_TP_KNOWLEDGE_MAINT_ADJUSMENT_INSERT", civName, MapModData.KM_PER_TECH_PER_CITIZEN)
+			reductionInsert = reductionInsert .. Locale.Lookup("TXT_KEY_EA_TP_KNOWLEDGE_MAINT_CIV_INSERT", MapModData.civKMPercent, civName)
 		end
-		local kmPerTechPerCitizen = math.floor(1000 * MapModData.kmPerTechPerCitizen + 0.5) / 1000
-		local kmBlurb = Locale.Lookup("TXT_KEY_EA_TP_KNOWLEDGE_MAINT", MapModData.knowlMaint, MapModData.techCount, MapModData.totalPopulationForKM, kmPerTechPerCitizen, civInsert)
+		if MapModData.greatLibraryKMPercent ~= 0 then
+			kmReduction = kmReduction + MapModData.greatLibraryKMPercent
+			if reductionInsert ~= "" then
+				reductionInsert = reductionInsert .. " " .. Locale.Lookup("TXT_KEY_EA_TP_AND") .. " "
+			end
+			reductionInsert = reductionInsert .. Locale.Lookup("TXT_KEY_EA_TP_KNOWLEDGE_MAINT_GREAT_LIBRARY_INSERT", MapModData.greatLibraryKMPercent)
+		end
+		if kmReduction ~= 0 then
+			kmPerTechPerCitizen = kmPerTechPerCitizen * (100 - kmReduction) / 100			
+			reductionInsert = " " .. Locale.Lookup("TXT_KEY_EA_TP_KNOWLEDGE_MAINT_MOD_INSERT", reductionInsert)
+		end
+
+		kmPerTechPerCitizen = math.floor(1000 * kmPerTechPerCitizen + 0.5) / 1000
+		local kmBlurb = Locale.Lookup("TXT_KEY_EA_TP_KNOWLEDGE_MAINT", MapModData.knowlMaint, MapModData.techCount, MapModData.totalPopulationForKM, kmPerTechPerCitizen, reductionInsert)
 
 		strText = strText .. "[NEWLINE][NEWLINE]" .. kmBlurb
 		--end Paz add

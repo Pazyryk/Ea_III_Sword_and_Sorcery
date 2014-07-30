@@ -279,7 +279,7 @@ end
 
 function ResurectedPlayer(iPlayer)
 	realCivs[iPlayer] = gPlayers[iPlayer]
-	if iOwner < MAX_MAJOR_CIVS then
+	if iPlayer < MAX_MAJOR_CIVS then
 		fullCivs[iPlayer] = gPlayers[iPlayer]
 	else
 		cityStates[iPlayer] = gPlayers[iPlayer]

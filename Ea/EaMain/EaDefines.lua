@@ -259,29 +259,13 @@ gg_counts = {	freshWaterAbzuFollowerCities = 0,
 --Other shared tables
 MapModData.gpRegisteredActions = MapModData.gpRegisteredActions or {}
 
---human player UI
-MapModData.kmPerTechPerCitizen = 0
-MapModData.knowlMaint = 0
-MapModData.techCount = 0
-MapModData.totalPopulationForKM = 0
-MapModData.mercenaryNet = 0
-MapModData.cultureLevel = 0
-MapModData.nextCultureLevel = 0
-MapModData.estCultureLevelChange = 0
-MapModData.approachingCulturalLevel = 0
-MapModData.cultureRate = 0
-MapModData.faithFromCityStates = 0
-MapModData.faithFromAzzTribute = 0
-MapModData.faithFromToAhrimanTribute = 0
-MapModData.faithFromGPs = 0
-MapModData.numberGreatPeople = 0
-MapModData.totalGreatPersonPoints = 0
-
 --Active player UI
-MapModData.kmPerTechPerCitizen = 0
 MapModData.knowlMaint = 0
 MapModData.techCount = 0
 MapModData.totalPopulationForKM = 0
+MapModData.kmPerTechPerCitizen = 0
+MapModData.civKMPercent = 0
+MapModData.greatLibraryKMPercent = 0
 MapModData.mercenaryNet = 0
 MapModData.cultureLevel = 0
 MapModData.nextCultureLevel = 0
@@ -299,7 +283,7 @@ MapModData.validForestJunglePlots = 0
 MapModData.originalForestJunglePlots = 0
 MapModData.harmonicMeanDenominator = 0
 MapModData.ownablePlots = 0
-MapModData.costHelpForTech = ""
+MapModData.techCostHelp = ""
 --Unit Panel UI
 MapModData.bShow = false
 MapModData.bAllow = false

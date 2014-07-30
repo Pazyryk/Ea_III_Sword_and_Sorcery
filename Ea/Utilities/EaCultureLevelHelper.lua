@@ -16,7 +16,7 @@ local POLICY_MULTIPLIER = 5												--policies as a function of culture gener
 local POLICY_ADD = 4													--extra policies you would get with no culture
 
 local CL_APPROACH_FACTOR = 0.006 / MapModData.GAME_SPEED_MULTIPLIER		--try to approach steady state level by this fraction of the difference each turn
-local CL_TARGET_CHANGE = 0.06 / MapModData.GAME_SPEED_MULTIPLIER		--reduce or increase per turn change toward this level
+local CL_TARGET_CHANGE = 0.06 / MapModData.GAME_SPEED_MULTIPLIER		--reduce or increase per turn change toward this level; IMPORTANT!!!: Update EXPECTED_CL_CHANGE in EaAICivPlanning.lua to match this
 local CL_CHANGE_DAMPING_EXPONENT = 1/2									--lower value pushes per turn change toward target change
 
 
@@ -79,7 +79,7 @@ function UpdateCulturalLevel(iPlayer, eaPlayer)
 	local culturalLevel = culturalLevelLastTurn + GetCLChange(culturalLevelLastTurn, steadyStateCL)
 
 	eaPlayer.culturalLevel = culturalLevel
-	eaPlayer.culturalLevelChange = culturalLevel - culturalLevelLastTurn		--used by AI (not UI)
+	--eaPlayer.culturalLevelChange = culturalLevel - culturalLevelLastTurn		--used by AI (not UI)
 end
 
 -- UI for active player

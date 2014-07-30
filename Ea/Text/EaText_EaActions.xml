@@ -155,6 +155,22 @@
 		<Row Tag="TXT_KEY_EA_ACTION_GREAT_LIBRARY">
 			<Text>Build Great Library</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_ACADEMY_PHILOSOPHY">
+			<Text>Build Academy of Philosophy</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_ACADEMY_LOGIC">
+			<Text>Build Academy of Logic</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_ACADEMY_SEMIOTICS">
+			<Text>Build Academy of Semiotics</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_ACADEMY_METAPHYSICS">
+			<Text>Build Academy of Metaphysics</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_ACADEMY_TRANS_THOUGHT">
+			<Text>Build Academy of Transcendental Thought</Text>
+		</Row>		
+		
 		<Row Tag="TXT_KEY_EA_ACTION_ARCANE_TOWER">
 			<Text>Build Arcane Tower</Text>
 		</Row>

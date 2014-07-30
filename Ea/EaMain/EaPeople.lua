@@ -242,9 +242,11 @@ end
 
 function MissingEaPersonHasUnit(iPerson, unit)
 	if gDeadPeople[iPerson] then
-		print("!!!! ERROR: Found unit:GetPersonIndex() matching dead person; killing unit; iPerson, iUnit = ", iPerson, unit:GetID())
-		MapModData.bBypassOnCanSaveUnit = true
-		unit:Kill(false, -1)
+		if unit and not unit:IsDelayedDeath() and not unit:IsDead() then
+			print("!!!! ERROR: Found unit:GetPersonIndex() matching dead person; killing unit; iPerson, unit:GetPersonIndex(), iUnit = ", iPerson, unit:GetPersonIndex(), unit:GetID())
+			MapModData.bBypassOnCanSaveUnit = true
+			unit:Kill(false, -1)
+		end
 	else
 		error("unit:GetPersonIndex() did not match any iPerson living or dead: " .. (iPerson or "nil") .. " " .. (unit and unit:GetID() or "nil"))
 	end
@@ -561,7 +563,10 @@ function GenerateGreatPerson(iPlayer, class, subclass, eaPersonRowID, bAsLeader,
 	--for a specific class, use (iPlayer, class, nil, nil)
 	--for a specific subclass, use (iPlayer, nil, subclass, nil)
 	--for a specific person, use (iPlayer, nil, subclass, eaPersonRowID)	--must specify class/subclass/dualClass info!
-	print("GenerateGreatPerson",iPlayer, class, subclass, eaPersonRowID)
+	print("GenerateGreatPerson", iPlayer, class, subclass, eaPersonRowID, bAsLeader, dualClass)
+	if not fullCivs[iPlayer] then
+		error("Attempt to generate great person for non-full civ (alive) player, " .. iPlayer or "nil")
+	end
 	local player = Players[iPlayer]
 	local eaPlayer = gPlayers[iPlayer]
 	if not class and not subclass then	--use random generation
@@ -648,7 +653,7 @@ function GenerateGreatPerson(iPlayer, class, subclass, eaPersonRowID, bAsLeader,
 	local iUnit = unit:GetID()
 	eaPerson.iUnit = iUnit
 	UpdateGreatPersonStatsFromUnit(unit, eaPerson)		--x, y, moves, level, xp; fills promotions table
-		
+	--everything below safe to happen after unit init (could happen to GP anytime)
 	if eaPersonRowID or player:IsHuman() then
 		UngenericizePerson(iPlayer, iPerson, eaPersonRowID)
 	else
@@ -1336,9 +1341,9 @@ end
 function KillPerson(iPlayer, iPerson, unit, iKillerPlayer, deathType)
 	--Important! Supply unit if unit needs to be killed! iKillerPlayer is optional but only matters only if unit supplied
 	print("KillPerson(iPlayer, iPerson, unit, iKillerPlayer, deathType) ", iPlayer, iPerson, unit, iKillerPlayer, deathType)
+	local eaPerson = gPeople[iPerson]
 	local player = Players[iPlayer]
 	local eaPlayer = gPlayers[iPlayer]
-	local eaPerson = gPeople[iPerson]
 
 	--debug info
 	if unit then
@@ -1348,7 +1353,7 @@ function KillPerson(iPlayer, iPerson, unit, iKillerPlayer, deathType)
 	end
 	print("eaPerson.iPlayer = ", eaPerson.iPlayer)
 	print("eaPerson.iUnit = ", eaPerson.iUnit)
-	print("eaPerson.unitTypeID = ", eaPerson.unitTypeID, GameInfo.Units[eaPerson.unitTypeID].Type)
+	print("eaPerson.unitTypeID = ", eaPerson.unitTypeID, eaPerson.unitTypeID and GameInfo.Units[eaPerson.unitTypeID].Type or nil)
 	print("subclass = ", eaPerson.subclass)
 	print("class1 = ", eaPerson.class1)
 	print("class2 = ", eaPerson.class2)
@@ -1432,9 +1437,8 @@ function KillPerson(iPlayer, iPerson, unit, iKillerPlayer, deathType)
 		eaDeadPerson.promotions[k] = v
 	end
 
-	gDeadPeople[#gDeadPeople + 1] = eaDeadPerson
+	gDeadPeople[iPerson] = eaDeadPerson
 	gPeople[iPerson] = nil
-
 	print("finished KillPerson")
 end
 

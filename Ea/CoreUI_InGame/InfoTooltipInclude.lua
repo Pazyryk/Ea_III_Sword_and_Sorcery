@@ -146,7 +146,7 @@ function GetHelpTextForBuilding(iBuildingID, bExcludeName, bExcludeHeader, bNoMa
 		else
 			eaPlayer = gT.gPlayers[Game.GetActivePlayer()]
 		end
-		bUseDivineFavor = eaPlayer.bUseDivineFavor
+		bUseDivineFavor = eaPlayer and eaPlayer.bUseDivineFavor
 	end
 	--end Paz add
 

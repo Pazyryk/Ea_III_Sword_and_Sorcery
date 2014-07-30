@@ -681,6 +681,12 @@ local function OnCanSaveUnit(iPlayer, iUnit, bDelay)	--fires for combat and non-
 	end	
 
 	if iPlayer ~= g_iDefendingPlayer or iUnit ~= g_iDefendingUnit then	--this was not a combat defender death
+
+		if unit:GetUnitType() == UNIT_LICH and gWonders[EA_WONDER_ARCANE_TOWER][iPerson] then
+			SaveLich(unit)
+			return true
+		end
+
 		local deathType
 		if iPlayer == g_iAttackingPlayer and iUnit == g_iAttackingUnit then
 			print("An attacking GP was killed in combat")
@@ -688,11 +694,6 @@ local function OnCanSaveUnit(iPlayer, iUnit, bDelay)	--fires for combat and non-
 		else
 			print("A GP was killed for unknown reason; disbanded?")
 			deathType = "Unknown"
-		end
-
-		if unit:GetUnitType() == UNIT_LICH and gWonders[EA_WONDER_ARCANE_TOWER][iPerson] then
-			SaveLich(unit)
-			return true
 		end
 
 		KillPerson(iPlayer, iPerson, nil, nil, deathType)	--unit must be nil here because dll will finish it off!

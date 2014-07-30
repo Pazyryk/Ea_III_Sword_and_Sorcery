@@ -286,11 +286,20 @@ function UpdateDisplay()
 	--Paz disable: IconHookup( myLeaderInfo.PortraitIndex, 64, myLeaderInfo.IconAtlas, Controls.LeaderIcon );
 
 	--Paz add
-	if not eaPlayer or eaPlayer.religionID == -1 then
+	local myReligionID = eaPlayer and eaPlayer.religionID or -1
+	if myReligionID == -1 then
 		Controls.MyReligionIcon:SetHide(true)
 	else
-		local myReligionInfo = GameInfo.Religions[eaPlayer.religionID]
-		IconHookup( myReligionInfo.PortraitIndex, 48, myReligionInfo.IconAtlas, Controls.MyReligionIcon )
+		local myReligionInfo = GameInfo.Religions[myReligionID]
+		local iconAtlas = "EA_RELIGION_ATLAS"
+		-- if founder with holy city, use star atlas
+		if gT.gReligions[myReligionID].founder == g_iPlayer then
+			local holyCity = Game.GetHolyCityForReligion(myReligionID, g_iPlayer)
+			if holyCity and holyCity:GetOwner() == g_iPlayer then
+				iconAtlas = "EA_RELIGION_STAR_ATLAS"
+			end
+		end
+		IconHookup( myReligionInfo.PortraitIndex, 48, iconAtlas, Controls.MyReligionIcon )
 		Controls.MyReligionIcon:SetHide(false)
 	end
 	--end Paz add

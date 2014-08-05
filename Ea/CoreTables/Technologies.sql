@@ -136,8 +136,6 @@ INSERT INTO Technologies (Type,		Utility) VALUES
 ('TECH_ALLOW_TIMBER_TRADE',			1	),	--allows Timber trade and Timberyard
 ('TECH_ALLOW_HORSE_TRADE',			1	),	--all can trade except Heldeofol
 ('TECH_MOLY_VISIBLE',				1	),	--Moly visible, tradeable and improveable
-('TECH_ALLOW_MANA_YIELDS',			1	),
-('TECH_ALLOW_DIVINE_FAVOR_YIELDS',	1	),
 ('TECH_ALLOW_ALL_WATER_PASSAGE',	1	);
 
 

@@ -376,7 +376,8 @@ function DoSequencedAttacks()	--called directly and at end of OnCombatEnded when
 					end
 
 					if bAllow and attackingUnit:CanMoveOrAttackInto(plot) then
-						attackingUnit:PushMission(MissionTypes.MISSION_MOVE_TO, x, y)
+						attackingUnit:PopMission()
+						attackingUnit:PushMission(MissionTypes.MISSION_MOVE_TO, x, y, 0, 0, 1)
 						return
 					end
 				end

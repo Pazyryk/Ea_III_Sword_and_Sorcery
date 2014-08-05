@@ -401,5 +401,6 @@ Events.GameplaySetActivePlayer.Add(OnActivePlayerChanged)
 ----------------------------------------------------------------
 -- Init
 ----------------------------------------------------------------
+local OnLoadEaMain = OnLoadEaMain
 HandleError10(OnLoadEaMain)		--in EaInit.lua
 bInitialized = true

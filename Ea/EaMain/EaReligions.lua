@@ -269,7 +269,8 @@ end
 
 function SetDivineFavorUse(iPlayer, bDivineFavor)
 	print("SetDivineFavorUse ", iPlayer, bDivineFavor)
-	--Always set eaPlayer.bUsesDivineFavor here so we can keep track of everything in one place
+	--Always set eaPlayer.bUsesDivineFavor here so we can do all associated changes in one place!
+
 	local eaPlayer = gPlayers[iPlayer]
 	if not eaPlayer.bUsesDivineFavor == not bDivineFavor then return end	--already done (not's used to make nil and false equivelent)
 
@@ -293,10 +294,9 @@ function SetDivineFavorUse(iPlayer, bDivineFavor)
 		player:AddNotification(NotificationTypes.NOTIFICATION_RELIGION_ERROR, text, text, -1, -1)
 	end
 
-	--hidden techs
-	local team = Teams[player:GetTeam()]
-	team:SetHasTech(GameInfoTypes.TECH_ALLOW_DIVINE_FAVOR_YIELDS, bDivineFavor)
-	team:SetHasTech(GameInfoTypes.TECH_ALLOW_MANA_YIELDS, not bDivineFavor)
+	--hidden policies
+	player:SetHasPolicy(GameInfoTypes.POLICY_USES_DIVINE_FAVOR, bDivineFavor)
+	player:SetHasPolicy(GameInfoTypes.POLICY_USES_MANA, not bDivineFavor)
 
 end
 
@@ -423,6 +423,7 @@ function BecomeFallen(iPlayer)		--this could happen before, during or after the 
 	local player = Players[iPlayer]
 	eaPlayer.bIsFallen = true
 	SetDivineFavorUse(iPlayer, false)
+	player:SetHasPolicy(GameInfoTypes.POLICY_IS_FALLEN, true)
 
 	--"Mirror" Theism branch
 	if player:HasPolicy(POLICY_THEISM) then

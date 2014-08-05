@@ -919,39 +919,6 @@ UseUnit[GameInfoTypes.UNIT_WHALING_BOATS] = function(iPlayer, unit)
 	unit:Kill(true, -1)		--remove unit
 end
 
---[[
-UseAIUnit[GameInfoTypes.UNIT_CARAVAN] = function(iPlayer, unit)
-	--happens when AI route expires
-	--need logic to cance
-	print("UseAIUnit[GameInfoTypes.UNIT_CARAVAN]", iPlayer, unit)
-	local numberOpen, bestCity, bestYield = FindOpenTradeRoute(iPlayer, DOMAIN_LAND, true)
-	if 0 < numberOpen then
-		local plot = unit:GetPlot()
-		local city = plot:GetPlotCity()
-		if city ~= bestCity then
-			--do instant teleport for AI (it's a small ai cheat that prevents log jam of all units going to same city)
-			print("Teleporting AI caravan to better FromCity")
-			plot = bestCity:Plot()
-			unit:SetXY(plot:GetX(), plot:GetY())
-
-			--Game.SelectionListGameNetMessage(GameMessageTypes.GAMEMESSAGE_PUSH_MISSION, MissionTypes.MISSION_CHANGE_TRADE_UNIT_HOME_CITY, g_selectedPlotX, g_selectedPlotY, 0, false, bShift);
-			--unit:PushMission(MissionTypes.MISSION_CHANGE_TRADE_UNIT_HOME_CITY, bestCity:GetX(), bestCity:GetY(), 0, 0, 1)
-		end
-		unit:PushMission(MissionTypes.MISSION_ESTABLISH_TRADE_ROUTE, plot:GetPlotIndex(), 0, 0, 0, 1)		--TradeConnectionType (3rd arg) is 0 for land!!!! must test for sea
-	else
-		print("!!!! WARNING: player has caravan but no open and available trade routes")
-	end
-end
-
-
-
-UseAIUnit[GameInfoTypes.UNIT_CARGO_SHIP] = function(iPlayer, unit)
-	print("UseAIUnit[GameInfoTypes.UNIT_CARGO_SHIP]", iPlayer, unit)
-
-
-end
-]]
-
 
 --sustained promotion system
 

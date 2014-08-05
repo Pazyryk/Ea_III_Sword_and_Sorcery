@@ -4,6 +4,8 @@
 --------------------------------------------------------------
 print("Loading EaInit.lua...")
 
+local HandleError10 = HandleError10
+
 local function InitForNewGame()
 
 	--gWorld
@@ -207,9 +209,10 @@ local function OnEnterGame()   --Runs when Begin or Countinue Your Journey press
 	end
 
 	gg_init.bEnteredGame = true
+	MapModData.bEnteredGame = true
 
-	if MapModData.error then
-		error(MapModData.error)		
+	if MapModData.error then			--move later?
+		LuaEvents.EaErrorPopupDoErrorPopup(MapModData.error)		
 	end
 
 
@@ -218,5 +221,6 @@ local function OnEnterGame()   --Runs when Begin or Countinue Your Journey press
 	--There is a exe autosave right after this, but GameEvents.GameSave is specifically disabled (in dll)
 	--for first save since it causes an intermittent game hang in new games
 end
-Events.LoadScreenClose.Add(OnEnterGame)
+local function X_OnEnterGame() return HandleError10(OnEnterGame) end
+Events.LoadScreenClose.Add(X_OnEnterGame)
 

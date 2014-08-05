@@ -81,17 +81,12 @@ function EaPoliciesInit(bNewGame)
 	print("Running EaPoliciesInit...")
 	if bNewGame then
 		for iPlayer, eaPlayer in pairs(fullCivs) do
-			local player = Players[0]
+			local player = Players[iPlayer]
 			player:SetHasPolicy(GameInfoTypes.POLICY_ALL_FULL_CIVS, true)
+			player:SetHasPolicy(GameInfoTypes.POLICY_USES_MANA, true)		--until/unless they become Azzandarayasna religion
 			NRArrayAdd(gg_animalSpawnInhibitTeams, player:GetTeam())
 		end
 	else
-		--v3 save compatibility patch (remove later)
-		local bV3PatchHack = false
-		if gWorld.panCivsEver == 0 then
-			bV3PatchHack = true
-		end	
-
 		for iPlayer, eaPlayer in pairs(fullCivs) do
 			local player = Players[iPlayer]
 			if player:HasPolicy(GameInfoTypes.POLICY_PATRONAGE) then

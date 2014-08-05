@@ -34,7 +34,7 @@ local FEATURE_JUNGLE = 						GameInfoTypes.FEATURE_JUNGLE
 local FEATURE_MARSH =	 					GameInfoTypes.FEATURE_MARSH
 local FEATURE_BLIGHT =	 					GameInfoTypes.FEATURE_BLIGHT
 local FEATURE_FALLOUT =	 					GameInfoTypes.FEATURE_FALLOUT
-local FEATURE_CRATER =	 					GameInfoTypes.FEATURE_CRATER		--1st Natural Wonder
+local FEATURE_CRATER =	 					GameInfoTypes.FEATURE_CRATER		--always 1st Natural Wonder
 
 local RESOURCE_TIMBER =						GameInfoTypes.RESOURCE_TIMBER
 local RESOURCE_IVORY =						GameInfoTypes.RESOURCE_IVORY
@@ -360,9 +360,19 @@ function EaPlotsInit(bNewGame)
 						originalForestJunglePlots = originalForestJunglePlots + 1
 					end 
 				end
-			end 
-			
+			end
+
+			if featureID >= FEATURE_CRATER then	--NW
+				local featureInfo = GameInfo.Features[featureID]
+				if featureInfo.EaImprovement then
+					plot:SetImprovementType(GameInfoTypes[featureInfo.EaImprovement])
+				end
+				if featureID == GameInfoTypes.FEATURE_POTOSI then		--Dispater's Vault gets gems
+					plot:SetResourceType(GameInfoTypes.RESOURCE_GEMS, 1)
+				end
+			end
 		end
+
 		print(" - originalForestJunglePlots, validForestJunglePlots, ownablePlots = ", originalForestJunglePlots, validForestJunglePlots, ownablePlots)
 		MapModData.validForestJunglePlots = validForestJunglePlots
 		MapModData.originalForestJunglePlots = originalForestJunglePlots
@@ -386,6 +396,9 @@ function EaPlotsInit(bNewGame)
 						if distance < 2 then
 							plot:SetFeatureType(-1)
 							plot:SetLivingTerrainData(-1, false, 0, -100)	--never existed
+							if plot:GetResourceType(-1) == RESOURCE_YEW then
+								ChangeResource(plot, -1, nil)
+							end
 						else
 							plot:SetLivingTerrainStrength(0)					
 						end

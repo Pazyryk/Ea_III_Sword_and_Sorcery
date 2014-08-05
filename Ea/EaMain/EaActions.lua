@@ -2114,13 +2114,9 @@ Test[GameInfoTypes.EA_ACTION_LEAD_CHARGE] = function()
 	return true
 end
 
-
---need prospective target here (for forced ai attack); also neeed to make sure we have melee and not ranged unit on plot
---g_obj1 is valid target unit; g_obj2 is same-plot melee unit
-
 TestTarget[GameInfoTypes.EA_ACTION_LEAD_CHARGE] = function()
 	--Must be melee attack unit on same plot and enemy in range
-
+	--g_obj1 is valid target unit; g_obj2 is same-plot melee unit
 	local unitCount = g_plot:GetNumUnits()
 	for i = 0, unitCount - 1 do
 		local unit = g_plot:GetUnit(i)
@@ -2189,19 +2185,16 @@ SetAIValues[GameInfoTypes.EA_ACTION_LEAD_CHARGE] = function()
 end
 
 Do[GameInfoTypes.EA_ACTION_LEAD_CHARGE] = function()
-
 	g_unit:SetGPAttackState(1)
-
-
 	if g_bAIControl then		--Carry out attack
 		local targetX, targetY = g_obj1:GetX(), g_obj1:GetY()
-		g_unit:PushMission(MissionTypes.MISSION_MOVE_TO, targetX, targetY)		--, 0, 0, 1)
+		print("AI Warrior about to Lead Charge; damage before: ", g_unit:GetDamage())
+		g_unit:PopMission()
+		g_unit:PushMission(MissionTypes.MISSION_MOVE_TO, targetX, targetY, 0, 0, 1)
 		if g_unit and g_unit:MovesLeft() > 0  then
-			print("!!!! ERROR: AI GP has movement after Lead Charge! Did it not attack?", g_unit:MovesLeft())
+			print("!!!! ERROR: AI GP has movement after Lead Charge! Did it not attack? moves/damage: ", g_unit:MovesLeft(), g_unit:GetDamage())
 			g_unit:SetMoves(0)
 		end
-		--follow-up melee attack and GPAttackState reset will happen from OnCombatEnded
-
 	elseif g_iPlayer == g_iActivePlayer then	--Put Warrior in forced interface
 		MapModData.forcedUnitSelection = g_iUnit
 		MapModData.forcedInterfaceMode = InterfaceModeTypes.INTERFACEMODE_ATTACK
@@ -2209,7 +2202,7 @@ Do[GameInfoTypes.EA_ACTION_LEAD_CHARGE] = function()
 		UI.LookAtSelectionPlot(0)
 		Events.SerialEventUnitInfoDirty()
 	end
-
+	--follow-up melee attack and GPAttackState reset will happen from OnCombatEnded
 	return true
 end
 
@@ -3717,6 +3710,7 @@ Finish[GameInfoTypes.EA_ACTION_LAND_TRADE_ROUTE] = function()
 	--free caravan starts the route
 	g_specialEffectsPlot = fromCityPlot
 	local unit = g_player:InitUnit(GameInfoTypes.UNIT_CARAVAN, fromCity:GetX(), fromCity:GetY())
+	unit:PopMission()
 	unit:PushMission(MissionTypes.MISSION_ESTABLISH_TRADE_ROUTE, g_iPlot, 0, 0, 0, 1)
 	AIRecalculateNumTradeRoutesTargeted(g_iPlayer)
 	return true
@@ -3879,7 +3873,8 @@ Finish[GameInfoTypes.EA_ACTION_SEA_TRADE_ROUTE] = function()
 	--free cargo ship starts the route
 	g_specialEffectsPlot = fromCityPlot
 	local unit = g_player:InitUnit(GameInfoTypes.UNIT_CARGO_SHIP, fromCity:GetX(), fromCity:GetY())
-	unit:PushMission(MissionTypes.MISSION_ESTABLISH_TRADE_ROUTE, g_iPlot, 2, 0, 0, 1)				--2nd arg?
+	unit:PopMission()
+	unit:PushMission(MissionTypes.MISSION_ESTABLISH_TRADE_ROUTE, g_iPlot, 2, 0, 0, 1)
 	AIRecalculateNumTradeRoutesTargeted(g_iPlayer)
 	return true
 end

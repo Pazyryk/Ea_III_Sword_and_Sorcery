@@ -56,8 +56,11 @@ function HandleError(f, ...)	--f can have any number of args and return values
 	if GetAIAutoPlay() > 0 then
 		LuaEvents.EaAutoplay(1)		--stop autoplay session
 	end
-	MapModData.error = result[2]
-	LuaEvents.EaErrorPopupDoErrorPopup(result[2])
+	if MapModData.bEnteredGame then
+		LuaEvents.EaErrorPopupDoErrorPopup(result[2])
+	else
+		MapModData.error = result[2]
+	end
 end
 ]]
 function HandleError10(f, arg1)		--f can have 0 or 1 arg and no return value
@@ -69,8 +72,11 @@ function HandleError10(f, arg1)		--f can have 0 or 1 arg and no return value
 	if GetAIAutoPlay() > 0 then
 		LuaEvents.EaAutoplay(1)		--stop autoplay session
 	end
-	MapModData.error = value
-	LuaEvents.EaErrorPopupDoErrorPopup(value)
+	if MapModData.bEnteredGame then
+		LuaEvents.EaErrorPopupDoErrorPopup(value)
+	else
+		MapModData.error = value
+	end
 end
 
 function HandleError21(f, arg1, arg2)	--f can have up to 2 args and 0 or 1 return value
@@ -82,8 +88,11 @@ function HandleError21(f, arg1, arg2)	--f can have up to 2 args and 0 or 1 retur
 	if GetAIAutoPlay() > 0 then
 		LuaEvents.EaAutoplay(1)		--stop autoplay session
 	end
-	MapModData.error = value
-	LuaEvents.EaErrorPopupDoErrorPopup(value)
+	if MapModData.bEnteredGame then
+		LuaEvents.EaErrorPopupDoErrorPopup(value)
+	else
+		MapModData.error = value
+	end
 end
 
 function HandleError31(f, arg1, arg2, arg3)	--f can have up to 2 args and 0 or 1 return value
@@ -95,8 +104,11 @@ function HandleError31(f, arg1, arg2, arg3)	--f can have up to 2 args and 0 or 1
 	if GetAIAutoPlay() > 0 then
 		LuaEvents.EaAutoplay(1)		--stop autoplay session
 	end
-	MapModData.error = value
-	LuaEvents.EaErrorPopupDoErrorPopup(value)
+	if MapModData.bEnteredGame then
+		LuaEvents.EaErrorPopupDoErrorPopup(value)
+	else
+		MapModData.error = value
+	end
 end
 
 function HandleError41(f, arg1, arg2, arg3, arg4)	--f can have up to 4 args and 0 or 1 return value
@@ -108,8 +120,11 @@ function HandleError41(f, arg1, arg2, arg3, arg4)	--f can have up to 4 args and 
 	if GetAIAutoPlay() > 0 then
 		LuaEvents.EaAutoplay(1)		--stop autoplay session
 	end
-	MapModData.error = value
-	LuaEvents.EaErrorPopupDoErrorPopup(value)
+	if MapModData.bEnteredGame then
+		LuaEvents.EaErrorPopupDoErrorPopup(value)
+	else
+		MapModData.error = value
+	end
 end
 
 function HandleError51(f, arg1, arg2, arg3, arg4, arg5)	--f can have up to 4 args and 0 or 1 return value
@@ -121,8 +136,11 @@ function HandleError51(f, arg1, arg2, arg3, arg4, arg5)	--f can have up to 4 arg
 	if GetAIAutoPlay() > 0 then
 		LuaEvents.EaAutoplay(1)		--stop autoplay session
 	end
-	MapModData.error = value
-	LuaEvents.EaErrorPopupDoErrorPopup(value)
+	if MapModData.bEnteredGame then
+		LuaEvents.EaErrorPopupDoErrorPopup(value)
+	else
+		MapModData.error = value
+	end
 end
 
 function HandleError61(f, arg1, arg2, arg3, arg4, arg5, arg6)	--f can have up to 6 args and 0 or 1 return value
@@ -134,8 +152,11 @@ function HandleError61(f, arg1, arg2, arg3, arg4, arg5, arg6)	--f can have up to
 	if GetAIAutoPlay() > 0 then
 		LuaEvents.EaAutoplay(1)		--stop autoplay session
 	end
-	MapModData.error = value
-	LuaEvents.EaErrorPopupDoErrorPopup(value)
+	if MapModData.bEnteredGame then
+		LuaEvents.EaErrorPopupDoErrorPopup(value)
+	else
+		MapModData.error = value
+	end
 end
 
 function HandleError81(f, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8)	--f can have up to 8 args and 0 or 1 return value
@@ -147,8 +168,11 @@ function HandleError81(f, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8)	--f ca
 	if GetAIAutoPlay() > 0 then
 		LuaEvents.EaAutoplay(1)		--stop autoplay session
 	end
-	MapModData.error = value
-	LuaEvents.EaErrorPopupDoErrorPopup(value)
+	if MapModData.bEnteredGame then
+		LuaEvents.EaErrorPopupDoErrorPopup(value)
+	else
+		MapModData.error = value
+	end
 end
 
 function HandleErrorF0(f, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15)	--f can have up to 15 args and no return value
@@ -160,6 +184,9 @@ function HandleErrorF0(f, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, 
 	if GetAIAutoPlay() > 0 then
 		LuaEvents.EaAutoplay(1)		--stop autoplay session
 	end
-	MapModData.error = value
-	LuaEvents.EaErrorPopupDoErrorPopup(value)
+	if MapModData.bEnteredGame then
+		LuaEvents.EaErrorPopupDoErrorPopup(value)
+	else
+		MapModData.error = value
+	end
 end

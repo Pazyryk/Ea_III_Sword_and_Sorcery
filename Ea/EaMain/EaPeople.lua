@@ -479,11 +479,9 @@ local function SkipActivePlayerPeople()
 			local iUnit = gPeople[iPerson].iUnit
 			local unit = player:GetUnitByID(iUnit)
 			if unit then
-
 				g_skipActivePlayerPeople[iPerson] = false
 				unit:PopMission()
 				unit:PushMission(MissionTypes.MISSION_SKIP, unit:GetX(), unit:GetY(), 0, 0, 1) --, MissionTypes.MISSION_SKIP, unit:GetPlot(), unit)
-
 			end
 		end
 	end

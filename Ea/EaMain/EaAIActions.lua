@@ -58,6 +58,8 @@ local Teams =								Teams
 local gg_aiOptionValues =					gg_aiOptionValues	--communicates with EaAction.lua
 local gg_unitClusters =						gg_unitClusters	--values set in EaUnitsAI.lua; used here for GP threat assesment if GP has combat role
 local gg_playerPlotActionTargeted =			gg_playerPlotActionTargeted
+local gg_cachedMapPlots =					gg_cachedMapPlots
+
 
 --localized functions
 local TestEaAction =						TestEaAction
@@ -66,7 +68,7 @@ local DoEaAction =							DoEaAction
 local TestEaSpell =							TestEaSpell
 local TestEaSpellTarget =					TestEaSpellTarget
 local DoEaSpell =							DoEaSpell
-local PlotDistance =							Map.PlotDistance
+local PlotDistance =						Map.PlotDistance
 local GetPlotFromXY =						Map.GetPlot
 local Format =								string.format
 local GetXYFromPlotIndex =					GetXYFromPlotIndex
@@ -131,6 +133,14 @@ function AIRecalculateNumTradeRoutesTargeted(iPlayer)
 			end
 		end
 	end
+end
+
+---------------------------------------------------------------
+-- Init
+---------------------------------------------------------------
+
+function EaAIActionsInit(bNewGame)
+
 end
 
 ---------------------------------------------------------------
@@ -450,10 +460,22 @@ AITarget.NearbyLivTerrain = function()
 	end
 end
 
-AITarget.Tower = function()
+AITarget.TowerTemple = function()
 	local tower = gWonders[EA_WONDER_ARCANE_TOWER][g_iPerson]
 	if tower then
 		local x, y = GetXYFromPlotIndex(tower.iPlot)
+		TestAddOption("Plot", x, y, 0, nil)
+	elseif g_eaPerson.templeID then
+		local temple = gWonders[g_eaPerson.templeID]
+		local x, y = GetXYFromPlotIndex(temple.iPlot)
+		TestAddOption("Plot", x, y, 0, nil)
+	end
+end
+
+AITarget.Temple = function()
+	if g_eaPerson.templeID then
+		local temple = gWonders[g_eaPerson.templeID]
+		local x, y = GetXYFromPlotIndex(temple.iPlot)
 		TestAddOption("Plot", x, y, 0, nil)
 	end
 end
@@ -484,14 +506,10 @@ AITarget.VacantTower = function()
 	end
 end
 
-local wideSearchRings = {2,4,6,9,12,15}
+local wideSearchRings = {2,4,6,9,12}
 
-AITarget.TowerToWide = function()			-- Test in caster's tower and spaced out rings to distance 15 (exclude water)
-	local tower = gWonders[EA_WONDER_ARCANE_TOWER][g_iPerson]
-	if tower then
-		local x, y = GetXYFromPlotIndex(tower.iPlot)
-		TestAddOption("Plot", x, y, 0, nil)
-	end
+AITarget.SpacedRingsWide = function()
+	TestAddOption("Plot", g_gpX, g_gpY, 0, 0)
 	for _, radius in pairs(wideSearchRings) do
 		for plot in PlotRingIterator(g_gpPlot, radius, 1, false) do
 			if not plot:IsWater() then
@@ -501,6 +519,7 @@ AITarget.TowerToWide = function()			-- Test in caster's tower and spaced out rin
 		end
 	end
 end
+
 
 local getClosestCityCache = {callCount = 0}
 
@@ -730,7 +749,12 @@ AITarget.RevealedGRWs = function()		--for Dispel Glyphs, Runes and Wards
 	end
 end
 
-
+AITarget.AhrimansVault = function()
+	for iPlot in pairs(gg_cachedMapPlots.accessAhrimansVault) do
+		local x, y = GetXYFromPlotIndex(iPlot)
+		TestAddOption("Plot", x, y, 0, nil)
+	end
+end
 -------------------------------------------------------------------------------
 
 local function AddNonCombatOptions()
@@ -754,9 +778,11 @@ local function AddNonCombatOptions()
 			if bTest then
 				local eaAction = GameInfo.EaActions[g_eaActionID]
 				print("AI: Non-target tests passed for ", eaAction.Type)
-				local AITargetFunction = AITarget[eaAction.AITarget]
-				if AITargetFunction then
-					AITargetFunction()
+				if AITarget[eaAction.AITarget] then
+					AITarget[eaAction.AITarget]()
+				end
+				if AITarget[eaAction.AITarget2] then
+					AITarget[eaAction.AITarget2]()
 				end
 			end
 		end

@@ -9,332 +9,641 @@
 		<Row Tag="TXT_KEY_EA_TECH_DOMESTICATION">
 			<Text>Domestication</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_DOMESTICATION_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_HUNTING">
 			<Text>Hunting</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_HUNTING_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_FISHING">
 			<Text>Fishing</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_FISHING_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_AGRICULTURE">
 			<Text>Agriculture</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_AGRICULTURE_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_WRITING">
 			<Text>Writing</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_WRITING_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_CURRENCY">
 			<Text>Currency</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_CURRENCY_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_MINING">
 			<Text>Mining</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_MINING_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_HORSEBACK_RIDING">
 			<Text>Horseback Riding</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_HORSEBACK_RIDING_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_ANIMAL_HUSBANDRY">
 			<Text>Animal Husbandry</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_ANIMAL_HUSBANDRY_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_ELEPHANT_TRAINING">
 			<Text>Elephant Training</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_ELEPHANT_TRAINING_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_TRACKING_TRAPPING">
 			<Text>Tracking & Trapping</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_TRACKING_TRAPPING_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_ARCHERY">
 			<Text>Archery</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_ARCHERY_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_HARPOONS">
 			<Text>Harpoons</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_HARPOONS_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_SAILING">
 			<Text>Sailing</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_SAILING_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_MILLING">
 			<Text>Milling</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_MILLING_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_WEAVING">
 			<Text>Weaving</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_WEAVING_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_ZYMURGY">
 			<Text>Zymurgy</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_ZYMURGY_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_IRRIGATION">
 			<Text>Irrigation</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_IRRIGATION_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_CALENDAR">
 			<Text>Calendar</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_CALENDAR_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_DIVINE_LITURGY">
 			<Text>Divine Liturgy</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_DIVINE_LITURGY_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_MALEFICIUM">
 			<Text>Maleficium</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_MALEFICIUM_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_THAUMATURGY">
 			<Text>Thaumaturgy</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_THAUMATURGY_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_PHILOSOPHY">
 			<Text>Philosophy</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_PHILOSOPHY_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_DRAMA">
 			<Text>Drama</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_DRAMA_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_MATHEMATICS">
 			<Text>Mathematics</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_MATHEMATICS_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_COINAGE">
 			<Text>Coinage</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_COINAGE_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_MASONRY">
 			<Text>Masonry</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_MASONRY_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_BRONZE_WORKING">
 			<Text>Bronze Working</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_BRONZE_WORKING_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_DEEP_MINING">
 			<Text>Deep Mining</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_DEEP_MINING_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_STIRRUPS">
 			<Text>Stirrups</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_STIRRUPS_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_ANIMAL_INDUSTRY">
 			<Text>Animal Industry</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_ANIMAL_INDUSTRY_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_ELEPHANT_LABOR">
 			<Text>Elephant Labor</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_ELEPHANT_LABOR_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_GAMEKEEPING">
 			<Text>Gamekeeping</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_GAMEKEEPING_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_BOWYERS">
 			<Text>Bowyers</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_BOWYERS_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_SHIP_BUILDING">
 			<Text>Ship Building</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_SHIP_BUILDING_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_FORESTRY">
 			<Text>Forestry</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_FORESTRY_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_FINE_TEXTILES">
 			<Text>Fine Textiles</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_FINE_TEXTILES_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_OENOLOGY">
 			<Text>Œnology</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_OENOLOGY_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_CROP_ROTATION">
 			<Text>Crop Rotation</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_CROP_ROTATION_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_DIVINE_VITALISM">
 			<Text>Divine Vitalism</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_DIVINE_VITALISM_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_LYCANTHROPY">
 			<Text>Lycanthropy</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_LYCANTHROPY_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_REANIMATION">
 			<Text>Reanimation</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_REANIMATION_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_SORCERY">
 			<Text>Sorcery</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_SORCERY_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_CONJURATION">
 			<Text>Conjuration</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_CONJURATION_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_TRANSMUTATION">
 			<Text>Transmutation</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_TRANSMUTATION_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_LOGIC">
 			<Text>Logic</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_LOGIC_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_LITERATURE">
 			<Text>Literature</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_LITERATURE_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_MUSIC">
 			<Text>Music</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_MUSIC_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_ALCHEMY">
 			<Text>Alchemy</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_ALCHEMY_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_MECHANICS">
 			<Text>Mechanics</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_MECHANICS_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_BANKING">
 			<Text>Banking</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_BANKING_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_CONSTRUCTION">
 			<Text>Construction</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_CONSTRUCTION_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_IRON_WORKING">
 			<Text>Iron Working</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_IRON_WORKING_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_EARTH_DIVINATION">
 			<Text>Earth Divination</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_EARTH_DIVINATION_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_UNDERDARK_PATHS">
 			<Text>Underdark Paths</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_UNDERDARK_PATHS_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_ANIMAL_BREEDING">
 			<Text>Animal Breeding</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_ANIMAL_BREEDING_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_ANIMAL_MASTERY">
 			<Text>Animal Mastery</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_ANIMAL_MASTERY_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_MARKSMANSHIP">
 			<Text>Marksmanship</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_MARKSMANSHIP_HELP">
+			<Text></Text>
 		</Row>
 
 		<Row Tag="TXT_KEY_EA_TECH_ASTRONOMY">
 			<Text>Astronomy</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_ASTRONOMY_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_DIVINE_ESSENCE">
 			<Text>Divine Essence</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_DIVINE_ESSENCE_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_DIVINE_INTERVENTION">
 			<Text>Divine Intervention</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_DIVINE_INTERVENTION_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_VAMPIRISM">
 			<Text>Vampirism</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_VAMPIRISM_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_NECROMANCY">
 			<Text>Necromancy</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_NECROMANCY_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_SUMMONING">
 			<Text>Summoning</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_SUMMONING_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_EVOCATION">
 			<Text>Evocation</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_EVOCATION_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_METAPHYSICS">
 			<Text>Metaphysics</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_METAPHYSICS_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_SEMIOTICS">
 			<Text>Semiotics</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_SEMIOTICS_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_ENCHANTMENT">
 			<Text>Enchantment</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_ENCHANTMENT_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_CHEMISTRY">
 			<Text>Chemistry</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_CHEMISTRY_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_SANITATION">
 			<Text>Sanitation</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_TECH_PHYSICS">
-			<Text>Physics</Text>
+		<Row Tag="TXT_KEY_EA_TECH_SANITATION_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_ENGINEERING">
 			<Text>Engineering</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_ENGINEERING_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_METAL_CASTING">
 			<Text>Metal Casting</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_METAL_CASTING_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_WAR_HORSES">
 			<Text>War Horses</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_WAR_HORSES_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_WAR_ELEPHANTS">
 			<Text>War Elephants</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_WAR_ELEPHANTS_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_WHALING">
 			<Text>Whaling</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_WHALING_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_NAVIGATION">
 			<Text>Navigation</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_NAVIGATION_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_CELESTIAL_KNOWLEDGE">
 			<Text>Celestial Knowledge</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_CELESTIAL_KNOWLEDGE_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_SOUL_BINDING">
 			<Text>Soul Binding</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_SOUL_BINDING_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_ILLUSION">
 			<Text>Illusion</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_ILLUSION_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_ABJURATION">
 			<Text>Abjuration</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_ABJURATION_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_TRANSCENDENTAL_THOUGHT">
 			<Text>Transcendental Thought</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_TRANSCENDENTAL_THOUGHT_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_GREATER_ILLUSION">
 			<Text>Greater Illusion</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_GREATER_ILLUSION_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_GREATER_ENCHANTMENT">
 			<Text>Greater Enchantment</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_GREATER_ENCHANTMENT_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_AESTHETICS">
 			<Text>Æsthetics</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_AESTHETICS_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_MEDICINE">
 			<Text>Medicine</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_MEDICINE_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_ARCHITECTURE">
 			<Text>Architecture</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_ARCHITECTURE_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_MACHINERY">
 			<Text>Machinery</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_MACHINERY_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_STEEL_WORKING">
 			<Text>Steel Working</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_STEEL_WORKING_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_ELEMENTAL_FORGING">
 			<Text>Elemental Forging</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_ELEMENTAL_FORGING_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_DEEP_ROADS">
 			<Text>Deep Roads</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_DEEP_ROADS_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_BEAST_MASTERY">
 			<Text>Beast Mastery</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_BEAST_MASTERY_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_MUMAKIL_RIDING">
 			<Text>Mûmakil Riding</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_MUMAKIL_RIDING_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_SONG_OF_LEVIATHAN">
 			<Text>Song of Leviathan</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_SONG_OF_LEVIATHAN_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_ADV_NAVAL_ENGINEERING">
 			<Text>Adv. Naval Engineering</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_ADV_NAVAL_ENGINEERING_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_NAVAL_ENGINEERING">
 			<Text>Naval Engineering</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_NAVAL_ENGINEERING_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_HEAVENLY_CYCLES">
 			<Text>Heavenly Cycles</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_HEAVENLY_CYCLES_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_BREACH">
 			<Text>Breach</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_BREACH_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_GREATER_ARCANA">
 			<Text>Greater Arcana</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_GREATER_ARCANA_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_PHANTASMAGORIA">
 			<Text>Phantasmagoria</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_PHANTASMAGORIA_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_INVOCATION">
 			<Text>Invocation</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_INVOCATION_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_ETHEREAL_ARCHITECTURE">
 			<Text>Ethereal Architecture</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_ETHEREAL_ARCHITECTURE_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_STEAM_POWER">
 			<Text>Steam Power</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_STEAM_POWER_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_MITHRIL_WORKING">
 			<Text>Mithril Working</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_MITHRIL_WORKING_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_KNOWLEDGE_OF_HEAVEN">
 			<Text>Knowledge of Heaven</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_KNOWLEDGE_OF_HEAVEN_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_ARMAGEDDON_RITUALS">
 			<Text>Armageddon Rituals</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_ARMAGEDDON_RITUALS_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_ESOTERIC_ARCANA">
 			<Text>Esoteric Arcana</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_ESOTERIC_ARCANA_HELP">
+			<Text></Text>
+		</Row>
 
-		<Row Tag="TXT_KEY_EA_TECH_UNDERDARK_LORE">
-			<Text>Underdark Lore</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_TECH_BEAST_BREEDING">
-			<Text>Beast Breeding</Text>
-		</Row>
 
 		<!-- Technologies Special Texts -->
 
@@ -344,19 +653,21 @@
 		<Row Tag="TXT_KEY_EA_TECH_TRACKING_TRAPPING_SPECIAL">
 			<Text>+1 range at which Hunters can establish Camps (i.e., 4 plots from city if no other modifiers)</Text>
 		</Row>
-
 		<Row Tag="TXT_KEY_EA_TECH_SAILING_SPECIAL">
 			<Text>Cities adjacent to a Natural Harbor (any coastal plot with 3 adjacent land plots) gain ownership of the plot and a free Harbor building</Text>
 		</Row>
-
 		<Row Tag="TXT_KEY_EA_TECH_MALEFICIUM_SPECIAL">
-			<Text>Civilization will Fall when anyone makes the Prophecy of Vâ</Text>
+			<Text>Allows any Devout from this civilization to make the Prophecy of Aŋra founding the Aŋra religion</Text>
 		</Row>
 
+		<Row Tag="TXT_KEY_EA_TECH_VA_SPECIAL">
+			<Text>Researching this will allow any Devout from any civilization to make the Prophecy of Vâ, causing civilizations that know Maleficium to Fall but opening higher tier arcane technologies leading to Armageddon Rituals</Text>
+		</Row>	
+		
 		<Row Tag="TXT_KEY_EA_TECH_PHILOSOPHY_SPECIAL">
 			<Text>Reduces Knowledge Maintenence by 1% per tech known</Text>
 		</Row>
-
+			
 		<Row Tag="TXT_KEY_EA_TECH_SHIP_BUILDING_SPECIAL">
 			<Text>+2 range at which you can establish Fishing and Whailing Boats (i.e., 5 plots from coastal city if no other modifiers)</Text>
 		</Row>
@@ -379,11 +690,6 @@
 		<Row Tag="TXT_KEY_EA_TECH_MEDICINE_SPECIAL">
 			<Text>All units heal 5% faster</Text>
 		</Row>
-		
-		
-		<Row Tag="TXT_KEY_EA_TECH_BEAST_BREEDING_SPECIAL">
-			<Text>Mûmakil spawn near existing Elephant - !! NOT YET IMPLEMENTED; MUMAKIL CURRENTLY USE ELEPHANT RESOURCE !!</Text>
-		</Row>
 		<Row Tag="TXT_KEY_EA_TECH_WHALING_SPECIAL">
 			<Text>+2 range at which you can establish Whailing Boats</Text>
 		</Row>
@@ -400,6 +706,24 @@
 			<Text>All regular troops of tier 5 and higher gain +4 Combat Strength</Text>
 		</Row>
 
+		<Row Tag="TXT_KEY_EA_TECH_KNOWLEDGE_OF_HEAVEN_SPECIAL_1">
+			<Text>With 10000 Divine Favor a Devout can initiate Ordo Salutis (Prophecy, instant) calling all twelve Archangels at once; the Devout will be sacrificed</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_KNOWLEDGE_OF_HEAVEN_SPECIAL_2">
+			<Text>With 10000 Divine Favor any spellcaster can Seal Ahriman's Vault (Ritual, 8 turns and must be adjacent to map feature) preventing all further spellcasting by the Fallen</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_ARMAGEDDON_RITUALS_SPECIAL_1">
+			<Text>Enables Ahriman's Exchange (Ritual, 8 turns) by any spellcaster, consuming half of the civilization's remaining mana exchanging it for experience gained by the spellcaster</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_ARMAGEDDON_RITUALS_SPECIAL_2">
+			<Text>Enables Consume Souls (Ritual, 8 turns) by any spellcaster, destroying up to half of the remaining world population (leaving cities at minimum size 1) while consuming 100 mana per population point destroyed</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_ARMAGEDDON_RITUALS_SPECIAL_3">
+			<Text>Enables Consume Self (Ritual, 8 turns) by any spellcaster, destroying self while consuming mana equal to the total experience accumulated by the spellcaster</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_TECH_ESOTERIC_ARCANA_SPECIAL">
+			<Text>With 10000 Mana any spellcaster can Seal Ahriman's Vault (Ritual, 8 turns and must be adjacent to map feature) preventing all further spellcasting by the Fallen</Text>
+		</Row>
 		
 
 	</Language_en_US>

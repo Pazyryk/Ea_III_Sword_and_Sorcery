@@ -7,47 +7,92 @@
 		<Row Tag="TXT_KEY_EA_PROCESS_INDUSTRIAL_AGRICULTURE">
 			<Text>Industrial Agriculture</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_PROCESS_INDUSTRIAL_AGRICULTURE_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Industrial Agriculture[ENDCOLOR] converts 25% of the [ICON_PRODUCTION] Production of this City into food distributed in all cities.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_PROCESS_WORLD_WEAVE">
 			<Text>World Weave</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROCESS_WORLD_WEAVE_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]World Weave[ENDCOLOR] uses [ICON_PRODUCTION] Production of this City to convert citizens worldwide into followers of The Weave of Éa (randomly converted from cities that already have at least one follower, with pantheistic cult followers considered followers of The Weave; 100 [ICON_PRODUCTION] Production needed to convert one non-religious citizen, 500 to convert a theistic citizen).</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROCESS_EA_BLESSINGS">
 			<Text>Éa Blessings</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_PROCESS_EA_BLESSINGS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Éa Blessings[ENDCOLOR] converts 10% of the [ICON_PRODUCTION] Production of this City into Living Terrain strength, randomly applied to non-improved forest, jungle or marsh plots worldwide.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_PROCESS_MAJOR_SPIRITS_TRIBUTE">
 			<Text>Major Spirits' Tribute</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROCESS_MAJOR_SPIRITS_TRIBUTE_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Major Spirits' Tribute[ENDCOLOR] converts 25% of the [ICON_PRODUCTION] Production of this City into [ICON_INFLUENCE] Influence divided among all Major Spirits of Éa that are friends or allies (or all contacted if none are currently friends or allies).</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROCESS_FAERIES_TRIBUTE">
 			<Text>Faeries' Tribute</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_PROCESS_FAERIES_TRIBUTE_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Faeries' Tribute[ENDCOLOR] converts [ICON_PRODUCTION] Production of this City into boosted relationship with The Fay (boost equals moving average of production contributed over the last 100 turns divided by 10).</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_PROCESS_AZZANDARAS_TRIBUTE">
 			<Text>Azzandara's Tribute</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROCESS_AZZANDARAS_TRIBUTE_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Azzandara's Tribute[ENDCOLOR] converts 25% of the [ICON_PRODUCTION] Production of this City into [ICON_PEACE] Divine Favor.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROCESS_WORLD_SALVATION">
 			<Text>World Salvation</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_PROCESS_WORLD_SALVATION_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]World Salvation[ENDCOLOR] uses [ICON_PRODUCTION] Production of this City to convert citizens worldwide into followers of Azzandarayasna (randomly converted from cities that already have at least one follower; 100 [ICON_PRODUCTION] Production needed to convert one non-religious citizen, 500 to convert a citizen of another religion).</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_PROCESS_AHRIMANS_TRIBUTE">
 			<Text>Ahriman's Tribute</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROCESS_AHRIMANS_TRIBUTE_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Ahriman's Tribute[ENDCOLOR] converts 25% of the [ICON_PRODUCTION] Production of this City into consumed [ICON_STAR] Mana. The Mana is directly consumed and never made available to the civilization.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROCESS_WORLD_CORRUPTION">
 			<Text>World Corruption</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_PROCESS_WORLD_CORRUPTION_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]World Corruption[ENDCOLOR] uses [ICON_PRODUCTION] Production of this City to convert citizens worldwide into followers of Aŋra (randomly converted from cities that already have at least one follower; 100 [ICON_PRODUCTION] Production needed to convert one non-religious citizen, 500 to convert a citizen of another religion).</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_PROCESS_OPPRESSION">
 			<Text>Oppression</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROCESS_OPPRESSION_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Oppression[ENDCOLOR] converts 25% of the [ICON_PRODUCTION] Production of this City into civilization [ICON_HAPPINESS_4] Unhappiness.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROCESS_TRAINING_EXERCISES">
 			<Text>Training Exercises</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_PROCESS_TRAINING_EXERCISES_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Training Exercises[ENDCOLOR] converts 25% of the [ICON_PRODUCTION] Production of this City into experience divided among all military units.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_PROCESS_RESEARCH">
 			<Text>Research</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROCESS_RESEARCH_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Research[ENDCOLOR] converts 25% of the [ICON_PRODUCTION] Production of this City into [ICON_RESEARCH] Research.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROCESS_THE_ARTS">
 			<Text>The Arts</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_PROCESS_THE_ARTS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]The Arts[ENDCOLOR] converts 25% of the [ICON_PRODUCTION] Production of this City into [ICON_CULTURE] Culture.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_PROCESS_TRADE_SURPLUS">
 			<Text>Trade Surplus</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_PROCESS_TRADE_SURPLUS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Trade Surplus[ENDCOLOR] converts 25% of the [ICON_PRODUCTION] Production of this City into [ICON_GOLD] Gold.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_PROCESS_PATRONAGE">
 			<Text>Patronage</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROCESS_PATRONAGE_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Patronage[ENDCOLOR] converts 25% of the [ICON_PRODUCTION] Production of this City into [ICON_INFLUENCE] Influence divided among all City State friends and allies, or all contacted if none are currently friends or allies.</Text>
 		</Row>
 
 

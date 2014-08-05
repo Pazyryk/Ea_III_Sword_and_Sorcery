@@ -92,6 +92,9 @@ local YIELD_SCIENCE =							GameInfoTypes.YIELD_SCIENCE
 local YIELD_CULTURE = 							GameInfoTypes.YIELD_CULTURE
 local YIELD_FAITH = 							GameInfoTypes.YIELD_FAITH
 
+local VERY_UNHAPPY_THRESHOLD =					GameDefines.VERY_UNHAPPY_THRESHOLD
+local VERY_UNHAPPY_THRESHOLD =					GameDefines.VERY_UNHAPPY_GROWTH_PENALTY
+local VERY_UNHAPPY_THRESHOLD =					GameDefines.UNHAPPY_GROWTH_PENALTY
 
 local UNHAPPINESS_PER_OCCUPIED_POPULATION =		GameDefines.UNHAPPINESS_PER_OCCUPIED_POPULATION
 local UNHAPPINESS_PER_CAPTURED_CITY =			GameDefines.UNHAPPINESS_PER_CAPTURED_CITY
@@ -102,10 +105,13 @@ local playerType =	MapModData.playerType
 local realCivs =	MapModData.realCivs
 
 local gg_regularCombatType = gg_regularCombatType
+local gg_eaTechClass = gg_eaTechClass
 
 --localized functions
 local GetPlotByIndex = Map.GetPlotByIndex
 local floor = math.floor
+local HandleError31 = HandleError31
+local HandleError41 = HandleError41
 
 --file control
 local g_iActivePlayer = Game.GetActivePlayer()
@@ -261,44 +267,88 @@ function UpdateCityYields(iPlayer, iSpecificCity, effectType, bPerTurnCall)
 	local faithDistribution = 0
 
 	if bFullCiv then
-		if player:HasPolicy(POLICY_INDUSTRIALIZATION) then
-			local food = eaPlayer.foodDistributionCarryover or 0
-			for city in player:Cities() do
-				local orderType, orderID = city:GetOrderFromQueue(0)
-				if orderType == ORDER_MAINTAIN and orderID == PROCESS_INDUSTRIAL_AGRICULTURE then	
-					food = food + city:GetYieldRate(YIELD_PRODUCTION) / 4
+		if effectType == nil or effectType == "Food" then
+			if player:HasPolicy(POLICY_INDUSTRIALIZATION) then
+				local food = eaPlayer.foodDistributionCarryover or 0
+				for city in player:Cities() do
+					local orderType, orderID = city:GetOrderFromQueue(0)
+					if orderType == ORDER_MAINTAIN and orderID == PROCESS_INDUSTRIAL_AGRICULTURE then	
+						food = food + city:GetYieldRate(YIELD_PRODUCTION) / 4
+					end
+				end
+				if player:HasPolicy(POLICY_DOMINIONISM_FINISHER) then
+					food = food + player:GetTotalJONSCulturePerTurn() / 3
+				end		
+				foodDistribution = floor(food / numCities)
+				if bPerTurnCall then										--no change if this is just a UI update
+					eaPlayer.foodDistributionCarryover = food % numCities
 				end
 			end
-			if player:HasPolicy(POLICY_DOMINIONISM_FINISHER) then
-				food = food + player:GetTotalJONSCulturePerTurn() / 3
-			end		
-			foodDistribution = floor(food / numCities)
-			if bPerTurnCall then										--no change if this is just a UI update
-				eaPlayer.foodDistributionCarryover = food % numCities
+		end
+
+		if effectType == nil or effectType == "Production" then
+			if player:HasPolicy(POLICY_SLAVE_CASTES) then
+				local unhappiness = -player:GetExcessHappiness()
+				unhappiness = unhappiness < 0 and 0 or unhappiness
+				local production = (eaPlayer.productionDistributionCarryover or 0) + unhappiness
+				if player:HasPolicy(POLICY_SLAVERY_FINISHER) then
+					production = production + floor(player:GetTotalJONSCulturePerTurn() / 3)
+				end
+				productionDistribution = floor(production / numCities)
+				eaPlayer.productionDistributionCarryover = bPerTurnCall and production % numCities or eaPlayer.productionDistributionCarryover	--dump remainder into unhappiness account even if it is from culture
 			end
 		end
 
-		if player:HasPolicy(POLICY_SLAVE_CASTES) then
-			local unhappiness = -player:GetExcessHappiness()
-			unhappiness = unhappiness < 0 and 0 or unhappiness
-			local production = (eaPlayer.productionDistributionCarryover or 0) + unhappiness
-			if player:HasPolicy(POLICY_SLAVERY_FINISHER) then
-				production = production + floor(player:GetTotalJONSCulturePerTurn() / 3)
+		if effectType == nil or effectType == "Science" then
+			local science = (eaPlayer.scienceDistributionCarryover or 0)
+			if player:HasPolicy(POLICY_TRADITION_FINISHER) then
+				science = science + floor(player:GetTotalJONSCulturePerTurn() / 3)
 			end
-			productionDistribution = floor(production / numCities)
-			eaPlayer.productionDistributionCarryover = bPerTurnCall and production % numCities or eaPlayer.productionDistributionCarryover	--dump remainder into unhappiness account even if it is from culture
+			if eaPlayer.gpArcaneScience and next(eaPlayer.gpArcaneScience) ~= nil then
+				local currentResearchID = player:GetCurrentResearch()
+				if currentResearchID and (gg_eaTechClass[currentResearchID] == "Arcane" or gg_eaTechClass[currentResearchID] == "ArcaneEvil") then
+					for iPerson, arcaneScience in pairs(eaPlayer.gpArcaneScience) do
+						science = science + arcaneScience
+					end
+				else
+					for iPerson in pairs(eaPlayer.gpArcaneScience) do
+						eaPlayer.gpArcaneScience[iPerson] = nil
+						InterruptEaAction(iPlayer, iPerson)
+					end
+				end
+			end
+			if eaPlayer.gpDivineScience and next(eaPlayer.gpDivineScience) ~= nil then
+				local currentResearchID = player:GetCurrentResearch()
+				if currentResearchID and gg_eaTechClass[currentResearchID] == "Divine" then
+					for iPerson, divineScience in pairs(eaPlayer.gpDivineScience) do
+						science = science + divineScience
+					end
+				else
+					for iPerson in pairs(eaPlayer.gpDivineScience) do
+						eaPlayer.gpDivineScience[iPerson] = nil
+						InterruptEaAction(iPlayer, iPerson)
+					end
+				end
+			end
+			if science ~= 0 then
+				scienceDistribution = floor(science / numCities)
+				eaPlayer.scienceDistributionCarryover = bPerTurnCall and science % numCities or eaPlayer.scienceDistributionCarryover	--no change if this is just a UI update
+			end
 		end
-
+		--[[
 		if player:HasPolicy(POLICY_TRADITION_FINISHER) then
 			local science = (eaPlayer.scienceDistributionCarryover or 0) + floor(player:GetTotalJONSCulturePerTurn() / 3)
 			scienceDistribution = floor(science / numCities)
 			eaPlayer.scienceDistributionCarryover = bPerTurnCall and science % numCities or eaPlayer.scienceDistributionCarryover	--no change if this is just a UI update
 		end
-	
-		if player:HasPolicy(POLICY_COMMERCE_FINISHER) then
-			local gold = (eaPlayer.goldDistributionCarryover or 0) + floor(player:GetTotalJONSCulturePerTurn() / 3)
-			goldDistribution = floor(gold / numCities)
-			eaPlayer.goldDistributionCarryover = bPerTurnCall and gold % numCities or eaPlayer.goldDistributionCarryover	--no change if this is just a UI update
+		]]
+		
+		if effectType == nil or effectType == "Gold" then
+			if player:HasPolicy(POLICY_COMMERCE_FINISHER) then
+				local gold = (eaPlayer.goldDistributionCarryover or 0) + floor(player:GetTotalJONSCulturePerTurn() / 3)
+				goldDistribution = floor(gold / numCities)
+				eaPlayer.goldDistributionCarryover = bPerTurnCall and gold % numCities or eaPlayer.goldDistributionCarryover	--no change if this is just a UI update
+			end
 		end
 	end
 
@@ -558,10 +608,14 @@ function UpdateCityYields(iPlayer, iSpecificCity, effectType, bPerTurnCall)
 		end
 	end
 end
+local function X_UpdateCityYields(iPlayer, iSpecificCity, effectType, bPerTurnCall) return HandleError41(UpdateCityYields, iPlayer, iSpecificCity, effectType, bPerTurnCall) end
+LuaEvents.EaYieldsUpdateCityYields.Add(X_UpdateCityYields)
 
 --------------------------------------------------------------
 -- Event functions
 --------------------------------------------------------------
+
+
 local prevOrderType = {}	--index by iCity, use to know if changed
 local prevOrderID = {}
 local function ActivePlayerCityBuildQueueChange(iPlayer, iCity, updateTypeID)
@@ -625,7 +679,8 @@ local function ActivePlayerCityBuildQueueChange(iPlayer, iCity, updateTypeID)
 		end
 	end
 end
-Events.SpecificCityInfoDirty.Add(ActivePlayerCityBuildQueueChange)
+local function X_ActivePlayerCityBuildQueueChange(iPlayer, iCity, updateTypeID) return HandleError31(ActivePlayerCityBuildQueueChange, iPlayer, iCity, updateTypeID) end
+Events.SpecificCityInfoDirty.Add(X_ActivePlayerCityBuildQueueChange)
 
 
 ----------------------------------------------------------------

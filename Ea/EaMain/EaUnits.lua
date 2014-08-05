@@ -721,7 +721,8 @@ local function OnUnitTakingPromotion(iPlayer, iUnit, promotionID)
 		end
 	end
 end
-GameEvents.UnitTakingPromotion.Add(function(iPlayer, iUnit, promotionID) return HandleError31(OnUnitTakingPromotion, iPlayer, iUnit, promotionID) end)
+local function X_OnUnitTakingPromotion(iPlayer, iUnit, promotionID) return HandleError31(OnUnitTakingPromotion, iPlayer, iUnit, promotionID) end
+GameEvents.UnitTakingPromotion.Add(X_OnUnitTakingPromotion)
 
 --------------------------------------------------------------
 -- Promotion utilities

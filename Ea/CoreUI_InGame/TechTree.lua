@@ -471,7 +471,7 @@ function TechSelected( eTech, iDiscover)
 		end
    	end
 	--Paz add
-	--MapModData.bRequestPlayerScienceUpdate = true
+	LuaEvents.EaYieldsUpdateCityYields(playerID, nil, "Science", false)
 	--end Paz add
 end
 

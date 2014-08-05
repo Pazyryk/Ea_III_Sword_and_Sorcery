@@ -93,6 +93,7 @@ local gg_playerCityPlotIndexes =	gg_playerCityPlotIndexes
 local gg_remoteImprovePlot =		gg_remoteImprovePlot
 local gg_cityRemoteImproveCount =	gg_cityRemoteImproveCount
 local gg_naturalWonders =			gg_naturalWonders
+local gg_cachedMapPlots =			gg_cachedMapPlots
 
 --localized functions
 local Rand = Map.Rand
@@ -102,7 +103,7 @@ local GetPlotByIndex = Map.GetPlotByIndex
 local GetPlotIndexFromXY = GetPlotIndexFromXY
 local floor = math.floor
 local HandleError41 = HandleError41
-local HandleError = HandleError
+local HandleError31 = HandleError31
 
 --file control
 local g_bNotVisibleByResourceID = {}
@@ -175,7 +176,7 @@ local function DoLivingTerrainSpread(fromPlot, toPlot, fromType, fromStrength)
 		LivingTerrainGrowHere(toPlot:GetPlotIndex(), fromType)
 		toPlot:SetLivingTerrainData(fromType, true, 1, -100)
 		fromStrength = fromStrength - 1
-		fromPlot:SetLivingTerrainData(fromStrength)
+		fromPlot:SetLivingTerrainStrength(fromStrength)
 		print("Living terrain has spread to an adjacent (non-living or not very strong) tile ", fromPlot:GetPlotIndex(), toPlot:GetPlotIndex())
 	else
 		--may have conflict between spread type and old (currently absent) type; don't want to kill a stronger terrain that was just chopped, so regrow it as own type
@@ -187,7 +188,7 @@ local function DoLivingTerrainSpread(fromPlot, toPlot, fromType, fromStrength)
 			LivingTerrainGrowHere(toPlot:GetPlotIndex(), fromType)	
 			toPlot:SetLivingTerrainData(fromType, true, toStrength + 1, toTurnChopped)
 			fromStrength = fromStrength - 1
-			fromPlot:SetLivingTerrainData(fromStrength)
+			fromPlot:SetLivingTerrainStrength(fromStrength)
 			print("Living terrain has awakened and converted an adjacent (currently absent) living tile ", fromPlot:GetPlotIndex(), toPlot:GetPlotIndex())
 			print("Was, ", toType, true, toStrength, toTurnChopped)
 			print("Is now: ", fromType, true, toStrength+1, toTurnChopped)
@@ -399,18 +400,16 @@ function EaPlotsInit(bNewGame)
 		MapModData.ownablePlots = SaveDB.GetValue("OwnablePlots", ownablePlots)
 	end
 
+	--stored stuff needed for new and loaded games
+
 	for iPlayer, eaPlayer in pairs(realCivs) do
 		g_addResource[iPlayer] = {}
 		g_bNotVisibleByResourceID[iPlayer] = {}
 		g_bBlockedByFeatureID[iPlayer] = {}
 		gg_cityRemoteImproveCount[iPlayer] = {}
 	end
-
-	--all plots cycle (new or loaded)
-
 	local totalLivingTerrainStrength = 0
 	local harmonicMeanDenominator = 0
-	--local lakeCounter, fishingCounter, whaleCounter, campCounter = 0, 0, 0, 0
 	for iPlot = 0, Map.GetNumPlots() - 1 do
 		local x, y = GetXYFromPlotIndex(iPlot)
 		local plot = GetPlotByIndex(iPlot)
@@ -476,7 +475,24 @@ function EaPlotsInit(bNewGame)
 	
 	MapModData.totalLivingTerrainStrength = floor(totalLivingTerrainStrength)
 	MapModData.harmonicMeanDenominator = harmonicMeanDenominator
-	--print("Lakes, FishingResources, Whales, CampResources ", lakeCounter, fishingCounter, whaleCounter, campCounter)
+
+	--cached map plots that may be useful
+	for featureID, nwTable in pairs(gg_naturalWonders) do
+		if featureID == GameInfoTypes.FEATURE_SOLOMONS_MINES then		--really Ahriman's Vault
+			local plot = GetPlotFromXY(nwTable.x, nwTable.y)
+			for adjPlot in AdjacentPlotIterator(plot) do
+				if not (adjPlot:IsWater() or adjPlot:IsMountain() or adjPlot:IsImpassable()) then
+					gg_cachedMapPlots.accessAhrimansVault = gg_cachedMapPlots.accessAhrimansVault or {}
+					gg_cachedMapPlots.accessAhrimansVault[adjPlot:GetPlotIndex()] = true
+				end
+			end
+		end
+	end
+	if not gg_cachedMapPlots.accessAhrimansVault then
+		error("Ahriman's Vault cannot be reached; this map is unplaybable")
+	end
+
+
 end
 
 --------------------------------------------------------------
@@ -1324,9 +1340,10 @@ local function OnCityCanAcquirePlot(iPlayer, iCity, x, y)
 	if plot:IsMountain() then return false end
 	return true
 end
-GameEvents.CityCanAcquirePlot.Add(OnCityCanAcquirePlot)
+local function X_OnCityCanAcquirePlot(iPlayer, iCity, x, y) return HandleError41(OnCityCanAcquirePlot, iPlayer, iCity, x, y) end
+GameEvents.CityCanAcquirePlot.Add(X_OnCityCanAcquirePlot)
 
-function ListenerSerialEventHexCultureChanged(hexX, hexY, iPlayer, bUnknown)	--fires for all owned plots at game init too
+local function ListenerSerialEventHexCultureChanged(hexX, hexY, iPlayer)	--fires for all owned plots at game init too
 	if gg_init.bEnteredGame and iPlayer ~= -1 then
 		--print(string.format("Hex ownership change at hex coordinates: %d, %d for player: %d", hexX, hexY, iPlayer))
 
@@ -1368,7 +1385,8 @@ function ListenerSerialEventHexCultureChanged(hexX, hexY, iPlayer, bUnknown)	--f
 		end
 	end
 end
-Events.SerialEventHexCultureChanged.Add(ListenerSerialEventHexCultureChanged)
+local function X_ListenerSerialEventHexCultureChanged(hexX, hexY, iPlayer) return HandleError31(ListenerSerialEventHexCultureChanged, hexX, hexY, iPlayer) end
+Events.SerialEventHexCultureChanged.Add(X_ListenerSerialEventHexCultureChanged)
 
 
 local function OnBuildFinished(iPlayer, x, y, improvementID)		--improvementID for newly built only (e.g., -1 if this is a repair)
@@ -1390,7 +1408,8 @@ local function OnBuildFinished(iPlayer, x, y, improvementID)		--improvementID fo
 		end
 	end
 end
-GameEvents.BuildFinished.Add(function(iPlayer, x, y, improvementID) return HandleError41(OnBuildFinished, iPlayer, x, y, improvementID) end)
+local function X_OnBuildFinished(iPlayer, x, y, improvementID) return HandleError41(OnBuildFinished, iPlayer, x, y, improvementID) end
+GameEvents.BuildFinished.Add(X_OnBuildFinished)
 
 
 

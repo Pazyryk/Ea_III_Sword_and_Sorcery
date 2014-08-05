@@ -41,6 +41,7 @@ local Vector2 =				Vector2
 local ToHexFromGrid =		ToHexFromGrid
 local HandleError21 =		HandleError21
 local HandleError31 =		HandleError31
+local HandleError81 =		HandleError81
 
 local gg_eaSpecial =		gg_eaSpecial
 
@@ -313,7 +314,9 @@ function UpdatePlotEffectHighlight(iPlot, newShowState, bForceFullUpdate)	--all 
 		end
 	end
 end
-LuaEvents.EaMagicUpdatePlotEffectHighlight.Add(function(iPlot, newShowState, bForceFullUpdate) return HandleError31(UpdatePlotEffectHighlight, iPlot, newShowState, bForceFullUpdate) end)
+local UpdatePlotEffectHighlight = UpdatePlotEffectHighlight
+local function X_UpdatePlotEffectHighlight(iPlot, newShowState, bForceFullUpdate) return HandleError31(UpdatePlotEffectHighlight, iPlot, newShowState, bForceFullUpdate) end
+LuaEvents.EaMagicUpdatePlotEffectHighlight.Add(X_UpdatePlotEffectHighlight)
 
 --------------------------------------------------------------
 -- GameEvents
@@ -326,7 +329,8 @@ local function OnUnitSetXYPlotEffect(iPlayer, iUnit, x, y, plotEffectID, plotEff
 		OnPlotEffect[plotEffectID](iPlayer, iUnit, x, y, plotEffectStrength, iPlotEffectPlayer, iPlotEffectCaster)
 	end
 end
-GameEvents.UnitSetXYPlotEffect.Add(function(iPlayer, iUnit, x, y, plotEffectID, plotEffectStrength, iPlotEffectPlayer, iPlotEffectCaster) return HandleError(OnUnitSetXYPlotEffect, iPlayer, iUnit, x, y, plotEffectID, plotEffectStrength, iPlotEffectPlayer, iPlotEffectCaster) end)
+local function X_OnUnitSetXYPlotEffect(iPlayer, iUnit, x, y, plotEffectID, plotEffectStrength, iPlotEffectPlayer, iPlotEffectCaster) return HandleError81(OnUnitSetXYPlotEffect, iPlayer, iUnit, x, y, plotEffectID, plotEffectStrength, iPlotEffectPlayer, iPlotEffectCaster) end
+GameEvents.UnitSetXYPlotEffect.Add(X_OnUnitSetXYPlotEffect)
 
 OnPlotEffect[GameInfoTypes.EA_PLOTEFFECT_EXPLOSIVE_RUNE] = function(iPlayer, iUnit, x, y, plotEffectStrength, iPlotEffectPlayer, iPlotEffectCaster)
 	local plotEffectPlayer = Players[iPlotEffectPlayer]

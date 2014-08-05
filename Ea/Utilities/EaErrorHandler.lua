@@ -5,6 +5,12 @@
 --Best to set EnableLuaDebugLibrary = 1 in config.ini, but this will work either way
 --Use whichever Error Handler you need; the first is fastest and the last the slowest
 
+local getinfo = debug.getinfo
+local format = string.format
+local unpack = unpack
+local xpcall = xpcall
+local GetAIAutoPlay = Game.GetAIAutoPlay
+
 local g_errorStr = "none"
 
 local function Traceback(str)
@@ -18,7 +24,7 @@ local function Traceback(str)
 	print("Stack traceback:")
 	str = str .. "[NEWLINE]Stack traceback:"
 	while true do
-		local info = debug.getinfo(level)
+		local info = getinfo(level)
 		if not info then break end
 		local errorLine = ""
 		if info.what == "C" then   -- is a C function?
@@ -37,93 +43,123 @@ local function Traceback(str)
 	return str
 end
 
-function HandleError(f, ...)
-	--f can have any number of args and return values
+--The first function is here as a model or in case you are in a hurry. Unpack is very slow
+--so it's better to use a function with a defined number of function and return args. Pick
+--or make one with appropriate arg number (extra add miniscule overhead but work).
+--[[
+function HandleError(f, ...)	--f can have any number of args and return values
 	local g = function() return f(unpack(arg)) end
 	local result = {xpcall(g, Traceback)}
 	if result[1] then
 		return unpack(result, 2)
 	end
-	if Game.GetAIAutoPlay() > 0 then
+	if GetAIAutoPlay() > 0 then
 		LuaEvents.EaAutoplay(1)		--stop autoplay session
 	end
+	MapModData.error = result[2]
 	LuaEvents.EaErrorPopupDoErrorPopup(result[2])
 end
-
-function HandleError10(f, arg1)
-	--f can have 0 or 1 arg and no return value
+]]
+function HandleError10(f, arg1)		--f can have 0 or 1 arg and no return value
 	local g = function() return f(arg1) end
 	local success, value = xpcall(g, Traceback)
 	if success then
 		return
 	end
-	if Game.GetAIAutoPlay() > 0 then
+	if GetAIAutoPlay() > 0 then
 		LuaEvents.EaAutoplay(1)		--stop autoplay session
 	end
+	MapModData.error = value
 	LuaEvents.EaErrorPopupDoErrorPopup(value)
 end
 
-function HandleError21(f, arg1, arg2)
-	--f can have up to 2 args and 0 or 1 return value
+function HandleError21(f, arg1, arg2)	--f can have up to 2 args and 0 or 1 return value
 	local g = function() return f(arg1, arg2) end
 	local success, value = xpcall(g, Traceback)
 	if success then
 		return value
 	end
-	if Game.GetAIAutoPlay() > 0 then
+	if GetAIAutoPlay() > 0 then
 		LuaEvents.EaAutoplay(1)		--stop autoplay session
 	end
+	MapModData.error = value
 	LuaEvents.EaErrorPopupDoErrorPopup(value)
 end
 
-function HandleError31(f, arg1, arg2, arg3)
-	--f can have up to 2 args and 0 or 1 return value
+function HandleError31(f, arg1, arg2, arg3)	--f can have up to 2 args and 0 or 1 return value
 	local g = function() return f(arg1, arg2, arg3) end
 	local success, value = xpcall(g, Traceback)
 	if success then
 		return value
 	end
-	if Game.GetAIAutoPlay() > 0 then
+	if GetAIAutoPlay() > 0 then
 		LuaEvents.EaAutoplay(1)		--stop autoplay session
 	end
+	MapModData.error = value
 	LuaEvents.EaErrorPopupDoErrorPopup(value)
 end
 
-function HandleError41(f, arg1, arg2, arg3, arg4)
-	--f can have up to 4 args and 0 or 1 return value
+function HandleError41(f, arg1, arg2, arg3, arg4)	--f can have up to 4 args and 0 or 1 return value
 	local g = function() return f(arg1, arg2, arg3, arg4) end
 	local success, value = xpcall(g, Traceback)
 	if success then
 		return value
 	end
-	if Game.GetAIAutoPlay() > 0 then
+	if GetAIAutoPlay() > 0 then
 		LuaEvents.EaAutoplay(1)		--stop autoplay session
 	end
+	MapModData.error = value
 	LuaEvents.EaErrorPopupDoErrorPopup(value)
 end
 
-function HandleError51(f, arg1, arg2, arg3, arg4, arg5)
-	--f can have up to 4 args and 0 or 1 return value
+function HandleError51(f, arg1, arg2, arg3, arg4, arg5)	--f can have up to 4 args and 0 or 1 return value
 	local g = function() return f(arg1, arg2, arg3, arg4, arg5) end
 	local success, value = xpcall(g, Traceback)
 	if success then
 		return value
 	end
-	if Game.GetAIAutoPlay() > 0 then
+	if GetAIAutoPlay() > 0 then
 		LuaEvents.EaAutoplay(1)		--stop autoplay session
 	end
+	MapModData.error = value
 	LuaEvents.EaErrorPopupDoErrorPopup(value)
 end
 
-function HandleError61(f, arg1, arg2, arg3, arg4, arg5, arg6)
-	--f can have up to 6 args and 0 or 1 return value
+function HandleError61(f, arg1, arg2, arg3, arg4, arg5, arg6)	--f can have up to 6 args and 0 or 1 return value
 	local g = function() return f(arg1, arg2, arg3, arg4, arg5, arg6) end
 	local success, value = xpcall(g, Traceback)
 	if success then
 		return value
 	end
-	if Game.GetAIAutoPlay() > 0 then
+	if GetAIAutoPlay() > 0 then
 		LuaEvents.EaAutoplay(1)		--stop autoplay session
 	end
+	MapModData.error = value
+	LuaEvents.EaErrorPopupDoErrorPopup(value)
+end
+
+function HandleError81(f, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8)	--f can have up to 8 args and 0 or 1 return value
+	local g = function() return f(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8) end
+	local success, value = xpcall(g, Traceback)
+	if success then
+		return value
+	end
+	if GetAIAutoPlay() > 0 then
+		LuaEvents.EaAutoplay(1)		--stop autoplay session
+	end
+	MapModData.error = value
+	LuaEvents.EaErrorPopupDoErrorPopup(value)
+end
+
+function HandleErrorF0(f, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15)	--f can have up to 15 args and no return value
+	local g = function() return f(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15) end
+	local success, value = xpcall(g, Traceback)
+	if success then
+		return
+	end
+	if GetAIAutoPlay() > 0 then
+		LuaEvents.EaAutoplay(1)		--stop autoplay session
+	end
+	MapModData.error = value
 	LuaEvents.EaErrorPopupDoErrorPopup(value)
 end

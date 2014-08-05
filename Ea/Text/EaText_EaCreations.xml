@@ -237,29 +237,82 @@
 		<Row Tag="TXT_KEY_EA_ARTIFACT_TOME_OF_EQUUS">
 			<Text>Tome of Equus</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_EQUUS_HELP">
+			<Text>Lowers research cost for and knowledge maintenance from Domestication, Horseback Riding, Animal Husbandry, Stirrups, Animal Industry, Animal Breeding and War Horses[NEWLINE]Provides experience for new and existing horse-mounted units</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_ARTIFACT_TOME_OF_BEASTS">
 			<Text>Tome of Beasts</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_BEASTS_HELP">
+			<Text>Lowers research cost for and knowledge maintenance from Domestication, Hunting, Elephant Labor, Tracking & Trapping, Elephant Training, Gamekeeping, Animal Mastery, War Elephants, Beast Mastery, Mumakil Riding</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ARTIFACT_TOME_OF_THE_LEVIATHAN">
 			<Text>Tome of the Leviathan</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_THE_LEVIATHAN_HELP">
+			<Text>Lowers research cost for and knowledge maintenance from Hunting, Fishing, Harpoons, Sailing, Shipbuilding, Navigation, Beast Mastery and Whaling[NEWLINE]+2 research from whales</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_ARTIFACT_TOME_OF_HARVESTS">
 			<Text>Tome of Harvests</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_HARVESTS_HELP">
+			<Text>Lowers research cost for and knowledge maintenance from Agriculture, Milling, Weaving, Zymurgy, Irrigation, Calendar, Forestry, Fine Textiles, Oenology and Crop Rotation</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ARTIFACT_TOME_OF_TOMES">
 			<Text>Tome of Tomes</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_TOMES_HELP">
+			<Text>Gain 20% of the benefit of all other Tomes in the world, regardless of owner.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_ARTIFACT_TOME_OF_AESTHETICS">
 			<Text>Tome of Æsthetics</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_AESTHETICS_HELP">
+			<Text>Lowers research cost for and knowledge maintenance from Writing, Philosophy, Drama, Mathematics, Literature, Music and Æsthetics</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ARTIFACT_TOME_OF_AXIOMS">
 			<Text>Tome of Axioms</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_AXIOMS_HELP">
+			<Text>Lowers research cost for and knowledge maintenance from Writing, Currency, Mathematics, Astronomy, Alchemy, Mechanics, Chemistry, Medicine, Machinery and Steam Power</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_ARTIFACT_TOME_OF_FORM">
 			<Text>Tome of Form</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_FORM_HELP">
+			<Text>Lowers research cost for and knowledge maintenance from Writing, Mining, Masonry, Construction, Sanitation, Engineering, Metal Casting, Architecture and Machinery</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_ARTIFACT_TOME_OF_METALLURGY">
 			<Text>Tome of Metallurgy</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_METALLURGY_HELP">
+			<Text>Lowers research cost for and knowledge maintenance from Mining, Coinage, Bronze Working, Iron Working, Metal Casting, Steel Working, Elemental Forging and Mithril Working</Text>
+		</Row>
+		
+		
+		<Row Tag="TXT_KEY_EA_ARTIFACT_CORPUS_HERMETICUM">
+			<Text>Corpus Hermeticum</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_CORPUS_HERMETICUM_HELP">
+			<Text>Lowers research cost for and knowledge maintenance from Divine Liturgy, Divine Vitalism, Heavenly Cycles, Divine Essence, Celestial Knowldege, Divine Intervention and Knowledge of Heaven</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ARTIFACT_NECRONOMICON">
+			<Text>Necronomicon</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_NECRONOMICON_HELP">
+			<Text>Lowers research cost for and knowledge maintenance from Maleficium, Reanimation, Necromancy, Soul Binding and Armageddon Rituals</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ARTIFACT_ARS_GOETIA">
+			<Text>Ars Goetia</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_ARS_GOETIA_HELP">
+			<Text>Lowers research cost for and knowledge maintenance from Maleficium, Thaumaturgy, Sorcery, Summoning, Breach and Armageddon Rituals</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ARTIFACT_BOOK_OF_EIBON">
+			<Text>Book of Eibon</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_BOOK_OF_EIBON_HELP">
+			<Text>Lowers research cost for and knowledge maintenance from Thaumaturgy, Conjuration, Transmutation, Evocation, Abjuration, Invocation, Greater Arcana and Esoteric Arcana</Text>
 		</Row>
 
 

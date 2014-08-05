@@ -22,7 +22,8 @@ local function OnCanCreateTradeRoute(iOriginPlot, iDestPlot, iDestPlayer, eDomai
 		return bIsOpenRoute
 	end
 end
-GameEvents.CanCreateTradeRoute.Add(function(iOriginPlot, iDestPlot, iDestPlayer, eDomain, eConnectionType) return HandleError51(OnCanCreateTradeRoute, iOriginPlot, iDestPlot, iDestPlayer, eDomain, eConnectionType) end)
+local function X_OnCanCreateTradeRoute(iOriginPlot, iDestPlot, iDestPlayer, eDomain, eConnectionType) return HandleError51(OnCanCreateTradeRoute, iOriginPlot, iDestPlot, iDestPlayer, eDomain, eConnectionType) end
+GameEvents.CanCreateTradeRoute.Add(X_OnCanCreateTradeRoute)
 
 
 

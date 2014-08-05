@@ -272,10 +272,10 @@
 				<Stack Anchor="L,T" Offset="0,0" Padding="0" Size="0,0" StackGrowth="Right">
 					<!-- ORDER BOX  -->
 					<Box Size="190,290 " Anchor="C,T" Color="0,0,0,0">
-						<Image Anchor="C,T" Offset="0,0" TextureOffset="0,0" Size="190,290" Color="255,255,255,255" Texture="SocialPoliciesBranchBlackMask.dds" ToolTip="TXT_KEY_EA_BLANK_HELP"/>
+						<Image Anchor="C,T" Offset="0,0" TextureOffset="0,0" Size="190,290" Color="255,255,255,255" Texture="SocialPoliciesBranchBlackMask.dds" ToolTip="TXT_KEY_EA_BLANK_SPACE"/>
 						
 						<!-- Policy Branch Image -->
-						<Image Anchor="C,T" Offset="0,0" TextureOffset="0,0" Size="190,90" Texture="SocialPoliciesBranchBlackMask.dds" ID="BranchBack8" ToolTip="TXT_KEY_EA_BLANK_HELP"/>
+						<Image Anchor="C,T" Offset="0,0" TextureOffset="0,0" Size="190,90" Texture="SocialPoliciesBranchBlackMask.dds" ID="BranchBack8" ToolTip="TXT_KEY_EA_BLANK_SPACE"/>
 						<Image ID="ImageMask8" Anchor="C,T" Offset="0,0" Size="190,290" Color="255,255,255,200" Texture="Assets/UI/Art/Icons/SocialPoliciesBranchBlackMask.dds"/>
 						<Box ID="DisabledMask8" Size="190,290" Offset="0,0" Anchor="C,T" Color="0,0,0,200"/>
 						<Image Anchor="C,T" Offset="0,0" Size="190,290" Texture="Assets/UI/Art/Icons/SocialPoliciesTrim.dds">
@@ -293,7 +293,7 @@
 							</HideOnMouseOver>
 						</Box>
 						<!-- adopt button -->
-						<GridButton Size="170,36" Anchor="C,T" Offset="0,46" Font="EaTwCnMT18" Color="255,255,255,200" String="" FontStyle="Shadow" Color0="Beige.255" Color1="Black.128" Style="BaseButton" ToolTip="TXT_KEY_EA_BLANK_HELP" Hidden="0" ID="BranchButton8">
+						<GridButton Size="170,36" Anchor="C,T" Offset="0,46" Font="EaTwCnMT18" Color="255,255,255,200" String="" FontStyle="Shadow" Color0="Beige.255" Color1="Black.128" Style="BaseButton" ToolTip="TXT_KEY_EA_BLANK_SPACE" Hidden="0" ID="BranchButton8">
 							<Image Anchor="R,C" Offset="0,0" Size="48,48" Texture="48Lock.dds" ID="Lock8"/>
 						</GridButton>				
 						<Box ID="DisabledBox8" Size="190,290" Offset="0,0" Anchor="C,T" Color="0,0,0,0">

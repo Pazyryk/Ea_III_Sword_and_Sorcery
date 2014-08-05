@@ -330,7 +330,8 @@ local function OnPlayerDoTurn(iPlayer)	-- Runs at begining of turn for all livin
 	timerAllPerTurnFunctions = timerAllPerTurnFunctions - timerAllPerTurnFunctionsStart + Clock()
 
 end
-GameEvents.PlayerDoTurn.Add(function(iPlayer) return HandleError10(OnPlayerDoTurn, iPlayer) end)
+local function X_OnPlayerDoTurn(iPlayer) return HandleError10(OnPlayerDoTurn, iPlayer) end
+GameEvents.PlayerDoTurn.Add(X_OnPlayerDoTurn)
 
 ----------------------------------------------------------------
 --Save 
@@ -340,7 +341,8 @@ local function OnGameSave()
 	print("OnGameSave ")
 	TableSave(gT, "Ea")
 end
-GameEvents.GameSave.Add(OnGameSave)
+local function X_OnGameSave() return HandleError10(OnGameSave) end
+GameEvents.GameSave.Add(X_OnGameSave)
 
 ----------------------------------------------------------------
 -- Autoplay

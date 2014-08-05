@@ -160,10 +160,10 @@ local Rand =				Map.Rand
 local floor =				math.floor
 
 --localized global functions
-local HandleError =			HandleError
 local HandleError21 =		HandleError21
 local HandleError31 =		HandleError31
 local HandleError41 =		HandleError41
+local HandleError51 =		HandleError51
 local HandleError61 =		HandleError61
 local GetMemoizedPlotIndexDistance = GetMemoizedPlotIndexDistance
 local PlotDistance =			Map.PlotDistance
@@ -986,7 +986,8 @@ local function OnPlayerCityFounded(iPlayer, x, y)
 
 	print("New city", iPlayer, iPlot, x, y, iCity, city:GetName())
 end
-GameEvents.PlayerCityFounded.Add(function(iPlayer, x, y) return HandleError31(OnPlayerCityFounded, iPlayer, x, y) end)
+local function X_OnPlayerCityFounded(iPlayer, x, y) return HandleError31(OnPlayerCityFounded, iPlayer, x, y) end
+GameEvents.PlayerCityFounded.Add(X_OnPlayerCityFounded)
 
 local function OnSetPopulation(x, y, oldPopulation, newPopulation)
 	if oldPopulation == newPopulation then return end
@@ -1056,7 +1057,8 @@ local function OnSetPopulation(x, y, oldPopulation, newPopulation)
 		end
 	end
 end
-GameEvents.SetPopulation.Add(function(x, y, oldPopulation, newPopulation) return HandleError41(OnSetPopulation, x, y, oldPopulation, newPopulation) end)
+local function X_OnSetPopulation(x, y, oldPopulation, newPopulation) return HandleError41(OnSetPopulation, x, y, oldPopulation, newPopulation) end
+GameEvents.SetPopulation.Add(X_OnSetPopulation)
 
 local function OnCityCaptureComplete(iPlayer, bCapital, x, y, iNewOwner)
 
@@ -1149,7 +1151,8 @@ local function OnCityCaptureComplete(iPlayer, bCapital, x, y, iNewOwner)
 	end
 
 end
-GameEvents.CityCaptureComplete.Add(function(iPlayer, bCapital, x, y, iNewOwner) return HandleError(OnCityCaptureComplete, iPlayer, bCapital, x, y, iNewOwner) end)
+local function X_OnCityCaptureComplete(iPlayer, bCapital, x, y, iNewOwner) return HandleError51(OnCityCaptureComplete, iPlayer, bCapital, x, y, iNewOwner) end
+GameEvents.CityCaptureComplete.Add(X_OnCityCaptureComplete)
 
 --TO DO: city raized and salted
 
@@ -1158,13 +1161,13 @@ GameEvents.CityCaptureComplete.Add(function(iPlayer, bCapital, x, y, iNewOwner) 
 --------------------------------------------------------------
 -- River Connections
 --------------------------------------------------------------
-
-GameEvents.CityConnections.Add(function(iPlayer, bDirect) return not bDirect end)	--register testing for "non-direct" routes
+local function CityConnections(iPlayer, bDirect) return not bDirect end
+GameEvents.CityConnections.Add(CityConnections)	--register testing for "non-direct" routes
 
 local MAP_W, MAP_H = Map.GetGridSize()
 local riverManager = RiverManager:new(function(iPlot) return true end)
 
-function OnCityConnected(iPlayer, iCityX, iCityY, iToCityX, iToCityY, bDirect)
+local function OnCityConnected(iPlayer, iCityX, iCityY, iToCityX, iToCityY, bDirect)
 	--print("OnCityConnected ", iPlayer, iCityX, iCityY, iToCityX, iToCityY, bDirect)
 	if g_riverDockByPlotIndex[iCityY * MAP_W + iCityX] and g_riverDockByPlotIndex[iToCityY * MAP_W + iToCityX] then
 		local fromRivers = riverManager:getRivers(iCityX, iCityY)
@@ -1179,9 +1182,11 @@ function OnCityConnected(iPlayer, iCityX, iCityY, iToCityX, iToCityY, bDirect)
 	end
 	return false	
 end
-GameEvents.CityConnected.Add(function(iPlayer, iCityX, iCityY, iToCityX, iToCityY, bDirect) return HandleError61(OnCityConnected, iPlayer, iCityX, iCityY, iToCityX, iToCityY, bDirect) end)
+local function X_OnCityConnected(iPlayer, iCityX, iCityY, iToCityX, iToCityY, bDirect) return HandleError61(OnCityConnected, iPlayer, iCityX, iCityY, iToCityX, iToCityY, bDirect) end
+GameEvents.CityConnected.Add(X_OnCityConnected)
 
-GameEvents.CanRazeOverride.Add(function() return true end)
+local function CanRazeOverride() return true end
+GameEvents.CanRazeOverride.Add(CanRazeOverride)
 
 --------------------------------------------------------------
 -- City builds
@@ -1201,7 +1206,8 @@ local function OnPlayerCanConstruct(iPlayer, buildingTypeID)
 	if eaPlayer.blockedBuildingsByID[buildingTypeID] then return false end
 	return true
 end
-GameEvents.PlayerCanConstruct.Add(function(iPlayer, buildingTypeID) return HandleError21(OnPlayerCanConstruct, iPlayer, buildingTypeID) end)
+local function X_OnPlayerCanConstruct(iPlayer, buildingTypeID) return HandleError21(OnPlayerCanConstruct, iPlayer, buildingTypeID) end
+GameEvents.PlayerCanConstruct.Add(X_OnPlayerCanConstruct)
 
 local processPolicyReq = {}
 for processInfo in GameInfo.Processes() do
@@ -1226,7 +1232,8 @@ local function OnPlayerCanMaintain(iPlayer, processTypeID)
 	end
 	return false
 end
-GameEvents.PlayerCanMaintain.Add(function(iPlayer, processTypeID) return HandleError21(OnPlayerCanMaintain, iPlayer, processTypeID) end)
+local function X_OnPlayerCanMaintain(iPlayer, processTypeID) return HandleError21(OnPlayerCanMaintain, iPlayer, processTypeID) end
+GameEvents.PlayerCanMaintain.Add(X_OnPlayerCanMaintain)
 
 local TestCityCanConstruct = {}
 local function OnCityCanConstruct(iPlayer, iCity, buildingTypeID)
@@ -1236,7 +1243,8 @@ local function OnCityCanConstruct(iPlayer, iCity, buildingTypeID)
 	end
 	return true
 end
-GameEvents.CityCanConstruct.Add(function(iPlayer, iCity, buildingTypeID) return HandleError31(OnCityCanConstruct, iPlayer, iCity, buildingTypeID) end)
+local function X_OnCityCanConstruct(iPlayer, iCity, buildingTypeID) return HandleError31(OnCityCanConstruct, iPlayer, iCity, buildingTypeID) end
+GameEvents.CityCanConstruct.Add(X_OnCityCanConstruct)
 
 
 TestCityCanConstruct[GameInfoTypes.BUILDING_FLOATING_GARDENS] = function(iPlayer, iCity)
@@ -1329,7 +1337,8 @@ local function OnCityBuildingsIsBuildingSellable(iPlayer, buildingTypeID)
 	if prohibitSellBuildings[buildingTypeID] then return false end
 	return true
 end
-GameEvents.CityBuildingsIsBuildingSellable.Add(function(iPlayer, buildingTypeID) return HandleError21(OnCityBuildingsIsBuildingSellable, iPlayer, buildingTypeID) end)
+local function X_OnCityBuildingsIsBuildingSellable(iPlayer, buildingTypeID) return HandleError21(OnCityBuildingsIsBuildingSellable, iPlayer, buildingTypeID) end
+GameEvents.CityBuildingsIsBuildingSellable.Add(X_OnCityBuildingsIsBuildingSellable)
 
 g_numCaravansCanTrain = 0
 g_numCargoShipsCanTrain = 0
@@ -1359,7 +1368,8 @@ local function OnPlayerCanTrain(iPlayer, unitTypeID)
 	--end
 	return true
 end
-GameEvents.PlayerCanTrain.Add(function(iPlayer, unitTypeID) return HandleError21(OnPlayerCanTrain, iPlayer, unitTypeID) end)
+local function X_OnPlayerCanTrain(iPlayer, unitTypeID) return HandleError21(OnPlayerCanTrain, iPlayer, unitTypeID) end
+GameEvents.PlayerCanTrain.Add(X_OnPlayerCanTrain)
 
 
 local TestCityCanTrain = {}
@@ -1370,7 +1380,8 @@ local function OnCityCanTrain(iPlayer, iCity, unitTypeID)
 	end
 	return true
 end
-GameEvents.CityCanTrain.Add(function(iPlayer, iCity, unitTypeID) return HandleError31(OnCityCanTrain, iPlayer, iCity, unitTypeID) end)
+local function X_OnCityCanTrain(iPlayer, iCity, unitTypeID) return HandleError31(OnCityCanTrain, iPlayer, iCity, unitTypeID) end
+GameEvents.CityCanTrain.Add(X_OnCityCanTrain)
 
 --[[
 TestCityCanTrain[GameInfoTypes.UNIT_CARAVAN] = function(iPlayer, iCity)

@@ -27,15 +27,12 @@ local POLICY_BRANCH_MILITARISM =	GameInfoTypes.POLICY_BRANCH_MILITARISM
 local POLICY_BRANCH_COMMERCE =		GameInfoTypes.POLICY_BRANCH_COMMERCE
 local POLICY_BRANCH_TRADITION =		GameInfoTypes.POLICY_BRANCH_TRADITION
 
-local POLICY_ARCANE_ELITE =			GameInfoTypes.POLICY_ARCANE_ELITE
+local POLICY_THAUMATOCRACY =			GameInfoTypes.POLICY_THAUMATOCRACY
 local POLICY_SLAVE_RAIDERS =		GameInfoTypes.POLICY_SLAVE_RAIDERS
 local POLICY_SLAVE_ARMIES =			GameInfoTypes.POLICY_SLAVE_ARMIES
 
 local RELIGION_AZZANDARAYASNA =		GameInfoTypes.RELIGION_AZZANDARAYASNA
 local RELIGION_THE_WEAVE_OF_EA =	GameInfoTypes.RELIGION_THE_WEAVE_OF_EA
-local TECH_SLAVERY =				GameInfoTypes.TECH_SLAVERY
-local TECH_SLAVE_RAIDERS =			GameInfoTypes.TECH_SLAVE_RAIDERS
-local TECH_SLAVE_ARMIES =			GameInfoTypes.TECH_SLAVE_ARMIES
 
 
 --localized game and global tables
@@ -154,8 +151,8 @@ function PolicyPerCivTurn(iPlayer)
 	local player = Players[iPlayer]
 	local eaPlayer = gPlayers[iPlayer]
 
-	if player:HasPolicy(POLICY_ARCANE_ELITE) then
-		eaPlayer.classPoints[7] = eaPlayer.classPoints[7] + 5	--Thaumaturge
+	if player:HasPolicy(POLICY_THAUMATOCRACY) then
+		eaPlayer.classPoints[7] = eaPlayer.classPoints[7] + 10	--Thaumaturge
 	end
 
 	UpdateCulturalLevel(iPlayer, eaPlayer)
@@ -210,8 +207,6 @@ function OnPlayerAdoptPolicyBranch(iPlayer, policyBranchTypeID)					--called by 
 			iCapitalCity = capital:GetID()
 			FoundReligion(iPlayer, iCapitalCity, RELIGION_THE_WEAVE_OF_EA)	--always The Fay
 		end
-		--Techs
-		team:SetHasTech(GameInfoTypes.TECH_PANTHEISM, true)
 
 		--Meet gods represented by Natural Wonders already discovered
 		gg_teamCanMeetGods[iTeam] = true
@@ -260,13 +255,14 @@ function OnPlayerAdoptPolicyBranch(iPlayer, policyBranchTypeID)					--called by 
 
 end
 local OnPlayerAdoptPolicyBranch = OnPlayerAdoptPolicyBranch
-GameEvents.PlayerAdoptPolicyBranch.Add(function(iPlayer, policyBranchTypeID) return HandleError21(OnPlayerAdoptPolicyBranch, iPlayer, policyBranchTypeID) end)
+local function X_OnPlayerAdoptPolicyBranch(iPlayer, policyBranchTypeID) return HandleError21(OnPlayerAdoptPolicyBranch, iPlayer, policyBranchTypeID) end
+GameEvents.PlayerAdoptPolicyBranch.Add(X_OnPlayerAdoptPolicyBranch)
 
 local policyDelayedEffectID = {}
 local policyDelayedEffectPlayerIndex = {}
 local policyDelayedEffectNum = 0
 
-function OnPlayerAdoptPolicy(iPlayer, policyID)				--called by EaAICiv.lua for AI; Does not fire for openers! (or finishers???)
+function OnPlayerAdoptPolicy(iPlayer, policyID)				--called by EaAICiv.lua for AI; Does not fire for openers or finishers!
 	print("Called OnPlayerAdoptPolicy", iPlayer, policyID)
 	policyDelayedEffectNum = policyDelayedEffectNum + 1
 	policyDelayedEffectID[policyDelayedEffectNum] = policyID
@@ -277,7 +273,8 @@ function OnPlayerAdoptPolicy(iPlayer, policyID)				--called by EaAICiv.lua for A
 	end
 end
 local OnPlayerAdoptPolicy = OnPlayerAdoptPolicy
-GameEvents.PlayerAdoptPolicy.Add(function(iPlayer, policyID) return HandleError21(OnPlayerAdoptPolicy, iPlayer, policyID) end)
+local function X_OnPlayerAdoptPolicy(iPlayer, policyID) return HandleError21(OnPlayerAdoptPolicy, iPlayer, policyID) end
+GameEvents.PlayerAdoptPolicy.Add(X_OnPlayerAdoptPolicy)
 
 function OnPlayerAdoptPolicyDelayedEffect()		--called by closing policy window and end turn (just in case) for human player
 	Dprint("OnPlayerAdoptPolicyDelayedEffect")
@@ -334,6 +331,11 @@ function OnPlayerAdoptPolicyDelayedEffect()		--called by closing policy window a
 end
 LuaEvents.EaPoliciesOnPlayerAdoptPolicyDelayedEffect.Add(OnPlayerAdoptPolicyDelayedEffect)
 
+
+
+--GameEvents.PolicyBranchFinisher
+
+
 local function OnPlayerCanAdoptPolicyBranch(iPlayer, policyBranchTypeID)
 	Dprint("OnPlayerCanAdoptPolicyBranch ", iPlayer, policyBranchTypeID)
 	if policyBranchTypeID == POLICY_BRANCH_THEISM then
@@ -345,7 +347,8 @@ local function OnPlayerCanAdoptPolicyBranch(iPlayer, policyBranchTypeID)
 	end
 	return true
 end
-GameEvents.PlayerCanAdoptPolicyBranch.Add(function(iPlayer, policyBranchTypeID) return HandleError21(OnPlayerCanAdoptPolicyBranch, iPlayer, policyBranchTypeID) end)
+local function X_OnPlayerCanAdoptPolicyBranch(iPlayer, policyBranchTypeID) return HandleError21(OnPlayerCanAdoptPolicyBranch, iPlayer, policyBranchTypeID) end
+GameEvents.PlayerCanAdoptPolicyBranch.Add(X_OnPlayerCanAdoptPolicyBranch)
 
 --Disabled below because it doesn't allow for capture returns
 --local function OnCanCaptureCivilian(iPlayer, iUnit)
@@ -377,11 +380,11 @@ OnPolicyAdopted[GameInfoTypes.POLICY_THROUGH_THE_VEIL] = function(iPlayer)
 end
 
 OnPolicyAdopted[GameInfoTypes.POLICY_ARCANE_LORE] = function(iPlayer)
-	gg_playerArcaneMod[iPlayer] = gg_playerArcaneMod[iPlayer] - 10
+	gg_playerArcaneMod[iPlayer] = gg_playerArcaneMod[iPlayer] - 25
 end
 
-OnPolicyAdopted[GameInfoTypes.POLICY_ARCANE_RESEARCH] = function(iPlayer)
-	gg_playerArcaneMod[iPlayer] = gg_playerArcaneMod[iPlayer] - 20
+OnPolicyAdopted[GameInfoTypes.POLICY_ARCANA_PRIMUS] = function(iPlayer)
+	ResetPlayerGPMods(iPlayer)
 end
 
 OnPolicyAdopted[GameInfoTypes.POLICY_SLAVE_BREEDING] = function(iPlayer)
@@ -390,16 +393,6 @@ end
 
 OnPolicyAdopted[GameInfoTypes.POLICY_SERVI_AETERNAM] = function(iPlayer)
 	WeLikeBeingUnhappy(iPlayer, 2)
-end
-
-OnPolicyAdopted[GameInfoTypes.POLICY_SLAVE_RAIDERS] = function(iPlayer)
-	local team = Teams[Players[iPlayer]:GetTeam()]
-	team:SetHasTech(TECH_SLAVE_RAIDERS, true)
-end
-
-OnPolicyAdopted[GameInfoTypes.POLICY_SLAVE_ARMIES] = function(iPlayer)
-	local team = Teams[Players[iPlayer]:GetTeam()]
-	team:SetHasTech(TECH_SLAVE_ARMIES, true)
 end
 
 OnPolicyAdopted[GameInfoTypes.POLICY_WOODS_LORE] = function(iPlayer)

@@ -52,7 +52,6 @@ INSERT INTO Ea_ExpectedTableFiles (FileName) VALUES
 	('EaText_Religions.xml'),
 	('EaText_Technologies.xml'),
 	('EaText_Terrain.xml'),
-	('EaText_Help.xml'),
 	('EaText_UnitBuilds.xml'),
 	('EaText_UnitPromotions.xml'),
 	('EaText_Units.xml'),

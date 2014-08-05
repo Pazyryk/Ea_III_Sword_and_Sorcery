@@ -12,6 +12,8 @@ local print = ENABLE_PRINT and print or function() end
 local ECONOMICAISTRATEGY_NEED_HAPPINESS =			GameInfoTypes.ECONOMICAISTRATEGY_NEED_HAPPINESS
 local ECONOMICAISTRATEGY_NEED_HAPPINESS_CRITICAL =	GameInfoTypes.ECONOMICAISTRATEGY_NEED_HAPPINESS_CRITICAL
 
+local HandleError21 = HandleError21
+local HandleError31 = HandleError31
 
 local g_weLikeBeingUnhappy = {}	--1, kind of; 2, seriously
 
@@ -27,13 +29,14 @@ function WeLikeBeingUnhappy(iPlayer, level)
 end
 
 
-function OnCityStrategyCanActivate(strategyID, iPlayer, iCity)
+local function OnCityStrategyCanActivate(strategyID, iPlayer, iCity)
 	print("->>CityStrategyCanActivate ", iPlayer, iCity, GameInfo.AICityStrategies[strategyID].Type)
 	return true
 end
-GameEvents.CityStrategyCanActivate.Add(OnCityStrategyCanActivate)
+local function X_OnCityStrategyCanActivate(strategyID, iPlayer, iCity) return HandleError31(OnCityStrategyCanActivate, strategyID, iPlayer, iCity) end
+GameEvents.CityStrategyCanActivate.Add(X_OnCityStrategyCanActivate)
 
-function OnEconomicStrategyCanActivate(strategyID, iPlayer)
+local function OnEconomicStrategyCanActivate(strategyID, iPlayer)
 	print("->>EconomicStrategyCanActivate ", iPlayer, GameInfo.AIEconomicStrategies[strategyID].Type)
 	if strategyID == ECONOMICAISTRATEGY_NEED_HAPPINESS then
 		if g_weLikeBeingUnhappy[iPlayer] then return false end
@@ -42,13 +45,15 @@ function OnEconomicStrategyCanActivate(strategyID, iPlayer)
 	end
 	return true
 end
-GameEvents.EconomicStrategyCanActivate.Add(OnEconomicStrategyCanActivate)
+local function X_OnEconomicStrategyCanActivate(strategyID, iPlayer) return HandleError21(OnEconomicStrategyCanActivate, strategyID, iPlayer) end
+GameEvents.EconomicStrategyCanActivate.Add(X_OnEconomicStrategyCanActivate)
 
-function OnMilitaryStrategyCanActivate(strategyID, iPlayer)
+local function OnMilitaryStrategyCanActivate(strategyID, iPlayer)
 	print("->>MilitaryStrategyCanActivate ", iPlayer, GameInfo.AIMilitaryStrategies[strategyID].Type)
 	return true
 end
-GameEvents.MilitaryStrategyCanActivate.Add(OnMilitaryStrategyCanActivate)
+local function X_OnMilitaryStrategyCanActivate(strategyID, iPlayer) return HandleError21(OnMilitaryStrategyCanActivate, strategyID, iPlayer) end
+GameEvents.MilitaryStrategyCanActivate.Add(X_OnMilitaryStrategyCanActivate)
 
 --
 --

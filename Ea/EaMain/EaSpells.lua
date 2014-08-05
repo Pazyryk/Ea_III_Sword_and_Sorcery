@@ -73,6 +73,7 @@ local gg_baseUnitPower =					gg_baseUnitPower
 local gg_playerPlotActionTargeted =			gg_playerPlotActionTargeted
 local gg_eaSpecial =						gg_eaSpecial
 local gg_regularCombatType =				gg_regularCombatType
+local gg_eaTechClass =						gg_eaTechClass
 
 --localized functions
 local floor =								math.floor
@@ -370,7 +371,7 @@ end
 --Finish functions are for actions that take time, runs when completed (does generic function like building add, or calls custom function).
 
 
-function TestEaSpellForHumanUI(eaActionID, iPlayer, unit, iPerson, testX, testY)	--called from UnitPanel
+local function TestEaSpellForHumanUI(eaActionID, iPlayer, unit, iPerson, testX, testY)	--called from UnitPanel
 	Dprint("TestEaSpellForHumanUI ", eaActionID, iPlayer, unit, iPerson, testX, testY)
 	--	MapModData.bShow	--> "Show" this button in UI.
 	--	MapModData.bAllow	--> "Can do" (always equals Test return)
@@ -384,9 +385,11 @@ function TestEaSpellForHumanUI(eaActionID, iPlayer, unit, iPerson, testX, testY)
 	MapModData.text = "no help text"	--will change below or take eaAction.Help value
 
 	--By default, text will be from eaAction.Help. If we want something else, then we must change below or in action-specific SetUI function.
+	if gWorld.bAhrimansVaultSealed and g_eaPlyaer.bIsFallen and g_eaAction.AhrimansVaultMatters then
+		MapModData.text = "[COLOR_WARNING_TEXT]Ahriman's Vault has been sealed; the Fallen can no longer cast spells[ENDCOLOR]"
+	end
 
-
-	if g_bEmbarked then
+	if MapModData.text == "no help text" and g_bEmbarked then
 		MapModData.text = "[COLOR_WARNING_TEXT]Cannot cast spell while embarked[ENDCOLOR]"
 	end
 
@@ -422,7 +425,6 @@ function TestEaSpellForHumanUI(eaActionID, iPlayer, unit, iPerson, testX, testY)
 		end
 	end
 
-
 	if MapModData.text == "no help text" and not g_bSufficientFaith then
 		local magicStuff = g_eaPlayer.bUsesDivineFavor and "divine favor" or "mana"
 		if g_faith < 1 then
@@ -432,7 +434,7 @@ function TestEaSpellForHumanUI(eaActionID, iPlayer, unit, iPerson, testX, testY)
 		end
 	end
 
-	if not g_bEmbarked and SetUI[eaActionID] then
+	if MapModData.text == "no help text" and SetUI[eaActionID] then
 		SetUI[eaActionID]()
 	end
 
@@ -445,8 +447,8 @@ function TestEaSpellForHumanUI(eaActionID, iPlayer, unit, iPerson, testX, testY)
 	g_bUICall = false
 	g_bSetDelayedFailForUI = false
 end
---LuaEvents.EaSpellsTestEaSpellForHumanUI.Add(TestEaSpellForHumanUI)
-LuaEvents.EaSpellsTestEaSpellForHumanUI.Add(function(eaActionID, iPlayer, unit, iPerson, testX, testY) return HandleError61(TestEaSpellForHumanUI, eaActionID, iPlayer, unit, iPerson, testX, testY) end)
+local function X_TestEaSpellForHumanUI(eaActionID, iPlayer, unit, iPerson, testX, testY) return HandleError61(TestEaSpellForHumanUI, eaActionID, iPlayer, unit, iPerson, testX, testY) end
+LuaEvents.EaSpellsTestEaSpellForHumanUI.Add(X_TestEaSpellForHumanUI)
 
 function TestEaSpell(eaActionID, iPlayer, unit, iPerson, testX, testY, bAINonTargetTest)
 	--This function sets all file locals related to iPlayer and iPerson 
@@ -540,7 +542,10 @@ function TestEaSpell(eaActionID, iPlayer, unit, iPerson, testX, testY, bAINonTar
 		end
 	end
 
-	g_worldManaDepletion = 1 - gWorld.sumOfAllMana / MapModData.STARTING_SUM_OF_ALL_MANA
+	g_worldManaDepletion = 1 - gWorld.sumOfAllMana / STARTING_SUM_OF_ALL_MANA
+
+	--Block for fallen after Ahriman's Vault sealed
+	if gWorld.bAhrimansVaultSealed and g_eaPlyaer.bIsFallen and g_eaAction.AhrimansVaultMatters then return false end
 
 	--Specific action test (runs if it exists)
 	if Test[eaActionID] and not Test[eaActionID]() then return false end
@@ -1012,7 +1017,6 @@ function TestSpellLearnable(iPlayer, iPerson, spellID, spellClass, bSuppressMini
 	if spellInfo.PantheismCult and not player:HasPolicy(GameInfoTypes.POLICY_PANTHEISM) then return end		--show cult spell only if Pantheistic
 	if spellInfo.ReligionNotFounded and gReligions[GameInfoTypes[spellInfo.ReligionNotFounded] ] then return false end
 	if spellInfo.ReligionFounded and not gReligions[GameInfoTypes[spellInfo.ReligionFounded] ] then return false end
-	if spellInfo.MaleficiumLearnedByAnyone and gWorld.maleficium ~= "Learned" then return false end
 	if spellInfo.ExcludeFallen and eaPlayer.bIsFallen then return false end
 	if spellInfo.CivReligion and eaPlayer.religionID ~= GameInfoTypes[spellInfo.CivReligion] then return false end
 	if spellInfo.PolicyReq and not player:HasPolicy(GameInfoTypes[spellInfo.PolicyReq]) then return false end
@@ -1527,7 +1531,7 @@ local function ModelRanged_TestTarget()	--TO DO: need better AI targeting logic 
 		bAllowCity = false
 		bValueDamaged = false
 	elseif g_eaActionID == EA_SPELL_MASS_ENERGY_DRAIN then
-		range = 3
+		range = 4
 		bAutoTargetAll = true
 		bLivingOnly = true
 		bAllowCity = false
@@ -2690,7 +2694,6 @@ Finish[GameInfoTypes.EA_SPELL_BLIGHT] = function()
 	return true
 end
 
-
 --EA_SPELL_HEX
 TestTarget[GameInfoTypes.EA_SPELL_HEX] = function()
 	--Priority: strongest adjacent enemy (cost x current hp)
@@ -2908,6 +2911,124 @@ Do[GameInfoTypes.EA_SPELL_HEAL] = function()
 	g_specialEffectsPlot = g_obj1:GetPlot()
 	return true
 end
+
+
+--EA_SPELL_LECTIO_OCCULTUS
+TestTarget[GameInfoTypes.EA_SPELL_LECTIO_OCCULTUS] = function()
+	g_int1 = g_player:GetCurrentResearch()
+	if gg_eaTechClass[g_int1] == "Arcane" or gg_eaTechClass[g_int1] == "ArcaneEvil" then
+		return true	
+	else
+		g_testTargetSwitch = 1
+		return false
+	end
+end
+
+SetUI[GameInfoTypes.EA_SPELL_LECTIO_OCCULTUS] = function()
+	if g_bNonTargetTestsPassed then
+		if g_bAllTestsPassed then
+			local techName = Locale.Lookup(GameInfo.Technologies[g_int1].Description)
+			MapModData.text = "Convert " .. g_modSpell .. " mana per turn into research toward " .. techName
+		elseif g_testTargetSwitch == 1 then
+			MapModData.text = "[COLOR_WARNING_TEXT]Civilization must be researching an arcane technology[ENDCOLOR]"
+		end
+	end
+end
+
+SetAIValues[GameInfoTypes.EA_SPELL_LECTIO_OCCULTUS] = function()
+	gg_aiOptionValues.b = g_modSpell * g_faith / 10000	
+end
+
+Do[GameInfoTypes.EA_SPELL_LECTIO_OCCULTUS] = function()
+	g_eaPlayer.gpArcaneScience = g_eaPlayer.gpArcaneScience or {}
+	g_eaPlayer.gpArcaneScience[g_iPerson] = g_modSpell
+	if g_iPlayer == g_iActivePlayer then
+		UpdateCityYields(g_iPlayer, nil, "Science")	--instant UI update for human
+		g_unit:PopMission()
+		g_unit:PushMission(MissionTypes.MISSION_SKIP, g_x, g_y, 0, 0, 1)
+		g_eaPerson.activePlayerEndTurnManaDivineFavor = g_modSpell
+	else
+		UseManaOrDivineFavor(g_iPlayer, g_iPerson, g_modSpell)
+		g_unit:FinishMoves()
+	end
+	return true
+end
+
+Interrupt[GameInfoTypes.EA_SPELL_LECTIO_OCCULTUS] = function(iPlayer, iPerson)
+	local eaPlayer = gPlayers[iPlayer]
+	local eaPerson = gPeople[iPerson]
+	eaPerson.activePlayerEndTurnManaDivineFavor = nil
+	if eaPlayer.gpArcaneScience then
+		eaPlayer.gpArcaneScience[iPerson] = nil
+		if iPlayer == g_iActivePlayer then
+			UpdateCityYields(iPlayer, nil, "Science")
+			local unit = Players[iPlayer]:GetUnitByID(eaPerson.iUnit)
+			if unit then
+				unit:DoCommand(CommandTypes.COMMAND_WAKE)
+				Events.SerialEventUnitInfoDirty()
+			end
+		end
+	end
+end
+
+--EA_SPELL_LECTIO_DIVINA
+TestTarget[GameInfoTypes.EA_SPELL_LECTIO_DIVINA] = function()
+	g_int1 = g_player:GetCurrentResearch()
+	if gg_eaTechClass[g_int1] == "Divine" then
+		return true	
+	else
+		g_testTargetSwitch = 1
+		return false
+	end
+end
+
+SetUI[GameInfoTypes.EA_SPELL_LECTIO_DIVINA] = function()
+	if g_bNonTargetTestsPassed then
+		if g_bAllTestsPassed then
+			local techName = Locale.Lookup(GameInfo.Technologies[g_int1].Description)
+			MapModData.text = "Convert " .. g_modSpell .. " divine favor per turn into research toward " .. techName
+		elseif g_testTargetSwitch == 1 then
+			MapModData.text = "[COLOR_WARNING_TEXT]Civilization must be researching a divine technology[ENDCOLOR]"
+		end
+	end
+end
+
+SetAIValues[GameInfoTypes.EA_SPELL_LECTIO_DIVINA] = function()
+	gg_aiOptionValues.b = g_modSpell * g_faith / 10000	
+end
+
+Do[GameInfoTypes.EA_SPELL_LECTIO_DIVINA] = function()
+	g_eaPlayer.gpDivineScience = g_eaPlayer.gpDivineScience or {}
+	g_eaPlayer.gpDivineScience[g_iPerson] = g_modSpell
+	if g_iPlayer == g_iActivePlayer then
+		UpdateCityYields(g_iPlayer, nil, "Science")	--instant UI update for human
+		g_unit:PopMission()
+		g_unit:PushMission(MissionTypes.MISSION_SKIP, g_x, g_y, 0, 0, 1)
+		g_eaPerson.activePlayerEndTurnManaDivineFavor = g_modSpell
+	else
+		UseManaOrDivineFavor(g_iPlayer, g_iPerson, g_modSpell)
+		g_unit:FinishMoves()
+	end
+	return true
+end
+
+Interrupt[GameInfoTypes.EA_SPELL_LECTIO_DIVINA] = function(iPlayer, iPerson)
+	local eaPlayer = gPlayers[iPlayer]
+	local eaPerson = gPeople[iPerson]
+	eaPerson.activePlayerEndTurnManaDivineFavor = nil
+	if eaPlayer.gpDivineScience then
+		eaPlayer.gpDivineScience[iPerson] = nil
+		if iPlayer == g_iActivePlayer then
+			UpdateCityYields(iPlayer, nil, "Science")
+			local unit = Players[iPlayer]:GetUnitByID(eaPerson.iUnit)
+			if unit then
+				unit:DoCommand(CommandTypes.COMMAND_WAKE)
+				Events.SerialEventUnitInfoDirty()
+			end
+		end
+	end
+end
+
 
 --EA_SPELL_BLESS
 TestTarget[GameInfoTypes.EA_SPELL_BLESS] = function()

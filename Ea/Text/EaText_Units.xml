@@ -8,270 +8,508 @@
 		<Row Tag="TXT_KEY_EA_UNIT_SETTLERS">
 			<Text>Settlers</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_SETTLERS_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_WORKERS">
 			<Text>Workers</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_WORKERS_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_SLAVES">
 			<Text>Slaves</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_SLAVES_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_HUNTERS">
 			<Text>Hunters</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_HUNTERS_HELP">
+			<Text>Establishes Camps on [ICON_RES_DEER] Deer, [ICON_RES_TRUFFLES] Boars, [ICON_RES_FUR] Small Game and [ICON_RES_IVORY] Elephants. Can establish up to 5 plots from cities with Tracking, or up to 7 plots with Animal Mastery.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_FISHING_BOATS">
 			<Text>Fishing Boats</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_FISHING_BOATS_HELP">
+			<Text>Establishes Fishing Boats on [ICON_RES_FISH] Fish, [ICON_RES_CRAB] Crabs, [ICON_RES_PEARLS] Oysters and Lakes. Can establish on sea resources (not lakes) up to 5 plots from cities with Sailing, up to 7 plots with Ship Construction, or up to 9 plots with Navigation.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_WHALING_BOATS">
 			<Text>Whaling Boats</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_WHALING_BOATS_HELP">
+			<Text>Establishes Whaling Boats on [ICON_RES_WHALE] Whales. Can establish up to 5 plots from cities with Sailing, up to 7 plots with Ship Construction, up to 9 plots with Navigation, or up to 11 plots with Whaling.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_CARAVAN">
 			<Text>Caravan</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_CARAVAN_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_CARGO_SHIP">
 			<Text>Cargo Ships</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_CARGO_SHIP_HELP">
+			<Text></Text>
 		</Row>
 		
 
 		<Row Tag="TXT_KEY_EA_UNIT_LONGSHIPS">
 			<Text>Longships</Text>
-		</Row>		
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_LONGSHIPS_HELP">
+			<Text></Text>
+		</Row>	
 		<Row Tag="TXT_KEY_EA_UNIT_BIREMES">
 			<Text>Biremes</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_BIREMES_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_TRIREMES">
 			<Text>Triremes</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_TRIREMES_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_QUINQUEREMES">
 			<Text>Quinqueremes</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_QUINQUEREMES_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_CARAVELS">
 			<Text>Caravels</Text>
-		</Row>		
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_CARAVELS_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_DROMONS">
 			<Text>Dromons</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_DROMONS_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_CARRACKS">
 			<Text>Carracks</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_CARRACKS_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_GALLEONS">
 			<Text>Galleons</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_GALLEONS_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_IRONCLADS">
 			<Text>Ironclads</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_IRONCLADS_HELP">
+			<Text></Text>
 		</Row>
 
 		<Row Tag="TXT_KEY_EA_UNIT_BALLISTAE">
 			<Text>Ballistae</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_BALLISTAE_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_CATAPULTS">
 			<Text>Catapults</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_CATAPULTS_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_TREBUCHETS">
 			<Text>Trebuchets</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_TREBUCHETS_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_FIRE_CATAPULTS">
 			<Text>Fire Catapults</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_FIRE_CATAPULTS_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_FIRE_TREBUCHETS">
 			<Text>Fire Trebuchets</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_FIRE_TREBUCHETS_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_BOMBARDS">
 			<Text>Bombards</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_BOMBARDS_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_GREAT_BOMBARDE">
 			<Text>Great Bombarde</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_GREAT_BOMBARDE_HELP">
+			<Text></Text>
 		</Row>
 		
 		<Row Tag="TXT_KEY_EA_UNIT_LANDSHIPS">
 			<Text>Landships</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_LANDSHIPS_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_AIRSHIPS">
 			<Text>Airships</Text>
 		</Row>
-		
-		
+		<Row Tag="TXT_KEY_EA_UNIT_AIRSHIPS_HELP">
+			<Text></Text>
+		</Row>
 		
 		<Row Tag="TXT_KEY_EA_UNIT_MOUNTED_ELEPHANTS">
 			<Text>Mounted Elephants</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_MOUNTED_ELEPHANTS_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_WAR_ELEPHANTS">
 			<Text>War Elephants</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_WAR_ELEPHANTS_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_MUMAKIL">
 			<Text>Mûmakil</Text>
 		</Row>
-
+		<Row Tag="TXT_KEY_EA_UNIT_MUMAKIL_HELP">
+			<Text></Text>
+		</Row>
 
 		<Row Tag="TXT_KEY_EA_UNIT_SCOUTS">
 			<Text>Scouts</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_SCOUTS_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_TRACKERS">
 			<Text>Trackers</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_TRACKERS_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_RANGERS">
 			<Text>Rangers</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_RANGERS_HELP">
+			<Text></Text>
 		</Row>
 
 		<Row Tag="TXT_KEY_EA_UNIT_WARRIORS">
 			<Text>Warriors</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_WARRIORS_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_LIGHT_INFANTRY">
 			<Text>Light Infantry</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_LIGHT_INFANTRY_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_MEDIUM_INFANTRY">
 			<Text>Medium Infantry</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_MEDIUM_INFANTRY_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_HEAVY_INFANTRY">
 			<Text>Heavy Infantry</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_HEAVY_INFANTRY_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_IMMORTALS">
 			<Text>Immortals</Text>
-		</Row>		
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_IMMORTALS_HELP">
+			<Text></Text>
+		</Row>	
 		
 		<Row Tag="TXT_KEY_EA_UNIT_CHARIOTS">
 			<Text>Chariots</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_CHARIOTS_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_HORSEMEN">
 			<Text>Horsemen</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_HORSEMEN_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_EQUITES">
 			<Text>Equites</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_EQUITES_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_ARMORED_CAVALRY">
 			<Text>Armored Cavalry</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_ARMORED_CAVALRY_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_CATAPHRACTS">
 			<Text>Cataphracts</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_CATAPHRACTS_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_CLIBANARII">
 			<Text>Clibanarii</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_CLIBANARII_HELP">
+			<Text></Text>
 		</Row>
 		
 		<Row Tag="TXT_KEY_EA_UNIT_WOLF_RIDERS">
 			<Text>Wolf Rider</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_WOLF_RIDERS_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_WARG_RIDERS">
 			<Text>Warg Riders</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_WARG_RIDERS_HELP">
+			<Text></Text>
 		</Row>
 
 		<Row Tag="TXT_KEY_EA_UNIT_ARCHERS">
 			<Text>Archers</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_ARCHERS_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_BOWMEN">
 			<Text>Bowmen</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_BOWMEN_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_MARKSMEN">
 			<Text>Marksmen</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_MARKSMEN_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_CROSSBOWMEN">
 			<Text>Crossbowmen</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_CROSSBOWMEN_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_ARQUEBUSSMEN">
 			<Text>Arquebussmen</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_ARQUEBUSSMEN_HELP">
+			<Text></Text>
+		</Row>
 
-		
-		<Row Tag="TXT_KEY_EA_UNIT_CHARIOT_ARCHERS">
-			<Text>Chariot Archers</Text>
-		</Row>		
 		<Row Tag="TXT_KEY_EA_UNIT_HORSE_ARCHERS">
 			<Text>Horse Archers</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_HORSE_ARCHERS_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_BOWED_CAVALRY">
 			<Text>Bowed Cavalry</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_BOWED_CAVALRY_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_SAGITARII">
 			<Text>Sagitarii</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_SAGITARII_HELP">
+			<Text></Text>
 		</Row>
 
 		<Row Tag="TXT_KEY_EA_UNIT_GALLEYS_PIRATES">
 			<Text>Galleys</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_GALLEYS_PIRATES_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_WARRIORS_BARB">
 			<Text>Wildmen</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_WARRIORS_BARB_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_LIGHT_INFANTRY_BARB">
 			<Text>Brutes</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_LIGHT_INFANTRY_BARB_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_MEDIUM_INFANTRY_BARB">
 			<Text>Toughs</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_MEDIUM_INFANTRY_BARB_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_ARCHERS_BARB">
 			<Text>Archers</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_ARCHERS_BARB_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_AXMAN_BARB">
 			<Text>Axmen</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_AXMAN_BARB_HELP">
+			<Text></Text>
 		</Row>
 
 
 		<Row Tag="TXT_KEY_EA_UNIT_NAGA_GREEN">
 			<Text>Green Nagas</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_NAGA_GREEN_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_NAGA_BLUE">
 			<Text>Blue Nagas</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_NAGA_BLUE_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_OGRES">
 			<Text>Ogres</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_OGRES_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_HOBGOBLINS">
 			<Text>Hobgoblins</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_HOBGOBLINS_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_WOLVES">
 			<Text>Wolves</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_WOLVES_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_WARGS">
 			<Text>Wargs</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_WARGS_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_LIONS">
 			<Text>Lions</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_LIONS_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_GRIFFONS">
 			<Text>Griffons</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_GRIFFONS_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_SCORPIONS_SAND">
 			<Text>Sand Scorpions</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_SCORPIONS_SAND_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_SCORPIONS_BLACK">
 			<Text>Black Scorpions</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_SCORPIONS_BLACK_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_SCORPIONS_WHITE">
 			<Text>Snow Scorpions</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_SCORPIONS_WHITE_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_KRAKEN">
 			<Text>Kraken</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_KRAKEN_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_GIANT_SPIDER">
 			<Text>Giant Spider</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_GIANT_SPIDER_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_DRAKE_GREEN">
 			<Text>Green Drake</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_DRAKE_GREEN_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_DRAKE_BLUE">
 			<Text>Blue Drake</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_DRAKE_BLUE_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_DRAKE_RED">
 			<Text>Red Drake</Text>
 		</Row>
-
+		<Row Tag="TXT_KEY_EA_UNIT_DRAKE_RED_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_TREE_ENT">
 			<Text>Tree-Ent</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_TREE_ENT_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_SKELETON_SWORDSMEN">
 			<Text>Skeletons</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_SKELETON_SWORDSMEN_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_ZOMBIES">
 			<Text>Zombies</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_ZOMBIES_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_UNIT_DEMON_II">
 			<Text>Demon, Type II</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_UNIT_DEMON_II_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_DEMON_I">
 			<Text>Demon, Type I</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_DEMON_I_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_HORMAGAUNT">
 			<Text>Abyssal Creatures</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_HORMAGAUNT_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_ANGEL_SPEARMAN">
 			<Text>Heaven's Guard</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_ANGEL_SPEARMAN_HELP">
+			<Text></Text>
 		</Row>
 		
 		<!-- GP Units -->
@@ -279,52 +517,110 @@
 		<Row Tag="TXT_KEY_EA_UNIT_ENGINEER">
 			<Text>Engineer</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_ENGINEER_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_MERCHANT">
 			<Text>Merchant</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_MERCHANT_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_SAGE">
 			<Text>Sage</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_SAGE_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_ALCHEMIST">
 			<Text>Alchemist</Text>
 		</Row>
-
+		<Row Tag="TXT_KEY_EA_UNIT_ALCHEMIST_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_ARTIST">
 			<Text>Artist</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_ARTIST_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_WARRIOR">
 			<Text>Warrior</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_WARRIOR_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_BERSERKER">
 			<Text>Berserker</Text>
 		</Row>
-
+		<Row Tag="TXT_KEY_EA_UNIT_BERSERKER_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_PRIEST">
 			<Text>Priest</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_PRIEST_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_PALADIN">
 			<Text>Paladin</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_PALADIN_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_EIDOLON">
 			<Text>Eidolon</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_EIDOLON_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_DRUID">
 			<Text>Druid</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_DRUID_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_WITCH">
 			<Text>Witch</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_WITCH_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_WIZARD">
 			<Text>Wizard</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_WIZARD_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_SORCERER">
 			<Text>Sorcerer</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_SORCERER_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_NECROMANCER">
 			<Text>Necromancer</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_NECROMANCER_HELP">
+			<Text></Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_MAGE">
+			<Text>Mage</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_MAGE_HELP">
+			<Text></Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_ARCHMAGE">
+			<Text>Archmage</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_ARCHMAGE_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_LICH">
 			<Text>Lich</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_UNIT_LICH_HELP">
+			<Text></Text>
 		</Row>
 
 	</Language_en_US>

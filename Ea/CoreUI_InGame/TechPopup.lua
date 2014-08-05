@@ -56,6 +56,9 @@ function TechSelected( eTech, iValue)
 	   	Network.SendResearch(eTech, iValue, -1, false); -- iValue is number of free (non-espionage) techs
 	end
 	ClosePopup();
+	--Paz add
+	LuaEvents.EaYieldsUpdateCityYields(playerID, nil, "Science", false)
+	--end Paz add
 end
 
 -------------------------------------------------

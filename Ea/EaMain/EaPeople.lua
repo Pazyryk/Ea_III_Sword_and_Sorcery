@@ -308,7 +308,7 @@ function TestResyncGPIndexes()
 			end
 			if not bFound then
 				print("!!!! ERROR: found orphan GP not matched to any map unit, killing; iPlayer, iPerson, class1, class2, subclass = ", eaPerson.iPlayer, iPerson, eaPerson.class1, eaPerson.class2, eaPerson.subclass)
-				KillPerson(eaPerson.iPlayer, iPerson)
+				KillPerson(eaPerson.iPlayer, iPerson, nil, nil, "missing unit in TestResyncGPIndexes")
 			end
 		end
 	end
@@ -386,9 +386,9 @@ function PeoplePerCivTurn(iPlayer)
 			end
 
 			if bDieOfOldAge then
-				KillPerson(iPlayer, iPerson, unit, nil, "OldAge")
+				KillPerson(iPlayer, iPerson, unit, nil, "Old Age")
 			elseif bKill then
-				KillPerson(iPlayer, iPerson, nil, nil, nil)
+				KillPerson(iPlayer, iPerson, nil, nil, "missing unit in PeoplePerCivTurn")
 			else
 
 				--Do passive xp (Ljosalfar only)
@@ -512,7 +512,7 @@ function PeopleAfterTurn(iPlayer, bActionInfoPanelCall)
 			local unit = eaPerson.iUnit ~= -1 and player:GetUnitByID(eaPerson.iUnit)
 			if not unit then
 				print("!!!! ERROR: No unit for GP; killing person")
-				KillPerson(iPlayer, iPerson, nil, nil, nil)
+				KillPerson(iPlayer, iPerson, nil, nil, "missing unit in PeopleAfterTurn")
 			else
 				if bHumanPlayer and iPlayer ~= g_iLastPlayerPeopleAfterTurn then	--Human actions run automatically at turn end so that player can interupt
 					if unit:GetMoves() > 0 then
@@ -524,9 +524,14 @@ function PeopleAfterTurn(iPlayer, bActionInfoPanelCall)
 							else
 								bActionSuccess = DoEaSpell(eaActionID, iPlayer, unit, iPerson)
 							end
-							if bActionSuccess and eaPerson.activePlayerEndTurnXP and unit then
-								unit:ChangeExperience(eaPerson.activePlayerEndTurnXP)
-								eaPerson.activePlayerEndTurnXP = nil
+							if bActionSuccess and unit then
+								if eaPerson.activePlayerEndTurnXP then
+									unit:ChangeExperience(eaPerson.activePlayerEndTurnXP)
+									eaPerson.activePlayerEndTurnXP = nil
+								elseif eaPerson.activePlayerEndTurnManaDivineFavor then
+									UseManaOrDivineFavor(iPlayer, iPerson, eaPerson.activePlayerEndTurnManaDivineFavor)
+									eaPerson.activePlayerEndTurnManaDivineFavor = nil
+								end
 							end
 
 							if not bActionSuccess and unit and unit:GetMoves() > 0 and not unit:IsDelayedDeath() and not unit:IsDead() then
@@ -1131,7 +1136,8 @@ end
 -- GP Modifier Functions
 --------------------------------------------------------------
 
-local subclassModLevelModifier = {
+
+local subclassModLevelModifier = {							--TO DO: Move to table
 	Witch = {		EAMOD_DIVINATION =		0.25,
 					EAMOD_ENCHANTMENT =		0.25,
 					EAMOD_ABJURATION =		0.1,
@@ -1153,7 +1159,25 @@ local subclassModLevelModifier = {
 					EAMOD_NECROMANCY =		0.2,
 					EAMOD_ILLUSION =		0.2		},
 	Necromancer = {	EAMOD_NECROMANCY =		0.5		},
-	Illusionist = {	EAMOD_ILLUSION =		0.5		}
+	Illusionist = {	EAMOD_ILLUSION =		0.5		},
+	Mage = {		EAMOD_DIVINATION =		0.1,
+					EAMOD_ENCHANTMENT =		0.1,
+					EAMOD_ABJURATION =		0.1,
+					EAMOD_EVOCATION =		0.1,
+					EAMOD_TRANSMUTATION =	0.1,
+					EAMOD_CONJURATION =		0.1,
+					EAMOD_NECROMANCY =		0.1,
+					EAMOD_ILLUSION =		0.1,
+					EAMOD_SCHOLARSHIP =		0.1		},
+	Archmage = {	EAMOD_DIVINATION =		0.2,
+					EAMOD_ENCHANTMENT =		0.2,
+					EAMOD_ABJURATION =		0.2,
+					EAMOD_EVOCATION =		0.2,
+					EAMOD_TRANSMUTATION =	0.2,
+					EAMOD_CONJURATION =		0.2,
+					EAMOD_NECROMANCY =		0.2,
+					EAMOD_ILLUSION =		0.2,
+					EAMOD_SCHOLARSHIP =		0.2		}
 }
 
 local subclassModModifier = {
@@ -1164,6 +1188,18 @@ local subclassModModifier = {
 					EAMOD_CONJURATION =		-2,
 					EAMOD_NECROMANCY =		-2		}
 }
+
+local modPolicyModifier = {
+	EAMOD_DIVINATION =		{[GameInfoTypes.POLICY_ARCANA_PRIMUS] = 8},
+	EAMOD_ENCHANTMENT =		{[GameInfoTypes.POLICY_ARCANA_PRIMUS] = 8},
+	EAMOD_ABJURATION =		{[GameInfoTypes.POLICY_ARCANA_PRIMUS] = 8},
+	EAMOD_EVOCATION =		{[GameInfoTypes.POLICY_ARCANA_PRIMUS] = 8},
+	EAMOD_TRANSMUTATION =	{[GameInfoTypes.POLICY_ARCANA_PRIMUS] = 8},
+	EAMOD_CONJURATION =		{[GameInfoTypes.POLICY_ARCANA_PRIMUS] = 8},
+	EAMOD_NECROMANCY =		{[GameInfoTypes.POLICY_ARCANA_PRIMUS] = 8},
+	EAMOD_ILLUSION =		{[GameInfoTypes.POLICY_ARCANA_PRIMUS] = 8}
+}
+
 
 local cachedGPMod = {}
 
@@ -1238,7 +1274,26 @@ function GetGPMod(iPerson, modType1, modType2)
 
 	--age class (TO DO)
 
+	--Policies
+	if modPolicyModifier[modType1] then
+		local player = Players[eaPerson.iPlayer]
+		for policyID, mod in pairs(modPolicyModifier[modType1]) do
+			if player:HasPolicy(policyID) then
+				totalMod = totalMod + mod
+			end
+		end
+	end
 
+	if modType2 and modPolicyModifier[modType2] then
+		local player = Players[eaPerson.iPlayer]
+		for policyID, mod in pairs(modPolicyModifier[modType2]) do
+			if player:HasPolicy(policyID) then
+				totalMod = totalMod + mod
+			end
+		end
+	end
+
+	--Epics
 	if modType1 == "EAMOD_LEADERSHIP" or modType2 == "EAMOD_LEADERSHIP" then
 		if gEpics[EA_EPIC_GRIMNISMAL] and gEpics[EA_EPIC_GRIMNISMAL].iPlayer == eaPerson.iPlayer then
 			totalMod = totalMod * (100 + gEpics[EA_EPIC_GRIMNISMAL].mod) / 100
@@ -1328,7 +1383,7 @@ function AIInturruptGPsForLeadershipOpportunity(iPlayer)	--TO DO: Make this bett
 				end
 			else
 				print("!!!! ERROR: No unit for GP; killing person")
-				KillPerson(iPlayer, iPerson, nil, nil, nil)
+				KillPerson(iPlayer, iPerson, nil, nil, "missing unit in AIInturruptGPsForLeadershipOpportunity")
 				--error("No unit for GP")
 			end
 		end
@@ -1398,7 +1453,7 @@ function KillPerson(iPlayer, iPerson, unit, iKillerPlayer, deathType)
 	--remove unit if supplied
 	if unit then
 		MapModData.bBypassOnCanSaveUnit = true
-		unit:Kill(true, iKillerPlayer)
+		unit:Kill(true, iKillerPlayer or -1)
 	end
 
 	--debug: test all units to make sure no one else has this person index

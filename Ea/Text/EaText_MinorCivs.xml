@@ -8,19 +8,37 @@
 		<Row Tag="TXT_KEY_EA_MINOR_TRAIT_MERCENARY">
 			<Text>Mercenary</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_MINOR_TRAIT_MERCENARY_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Mercenary[ENDCOLOR] City States excel in the training of one or more units (or unit lines) which are available for hire. Any civilization can hire mercenaries from these city states if they are friends or allies. Civilizations with the Mercenaries policy can hire these units regardless of friendship (so long as they are not at war) but receive a discount if friends (-10%) or allies (-20%). Theses city states will usually have some strategic resources available that are appropriate for their unit specialization. (Note: Unit specializations not implemented yet.)</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_MINOR_TRAIT_SLAVERS">
 			<Text>Slavers</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_MINOR_TRAIT_SLAVERS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Slaver[ENDCOLOR] City States produce and capture slaves which can be purchased by civilizations that have opened the Slavery policy branch. These city states will occasionally declare war on their neighbors (either city state or full civ) but only when they see good opportunity for slave raiding. Being friends or allies reduces the cost of slaves and reduces, but does not eliminate, the chance of being raided for slaves (previous good relationship will be re-established after cessation of the slave raid) (Slavers CS trait not yet implemented!)</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_MINOR_TRAIT_ARCANE">
 			<Text>Arcane</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_MINOR_TRAIT_ARCANE_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Arcane[ENDCOLOR] City States are potential sources of [ICON_STAR] Mana for your civilization and arcane spells for your thaumaturges. These effects are not available to civilizations that follow Azzandarayasna. Friends and allies gain 4 and 8 [ICON_STAR] Mana per turn, respectively. Each magical city state has one unique arcane spell that will be learned by any visiting thaumaturge from an allied civilization (not yet implemented). An Arcane city state that has been converted to Azzandarayasna will no longer provide these benefits.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_MINOR_TRAIT_HOLY">
 			<Text>Holy</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_MINOR_TRAIT_HOLY_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Holy[ENDCOLOR] City States are a potential source of [ICON_PEACE] Divine Favor for your civilization and divine spells for your devouts. These effects are only available to civilizations that follow Azzandarayasna. Friends and allies gain 4 and 8 [ICON_PEACE] Divine Favor per turn, respectively. Each holy city state has one unique divine spell that will be learned by any visiting devout from an allied civilization (not yet implemented). These city states will slowly accumulate Azzandarayasna followers after that religion has been founded, eventually converting on their own. A Holy city state that has been converted to The Weave of Éa or any of its cults will no longer provide these effects. A Holy city state that has been converted to Aŋra becomes Unholy, providing benefits (mana and altered divine spells) only to fallen civilizations.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_MINOR_TRAIT_UNHOLY">
 			<Text>Unholy</Text>
 		</Row>
-
+		<Row Tag="TXT_KEY_EA_MINOR_TRAIT_UNHOLY_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Unholy[ENDCOLOR] City States were once Holy City States that have Fallen. They are potential sources of [ICON_STAR] Mana but only for Fallen civilization. Fallen civilizations that are Friends or allies gain 4 or 8 [ICON_STAR] Mana per turn, respectively. An Unholy City State converted to Azzandarayasna returns to its original Holy status.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GOD_SPHERES_HELP">
+			<Text>(Spheres are not yet implemented!)</Text>
+		</Row>
+		
 		<!-- MinorCivilizations (city states) -->
 		
 		<Row Tag="TXT_KEY_EA_CITYSTATE_DINAS_AFFARAON">

@@ -569,6 +569,11 @@ function ScienceTipHandler( control )
 		--Knowledge Maintenance blurb
 		local kmPerTechPerCitizen = MapModData.kmPerTechPerCitizen
 		local kmReduction = 0
+		local popReductionInsert = ""
+		if MapModData.intelligentArchiveKMReduction ~= 0 then
+			popReductionInsert = Locale.Lookup("TXT_KEY_EA_TP_KNOWLEDGE_MAINT_POP_INSERT", string.format("%.2f", MapModData.intelligentArchiveKMReduction))
+		end
+
 		local reductionInsert = ""
 		--" (reduced xx% for <civ name> and xx% for Great Library)"
 		if MapModData.civKMPercent ~= 0 then
@@ -589,7 +594,7 @@ function ScienceTipHandler( control )
 		end
 
 		kmPerTechPerCitizen = math.floor(1000 * kmPerTechPerCitizen + 0.5) / 1000
-		local kmBlurb = Locale.Lookup("TXT_KEY_EA_TP_KNOWLEDGE_MAINT", MapModData.knowlMaint, MapModData.techCount, MapModData.totalPopulationForKM, kmPerTechPerCitizen, reductionInsert)
+		local kmBlurb = Locale.Lookup("TXT_KEY_EA_TP_KNOWLEDGE_MAINT", MapModData.knowlMaint, MapModData.techCount, MapModData.totalPopulationForKM, popReductionInsert, kmPerTechPerCitizen, reductionInsert)
 
 		strText = strText .. "[NEWLINE][NEWLINE]" .. kmBlurb
 		--end Paz add

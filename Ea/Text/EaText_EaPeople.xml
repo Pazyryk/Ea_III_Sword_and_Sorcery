@@ -73,6 +73,12 @@
 		<Row Tag="TXT_KEY_EA_NECROMANCER">
 			<Text>Necromancer</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_MAGE">
+			<Text>Mage</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ARCHMAGE">
+			<Text>Archmage</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_LICH">
 			<Text>Lich</Text>
 		</Row>

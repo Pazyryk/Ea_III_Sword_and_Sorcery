@@ -192,7 +192,8 @@ local function OnGetScenarioDiploModifier1(iPlayer1, iPlayer2)	--player2 is the 
 
 	return g_evilPenalty
 end
-GameEvents.GetScenarioDiploModifier1.Add(OnGetScenarioDiploModifier1)
+local function X_OnGetScenarioDiploModifier1(iPlayer1, iPlayer2) return HandleError21(OnGetScenarioDiploModifier1, iPlayer1, iPlayer2) end
+GameEvents.GetScenarioDiploModifier1.Add(X_OnGetScenarioDiploModifier1)
 
 local function OnGetScenarioDiploModifier2(iPlayer1, iPlayer2)
 	return g_yourKindPenalty
@@ -224,4 +225,5 @@ local function OnCanContactMajorTeam(iTeam1, iTeam2)
 	print("OnCanContactMajorTeam ", iTeam1, iTeam2, "returning: ", true)
 	return true
 end
-GameEvents.CanContactMajorTeam.Add(OnCanContactMajorTeam) --new Ea API
+local function X_OnCanContactMajorTeam(iTeam1, iTeam2) return HandleError21(OnCanContactMajorTeam, iTeam1, iTeam2) end
+GameEvents.CanContactMajorTeam.Add(X_OnCanContactMajorTeam) --new Ea API

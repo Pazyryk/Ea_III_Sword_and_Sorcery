@@ -42,6 +42,7 @@ local playerType = MapModData.playerType
 --functions
 local floor = math.floor
 local Rand = Map.Rand
+local HandleError21 = HandleError21
 
 --localized tables
 local Players =		Players
@@ -556,7 +557,8 @@ local function OnPlayerMinorFriendshipAnchor(iMajorPlayer, iMinorPlayer)
 		end
 	end
 end
-GameEvents.PlayerMinorFriendshipAnchor.Add(OnPlayerMinorFriendshipAnchor)
+local function X_OnPlayerMinorFriendshipAnchor(iMajorPlayer, iMinorPlayer) return HandleError21(OnPlayerMinorFriendshipAnchor, iMajorPlayer, iMinorPlayer) end
+GameEvents.PlayerMinorFriendshipAnchor.Add(X_OnPlayerMinorFriendshipAnchor)
 
 local function OnPlayerMinorFriendshipDecayMod(iMajorPlayer, iMinorPlayer)
 	--print("OnPlayerMinorFriendshipDecayMod ", iMajorPlayer, iMinorPlayer)
@@ -573,7 +575,8 @@ local function OnPlayerMinorFriendshipDecayMod(iMajorPlayer, iMinorPlayer)
 		return 0
 	end
 end
-GameEvents.PlayerMinorFriendshipDecayMod.Add(OnPlayerMinorFriendshipDecayMod)
+local function X_OnPlayerMinorFriendshipDecayMod(iMajorPlayer, iMinorPlayer) return HandleError21(OnPlayerMinorFriendshipDecayMod, iMajorPlayer, iMinorPlayer) end
+GameEvents.PlayerMinorFriendshipDecayMod.Add(X_OnPlayerMinorFriendshipDecayMod)
 
 local function OnPlayerMinorFriendshipRecoveryMod(iMajorPlayer, iMinorPlayer)
 	--print("OnPlayerMinorFriendshipRecoveryMod ", iMajorPlayer, iMinorPlayer)
@@ -587,7 +590,8 @@ local function OnPlayerMinorFriendshipRecoveryMod(iMajorPlayer, iMinorPlayer)
 		return 0
 	end
 end
-GameEvents.PlayerMinorFriendshipRecoveryMod.Add(OnPlayerMinorFriendshipRecoveryMod)
+local function X_OnPlayerMinorFriendshipRecoveryMod(iMajorPlayer, iMinorPlayer) return HandleError21(OnPlayerMinorFriendshipRecoveryMod, iMajorPlayer, iMinorPlayer) end
+GameEvents.PlayerMinorFriendshipRecoveryMod.Add(X_OnPlayerMinorFriendshipRecoveryMod)
 
 function CheckCapitalBuildings(iPlayer)
 	local eaPlayer = gPlayers[iPlayer]
@@ -710,8 +714,6 @@ end
 
 local function TeemMeetListener(iActiveTeam, iMetTeam)	--player or team?
 	print("TeemMeetListener: ", iActiveTeam, iMetTeam)	--returning true did not prevent meeting (contrary to wiki)
-	
-
 end
 GameEvents.TeamMeet.Add(TeemMeetListener)
 

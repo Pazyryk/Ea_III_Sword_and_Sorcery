@@ -1145,7 +1145,7 @@ IsFinishedPlanTechsPolicies = function(iPlayer, planID)
 	if techs then
 		for i = 1, #techs do
 			local techID = techs[i]
-			if not team:IsHasTech(techID) then
+			if not team:IsHasTech(techID) then		--use also CanEverResearch
 				return false
 			end
 		end

@@ -506,31 +506,31 @@
 			<Text>Arcane Lore</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_ARCANE_LORE_HELP">
-			<Text>[COLOR_POSITIVE_TEXT]Arcane Lore[ENDCOLOR][NEWLINE][ICON_BULLET]10% reduced research cost for all arcane techs</Text>
+			<Text>[COLOR_POSITIVE_TEXT]Arcane Lore[ENDCOLOR][NEWLINE][ICON_BULLET]25% reduced research cost for all arcane techs</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_POLICY_ARCANE_RESEARCH">
-			<Text>Arcane Research</Text>
+		<Row Tag="TXT_KEY_EA_POLICY_MAGERY">
+			<Text>Magery</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_POLICY_ARCANE_RESEARCH_HELP">
-			<Text>[COLOR_POSITIVE_TEXT]Arcane Research[ENDCOLOR][NEWLINE][ICON_BULLET]20% reduced research cost for all arcane techs (cummulative with Arcane Lore)</Text>
+		<Row Tag="TXT_KEY_EA_POLICY_MAGERY_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Magery[ENDCOLOR][NEWLINE][ICON_BULLET]Witches, Wizards, Sorcerers and Sages can become subclass Mage (or Archmage at level 15) which are dual-class Thaumaturge/Sages that can convert mana to arcane research points</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_SOCIO_ARCANA">
 			<Text>Socio Arcana</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_SOCIO_ARCANA_HELP">
-			<Text>[COLOR_POSITIVE_TEXT]Socio Arcana[ENDCOLOR][NEWLINE][ICON_BULLET]+1 [ICON_STAR] Mana from Gatherer's Hut[NEWLINE][ICON_BULLET]+1 [ICON_STAR] Mana from each arcane building</Text>
+			<Text>[COLOR_POSITIVE_TEXT]Socio Arcana[ENDCOLOR][NEWLINE][ICON_BULLET]+1 [ICON_STAR] Mana per citizen [ICON_CITIZEN] DOES THIS WORK ????[NEWLINE][ICON_BULLET]+1 [ICON_STAR] Mana from Gatherer's Hut[NEWLINE][ICON_BULLET]+1 [ICON_STAR] Mana from each arcane building</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_POLICY_ARCANE_ELITE">
-			<Text>Arcane Elite</Text>
+		<Row Tag="TXT_KEY_EA_POLICY_THAUMATOCRACY">
+			<Text>Thaumatocracy</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_POLICY_ARCANE_ELITE_HELP">
-			<Text>[COLOR_POSITIVE_TEXT]Arcane Elite[ENDCOLOR][NEWLINE][ICON_BULLET]+5 Great People [ICON_GREAT_PEOPLE] points per turn toward the Thaumaturge class</Text>
+		<Row Tag="TXT_KEY_EA_POLICY_THAUMATOCRACY_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Thaumatocracy[ENDCOLOR][NEWLINE][ICON_BULLET]+10 Great People [ICON_GREAT_PEOPLE] points per turn toward the Thaumaturge class</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_POLICY_ARCANE_PRIMUS">
-			<Text>Arcane Primus</Text>
+		<Row Tag="TXT_KEY_EA_POLICY_ARCANA_PRIMUS">
+			<Text>Arcana Primus</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_POLICY_ARCANE_PRIMUS_HELP">
-			<Text>[COLOR_POSITIVE_TEXT]Arcane Primus[ENDCOLOR][NEWLINE][ICON_BULLET]+1 [ICON_STAR] Mana per citizen [ICON_CITIZEN]</Text>
+		<Row Tag="TXT_KEY_EA_POLICY_ARCANA_PRIMUS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Arcana Primus[ENDCOLOR][NEWLINE][ICON_BULLET]Thaumaturges gain +8 modifier in all magic schools</Text>
 		</Row>
 
 		<Row Tag="TXT_KEY_EA_POLICY_BRANCH_SLAVERY_CAP">

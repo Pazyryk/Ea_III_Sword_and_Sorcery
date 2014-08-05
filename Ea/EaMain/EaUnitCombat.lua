@@ -53,10 +53,12 @@ local gg_regularCombatType =		gg_regularCombatType
 local gg_eaSpecial =				gg_eaSpecial
 
 --localized functions
-local HandleError =					HandleError
 local HandleError10 =				HandleError10
 local HandleError21 =				HandleError21
 local HandleError31 =				HandleError31
+local HandleError81 =				HandleError81
+local HandleErrorF0 =				HandleErrorF0
+
 local floor =						math.floor
 local Rand =						Map.Rand
 local GetPlotFromXY =				Map.GetPlot
@@ -175,7 +177,8 @@ local function OnSerialEventUnitCreated(iPlayer, iUnit, hexVec, unitType, cultur
 		end
 	end
 end
-Events.SerialEventUnitCreated.Add(function(iPlayer, iUnit, hexVec, unitType, cultureType, civID, primaryColor, secondaryColor, unitFlagIndex, fogState, selected, military, notInvisible) return HandleError(OnSerialEventUnitCreated, iPlayer, iUnit, hexVec, unitType, cultureType, civID, primaryColor, secondaryColor, unitFlagIndex, fogState, selected, military, notInvisible) end)
+local function X_OnSerialEventUnitCreated(iPlayer, iUnit, hexVec, unitType, cultureType, civID, primaryColor, secondaryColor, unitFlagIndex, fogState, selected, military, notInvisible) return HandleErrorF0(OnSerialEventUnitCreated, iPlayer, iUnit, hexVec, unitType, cultureType, civID, primaryColor, secondaryColor, unitFlagIndex, fogState, selected, military, notInvisible) end
+Events.SerialEventUnitCreated.Add(X_OnSerialEventUnitCreated)
 
 --------------------------------------------------------------
 -- Combat GameEvents and supporting local functions
@@ -230,7 +233,8 @@ local function OnUnitCaptured(iPlayer, iUnit)
 		end
 	end
 end
-GameEvents.UnitCaptured.Add(function(iPlayer, iUnit) return HandleError21(OnUnitCaptured, iPlayer, iUnit) end)
+local function X_OnUnitCaptured(iPlayer, iUnit) return HandleError21(OnUnitCaptured, iPlayer, iUnit) end
+GameEvents.UnitCaptured.Add(X_OnUnitCaptured)
 
 --Forced interface mode: The Active player must do some something specific (e.g., use Magic Missile) or drop this interface mode and reset unit
 local function ResetForcedInterfaceUnit()		--resets temp attack unit if player fiddles around rather than attacking
@@ -496,7 +500,8 @@ local function OnCombatResult(iAttackingPlayer, iAttackingUnit, attackerDamage, 
 		end
 	end
 end
-GameEvents.CombatResult.Add(function(iAttackingPlayer, iAttackingUnit, attackerDamage, attackerFinalDamage, attackerMaxHP, iDefendingPlayer, iDefendingUnit, defenderDamage, defenderFinalDamage, defenderMaxHP, iInterceptingPlayer, iInterceptingUnit, interceptorDamage, targetX, targetY) return HandleError(OnCombatResult, iAttackingPlayer, iAttackingUnit, attackerDamage, attackerFinalDamage, attackerMaxHP, iDefendingPlayer, iDefendingUnit, defenderDamage, defenderFinalDamage, defenderMaxHP, iInterceptingPlayer, iInterceptingUnit, interceptorDamage, targetX, targetY) end)
+local function X_OnCombatResult(iAttackingPlayer, iAttackingUnit, attackerDamage, attackerFinalDamage, attackerMaxHP, iDefendingPlayer, iDefendingUnit, defenderDamage, defenderFinalDamage, defenderMaxHP, iInterceptingPlayer, iInterceptingUnit, interceptorDamage, targetX, targetY) return HandleErrorF0(OnCombatResult, iAttackingPlayer, iAttackingUnit, attackerDamage, attackerFinalDamage, attackerMaxHP, iDefendingPlayer, iDefendingUnit, defenderDamage, defenderFinalDamage, defenderMaxHP, iInterceptingPlayer, iInterceptingUnit, interceptorDamage, targetX, targetY) end
+GameEvents.CombatResult.Add(X_OnCombatResult)
 
 local function OnCombatEnded(iAttackingPlayer, iAttackingUnit, attackerDamage, attackerFinalDamage, attackerMaxHP, iDefendingPlayer, iDefendingUnit, defenderDamage, defenderFinalDamage, defenderMaxHP, iInterceptingPlayer, iInterceptingUnit, interceptorDamage, plotX, plotY)
 	print("OnCombatEnded ", iAttackingPlayer, iAttackingUnit, attackerDamage, attackerFinalDamage, attackerMaxHP, iDefendingPlayer, iDefendingUnit, defenderDamage, defenderFinalDamage, defenderMaxHP, iInterceptingPlayer, iInterceptingUnit, interceptorDamage, plotX, plotY)
@@ -619,7 +624,8 @@ local function OnCombatEnded(iAttackingPlayer, iAttackingUnit, attackerDamage, a
 
 	DoSequencedAttacks()
 end
-GameEvents.CombatEnded.Add(function(iAttackingPlayer, iAttackingUnit, attackerDamage, attackerFinalDamage, attackerMaxHP, iDefendingPlayer, iDefendingUnit, defenderDamage, defenderFinalDamage, defenderMaxHP, iInterceptingPlayer, iInterceptingUnit, interceptorDamage, plotX, plotY) return HandleError(OnCombatEnded, iAttackingPlayer, iAttackingUnit, attackerDamage, attackerFinalDamage, attackerMaxHP, iDefendingPlayer, iDefendingUnit, defenderDamage, defenderFinalDamage, defenderMaxHP, iInterceptingPlayer, iInterceptingUnit, interceptorDamage, plotX, plotY) end)
+local function X_OnCombatEnded(iAttackingPlayer, iAttackingUnit, attackerDamage, attackerFinalDamage, attackerMaxHP, iDefendingPlayer, iDefendingUnit, defenderDamage, defenderFinalDamage, defenderMaxHP, iInterceptingPlayer, iInterceptingUnit, interceptorDamage, plotX, plotY) return HandleErrorF0(OnCombatEnded, iAttackingPlayer, iAttackingUnit, attackerDamage, attackerFinalDamage, attackerMaxHP, iDefendingPlayer, iDefendingUnit, defenderDamage, defenderFinalDamage, defenderMaxHP, iInterceptingPlayer, iInterceptingUnit, interceptorDamage, plotX, plotY) end
+GameEvents.CombatEnded.Add(X_OnCombatEnded)
 
 local function OnCanSaveUnit(iPlayer, iUnit, bDelay)	--fires for combat and non-combat death (disband, settler settled, etc)
 	--Uses and resets file locals set in OnCombatResult above; always fires after that function if this is a combat death
@@ -747,7 +753,8 @@ local function OnCanSaveUnit(iPlayer, iUnit, bDelay)	--fires for combat and non-
 	return false
 
 end
-GameEvents.CanSaveUnit.Add(function(iPlayer, iUnit, bDelay) return HandleError31(OnCanSaveUnit, iPlayer, iUnit, bDelay) end)
+local function X_OnCanSaveUnit(iPlayer, iUnit, bDelay) return HandleError31(OnCanSaveUnit, iPlayer, iUnit, bDelay) end
+GameEvents.CanSaveUnit.Add(X_OnCanSaveUnit)
 
 function SaveLich(unit)
 	local iPlayer = unit:GetOwner()
@@ -778,7 +785,8 @@ local function OnCanChangeExperience(iPlayer, iUnit, iSummoner, iExperience, iMa
 	end
 	return true
 end
-GameEvents.CanChangeExperience.Add(function (iPlayer, iUnit, iSummoner, iExperience, iMax, bFromCombat, bInBorders, bUpdateGlobal) return HandleError(OnCanChangeExperience, iPlayer, iUnit, iSummoner, iExperience, iMax, bFromCombat, bInBorders, bUpdateGlobal) end)
+local function X_OnCanChangeExperience(iPlayer, iUnit, iSummoner, iExperience, iMax, bFromCombat, bInBorders, bUpdateGlobal) return HandleError81(OnCanChangeExperience, iPlayer, iUnit, iSummoner, iExperience, iMax, bFromCombat, bInBorders, bUpdateGlobal) end
+GameEvents.CanChangeExperience.Add(X_OnCanChangeExperience)
 
 local function OnBarbExperienceDenied(iPlayer, iUnit, iSummoner, iExperience)
 	print("OnBarbExperienceDenied ", iPlayer, iUnit, iSummoner, iExperience)
@@ -787,7 +795,8 @@ local function OnBarbExperienceDenied(iPlayer, iUnit, iSummoner, iExperience)
 		UseManaOrDivineFavor(iSummoner, nil, iExperience, true)
 	end
 end
-GameEvents.BarbExperienceDenied.Add(function (iPlayer, iUnit, iSummoner, iExperience) return HandleError41(OnBarbExperienceDenied, iPlayer, iUnit, iSummoner, iExperience) end)
+local function X_OnBarbExperienceDenied(iPlayer, iUnit, iSummoner, iExperience) return HandleError41(OnBarbExperienceDenied, iPlayer, iUnit, iSummoner, iExperience) end
+GameEvents.BarbExperienceDenied.Add(X_OnBarbExperienceDenied)
 
 
 

@@ -14,6 +14,9 @@
 		<Row Tag="TXT_KEY_EA_BUILDING_WARRENS">
 			<Text>Warrens</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_WARRENS_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_MARKETPLACE">
 			<Text>Marketplace</Text>
 		</Row>
@@ -54,13 +57,13 @@
 		<Row Tag="TXT_KEY_EA_BUILDING_MAGE_SCHOOL">
 			<Text>Mage School</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_MAGE_SCHOOL_SCHOOL">
+		<Row Tag="TXT_KEY_EA_BUILDING_MAGE_SCHOOL_HELP">
 			<Text>Increases the likelihood that a Thaumaturge will appear.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_PHARMAKEIA">
 			<Text>Pharmakeia</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_PHARMAKEIA_SCHOOL">
+		<Row Tag="TXT_KEY_EA_BUILDING_PHARMAKEIA_HELP">
 			<Text>Increases the likelihood that a Thaumaturge will appear.</Text>
 		</Row>
 		
@@ -334,10 +337,19 @@
 		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_LABORATORY">
 			<Text>Laboratory</Text>
-		</Row>		
+		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_LABORATORY_HELP">
 			<Text>+2 [ICON_RESEARCH] Research from Blasting Powder, Mithril and Reagents resources worked by this city.[NEWLINE][NEWLINE]City must have a Library and an improved source of at least one of these resources nearby.</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_INTELLIGENT_ARCHIVE">
+			<Text>Intelligent Archive</Text>
+			<Gender>neuter:an</Gender>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_INTELLIGENT_ARCHIVE_HELP">
+			<Text>-33% Knowldege Maintenance from this city's population</Text>
+		</Row>
+		
+		
 		<Row Tag="TXT_KEY_EA_BUILDING_THEATRE">
 			<Text>Theatre</Text>
 		</Row>
@@ -362,12 +374,15 @@
 			<Text>Museum</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_MUSEUM_HELP">
-			<Text>placeholder</Text>
+			<Text></Text>
 		</Row>
 
 
 		<Row Tag="TXT_KEY_EA_BUILDING_BREEDING_PEN">
 			<Text>Breeding Pen</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_BREEDING_PEN_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_BOWYER">
 			<Text>Bowyer</Text>
@@ -378,12 +393,21 @@
 		<Row Tag="TXT_KEY_EA_BUILDING_ROASTING_FURNACE">
 			<Text>Roasting Furnace</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_ROASTING_FURNACE_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_CHRYSOPOEIA_REACTOR">
 			<Text>Chrysopoeia Reactor</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_CHRYSOPOEIA_REACTOR_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_ARGENTOPOEIA_REACTOR">
 			<Text>Argentopoeia Reactor</Text>
 			<Gender>neuter:an</Gender>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_ARGENTOPOEIA_REACTOR_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_DISTILLERY">
 			<Text>Distillery</Text>
@@ -479,11 +503,14 @@
 		<Row Tag="TXT_KEY_EA_BUILDING_STRONGHOLD">
 			<Text>Stronghold</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_STRONGHOLD_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_CASTLE">
 			<Text>Castle</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_CASTLE_HELP">
-			<Text>placeholder</Text>
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_AQUEDUCT">
 			<Text>Aqueduct</Text>
@@ -522,7 +549,7 @@
 			<Text>Printing Press</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_PRINTING_PRESS_HELP">
-			<Text>placeholder</Text>
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_OBSERVATORY">
 			<Text>Observatory</Text>
@@ -531,6 +558,20 @@
 		<Row Tag="TXT_KEY_EA_BUILDING_OBSERVATORY_HELP">
 			<Text>City must be built next to a Mountain.</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_CHAMBER_THOUGHT">
+			<Text>Chamber of Thought</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_CHAMBER_THOUGHT_HELP">
+			<Text></Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_CONSCIOUSNESS_ENGINE">
+			<Text>Consciousness Engine</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_CONSCIOUSNESS_ENGINE_HELP">
+			<Text></Text>
+		</Row>
+		
+		
 		<Row Tag="TXT_KEY_EA_BUILDING_SHIPYARD">
 			<Text>Shipyard</Text>
 		</Row>
@@ -541,7 +582,7 @@
 			<Text>Hospital</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_HOSPITAL_HELP">
-			<Text>+6 Health in this city.</Text>
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_DEEP_FARMS">
 			<Text>Deep Farms</Text>
@@ -562,32 +603,43 @@
 		<Row Tag="TXT_KEY_EA_BUILDING_FOUNDRY_HELP">
 			<Text>Must be built by an Engineer.</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_ACADEMY">
-			<Text>Academy</Text>
-			<Gender>neuter:an</Gender>
-		</Row>
-		<Row Tag="TXT_KEY_EA_BUILDING_ACADEMY_HELP">
-			<Text>Must be built by a Sage.</Text>
-		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_CATHEDRAL">
 			<Text>Cathedral</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_CATHEDRAL_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_TRADE_HOUSE">
 			<Text>Trade House</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_TRADE_HOUSE_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_MILITARY_ACADEMY">
 			<Text>Military Academy</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_MILITARY_ACADEMY_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_NAVAL_ACADEMY">
 			<Text>Naval Academy</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_NAVAL_ACADEMY_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_NATIONAL_TREASURY">
 			<Text>National Treasury</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_NATIONAL_TREASURY_HELP">
+			<Text></Text>
 		</Row>
 
 
 		<Row Tag="TXT_KEY_EA_BUILDING_PALACE">
 			<Text>Palace</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUILDING_PALACE_HELP">
+			<Text></Text>
 		</Row>
 
 		<!-- Wonders (plot wonders use TXT_KEY_EA_WONDER_ and defined in EaText_EaCreations.xml) -->

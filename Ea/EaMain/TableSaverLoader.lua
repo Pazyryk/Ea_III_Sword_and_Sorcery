@@ -9,8 +9,9 @@ print ("Loading TableSaverLoader.lua...")
 -- 0.13 (Jul 13, 2014) Fixed a bug in 0.12 that occured when a nested table was moved from one table index to another
 --                     Recoded from ground-up for speed and robustness; there are some new table rules
 -- 0.14 (Jul 14, 2014) Fixed error in 0.13 where it would load an empty table as nil
--- 0.15 (Jul 16, 2014) More speed and memory optimizations: in particular, no longer stores a string representation of numbers
+-- 0.15 (never released) More speed and memory optimizations: in particular, no longer stores a string representation of numbers
 --					   TableLoad returns true (if save tables exist) or false, so can be used to detect a loaded game
+-- 0.16 (Aug 4, 2014) Now allows apostrohe (') in string values and NaN, Inf and -Inf as numbers
 ------------------------------------------------------------------------------------------------------
 
 -- TableSave() recursively saves a table and all nested tables (at any level) to Civ5SavedGameDatabase.db
@@ -76,6 +77,11 @@ local bVerboseDB = false			-- If true, print all statements that change the DB
 -- File Locals
 ------------------------------------------------------------------------------------------------------
 
+--constants
+local STR_NAN = tostring(0/0)		--these are valid numbers in Lua but tostring can be platform/version dependent
+local STR_POS_INF = tostring(1/0)
+local STR_NEG_INF = tostring(-1/0)
+
 --DB table names
 local DBTableData
 local DBTableInfo
@@ -120,6 +126,7 @@ local tostring = tostring
 local tonumber = tonumber
 local byte = string.byte
 local sub = string.sub
+local gsub = string.gsub
 local find = string.find
 local concat = table.concat
 
@@ -275,21 +282,21 @@ function TableLoad(masterTable, DBTablePrefix)
 				local value
 				local firstByte = sub(valueString, 1, 1)
 				if firstByte == "$" then
-					value = sub(valueString, 2)		--surprisingly, it works for "$", returns ""
+					value = gsub(sub(valueString, 2), "''", "'")	--gsub reverses double apostrophe escape; surprisingly sub works for empty string ("$" -> "")
 				elseif firstByte == "T" then
 					value = true
 				elseif firstByte == "F" then
 					value = false
-				elseif firstByte == "*" then		--needed in case we have an empty table
+				elseif firstByte == "*" then						--needed in case we have an empty table
 					value = currentTable[key] or {}
 				else
-					value = tonumber(valueString)	--numbers have no prefix byte
+					value = tonumber(valueString)					--numbers have no prefix byte
 					if not value then
-						if valueString == "1.#INF" then
-							value = 1/0						--yes, these are valid "numbers" in Lua even though tonumber doesn't recognize them
-						elseif valueString == "-1.#INF" then
+						if valueString == STR_POS_INF then			--tonumber doesn't recognize these
+							value = 1/0	
+						elseif valueString == STR_NEG_INF then
 							value = -1/0
-						elseif valueString == "-1.#IND" then
+						elseif valueString == STR_NAN then
 							value = 0/0		
 						else
 							--Can only get here if x ~= tonumber(tostring(x)) where type(x) == "number", and not caught by elseif's above
@@ -412,13 +419,13 @@ end
 SerializeLuaValue = function(value)
 	local valueType = type(value)
 	if valueType == "number" then
-		return tostring(value)			--numbers stored as text with no prefix byte
+		return tostring(value)					--numbers stored as text with no prefix byte
 	elseif valueType == "string" then
-		return "$" .. value				--strings have "$" as prefix byte
+		return "$" .. gsub(value, "'", "''")	--strings have "$" as prefix byte; we'll need to escape apostrophe (with two apostrophes) for sql statement
 	elseif valueType == "boolean" then
-		return value and "T" or "F"		--booleans represented by "T" or "F"
+		return value and "T" or "F"				--booleans represented by "T" or "F"
 	elseif valueType == "table" then
-		return "*"						--table represented by "*"
+		return "*"								--table represented by "*"
 	else
 		error("TableSaverLoader doesn't know type ".. valueType)
 	end

@@ -472,6 +472,12 @@
 		<Row Tag="TXT_KEY_EA_PROMOTION_NECROMANCER">
 			<Text>Necromancer</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_MAGE">
+			<Text>Mage</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_ARCHMAGE">
+			<Text>Archmage</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_LICH">
 			<Text>Lich</Text>
 		</Row>

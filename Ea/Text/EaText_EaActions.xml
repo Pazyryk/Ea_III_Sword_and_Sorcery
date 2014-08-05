@@ -20,6 +20,9 @@
 		<Row Tag="TXT_KEY_EA_ACTION_TAKE_LEADERSHIP">
 			<Text>Take Leadership</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TAKE_LEADERSHIP_HELP">
+			<Text>Any great person can take leadership of your civilization, but must be in your capital</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_TAKE_RESIDENCE">
 			<Text>Take Residence in City</Text>
 		</Row>
@@ -29,14 +32,26 @@
 		<Row Tag="TXT_KEY_EA_ACTION_SELL_SLAVES">
 			<Text>Sell Slaves</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_SELL_SLAVE_HELP">
+			<Text>Sell Slaves for 30 gold</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_RENDER_SLAVES">
 			<Text>Render Slaves</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_RENDER_SLAVE_HELP">
+			<Text>Render Slaves for 20 production toward any unit or building</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_HIRE_OUT_MERC">
 			<Text>Hire Out Mercenary</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_HIRE_OUT_MERC_HELP">
+			<Text>Unit will be available for other civilizations or city states to hire if any are interested</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_CANC_HIRE_OUT_MERC">
 			<Text>Cancel Hire Out Order</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_CANC_HIRE_OUT_MERC_HELP">
+			<Text>Unit will no longer be available for other civs to hire</Text>
 		</Row>
 
 
@@ -102,23 +117,51 @@
 		<Row Tag="TXT_KEY_EA_ACTION_PROPHECY_AHURADHATA">
 			<Text>Prophecy of Ahuradhâta</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_PROPHECY_AHURADHATA_HELP">
+			<Text>Found the Azzandarayasna religion in this city</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_PROPHECY_MITHRA">
 			<Text>Prophecy of Mithra</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_PROPHECY_MA">
 			<Text>Prophecy of Mâ</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_PROPHECY_MA_HELP">
+			<Text>placeholder</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_PROPHECY_VA">
 			<Text>Prophecy of Vâ</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_PROPHECY_VA_HELP">
+			<Text>All civilizations that know Maleficium will Fall</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_PROPHECY_ANRA">
 			<Text>Prophecy of Aŋra</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_PROPHECY_ANRA_HELP">
+			<Text>Found the Aŋra religion in this city</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_PROPHECY_AESHEMA">
 			<Text>Prophecy of Aeshema</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_PROPHECY_AESHEMA_HELP">
+			<Text>Summon the Demon of Wrath, Aeshema, and empower him with the annihilation of all of your cities and units</Text>
+		</Row>
 
+		<Row Tag="TXT_KEY_EA_ACTION_PROPHECY_ORDO_SALUTIS">
+			<Text>Ordo Salutis</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_PROPHECY_ORDO_SALUTIS_HELP">
+			<Text>Calls all twelve Archangels at once (even if they have been called before) and a host of lesser Angels and Heaven's Guard. Sacrifices the prophecy maker.</Text>
+		</Row>
 
+		<Row Tag="TXT_KEY_EA_ACTION_PROPHECY_ORDO_DAMNATIO">
+			<Text>Ordo Damnatio</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_PROPHECY_ORDO_DAMNATIO_HELP">
+			<Text>Summons all eight Archdemons at once (even if they have been summoned before) and a host of lesser Demons and Abyssal Creatures. Sacrifices the prophecy maker.</Text>
+		</Row>
+		
 		<Row Tag="TXT_KEY_EA_ACTION_KOLOSSOS">
 			<Text>Build Kolossós</Text>
 		</Row>
@@ -336,21 +379,39 @@
 		<Row Tag="TXT_KEY_EA_ACTION_EPIC_VOLUSPA">
 			<Text>Craft the Völuspá</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_EPIC_VOLUSPA_HELP">
+			<Text>Raises your civilization's cultural level</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_EPIC_HAVAMAL">
 			<Text>Craft the Hávamál</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_EPIC_HAVAMAL_HELP">
+			<Text>Raises your civilization's happiness</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_EPIC_VAFTHRUTHNISMAL">
 			<Text>Craft the Vafthrúthnismál</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_EPIC_VAFTHRUTHNISMAL_HELP">
+			<Text>Raises your civilizations research</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_EPIC_GRIMNISMAL">
 			<Text>Craft the Grímnismál</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_EPIC_GRIMNISMAL_HELP">
+			<Text>Raises the bonus provided by your leader</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_EPIC_HYMISKVITHA">
 			<Text>Craft the Hymiskvitha</Text>
 		</Row>	
+		<Row Tag="TXT_KEY_EA_ACTION_EPIC_HYMISKVITHA_HELP">
+			<Text>Raises culture from wine, ale and spirits (improvements and buildings)</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_EPIC_NATIONAL">
 			<Text>Craft your Civilization's National Epic</Text>
 		</Row>	
+		<Row Tag="TXT_KEY_EA_ACTION_EPIC_NATIONAL_HELP">
+			<Text>Raises your civilization's generation of great people</Text>
+		</Row>
 		
 		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_EQUUS">
 			<Text>Write the Tome of Equus</Text>
@@ -379,18 +440,37 @@
 		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_METALLURGY">
 			<Text>Write the Tome of Metallurgy</Text>
 		</Row>
+		
+		<Row Tag="TXT_KEY_EA_ACTION_CORPUS_HERMETICUM">
+			<Text>Write the Tome of Metallurgy</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_NECRONOMICON">
+			<Text>Write the Tome of Metallurgy</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_ARS_GOETIA">
+			<Text>Write the Tome of Metallurgy</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_BOOK_OF_EIBON">
+			<Text>Write the Tome of Metallurgy</Text>
+		</Row>
 
 		<Row Tag="TXT_KEY_EA_ACTION_FOUNDRY">
 			<Text>Build Foundry</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_ACTION_ACADEMY">
-			<Text>Build Academy</Text>
+		<Row Tag="TXT_KEY_EA_ACTION_FOUNDRY_HELP">
+			<Text>Generates 5 production</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_FESTIVAL">
 			<Text>Create Festival</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_FESTIVAL_HELP">
+			<Text>Generates 5 culture</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE">
 			<Text>Build Temple</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TEMPLE_HELP">
+			<Text>Generates 5 Mana or 5 Divine Favor</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_TRADE_HOUSE">
 			<Text>Establish Trade House</Text>
@@ -429,7 +509,31 @@
 		<Row Tag="TXT_KEY_EA_ACTION_RITUAL_BAKKHEIA">
 			<Text>Ritual of Bakkheia</Text>
 		</Row>
-		
+
+		<Row Tag="TXT_KEY_EA_ACTION_RITUAL_AHRIMANS_EXCHANGE">
+			<Text>Ahriman's Exchange Ritual</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_RITUAL_AHRIMANS_EXCHANGE_HELP">
+			<Text>Consumes half of the civilization's remaining mana exchanging it for experience gained by the ritual performer.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_RITUAL_CONSUME_SOULS">
+			<Text>Consume Souls Ritual</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_RITUAL_CONSUME_SOULS_HELP">
+			<Text>Destroys up to half the remaining world population (leaving cities at minimum size 1) consuming 100 mana per population point destroyed.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_RITUAL_CONSUME_SELF">
+			<Text>Consume Self Ritual</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_RITUAL_CONSUME_SELF_HELP">
+			<Text>Destroys self, consuming mana equal to the total experience accumulated by the ritual performer.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_RITUAL_SEAL_AHRIMANS_VAULT">
+			<Text>Seal Ahriman's Vault</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_RITUAL_SEAL_AHRIMANS_VAULT_HELP">
+			<Text>Permanently seals Ahriman's Vault preventing further mana consumption and spellcasting by the Fallen. Also removes all Breach and prevents subsequent generation of Blight, Demons and Undead. Must be performed adjacent to Ahriman's Vault by a non-Fallen great person meeting one of the following requirements: 1) (Devout or Thaumaturge) civilization has Knowledge of Heaven and 10000 accumulated divine favor; 2) (Devout or Thaumaturge) civilization has Esoteric Arcana and 10000 accumulated mana; 3) (Devout or Thaumaturge) civilization has all Pantheism policies and 20000 accumulated mana; 4) (Any great person) all Fallen civilizations have been destroyed or forced to renounce Maleficium, all Fallen spellcasters are destroyed, and all Temples of Destruction are in ruins.</Text>
+		</Row>		
 
 		
 	</Language_en_US>

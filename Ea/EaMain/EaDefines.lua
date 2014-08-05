@@ -60,7 +60,9 @@ MapModData.MAP_SIZE_MULTIPLIER = MAP_SIZE_MULTIPLIER
 
 print("Game speed, map size, speed multiplier, size multiplier = ", gameSpeed, mapSize, GAME_SPEED_MULTIPLIER, MAP_SIZE_MULTIPLIER)
 
-MapModData.STARTING_SUM_OF_ALL_MANA = math.floor(UNADJUSTED_STARTING_SUM_OF_ALL_MANA * GAME_SPEED_MULTIPLIER * MAP_SIZE_MULTIPLIER)
+
+STARTING_SUM_OF_ALL_MANA = math.floor(UNADJUSTED_STARTING_SUM_OF_ALL_MANA * GAME_SPEED_MULTIPLIER * MAP_SIZE_MULTIPLIER)
+MapModData.STARTING_SUM_OF_ALL_MANA = STARTING_SUM_OF_ALL_MANA
 
 UNIT_SUFFIXES = {"_MAN", "_SIDHE", "_ORC"}
 
@@ -83,6 +85,8 @@ GP_TXT_KEYS = {	Engineer = "TXT_KEY_EA_ENGINEER",
 				Wizard = "TXT_KEY_EA_WIZARD",
 				Sorcerer = "TXT_KEY_EA_SORCERER",
 				Necromancer = "TXT_KEY_EA_NECROMANCER",
+				Mage = "TXT_KEY_EA_MAGE",
+				Archmage = "TXT_KEY_EA_ARCHMAGE",
 				Lich = "TXT_KEY_EA_LICH"	}
 MapModData.GP_TXT_KEYS = GP_TXT_KEYS
 
@@ -188,6 +192,13 @@ for unitInfo in GameInfo.Units() do
 	end
 end
 
+gg_eaTechClass = {}
+for techInfo in GameInfo.Technologies() do
+	if techInfo.EaTechClass then
+		gg_eaTechClass[techInfo.ID] = techInfo.EaTechClass
+	end
+end
+
 
 MapModData.civNamesByRace = MapModData.civNamesByRace or {}
 local civNamesByRace = MapModData.civNamesByRace
@@ -202,8 +213,9 @@ for row in GameInfo.EaCiv_Races() do
 	end
 end
 
-gg_naturalWonders = {}	--index by featureID; filled in EaPlots Init
-
+--filled in EaPlotsInit
+gg_naturalWonders = {}	--index by featureID; holds table with some NW info
+gg_cachedMapPlots = {}	--keep some specific plot tables here that don't change (most =true so we can do index test)
 ----------------------------------------------------------------------------------------------------------------------------
 -- Non-preserved globals 
 ----------------------------------------------------------------------------------------------------------------------------
@@ -263,6 +275,7 @@ MapModData.gpRegisteredActions = MapModData.gpRegisteredActions or {}
 MapModData.knowlMaint = 0
 MapModData.techCount = 0
 MapModData.totalPopulationForKM = 0
+MapModData.intelligentArchiveKMReduction = 0
 MapModData.kmPerTechPerCitizen = 0
 MapModData.civKMPercent = 0
 MapModData.greatLibraryKMPercent = 0

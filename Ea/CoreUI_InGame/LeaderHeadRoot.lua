@@ -255,10 +255,8 @@ function OnShowHide( bHide )
 			end
 		end
 		if not bHide and dds then
-	
 			local gridSize, gridOffset, imageFrame, imageSize, imageOffset = ScaleImage("Leader", dds)
 			print(dds, imageFrame, imageSize.x, imageSize.y, imageOffset.x, imageOffset.y, gridSize.x, gridSize.y, gridOffset.x, gridOffset.y)
-
 			if gridSize then
 				Controls.EaLeaderGrid:SetHide(false)
 				Controls.EaLeaderGrid:SetSize(gridSize)

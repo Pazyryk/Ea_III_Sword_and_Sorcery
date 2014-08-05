@@ -7,10 +7,14 @@ print("Loading EaInit.lua...")
 local function InitForNewGame()
 
 	--gWorld
-	gWorld.sumOfAllMana =				MapModData.STARTING_SUM_OF_ALL_MANA
+	gWorld.sumOfAllMana =				STARTING_SUM_OF_ALL_MANA
 	gWorld.armageddonStage =			0
 	gWorld.armageddonSap =				0
 	gWorld.bAllCivsHaveNames =			false
+	gWorld.evilTechControl =			"NewGame"	--VaReady, VaMade
+
+	gWorld.bAhrimansVaultSealed =		false
+
 	gWorld.returnAsPlayer =				Game.GetActivePlayer()
 	gWorld.encampments =				{}
 	gWorld.azzConvertNum =				0
@@ -171,10 +175,11 @@ function OnLoadEaMain()   --Called from the bottom of EaMain after all included 
 	EaCivNamingInit(bNewGame)
 	EaPoliciesInit(bNewGame)
 	EaTechsInit(bNewGame)
-	EaPlotsInit(bNewGame)		--before cities
+	EaPlotsInit(bNewGame)	
 	EaPeopleInit(bNewGame)
-	EaCityInit(bNewGame)
+	EaCityInit(bNewGame)		--after EaPlotsInit
 	EaYieldsInit(bNewGame)
+	EaAIActionsInit(bNewGame)	--after EaPlotsInit
 	EaAIUnitsInit(bNewGame)
 	EaUnitCombatInit(bNewGame)
 	EaUnitsInit(bNewGame)
@@ -202,6 +207,12 @@ local function OnEnterGame()   --Runs when Begin or Countinue Your Journey press
 	end
 
 	gg_init.bEnteredGame = true
+
+	if MapModData.error then
+		error(MapModData.error)		
+	end
+
+
 	print("Debug - end of OnEnterGame")
 
 	--There is a exe autosave right after this, but GameEvents.GameSave is specifically disabled (in dll)

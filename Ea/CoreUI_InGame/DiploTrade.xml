@@ -82,6 +82,9 @@
 					<Button Style="TradeItemButton" Anchor="L,C" String="TXT_KEY_DIPLO_OPEN_BORDERS" ID="UsPocketOpenBorders"/>
 					<Button Style="TradeItemButton" Anchor="L,C" String="TXT_KEY_DIPLO_DEF_PACT" ID="UsPocketDefensivePact"/>
 					<Button Style="TradeItemButton" Anchor="L,C" String="TXT_KEY_DIPLO_RESCH_AGREEMENT" ID="UsPocketResearchAgreement"/>
+					<!--Paz add: Renounce Maleficium-->
+					<Button Style="TradeItemButton" Anchor="L,C" String="TXT_KEY_EA_DIPLO_RENOUNCE_MALEFICIUM" ID="UsPocketRenounceMaleficium"/>
+					<!--end Paz add-->
 					<Button Style="TradeItemButton" Anchor="L,C" String="TXT_KEY_DIPLO_TRADE_AGREEMENT" ID="UsPocketTradeAgreement" Hidden="1"/>
 					<Button Style="TradeItemButton" Anchor="L,C" String="TXT_KEY_DIPLO_CITIES" ID="UsPocketCities"/>
 					<Button Style="TradeItemButton" Anchor="L,C" String="[ICON_MINUS] TXT_KEY_DIPLO_OTHER_PLAYERS" ID="UsPocketOtherPlayer"/>
@@ -128,6 +131,9 @@
 					<Button Style="TradeItemButton" Anchor="L,C" String="TXT_KEY_DIPLO_OPEN_BORDERS" ID="ThemPocketOpenBorders"/>
 					<Button Style="TradeItemButton" Anchor="L,C" String="TXT_KEY_DIPLO_DEF_PACT" ID="ThemPocketDefensivePact"/>
 					<Button Style="TradeItemButton" Anchor="L,C" String="TXT_KEY_DIPLO_RESCH_AGREEMENT" ID="ThemPocketResearchAgreement"/>
+					<!--Paz add: Renounce Maleficium-->
+					<Button Style="TradeItemButton" Anchor="L,C" String="TXT_KEY_EA_DIPLO_RENOUNCE_MALEFICIUM" ID="ThemPocketRenounceMaleficium"/>
+					<!--end Paz add-->
 					<Button Style="TradeItemButton" Anchor="L,C" String="TXT_KEY_DIPLO_TRADE_AGREEMENT" ID="ThemPocketTradeAgreement" Hidden="1"/>
 					<Button Style="TradeItemButton" Anchor="L,C" String="TXT_KEY_DIPLO_CITIES" ID="ThemPocketCities"/>
 					<Button Style="TradeItemButton" Anchor="L,C" String="TXT_KEY_DIPLO_OTHER_PLAYERS" ID="ThemPocketOtherPlayer"/>
@@ -188,6 +194,9 @@
 					<Button Style="TradeItemButton" Anchor="L,C" String="TXT_KEY_DIPLO_OPEN_BORDERS" ID="UsTableOpenBorders"/>
 					<Button Style="TradeItemButton" Anchor="L,C" String="TXT_KEY_DIPLO_DEF_PACT" ID="UsTableDefensivePact"/>
 					<Button Style="TradeItemButton" Anchor="L,C" String="Research agreement" ID="UsTableResearchAgreement"/>
+					<!--Paz add: Renounce Maleficium-->
+					<Button Style="TradeItemButton" Anchor="L,C" String="TXT_KEY_EA_DIPLO_RENOUNCE_MALEFICIUM" ID="UsTableRenounceMaleficium"/>
+					<!--end Paz add-->
 					<Button Style="TradeItemButton" Anchor="L,C" String="TXT_KEY_DIPLO_TRADE_AGREEMENT" ID="UsTableTradeAgreement"/>
 					<Stack Anchor="L,T" Offset="0,0" Size="128,0" StackGrowth="Bottom" Padding="5" Hidden="0" ID="UsTableCitiesStack"/>
 					<Stack Anchor="L,T" Offset="0,0" Size="128,0" StackGrowth="Bottom" Padding="5" Hidden="0" ID="UsTableDeclareWarStack">
@@ -243,6 +252,9 @@
 					<Button Style="TradeItemButton" Anchor="L,C" String="TXT_KEY_DIPLO_OPEN_BORDERS" ID="ThemTableOpenBorders"/>
 					<Button Style="TradeItemButton" Anchor="L,C" String="TXT_KEY_DIPLO_DEF_PACT" ID="ThemTableDefensivePact"/>
 					<Button Style="TradeItemButton" Anchor="L,C" String="Research agreement" ID="ThemTableResearchAgreement"/>
+					<!--Paz add: Renounce Maleficium-->
+					<Button Style="TradeItemButton" Anchor="L,C" String="TXT_KEY_EA_DIPLO_RENOUNCE_MALEFICIUM" ID="ThemTableRenounceMaleficium"/>
+					<!--end Paz add-->
 					<Button Style="TradeItemButton" Anchor="L,C" String="TXT_KEY_DIPLO_TRADE_AGREEMENT" ID="ThemTableTradeAgreement"/>
 					<Stack Anchor="L,T" Offset="0,0" Size="128,0" StackGrowth="Bottom" Padding="5" Hidden="0" ID="ThemTableCitiesStack"/>
 					<Stack Anchor="L,T" Offset="0,0" Size="128,0" StackGrowth="Bottom" Padding="5" Hidden="0" ID="ThemTableDeclareWarStack">

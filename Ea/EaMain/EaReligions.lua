@@ -51,6 +51,7 @@ local gReligions =	gReligions
 --functions
 local Rand = Map.Rand
 local floor = math.floor
+local HandleError21 = HandleError21
 
 --file control
 local g_iActivePlayer = Game.GetActivePlayer()
@@ -500,6 +501,7 @@ function BecomeFallen(iPlayer)		--this could happen before, during or after the 
 	eaPlayer.manaConsumed = (eaPlayer.manaConsumed or 0) + MANA_CONSUMED_BY_CIV_FALL
 end
 
+
 local religionConversionTable = {[-1] = 0}
 local religionPopTable = {[-1] = 0}
 for religion in GameInfo.Religions() do
@@ -550,6 +552,16 @@ function GetConversionOutcome(city, religionID, mod)
 
 	return totalConversions, bFlip, religionConversionTable
 end
+
+
+local function OnRenounceMaleficium(iPlayer1, iPlayer2)
+	print("OnRenounceMaleficium ", iPlayer1, iPlayer2)
+	print(gPlayers[iPlayer1].bIsFallen, gPlayers[iPlayer1].bIsFallen)
+end
+local function X_OnRenounceMaleficium(iPlayer1, iPlayer2) return HandleError21(OnRenounceMaleficium, iPlayer1, iPlayer2) end
+GameEvents.RenounceMaleficium.Add(X_OnRenounceMaleficium)
+
+
 
 ----------------------------------------------------------------
 -- Player change

@@ -606,7 +606,8 @@ function GenerateGreatPerson(iPlayer, class, subclass, eaPersonRowID, bAsLeader,
 	-- !!!!!!!!!!!!!!!!  INIT NEW EaPerson HERE !!!!!!!!!!!!!!!!
 
 	--do eaPerson stuff first!, then init unit after EVERYTHING is ready
-	local iPerson = #gPeople + 1
+	gWorld.personCount = gWorld.personCount + 1
+	local iPerson = gWorld.personCount
 	local eaPerson = {	iPlayer = iPlayer,			
 						iUnit = -1,							-- need this!
 						iUnitJoined = -1,

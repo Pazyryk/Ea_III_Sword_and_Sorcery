@@ -1,3 +1,7 @@
+
+--Paz added support for TRADE_ITEM_RENOUCE_MALEFICIUM (requires dll mod)
+
+
 ----------------------------------------------------------------        
 ----------------------------------------------------------------        
 include( "IconSupport" );
@@ -938,6 +942,10 @@ function ResetDisplay()
     Controls.ThemPocketDefensivePact:SetHide( false );
     Controls.UsPocketResearchAgreement:SetHide( false );
     Controls.ThemPocketResearchAgreement:SetHide( false );
+	--Paz add
+    Controls.UsPocketRenounceMaleficium:SetHide( not g_Deal:IsPossibleToTradeItem(g_iUs, g_iThem, TradeableItems.TRADE_ITEM_RENOUCE_MALEFICIUM, -1) )
+    Controls.ThemPocketRenounceMaleficium:SetHide( not g_Deal:IsPossibleToTradeItem(g_iThem, g_iUs, TradeableItems.TRADE_ITEM_RENOUCE_MALEFICIUM, -1) )
+	--end Paz add
     --Controls.UsPocketTradeAgreement:SetHide( false );		Trade agreement disabled for now
     --Controls.ThemPocketTradeAgreement:SetHide( false );		Trade agreement disabled for now
     if (Controls.UsPocketDoF ~= nil) then
@@ -1740,6 +1748,10 @@ function DoClearTable()
 	Controls.ThemTableDefensivePact:SetHide( true );
 	Controls.UsTableResearchAgreement:SetHide( true );
 	Controls.ThemTableResearchAgreement:SetHide( true );
+	--Paz add
+	Controls.UsTableRenounceMaleficium:SetHide( true );
+	Controls.ThemTableRenounceMaleficium:SetHide( true );
+	--end Paz add
 	Controls.UsTableTradeAgreement:SetHide( true );
 	Controls.ThemTableTradeAgreement:SetHide( true );
     Controls.UsTableCitiesStack:SetHide( true );
@@ -2025,6 +2037,18 @@ function DisplayDeal()
                 Controls.ThemPocketResearchAgreement:SetHide( true );
                 Controls.ThemTableResearchAgreement:SetHide( false );
             end
+
+		--Paz add
+        elseif( TradeableItems.TRADE_ITEM_RENOUCE_MALEFICIUM == itemType ) then
+        
+            if( bFromUs ) then
+                Controls.UsPocketRenounceMaleficium:SetHide( true )
+                Controls.UsTableRenounceMaleficium:SetHide( false )
+            else
+                Controls.ThemPocketRenounceMaleficium:SetHide( true )
+                Controls.ThemTableRenounceMaleficium:SetHide( false )
+            end
+		--end Paz add
         
         elseif( TradeableItems.TRADE_ITEM_TRADE_AGREEMENT == itemType ) then
         
@@ -2483,6 +2507,40 @@ Controls.ThemTableOpenBorders:SetVoid1( 0 );
 
 
 
+--Paz add
+-----------------------------------------------------------------------------------------------------------------------
+-- Renounce Maleficium Handlers
+-----------------------------------------------------------------------------------------------------------------------
+function PocketRenounceMaleficiumHandler(isUs)
+    if( isUs == 1 ) then
+        g_Deal:AddRenounceMaleficiumTrade(g_iUs)
+    else
+        g_Deal:AddRenounceMaleficiumTrade(g_iThem)
+    end
+    DisplayDeal()
+    DoUIDealChangedByHuman()
+end
+Controls.UsPocketRenounceMaleficium:RegisterCallback( Mouse.eLClick, PocketRenounceMaleficiumHandler )
+Controls.ThemPocketRenounceMaleficium:RegisterCallback( Mouse.eLClick, PocketRenounceMaleficiumHandler )
+Controls.UsPocketRenounceMaleficium:SetVoid1( 1 )
+Controls.ThemPocketRenounceMaleficium:SetVoid1( 0 )
+
+function TableRenounceMaleficiumHandler(isUs)
+    if( isUs == 1 ) then
+        g_Deal:RemoveRenounceMaleficiumTrade(g_iUs)
+    else
+        g_Deal:RemoveRenounceMaleficiumTrade(g_iThem)
+    end
+    DoClearTable()
+    DisplayDeal()
+    DoUIDealChangedByHuman()
+end
+Controls.UsTableRenounceMaleficium:RegisterCallback( Mouse.eLClick, TableRenounceMaleficiumHandler )
+Controls.ThemTableRenounceMaleficium:RegisterCallback( Mouse.eLClick, TableRenounceMaleficiumHandler )
+Controls.UsTableRenounceMaleficium:SetVoid1( 1 )
+Controls.ThemTableRenounceMaleficium:SetVoid1( 0 )
+--end Paz add
+
 
 -----------------------------------------------------------------------------------------------------------------------
 -- Defensive Pact Handlers
@@ -2552,7 +2610,6 @@ function TableResearchAgreementHandler()
 end
 Controls.UsTableResearchAgreement:RegisterCallback( Mouse.eLClick, TableResearchAgreementHandler );
 Controls.ThemTableResearchAgreement:RegisterCallback( Mouse.eLClick, TableResearchAgreementHandler );
-
 
 
 

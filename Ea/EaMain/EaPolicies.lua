@@ -327,8 +327,17 @@ end
 LuaEvents.EaPoliciesOnPlayerAdoptPolicyDelayedEffect.Add(OnPlayerAdoptPolicyDelayedEffect)
 
 
-
---GameEvents.PolicyBranchFinisher
+local function OnFinisherPolicy(iPlayer, policyID)
+	print("OnFinisherPolicy ", iPlayer, policyID)
+	if policyID == GameInfoTypes.POLICY_PANTHEISM_FINISHER then
+		local eaPlayer = gPlayers[iPlayer]
+		if not eaPlayer.manaToSealAhrimansVault or eaPlayer.manaToSealAhrimansVault > 20000 then
+			eaPlayer.manaToSealAhrimansVault = 20000
+		end
+	end
+end
+local function X_OnFinisherPolicy(iPlayer, policyID) return HandleError21(OnFinisherPolicy, iPlayer, policyID) end
+GameEvents.FinisherPolicy.Add(X_OnFinisherPolicy)
 
 
 local function OnPlayerCanAdoptPolicyBranch(iPlayer, policyBranchTypeID)

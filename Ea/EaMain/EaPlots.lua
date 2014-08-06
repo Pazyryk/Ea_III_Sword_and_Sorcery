@@ -502,9 +502,8 @@ function EaPlotsInit(bNewGame)
 		end
 	end
 	if not gg_cachedMapPlots.accessAhrimansVault then
-		error("Ahriman's Vault cannot be reached; this map is unplaybable")
+		error("Ahriman's Vault cannot be reached: this map is unplaybable; RESTART GAME may fix this problem")
 	end
-
 
 end
 
@@ -1008,8 +1007,13 @@ end
 function PlotsPerTurn()
 	--This function is really pushing the 60 upvalue limit, but it is also one we want to run very fast
 	--Watch for "Syntax Error: function at line xxx has more than 60 upvalues" when adding stuff
-
 	print("Running PlotsPerTurn")
+
+	--bad map; keep harassing player so they don't discover this is important on turn 250
+	if not gg_cachedMapPlots.accessAhrimansVault then
+		error("Ahriman's Vault cannot be reached: this map is unplaybable")
+	end
+
 	local PlotToRadiusIterator = PlotToRadiusIterator
 	local encampments = gWorld.encampments
 	local gameTurn = Game.GetGameTurn()

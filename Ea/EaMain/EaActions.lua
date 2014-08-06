@@ -190,25 +190,25 @@ function EaActionsInit(bNewGame)
 		gg_playerPlotActionTargeted[iPlayer] = {}
 	end
 	for iPerson, eaPerson in pairs(gPeople) do
-		local iPlayer = eaPerson.iPlayer
-		if eaPerson.eaActionID > 0 then	
-			local player = Players[iPlayer]
-			local unit = player:GetUnitByID(eaPerson.iUnit)
-			if not unit then
-				--this is happening in player loads; better to kill gp so they report it
-				KillPerson(iPlayer, iPerson, nil, nil, "missing unit at init")
-			end
-			local iPlot = unit:GetPlot():GetPlotIndex()
-			print("-setting gg_playerPlotActionTargeted for eaActionID ", iPlayer, iPlot, eaPerson.eaActionID, iPerson)
-			gg_playerPlotActionTargeted[iPlayer][iPlot] = gg_playerPlotActionTargeted[iPlayer][iPlot] or {}
-			gg_playerPlotActionTargeted[iPlayer][iPlot][eaPerson.eaActionID] = iPerson
-		elseif eaPerson.gotoEaActionID > 0 then		--AI going to do something
-			local gotoPlotIndex = eaPerson.gotoPlotIndex
-			print("-setting gg_playerPlotActionTargeted for gotoEaActionID ", iPlayer, gotoPlotIndex, eaPerson.gotoEaActionID, iPerson)
-			gg_playerPlotActionTargeted[iPlayer][gotoPlotIndex] = gg_playerPlotActionTargeted[iPlayer][gotoPlotIndex] or {}
-			gg_playerPlotActionTargeted[iPlayer][gotoPlotIndex][eaPerson.gotoEaActionID] = iPerson
-		end
 		if iPerson > 0 then
+			local iPlayer = eaPerson.iPlayer
+			if eaPerson.eaActionID > 0 then	
+				local player = Players[iPlayer]
+				local unit = player:GetUnitByID(eaPerson.iUnit)
+				if not unit then
+					--this is happening in player loads; better to kill gp so they report it
+					KillPerson(iPlayer, iPerson, nil, nil, "missing unit at init")
+				end
+				local iPlot = unit:GetPlot():GetPlotIndex()
+				print("-setting gg_playerPlotActionTargeted for eaActionID ", iPlayer, iPlot, eaPerson.eaActionID, iPerson)
+				gg_playerPlotActionTargeted[iPlayer][iPlot] = gg_playerPlotActionTargeted[iPlayer][iPlot] or {}
+				gg_playerPlotActionTargeted[iPlayer][iPlot][eaPerson.eaActionID] = iPerson
+			elseif eaPerson.gotoEaActionID > 0 then		--AI going to do something
+				local gotoPlotIndex = eaPerson.gotoPlotIndex
+				print("-setting gg_playerPlotActionTargeted for gotoEaActionID ", iPlayer, gotoPlotIndex, eaPerson.gotoEaActionID, iPerson)
+				gg_playerPlotActionTargeted[iPlayer][gotoPlotIndex] = gg_playerPlotActionTargeted[iPlayer][gotoPlotIndex] or {}
+				gg_playerPlotActionTargeted[iPlayer][gotoPlotIndex][eaPerson.gotoEaActionID] = iPerson
+			end
 			RegisterGPActions(iPerson)
 		end
 	end

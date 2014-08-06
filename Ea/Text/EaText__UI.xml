@@ -290,6 +290,12 @@
 		</Row>
 		
 		<!-- POPUPS -->
+		
+		<!-- Trade -->
+		<Row Tag="TXT_KEY_EA_DIPLO_RENOUNCE_MALEFICIUM">
+			<Text>Renounce Maleficium</Text>
+		</Row>
+		
 		<!-- Armageddon Popup -->
 		<Row Tag="TXT_KEY_EA_ARMAGEDDON_1A">
 			<Text>The Fallen (followers of Aŋra and those that know Maleficium) have begun to consume mana at a dangerous rate. Mana is the material fabric of Éa and all things in it, and it cannot be replenished. If this process goes unchecked, the weave of the world will begin to fray. It will eventually come apart at the seams.</Text>

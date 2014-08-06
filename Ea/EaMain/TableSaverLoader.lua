@@ -9,9 +9,9 @@ print ("Loading TableSaverLoader.lua...")
 -- 0.13 (Jul 13, 2014) Fixed a bug in 0.12 that occured when a nested table was moved from one table index to another
 --                     Recoded from ground-up for speed and robustness; there are some new table rules
 -- 0.14 (Jul 14, 2014) Fixed error in 0.13 where it would load an empty table as nil
--- 0.15 (never released) More speed and memory optimizations: in particular, no longer stores a string representation of numbers
+-- 0.15 (not released) More speed and memory optimizations: in particular, no longer stores a string representation of numbers
 --					   TableLoad returns true (if save tables exist) or false, so can be used to detect a loaded game
--- 0.16 (Aug 4, 2014) Now allows apostrohe (') in string values and NaN, Inf and -Inf as numbers
+-- 0.16 (Aug 6, 2014) Now allows apostrohe (') in string values and NaN, Inf and -Inf as numbers; more memory optimization
 ------------------------------------------------------------------------------------------------------
 
 -- TableSave() recursively saves a table and all nested tables (at any level) to Civ5SavedGameDatabase.db
@@ -22,7 +22,7 @@ print ("Loading TableSaverLoader.lua...")
 --  * Keys must be integers or strings
 --  * Avoid "$" and "#" anywhere in string keys
 --  * Avoid international or other non-ascii characters in string keys (multi-byte chars may screw up key parsing)
---  * Don't use "" as a key
+--  * Don't use empty string ("") as a key
 --  * Table values can include any value of type boolean, number, string or table (NOT function, userdata or thread)
 --
 -- "Tree-like" means that branches never reconnect in your table nesting structure. In other words, nested tables
@@ -78,6 +78,7 @@ local bVerboseDB = false			-- If true, print all statements that change the DB
 ------------------------------------------------------------------------------------------------------
 
 --constants
+local DUMMY_TABLE = {}
 local STR_NAN = tostring(0/0)		--these are valid numbers in Lua but tostring can be platform/version dependent
 local STR_POS_INF = tostring(1/0)
 local STR_NEG_INF = tostring(-1/0)
@@ -93,12 +94,8 @@ local bInited, bTableLoaded = false, false
 local checksum = 0
 
 --Lua representation of the database data (so we know what to update, insert or delete)
-local dbMaxID = 0
 local dbLuaValueByK = {}
-local dbIDbyK = {}
 local dbFoundK = {}
-
-setmetatable(dbLuaValueByK, {__mode = "v"})	--Lua can garbage collect a table immediately if mod code no longer referenes it (TSL doesn't need it either)
 
 --DB operation buffers; hold table keys that need to be inserted or updated
 local insertBuffer = {}
@@ -108,12 +105,12 @@ local updateBuffer = {}
 local inserts, updates, deletes, unchangeds = 0, 0, 0, 0
 
 --max SQL statement size restrictions
-local maxInsertsPerTransaction = 300			-- observed query error somewhere between 500 and 600
-local maxUpdatesPerTransaction = 600			-- successful up to 1600 (but these tests on 3 col table)
+local maxInsertsPerTransaction = 300			-- don't know limit
+local maxUpdatesPerTransaction = 600			-- successful up to 1600 on 3 col table
 
 --SQL string construction
 local textStrTable = {}
-local idStrTable = {}
+local keyStrTable = {}
 
 --local functions
 local DBQuery = Modding.OpenSaveData().Query
@@ -149,7 +146,7 @@ function TableSave(masterTable, DBTablePrefix)
 		end
 		if bCreateTables then		--create table and table_SaveLoadInfo
 			print("Creating SavedGameDB tables for new game: "..DBTableData.." and "..DBTableInfo)
-			DBChange("CREATE TABLE ["..DBTableData.."] ('ID' INTEGER PRIMARY KEY, 'K' TEXT NOT NULL, 'V' TEXT NOT NULL)")
+			DBChange("CREATE TABLE ["..DBTableData.."] ('K' TEXT PRIMARY KEY, 'V' TEXT)")
 			DBChange("CREATE TABLE ["..DBTableInfo.."] ('ID' INTEGER PRIMARY KEY, 'turn' TEXT, 'bCreateTables' TEXT, 'inserts' TEXT, 'deletes' TEXT, 'updates' TEXT, 'unchangeds' TEXT, 'checksum' TEXT, 'saveTime' TEXT, 'loadTurn' TEXT, 'loadTime' TEXT, 'loadErrors' TEXT)")
 		elseif not bTableLoaded then
 			print("!!!! TableSaverLoader thinks you are using TableSave before TableLoad on a loaded game; are you sure you want to do that? !!!!")
@@ -170,15 +167,12 @@ function TableSave(masterTable, DBTablePrefix)
 
 		for i = nextToProcess, processed do
 			local keyString = updateBuffer[i]
-			local valueString = SerializeLuaValue(dbLuaValueByK[keyString])
-			local id = dbIDbyK[keyString]
-					
+			local valueString = SerializeLuaValue(dbLuaValueByK[keyString])		
 			txtCount = txtCount + 1
-			local idStr = tostring(id)
-			textStrTable[txtCount] = "when ID=" .. idStr .. " then '" .. valueString .. "'"
-			idStrTable[txtCount] = idStr
+			keyStrTable[txtCount] = "'" .. keyString .. "'"
+			textStrTable[txtCount] = "when K='" .. keyString .. "' then '" .. valueString .. "'"
 		end
-		DBChange("update ["..DBTableData.."] set V=case "..concat(textStrTable, " ", 1, txtCount).." end where ID in ("..concat(idStrTable, "," , 1, txtCount)..")")
+		DBChange("update ["..DBTableData.."] set V=case "..concat(textStrTable, " ", 1, txtCount).." end where K in ("..concat(keyStrTable, "," , 1, txtCount)..")")
 	end
 
 	--DB inserts; process up to maxInsertsPerTransaction at a time
@@ -191,13 +185,10 @@ function TableSave(masterTable, DBTablePrefix)
 		for i = nextToProcess, processed do
 			local keyString = insertBuffer[i]
 			local valueString = SerializeLuaValue(dbLuaValueByK[keyString])
-			dbMaxID = dbMaxID + 1
-			dbIDbyK[keyString] = dbMaxID
-
 			txtCount = txtCount + 1
-			textStrTable[txtCount] = dbMaxID..",'"..keyString.."','"..valueString.."'"
+			textStrTable[txtCount] = "'"..keyString.."','"..valueString.."'"
 		end
-		DBChange("insert into ["..DBTableData.."] (ID,K,V) select ".. concat(textStrTable, " union all select ", 1, txtCount))
+		DBChange("insert into ["..DBTableData.."] (K,V) values (" .. concat(textStrTable, "),(", 1, txtCount) .. ")")
 	end
 
 	--DB deletions; delete all rows not seen in this save (assumes no limit on number of deletes)
@@ -206,7 +197,6 @@ function TableSave(masterTable, DBTablePrefix)
 			dbFoundK[keyString] = false	--reset for next save
 		else
 			deletes = deletes + 1
-			local id = dbIDbyK[keyString]
 
 			--remove from checksum
 			if bChecksum then
@@ -215,14 +205,13 @@ function TableSave(masterTable, DBTablePrefix)
 
 			--remove from Lua representation of DB
 			dbLuaValueByK[keyString] = nil
-			dbIDbyK[keyString] = nil
 			dbFoundK[keyString] = nil
 
-			idStrTable[deletes] = tostring(id)
+			keyStrTable[deletes] = "'" .. keyString .. "'"
 		end
 	end
 	if 0 < deletes then
-		DBChange("delete from [" .. DBTableData .. "] where ID in (" .. concat(idStrTable, ",", 1, deletes).. ")" )
+		DBChange("delete from [" .. DBTableData .. "] where K in (" .. concat(keyStrTable, ",", 1, deletes).. ")" )
 	end
 
 	local saveTime = os.clock() - timer
@@ -252,9 +241,7 @@ function TableLoad(masterTable, DBTablePrefix)
 
 	--reset in case modder calls again for some reason
 	checksum = 0
-	dbMaxID = 0
 	EmptyTable(dbLuaValueByK)
-	EmptyTable(dbIDbyK)
 	EmptyTable(dbFoundK)
 
 	for row in DBQuery("SELECT * FROM ["..DBTableData.."]") do
@@ -262,8 +249,7 @@ function TableLoad(masterTable, DBTablePrefix)
 		local keyPos = 1
 		local currentTable = masterTable
 
-		-- Work through nested tables in keyString, referencing existing tables or creating
-		-- new ones, until we get to last key which references a non-table value
+		-- Work through nested tables in keyString, referencing existing tables or creating new ones, until we get to last key
 		while true do
 			local bTextKey = sub(keyString, keyPos, keyPos) == "$"	
 			local nextKeyPos = find(keyString, "[%#%$]", keyPos + 2)	-- +2 assumes that you don't use "" as key
@@ -300,7 +286,7 @@ function TableLoad(masterTable, DBTablePrefix)
 							value = 0/0		
 						else
 							--Can only get here if x ~= tonumber(tostring(x)) where type(x) == "number", and not caught by elseif's above
-							error("TableSaverLoader did not understand valueString from DB; row = " .. row.ID .. "; valueString = " .. tostring(valueString))
+							error("TableSaverLoader did not understand valueString from DB; keyString = " .. row.K .. "; valueString = " .. valueString)
 						end
 					end
 				end
@@ -313,9 +299,7 @@ function TableLoad(masterTable, DBTablePrefix)
 
 				--update Lua representation of database data			
 				dbLuaValueByK[keyString] = value
-				dbIDbyK[keyString] = row.ID
 				dbFoundK[keyString] = false
-				dbMaxID = dbMaxID < row.ID and row.ID or dbMaxID	--don't assume ordered by ID
 
 				break
 			end
@@ -380,26 +364,31 @@ BuildTable = function (table, tableName)
 		dbFoundK[keyString] = true
 
 		--figure out what to do with this value
-		if dbLuaValueByK[keyString] == value then		--this element has not changed since last TableSave; do nothing (most common)
+		local bTable = type(value) == "table"
+
+		if dbLuaValueByK[keyString] == value or (bTable and dbLuaValueByK[keyString] == DUMMY_TABLE) then
+			--this element has not changed since last TableSave; do nothing (most common)
 			unchangeds = unchangeds + 1
-		elseif dbLuaValueByK[keyString] then			--element exists but needs update
+		elseif dbLuaValueByK[keyString] then
+			--element exists but needs update
 			updates = updates + 1
 			updateBuffer[updates] = keyString
 			if bChecksum then
 				checksum = checksum - Checksum(dbLuaValueByK[keyString])
 				checksum = checksum + Checksum(value)
 			end
-			dbLuaValueByK[keyString] = value
-		else											--element does not exists; insert as new DB row
+			dbLuaValueByK[keyString] = bTable and DUMMY_TABLE or value
+		else
+			--element does not exists; insert as new DB row
 			inserts = inserts + 1
 			insertBuffer[inserts] = keyString
 			if bChecksum then
 				checksum = checksum + Checksum(value)
 			end
-			dbLuaValueByK[keyString] = value
+			dbLuaValueByK[keyString] = bTable and DUMMY_TABLE or value
 		end
 
-		if type(value) == "table" then
+		if bTable then
 			BuildTable(value, keyString)			--recursion
 		end
 	end
@@ -434,13 +423,13 @@ end
 Checksum = function(value)
 	local valueType = type(value)
 	if valueType == "number" then
-		return byte(tostring(value), -1)
+		return byte(tostring(value), 1)	--use first digit so we don't get hammered by some tostring roundoff problem
 	elseif valueType == "string" then
 		return byte(value, -1) or 11	--or ""
 	elseif valueType == "boolean" then
 		return value and 13 or 17	--whatever
 	else
-		return 1	--table may be garbage collected, so must have same checksum as nil
+		return 1	--any table
 	end
 end
 

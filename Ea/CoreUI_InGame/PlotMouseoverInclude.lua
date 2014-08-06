@@ -337,14 +337,18 @@ function GetImprovementString(plot)
 	end
 	--end Paz add
 
-	if (iImprovementType >= 0 and iImprovementType ~= GameInfoTypes.IMPROVEMENT_BLIGHT) then		--Paz added IMPROVEMENT_BLIGHT condition
-		--[[Paz modified below
+	--[[Paz modified below
+	if (iImprovementType >= 0) then		--Paz added IMPROVEMENT_BLIGHT condition
+	
 		if (improvementStr ~= "") then
 			improvementStr = improvementStr .. ", ";
 		end
 		local convertedKey = Locale.ConvertTextKey(GameInfo.Improvements[iImprovementType].Description);		
 		improvementStr = improvementStr .. convertedKey;
 		]]
+
+
+	if (iImprovementType >= 0 and iImprovementType <= GameInfoTypes.IMPROVEMENT_CRATER and iImprovementType ~= GameInfoTypes.IMPROVEMENT_BLIGHT) then
 		if iImprovementType == GameInfoTypes.IMPROVEMENT_BARBARIAN_CAMP then
 			local encampmentID = gT.gWorld.encampments[plot:GetPlotIndex()]
 			if encampmentID then

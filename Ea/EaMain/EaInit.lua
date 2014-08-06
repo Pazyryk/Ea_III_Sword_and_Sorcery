@@ -9,6 +9,7 @@ local HandleError10 = HandleError10
 local function InitForNewGame()
 
 	--gWorld
+	gWorld.personCount =				0
 	gWorld.sumOfAllMana =				STARTING_SUM_OF_ALL_MANA
 	gWorld.armageddonStage =			0
 	gWorld.armageddonSap =				0

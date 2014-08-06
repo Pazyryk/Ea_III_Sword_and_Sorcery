@@ -5,8 +5,7 @@ Current build requires Ea Media Pack (v 5); see readme one level up for link
 Mod info and credits: http://forums.civfanatics.com/showthread.php?t=483622
 
 -----------------------------------------------------------------------------
-Ea API
-New GameDefines, GameEvents and Lua methods by class
+Ea API: New GameDefines, GameEvents and Lua methods by class
 
 --------------------------------------------------------------
 -- GameDefines
@@ -21,12 +20,14 @@ ANIMAL_TEAM		(=62)
 --------------------------------------------------------------
 
 --CallHook
-GameSave()	--must set Game.SetGameEventsSaveGame(true) before this will fire
+GameSave()	--note: skips 1st autosave that immediately follows Begin Your Journey because it caused intermitent hang
 CombatResult(iAttackingPlayer, iAttackingUnit, attackerDamage, attackerFinalDamage, attackerMaxHP,iDefendingPlayer, iDefendingUnit, defenderDamage, defenderFinalDamage, defenderMaxHP, iInterceptingPlayer, iInterceptingUnit, interceptorDamage, plotX, plotY)
 CombatEnded(iAttackingPlayer, iAttackingUnit, attackerDamage, attackerFinalDamage, attackerMaxHP,iDefendingPlayer, iDefendingUnit, defenderDamage, defenderFinalDamage, defenderMaxHP, iInterceptingPlayer, iInterceptingUnit, interceptorDamage, plotX, plotY)
 UnitSetXYPlotEffect(iPlayer, iUnit, x, y, plotEffectID, plotEffectStrength, plotEffectPlayer, plotEffectCaster)
 UnitCaptured(iPlayer, iUnit)
 BarbExperienceDenied(iPlayer, iUnit, iSummoner, iExperience)	--unmodded experience unit would get if not barb
+FinisherPolicy(iPlayer, policyID)
+RenounceMaleficium(iPlayer1, iPlayer2) --one of these has Renounced Maleficium for the other (only one can be fallen so figure it out)
 
 --CallTestAll
 CanAutoSave(bInitial, bPostTurn)
@@ -38,18 +39,17 @@ UnitTakingPromotion(iPlayer, iUnit, promotionID)
 CanCaptureCivilian(iPlayer, iUnit)				--not used because it won't allow recapture & civilian returns (used UnitCaptured instead)
 CanChangeExperience(iPlayer, iUnit, iSummoner, iExperience, iMax, bFromCombat, bInBorders, bUpdateGlobal)	--false prevents xp change to summoned unit
 CanCreateTradeRoute(iOriginPlot, iDestPlot, iDestPlayer, eDomain, eConnectionType)
+CityCanRangeStrikeAt(iAttacker, iCity, x, y)	DISABLED IN DLL! (not used)
 
 --CallTestAny
 CityConnections		// whoward69's river connection system
-CityConnected
+CityConnected		// whoward69's river connection system
 
 --CallAccumulator
 PlayerTechCostMod(iPlayer, techID)
 PlayerMinorFriendshipAnchor(eMajor, eMinor)
-
-
---Added but currently disabled:
-//CityCanRangeStrikeAt(iAttacker, iCity, x, y)	CallTestAll
+PlayerMinorFriendshipDecayMod(eMajor, eMinor)
+PlayerMinorFriendshipRecoveryMod(eMajor, eMinor)
 
 --------------------------------------------------------------
 -- Game
@@ -84,12 +84,19 @@ int		GetUnhappinessFromMod()
 void	SetUnhappinessFromMod(int)
 int		GetWarmongerModifier()		--returns the penalty to warmonger levels OTHER players gain for taking actions against THIS player (default 0)
 void	SetWarmongerModifier(int)	--100 means actions against this player create NO warmonger effect for anyone
-
+int		GetMaleficiumLevel()
+void	SetMaleficiumLevel(int)		--set on Lua side to change availability and value of TRADE_ITEM_RENOUCE_MALEFICIUM
 
 Need to add player:SetEndTurn(bool)	so we can interupt active player turn without Lua hacks
 
 --------------------------------------------------------------
--- Plots
+-- Deal
+--------------------------------------------------------------
+void	AddRenounceMaleficiumTrade(iPlayer)		--TRADE_ITEM_RENOUCE_MALEFICIUM
+void	RemoveRenounceMaleficiumTrade(iPlayer)
+
+--------------------------------------------------------------
+-- Plot
 --------------------------------------------------------------
 void				AddFloatUpMessage(sMessage, fDelay, iShowPlayer)	--last two optional	
 int, int			GetXY()

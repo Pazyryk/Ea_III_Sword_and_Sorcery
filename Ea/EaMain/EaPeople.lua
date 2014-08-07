@@ -1416,7 +1416,9 @@ function KillPerson(iPlayer, iPerson, unit, iKillerPlayer, deathType)
 	
 	--notification
 	if iPlayer == g_iActivePlayer then
-		LuaEvents.EaImagePopup({type = "PersonDeath", id = iPerson, sound = "AS2D_EVENT_NOTIFICATION_BAD"})	--TO DO! find unit killed sound
+		if deathType ~= "Renounce Maleficium" then
+			LuaEvents.EaImagePopup({type = "PersonDeath", id = iPerson, sound = "AS2D_EVENT_NOTIFICATION_BAD"})	--TO DO! find unit killed sound
+		end
 	end
 
 	--housekeeping

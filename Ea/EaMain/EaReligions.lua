@@ -556,7 +556,73 @@ end
 
 local function OnRenounceMaleficium(iPlayer1, iPlayer2)
 	print("OnRenounceMaleficium ", iPlayer1, iPlayer2)
-	print(gPlayers[iPlayer1].bIsFallen, gPlayers[iPlayer1].bIsFallen)
+	--one player must be persuing Maleficium or anti-Theism and the other not; use that to figure out who is renouncing
+	local player, otherPlayer = Players[iPlayer1], Players[iPlayer2]
+	local malLevel = player:GetMaleficiumLevel()
+	local iPlayer, iOtherPlayer
+	if (malLevel > 0) == (otherPlayer:GetMaleficiumLevel() > 0) then
+		error("Renounce maleficium by or to wrong player " .. iPlayer1 .. " " .. iPlayer2 .. " " .. malLevel .. " " .. malLevelOther)
+	end
+	if malLevel > 0 then
+		iPlayer, iOtherPlayer = iPlayer1, iPlayer2
+	else
+		player, otherPlayer = otherPlayer, player
+		iPlayer, iOtherPlayer = iPlayer2, iPlayer1
+	end
+	print(" -player " .. iPlayer .. " renounces with GetMaleficiumLevel = ", player:GetMaleficiumLevel())
+	local team = Teams[player:GetTeam()]
+	local eaPlayer = gPlayers[iPlayer]
+
+	--mark as renounced to restrict techs/policies
+	eaPlayer.bRenouncedMaleficium = true
+
+	--remove techs (note: if we ever have teams, then this probably would break the team)
+	for techID, eaTechClass in pairs(gg_eaTechClass) do
+		if eaTechClass == "ArcaneEvil" then
+			if team:IsHasTech(techID) then
+				print(" -removing tech ", GameInfo.Technologies[techID].Type)
+				eaPlayer.techs[techID] = nil
+				team:SetHasTech(techID, false)
+			end
+		end
+	end
+
+	--remove policies; CL will be reduced but this is only temporary setback since Approach CL is unaffected
+	local countPolicies = 0
+	for policyInfo in GameInfo.Policies() do
+		if policyInfo.PolicyBranchType == "POLICY_BRANCH_ANTI_THEISM" then
+			if player:HasPolicy(policyInfo.ID) then
+				print(" -removing policy ", GameInfo.Policies[policyInfo.ID].Type)
+				countPolicies = countPolicies + 1
+				player:SetHasPolicy(policyInfo.ID, false)
+			end
+		end
+	end
+	if player:IsPolicyBranchUnlocked(GameInfoTypes.POLICY_BRANCH_ANTI_THEISM) then
+		print(" -removing Anti-Theism opener/finisher policies and locking the branch")
+		countPolicies = countPolicies + 1
+		player:SetHasPolicy(GameInfoTypes.POLICY_ANTI_THEISM_FINISHER, false)
+		player:SetHasPolicy(GameInfoTypes.POLICY_ANTI_THEISM, false)
+		player:SetPolicyBranchUnlocked(GameInfoTypes.POLICY_BRANCH_ANTI_THEISM, false)
+	end
+	eaPlayer.culturalLevel = eaPlayer.culturalLevel - countPolicies
+
+	--spellcasters flee even if civ not fallen (Prophecy of Va may not be made yet, but we don't want spellcasters reanimating dead)
+	for iPerson, eaPerson in pairs(gPeople) do
+		if eaPerson.iPlayer == iPlayer and eaPerson.spells then
+			KillPerson(iPlayer, iPerson, unit, -1, "Renounce Maleficium")	--individual death notification suppressed
+		end
+	end
+
+	--player may or may not be fallen; we can undo that here unless they are Anra religion (may become fallen again via Anra)
+	if eaPlayer.religionID ~= RELIGION_ANRA then
+		eaPlayer.bIsFallen = false
+	end
+
+	--update Top Panel for active player
+	if iPlayer == g_iActivePlayer then
+		LuaEvents.TopPanelInfoDirty()
+	end
 end
 local function X_OnRenounceMaleficium(iPlayer1, iPlayer2) return HandleError21(OnRenounceMaleficium, iPlayer1, iPlayer2) end
 GameEvents.RenounceMaleficium.Add(X_OnRenounceMaleficium)

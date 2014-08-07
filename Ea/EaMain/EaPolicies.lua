@@ -257,7 +257,7 @@ local policyDelayedEffectID = {}
 local policyDelayedEffectPlayerIndex = {}
 local policyDelayedEffectNum = 0
 
-function OnPlayerAdoptPolicy(iPlayer, policyID)				--called by EaAICiv.lua for AI; Does not fire for openers or finishers!
+function OnPlayerAdoptPolicy(iPlayer, policyID)				--called by EaAICiv.lua for AI; does not fire for openers or finishers!!!
 	print("Called OnPlayerAdoptPolicy", iPlayer, policyID)
 	policyDelayedEffectNum = policyDelayedEffectNum + 1
 	policyDelayedEffectID[policyDelayedEffectNum] = policyID
@@ -279,11 +279,6 @@ function OnPlayerAdoptPolicyDelayedEffect()		--called by closing policy window a
 		local policyID = policyDelayedEffectID[i]
 		local iPlayer = policyDelayedEffectPlayerIndex[i]
 		local policyInfo = GameInfo.Policies[policyID]
-
-		--Meet pantheistic god
-		--if policyInfo.PolicyBranchType == "POLICY_BRANCH_PANTHEISM" then
-		--	MeetRandomPantheisticGod(iPlayer, "PantheisticPolicy", policyID)
-		--end
 
 		RefreshBeliefs(policyID)
 
@@ -314,6 +309,12 @@ function OnPlayerAdoptPolicyDelayedEffect()		--called by closing policy window a
 			end
 		end
 
+		--Maleficium level (for dll control of Renounce Maleficium)
+		if policyInfo.PolicyBranchType == "POLICY_BRANCH_ANTI_THEISM" then
+			local player = Players[iPlayer]
+			player:SetMaleficiumLevel(player:GetMaleficiumLevel() + 2)
+		end
+
 		--Specific Lua functions
 		if OnPolicyAdopted[policyID] then
 			OnPolicyAdopted[policyID](iPlayer)
@@ -341,24 +342,19 @@ GameEvents.FinisherPolicy.Add(X_OnFinisherPolicy)
 
 
 local function OnPlayerCanAdoptPolicyBranch(iPlayer, policyBranchTypeID)
-	Dprint("OnPlayerCanAdoptPolicyBranch ", iPlayer, policyBranchTypeID)
+	--print("OnPlayerCanAdoptPolicyBranch ", iPlayer, policyBranchTypeID)
 	if policyBranchTypeID == POLICY_BRANCH_THEISM then
 		local eaPlayer = gPlayers[iPlayer]
 		return not eaPlayer.bIsFallen and eaPlayer.race == EARACE_MAN
 	elseif policyBranchTypeID == POLICY_BRANCH_ANTI_THEISM then
 		local eaPlayer = gPlayers[iPlayer]
-		return eaPlayer.bIsFallen and eaPlayer.race == EARACE_MAN
+		return eaPlayer.bIsFallen and not eaPlayer.bRenouncedMaleficium
 	end
 	return true
 end
 local function X_OnPlayerCanAdoptPolicyBranch(iPlayer, policyBranchTypeID) return HandleError21(OnPlayerCanAdoptPolicyBranch, iPlayer, policyBranchTypeID) end
 GameEvents.PlayerCanAdoptPolicyBranch.Add(X_OnPlayerCanAdoptPolicyBranch)
 
---Disabled below because it doesn't allow for capture returns
---local function OnCanCaptureCivilian(iPlayer, iUnit)
---	return gg_slaveryPlayer[iPlayer]
---end
---GameEvents.CanCaptureCivilian.Add(function(iPlayer, iUnit) return HandleError21(OnCanCaptureCivilian, iPlayer, iUnit) end)
 
 --------------------------------------------------------------
 -- Policy-specific

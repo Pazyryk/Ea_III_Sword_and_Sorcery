@@ -4,7 +4,7 @@
 --------------------------------------------------------------
 
 local HOTFIX = "-"
-local DLL_COMMIT = "899eaa1"
+local DLL_COMMIT = "6e53fc0"
 local EA_MEDIA_PACK_MIN_VERSION = 5
 
 -------------------------------------------------------------------------------------------------------
@@ -340,6 +340,10 @@ GameEvents.PlayerDoTurn.Add(X_OnPlayerDoTurn)
 local function OnGameSave()
 	print("OnGameSave ")
 	TableSave(gT, "Ea")
+
+	--debug
+	TableLoad(gT, "Ea")
+
 end
 local function X_OnGameSave() return HandleError10(OnGameSave) end
 GameEvents.GameSave.Add(X_OnGameSave)

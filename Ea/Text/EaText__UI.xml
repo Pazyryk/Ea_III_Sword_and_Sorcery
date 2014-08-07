@@ -293,7 +293,10 @@
 		
 		<!-- Trade -->
 		<Row Tag="TXT_KEY_EA_DIPLO_RENOUNCE_MALEFICIUM">
-			<Text>Renounce Maleficium</Text>
+			<Text>RENOUNCE MALEFICIUM</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_DIPLO_RENOUNCE_MALEFICIUM_TT">
+			<Text>The civilization will give up Maleficium and all its enabled technologies plus all (Anti-)Theism policies. All spellcasters belonging to the civilization will desert it, going rogue for a time and possibly joining other Fallen civilizations.</Text>
 		</Row>
 		
 		<!-- Armageddon Popup -->

@@ -767,7 +767,8 @@ Controls.UsPocketOtherPlayer:SetVoid1( 1 );
 Controls.UsPocketStrategic:SetVoid1( 1 );
 Controls.UsPocketLuxury:SetVoid1( 1 );
 
-if (not Game.IsOption("GAMEOPTION_NO_LEAGUES")) then
+--Paz disbled: if (not Game.IsOption("GAMEOPTION_NO_LEAGUES")) then
+if false then
 	g_SubStacks[ tostring( Controls.UsPocketVote		) ] = Controls.UsPocketVoteStack;
 	g_SubStacks[ tostring( Controls.ThemPocketVote		) ] = Controls.ThemPocketVoteStack;
 	g_SubLabels[ tostring( Controls.UsPocketVote		) ] = Locale.ConvertTextKey( "TXT_KEY_TRADE_ITEM_VOTES" );
@@ -806,7 +807,8 @@ Controls.ThemPocketStrategic:RegisterCallback( Mouse.eLClick, SubStackHandler );
 Controls.UsPocketLuxury:RegisterCallback( Mouse.eLClick, SubStackHandler );
 Controls.ThemPocketLuxury:RegisterCallback( Mouse.eLClick, SubStackHandler );
 
-if (not Game.IsOption("GAMEOPTION_NO_LEAGUES")) then
+--Paz disabled: if (not Game.IsOption("GAMEOPTION_NO_LEAGUES")) then
+if false then
 	function VoteStackHandler( bIsUs, none, control )
 		RefreshPocketVotes(bIsUs);
 		SubStackHandler( bIsUs, none, control );
@@ -940,8 +942,8 @@ function ResetDisplay()
     Controls.ThemPocketOpenBorders:SetHide( false );
     Controls.UsPocketDefensivePact:SetHide( false );
     Controls.ThemPocketDefensivePact:SetHide( false );
-    Controls.UsPocketResearchAgreement:SetHide( false );
-    Controls.ThemPocketResearchAgreement:SetHide( false );
+    Controls.UsPocketResearchAgreement:SetHide( true );		--Paz: disabled by setting true
+    Controls.ThemPocketResearchAgreement:SetHide( true );	--Paz: disabled by setting true
 	--Paz add
     Controls.UsPocketRenounceMaleficium:SetHide( not g_Deal:IsPossibleToTradeItem(g_iUs, g_iThem, TradeableItems.TRADE_ITEM_RENOUCE_MALEFICIUM, -1) )
     Controls.ThemPocketRenounceMaleficium:SetHide( not g_Deal:IsPossibleToTradeItem(g_iThem, g_iUs, TradeableItems.TRADE_ITEM_RENOUCE_MALEFICIUM, -1) )
@@ -1648,7 +1650,8 @@ function ResetDisplay()
     ---------------------------------------------------------------------------------- 
     -- Votes
     ----------------------------------------------------------------------------------
-    if (not Game.IsOption("GAMEOPTION_NO_LEAGUES")) then
+    --Paz disabled: if (not Game.IsOption("GAMEOPTION_NO_LEAGUES")) then
+	if false then
 		Controls.UsPocketVote:SetHide(false);
 		Controls.ThemPocketVote:SetHide(false);
 		
@@ -1712,12 +1715,12 @@ function ResetDisplay()
 		Controls.UsPocketAllowEmbassy:SetHide(false);
 		Controls.UsPocketOpenBorders:SetHide(false);
 		Controls.UsPocketDefensivePact:SetHide(false);
-		Controls.UsPocketResearchAgreement:SetHide(false);
+		Controls.UsPocketResearchAgreement:SetHide(true);		--Paz: disabled by setting true
 		Controls.UsPocketOtherPlayer:SetHide(false);
 		Controls.ThemPocketAllowEmbassy:SetHide(false);
 		Controls.ThemPocketOpenBorders:SetHide(false);
 		Controls.ThemPocketDefensivePact:SetHide(false);
-		Controls.ThemPocketResearchAgreement:SetHide(false);
+		Controls.ThemPocketResearchAgreement:SetHide(true);		--Paz: disabled by setting true
 		Controls.ThemPocketOtherPlayer:SetHide(false);
 	end
 

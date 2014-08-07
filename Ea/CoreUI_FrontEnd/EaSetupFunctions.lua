@@ -142,7 +142,7 @@ function SetEaCivs()
 	local EaSetupDB = Modding.OpenUserData("EaSetupData", 1)
 
 	--this will give us more Man than Sidhe but with some slots left random
-	local randCivAddOrder = {0, 1, -1,  0, -1,  0, 1,  0, -1,  0, 1,  0, -1,  0, 1,  0, -1,  0, 1,  0, -1,  0, 1,  0, -1,  0, 1} -- 0 Man; 1 Sidhe; -1 Random
+	local randCivAddOrder = {-1, 0, 1, -1,  0, -1,  0, 1,  0, -1,  0, 1,  0, -1,  0, 1,  0, -1,  0, 1,  0, -1,  0, 1,  0, -1,  0, 1} -- 0 Man; 1 Sidhe; -1 Random
 
 	local randCivNum = 0
 
@@ -155,10 +155,15 @@ function SetEaCivs()
 		if PreGame.GetSlotStatus(iPlayer) == SlotStatus.SS_COMPUTER then
 			
 			if PreGame.GetCivilization(iPlayer) == -1 then
-				randCivNum = randCivNum + 1
-				local civID = randCivAddOrder[randCivNum]
-				if civID == -1 then
-					civID = (math.random(3) == 1) and 1 or 0
+				local civID
+				if iPlayer == 0 then
+					civID = math.random(2) - 1		--50/50 if player chooses random for themselves
+				else
+					randCivNum = randCivNum + 1
+					civID = randCivAddOrder[randCivNum]
+					if civID == -1 then
+						civID = math.random(3) == 1 and 1 or 0
+					end
 				end
 				print("Mod picking civ for random slot: ", iPlayer, civID)
 				PreGame.SetCivilization(iPlayer, civID)

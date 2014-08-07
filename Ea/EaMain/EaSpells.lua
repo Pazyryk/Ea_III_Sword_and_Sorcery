@@ -730,7 +730,7 @@ function TestEaSpellTarget(eaActionID, testX, testY, bAITargetTest)
 			progress = g_eaCity.civProgress[g_iPlayer] and g_eaCity.civProgress[g_iPlayer][eaActionID] or 0
 		elseif progressHolder == "Plot" then
 			local buildID = GameInfoTypes[g_eaAction.BuildType]
-			progress = g_plot:GetBuildProgress(buildID)
+			progress = g_plot:GetBuildProgress(buildID) or 0
 		end
 
 		turnsToComplete = turnsToComplete - progress

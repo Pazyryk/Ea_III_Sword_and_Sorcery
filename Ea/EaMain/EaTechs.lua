@@ -537,12 +537,17 @@ LuaEvents.EaTechsGetTechCostHelp.Add(function(iPlayer, techID, bKnown) return Ha
 local OnTeamTechLearned = {}
 local OnMajorPlayerTechLearned = {}
 
-local function OnTeamTechResearched(iTeam, techID, _)
-	print("Running OnTeamTechResearched ", iTeam, techID, _)
+local function OnTeamTechResearched(iTeam, techID, iLearned)
+	print("Running OnTeamTechResearched ", iTeam, techID, iLearned)
+
+	if iLearned ~= 1 then return end		-- -1 for removed tech
 
 	if iTeam == BARB_PLAYER_INDEX then
 		UpdateBarbTech(techID)
 	else
+		local tier = techTier[techID]
+		local maleficiumLevel = gg_eaTechClass[techID] == "ArcaneEvil" and tier or 0
+
 		if OnTeamTechLearned[techID] then
 			OnTeamTechLearned[techID](iTeam)
 		end
@@ -550,12 +555,15 @@ local function OnTeamTechResearched(iTeam, techID, _)
 			for iPlayer, eaPlayer in pairs(fullCivs) do
 				local player = Players[iPlayer]
 				if player:GetTeam() == iTeam then
+					if maleficiumLevel ~= 0 then
+						player:SetMaleficiumLevel(player:GetMaleficiumLevel() + maleficiumLevel)
+					end
 					OnMajorPlayerTechLearned[techID](iPlayer)
 				end
 			end
 		end
 
-		--count non-utility techs for Research Maint and scoring
+		--remember non-utility techs for quick KM calculation
 		if techTier[techID] then		--must be non-Utility
 			--faster to cycle through players here then all techs every player turn
 			for iPlayer, eaPlayer in pairs(fullCivs) do
@@ -585,7 +593,9 @@ OnTeamTechLearned[GameInfoTypes.TECH_MATHEMATICS] = OnTeamTechLearned[GameInfoTy
 OnTeamTechLearned[GameInfoTypes.TECH_ARCHERY] = OnTeamTechLearned[GameInfoTypes.TECH_SAILING]
 
 OnTeamTechLearned[GameInfoTypes.TECH_REANIMATION] = function(iTeam)
-	gWorld.evilTechControl = "VaReady"
+	if gWorld.evilTechControl == "NewGame" then
+		gWorld.evilTechControl = "VaReady"
+	end
 end
 OnTeamTechLearned[GameInfoTypes.TECH_SORCERY] = OnTeamTechLearned[GameInfoTypes.TECH_REANIMATION]
 
@@ -741,6 +751,7 @@ local function OnPlayerCanEverResearch(iPlayer, techID)
 
 	--eaTechClass blocks
 	if gg_eaTechClass[techID] == "ArcaneEvil" then
+		if eaPlayer.bRenouncedMaleficium then return false end
 		if 3 < techTier[techID] and gWorld.evilTechControl ~= "VaMade" then return false end
 	elseif gg_eaTechClass[techID] == "Devine" then
 		if  eaPlayer.race ~= EARACE_MAN or eaPlayer.bIsFallen then return false end

@@ -71,17 +71,17 @@ end
 
 function PopulateProtector()
 	print("PopulateProtector")
-	local score, bVictory, civsCorrected, sorcerersDestroyed, artifactsDestroyed = GetProtectorVictoryData(g_iActivePlayer)
-	print(score, bVictory, civsCorrected, sorcerersDestroyed, artifactsDestroyed)
+	local score, bVictory, protectorProphsRituals, civsCorrected, fallenFollowersDestr = GetProtectorVictoryData(g_iActivePlayer)
+	print(score, bVictory, protectorProphsRituals, civsCorrected, fallenFollowersDestr)
 
 	if g_bestModScore < score then
 		g_bestModScore = score
 		g_bestScoreType = GameInfoTypes.VICTORY_PROTECTOR
 	end
 
-	Controls.ProtectorA:SetText(Format("%d", civsCorrected))
-	Controls.ProtectorB:SetText(Format("%d", sorcerersDestroyed))
-	Controls.ProtectorC:SetText(Format("%d", artifactsDestroyed))
+	Controls.ProtectorA:SetText(Format("%d", protectorProphsRituals))
+	Controls.ProtectorB:SetText(Format("%d", civsCorrected))
+	Controls.ProtectorC:SetText(Format("%d", fallenFollowersDestr))
 	Controls.ProtectorScore:SetText(Format("%d", score))
 
 	g_scores[g_iActivePlayer] = score

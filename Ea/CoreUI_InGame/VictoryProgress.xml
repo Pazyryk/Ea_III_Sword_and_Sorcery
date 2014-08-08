@@ -120,9 +120,9 @@
 			<Box Size="462,144" Color="255,255,255,0">
 				<Label Offset="5,5" Font="EaTwCnMT24" String="TXT_KEY_EA_VICTORY_PROTECTOR"/>
 				<Stack Anchor="L,T" Size="0,0" Offset="5,39" Padding="12" StackGrowth="Bottom">
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="L,T" String="Prophs./Rituals:"/>
 					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="L,T" String="Civs Corrected:"/>
-					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="L,T" String="Sorcerers Destr.:"/>
-					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="L,T" String="Artifacts Destr.:"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="L,T" String="Followers Destr.:"/>
 					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="L,T" String="Your Score:"/>
 				</Stack>
 				<Stack Anchor="L,T" Size="0,0" Offset="150,39" Padding="12" StackGrowth="Bottom">

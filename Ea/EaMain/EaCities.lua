@@ -647,7 +647,10 @@ function CityPerCivTurn(iPlayer)		--Full civ only		TO DO: must be real civs so t
 		if eaCity.iOwner == iPlayer then
 			local plot = GetPlotByIndex(iPlot)
 			local city = plot:GetPlotCity()
-			if not city then	--was raized to ground, delete from gCities and gg_playerCityPlotIndexes
+			if not city then	--was raized to ground, delete from gCities and gg_playerCityPlotIndexes (TO DO: Need a safer way to detect razed to ground for case where another city is settled here)
+				if eaCity.holyCityFor and eaCity.holyCityFor[RELIGION_ANRA] then
+					eaPlayer.fallenFollowersDestr = (eaPlayer.fallenFollowersDestr or 0) + 50 --last owner gets credit for razing
+				end
 				gCities[iPlot] = nil
 				for iLoopCity, iLoopPlot in pairs(gg_playerCityPlotIndexes[iPlayer]) do
 					local loopCity = player:GetCityByID(iLoopCity)
@@ -845,13 +848,12 @@ function CityPerCivTurn(iPlayer)		--Full civ only		TO DO: must be real civs so t
 				end
 
 				--Race hatreds grow based on city razing
-				if city:IsRazing() then
-					if cityRaceID ~= eaPlayer.race then
+				if cityRaceID ~= eaPlayer.race and city:IsRazing() then
+					if not bAnraFounded or (city:GetReligiousMajority() ~= RELIGION_ANRA and not city:IsHolyCityForReligion(RELIGION_ANRA)) then
 						local addHate = RACE_HATRED_FOR_RAZED_POP
 						gRaceDiploMatrix[cityRaceID][eaPlayer.race] = gRaceDiploMatrix[cityRaceID][eaPlayer.race] + addHate
 					end
 				end
-				----gRaceDiploMatrix[observerRaceID][subjectRaceID]  RACE_HATRED_FOR_RAZED_POP
 
 				--Full civ only
 				if bFullCiv then
@@ -1153,6 +1155,7 @@ local function OnCityCaptureComplete(iPlayer, bCapital, x, y, iNewOwner)
 end
 local function X_OnCityCaptureComplete(iPlayer, bCapital, x, y, iNewOwner) return HandleError51(OnCityCaptureComplete, iPlayer, bCapital, x, y, iNewOwner) end
 GameEvents.CityCaptureComplete.Add(X_OnCityCaptureComplete)
+
 
 --TO DO: city raized and salted
 

@@ -375,12 +375,14 @@ local function FinishEaAction(eaActionID)		--only called from DoEaAction so file
 					--need percentage (round up or down???)
 					local convertPercent = floor(1 + 100 * g_tablePointer[i] / g_city:GetNumFollowers(i))
 					g_city:ConvertPercentFollowers(cultID, i, convertPercent)
+					if i == RELIGION_ANRA then
+						g_eaPlayer.fallenFollowersDestr = (g_eaPlayer.fallenFollowersDestr or 0) + (2 * g_tablePointer[i])
+					end
 				end
 			end
 		else
 			FoundReligion(g_iPlayer, g_iCity, cultID)
 			g_city:ConvertPercentFollowers(cultID, RELIGION_THE_WEAVE_OF_EA, 100)
-
 		end
 		UpdateCivReligion(g_iOwner)
 	end
@@ -2866,6 +2868,7 @@ end
 Do[GameInfoTypes.EA_ACTION_PROPHECY_VA] = function()	--All civs with Maleficium will fall
 	print("Prophecy of Va")
 	gWorld.evilTechControl = "VaMade"
+	g_eaPlayer.protectorProphsRituals = (g_eaPlayer.protectorProphsRituals or 0) + 25
 	if gReligions[RELIGION_AZZANDARAYASNA] and not gReligions[RELIGION_ANRA] then	
 		--Azz is founded but Anra is not; maybe Anra will be founded now
 		local anraHolyCity
@@ -3955,6 +3958,9 @@ Finish[GameInfoTypes.EA_ACTION_PROSELYTIZE] = function()
 			--need percentage (round up or down???)
 			local convertPercent = floor(1 + 100 * g_tablePointer[i] / g_city:GetNumFollowers(i))
 			g_city:ConvertPercentFollowers(RELIGION_AZZANDARAYASNA, i, convertPercent)
+			if i == RELIGION_ANRA then
+				g_eaPlayer.fallenFollowersDestr = (g_eaPlayer.fallenFollowersDestr or 0) + (2 * g_tablePointer[i])
+			end
 		end
 	end
 	UpdateCivReligion(g_iOwner)
@@ -4252,6 +4258,7 @@ end
 
 Finish[GameInfoTypes.EA_ACTION_RITUAL_SEAL_AHRIMANS_VAULT] = function()
 	gWorld.bAhrimansVaultSealed = true					--TO DO: This will block all spellcasting by the Fallen (and a few non-spell actions)
+	g_eaPlayer.protectorProphsRituals = (g_eaPlayer.protectorProphsRituals or 0) + 50
 	UseManaOrDivineFavor(g_iPlayer, nil, g_int1, false)
 	return true
 end

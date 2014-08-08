@@ -192,10 +192,14 @@ for unitInfo in GameInfo.Units() do
 	end
 end
 
+gg_techTier = {}
 gg_eaTechClass = {}
 for techInfo in GameInfo.Technologies() do
-	if techInfo.EaTechClass then
-		gg_eaTechClass[techInfo.ID] = techInfo.EaTechClass
+	if not techInfo.Utility then
+		gg_techTier[techInfo.ID] = techInfo.GridX + 1
+		if techInfo.EaTechClass then
+			gg_eaTechClass[techInfo.ID] = techInfo.EaTechClass
+		end
 	end
 end
 

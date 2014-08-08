@@ -13,17 +13,17 @@ local floor = math.floor
 function GetProtectorVictoryData(iPlayer)
 	local eaPlayer = gT.gPlayers[iPlayer]
 	
+	local protectorProphsRituals = eaPlayer.protectorProphsRituals or 0
 	local civsCorrected = eaPlayer.civsCorrected or 0
-	local sorcerersDestroyed = eaPlayer.sorcerersDestroyed or 0
-	local artifactsDestroyed = eaPlayer.artifactsDestroyed or 0
+	local fallenFollowersDestr = eaPlayer.fallenFollowersDestr or 0
 
 	--Generate score
-	local score = civsCorrected + sorcerersDestroyed + artifactsDestroyed		--temp just to get something here
+	local score = protectorProphsRituals + civsCorrected + fallenFollowersDestr		--temp just to get something here
 
 	--Test victory conditions
 	local bVictory = score > 0 and gT.gWorld.AllEvilRemoved
 
-	return score, bVictory, civsCorrected, sorcerersDestroyed, artifactsDestroyed
+	return score, bVictory, protectorProphsRituals, civsCorrected, fallenFollowersDestr
 end
 
 function GetDestroyerVictoryData(iPlayer)

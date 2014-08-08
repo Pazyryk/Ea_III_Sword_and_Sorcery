@@ -56,6 +56,7 @@ local gg_campRange =			gg_campRange
 local gg_playerArcaneMod =		gg_playerArcaneMod
 local gg_regularCombatType =	gg_regularCombatType
 local gg_unitTier =				gg_unitTier
+local gg_techTier =				gg_techTier
 local gg_eaTechClass =			gg_eaTechClass
 
 --localized functions
@@ -77,12 +78,6 @@ local g_playerTechTierModifiers = {}	--index by iPlayer, tier
 --------------------------------------------------------------
 -- Cached Tables
 --------------------------------------------------------------
-local techTier = {}
-for techInfo in GameInfo.Technologies() do
-	if not techInfo.Utility then
-		techTier[techInfo.ID] = techInfo.GridX + 1
-	end
-end
 
 local tomeTechs = {}		--index by artifactID, techIC
 for row in GameInfo.EaArtifacts_TomeTechs() do
@@ -159,7 +154,7 @@ local function ResetTechCosts(iPlayer)		--stores both km and research cost effec
 		techTierModifiers[3] = -percentReduction										--reduced tech cost for tier 3
 		local kmPerTechReduction = kmPerTech * percentReduction / 100 
 		for techID in pairs(eaPlayer.techs) do
-			if techTier[techID] == 2 then												--reduced km for tier 2
+			if gg_techTier[techID] == 2 then												--reduced km for tier 2
 				kmByTech[techID] = kmByTech[techID] - kmPerTechReduction
 			end
 		end
@@ -169,7 +164,7 @@ local function ResetTechCosts(iPlayer)		--stores both km and research cost effec
 		techTierModifiers[4] = -percentReduction										--reduced tech cost for tier 4
 		local kmPerTechReduction = kmPerTech * percentReduction / 100 
 		for techID in pairs(eaPlayer.techs) do
-			if techTier[techID] == 3 then												--reduced km for tier 3
+			if gg_techTier[techID] == 3 then												--reduced km for tier 3
 				kmByTech[techID] = kmByTech[techID] - kmPerTechReduction
 			end
 		end
@@ -179,7 +174,7 @@ local function ResetTechCosts(iPlayer)		--stores both km and research cost effec
 		techTierModifiers[5] = -percentReduction										--reduced tech cost for tier 5
 		local kmPerTechReduction = kmPerTech * percentReduction / 100 
 		for techID in pairs(eaPlayer.techs) do
-			if techTier[techID] == 4 then												--reduced km for tier 4
+			if gg_techTier[techID] == 4 then												--reduced km for tier 4
 				kmByTech[techID] = kmByTech[techID] - kmPerTechReduction
 			end
 		end
@@ -189,7 +184,7 @@ local function ResetTechCosts(iPlayer)		--stores both km and research cost effec
 		techTierModifiers[6] = -percentReduction										--reduced tech cost for tier 6
 		local kmPerTechReduction = kmPerTech * percentReduction / 100 
 		for techID in pairs(eaPlayer.techs) do
-			if techTier[techID] == 5 then												--reduced km for tier 5
+			if gg_techTier[techID] == 5 then												--reduced km for tier 5
 				kmByTech[techID] = kmByTech[techID] - kmPerTechReduction
 			end
 		end
@@ -199,7 +194,7 @@ local function ResetTechCosts(iPlayer)		--stores both km and research cost effec
 		techTierModifiers[7] = -percentReduction										--reduced tech cost for tier 7
 		local kmPerTechReduction = kmPerTech * percentReduction / 100 
 		for techID in pairs(eaPlayer.techs) do
-			if techTier[techID] == 6 then												--reduced km for tier 6
+			if gg_techTier[techID] == 6 then												--reduced km for tier 6
 				kmByTech[techID] = kmByTech[techID] - kmPerTechReduction
 			end
 		end
@@ -265,8 +260,8 @@ local function OnPlayerTechCostMod(iPlayer, techID)		--Ea API
 		mod = mod - gEpics[EA_EPIC_VAFTHRUTHNISMAL].mod			--non-arcane techs only
 	end
 
-	if g_playerTechTierModifiers[iPlayer][techTier[techID]] then
-		mod = mod + g_playerTechTierModifiers[iPlayer][techTier[techID]]
+	if g_playerTechTierModifiers[iPlayer][gg_techTier[techID]] then
+		mod = mod + g_playerTechTierModifiers[iPlayer][gg_techTier[techID]]
 	end
 
 	if mod < -50 then
@@ -423,7 +418,7 @@ local NAME_TOME_OF_TOMES = Locale.Lookup(GameInfo.EaArtifacts[EA_ARTIFACT_TOME_O
 
 local function GetTechCostHelp(iPlayer, techID, bKnown)
 	--print("GetTechCostHelp ", iPlayer, techID, bKnown, g_kmByTech[iPlayer][techID])
-	local tier = techTier[techID]
+	local tier = gg_techTier[techID]
 	if not tier then return end		--Utility tech so it won't display anyway
 
 	local str = ""
@@ -541,7 +536,7 @@ local function OnTeamTechResearched(iTeam, techID, iLearned)
 	print("Running OnTeamTechResearched ", iTeam, techID, iLearned)
 
 	if iLearned ~= 1 then return end		-- -1 for removed tech
-	local tier = techTier[techID]
+	local tier = gg_techTier[techID]
 	if not tier then return end				-- well exit for any Utility tech
 
 	if iTeam == BARB_PLAYER_INDEX then
@@ -771,7 +766,7 @@ local function OnPlayerCanEverResearch(iPlayer, techID)
 	--eaTechClass blocks
 	if gg_eaTechClass[techID] == "ArcaneEvil" then
 		if eaPlayer.bRenouncedMaleficium then return false end
-		if 3 < techTier[techID] and gWorld.evilTechControl ~= "VaMade" then return false end
+		if 3 < gg_techTier[techID] and gWorld.evilTechControl ~= "VaMade" then return false end
 	elseif gg_eaTechClass[techID] == "Devine" then
 		if  eaPlayer.race ~= EARACE_MAN or eaPlayer.bIsFallen then return false end
 	end

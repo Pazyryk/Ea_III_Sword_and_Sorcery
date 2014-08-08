@@ -46,7 +46,7 @@ local realCivs =	MapModData.realCivs
 local fullCivs =	MapModData.fullCivs
 local gPlayers =	gPlayers
 local gReligions =	gReligions
---local gg_religionFollowersByEaCityIndex = gg_religionFollowersByEaCityIndex
+local gg_techTier =	gg_techTier
 
 --functions
 local Rand = Map.Rand
@@ -305,6 +305,7 @@ function FoundReligion(iPlayer, iCity, religionID)	--call should make sure that 
 	print("FoundReligion ", iPlayer, iCity, religionID)
 	local player = Players[iPlayer]
 	local city = player:GetCityByID(iCity)
+	local eaCity = gCities[city:Plot():GetPlotIndex()]
 	local eaPlayer = gPlayers[iPlayer]
 	local religion = GameInfo.Religions[religionID]
 	gReligions[religionID] = {founder = iPlayer}		--use table existance to know religion is founded (no game function for this)
@@ -312,7 +313,18 @@ function FoundReligion(iPlayer, iCity, religionID)	--call should make sure that 
 	local belief2ID = religion.EaInitialBelief2 and GameInfoTypes[religion.EaInitialBelief2] or -1
 	local belief3ID = religion.EaInitialBelief3 and GameInfoTypes[religion.EaInitialBelief3] or -1
 
+	--get credit for converting Anra followers
+	local anraFollowersBefore = gReligions[RELIGION_ANRA] and city:GetNumFollowers(RELIGION_ANRA) or 0
+
 	Game.FoundReligion(iPlayer, religionID, nil, beliefID, belief2ID, belief3ID, -1, city)
+	if not city:IsHolyCityForReligion(religionID) then
+		error("city isn't Holy City after religion founding")
+	end
+
+	if eaCity then		--doesn't exist for initail Fay founding of the Weave
+		eaCity.holyCityFor = eaCity.holyCityFor or {}
+		eaCity.holyCityFor[religionID] = true
+	end
 
 	while city:GetReligiousMajority() ~= religionID do	--make it so
 		local convertID, followers
@@ -323,6 +335,11 @@ function FoundReligion(iPlayer, iCity, religionID)	--call should make sure that 
 		print("Converting random religions until founded is majority; converting religionID = ", convertID)
 		local convertPercent = floor(1 + 100 / followers)
 		city:ConvertPercentFollowers(religionID, convertID, convertPercent)
+	end
+
+	local anraFollowersAfter = gReligions[RELIGION_ANRA] and city:GetNumFollowers(RELIGION_ANRA) or 0
+	if anraFollowersAfter < anraFollowersBefore then
+		eaPlayer.fallenFollowersDestr = (eaPlayer.fallenFollowersDestr or 0) + 2 * (anraFollowersAfter - anraFollowersBefore)
 	end
 
 	if religionID == RELIGION_ANRA and not eaPlayer.bIsFallen then
@@ -582,6 +599,9 @@ local function OnRenounceMaleficium(iPlayer1, iPlayer2)
 	print(" -player " .. iPlayer .. " renounces with GetMaleficiumLevel = ", player:GetMaleficiumLevel())
 	local team = Teams[player:GetTeam()]
 	local eaPlayer = gPlayers[iPlayer]
+	local eaOtherPlayer = gPlayers[iOtherPlayer]
+	eaOtherPlayer.civsCorrected = eaOtherPlayer.civsCorrected or 0
+	eaOtherPlayer.fallenFollowersDestr = eaOtherPlayer.fallenFollowersDestr or 0
 
 	--mark as renounced to restrict techs/policies
 	eaPlayer.bRenouncedMaleficium = true
@@ -596,6 +616,7 @@ local function OnRenounceMaleficium(iPlayer1, iPlayer2)
 				print(" -removing tech ", GameInfo.Technologies[techID].Type)
 				eaPlayer.techs[techID] = nil
 				team:SetHasTech(techID, false)
+				eaOtherPlayer.civsCorrected = eaOtherPlayer.civsCorrected + (5 * gg_techTier[techID])
 			end
 		end
 	end
@@ -608,21 +629,27 @@ local function OnRenounceMaleficium(iPlayer1, iPlayer2)
 				print(" -removing policy ", GameInfo.Policies[policyInfo.ID].Type)
 				countPolicies = countPolicies + 1
 				player:SetHasPolicy(policyInfo.ID, false)
+				eaOtherPlayer.civsCorrected = eaOtherPlayer.civsCorrected + 10
 			end
 		end
 	end
 	if player:IsPolicyBranchUnlocked(GameInfoTypes.POLICY_BRANCH_ANTI_THEISM) then
 		print(" -removing Anti-Theism opener/finisher policies and locking the branch")
 		countPolicies = countPolicies + 1
-		player:SetHasPolicy(GameInfoTypes.POLICY_ANTI_THEISM_FINISHER, false)
+		if player:HasPolicy(GameInfoTypes.POLICY_ANTI_THEISM_FINISHER) then	--don't count for CL reduction
+			player:SetHasPolicy(GameInfoTypes.POLICY_ANTI_THEISM_FINISHER, false)
+			eaOtherPlayer.civsCorrected = eaOtherPlayer.civsCorrected + 10
+		end
 		player:SetHasPolicy(GameInfoTypes.POLICY_ANTI_THEISM, false)
 		player:SetPolicyBranchUnlocked(GameInfoTypes.POLICY_BRANCH_ANTI_THEISM, false)
+		eaOtherPlayer.civsCorrected = eaOtherPlayer.civsCorrected + 10
 	end
 	eaPlayer.culturalLevel = eaPlayer.culturalLevel - countPolicies
 
 	--spellcasters flee even if civ not fallen (Prophecy of Va may not be made yet, but we don't want spellcasters reanimating dead)
 	for iPerson, eaPerson in pairs(gPeople) do
 		if eaPerson.iPlayer == iPlayer and eaPerson.spells then
+			eaOtherPlayer.fallenFollowersDestr = eaOtherPlayer.fallenFollowersDestr + (2 * eaPerson.level)
 			KillPerson(iPlayer, iPerson, unit, -1, "Renounce Maleficium")	--individual death notification suppressed
 		end
 	end

@@ -27,12 +27,14 @@ local POLICY_BRANCH_MILITARISM =	GameInfoTypes.POLICY_BRANCH_MILITARISM
 local POLICY_BRANCH_COMMERCE =		GameInfoTypes.POLICY_BRANCH_COMMERCE
 local POLICY_BRANCH_TRADITION =		GameInfoTypes.POLICY_BRANCH_TRADITION
 
-local POLICY_THAUMATOCRACY =			GameInfoTypes.POLICY_THAUMATOCRACY
+local POLICY_THAUMATOCRACY =		GameInfoTypes.POLICY_THAUMATOCRACY
 local POLICY_SLAVE_RAIDERS =		GameInfoTypes.POLICY_SLAVE_RAIDERS
 local POLICY_SLAVE_ARMIES =			GameInfoTypes.POLICY_SLAVE_ARMIES
 
 local RELIGION_AZZANDARAYASNA =		GameInfoTypes.RELIGION_AZZANDARAYASNA
 local RELIGION_THE_WEAVE_OF_EA =	GameInfoTypes.RELIGION_THE_WEAVE_OF_EA
+
+local TECH_MALEFICIUM =				GameInfoTypes.TECH_MALEFICIUM
 
 
 --localized game and global tables
@@ -50,6 +52,7 @@ local gg_naturalWonders =			gg_naturalWonders
 local floor = math.floor
 
 --localized global functions
+local HandleError10 =	HandleError10
 local HandleError21 =	HandleError21
 
 --file functions
@@ -174,11 +177,21 @@ function OnPlayerAdoptPolicyBranch(iPlayer, policyBranchTypeID)					--called by 
 	--change everything to delayed effect (as for policies below) and function calls
 
 	if policyBranchTypeID == POLICY_BRANCH_THEISM then
+		local player = Players[iPlayer]
 		local eaPlayer = gPlayers[iPlayer]
 		if eaPlayer.religionID == -1 or eaPlayer.religionID == RELIGION_AZZANDARAYASNA then
 			SetDivineFavorUse(iPlayer, true)		--provisionally allowed for non-relgious civ; will be reversed if any other religion becomes dominent
 		end
-
+		local maleficiumLevel = player:GetMaleficiumLevel()
+		maleficiumLevel = maleficiumLevel > 0 and 0 or maleficiumLevel
+		maleficiumLevel = maleficiumLevel - 2
+		player:SetMaleficiumLevel(maleficiumLevel)
+	elseif policyBranchTypeID == POLICY_BRANCH_ANTI_THEISM then
+		local player = Players[iPlayer]
+		local maleficiumLevel = player:GetMaleficiumLevel()
+		maleficiumLevel = maleficiumLevel < 0 and 0 or maleficiumLevel
+		maleficiumLevel = maleficiumLevel + 2
+		player:SetMaleficiumLevel(maleficiumLevel)	--Maleficium level (for dll control of Renounce Maleficium)
 	elseif policyBranchTypeID == POLICY_BRANCH_PANTHEISM then
 		local player = Players[iPlayer]
 		local iTeam = player:GetTeam()
@@ -272,7 +285,7 @@ local function X_OnPlayerAdoptPolicy(iPlayer, policyID) return HandleError21(OnP
 GameEvents.PlayerAdoptPolicy.Add(X_OnPlayerAdoptPolicy)
 
 function OnPlayerAdoptPolicyDelayedEffect()		--called by closing policy window and end turn (just in case) for human player
-	Dprint("OnPlayerAdoptPolicyDelayedEffect")
+	--print("OnPlayerAdoptPolicyDelayedEffect")
 	--effects delayed until after trait test; for human player until policy window closed (cached in case >1 policy gained before window closed)
 	local i = 1
 	while i <= policyDelayedEffectNum do
@@ -309,10 +322,19 @@ function OnPlayerAdoptPolicyDelayedEffect()		--called by closing policy window a
 			end
 		end
 
-		--Maleficium level (for dll control of Renounce Maleficium)
-		if policyInfo.PolicyBranchType == "POLICY_BRANCH_ANTI_THEISM" then
+		--Policy in branch cummulative effects
+		if policyInfo.PolicyBranchType == "POLICY_BRANCH_THEISM" then
 			local player = Players[iPlayer]
-			player:SetMaleficiumLevel(player:GetMaleficiumLevel() + 2)
+			local maleficiumLevel = player:GetMaleficiumLevel()
+			maleficiumLevel = maleficiumLevel > 0 and 0 or maleficiumLevel
+			maleficiumLevel = maleficiumLevel - 2
+			player:SetMaleficiumLevel(maleficiumLevel)
+		elseif policyInfo.PolicyBranchType == "POLICY_BRANCH_ANTI_THEISM" then
+			local player = Players[iPlayer]
+			local maleficiumLevel = player:GetMaleficiumLevel()
+			maleficiumLevel = maleficiumLevel < 0 and 0 or maleficiumLevel
+			maleficiumLevel = maleficiumLevel + 2
+			player:SetMaleficiumLevel(maleficiumLevel)	--Maleficium level (for dll control of Renounce Maleficium)
 		end
 
 		--Specific Lua functions
@@ -325,10 +347,11 @@ function OnPlayerAdoptPolicyDelayedEffect()		--called by closing policy window a
 	policyDelayedEffectNum = 0	
 
 end
-LuaEvents.EaPoliciesOnPlayerAdoptPolicyDelayedEffect.Add(OnPlayerAdoptPolicyDelayedEffect)
+local function X_OnPlayerAdoptPolicyDelayedEffect() return HandleError10(OnPlayerAdoptPolicyDelayedEffect) end
+LuaEvents.EaPoliciesOnPlayerAdoptPolicyDelayedEffect.Add(X_OnPlayerAdoptPolicyDelayedEffect)
 
 
-local function OnFinisherPolicy(iPlayer, policyID)
+function OnFinisherPolicy(iPlayer, policyID)
 	print("OnFinisherPolicy ", iPlayer, policyID)
 	if policyID == GameInfoTypes.POLICY_PANTHEISM_FINISHER then
 		local eaPlayer = gPlayers[iPlayer]
@@ -337,6 +360,7 @@ local function OnFinisherPolicy(iPlayer, policyID)
 		end
 	end
 end
+local OnFinisherPolicy = OnFinisherPolicy
 local function X_OnFinisherPolicy(iPlayer, policyID) return HandleError21(OnFinisherPolicy, iPlayer, policyID) end
 GameEvents.FinisherPolicy.Add(X_OnFinisherPolicy)
 
@@ -345,7 +369,7 @@ local function OnPlayerCanAdoptPolicyBranch(iPlayer, policyBranchTypeID)
 	--print("OnPlayerCanAdoptPolicyBranch ", iPlayer, policyBranchTypeID)
 	if policyBranchTypeID == POLICY_BRANCH_THEISM then
 		local eaPlayer = gPlayers[iPlayer]
-		return not eaPlayer.bIsFallen and eaPlayer.race == EARACE_MAN
+		return not eaPlayer.bIsFallen and not eaPlayer.techs[TECH_MALEFICIUM] and eaPlayer.race == EARACE_MAN
 	elseif policyBranchTypeID == POLICY_BRANCH_ANTI_THEISM then
 		local eaPlayer = gPlayers[iPlayer]
 		return eaPlayer.bIsFallen and not eaPlayer.bRenouncedMaleficium

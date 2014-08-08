@@ -541,12 +541,25 @@ local function OnTeamTechResearched(iTeam, techID, iLearned)
 	print("Running OnTeamTechResearched ", iTeam, techID, iLearned)
 
 	if iLearned ~= 1 then return end		-- -1 for removed tech
+	local tier = techTier[techID]
+	if not tier then return end				-- well exit for any Utility tech
 
 	if iTeam == BARB_PLAYER_INDEX then
 		UpdateBarbTech(techID)
 	else
-		local tier = techTier[techID]
-		local maleficiumLevel = gg_eaTechClass[techID] == "ArcaneEvil" and tier or 0
+		local maleficiumLevelChange = 0
+		if gg_eaTechClass[techID] == "ArcaneEvil" then
+			maleficiumLevelChange = tier
+		elseif gg_eaTechClass[techID] == "Divine" then
+			maleficiumLevelChange = -tier
+		elseif gg_eaTechClass[techID] == "Arcane" then			--negative change won't apply if player has positive value already
+			maleficiumLevelChange = tier > 3 and -floor((tier - 2) / 2) or 0
+		else
+			maleficiumLevelChange = tier > 4 and -floor((tier - 2) / 2) or 0
+		end
+
+
+		local maleficiumLevelChange = gg_eaTechClass[techID] == "ArcaneEvil" and tier or 0
 
 		if OnTeamTechLearned[techID] then
 			OnTeamTechLearned[techID](iTeam)
@@ -555,8 +568,17 @@ local function OnTeamTechResearched(iTeam, techID, iLearned)
 			for iPlayer, eaPlayer in pairs(fullCivs) do
 				local player = Players[iPlayer]
 				if player:GetTeam() == iTeam then
-					if maleficiumLevel ~= 0 then
-						player:SetMaleficiumLevel(player:GetMaleficiumLevel() + maleficiumLevel)
+					if maleficiumLevelChange > 0 then	--Maleficium level (for dll control of Renounce Maleficium)	
+						local maleficiumLevel = player:GetMaleficiumLevel()
+						maleficiumLevel = maleficiumLevel < 0 and 0 or maleficiumLevel	--if they were at all "anti-maleficium" before, undo that
+						maleficiumLevel = maleficiumLevel + maleficiumLevelChange
+						player:SetMaleficiumLevel(maleficiumLevel)					
+					elseif maleficiumLevelChange < 0 then
+						local maleficiumLevel = player:GetMaleficiumLevel()
+						if maleficiumLevel <= 0 then							--only reduce if this is NOT already a player with positive MaleficiumLevel
+							maleficiumLevel = maleficiumLevel + maleficiumLevelChange
+							player:SetMaleficiumLevel(maleficiumLevel)	
+						end
 					end
 					OnMajorPlayerTechLearned[techID](iPlayer)
 				end
@@ -564,16 +586,13 @@ local function OnTeamTechResearched(iTeam, techID, iLearned)
 		end
 
 		--remember non-utility techs for quick KM calculation
-		if techTier[techID] then		--must be non-Utility
-			--faster to cycle through players here then all techs every player turn
-			for iPlayer, eaPlayer in pairs(fullCivs) do
-				local player = Players[iPlayer]
-				if player:GetTeam() == iTeam then
-					eaPlayer.techs[techID] = true
-					if not player:IsHuman() then
-						if player:GetLengthResearchQueue() < 2 then			--still 1 in queue if just gained this one as free tech 
-							AIPushTechsFromCivPlans(iPlayer, false)
-						end
+		for iPlayer, eaPlayer in pairs(fullCivs) do
+			local player = Players[iPlayer]
+			if player:GetTeam() == iTeam then
+				eaPlayer.techs[techID] = true
+				if not player:IsHuman() then
+					if player:GetLengthResearchQueue() < 2 then			--still 1 in queue if just gained this one as free tech 
+						AIPushTechsFromCivPlans(iPlayer, false)
 					end
 				end
 			end

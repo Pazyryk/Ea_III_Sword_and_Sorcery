@@ -11,7 +11,7 @@ print ("Loading TableSaverLoader.lua...")
 -- 0.14 (Jul 14, 2014) Fixed error in 0.13 where it would load an empty table as nil
 -- 0.15 (not released) More speed and memory optimizations: in particular, no longer stores a string representation of numbers
 --					   TableLoad returns true (if save tables exist) or false, so can be used to detect a loaded game
--- 0.16 (Aug 6, 2014) Now allows apostrohe (') in string values and NaN, Inf and -Inf as numbers; more memory optimization
+-- 0.16 (Aug 7, 2014) Now allows apostrohe (') in string values and NaN, Inf and -Inf as numbers; more memory optimization
 ------------------------------------------------------------------------------------------------------
 
 -- TableSave() recursively saves a table and all nested tables (at any level) to Civ5SavedGameDatabase.db

@@ -426,16 +426,24 @@ function BecomeFallen(iPlayer)		--this could happen before, during or after the 
 	SetDivineFavorUse(iPlayer, false)
 	player:SetHasPolicy(GameInfoTypes.POLICY_IS_FALLEN, true)
 
+	--MaleficiumLevel; get this to at least 0 (goes positive when they gain Maleficium tech or anti-Theism policy, allowing Renounce Maleficium trade item)
+	local maleficiumLevel = player:GetMaleficiumLevel()
+	if maleficiumLevel < 0 then
+		player:SetMaleficiumLevel(0)
+	end
+
 	--"Mirror" Theism branch
 	if player:HasPolicy(POLICY_THEISM) then
 		print("Converting Theism policies to mirror policies")
 		player:SetPolicyBranchUnlocked(POLICY_BRANCH_ANTI_THEISM, true)
+		OnPlayerAdoptPolicyBranch(iPlayer, POLICY_BRANCH_ANTI_THEISM)	--doesn't fire from GameEvents if set by Lua
 		player:SetHasPolicy(POLICY_ANTI_THEISM, true)
 		for policy in GameInfo.Policies() do
 			if policy.PolicyBranchType == "POLICY_BRANCH_THEISM" then
 				if player:HasPolicy(policy.ID) then
 					player:SetHasPolicy(policy.ID, false)
 					player:SetHasPolicy(policy.ID + FALLEN_ID_SHIFT, true)
+					OnPlayerAdoptPolicy(iPlayer, policy.ID)				--doesn't fire from GameEvents if set by Lua
 				end
 			end
 		end
@@ -443,6 +451,7 @@ function BecomeFallen(iPlayer)		--this could happen before, during or after the 
 		if player:HasPolicy(POLICY_THEISM_FINISHER) then
 			player:SetHasPolicy(POLICY_THEISM_FINISHER, false)
 			player:SetHasPolicy(POLICY_ANTI_THEISM_FINISHER, true)
+			OnFinisherPolicy(iPlayer, POLICY_ANTI_THEISM_FINISHER)		--doesn't fire from GameEvents if set by Lua
 		end
 		player:SetPolicyBranchUnlocked(POLICY_BRANCH_THEISM, false)
 	end
@@ -554,6 +563,7 @@ function GetConversionOutcome(city, religionID, mod)
 end
 
 
+
 local function OnRenounceMaleficium(iPlayer1, iPlayer2)
 	print("OnRenounceMaleficium ", iPlayer1, iPlayer2)
 	--one player must be persuing Maleficium or anti-Theism and the other not; use that to figure out who is renouncing
@@ -575,6 +585,9 @@ local function OnRenounceMaleficium(iPlayer1, iPlayer2)
 
 	--mark as renounced to restrict techs/policies
 	eaPlayer.bRenouncedMaleficium = true
+
+	--prevent this from coming up again as a trade item
+	player:SetMaleficiumLevel(0)
 
 	--remove techs (note: if we ever have teams, then this probably would break the team)
 	for techID, eaTechClass in pairs(gg_eaTechClass) do

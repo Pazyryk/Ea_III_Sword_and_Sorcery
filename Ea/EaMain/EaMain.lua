@@ -3,8 +3,9 @@
 -- DateCreated: 8/16/2011 7:17:51 PM
 --------------------------------------------------------------
 
-local HOTFIX = "-"
-local DLL_COMMIT = "6e53fc0"
+local HOTFIX = "none"
+local DLL_COMMIT = "13c4065"
+local DLL_DEBUG_BUILD = false
 local EA_MEDIA_PACK_MIN_VERSION = 5
 
 -------------------------------------------------------------------------------------------------------
@@ -34,8 +35,9 @@ for key, modInfo in pairs(unsortedInstalledMods) do
 	end
 end
 print("")
-print("hotfix: " .. HOTFIX)
-print("dll   : " .. DLL_COMMIT)
+print("hotfix          : " .. HOTFIX)
+print("dll commit      : " .. DLL_COMMIT)
+print("dll debug build : " .. tostring(DLL_DEBUG_BUILD))
 print("****************************************************************")
 print("")
 
@@ -340,10 +342,6 @@ GameEvents.PlayerDoTurn.Add(X_OnPlayerDoTurn)
 local function OnGameSave()
 	print("OnGameSave ")
 	TableSave(gT, "Ea")
-
-	--debug
-	TableLoad(gT, "Ea")
-
 end
 local function X_OnGameSave() return HandleError10(OnGameSave) end
 GameEvents.GameSave.Add(X_OnGameSave)

@@ -10,6 +10,14 @@ local print = ENABLE_PRINT and print or function() end
 local Dprint = DEBUG_PRINT and print or function() end
 
 --------------------------------------------------------------
+-- Settings
+--------------------------------------------------------------
+
+local FULL_WARMONGER_DISCOUNT_AT_MANA_CONSUMED = STARTING_SUM_OF_ALL_MANA / 10
+
+
+
+--------------------------------------------------------------
 -- File Locals
 --------------------------------------------------------------
 
@@ -18,6 +26,7 @@ local FAY_PLAYER_INDEX =				FAY_PLAYER_INDEX
 local STARTING_SUM_OF_ALL_MANA =		MapModData.STARTING_SUM_OF_ALL_MANA
 local EARACE_MAN =						GameInfoTypes.EARACE_MAN
 local EARACE_SIDHE =					GameInfoTypes.EARACE_SIDHE
+local EARACE_HELDEOFOL =				GameInfoTypes.EARACE_HELDEOFOL
 local EACIV_SKOGR =						GameInfoTypes.EACIV_SKOGR
 local POLICY_BRANCH_DOMINIONISM =		GameInfoTypes.POLICY_BRANCH_DOMINIONISM
 local POLICY_BRANCH_PANTHEISM =			GameInfoTypes.POLICY_BRANCH_PANTHEISM
@@ -31,6 +40,7 @@ local RELIGION_ANRA =					GameInfoTypes.RELIGION_ANRA
 
 local gRaceDiploMatrix = gRaceDiploMatrix
 local fullCivs = MapModData.fullCivs
+local cityStates = MapModData.cityStates
 
 --functions
 local HandleError21 = HandleError21
@@ -63,6 +73,22 @@ function EaDiplomacyInit(bNewGame)
 	if not bNewGame then
 		g_gameTurn = Game.GetGameTurn()
 	end
+	
+	--Heldeofol and CS Warmonger adjustments
+	if bNewGame then
+		for iPlayer, eaPlayer in pairs(fullCivs) do
+			if eaPlayer.race == EARACE_HELDEOFOL then
+				Players[iPlayer]:SetWarmongerModifier(100)		--fully discounted
+			end
+		end
+		for iPlayer, eaPlayer in pairs(cityStates) do
+			if eaPlayer.race == EARACE_HELDEOFOL then
+				Players[iPlayer]:SetWarmongerModifier(100)		--fully discounted
+			else
+				Players[iPlayer]:SetWarmongerModifier(75)		--want only 25% warmonger to lessen the "last city" effect
+			end
+		end
+	end
 end
 
 --------------------------------------------------------------
@@ -72,8 +98,10 @@ end
 function DiploPerCivTurn(iPlayer)	--full civs only
 	g_gameTurn = Game.GetGameTurn()
 	local eaPlayer = gPlayers[iPlayer]
+
+	--Mana consumption Warmonger
 	if 0 < gWorld.armageddonStage and eaPlayer.manaConsumed and (eaPlayer.race == EARACE_MAN or eaPlayer.race == EARACE_SIDHE) then	--Heldeofol are already fully discounted for warmonger penalty, so can't get worse
-		local iWarmongerDiscout = floor(300 * eaPlayer.manaConsumed / STARTING_SUM_OF_ALL_MANA)
+		local iWarmongerDiscout = floor(100 * eaPlayer.manaConsumed / FULL_WARMONGER_DISCOUNT_AT_MANA_CONSUMED)
 		iWarmongerDiscout = iWarmongerDiscout < 100 and iWarmongerDiscout or 100
 		print("SetWarmongerModifier; iPlayer, iWarmongerDiscout = ", iPlayer, iWarmongerDiscout)
 		Players[iPlayer]:SetWarmongerModifier(iWarmongerDiscout)

@@ -5,14 +5,12 @@
 
 print("Loading EaPeople.lua...")
 local print = ENABLE_PRINT and print or function() end
-local Dprint = DEBUG_PRINT and print or function() end
 
 --------------------------------------------------------------
 -- Local Defines
 --------------------------------------------------------------
 local FIRST_SPELL_ID =					FIRST_SPELL_ID
 local HIGHEST_PROMOTION_ID =			HIGHEST_PROMOTION_ID
-local MOD_MEMORY_HALFLIFE =				MOD_MEMORY_HALFLIFE
 
 local EACIV_LJOSALFAR =					GameInfoTypes.EACIV_LJOSALFAR
 local EAMOD_DEVOTION =					GameInfoTypes.EAMOD_DEVOTION
@@ -127,7 +125,7 @@ end
 -- UI Interface
 --------------------------------------------------------------
 local function SetGPModsTable(iPerson)	--used by EaImagePopup for showing GP mods
-	Dprint("SetGPModsTable ", iPerson)
+	--print("SetGPModsTable ", iPerson)
 	local GetGPMod = GetGPMod
 	local TestGPModValid = TestGPModValid
 	local eaPerson = gPeople[iPerson]
@@ -1357,7 +1355,7 @@ end
 
 
 function UnJoinGP(iPlayer, eaPerson)
-	Dprint("UnJoinGP ", iPlayer, eaPerson)
+	--print("UnJoinGP ", iPlayer, eaPerson)
 	eaPerson.iUnitJoined = -1
 
 	--Does nothing now

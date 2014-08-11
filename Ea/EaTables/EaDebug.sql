@@ -4,6 +4,7 @@ CREATE TABLE Ea_ExpectedTableFiles ('FileName' TEXT NOT NULL);
 INSERT INTO Ea_ExpectedTableFiles (FileName) VALUES
 	('EaImages.sql'),				--from Ea Media Pack
 	('EaSounds.sql'),				--from Ea Media Pack
+	('_EaSettings.sql'),
 	('EaActions.sql'),
 	('EaAI.sql'),
 	('EaAnimals.sql'),

@@ -28,6 +28,7 @@ UnitCaptured(iPlayer, iUnit)
 BarbExperienceDenied(iPlayer, iUnit, iSummoner, iExperience)	--unmodded experience unit would get if not barb
 FinisherPolicy(iPlayer, policyID)
 RenounceMaleficium(iPlayer1, iPlayer2) --one of these has Renounced Maleficium for the other (only one can be fallen so figure it out)
+CityKilled(iPlayer, iCity, iPlot, bCapital)
 
 --CallTestAll
 CanAutoSave(bInitial, bPostTurn)

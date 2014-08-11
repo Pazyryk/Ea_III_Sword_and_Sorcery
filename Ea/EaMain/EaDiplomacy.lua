@@ -13,9 +13,8 @@ local Dprint = DEBUG_PRINT and print or function() end
 -- Settings
 --------------------------------------------------------------
 
-local FULL_WARMONGER_DISCOUNT_AT_MANA_CONSUMED = STARTING_SUM_OF_ALL_MANA / 10
-
-
+local STARTING_SUM_OF_ALL_MANA =				 MapModData.EaSettings.STARTING_SUM_OF_ALL_MANA
+local FULL_WARMONGER_DISCOUNT_AT_MANA_CONSUMED = MapModData.EaSettings.FULL_WARMONGER_DISCOUNT_AT_PERCENT_MANA * STARTING_SUM_OF_ALL_MANA / 100
 
 --------------------------------------------------------------
 -- File Locals
@@ -23,7 +22,6 @@ local FULL_WARMONGER_DISCOUNT_AT_MANA_CONSUMED = STARTING_SUM_OF_ALL_MANA / 10
 
 --constants
 local FAY_PLAYER_INDEX =				FAY_PLAYER_INDEX
-local STARTING_SUM_OF_ALL_MANA =		MapModData.STARTING_SUM_OF_ALL_MANA
 local EARACE_MAN =						GameInfoTypes.EARACE_MAN
 local EARACE_SIDHE =					GameInfoTypes.EARACE_SIDHE
 local EARACE_HELDEOFOL =				GameInfoTypes.EARACE_HELDEOFOL
@@ -85,7 +83,7 @@ function EaDiplomacyInit(bNewGame)
 			if eaPlayer.race == EARACE_HELDEOFOL then
 				Players[iPlayer]:SetWarmongerModifier(100)		--fully discounted
 			else
-				Players[iPlayer]:SetWarmongerModifier(75)		--want only 25% warmonger to lessen the "last city" effect
+				Players[iPlayer]:SetWarmongerModifier(MapModData.EaSettings.CITY_STATE_WARMONGER_DISCOUNT)	--need discout to lessen the "last city" effect
 			end
 		end
 	end
@@ -139,7 +137,7 @@ local function CalculateDiploModifiers(iPlayer1, iPlayer2)
 	local maleficiumTechs = team2:IsHasTech(TECH_MALEFICIUM) and 1 or 0
 	local manaEaterPts = 0
 	if eaPlayer2.manaConsumed and 0 < gWorld.armageddonStage then
-		manaEaterPts = 100 * eaPlayer2.manaConsumed / MapModData.STARTING_SUM_OF_ALL_MANA	--mod by observer class
+		manaEaterPts = 100 * eaPlayer2.manaConsumed / STARTING_SUM_OF_ALL_MANA	--mod by observer class
 	end
 
 	--diplo effects by observer category

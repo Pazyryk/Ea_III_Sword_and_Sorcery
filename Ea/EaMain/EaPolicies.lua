@@ -5,9 +5,6 @@
 
 print("Loading EaPolicies.lua...")
 local print = ENABLE_PRINT and print or function() end
-local Dprint = DEBUG_PRINT and print or function() end
-
--- Cultural Level settings in EaCultureLevelHelper.lua
 
 --------------------------------------------------------------
 -- File Locals
@@ -65,11 +62,14 @@ local OnPolicyAdopted = {}
 --------------------------------------------------------------
 -- Cached Tables
 --------------------------------------------------------------
+
+local policyBranch = {}
 local policiesByBranch = {}
 for policyInfo in GameInfo.Policies() do
 	local branchType = policyInfo.PolicyBranchType
 	if branchType then
 		local branchID = GameInfoTypes[branchType]
+		policyBranch[policyInfo.ID] = branchID
 		policiesByBranch[branchID] = policiesByBranch[branchID] or {}
 		local nextIndex = #policiesByBranch[branchID] + 1
 		policiesByBranch[branchID][nextIndex] = policyInfo.ID
@@ -372,12 +372,23 @@ local function OnPlayerCanAdoptPolicyBranch(iPlayer, policyBranchTypeID)
 		return not eaPlayer.bIsFallen and not eaPlayer.techs[TECH_MALEFICIUM] and eaPlayer.race == EARACE_MAN
 	elseif policyBranchTypeID == POLICY_BRANCH_ANTI_THEISM then
 		local eaPlayer = gPlayers[iPlayer]
-		return eaPlayer.bIsFallen and not eaPlayer.bRenouncedMaleficium
+		return eaPlayer.bIsFallen and not eaPlayer.bRenouncedMaleficium and gWorld.evilControl ~= "Sealed"
 	end
 	return true
 end
 local function X_OnPlayerCanAdoptPolicyBranch(iPlayer, policyBranchTypeID) return HandleError21(OnPlayerCanAdoptPolicyBranch, iPlayer, policyBranchTypeID) end
 GameEvents.PlayerCanAdoptPolicyBranch.Add(X_OnPlayerCanAdoptPolicyBranch)
+
+local function OnPlayerCanAdoptPolicy(playerID, policyID)
+	local policyBranchTypeID = policyBranch[policyID]
+	if policyBranchTypeID == POLICY_BRANCH_ANTI_THEISM then
+		local eaPlayer = gPlayers[iPlayer]
+		return eaPlayer.bIsFallen and not eaPlayer.bRenouncedMaleficium and gWorld.evilControl ~= "Sealed"
+	end
+	return true
+end
+local function X_OnPlayerCanAdoptPolicy(iPlayer, policyID) return HandleError21(OnPlayerCanAdoptPolicy, iPlayer, policyID) end
+GameEvents.PlayerCanAdoptPolicy.Add(X_OnPlayerCanAdoptPolicy)
 
 
 --------------------------------------------------------------
@@ -423,6 +434,7 @@ OnPolicyAdopted[GameInfoTypes.POLICY_WOODS_LORE] = function(iPlayer)
 	local team = Teams[Players[iPlayer]:GetTeam()]
 	team:SetHasTech(GameInfoTypes.TECH_MOLY_VISIBLE, true)
 end
+OnPolicyAdopted[GameInfoTypes.POLICY_WITCHCRAFT] = OnPolicyAdopted[GameInfoTypes.POLICY_WOODS_LORE]
 
 OnPolicyAdopted[GameInfoTypes.POLICY_PATRONAGE] = function(iPlayer)
 	gg_bHasPatronage[iPlayer] = true
@@ -430,6 +442,3 @@ end
 
 
 
-
-
-OnPolicyAdopted[GameInfoTypes.POLICY_WITCHCRAFT] = OnPolicyAdopted[GameInfoTypes.POLICY_WOODS_LORE]

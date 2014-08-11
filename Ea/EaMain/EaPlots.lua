@@ -5,7 +5,13 @@
 
 print("Loading EaPlots.lua...")
 local print = ENABLE_PRINT and print or function() end
-local Dprint = DEBUG_PRINT and print or function() end
+
+--------------------------------------------------------------
+-- Settings
+--------------------------------------------------------------
+
+local STARTING_SUM_OF_ALL_MANA =		MapModData.EaSettings.STARTING_SUM_OF_ALL_MANA
+local TIMBER_DURATION_FROM_CHOP =		MapModData.EaSettings.TIMBER_DURATION_FROM_CHOP
 
 --------------------------------------------------------------
 -- File Locals
@@ -942,7 +948,7 @@ end
 
 local function GetArmageddonPlotStats()
 	local armageddonStage = gWorld.armageddonStage
-	local manaDepletion = 1 - (gWorld.sumOfAllMana / MapModData.STARTING_SUM_OF_ALL_MANA)
+	local manaDepletion = 1 - (gWorld.sumOfAllMana / STARTING_SUM_OF_ALL_MANA)
 	local blightBreachSpread = 0
 	local blightSpawn = 0
 	local breachSpawn = 0
@@ -1005,16 +1011,15 @@ end
 
 
 function PlotsPerTurn()
-	--This function is really pushing the 60 upvalue limit, but it is also one we want to run very fast
+	--WARNING: This function has 59 or 60 upvalues, right at the limit!
 	--Watch for "Syntax Error: function at line xxx has more than 60 upvalues" when adding stuff
 	print("Running PlotsPerTurn")
 
 	--bad map; keep harassing player so they don't discover this is important on turn 250
-	if not gg_cachedMapPlots.accessAhrimansVault then
-		error("Ahriman's Vault cannot be reached: this map is unplaybable")
-	end
+	--if not gg_cachedMapPlots.accessAhrimansVault then
+	--	error("Ahriman's Vault cannot be reached: this map is unplaybable")
+	--end
 
-	local PlotToRadiusIterator = PlotToRadiusIterator
 	local encampments = gWorld.encampments
 	local gameTurn = Game.GetGameTurn()
 
@@ -1300,7 +1305,7 @@ function PlotsPerTurn()
 				end
 
 				--timber from recent chop
-				if turnChopped and turnChopped > gameTurn - 20 then		--integer here sets the durration of a "timber pile"
+				if turnChopped and turnChopped > gameTurn - TIMBER_DURATION_FROM_CHOP then
 					g_addResource[iOwner][RESOURCE_TIMBER] = (g_addResource[iOwner][RESOURCE_TIMBER] or 0) + (g_hasTechForestry[iOwner] and 2 or 1)
 				end
 

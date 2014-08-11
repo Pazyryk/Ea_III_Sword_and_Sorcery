@@ -4,9 +4,6 @@
 --------------------------------------------------------------
 print("Loading EaArtifacts.lua...")
 local print = ENABLE_PRINT and print or function() end
-local Dprint = DEBUG_PRINT and print or function() end
-
-
 
 ---------------------------------------------------------------
 -- Local defines
@@ -30,7 +27,7 @@ function UpdateAllArtifacts()
 end
 
 function UpdateArtifact(artifactID)		--must be in city or on person to be "owned" (more complex conditions later)
-	Dprint("UpdateArtifact ", artifactID)
+	--print("UpdateArtifact ", artifactID)
 	--Test actual ownership based on location; test for ownership change
 	local artifact = gArtifacts[artifactID]
 	local mod = artifact.mod

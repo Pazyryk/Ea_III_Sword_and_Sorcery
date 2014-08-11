@@ -4,7 +4,6 @@
 --------------------------------------------------------------
 print("Loading EaAIPeople.lua...")
 local print = ENABLE_PRINT and print or function() end
-local Dprint = DEBUG_PRINT and print or function() end
 
 --------------------------------------------------------------
 -- Local Defines

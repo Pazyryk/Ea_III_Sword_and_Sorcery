@@ -15,13 +15,18 @@ function GetProtectorVictoryData(iPlayer)
 	
 	local protectorProphsRituals = eaPlayer.protectorProphsRituals or 0
 	local civsCorrected = eaPlayer.civsCorrected or 0
+	if eaPlayer.civsCorrectedProvisional then
+		for iLoopPlayer, pts in pairs(eaPlayer.civsCorrectedProvisional) do
+			civsCorrected = civsCorrected + pts
+		end
+	end
 	local fallenFollowersDestr = eaPlayer.fallenFollowersDestr or 0
 
 	--Generate score
-	local score = protectorProphsRituals + civsCorrected + fallenFollowersDestr		--temp just to get something here
+	local score = protectorProphsRituals + civsCorrected + fallenFollowersDestr
 
 	--Test victory conditions
-	local bVictory = score > 0 and gT.gWorld.AllEvilRemoved
+	local bVictory = score > 0 and gT.gWorld.bEnableProtectorVC
 
 	return score, bVictory, protectorProphsRituals, civsCorrected, fallenFollowersDestr
 end

@@ -5,7 +5,6 @@
 
 print("Loading EaAIMercenaries.lua...")
 local print = ENABLE_PRINT and print or function() end
-local Dprint = DEBUG_PRINT and print or function() end
 
 --CS merc:	peace no threat, sell all; war or threat, keep 4; war and threat, keep all
 --CS non-merc: buy up to 3 (peace) or 6 (war) if can afford it

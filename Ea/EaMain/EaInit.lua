@@ -8,24 +8,24 @@ local HandleError10 = HandleError10
 
 local function InitForNewGame()
 
-	--gWorld
+	--gWorld; nils listed for bookkeeping
 	gWorld.personCount =				0
-	gWorld.sumOfAllMana =				STARTING_SUM_OF_ALL_MANA
+	gWorld.sumOfAllMana =				MapModData.EaSettings.STARTING_SUM_OF_ALL_MANA
 	gWorld.armageddonStage =			0
 	gWorld.armageddonSap =				0
-	gWorld.bAllCivsHaveNames =			false
-	gWorld.evilTechControl =			"NewGame"	--VaReady, VaMade
-
-	gWorld.bAhrimansVaultSealed =		false
-
+	gWorld.bAllCivsHaveNames =			nil
+	gWorld.evilControl =				"NewGame"	--Ready, Open, Sealed
+	gWorld.bAnraHolyCityExists =		nil			--will be true after founding and then false if razed
+	gWorld.bEnableEasyVaultSeal =		nil
+	gWorld.bEnableProtectorVC =			nil
 	gWorld.returnAsPlayer =				Game.GetActivePlayer()
-	gWorld.encampments =				{}
 	gWorld.azzConvertNum =				0
 	gWorld.anraConvertNum =				0
 	gWorld.weaveConvertNum =			0
 	gWorld.livingTerrainConvertStr =	0
-	gWorld.calledMajorSpirits =			{}
 	gWorld.panCivsEver =				0
+	gWorld.encampments =				{}
+	gWorld.calledMajorSpirits =			{}
 	
 	--gRaceDiploMatrix; index by player1 (observer), player2 (subject); these are start values modified through game by city razing
 	for row in GameInfo.EaRaces_InitialHatreds() do
@@ -77,6 +77,7 @@ local function InitForNewGame()
 			eaPlayer.mercenaries = {}
 			eaPlayer.revealedNWs = {}
 			eaPlayer.revealedPlotEffects = {}	--indexed by iPlot
+			eaPlayer.atWarWith = {[62] = true, [63] = true}
 			local civID = player:GetCivilizationType()	 
 			local civRace = GameInfo.Civilizations[civID].EaRace
 			if civRace == "EARACE_SIDHE" then
@@ -98,6 +99,7 @@ local function InitForNewGame()
 			eaPlayer.leaderEaPersonIndex = GameInfoTypes.EAPERSON_FAND		-- Queen of the Fay
 			eaPlayer.culturalLevel = 20		--used in Diplo relations
 			eaPlayer.revealedNWs = {}
+			eaPlayer.atWarWith = {[62] = true, [63] = true}
 		elseif MapModData.playerType[iPlayer] == "CityState" then
 			eaPlayer.ImprovementsByID = {}
 			eaPlayer.ImprovedResourcesByID = {}
@@ -111,13 +113,27 @@ local function InitForNewGame()
 			local minorCivInfo = GameInfo.MinorCivilizations[player:GetMinorCivType()]
 			eaPlayer.race = GameInfoTypes[minorCivInfo.EaRace]
 			eaPlayer.mercenaries = {}
+			eaPlayer.atWarWith = {[62] = true, [63] = true}
 		elseif MapModData.playerType[iPlayer] == "God" then
 			eaPlayer.blockedBuildingsByID = {}
 			eaPlayer.religionID = GameInfoTypes.RELIGION_THE_WEAVE_OF_EA
+			eaPlayer.atWarWith = {[62] = true, [63] = true}
 		elseif MapModData.playerType[iPlayer] == "Animals" then
 			eaPlayer.sustainedPromotions = {}
+			eaPlayer.atWarWith = {}
+			for iLoopPlayer, loopPlayerType in pairs(MapModData.playerType) do
+				if loopPlayerType ~= "Animals" and loopPlayerType ~= "Barbs" then
+					eaPlayer.atWarWith[iLoopPlayer] = true
+				end
+			end
 		elseif MapModData.playerType[iPlayer] == "Barbs" then
 			eaPlayer.sustainedPromotions = {}
+			eaPlayer.atWarWith = {}
+			for iLoopPlayer, loopPlayerType in pairs(MapModData.playerType) do
+				if loopPlayerType ~= "Animals" and loopPlayerType ~= "Barbs" then
+					eaPlayer.atWarWith[iLoopPlayer] = true
+				end
+			end
 		end
 	end
 
@@ -205,7 +221,7 @@ local function OnEnterGame()   --Runs when Begin or Countinue Your Journey press
 	--trim dead players (after file inits in case someone is resurected)
 	for iPlayer in pairs(MapModData.realCivs) do
 		if not Players[iPlayer]:IsAlive() then
-			DeadPlayer(iPlayer)
+			DeadPlayer(iPlayer, nil)
 		end
 	end
 

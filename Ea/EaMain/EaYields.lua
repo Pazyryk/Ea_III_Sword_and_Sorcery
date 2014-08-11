@@ -5,7 +5,6 @@
 
 print("Loading EaYields.lua...")
 local print = ENABLE_PRINT and print or function() end
-local Dprint = DEBUG_PRINT and print or function() end
 
 --------------------------------------------------------------
 -- local defs
@@ -22,7 +21,7 @@ local ORDER_TRAIN =								OrderTypes.ORDER_TRAIN
 local CITY_UPDATE_TYPE_PRODUCTION =				CityUpdateTypes.CITY_UPDATE_TYPE_PRODUCTION
 
 local EA_ACTION_BUILD =							GameInfoTypes.EA_ACTION_BUILD
-local EA_ACTION_RECRUIT =							GameInfoTypes.EA_ACTION_RECRUIT
+local EA_ACTION_RECRUIT =						GameInfoTypes.EA_ACTION_RECRUIT
 
 local PROCESS_INDUSTRIAL_AGRICULTURE =			GameInfoTypes.PROCESS_INDUSTRIAL_AGRICULTURE
 local PROCESS_AZZANDARAS_TRIBUTE =				GameInfoTypes.PROCESS_AZZANDARAS_TRIBUTE

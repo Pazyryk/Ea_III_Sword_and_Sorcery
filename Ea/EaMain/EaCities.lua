@@ -5,16 +5,13 @@
 
 print("Loading EaCities.lua...")
 local print = ENABLE_PRINT and print or function() end
-local Dprint = DEBUG_PRINT and print or function() end
 
 --------------------------------------------------------------
 -- Settings
 --------------------------------------------------------------
 
-local MANA_CONSUMED_PER_ANRA_FOLLOWER_PER_TURN =	1
-local GUESSED_GROWTH_EXPIRE_TURN = 50	--AI makes a guess at growth potential, but uses real size instead this many turns after city founding
-local RACE_HATRED_FOR_RAZED_POP = 1 / (GAME_SPEED_MULTIPLIER + MAP_SIZE_MULTIPLIER)	--eg, 0.5 for standard/standard
-
+local MANA_CONSUMED_PER_ANRA_FOLLOWER_PER_TURN =	MapModData.EaSettings.MANA_CONSUMED_PER_ANRA_FOLLOWER_PER_TURN
+local RACE_HATRED_FOR_RAZED_POP =					MapModData.EaSettings.RACE_HATRED_FOR_RAZED_POP		--eg, 0.5 for standard/standard
 
 --------------------------------------------------------------
 -- File Locals
@@ -165,6 +162,7 @@ local HandleError31 =		HandleError31
 local HandleError41 =		HandleError41
 local HandleError51 =		HandleError51
 local HandleError61 =		HandleError61
+local HandleError81 =		HandleError81
 local GetMemoizedPlotIndexDistance = GetMemoizedPlotIndexDistance
 local PlotDistance =			Map.PlotDistance
 local GetPlotFromXY =		Map.GetPlot
@@ -647,20 +645,12 @@ function CityPerCivTurn(iPlayer)		--Full civ only		TO DO: must be real civs so t
 		if eaCity.iOwner == iPlayer then
 			local plot = GetPlotByIndex(iPlot)
 			local city = plot:GetPlotCity()
-			if not city then	--was raized to ground, delete from gCities and gg_playerCityPlotIndexes (TO DO: Need a safer way to detect razed to ground for case where another city is settled here)
-				if eaCity.holyCityFor and eaCity.holyCityFor[RELIGION_ANRA] then
-					eaPlayer.fallenFollowersDestr = (eaPlayer.fallenFollowersDestr or 0) + 50 --last owner gets credit for razing
-				end
-				gCities[iPlot] = nil
-				for iLoopCity, iLoopPlot in pairs(gg_playerCityPlotIndexes[iPlayer]) do
-					local loopCity = player:GetCityByID(iLoopCity)
-					if not loopCity then
-						gg_playerCityPlotIndexes[iPlayer][iLoopCity] = nil
-					end
-				end
+			if not city then
+				error("No city for eaCity in CityPerCivTurn" .. iPlayer .. " " .. plot:GetPlotIndex())
+				--Should always be caught by OnCityKilled; need to know otherwise
 			elseif city:GetOwner() ~= iPlayer then
-				error("eaCity owner disagrees with city owner", iPlayer, city:GetOwner(), city:GetName())
-				--Need to detect and fix if this happens for any reason (TO DO: edge case, one civ raizes and another builds on same plot same turn)
+				error("eaCity owner disagrees with city owner" .. iPlayer .. " " .. city:GetOwner() .. " " .. city:GetName())
+				--Need to detect and fix if this happens for any reason
 			else
 				local iCity = city:GetID()
 				cityCount = cityCount + 1
@@ -1001,24 +991,24 @@ local function OnSetPopulation(x, y, oldPopulation, newPopulation)
 	local plot = Map.GetPlot(x, y)
 	local city = plot:GetPlotCity()
 	print("Population change ", x, y, city:GetName(), oldPopulation, newPopulation, city:GetOwner(), Players[city:GetOwner()]:IsAlive())
+
+
+	--This may be our first indication of a resurected player; however, I'm not sure if GetOwner works yet,
+	--so I'm duplicating this functionality in OnCityCaptureComplete to be safe.
 	local iOwner = city:GetOwner()
-
-	--This is our first indication of a resurected player
-	--owner:IsAlive()=false still but they must be coming back to life if newPopulation > 0
-	--dead player is detected in OnCityCaptureComplete
-
-	if 0 < newPopulation and not realCivs[iOwner] then
+	if 0 < newPopulation and iOwner ~= -1 and not realCivs[iOwner] then
 		ResurectedPlayer(iOwner)
 	end
 
+	--[[  done by OnPlayerCityFounded or OnCityCaptureComplete so not needed here (I'm not sure if iOwner is updated anyway)
 	--add/remove from gg_playerCityPlotIndexes
-	if oldPopulation == 0 then	--new city for this player
+	if oldPopulation == 0 and iOwner ~= -1 then	--new city for this player
 		InitCityPlotIndexGlobals(iOwner, city:GetID())	--this is probably first call; no harm in redundant calls
 	end 
-
-	local owner = Players[iOwner]
+	]]
 
 	if city:IsRazing() then
+		local owner = Players[iOwner]
 		if newPopulation < oldPopulation then
 			--if Slave Raider policy then give them a slaves unit
 
@@ -1062,104 +1052,148 @@ end
 local function X_OnSetPopulation(x, y, oldPopulation, newPopulation) return HandleError41(OnSetPopulation, x, y, oldPopulation, newPopulation) end
 GameEvents.SetPopulation.Add(X_OnSetPopulation)
 
-local function OnCityCaptureComplete(iPlayer, bCapital, x, y, iNewOwner)
+local function OnCityCaptureComplete(iPlayer, bCapital, x, y, iNewOwner, iOldPopulation, bConquest)
 
-	--what about city destroyed on conquest?
+	--Function name is deceptive: this is really from CvPlayer::acquireCity. iNewOwner is trustworthy, but iPlayer could be
+	--either owner before capture or liberator. In latter case, there is no indication in args of owner before capture.
+	--This could even be a gift transfer (bGift is not passed by current GameEvents).
 
-	--On liberation, iPlayer is liberating player and iNewOwner is civ liberated to (which may be a resurection); there is no indication who captured from
+	--This could potentialy fire after OnCityKilled (for example in OCC capture; not sure if any other way)
 
-	local oldOwner = Players[iPlayer]
+	--iNewOwner might be a resurected player (may be detected by pop change first)
+
 	local newOwner = Players[iNewOwner]
 	local iPlot = GetPlotIndexFromXY(x, y)
 	local plot = GetPlotByIndex(iPlot)
 	local city = plot:GetPlotCity()
-	print("CityCaptureComplete", iPlayer, bCapital, x, y, iNewOwner, city:GetName())
+	print("CityCaptureComplete", iPlayer, bCapital, x, y, iNewOwner, iOldPopulation, bConquest, city and city:GetName() or "city was killed")
 
-	local iCity = city:GetID()
-	local eaCity = gCities[iPlot]
-	local eaPreviousOwner = gPlayers[iPlayer]
-	local eaNewOwner = gPlayers[iNewOwner]
+	if city then		--otherwise it should already have fired OnCityKilled before we got here
 
-	InitCityPlotIndexGlobals(iNewOwner, iCity)
+		local iCity = city:GetID()
+		local eaCity = gCities[iPlot]
+		local eaNewOwner = gPlayers[iNewOwner]
 
-	if oldOwner:IsAlive() then
-		if bCapital then
-			CheckCapitalBuildings(iPlayer)
+		--Figure out who previous owner and conquering player are, since they aren't necessarily iPlayer, iNewOwner, and bConquest is
+		--untrustworthy because this could be liberation resulting from conquest (in which case bConquest = false)
+		local iPreviousOwner = eaCity.iOwner
+		local iConqueringPlayer, conqueringPlayer, eaConqueringPlayer
+		if iPreviousOwner == iPlayer then
+			if bConquest then
+				iConqueringPlayer = iNewOwner
+				eaConqueringPlayer = eaNewOwner
+				print("This is a city conquest without liberation: iConqueringPlayer = " .. iConqueringPlayer .. "; iPreviousOwner = " .. iPreviousOwner)
+			else
+				print("This is a city gift")
+			end
+		else
+			iConqueringPlayer = iPlayer
+			eaConqueringPlayer = gPlayers[iPlayer]
+			print("This is a city conquest WITH liberation: iConqueringPlayer = " .. iConqueringPlayer .. "; iPreviousOwner = " .. iPreviousOwner)
 		end
-	else
-		print("!!!! Dead player detected from OnCityCaptureComplete !!!!")
-		DeadPlayer(iPlayer)
-	end
+		conqueringPlayer = iConqueringPlayer and Players[iConqueringPlayer]
 
+		eaCity.iOwner = iNewOwner
 
-	if eaCity.iOwner ~= iPlayer then
-		print("!!!!!!!!!!!! Error: EaCity info corrupted ", eaCity.iOwner)
-	end
-	eaCity.iOwner = iNewOwner
+		local previousOwner = Players[iPreviousOwner]
 
-	--Check race
-	local newCivRace = eaNewOwner.race
-	if newCivRace == GetCityRace(city) then
-		city:SetNumRealBuilding(BUILDING_RACIAL_DISHARMONY, 0)
-	else
-		city:SetNumRealBuilding(BUILDING_RACIAL_DISHARMONY, 1)
-	end
-
-	--City size and pop killed
-	local oldSize = eaCity.size
-	local newSize = city:GetPopulation()
-	eaCity.size = newSize
-	local popKilled = oldSize - newSize
-
-	--Credit for conquest
-	eaNewOwner.conquests = eaNewOwner.conquests or {}
-	local uniqueConquestStr = iPlot .. "-" .. city:GetGameTurnFounded()
-	if not eaNewOwner.conquests[uniqueConquestStr] then
-		eaNewOwner.conquests[uniqueConquestStr] = oldSize
-	end
-
-	--If Slave Raider present get slaves for each pop killed
-	for i = 0, plot:GetNumUnits() - 1 do
-		local unit = plot:GetUnit(i)
-		if unit:IsHasPromotion(PROMOTION_SLAVERAIDER) then
-			local raceID = GetCityRace(city)
-			local unitID
-			if raceID == EARACE_MAN then
-				unitID = UNIT_SLAVES_MAN
-			elseif raceID == EARACE_SIDHE then
-				unitID = UNIT_SLAVES_SIDHE
-			else 
-				unitID = UNIT_SLAVES_ORC
+		if previousOwner:IsAlive() then
+			if bCapital then
+				CheckCapitalBuildings(iPreviousOwner)
 			end
-			if eaNewOwner.eaCivNameID == EACIV_GAZIYA then
-				popKilled = floor(popKilled / 3 + 0.5)
+		else
+			print("!!!! Dead player detected from OnCityCaptureComplete !!!!")
+			DeadPlayer(iPreviousOwner, iConqueringPlayer)
+		end
+
+		--Resurected player (may be caught by OnSetPopulation but I'm not sure)
+		if not realCivs[iNewOwner] then
+			ResurectedPlayer(iNewOwner)
+		end
+
+		InitCityPlotIndexGlobals(iNewOwner, iCity)
+
+		--Check race
+		local newCivRace = eaNewOwner.race
+		if newCivRace == GetCityRace(city) then
+			city:SetNumRealBuilding(BUILDING_RACIAL_DISHARMONY, 0)
+		else
+			city:SetNumRealBuilding(BUILDING_RACIAL_DISHARMONY, 1)
+		end
+
+		--City size and pop killed
+		local oldSize = eaCity.size
+		local newSize = city:GetPopulation()
+		eaCity.size = newSize
+		local popKilled = oldSize - newSize
+
+		--Conquest
+		if iConqueringPlayer then
+
+			--Credit for conquest
+			eaConqueringPlayer.conquests = eaConqueringPlayer.conquests or {}
+			local uniqueConquestStr = iPlot .. "-" .. city:GetGameTurnFounded()
+			if not eaConqueringPlayer.conquests[uniqueConquestStr] then
+				eaConqueringPlayer.conquests[uniqueConquestStr] = oldSize
 			end
 
-			for j = 1, popKilled do
-				local newUnit = newOwner:InitUnit(unitID, x, y)
-				--newUnit:JumpToNearestValidPlot()
-				newUnit:SetHasPromotion(PROMOTION_SLAVE, true)
+			--Slave Raider
+			if conqueringPlayer:HasPolicy(POLICY_SLAVE_RAIDERS) then
+				local raceID = GetCityRace(city)
+				local unitID
+				if raceID == EARACE_MAN then
+					unitID = UNIT_SLAVES_MAN
+				elseif raceID == EARACE_SIDHE then
+					unitID = UNIT_SLAVES_SIDHE
+				else 
+					unitID = UNIT_SLAVES_ORC
+				end
+				if eaConqueringPlayer.eaCivNameID == EACIV_GAZIYA then
+					popKilled = floor(popKilled / 3 + 0.5)
+				end
+
+				for j = 1, popKilled do
+					local newUnit = newOwner:InitUnit(unitID, x, y)
+					--newUnit:JumpToNearestValidPlot()
+					newUnit:SetHasPromotion(PROMOTION_SLAVE, true)
+				end
 			end
-			break
+		end
+
+		local team = Teams[newOwner:GetTeam()]
+		if team:IsHasTech(TECH_SAILING) then
+			TestNaturalHarborForFreeHarbor(city)
 		end
 	end
-
-	--AddCityToResDistanceMatrixes(iNewOwner, city)
-	--CleanCityResDistanceMatrixes()
-
-	local team = Teams[newOwner:GetTeam()]
-	if team:IsHasTech(TECH_SAILING) then
-		TestNaturalHarborForFreeHarbor(city)
-	end
-
 end
-local function X_OnCityCaptureComplete(iPlayer, bCapital, x, y, iNewOwner) return HandleError51(OnCityCaptureComplete, iPlayer, bCapital, x, y, iNewOwner) end
+local function X_OnCityCaptureComplete(iPlayer, bCapital, x, y, iNewOwner, iOldPopulation, bConquest) return HandleError81(OnCityCaptureComplete, iPlayer, bCapital, x, y, iNewOwner, iOldPopulation, bConquest) end
 GameEvents.CityCaptureComplete.Add(X_OnCityCaptureComplete)
 
+local function OnCityKilled(iPlayer, iCity, iPlot, bCapital)	--only after razed to ground (not called by acquireCity)
+	print("OnCityKilled ", iPlayer, iCity, iPlot, bCapital)
+	local eaCity = gCities[iPlot]
+	if eaCity then
+		if eaCity.iOwner ~= iPlayer then	--these should agree (except in OCC where OnCityKilled fires before OnCityCaptureComplete)
+			print("!!!! ERROR: eaCity.iOwner did not agree with OnCityKilled iPlayer")
+		end
+		local eaPlayer = gPlayers[iPlayer]
+		if eaCity.holyCityFor and eaCity.holyCityFor[RELIGION_ANRA] then
+			gWorld.bAnraHolyCityExists = false			--can test ==false if we need to know if it ever existed
+			if not eaPlayer.bIsFallen then
+				eaPlayer.fallenFollowersDestr = (eaPlayer.fallenFollowersDestr or 0) + 50 --last owner gets credit for razing
+			end
+		end
+		gCities[iPlot] = nil		--we don't keep any info on dead cities, for now...
+		gg_playerCityPlotIndexes[iPlayer][iCity] = nil
 
---TO DO: city raized and salted
-
-
+	elseif gg_init.bEnteredGame then
+		error("No eaCity for a city razed to ground")
+	else
+		print("City razed to ground before player entered game; must be The Fay")
+	end
+end
+local function X_OnCityKilled(iPlayer, iCity, iPlot, bCapital) return HandleError41(OnCityKilled, iPlayer, iCity, iPlot, bCapital) end
+GameEvents.CityKilled.Add(X_OnCityKilled)
 
 --------------------------------------------------------------
 -- River Connections
@@ -1188,8 +1222,8 @@ end
 local function X_OnCityConnected(iPlayer, iCityX, iCityY, iToCityX, iToCityY, bDirect) return HandleError61(OnCityConnected, iPlayer, iCityX, iCityY, iToCityX, iToCityY, bDirect) end
 GameEvents.CityConnected.Add(X_OnCityConnected)
 
-local function CanRazeOverride() return true end
-GameEvents.CanRazeOverride.Add(CanRazeOverride)
+local function OnCanRazeOverride() return true end
+GameEvents.CanRazeOverride.Add(OnCanRazeOverride)
 
 --------------------------------------------------------------
 -- City builds

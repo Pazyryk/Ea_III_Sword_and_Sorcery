@@ -4,12 +4,23 @@
 --------------------------------------------------------------
 
 
+--------------------------------------------------------------
+-- File Locals
+--------------------------------------------------------------
 
-local fullCivs =			MapModData.fullCivs
+--constants
+local RELIGION_ANRA =				GameInfoTypes.RELIGION_ANRA
+local POLICY_BRANCH_ANTI_THEISM =	GameInfoTypes.POLICY_BRANCH_ANTI_THEISM
 
-local floor =				math.floor
-local sort =				table.sort
+--global tables
+local fullCivs =					MapModData.fullCivs
+local gg_eaTechClass =				gg_eaTechClass
 
+--functions
+local floor =						math.floor
+local sort =						table.sort
+
+--file control
 local g_playerScores = {}
 local g_sortedScores = {}
 
@@ -36,7 +47,7 @@ GameEvents.GameCoreTestVictory.Add(OnGameCoreTestVictory)
 
 
 function TestUpdateVictory(iPlayer)
-	print("VictoryPerCivTurn ", iPlayer)
+	print("TestUpdateVictory ", iPlayer)
 	if Game.GetWinner() ~= -1 then
 		print("Someone already won; no longer testing victory conditions or adjusting mod scores")
 		if Game.GetAIAutoPlay() > 1 then
@@ -165,5 +176,34 @@ function UpdateFayScore(iPlayer)
 	--TO DO: Adjust this down for land development and mana depletion
 
 	player:ChangeScoreFromScenario1(fayScore - player:GetScore())
+end
+
+function TestEnableProtectorConditions()
+	print("TestEnableProtectorConditions")
+
+	local bAllow = true
+	for iPlayer, eaPlayer in pairs(fullCivs) do
+		if eaPlayer.bIsFallen and not eaPlayer.bRenouncedMaleficium then
+			bAllow = false
+			break
+		end
+	end
+	if bAllow then
+		print(" -there are currently no fallen civs that have not renounced maleficium")
+		if not gReligions[RELIGION_ANRA] or (not Game.GetHolyCityForReligion(GameInfoTypes.RELIGION_ANRA, -1) and Game.GetNumFollowers(RELIGION_ANRA) == 0) then
+			print(" -everything is good... where are we with Prophecy of Simsum and Sealing the Vault?")
+			if gWorld.evilControl ~= "Sealed" then
+				gWorld.bEnableProtectorVC = true
+				print(" -all Protector VCs met; should have victory now...")
+				TestUpdateVictory(-1)				--will trigger VC
+				return
+			elseif gWorld.evilControl ~= "Open" then
+				print(" -making Seal Ahriman's Vault easy now...")
+				gWorld.bEnableEasyVaultSeal = true	--any GP can do it cheaply now
+				return
+			end
+		end
+	end
+	gWorld.bEnableEasyVaultSeal = false		--conditions might have changed
 end
 

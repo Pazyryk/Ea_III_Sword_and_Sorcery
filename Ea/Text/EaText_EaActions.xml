@@ -112,8 +112,21 @@
 		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_OCCUPY_TEMPLE">
 			<Text>Occupy Temple</Text>
-		</Row>		
+		</Row>
 		
+		<Row Tag="TXT_KEY_EA_ACTION_BECOME_MAGE">
+			<Text>Become Mage</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_BECOME_ARCHMAGE">
+			<Text>Become Archmage</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_PURGE">
+			<Text>Purge</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_PURGE_HELP">
+			<Text>Purge one Aŋra follower from this city</Text>
+		</Row>
+
 		<Row Tag="TXT_KEY_EA_ACTION_PROPHECY_AHURADHATA">
 			<Text>Prophecy of Ahuradhâta</Text>
 		</Row>

@@ -654,7 +654,7 @@ function UpdateUnitActions( unit )
 		if totalTurns < 1000 then
 			local progressHolder = eaAction.ProgressHolder
 			local progress
-			if progressHolder == "Person" then
+			if progressHolder == "Self" then
 				local progressTable = eaPerson.progress
 				progress = progressTable[inProgressEaActionID] or 0
 			elseif progressHolder == "City" then

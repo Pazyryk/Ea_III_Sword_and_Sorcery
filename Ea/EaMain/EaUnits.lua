@@ -5,7 +5,6 @@
 
 print("Loading EaUnits.lua...")
 local print = ENABLE_PRINT and print or function() end
-local Dprint = DEBUG_PRINT and print or function() end
 
 --------------------------------------------------------------
 -- File Locals
@@ -386,7 +385,7 @@ function UnitPerCivTurn(iPlayer)	--runs for full civs and city states
 	local bHasSteelWorking = team:IsHasTech(TECH_STEEL_WORKING)
 	local bHasMithrilWorking = team:IsHasTech(TECH_MITHRIL_WORKING)
 	local iLongWallOwner = gWonders[EA_WONDER_THE_LONG_WALL] and Map.GetPlotByIndex(gWonders[EA_WONDER_THE_LONG_WALL].iPlot):GetOwner()
-	local bMayBeSlowedByLongWall = iLongWallOwner and team:IsAtWar(Players[iLongWallOwner]:GetTeam())
+	local bMayBeSlowedByLongWall = iLongWallOwner and iLongWallOwner ~= -1 and team:IsAtWar(Players[iLongWallOwner]:GetTeam())
 	local longWallMod = iLongWallOwner and gWonders[EA_WONDER_THE_LONG_WALL].mod
 	local bNoCitrus = bFullCiv and player:GetNumResourceAvailable(RESOURCE_CITRUS, true) < 1
 	local bHasWarspirit = bFullCiv and player:HasPolicy(POLICY_WARSPIRIT)

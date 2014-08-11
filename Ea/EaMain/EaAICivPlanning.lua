@@ -5,15 +5,13 @@
 
 print("Loading EaAICivPlanning.lua...")
 local print = ENABLE_PRINT and print or function() end
-local Dprint = DEBUG_PRINT and print or function() end
-
 
 --------------------------------------------------------------
 -- Settings
 --------------------------------------------------------------
-local CONTINGENCY_THRESHOLD = 40				--Lower makes it easier to add contingency plan
-local CONTINGENCY_TURN_INTERVAL = 5
-local EXPECTED_CL_CHANGE = 0.06 / MapModData.GAME_SPEED_MULTIPLIER		--This should exactly match CL_TARGET_CHANGE in EaCultureLevelHelper.lua
+local CONTINGENCY_THRESHOLD = MapModData.EaSettings.CONTINGENCY_THRESHOLD		--Lower makes it easier to add contingency plan
+local CONTINGENCY_TURN_INTERVAL = MapModData.EaSettings.CONTINGENCY_TURN_INTERVAL
+local EXPECTED_CL_CHANGE = MapModData.EaSettings.CL_TARGET_CHANGE				--Good expectation at game start
 
 --------------------------------------------------------------
 -- File Locals
@@ -1039,7 +1037,7 @@ GetResearchNeededForTechList = function(teamTechs, techList)
 	--computes combined costs considering existing research and prereq redendancy (OK if techList has redundancy)
 	--accumulate tech and all prereqs in int1 table
 
-	--Dprint("GetResearchNeededForTechList ", teamTechs, techList)
+	--print("GetResearchNeededForTechList ", teamTechs, techList)
 	local numTechs = 1
 	int1[1] = techList[1]		--1st tech and its prereqs can be added without worry of redundancy
 	local prereqs = techPrereqs[techList[1] ]

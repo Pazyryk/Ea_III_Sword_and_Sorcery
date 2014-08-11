@@ -10,7 +10,7 @@ local gT = MapModData.gT
 
 
 --Settings
-local GP_TARGET_NUMBER = 3 * MapModData.MAP_SIZE_MULTIPLIER
+local GP_TARGET_NUMBER = MapModData.EaSettings.GP_TARGET_NUMBER
 
 
 --Constants

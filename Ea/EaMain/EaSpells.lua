@@ -8,16 +8,17 @@
 --------------------------------------------------------------
 print("Loading EaSpells.lua...")
 local print = ENABLE_PRINT and print or function() end
-local Dprint = DEBUG_PRINT and print or function() end
-
 
 ---------------------------------------------------------------
 -- Local defines
 ---------------------------------------------------------------
 
 --constants
+local STARTING_SUM_OF_ALL_MANA =			MapModData.EaSettings.STARTING_SUM_OF_ALL_MANA
+
 local DOMAIN_LAND =							DomainTypes.DOMAIN_LAND
 local DOMAIN_SEA =							DomainTypes.DOMAIN_SEA
+
 local EAMOD_DEVOTION =						GameInfoTypes.EAMOD_DEVOTION
 local EA_PLOTEFFECT_PROTECTIVE_WARD =		GameInfoTypes.EA_PLOTEFFECT_PROTECTIVE_WARD
 local EA_WONDER_ARCANE_TOWER =				GameInfoTypes.EA_WONDER_ARCANE_TOWER
@@ -50,7 +51,7 @@ local UNITCOMBAT_MOUNTED =					GameInfoTypes.UNITCOMBAT_MOUNTED
 local UNHAPPINESS_PER_CITY =				GameDefines.UNHAPPINESS_PER_CITY
 local UNIT_SUFFIXES =						UNIT_SUFFIXES
 local NUM_UNIT_SUFFIXES =					#UNIT_SUFFIXES
-local MOD_MEMORY_HALFLIFE =					MOD_MEMORY_HALFLIFE
+local MOD_MEMORY_HALFLIFE =					MapModData.EaSettings.MOD_MEMORY_HALFLIFE
 
 local MAX_RANGE =							MAX_RANGE
 local FIRST_SPELL_ID =						FIRST_SPELL_ID
@@ -372,7 +373,7 @@ end
 
 
 local function TestEaSpellForHumanUI(eaActionID, iPlayer, unit, iPerson, testX, testY)	--called from UnitPanel
-	Dprint("TestEaSpellForHumanUI ", eaActionID, iPlayer, unit, iPerson, testX, testY)
+	--print("TestEaSpellForHumanUI ", eaActionID, iPlayer, unit, iPerson, testX, testY)
 	--	MapModData.bShow	--> "Show" this button in UI.
 	--	MapModData.bAllow	--> "Can do" (always equals Test return)
 	--	MapModData.text	--> Displayed text when boolean1 = true (will display in red if boolean2 = false)
@@ -385,7 +386,7 @@ local function TestEaSpellForHumanUI(eaActionID, iPlayer, unit, iPerson, testX, 
 	MapModData.text = "no help text"	--will change below or take eaAction.Help value
 
 	--By default, text will be from eaAction.Help. If we want something else, then we must change below or in action-specific SetUI function.
-	if gWorld.bAhrimansVaultSealed and g_eaPlyaer.bIsFallen and g_eaAction.AhrimansVaultMatters then
+	if gWorld.evilControl == "Sealed" and g_eaPlyaer.bIsFallen and g_eaAction.AhrimansVaultMatters then
 		MapModData.text = "[COLOR_WARNING_TEXT]Ahriman's Vault has been sealed; the Fallen can no longer cast spells[ENDCOLOR]"
 	end
 
@@ -545,7 +546,7 @@ function TestEaSpell(eaActionID, iPlayer, unit, iPerson, testX, testY, bAINonTar
 	g_worldManaDepletion = 1 - gWorld.sumOfAllMana / STARTING_SUM_OF_ALL_MANA
 
 	--Block for fallen after Ahriman's Vault sealed
-	if gWorld.bAhrimansVaultSealed and g_eaPlyaer.bIsFallen and g_eaAction.AhrimansVaultMatters then return false end
+	if gWorld.evilControl == "Sealed" and g_eaPlyaer.bIsFallen and g_eaAction.AhrimansVaultMatters then return false end
 
 	--Specific action test (runs if it exists)
 	if Test[eaActionID] and not Test[eaActionID]() then return false end
@@ -722,7 +723,7 @@ function TestEaSpellTarget(eaActionID, testX, testY, bAITargetTest)
 		--Update progress
 		local progressHolder = g_eaAction.ProgressHolder
 		local progress
-		if progressHolder == "Person" then
+		if progressHolder == "Self" then
 			progress = g_eaPerson.progress[eaActionID] or 0
 		elseif progressHolder == "City" then
 			progress = g_eaCity.progress[eaActionID] or 0
@@ -896,7 +897,7 @@ function DoEaSpell(eaActionID, iPlayer, unit, iPerson, targetX, targetY)
 			end
 		else
 			local progressTable
-			if progressHolder == "Person" then
+			if progressHolder == "Self" then
 				progressTable = g_eaPerson.progress
 				print("getting progressTable from person ", progressTable, g_eaAction.Type)
 			elseif progressHolder == "City" then
@@ -1065,6 +1066,11 @@ local animals = {GameInfoTypes.UNIT_WOLVES, GameInfoTypes.UNIT_LIONS}
 local treeEnts = {GameInfoTypes.UNIT_TREE_ENT}
 --Remember to update numTableUnits below!
 
+local function ModelSummon_Test()
+	g_int3 = g_player:GetNumUnitsOutOfSupply()
+	return true
+end
+
 local function ModelSummon_TestTarget()
 	print("ModelSummon_TestTarget")
 	local unitTable, numTableUnits
@@ -1110,7 +1116,7 @@ local function ModelSummon_TestTarget()
 	elseif g_eaActionID == EA_SPELL_SUMMON_ARCHDEMON or g_eaActionID == EA_SPELL_CALL_ARCHANGEL or g_eaActionID == EA_SPELL_CALL_MAJOR_SPIRIT then
 		archType = true
 	end
-
+	
 	if archType then
 		g_value = gg_baseUnitPower[g_int1]		--g_int1 was set to unitTypeID in specific Test function below
 		print("archtype id, power = ", g_int1, g_value)
@@ -1299,7 +1305,8 @@ local function ModelSummon_SetUI()
 end
 
 local function ModelSummon_SetAIValues()
-	gg_aiOptionValues.i = g_value		--AI should always want this maxed out
+--g_int3
+	gg_aiOptionValues.i = g_value / (2 * g_int3 + 1)		--AI should always want this maxed out unless suffering from units out of supply
 end
 
 local function ModelSummon_Finish()
@@ -1349,54 +1356,63 @@ local function ModelSummon_Finish()
 end
 
 --EA_SPELL_CONJURE_MONSTER
+Test[GameInfoTypes.EA_SPELL_CONJURE_MONSTER] = ModelSummon_TestTarget
 TestTarget[GameInfoTypes.EA_SPELL_CONJURE_MONSTER] = ModelSummon_TestTarget
 SetUI[GameInfoTypes.EA_SPELL_CONJURE_MONSTER] = ModelSummon_SetUI
 SetAIValues[GameInfoTypes.EA_SPELL_CONJURE_MONSTER] = ModelSummon_SetAIValues
 Finish[GameInfoTypes.EA_SPELL_CONJURE_MONSTER] = ModelSummon_Finish
 
 --EA_SPELL_REANIMATE_DEAD
+Test[GameInfoTypes.EA_SPELL_REANIMATE_DEAD] = ModelSummon_TestTarget
 TestTarget[GameInfoTypes.EA_SPELL_REANIMATE_DEAD] = ModelSummon_TestTarget
 SetUI[GameInfoTypes.EA_SPELL_REANIMATE_DEAD] = ModelSummon_SetUI
 SetAIValues[GameInfoTypes.EA_SPELL_REANIMATE_DEAD] = ModelSummon_SetAIValues
 Finish[GameInfoTypes.EA_SPELL_REANIMATE_DEAD] = ModelSummon_Finish
 
 --EA_SPELL_RAISE_DEAD
+Test[GameInfoTypes.EA_SPELL_RAISE_DEAD] = ModelSummon_TestTarget
 TestTarget[GameInfoTypes.EA_SPELL_RAISE_DEAD] = ModelSummon_TestTarget
 SetUI[GameInfoTypes.EA_SPELL_RAISE_DEAD] = ModelSummon_SetUI
 SetAIValues[GameInfoTypes.EA_SPELL_RAISE_DEAD] = ModelSummon_SetAIValues
 Finish[GameInfoTypes.EA_SPELL_RAISE_DEAD] = ModelSummon_Finish
 
 --EA_SPELL_SUMMON_ABYSSAL_CREATURES
+Test[GameInfoTypes.EA_SPELL_SUMMON_ABYSSAL_CREATURES] = ModelSummon_TestTarget
 TestTarget[GameInfoTypes.EA_SPELL_SUMMON_ABYSSAL_CREATURES] = ModelSummon_TestTarget
 SetUI[GameInfoTypes.EA_SPELL_SUMMON_ABYSSAL_CREATURES] = ModelSummon_SetUI
 SetAIValues[GameInfoTypes.EA_SPELL_SUMMON_ABYSSAL_CREATURES] = ModelSummon_SetAIValues
 Finish[GameInfoTypes.EA_SPELL_SUMMON_ABYSSAL_CREATURES] = ModelSummon_Finish
 
 --EA_SPELL_SUMMON_DEMON
+Test[GameInfoTypes.EA_SPELL_SUMMON_DEMON] = ModelSummon_TestTarget
 TestTarget[GameInfoTypes.EA_SPELL_SUMMON_DEMON] = ModelSummon_TestTarget
 SetUI[GameInfoTypes.EA_SPELL_SUMMON_DEMON] = ModelSummon_SetUI
 SetAIValues[GameInfoTypes.EA_SPELL_SUMMON_DEMON] = ModelSummon_SetAIValues
 Finish[GameInfoTypes.EA_SPELL_SUMMON_DEMON] = ModelSummon_Finish
 
 --EA_SPELL_CALL_HEAVENS_GUARD
+Test[GameInfoTypes.EA_SPELL_CALL_HEAVENS_GUARD] = ModelSummon_TestTarget
 TestTarget[GameInfoTypes.EA_SPELL_CALL_HEAVENS_GUARD] = ModelSummon_TestTarget
 SetUI[GameInfoTypes.EA_SPELL_CALL_HEAVENS_GUARD] = ModelSummon_SetUI
 SetAIValues[GameInfoTypes.EA_SPELL_CALL_HEAVENS_GUARD] = ModelSummon_SetAIValues
 Finish[GameInfoTypes.EA_SPELL_CALL_HEAVENS_GUARD] = ModelSummon_Finish
 
 --EA_SPELL_CALL_ANGEL
+Test[GameInfoTypes.EA_SPELL_CALL_ANGEL] = ModelSummon_TestTarget
 TestTarget[GameInfoTypes.EA_SPELL_CALL_ANGEL] = ModelSummon_TestTarget
 SetUI[GameInfoTypes.EA_SPELL_CALL_ANGEL] = ModelSummon_SetUI
 SetAIValues[GameInfoTypes.EA_SPELL_CALL_ANGEL] = ModelSummon_SetAIValues
 Finish[GameInfoTypes.EA_SPELL_CALL_ANGEL] = ModelSummon_Finish
 
 --EA_SPELL_CALL_ANIMALS
+Test[GameInfoTypes.EA_SPELL_CONJURE_MONSTER] = ModelSummon_TestTarget
 TestTarget[GameInfoTypes.EA_SPELL_CALL_ANIMALS] = ModelSummon_TestTarget
 SetUI[GameInfoTypes.EA_SPELL_CALL_ANIMALS] = ModelSummon_SetUI
 SetAIValues[GameInfoTypes.EA_SPELL_CALL_ANIMALS] = ModelSummon_SetAIValues
 Finish[GameInfoTypes.EA_SPELL_CALL_ANIMALS] = ModelSummon_Finish
 
 --EA_SPELL_CALL_TREE_ENT
+Test[GameInfoTypes.EA_SPELL_CALL_TREE_ENT] = ModelSummon_TestTarget
 TestTarget[GameInfoTypes.EA_SPELL_CALL_TREE_ENT] = ModelSummon_TestTarget
 SetUI[GameInfoTypes.EA_SPELL_CALL_TREE_ENT] = ModelSummon_SetUI
 SetAIValues[GameInfoTypes.EA_SPELL_CALL_TREE_ENT] = ModelSummon_SetAIValues
@@ -1420,6 +1436,7 @@ Test[GameInfoTypes.EA_SPELL_SUMMON_ARCHDEMON] = function()
 		g_int1 = firstArchdemonID
 	end
 	print("-g_int1 = ", g_int1, GameInfo.Units[g_int1].Type)
+	g_int3 = 0	--units out of supply (don't care for archtypes)
 	return true
 end
 TestTarget[GameInfoTypes.EA_SPELL_SUMMON_ARCHDEMON] = ModelSummon_TestTarget
@@ -1445,6 +1462,7 @@ Test[GameInfoTypes.EA_SPELL_CALL_ARCHANGEL] = function()
 		g_int1 = firstArchangelID
 	end
 	print("-g_int1 = ", g_int1, GameInfo.Units[g_int1].Type)
+	g_int3 = 0	--units out of supply (don't care for archtypes)
 	return true
 end
 TestTarget[GameInfoTypes.EA_SPELL_CALL_ARCHANGEL] = ModelSummon_TestTarget
@@ -1482,6 +1500,7 @@ Test[GameInfoTypes.EA_SPELL_CALL_MAJOR_SPIRIT] = function()
 	end
 	g_int1 = bestGodUnitID
 	print("-g_int1 = ", g_int1, GameInfo.Units[g_int1].Type)
+	g_int3 = 0	--units out of supply (don't care for archtypes)
 	return true
 end
 TestTarget[GameInfoTypes.EA_SPELL_CALL_MAJOR_SPIRIT] = ModelSummon_TestTarget

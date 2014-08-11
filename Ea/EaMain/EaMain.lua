@@ -4,7 +4,7 @@
 --------------------------------------------------------------
 
 local HOTFIX = "none"
-local DLL_COMMIT = "13c4065"
+local DLL_COMMIT = "72b50ce"
 local DLL_DEBUG_BUILD = false
 local EA_MEDIA_PACK_MIN_VERSION = 5
 
@@ -103,7 +103,6 @@ include("EaDebugUtils.lua")
 include("EaTextUtils.lua")
 
 local print = ENABLE_PRINT and print or function() end	--set in EaDefines.lua
-local Dprint = DEBUG_PRINT and print or function() end	
 
 -------------------------------------------------------------------------------------------------------
 -- File Locals
@@ -269,6 +268,7 @@ local function OnPlayerDoTurn(iPlayer)	-- Runs at begining of turn for all livin
 		BarbSpawnPerTurn()
 		AnimalsPerTurn()
 		ReligionPerGameTurn()
+		TestEnableProtectorConditions()
 	end
 
 	g_bHumanOrFirstInAutoplayTurn = g_bHumanOrFirstInAutoplayTurn or iPlayer == g_iActivePlayer
@@ -281,7 +281,6 @@ local function OnPlayerDoTurn(iPlayer)	-- Runs at begining of turn for all livin
 	-------------------------------------------------------------------------------------------------------
 	if playerType[iPlayer] == "FullCiv" then
 		--Full civs
-		local eaPlayer = gPlayers[iPlayer]
 		UnitPerCivTurn(iPlayer)						--must be before PeoplePerCivTurn(iPlayer)
 		UpdateAllArtifacts()
 		WondersPerCivTurn(iPlayer)
@@ -294,7 +293,7 @@ local function OnPlayerDoTurn(iPlayer)	-- Runs at begining of turn for all livin
 			AICivRun(iPlayer)
 			AIMercenaryPerCivTurn(iPlayer)
 		end
-		if not eaPlayer.eaCivNameID then
+		if not gPlayers[iPlayer].eaCivNameID then
 			TestAllCivNamingConditions(iPlayer)
 		end
 		DiploPerCivTurn(iPlayer)

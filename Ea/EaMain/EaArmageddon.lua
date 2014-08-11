@@ -4,13 +4,12 @@
 --------------------------------------------------------------
 print("Loading EaMagic.lua...")
 local print = ENABLE_PRINT and print or function() end
-local Dprint = DEBUG_PRINT and print or function() end
 
 --------------------------------------------------------------
 -- File Locals
 --------------------------------------------------------------
 --constants
-local STARTING_SUM_OF_ALL_MANA =		MapModData.STARTING_SUM_OF_ALL_MANA
+local STARTING_SUM_OF_ALL_MANA =		MapModData.EaSettings.STARTING_SUM_OF_ALL_MANA
 local ARMAGEDDON_IMAGE_INFO =			GameInfo.EaPopups.EAPOPUP_DEATH_OTHER
 local ARMAGEDDON_SOUND =				"AS2D_EVENT_NOTIFICATION_VERY_BAD"
 

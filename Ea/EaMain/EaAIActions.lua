@@ -51,6 +51,7 @@ local LAST_SPELL_ID =						LAST_SPELL_ID
 local fullCivs =							MapModData.fullCivs
 local realCivs =							MapModData.realCivs
 local gpRegisteredActions =					MapModData.gpRegisteredActions
+local gWorld =								gWorld
 local gPlayers =							gPlayers
 local gPeople =								gPeople
 local Players =								Players
@@ -437,6 +438,19 @@ AITarget.AllCities = function()
 		local loopPlayer = Players[iLoopPlayer]
 		for city in loopPlayer:Cities() do
 			TestAddOption("Plot", city:GetX(), city:GetY(), 0, nil)
+		end
+	end
+end
+
+
+AITarget.Purge = function()
+	--really all cities but save time by checking main conditions here
+	if gWorld.bAnraHolyCityExists == false and not g_eaPlayer.bIsFallen and not g_eaPlayer.bRenouncedMaleficium then
+		for iLoopPlayer in pairs(realCivs) do
+			local loopPlayer = Players[iLoopPlayer]
+			for city in loopPlayer:Cities() do
+				TestAddOption("Plot", city:GetX(), city:GetY(), 0, nil)
+			end
 		end
 	end
 end

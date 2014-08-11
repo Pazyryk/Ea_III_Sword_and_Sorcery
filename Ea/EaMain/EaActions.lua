@@ -4,8 +4,6 @@
 --------------------------------------------------------------
 print("Loading EaActions.lua...")
 local print = ENABLE_PRINT and print or function() end
-local Dprint = DEBUG_PRINT and print or function() end
-
 
 ---------------------------------------------------------------
 -- Local defines
@@ -43,10 +41,10 @@ local ENEMY_HEAL_RATE =						GameDefines.ENEMY_HEAL_RATE
 local NEUTRAL_HEAL_RATE =					GameDefines.NEUTRAL_HEAL_RATE
 local FRIENDLY_HEAL_RATE =					GameDefines.FRIENDLY_HEAL_RATE
 
-local STARTING_SUM_OF_ALL_MANA =			STARTING_SUM_OF_ALL_MANA
+local STARTING_SUM_OF_ALL_MANA =			MapModData.EaSettings.STARTING_SUM_OF_ALL_MANA
 local UNIT_SUFFIXES =						UNIT_SUFFIXES
 local NUM_UNIT_SUFFIXES =					#UNIT_SUFFIXES
-local MOD_MEMORY_HALFLIFE =					MOD_MEMORY_HALFLIFE
+local MOD_MEMORY_HALFLIFE =					MapModData.EaSettings.MOD_MEMORY_HALFLIFE
 local FIRST_SPELL_ID =						FIRST_SPELL_ID
 
 --global tables
@@ -373,9 +371,9 @@ local function FinishEaAction(eaActionID)		--only called from DoEaAction so file
 			for i = -1, HIGHEST_RELIGION_ID do
 				if g_tablePointer[i] > 0 then
 					--need percentage (round up or down???)
-					local convertPercent = floor(1 + 100 * g_tablePointer[i] / g_city:GetNumFollowers(i))
+					local convertPercent = floor(0.9 + 100 * g_tablePointer[i] / g_city:GetNumFollowers(i))
 					g_city:ConvertPercentFollowers(cultID, i, convertPercent)
-					if i == RELIGION_ANRA then
+					if i == RELIGION_ANRA and not g_eaPlayer.bIsFallen then
 						g_eaPlayer.fallenFollowersDestr = (g_eaPlayer.fallenFollowersDestr or 0) + (2 * g_tablePointer[i])
 					end
 				end
@@ -487,7 +485,7 @@ end
 --Finish functions are for actions that take time, runs when completed (does generic function like building add, or calls custom function).
 
 local function TestEaActionForHumanUI(eaActionID, iPlayer, unit, iPerson, testX, testY)	--called from UnitPanel
-	Dprint("TestEaActionForHumanUI ", eaActionID, iPlayer, unit, iPerson, testX, testY)
+	--print("TestEaActionForHumanUI ", eaActionID, iPlayer, unit, iPerson, testX, testY)
 	--	MapModData.bShow	--> "Show" this button in UI.
 	--	MapModData.bAllow	--> "Can do" (always equals Test return)
 	--	MapModData.text	--> Displayed text when boolean1 = true (will display in red if boolean2 = false)
@@ -501,7 +499,7 @@ local function TestEaActionForHumanUI(eaActionID, iPlayer, unit, iPerson, testX,
 
 	--By default, bShow follows bAllow and text will be from eaAction.Help. If we want bShow=true when bAllow=false,
 	--then we must change below in g_bUniqueBlocked code or in action-specific SetUI function.
-	if gWorld.bAhrimansVaultSealed and g_eaPlyaer.bIsFallen and g_eaAction.AhrimansVaultMatters then
+	if gWorld.evilControl == "Sealed" and g_eaPlyaer.bIsFallen and g_eaAction.AhrimansVaultMatters then
 		MapModData.text = "[COLOR_WARNING_TEXT]Ahriman's Vault has been sealed; the Fallen can no do this action[ENDCOLOR]"
 	end
 
@@ -686,7 +684,7 @@ function TestEaAction(eaActionID, iPlayer, unit, iPerson, testX, testY, bAINonTa
 	
 	--print("pass d")
 			
-	if g_eaAction.UnitTypePrefix1 then
+	if g_eaAction.UnitTypePrefix1 then		--TO DO: This is aweful! What was I thinking?
 		local bAllow = false
 		for i = 1, NUM_UNIT_SUFFIXES do
 			local suffix = UNIT_SUFFIXES[i]
@@ -742,7 +740,7 @@ function TestEaAction(eaActionID, iPlayer, unit, iPerson, testX, testY, bAINonTa
 	end
 
 	--Block for fallen after Ahriman's Vault sealed
-	if gWorld.bAhrimansVaultSealed and g_eaPlyaer.bIsFallen and g_eaAction.AhrimansVaultMatters then return false end
+	if gWorld.evilControl == "Sealed" and g_eaPlyaer.bIsFallen and g_eaAction.AhrimansVaultMatters then return false end
 
 	--Specific action test (runs if it exists)
 	if Test[eaActionID] and not Test[eaActionID]() then return false end
@@ -911,7 +909,13 @@ function TestEaActionTarget(eaActionID, testX, testY, bAITargetTest)
 		end
 		g_int1 = GameInfoTypes[upgradeUnitType]	--upgrade unitID
 		if not g_int1 then return false end
-		g_int2 = g_unit:UpgradePrice(g_int1)	--upgrade cost
+		print("-upgrade unitID = ", g_int1)
+		if g_eaAction.NormalCombatUnit then
+			g_int2 = g_unit:UpgradePrice(g_int1)	--upgrade cost
+		else
+			g_int2 = 50
+		end
+		print("-upgrade price = ", g_int2)
 		if g_player:GetGold() < g_int2 then
 			if g_bUICall then
 				g_bSetDelayedFailForUI = true
@@ -970,7 +974,7 @@ function TestEaActionTarget(eaActionID, testX, testY, bAITargetTest)
 		--Update progress
 		local progressHolder = g_eaAction.ProgressHolder
 		local progress
-		if progressHolder == "Person" then
+		if progressHolder == "Self" then
 			progress = g_eaPerson.progress[eaActionID] or 0
 		elseif progressHolder == "City" then
 			progress = g_eaCity.progress[eaActionID] or 0
@@ -1164,7 +1168,7 @@ function DoEaAction(eaActionID, iPlayer, unit, iPerson, targetX, targetY)
 			end
 		else
 			local progressTable
-			if progressHolder == "Person" then
+			if progressHolder == "Self" then
 				progressTable = g_eaPerson.progress
 				print("getting progressTable from person ", progressTable, g_eaAction.Type)
 			elseif progressHolder == "City" then
@@ -1269,7 +1273,7 @@ function ClearActionPlotTargetedForPerson(iPlayer, iPerson)
 end
 
 local function SetWEAHelp(eaActionID, mod)
-	Dprint("SetWEAHelp ", eaActionID, mod)
+	--print("SetWEAHelp ", eaActionID, mod)
 	MapModData.text = "no help text"
 	g_bAllTestsPassed = true
 	g_mod = mod
@@ -2744,8 +2748,27 @@ Do[GameInfoTypes.EA_ACTION_BECOME_ARCHMAGE] = function()
 	UseManaOrDivineFavor(g_iPlayer, g_iPerson, xp)			
 end
 
+--EA_ACTION_PURGE
+Test[GameInfoTypes.EA_ACTION_PURGE] = function()
+	return gWorld.bAnraHolyCityExists == false and not g_eaPlayer.bIsFallen and not g_eaPlayer.bRenouncedMaleficium
+end
 
+TestTarget[GameInfoTypes.EA_ACTION_PURGE] = function()
+	return 0 < g_city:GetNumFollowers(RELIGION_ANRA)
+end
 
+SetAIValues[GameInfoTypes.EA_ACTION_PURGE] = function()
+	gg_aiOptionValues.i = 10			--TO DO: this needs to go through roof for AI persuing Protector VC
+end
+
+Finish[GameInfoTypes.EA_ACTION_PURGE] = function()
+	--TO DO: Fix so it doesn't remove another religion with pop reduction
+
+	local convertPercent = floor(0.9 + 100 / g_city:GetNumFollowers(RELIGION_ANRA))
+	g_city:ConvertPercentFollowers(-1, RELIGION_ANRA, convertPercent)
+	g_city:ChangePopulation(-1, true)
+	return true
+end
 
 ------------------------------------------------------------------------------------------------------------------------------
 -- Prophecies
@@ -2858,7 +2881,7 @@ end
 --EA_ACTION_PROPHECY_VA
 --displays EaAction.Help, "All civilizations that know Maleficium will fall"
 Test[GameInfoTypes.EA_ACTION_PROPHECY_VA] = function()
-	return gWorld.evilTechControl == "VaReady"
+	return gWorld.evilControl == "Ready"
 end
 
 SetAIValues[GameInfoTypes.EA_ACTION_PROPHECY_VA] = function()
@@ -2867,8 +2890,7 @@ end
 
 Do[GameInfoTypes.EA_ACTION_PROPHECY_VA] = function()	--All civs with Maleficium will fall
 	print("Prophecy of Va")
-	gWorld.evilTechControl = "VaMade"
-	g_eaPlayer.protectorProphsRituals = (g_eaPlayer.protectorProphsRituals or 0) + 25
+	gWorld.evilControl = "Open"
 	if gReligions[RELIGION_AZZANDARAYASNA] and not gReligions[RELIGION_ANRA] then	
 		--Azz is founded but Anra is not; maybe Anra will be founded now
 		local anraHolyCity
@@ -2941,6 +2963,11 @@ Do[GameInfoTypes.EA_ACTION_PROPHECY_VA] = function()	--All civs with Maleficium 
 			BecomeFallen(iLoopPlayer)
 		end
 		UpdateCivReligion(iLoopPlayer)
+	end
+
+	--Civ who made this gets credit to Protector Victory, but only if not Fallen
+	if not g_eaPlayer.bIsFallen then
+		g_eaPlayer.protectorProphsRituals = (g_eaPlayer.protectorProphsRituals or 0) + 25
 	end
 	return true
 end
@@ -3956,7 +3983,7 @@ Finish[GameInfoTypes.EA_ACTION_PROSELYTIZE] = function()
 		if g_tablePointer[i] > 0 then
 			print("about to convert", i, g_tablePointer[i])
 			--need percentage (round up or down???)
-			local convertPercent = floor(1 + 100 * g_tablePointer[i] / g_city:GetNumFollowers(i))
+			local convertPercent = floor(0.9 + 100 * g_tablePointer[i] / g_city:GetNumFollowers(i))
 			g_city:ConvertPercentFollowers(RELIGION_AZZANDARAYASNA, i, convertPercent)
 			if i == RELIGION_ANRA then
 				g_eaPlayer.fallenFollowersDestr = (g_eaPlayer.fallenFollowersDestr or 0) + (2 * g_tablePointer[i])
@@ -4016,7 +4043,7 @@ Finish[GameInfoTypes.EA_ACTION_ANTIPROSELYTIZE] = function()
 	for i = -1, HIGHEST_RELIGION_ID do
 		if g_tablePointer[i] > 0 then
 			--need percentage (round up or down???)
-			local convertPercent = floor(1 + 100 * g_tablePointer[i] / g_city:GetNumFollowers(i))
+			local convertPercent = floor(0.9 + 100 * g_tablePointer[i] / g_city:GetNumFollowers(i))
 			g_city:ConvertPercentFollowers(RELIGION_ANRA, i, convertPercent)
 		end
 	end
@@ -4159,10 +4186,6 @@ SetAIValues[GameInfoTypes.EA_ACTION_RITUAL_BAKKHEIA] = ModelCultRitual_SetAIValu
 
 
 --EA_ACTION_RITUAL_AHRIMANS_EXCHANGE
-Test[GameInfoTypes.EA_ACTION_RITUAL_AHRIMANS_EXCHANGE] = function()
-	return not gWorld.bAhrimansVaultSealed
-end
-
 SetAIValues[GameInfoTypes.EA_ACTION_RITUAL_AHRIMANS_EXCHANGE] = function()
 	local numSpellcasters = 0
 	for iPerson, eaPerson in pairs(gPeople) do
@@ -4181,10 +4204,6 @@ end
 
 
 --EA_ACTION_RITUAL_CONSUME_SOULS
-Test[GameInfoTypes.EA_ACTION_RITUAL_CONSUME_SOULS] = function()
-	return not gWorld.bAhrimansVaultSealed
-end
-
 SetAIValues[GameInfoTypes.EA_ACTION_RITUAL_CONSUME_SOULS] = function()
 	local estPopDestroyed = (Game.GetTotalPopulation() - 1.5 * Game.GetNumCities()) / 2	--estimate assuming 1/2 cities > size 1 have odd numbered pop
 	gg_aiOptionValues.i = 100 * estPopDestroyed
@@ -4206,10 +4225,6 @@ Finish[GameInfoTypes.EA_ACTION_RITUAL_CONSUME_SOULS] = function()
 end
 
 --EA_ACTION_RITUAL_CONSUME_SELF
-Test[GameInfoTypes.EA_ACTION_RITUAL_CONSUME_SELF] = function()
-	return not gWorld.bAhrimansVaultSealed
-end
-
 SetAIValues[GameInfoTypes.EA_ACTION_RITUAL_CONSUME_SELF] = function()
 	local spellcasterXP = 0
 	for iPerson, eaPerson in pairs(gPeople) do
@@ -4235,16 +4250,17 @@ end
 --EA_ACTION_RITUAL_SEAL_AHRIMANS_VAULT
 Test[GameInfoTypes.EA_ACTION_RITUAL_SEAL_AHRIMANS_VAULT] = function()
 	local minFaith
-	if false then			--TO DO: non-magic criteria (any GP)
-		minFaith = -99999
+	if gWorld.bEnableEasyVaultSeal then					--any GP can do it now with no prereq
+		minFaith = 0
 	elseif g_eaPlayer.manaToSealAhrimansVault and g_eaPerson.spells then	--quick test for conditions and GP
 		minFaith = g_eaPlayer.manaToSealAhrimansVault
 	end
 	if minFaith then
-		if g_faith < minFaith then
+		if minFaith > 0 and g_faith < minFaith then
 			return false
 		else
-			if gWorld.bAhrimansVaultSealed then return false end
+			if gWorld.evilControl ~= "Open" then return false end
+			if g_eaPlayer.bIsFallen then return false end
 			g_int1 = minFaith
 			return true
 		end
@@ -4256,8 +4272,12 @@ TestTarget[GameInfoTypes.EA_ACTION_RITUAL_SEAL_AHRIMANS_VAULT] = function()
 	return gg_cachedMapPlots.accessAhrimansVault[g_iPlot] == true
 end
 
+SetAIValues[GameInfoTypes.EA_ACTION_RITUAL_SEAL_AHRIMANS_VAULT] = function()
+	gg_aiOptionValues.i = 100000	--TO DO: Need an "interupt for opportunity" here
+end
+
 Finish[GameInfoTypes.EA_ACTION_RITUAL_SEAL_AHRIMANS_VAULT] = function()
-	gWorld.bAhrimansVaultSealed = true					--TO DO: This will block all spellcasting by the Fallen (and a few non-spell actions)
+	gWorld.evilControl = "Sealed"
 	g_eaPlayer.protectorProphsRituals = (g_eaPlayer.protectorProphsRituals or 0) + 50
 	UseManaOrDivineFavor(g_iPlayer, nil, g_int1, false)
 	return true

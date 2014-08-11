@@ -1222,7 +1222,7 @@ function FaithTipHandler( control )
 			if consumed == 0 then
 				percentStr = "0"
 			else
-				local percentConsumed = 100 * consumed / MapModData.STARTING_SUM_OF_ALL_MANA
+				local percentConsumed = 100 * consumed / MapModData.EaSettings.STARTING_SUM_OF_ALL_MANA
 				local decimalPlaces = math.floor(1 - math.log10(percentConsumed))
 				decimalPlaces = decimalPlaces < 0 and 0 or decimalPlaces
 				percentStr = string.format("%.".. decimalPlaces .. "f", percentConsumed)

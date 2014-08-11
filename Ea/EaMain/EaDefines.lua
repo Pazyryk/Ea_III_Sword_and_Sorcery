@@ -12,41 +12,30 @@ for k, v in pairs(MapModData) do
 end
 
 --------------------------------------------------------------
--- Debug
+-- Debug / Under-Construction
 --------------------------------------------------------------
 
 ENABLE_PRINT = true
 DEBUG_PRINT = false
 MapModData.DEBUG_PRINT = DEBUG_PRINT
 MapModData.bDebugShowHiddenBuildings = false
-
 MapModData.bDisableEnabledPolicies = true
 
 --------------------------------------------------------------
--- Settings
+-- Game Speed and Map Size adjustments
 --------------------------------------------------------------
 
-UNADJUSTED_STARTING_SUM_OF_ALL_MANA = 300000
-MOD_MEMORY_HALFLIFE = 30	--What AI is doing now is twice as important as this many turns ago
+local gameSpeedMultipliers = {	[GameInfoTypes.GAMESPEED_QUICK] =		2/3,
+								[GameInfoTypes.GAMESPEED_STANDARD] =	1,
+								[GameInfoTypes.GAMESPEED_EPIC] =		3/2,
+								[GameInfoTypes.GAMESPEED_MARATHON] =	2	}
 
---------------------------------------------------------------
--- Global Constants
---------------------------------------------------------------
-
-WeakKeyMetatable = {__mode = "k"}
-OutOfRangeReturnZeroMetaTable = {__index = function() return 0 end}	--return 0 rather than nil for out of range index
-
-local gameSpeedMultipliers = {	[GameInfoTypes.GAMESPEED_QUICK] = 0.67,
-								[GameInfoTypes.GAMESPEED_STANDARD] = 1,
-								[GameInfoTypes.GAMESPEED_EPIC] = 1.33,
-								[GameInfoTypes.GAMESPEED_MARATHON] = 2	}
-
-local mapSizeMultipliers = {	[GameInfoTypes.WORLDSIZE_DUEL] = 0.5,
-								[GameInfoTypes.WORLDSIZE_TINY] = 0.5,
-								[GameInfoTypes.WORLDSIZE_SMALL] = 0.67,
-								[GameInfoTypes.WORLDSIZE_STANDARD] = 1,	
-								[GameInfoTypes.WORLDSIZE_LARGE ] = 1.33,
-								[GameInfoTypes.WORLDSIZE_HUGE ] = 2	}
+local mapSizeMultipliers = {	[GameInfoTypes.WORLDSIZE_DUEL] =		1/2,
+								[GameInfoTypes.WORLDSIZE_TINY] =		1/2,
+								[GameInfoTypes.WORLDSIZE_SMALL] =		2/3,
+								[GameInfoTypes.WORLDSIZE_STANDARD] =	1,	
+								[GameInfoTypes.WORLDSIZE_LARGE ] =		3/2,
+								[GameInfoTypes.WORLDSIZE_HUGE ] =		2	}
 
 GAME_SPEED = Game.GetGameSpeedType()
 MAP_SIZE = Map.GetWorldSize()
@@ -60,9 +49,33 @@ MapModData.MAP_SIZE_MULTIPLIER = MAP_SIZE_MULTIPLIER
 
 print("Game speed, map size, speed multiplier, size multiplier = ", gameSpeed, mapSize, GAME_SPEED_MULTIPLIER, MAP_SIZE_MULTIPLIER)
 
+--------------------------------------------------------------
+-- Settings
+--------------------------------------------------------------
 
-STARTING_SUM_OF_ALL_MANA = math.floor(UNADJUSTED_STARTING_SUM_OF_ALL_MANA * GAME_SPEED_MULTIPLIER * MAP_SIZE_MULTIPLIER)
-MapModData.STARTING_SUM_OF_ALL_MANA = STARTING_SUM_OF_ALL_MANA
+MapModData.EaSettings = {}				--Find Ea gameplay settings in EaTables/_EaSettings.sql
+print("Adjusted Ea Game Settings:")
+for row in GameInfo.EaSettings() do
+	local value = row.Value
+	local multiplier = row.GameLengthExp and GAME_SPEED_MULTIPLIER ^ row.GameLengthExp or 1
+	multiplier = multiplier * (row.MapSizeExp and MAP_SIZE_MULTIPLIER ^ row.MapSizeExp or 1)
+	if multiplier ~= 1 then
+		value = value * multiplier
+		if row.Int == 1 then
+			value = math.floor(value + 0.5)
+		end
+	end
+	print(row.Name, value)
+	MapModData.EaSettings[row.Name] = value
+end
+
+--------------------------------------------------------------
+-- Global Constants
+--------------------------------------------------------------
+
+WeakKeyMetatable = {__mode = "k"}
+OutOfRangeReturnZeroMetaTable = {__index = function() return 0 end}	--return 0 rather than nil for out of range index
+
 
 UNIT_SUFFIXES = {"_MAN", "_SIDHE", "_ORC"}
 

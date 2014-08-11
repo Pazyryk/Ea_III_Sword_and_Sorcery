@@ -4,8 +4,6 @@
 --------------------------------------------------------------
 print("Loading EaAIUnits.lua...")
 local print = ENABLE_PRINT and print or function() end
-local Dprint = DEBUG_PRINT and print or function() end
-
 
 local fullCivs = MapModData.fullCivs
 local gg_unitClusters = gg_unitClusters
@@ -65,29 +63,31 @@ function AnalyzeUnitClusters(iPlayer)	--called by AfterPlayerTurn
 		local clusterCityDistances = clusterCityDistMatrix[i]
 		local closestOwn, closestForeign, closestEnemy
 		local closestOwnDist, closestForeignDist, closestEnemyDist = 1000, 1000, 1000
-		for eaCityIndex = 1, #clusterCityDistances do		--has same dimention as gCities
-			local eaCity = gCities[eaCityIndex]
-			if 0 < eaCity.size then
-				local distance = clusterCityDistances[eaCityIndex]
-				local iOwner = eaCity.iOwner
-				local iOwnerTeam = Players[iOwner]:GetTeam()
-				if iOwnerTeam == iTeam then
-					if distance < closestOwnDist then
-						closestOwnDist = distance
-						closestOwn = eaCityIndex
-					end
-				elseif team:IsAtWar(iOwnerTeam) then
-					if distance < closestEnemyDist then
-						closestEnemyDist = distance
-						closestEnemy = eaCityIndex
-					end
-				else
-					if distance < closestForeignDist then
-						closestForeignDist = distance
-						closestForeign = eaCityIndex
-					end
+		for eaCityIndex, eaCity in pairs(gCities) do	--has same keys as clusterCityDistances
+
+		--for eaCityIndex = 1, #clusterCityDistances do		--has same dimention as gCities
+			--local eaCity = gCities[eaCityIndex]
+			--if 0 < eaCity.size then
+			local distance = clusterCityDistances[eaCityIndex]
+			local iOwner = eaCity.iOwner
+			local iOwnerTeam = Players[iOwner]:GetTeam()
+			if iOwnerTeam == iTeam then
+				if distance < closestOwnDist then
+					closestOwnDist = distance
+					closestOwn = eaCityIndex
+				end
+			elseif team:IsAtWar(iOwnerTeam) then
+				if distance < closestEnemyDist then
+					closestEnemyDist = distance
+					closestEnemy = eaCityIndex
+				end
+			else
+				if distance < closestForeignDist then
+					closestForeignDist = distance
+					closestForeign = eaCityIndex
 				end
 			end
+			--end
 		end
 
 		--Threat logic here (AI GPs with any combat role look at gg_unitClusters)

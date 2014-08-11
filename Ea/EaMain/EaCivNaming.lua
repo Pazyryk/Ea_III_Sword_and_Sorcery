@@ -5,7 +5,6 @@
 
 print("Loading EaCivNaming.lua...")
 local print = ENABLE_PRINT and print or function() end
-local Dprint = DEBUG_PRINT and print or function() end
 
 --------------------------------------------------------------
 -- local defs

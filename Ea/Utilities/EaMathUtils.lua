@@ -5,10 +5,21 @@
 local PlotDistance = Map.PlotDistance
 
 function GetDistanceMatrix(pts, pts2)
-	print("Running GetDistanceMatrix", pts, #pts, pts2, pts2 and #pts2)
-	--returns distance matrix; if pts2 == nil then returns a symmetric matrix with zero diagonal
+	print("Running GetDistanceMatrix")
+	--Returns distance matrix; if pts2 == nil then returns a symmetric matrix with zero diagonal
+	--Any tables can be supplied as long as their elements have .x, .y
 
+	local pts2 = pts2 or pts
 	local dMatrix = {}
+	for k, v in pairs(pts) do
+		dMatrix[k] = {}
+		for k2, v2 in pairs(pts2) do
+			dMatrix[k][k2] = PlotDistance(v.x, v.y, v2.x, v2.y)
+		end
+	end
+	return dMatrix
+
+	--[[	generalized above to work for any non-array tables
 	if pts2 then	--asymmetric matrix
 		for i = 1, #pts do
 			dMatrix[i] = {}
@@ -32,6 +43,7 @@ function GetDistanceMatrix(pts, pts2)
 		end
 	end
 	return dMatrix
+	]]
 end
 
 --------------------------------------------------------------

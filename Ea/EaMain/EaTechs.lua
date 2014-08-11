@@ -5,14 +5,13 @@
 
 print("Loading EaTechs.lua...")
 local print = ENABLE_PRINT and print or function() end
-local Dprint = DEBUG_PRINT and print or function() end
 
 --------------------------------------------------------------
 -- Settings
 --------------------------------------------------------------
 --knowledge maintenence
-local KM_PER_TECH_PER_CITIZEN = 0.1
-local FAVORED_TECH_COST_REDUCTION = -20
+local KM_PER_TECH_PER_CITIZEN =		MapModData.EaSettings.KM_PER_TECH_PER_CITIZEN
+local FAVORED_TECH_COST_REDUCTION = MapModData.EaSettings.FAVORED_TECH_COST_REDUCTION
 
 --------------------------------------------------------------
 -- local defs
@@ -545,12 +544,12 @@ local function OnTeamTechResearched(iTeam, techID, iLearned)
 		local maleficiumLevelChange = 0
 		if gg_eaTechClass[techID] == "ArcaneEvil" then
 			maleficiumLevelChange = tier
-		elseif gg_eaTechClass[techID] == "Divine" then
+		elseif gg_eaTechClass[techID] == "Divine" then								--  -1 for each teir level learned
 			maleficiumLevelChange = -tier
 		elseif gg_eaTechClass[techID] == "Arcane" then			--negative change won't apply if player has positive value already
-			maleficiumLevelChange = tier > 3 and -floor((tier - 2) / 2) or 0
+			maleficiumLevelChange = tier > 2 and -floor((tier - 1) / 2) or 0		--  -1, -2, -3 for each teir 3-4, 5-6, 7
 		else
-			maleficiumLevelChange = tier > 4 and -floor((tier - 2) / 2) or 0
+			maleficiumLevelChange = tier > 3 and -floor((tier - 2) / 2) or 0		--  -1, -2 for each tier 4-5, 6-7 
 		end
 
 
@@ -559,39 +558,44 @@ local function OnTeamTechResearched(iTeam, techID, iLearned)
 		if OnTeamTechLearned[techID] then
 			OnTeamTechLearned[techID](iTeam)
 		end
-		if OnMajorPlayerTechLearned[techID] then
-			for iPlayer, eaPlayer in pairs(fullCivs) do
-				local player = Players[iPlayer]
-				if player:GetTeam() == iTeam then
-					if maleficiumLevelChange > 0 then	--Maleficium level (for dll control of Renounce Maleficium)	
-						local maleficiumLevel = player:GetMaleficiumLevel()
-						maleficiumLevel = maleficiumLevel < 0 and 0 or maleficiumLevel	--if they were at all "anti-maleficium" before, undo that
-						maleficiumLevel = maleficiumLevel + maleficiumLevelChange
-						player:SetMaleficiumLevel(maleficiumLevel)					
-					elseif maleficiumLevelChange < 0 then
-						local maleficiumLevel = player:GetMaleficiumLevel()
-						if maleficiumLevel <= 0 then							--only reduce if this is NOT already a player with positive MaleficiumLevel
-							maleficiumLevel = maleficiumLevel + maleficiumLevelChange
-							player:SetMaleficiumLevel(maleficiumLevel)	
-						end
-					end
-					OnMajorPlayerTechLearned[techID](iPlayer)
-				end
-			end
-		end
 
-		--remember non-utility techs for quick KM calculation
 		for iPlayer, eaPlayer in pairs(fullCivs) do
 			local player = Players[iPlayer]
 			if player:GetTeam() == iTeam then
+
+				--remember non-utility techs for quick KM calculation
 				eaPlayer.techs[techID] = true
 				if not player:IsHuman() then
 					if player:GetLengthResearchQueue() < 2 then			--still 1 in queue if just gained this one as free tech 
 						AIPushTechsFromCivPlans(iPlayer, false)
 					end
 				end
+
+				--maleficium changes
+				if maleficiumLevelChange > 0 then	--Maleficium level (for dll control of Renounce Maleficium)
+					if eaPlayer.bIsFallen then		--no positive values if not (we'll tally up these techs when they Fall)
+						local maleficiumLevel = player:GetMaleficiumLevel()
+						maleficiumLevel = maleficiumLevel < 0 and 0 or maleficiumLevel	--if they were at all "anti-maleficium" before, undo that
+						maleficiumLevel = maleficiumLevel + maleficiumLevelChange
+						player:SetMaleficiumLevel(maleficiumLevel)
+					end				
+				elseif maleficiumLevelChange < 0 then
+					if not eaPlayer.bIsFallen then
+						local maleficiumLevel = player:GetMaleficiumLevel()
+						if maleficiumLevel <= 0 then							--only reduce if this is NOT already a player with positive MaleficiumLevel
+							maleficiumLevel = maleficiumLevel + maleficiumLevelChange
+							player:SetMaleficiumLevel(maleficiumLevel)	
+						end
+					end
+				end
+
+				--tech-specific effects
+				if OnMajorPlayerTechLearned[techID] then
+					OnMajorPlayerTechLearned[techID](iPlayer)
+				end
 			end
 		end
+
 	end
 end
 local function X_OnTeamTechResearched(iTeam, techID, _) return HandleError31(OnTeamTechResearched, iTeam, techID, _) end
@@ -607,8 +611,8 @@ OnTeamTechLearned[GameInfoTypes.TECH_MATHEMATICS] = OnTeamTechLearned[GameInfoTy
 OnTeamTechLearned[GameInfoTypes.TECH_ARCHERY] = OnTeamTechLearned[GameInfoTypes.TECH_SAILING]
 
 OnTeamTechLearned[GameInfoTypes.TECH_REANIMATION] = function(iTeam)
-	if gWorld.evilTechControl == "NewGame" then
-		gWorld.evilTechControl = "VaReady"
+	if gWorld.evilControl == "NewGame" then
+		gWorld.evilControl = "Ready"
 	end
 end
 OnTeamTechLearned[GameInfoTypes.TECH_SORCERY] = OnTeamTechLearned[GameInfoTypes.TECH_REANIMATION]
@@ -766,7 +770,8 @@ local function OnPlayerCanEverResearch(iPlayer, techID)
 	--eaTechClass blocks
 	if gg_eaTechClass[techID] == "ArcaneEvil" then
 		if eaPlayer.bRenouncedMaleficium then return false end
-		if 3 < gg_techTier[techID] and gWorld.evilTechControl ~= "VaMade" then return false end
+		if 3 < gg_techTier[techID] and gWorld.evilControl ~= "Open" then return false end
+		if gWorld.evilControl == "Sealed" then return false end
 	elseif gg_eaTechClass[techID] == "Devine" then
 		if  eaPlayer.race ~= EARACE_MAN or eaPlayer.bIsFallen then return false end
 	end

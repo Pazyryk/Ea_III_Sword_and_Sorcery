@@ -2776,14 +2776,14 @@ end
 --Test, TestTarget, SetUI, SetAIValues, Do, Interrupt, Finish
 --Caution! Calls to most religion methods cause CTD if religionID has not been founded yet
 
---EA_ACTION_PROPHECY_AHURADHATA
-TestTarget[GameInfoTypes.EA_ACTION_PROPHECY_AHURADHATA] = function()
+--EA_ACTION_PROPHECY_YAZATAS
+TestTarget[GameInfoTypes.EA_ACTION_PROPHECY_YAZATAS] = function()
 	--generic test fails before this if it is not city and our city
 	return not g_city:IsHolyCityAnyReligion()
 end
 
 --[[
-SetUI[GameInfoTypes.EA_ACTION_PROPHECY_AHURADHATA] = function()
+SetUI[GameInfoTypes.EA_ACTION_PROPHECY_YAZATAS] = function()
 	if g_bNonTargetTestsPassed and not g_bAllTestsPassed then
 		MapModData.bShow = true
 		MapModData.text = "You can make this prophecy in any non-holy city that you own"
@@ -2791,7 +2791,7 @@ SetUI[GameInfoTypes.EA_ACTION_PROPHECY_AHURADHATA] = function()
 end
 ]]
 
-Do[GameInfoTypes.EA_ACTION_PROPHECY_AHURADHATA] = function()
+Do[GameInfoTypes.EA_ACTION_PROPHECY_YAZATAS] = function()
 	FoundReligion(g_iPlayer, g_iCity, RELIGION_AZZANDARAYASNA)
 	return true
 end
@@ -2875,20 +2875,17 @@ Do[GameInfoTypes.EA_ACTION_PROPHECY_MITHRA] = function()
 	return true
 end
 
---EA_ACTION_PROPHECY_MA
-
-
---EA_ACTION_PROPHECY_VA
+--EA_ACTION_PROPHECY_SIMSUM
 --displays EaAction.Help, "All civilizations that know Maleficium will fall"
-Test[GameInfoTypes.EA_ACTION_PROPHECY_VA] = function()
+Test[GameInfoTypes.EA_ACTION_PROPHECY_SIMSUM] = function()
 	return gWorld.evilControl == "Ready"
 end
 
-SetAIValues[GameInfoTypes.EA_ACTION_PROPHECY_VA] = function()
+SetAIValues[GameInfoTypes.EA_ACTION_PROPHECY_SIMSUM] = function()
 	gg_aiOptionValues.i = 100							--Game.GetGameTurn() / 4 - 25	--will happen sometime after turn 100
 end
 
-Do[GameInfoTypes.EA_ACTION_PROPHECY_VA] = function()	--All civs with Maleficium will fall
+Do[GameInfoTypes.EA_ACTION_PROPHECY_SIMSUM] = function()	--All civs with Maleficium will fall
 	print("Prophecy of Va")
 	gWorld.evilControl = "Open"
 	if gReligions[RELIGION_AZZANDARAYASNA] and not gReligions[RELIGION_ANRA] then	

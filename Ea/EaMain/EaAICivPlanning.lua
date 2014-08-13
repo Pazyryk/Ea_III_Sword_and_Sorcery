@@ -29,6 +29,7 @@ local FEATURE_FOREST = 				GameInfoTypes.FEATURE_FOREST
 local FEATURE_JUNGLE = 				GameInfoTypes.FEATURE_JUNGLE
 local FEATURE_MARSH =	 			GameInfoTypes.FEATURE_MARSH
 local FEATURE_SOLOMONS_MINES =	 	GameInfoTypes.FEATURE_SOLOMONS_MINES
+local FEATURE_EL_DORADO =	 		GameInfoTypes.FEATURE_EL_DORADO
 
 local POLICY_DOMINIONISM =			GameInfoTypes.POLICY_DOMINIONISM
 local POLICY_PANTHEISM =			GameInfoTypes.POLICY_PANTHEISM
@@ -220,8 +221,8 @@ end
 
 local excludedPolicyBranchesByBranchID = {}
 for row in GameInfo.PolicyBranch_Disables() do
-	b1 = GameInfoTypes[row.PolicyBranchType]
-	b2 = GameInfoTypes[row.PolicyBranchDisable]
+	local b1 = GameInfoTypes[row.PolicyBranchType]
+	local b2 = GameInfoTypes[row.PolicyBranchDisable]
 	excludedPolicyBranchesByBranchID[b1] = excludedPolicyBranchesByBranchID[b1] or {}
 	local index = #excludedPolicyBranchesByBranchID[b1] + 1
 	excludedPolicyBranchesByBranchID[b1][index] = b2
@@ -266,7 +267,9 @@ for techInfo in GameInfo.Technologies() do
 end
 CacheTechPrereqsRecursionByType = nil
 
-local unholyPlans = {[GameInfoTypes.EACIVPLAN_UNHOLY_CONTINGENT] = true, [GameInfoTypes.EACIVPLAN_UNHOLY] = true, [GameInfoTypes.EACIVPLAN_STYGIA] = true}
+local unholyPlans = {	[GameInfoTypes.EACIVPLAN_UNHOLY_CONTINGENT] = true,
+						[GameInfoTypes.EACIVPLAN_UNHOLY] = true,
+						[GameInfoTypes.EACIVPLAN_DESTROYER] = true}
 local holyPlans = {}
 
 local policiesByPlan = {}
@@ -1440,6 +1443,8 @@ PickBestAvailableNamingPlan = function(iPlayer)
 			if featureID ~= FEATURE_ICE then plotSpecial = "Sea" end
 		elseif featureID == FEATURE_SOLOMONS_MINES then
 			plotSpecial = "Evil"
+		elseif featureID == FEATURE_EL_DORADO then
+			plotSpecial = "Azzandara"
 		elseif plotTypeID == PLOT_MOUNTAIN then
 			plotSpecial = "Mountain"
 		elseif featureID == FEATURE_MARSH then

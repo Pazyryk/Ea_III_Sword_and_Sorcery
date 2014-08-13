@@ -400,14 +400,14 @@
 			<Text>Chrysopoeia Reactor</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_CHRYSOPOEIA_REACTOR_HELP">
-			<Text></Text>
+			<Text>Converts 1 Quicksilver resource into 1 [ICON_RES_GOLD] Gold</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_ARGENTOPOEIA_REACTOR">
 			<Text>Argentopoeia Reactor</Text>
 			<Gender>neuter:an</Gender>
 		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_ARGENTOPOEIA_REACTOR_HELP">
-			<Text></Text>
+			<Text>Converts 1 Quicksilver resource into 1 [ICON_RES_SILVER] Silver</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_DISTILLERY">
 			<Text>Distillery</Text>

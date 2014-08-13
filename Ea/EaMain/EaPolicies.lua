@@ -177,21 +177,13 @@ function OnPlayerAdoptPolicyBranch(iPlayer, policyBranchTypeID)					--called by 
 	--change everything to delayed effect (as for policies below) and function calls
 
 	if policyBranchTypeID == POLICY_BRANCH_THEISM then
-		local player = Players[iPlayer]
 		local eaPlayer = gPlayers[iPlayer]
 		if eaPlayer.religionID == -1 or eaPlayer.religionID == RELIGION_AZZANDARAYASNA then
 			SetDivineFavorUse(iPlayer, true)		--provisionally allowed for non-relgious civ; will be reversed if any other religion becomes dominent
 		end
-		local maleficiumLevel = player:GetMaleficiumLevel()
-		maleficiumLevel = maleficiumLevel > 0 and 0 or maleficiumLevel
-		maleficiumLevel = maleficiumLevel - 2
-		player:SetMaleficiumLevel(maleficiumLevel)
+		ChangeMaleficiumLevelWithTests(iPlayer, -2)
 	elseif policyBranchTypeID == POLICY_BRANCH_ANTI_THEISM then
-		local player = Players[iPlayer]
-		local maleficiumLevel = player:GetMaleficiumLevel()
-		maleficiumLevel = maleficiumLevel < 0 and 0 or maleficiumLevel
-		maleficiumLevel = maleficiumLevel + 2
-		player:SetMaleficiumLevel(maleficiumLevel)	--Maleficium level (for dll control of Renounce Maleficium)
+		ChangeMaleficiumLevelWithTests(iPlayer, 2)
 	elseif policyBranchTypeID == POLICY_BRANCH_PANTHEISM then
 		local player = Players[iPlayer]
 		local iTeam = player:GetTeam()
@@ -226,10 +218,14 @@ function OnPlayerAdoptPolicyBranch(iPlayer, policyBranchTypeID)					--called by 
 			end
 		end
 
+		ChangeMaleficiumLevelWithTests(iPlayer, -1)
+
 	elseif policyBranchTypeID == POLICY_BRANCH_ARCANA then
 
 		local team = Teams[Players[iPlayer]:GetTeam()]
 		team:SetHasTech(GameInfoTypes.TECH_MOLY_VISIBLE, true)
+
+		ChangeMaleficiumLevelWithTests(iPlayer, -1)
 	
 	elseif policyBranchTypeID == POLICY_BRANCH_SLAVERY then
 		local player = Players[iPlayer]
@@ -323,18 +319,14 @@ function OnPlayerAdoptPolicyDelayedEffect()		--called by closing policy window a
 		end
 
 		--Policy in branch cummulative effects
-		if policyInfo.PolicyBranchType == "POLICY_BRANCH_THEISM" then
-			local player = Players[iPlayer]
-			local maleficiumLevel = player:GetMaleficiumLevel()
-			maleficiumLevel = maleficiumLevel > 0 and 0 or maleficiumLevel
-			maleficiumLevel = maleficiumLevel - 2
-			player:SetMaleficiumLevel(maleficiumLevel)
+		if policyInfo.PolicyBranchType == "POLICY_BRANCH_PANTHEISM" then
+			ChangeMaleficiumLevelWithTests(iPlayer, -1)
+		elseif policyInfo.PolicyBranchType == "POLICY_BRANCH_THEISM" then
+			ChangeMaleficiumLevelWithTests(iPlayer, -2)
 		elseif policyInfo.PolicyBranchType == "POLICY_BRANCH_ANTI_THEISM" then
-			local player = Players[iPlayer]
-			local maleficiumLevel = player:GetMaleficiumLevel()
-			maleficiumLevel = maleficiumLevel < 0 and 0 or maleficiumLevel
-			maleficiumLevel = maleficiumLevel + 2
-			player:SetMaleficiumLevel(maleficiumLevel)	--Maleficium level (for dll control of Renounce Maleficium)
+			ChangeMaleficiumLevelWithTests(iPlayer, 2)
+		elseif policyInfo.PolicyBranchType == "POLICY_BRANCH_ARCANA" then
+			ChangeMaleficiumLevelWithTests(iPlayer, -1)
 		end
 
 		--Specific Lua functions
@@ -358,6 +350,13 @@ function OnFinisherPolicy(iPlayer, policyID)
 		if not eaPlayer.manaToSealAhrimansVault or eaPlayer.manaToSealAhrimansVault > 20000 then
 			eaPlayer.manaToSealAhrimansVault = 20000
 		end
+		ChangeMaleficiumLevelWithTests(iPlayer, -1)
+	elseif policyID == GameInfoTypes.POLICY_THEISM_FINISHER then
+		ChangeMaleficiumLevelWithTests(iPlayer, -2)
+	elseif policyID == GameInfoTypes.POLICY_ANTI_THEISM_FINISHER then
+		ChangeMaleficiumLevelWithTests(iPlayer, 2)	
+	elseif policyID == GameInfoTypes.POLICY_ARCANA_FINISHER then
+		ChangeMaleficiumLevelWithTests(iPlayer, -1)	
 	end
 end
 local OnFinisherPolicy = OnFinisherPolicy

@@ -127,35 +127,29 @@
 			<Text>Purge one Aŋra follower from this city</Text>
 		</Row>
 
-		<Row Tag="TXT_KEY_EA_ACTION_PROPHECY_AHURADHATA">
-			<Text>Prophecy of Ahuradhâta</Text>
+		<Row Tag="TXT_KEY_EA_ACTION_PROPHECY_YAZATAS">
+			<Text>Prophemi Yazatas</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_ACTION_PROPHECY_AHURADHATA_HELP">
+		<Row Tag="TXT_KEY_EA_ACTION_PROPHECY_YAZATAS_HELP">
 			<Text>Found the Azzandarayasna religion in this city</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_PROPHECY_MITHRA">
-			<Text>Prophecy of Mithra</Text>
+			<Text>Prophemi Mithra</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_ACTION_PROPHECY_MA">
-			<Text>Prophecy of Mâ</Text>
+		<Row Tag="TXT_KEY_EA_ACTION_PROPHECY_SIMSUM">
+			<Text>Prophemi Tzimtzūm</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_ACTION_PROPHECY_MA_HELP">
-			<Text>placeholder</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_ACTION_PROPHECY_VA">
-			<Text>Prophecy of Vâ</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_ACTION_PROPHECY_VA_HELP">
+		<Row Tag="TXT_KEY_EA_ACTION_PROPHECY_SIMSUM_HELP">
 			<Text>All civilizations that know Maleficium will Fall</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_PROPHECY_ANRA">
-			<Text>Prophecy of Aŋra</Text>
+			<Text>Prophemi Aŋra</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_PROPHECY_ANRA_HELP">
 			<Text>Found the Aŋra religion in this city</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_PROPHECY_AESHEMA">
-			<Text>Prophecy of Aeshema</Text>
+			<Text>Prophemi Aeshema</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_PROPHECY_AESHEMA_HELP">
 			<Text>Summon the Demon of Wrath, Aeshema, and empower him with the annihilation of all of your cities and units</Text>
@@ -174,6 +168,7 @@
 		<Row Tag="TXT_KEY_EA_ACTION_PROPHECY_ORDO_DAMNATIO_HELP">
 			<Text>Summons all eight Archdemons at once (even if they have been summoned before) and a host of lesser Demons and Abyssal Creatures. Sacrifices the prophecy maker.</Text>
 		</Row>
+		
 		
 		<Row Tag="TXT_KEY_EA_ACTION_KOLOSSOS">
 			<Text>Build Kolossós</Text>

@@ -557,7 +557,7 @@ function AddSmallButtonsToTechButton( thisTechButtonInstance, tech, maxSmallButt
 		local buttonName = "B"..tostring(buttonNum)
 		local thisButton = thisTechButtonInstance[buttonName]
 		if thisButton then
-			local iconAtlas, iconIndex = "EA_SPELLS_ATLAS", 0
+			local iconAtlas, iconIndex = "EA_SPELLS_ATLAS_EXTRA", 4
 			IconHookup(iconIndex, textureSize, iconAtlas, thisButton)
 			thisButton:SetHide( false )
 			thisButton:SetToolTipString(arcaneToolTip)
@@ -568,7 +568,7 @@ function AddSmallButtonsToTechButton( thisTechButtonInstance, tech, maxSmallButt
 		local buttonName = "B"..tostring(buttonNum)
 		local thisButton = thisTechButtonInstance[buttonName]
 		if thisButton then
-			local iconAtlas, iconIndex = "EA_SPELLS_ATLAS", 2
+			local iconAtlas, iconIndex = "EA_SPELLS_ATLAS_EXTRA", 6
 			IconHookup(iconIndex, textureSize, iconAtlas, thisButton)
 			thisButton:SetHide( false )
 			thisButton:SetToolTipString(divineToolTip)
@@ -579,7 +579,7 @@ function AddSmallButtonsToTechButton( thisTechButtonInstance, tech, maxSmallButt
 		local buttonName = "B"..tostring(buttonNum)
 		local thisButton = thisTechButtonInstance[buttonName]
 		if thisButton then
-			local iconAtlas, iconIndex = "EA_SPELLS_ATLAS", 1
+			local iconAtlas, iconIndex = "EA_SPELLS_ATLAS_EXTRA", 5
 			IconHookup(iconIndex, textureSize, iconAtlas, thisButton)
 			thisButton:SetHide( false )
 			thisButton:SetToolTipString(fallenToolTip)

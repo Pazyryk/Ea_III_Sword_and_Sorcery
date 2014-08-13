@@ -61,7 +61,7 @@ UPDATE Defines SET Value = 75 WHERE Name = 'BARBARIAN_TECH_PERCENT';		--75
 
 --AI
 INSERT INTO Defines (Name, Value) VALUES
-('AI_RENOUNCE_MALEFICIUM_BASE_VALUE',		150	),	--these control the trade item valuation in EaDLL
+('AI_RENOUNCE_MALEFICIUM_BASE_VALUE',		120	),	--these control the trade item valuation in EaDLL
 ('AI_RENOUNCE_MALEFICIUM_PEACE_MULTIPLIER',	2	),
 ('AI_RENOUNCE_MALEFICIUM_RECEIVER_VALUE',	100	);
 

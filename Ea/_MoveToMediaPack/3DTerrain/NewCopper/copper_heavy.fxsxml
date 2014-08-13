@@ -1,0 +1,12 @@
+<Asset>
+  <Mesh file="copper_heavy.gr2" source="Max" />
+  <Texture file="CityBase_SREF.dds" source="Max" />
+  <Texture file="Generic_Grey_8.dds" source="Max" />
+  <Texture file="Iron_Heavy_Decal_DIFF.dds" source="Max" />
+  <Texture file="Iron_ore_Heavy_Decal_H.dds" source="Max" />
+  <Texture file="Resource_Irradiance.dds" source="Max" />
+  <Texture file="copper_ore_DIFF.dds" source="Max" />
+  <Texture file="iron_ore_SREF.dds" source="Max" />
+  <Texture file="resource_Environment_Sharp.dds" source="Max" />
+  <Texture file="resources_Environment_Dull.dds" source="Max" />
+</Asset>

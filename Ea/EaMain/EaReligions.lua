@@ -451,6 +451,30 @@ function RefreshBeliefs(policyID)	--if policyID is nil then checks all policies 
 	end
 end
 
+function ChangeMaleficiumLevelWithTests(iPlayer, change)
+	--some checks here to make sure we're not doing this wrong
+	local eaPlayer = gPlayers[iPlayer]
+	if eaPlayer.bRenouncedMaleficium then return end		--these guys never go positive or negative, so won't offer or ask for Renounce Maleficium
+	if change < 0 then
+		if not eaPlayer.bIsFallen then
+			local player = Players[iPlayer]
+			local maleficiumLevel = player:GetMaleficiumLevel()
+			maleficiumLevel = maleficiumLevel > 0 and 0 or maleficiumLevel	--max 0, then change
+			maleficiumLevel = maleficiumLevel + change
+			player:SetMaleficiumLevel(maleficiumLevel)
+		end
+	elseif change > 0 then
+		if eaPlayer.bIsFallen then
+			local player = Players[iPlayer]
+			local maleficiumLevel = player:GetMaleficiumLevel()
+			maleficiumLevel = maleficiumLevel < 0 and 0 or maleficiumLevel	--min 0, then change
+			maleficiumLevel = maleficiumLevel + change
+			player:SetMaleficiumLevel(maleficiumLevel)	
+		end
+	end
+end
+
+
 function BecomeFallen(iPlayer)		--this could happen before, during or after the founding of Anra
 	local eaPlayer = gPlayers[iPlayer]
 	if eaPlayer.bIsFallen then return end
@@ -461,28 +485,32 @@ function BecomeFallen(iPlayer)		--this could happen before, during or after the 
 	SetDivineFavorUse(iPlayer, false)
 	player:SetHasPolicy(GameInfoTypes.POLICY_IS_FALLEN, true)
 
-	--MaleficiumLevel; get this to at least 0 and then +1, and then tally up tech effects since they weren't counted before (the couldn't take anti-Theism before this so no need to count that)
-	local maleficiumLevel = player:GetMaleficiumLevel()
-	maleficiumLevel = maleficiumLevel < 0 and 1 or maleficiumLevel + 1
+	--MaleficiumLevel; figure this out from scratch since bad effects weren't given before civ was Fallen
+	local maleficiumLevel = 1
+
+	--techs
 	for techID, eaTechType in pairs(gg_eaTechClass) do
-		if eaTechType == "ArcaneEvil" and eaPlayer.techs[techID] then
-			maleficiumLevel = maleficiumLevel + gg_techTier[techID]
+		if eaPlayer.techs[techID] then
+			if eaTechType == "ArcaneEvil" then
+				maleficiumLevel = maleficiumLevel + gg_techTier[techID]
+			elseif eaTechType == "Arcane" then
+				maleficiumLevel = maleficiumLevel + floor(gg_techTier[techID] / 2)
+			end
 		end
 	end
-	player:SetMaleficiumLevel(maleficiumLevel)	--This allows Renounce Maleficium to non-Fallen players (i.e., any player with GetMaleficiumLevel <= 0)
 
-	--"Mirror" Theism branch
+	--Mirror Theism branch; this WON'T call OnPlayerAdoptPolicyBranch & OnPlayerAdoptPolicy so do anything we need to do here
 	if player:HasPolicy(POLICY_THEISM) then
 		print("Converting Theism policies to mirror policies")
 		player:SetPolicyBranchUnlocked(POLICY_BRANCH_ANTI_THEISM, true)
-		OnPlayerAdoptPolicyBranch(iPlayer, POLICY_BRANCH_ANTI_THEISM)	--doesn't fire from GameEvents if set by Lua
 		player:SetHasPolicy(POLICY_ANTI_THEISM, true)
+		maleficiumLevel = maleficiumLevel + 2
 		for policy in GameInfo.Policies() do
 			if policy.PolicyBranchType == "POLICY_BRANCH_THEISM" then
 				if player:HasPolicy(policy.ID) then
 					player:SetHasPolicy(policy.ID, false)
 					player:SetHasPolicy(policy.ID + FALLEN_ID_SHIFT, true)
-					OnPlayerAdoptPolicy(iPlayer, policy.ID)				--doesn't fire from GameEvents if set by Lua
+					maleficiumLevel = maleficiumLevel + 2
 				end
 			end
 		end
@@ -490,10 +518,12 @@ function BecomeFallen(iPlayer)		--this could happen before, during or after the 
 		if player:HasPolicy(POLICY_THEISM_FINISHER) then
 			player:SetHasPolicy(POLICY_THEISM_FINISHER, false)
 			player:SetHasPolicy(POLICY_ANTI_THEISM_FINISHER, true)
-			OnFinisherPolicy(iPlayer, POLICY_ANTI_THEISM_FINISHER)		--doesn't fire from GameEvents if set by Lua
+			maleficiumLevel = maleficiumLevel + 2
 		end
 		player:SetPolicyBranchUnlocked(POLICY_BRANCH_THEISM, false)
 	end
+
+	ChangeMaleficiumLevelWithTests(iPlayer, maleficiumLevel)
 
 	--All spellcasters become Sorcerers
 	for iPerson, eaPerson in pairs(gPeople) do
@@ -700,10 +730,8 @@ local function OnRenounceMaleficium(iPlayer1, iPlayer2)
 	print(" -player " .. iPlayer .. " renounces with GetMaleficiumLevel = ", player:GetMaleficiumLevel())
 	local eaPlayer = gPlayers[iPlayer]
 
-	--mark as renounced to restrict techs/policies
+	--mark as renounced to restrict techs/policies; set MaleficiumLevel to 0 forever so this item will never be offered or asked for
 	eaPlayer.bRenouncedMaleficium = true
-
-	--prevent this from coming up again as a trade item
 	player:SetMaleficiumLevel(0)
 
 	--remove maleficium and give credit

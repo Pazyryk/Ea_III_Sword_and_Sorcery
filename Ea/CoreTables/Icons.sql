@@ -3,20 +3,37 @@
 -- Atlases
 --------------------------------------------------------------
 
-INSERT INTO IconTextureAtlases(Atlas,	IconSize,	Filename,					IconsPerRow,	IconsPerColumn) VALUES
-('EA_ACTION_ATLAS',						45,			'EaActionAtlas45.dds',		8,				8			),
-('EA_ACTION_ATLAS',						64,			'EaActionAtlas64.dds',		8,				8			),
-('EA_FLAG_ATLAS',						32,			'EaFlagAtlas32.dds',		8,				8			),
-('EA_RELIGION_ATLAS',					80,			'EaReligionAtlas80.dds',	8,				4			),
-('EA_RELIGION_ATLAS',					48,			'EaReligionAtlas48.dds',	8,				4			),
-('EA_RELIGION_ATLAS',					45,			'EaReligionAtlas45.dds',	8,				4			),
-('EA_RELIGION_ATLAS',					32,			'EaReligionAtlas32.dds',	8,				4			),
-('EA_RELIGION_STAR_ATLAS',				80,			'EaReligionStarAtlas80.dds',8,				4			),
-('EA_RELIGION_STAR_ATLAS',				48,			'EaReligionStarAtlas48.dds',8,				4			),
-('EA_RELIGION_STAR_ATLAS',				32,			'EaReligionStarAtlas32.dds',8,				4			),
-('EA_SPELLS_ATLAS',						64,			'EaSpellsAtlas64.dds',		8,				4			),
-('EA_SPELLS_ATLAS',						48,			'EaSpellsAtlas48.dds',		8,				4			),
-('EA_SPELLS_ATLAS',						45,			'EaSpellsAtlas45.dds',		8,				4			);
+INSERT INTO IconTextureAtlases(Atlas,	IconSize,	Filename,							IconsPerRow,	IconsPerColumn) VALUES
+('EA_ACTION_ATLAS',						45,			'EaActionAtlas45.dds',				8,				8			),
+('EA_ACTION_ATLAS',						64,			'EaActionAtlas64.dds',				8,				8			),
+('EA_FLAG_ATLAS',						32,			'EaFlagAtlas32.dds',				8,				8			),
+('EA_RELIGION_ATLAS',					80,			'EaReligionAtlas80.dds',			8,				4			),
+('EA_RELIGION_ATLAS',					48,			'EaReligionAtlas48.dds',			8,				4			),
+('EA_RELIGION_ATLAS',					45,			'EaReligionAtlas45.dds',			8,				4			),
+('EA_RELIGION_ATLAS',					32,			'EaReligionAtlas32.dds',			8,				4			),
+('EA_RELIGION_STAR_ATLAS',				80,			'EaReligionStarAtlas80.dds',		8,				4			),
+('EA_RELIGION_STAR_ATLAS',				48,			'EaReligionStarAtlas48.dds',		8,				4			),
+('EA_RELIGION_STAR_ATLAS',				32,			'EaReligionStarAtlas32.dds',		8,				4			),
+
+('EA_SPELLS_ATLAS_EXTRA',				64,			'EaSpellsAtlasExtra_64.dds',		8,				4			),
+('EA_SPELLS_ATLAS_EXTRA',				48,			'EaSpellsAtlasExtra_48.dds',		8,				4			),
+('EA_SPELLS_ATLAS_EXTRA',				45,			'EaSpellsAtlasExtra_45.dds',		8,				4			),
+
+('EA_SPELLS_ATLAS_ARCANE1',				64,			'EaSpellsAtlasArcane1_64.dds',		8,				4			),
+('EA_SPELLS_ATLAS_ARCANE1',				48,			'EaSpellsAtlasArcane1_48.dds',		8,				4			),
+('EA_SPELLS_ATLAS_ARCANE1',				45,			'EaSpellsAtlasArcane1_45.dds',		8,				4			),
+
+('EA_SPELLS_ATLAS_ARCANE2',				64,			'EaSpellsAtlasArcane2_64.dds',		8,				4			),
+('EA_SPELLS_ATLAS_ARCANE2',				48,			'EaSpellsAtlasArcane2_48.dds',		8,				4			),
+('EA_SPELLS_ATLAS_ARCANE2',				45,			'EaSpellsAtlasArcane2_45.dds',		8,				4			),
+
+('EA_SPELLS_ATLAS_DIVINE1',				64,			'EaSpellsAtlasDivine1_64.dds',		8,				4			),
+('EA_SPELLS_ATLAS_DIVINE1',				48,			'EaSpellsAtlasDivine1_48.dds',		8,				4			),
+('EA_SPELLS_ATLAS_DIVINE1',				45,			'EaSpellsAtlasDivine1_45.dds',		8,				4			),
+
+('EA_SPELLS_ATLAS_DIVINE2',				64,			'EaSpellsAtlasDivine2_64.dds',		8,				4			),
+('EA_SPELLS_ATLAS_DIVINE2',				48,			'EaSpellsAtlasDivine2_48.dds',		8,				4			),
+('EA_SPELLS_ATLAS_DIVINE2',				45,			'EaSpellsAtlasDivine2_45.dds',		8,				4			);
 
 
 

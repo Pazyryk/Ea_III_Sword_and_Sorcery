@@ -190,9 +190,9 @@ function TestEnableProtectorConditions()
 	end
 	if bAllow then
 		print(" -there are currently no fallen civs that have not renounced maleficium")
-		if not gReligions[RELIGION_ANRA] or (not Game.GetHolyCityForReligion(GameInfoTypes.RELIGION_ANRA, -1) and Game.GetNumFollowers(RELIGION_ANRA) == 0) then
+		if not gReligions[RELIGION_ANRA] or (not Game.GetHolyCityForReligion(RELIGION_ANRA, -1) and Game.GetNumFollowers(RELIGION_ANRA) == 0) then
 			print(" -everything is good... where are we with Prophecy of Simsum and Sealing the Vault?")
-			if gWorld.evilControl ~= "Sealed" then
+			if gWorld.evilControl == "Sealed" then
 				gWorld.bEnableProtectorVC = true
 				print(" -all Protector VCs met; should have victory now...")
 				TestUpdateVictory(-1)				--will trigger VC

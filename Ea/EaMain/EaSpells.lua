@@ -99,7 +99,7 @@ local Finish = {}
 --  Non-applicable variables will hold value from last call
 local g_eaAction
 local g_eaActionID
-local g_SpellClass				-- nil, "Arcane" or "Devine"
+local g_SpellClass				-- nil, "Arcane" or "Divine"
 local g_bAIControl				--for AI control of unit (can be true for human if Autoplay)
 local g_iActivePlayer = Game.GetActivePlayer()
 

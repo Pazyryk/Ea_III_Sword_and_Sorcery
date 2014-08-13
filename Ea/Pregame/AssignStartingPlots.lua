@@ -6039,8 +6039,9 @@ function AssignStartingPlots:GenerateNaturalWondersCandidatePlotLists()
 	end
 
 	--Paz add
-
+	PrioritizeAhrimansVault(NW_final_selections, self.wonder_list)
 	--end Paz add
+
 	if NW_final_selections ~= nil then
 
 		return NW_final_selections;
@@ -6216,6 +6217,10 @@ function AssignStartingPlots:PlaceNaturalWonders()
 		print("-- Not all Natural Wonders targeted got placed --"); print("-"); print("-");
 	end
 	--
+
+	--Paz add
+
+	--end Paz add
 		
 end
 ------------------------------------------------------------------------------
@@ -10117,8 +10122,7 @@ function AssignStartingPlots:PlaceResourcesAndCityStates()
 	-- end Paz add
 
 	--Paz add
-	--local iW, iH = Map.GetGridSize()
-	--AddEaHiddenCivs(iW, iH)
+	EaMapAdjustments()
 	--end Paz add
 	
 	-- Necessary to implement placement of Natural Wonders, and possibly other plot-type changes.

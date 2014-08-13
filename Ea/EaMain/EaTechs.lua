@@ -541,20 +541,6 @@ local function OnTeamTechResearched(iTeam, techID, iLearned)
 	if iTeam == BARB_PLAYER_INDEX then
 		UpdateBarbTech(techID)
 	else
-		local maleficiumLevelChange = 0
-		if gg_eaTechClass[techID] == "ArcaneEvil" then
-			maleficiumLevelChange = tier
-		elseif gg_eaTechClass[techID] == "Divine" then								--  -1 for each teir level learned
-			maleficiumLevelChange = -tier
-		elseif gg_eaTechClass[techID] == "Arcane" then			--negative change won't apply if player has positive value already
-			maleficiumLevelChange = tier > 2 and -floor((tier - 1) / 2) or 0		--  -1, -2, -3 for each teir 3-4, 5-6, 7
-		else
-			maleficiumLevelChange = tier > 3 and -floor((tier - 2) / 2) or 0		--  -1, -2 for each tier 4-5, 6-7 
-		end
-
-
-		local maleficiumLevelChange = gg_eaTechClass[techID] == "ArcaneEvil" and tier or 0
-
 		if OnTeamTechLearned[techID] then
 			OnTeamTechLearned[techID](iTeam)
 		end
@@ -572,21 +558,15 @@ local function OnTeamTechResearched(iTeam, techID, iLearned)
 				end
 
 				--maleficium changes
-				if maleficiumLevelChange > 0 then	--Maleficium level (for dll control of Renounce Maleficium)
-					if eaPlayer.bIsFallen then		--no positive values if not (we'll tally up these techs when they Fall)
-						local maleficiumLevel = player:GetMaleficiumLevel()
-						maleficiumLevel = maleficiumLevel < 0 and 0 or maleficiumLevel	--if they were at all "anti-maleficium" before, undo that
-						maleficiumLevel = maleficiumLevel + maleficiumLevelChange
-						player:SetMaleficiumLevel(maleficiumLevel)
-					end				
-				elseif maleficiumLevelChange < 0 then
-					if not eaPlayer.bIsFallen then
-						local maleficiumLevel = player:GetMaleficiumLevel()
-						if maleficiumLevel <= 0 then							--only reduce if this is NOT already a player with positive MaleficiumLevel
-							maleficiumLevel = maleficiumLevel + maleficiumLevelChange
-							player:SetMaleficiumLevel(maleficiumLevel)	
-						end
-					end
+				if gg_eaTechClass[techID] == "ArcaneEvil" then
+					ChangeMaleficiumLevelWithTests(iPlayer, tier)
+				elseif gg_eaTechClass[techID] == "Divine" then			--  -1 for each teir level learned
+					ChangeMaleficiumLevelWithTests(iPlayer, -tier)
+				elseif gg_eaTechClass[techID] == "Arcane" then
+					ChangeMaleficiumLevelWithTests(iPlayer, -floor(tier / 1.5))		-- function will give only the apropriate + or - effect
+					ChangeMaleficiumLevelWithTests(iPlayer, floor(tier / 2))
+				else
+					ChangeMaleficiumLevelWithTests(iPlayer, -floor(tier / 2.5))	
 				end
 
 				--tech-specific effects
@@ -618,7 +598,7 @@ end
 OnTeamTechLearned[GameInfoTypes.TECH_SORCERY] = OnTeamTechLearned[GameInfoTypes.TECH_REANIMATION]
 
 OnMajorPlayerTechLearned[GameInfoTypes.TECH_MALEFICIUM] = function(iPlayer)
-	if gWorldUniqueAction[EA_ACTION_PROPHECY_VA] == -1 then
+	if gWorldUniqueAction[EA_ACTION_PROPHECY_SIMSUM] == -1 then
 		BecomeFallen(iPlayer)
 	end
 end
@@ -772,7 +752,7 @@ local function OnPlayerCanEverResearch(iPlayer, techID)
 		if eaPlayer.bRenouncedMaleficium then return false end
 		if 3 < gg_techTier[techID] and gWorld.evilControl ~= "Open" then return false end
 		if gWorld.evilControl == "Sealed" then return false end
-	elseif gg_eaTechClass[techID] == "Devine" then
+	elseif gg_eaTechClass[techID] == "Divine" then
 		if  eaPlayer.race ~= EARACE_MAN or eaPlayer.bIsFallen then return false end
 	end
 

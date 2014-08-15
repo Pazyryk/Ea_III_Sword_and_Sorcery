@@ -598,7 +598,7 @@ end
 OnTeamTechLearned[GameInfoTypes.TECH_SORCERY] = OnTeamTechLearned[GameInfoTypes.TECH_REANIMATION]
 
 OnMajorPlayerTechLearned[GameInfoTypes.TECH_MALEFICIUM] = function(iPlayer)
-	if gWorldUniqueAction[EA_ACTION_PROPHECY_SIMSUM] == -1 then
+	if gWorld.evilControl == "Open" then
 		BecomeFallen(iPlayer)
 	end
 end

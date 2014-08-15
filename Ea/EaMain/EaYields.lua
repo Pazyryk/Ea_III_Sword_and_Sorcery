@@ -232,7 +232,7 @@ function UpdateGlobalYields(iPlayer, effectType, bPerTurnCall)	--City States onl
 			MapModData.mercenaryNet = mercenaryIncome - mercenaryCost
 		end
 		if bPerTurnCall then	--do deduction from teasury and/or set shortfall
-			player:ChangeGold(mercenaryNet)
+			player:ChangeGold(mercenaryIncome - mercenaryCost)
 		end
 	end
 

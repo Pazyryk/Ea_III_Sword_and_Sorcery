@@ -11,11 +11,19 @@ local EA_MEDIA_PACK_MIN_VERSION = 5
 -------------------------------------------------------------------------------------------------------
 
 include("EaErrorHandler.lua")
+local HandleError10 = HandleError10
+
+include("EaDefines.lua")	
+include("strict.lua")	--all globals must be declared before this except functions in main body or by using AddStrictLuaExceptions
+--AddStrictLuaExceptions("RiverManager", "River", "RiverSegmentManager", "RiverSegment")
+
+-------------------------------------------------------------------------------------------------------
+-- Load printout
+-------------------------------------------------------------------------------------------------------
 
 if not GameDefines.EA_DLL_VERSION then
-	error("Mod does not see modded dll for some reason.")
+	HandleError10(function() error("Mod does not see modded dll for some reason.") end)
 end
-
 
 print("Loading EaMain.lua...")
 print("")
@@ -55,9 +63,9 @@ include("EaMiscUtils.lua")
 include("RiverConnections.lua")
 
 --Defines and initialization
-include("EaDefines.lua")			--1st after utils (before any files that reference mod specific data)
-include("TableSaverLoader.lua")		--2rd
-include("EaInit.lua")				--3rd
+	
+include("TableSaverLoader.lua")	
+include("EaInit.lua")			
 include("_Debug.lua")
 
 --Helpers
@@ -116,10 +124,9 @@ local playerType = MapModData.playerType
 local fullCivs = MapModData.fullCivs
 
 --localized game and library functions
-local Clock = os.clock
+local clock = os.clock
 
 --localized global functions
-local HandleError10 =				HandleError10
 local AICivsPerGameTurn =			AICivsPerGameTurn
 local AIMercenaryPerGameTurn =		AIMercenaryPerGameTurn
 local PlotsPerTurn =				PlotsPerTurn
@@ -144,11 +151,12 @@ local MapModData = MapModData
 local g_lastPlayerID = -1
 local g_lastTurn = 0		--this causes per turn functions to skip on turn 0 (so no animals)
 local g_bHumanOrFirstInAutoplayTurn = false
-local oldTime = Clock()
+local oldTime = clock()
 local startHuman = 0
 local timerHuman = 0
 local timerTurn = 0
 local timerPlotsPerTurn = 0
+local timerAllPerTurnFunctionsStart = 0
 local timerAllPerTurnFunctions = 0
 local bInitialized = false
 
@@ -174,7 +182,7 @@ local function PrintGameTurn(iPlayer, gameTurn)
 		print("")
 		print("------------------------------------------------------------------------------------------------------")
 		print("----------------------------------------- NEW GAME TURN: " .. gameTurn .. " ------------------------------------------")
-		local newTime = Clock()
+		local newTime = clock()
 		timerTurn = newTime - oldTime
 		oldTime = newTime
 		print("Lua memory (Mb) = ", collectgarbage("count") / 1000)
@@ -224,7 +232,7 @@ local function AfterEveryPlayerTurn(iPlayer)
 		end
 	end
 	if g_bHumanOrFirstInAutoplayTurn then
-		timerHuman = Clock() - startHuman
+		timerHuman = clock() - startHuman
 		g_bHumanOrFirstInAutoplayTurn = false
 	end
 end
@@ -241,7 +249,7 @@ local function OnPlayerDoTurn(iPlayer)	-- Runs at begining of turn for all livin
 	local gameTurn = Game.GetGameTurn()
 	if gameTurn == 0 then return end
 
-	timerAllPerTurnFunctionsStart = Clock()
+	timerAllPerTurnFunctionsStart = clock()
 	local player = Players[iPlayer]
 
 	if g_lastTurn < gameTurn then
@@ -262,9 +270,9 @@ local function OnPlayerDoTurn(iPlayer)	-- Runs at begining of turn for all livin
 		EaArmageddonPerTurn()
 		AICivsPerGameTurn()
 		AIMercenaryPerGameTurn()
-		local startPlotsPerTurn = Clock()
+		local startPlotsPerTurn = clock()
 		PlotsPerTurn()
-		timerPlotsPerTurn = Clock() - startPlotsPerTurn
+		timerPlotsPerTurn = clock() - startPlotsPerTurn
 		BarbSpawnPerTurn()
 		AnimalsPerTurn()
 		ReligionPerGameTurn()
@@ -273,7 +281,7 @@ local function OnPlayerDoTurn(iPlayer)	-- Runs at begining of turn for all livin
 
 	g_bHumanOrFirstInAutoplayTurn = g_bHumanOrFirstInAutoplayTurn or iPlayer == g_iActivePlayer
 
-	local startOtherPerTurn = Clock()
+	local startOtherPerTurn = clock()
 	PrintNewTurnForPlayer(iPlayer, gameTurn)
 
 	-------------------------------------------------------------------------------------------------------
@@ -326,9 +334,9 @@ local function OnPlayerDoTurn(iPlayer)	-- Runs at begining of turn for all livin
 		--if gameTurn % g_autoSaveFreq == 0 then
 		--	EaAutoSave(gameTurn)
 		--end
-		startHuman = Clock()
+		startHuman = clock()
 	end
-	timerAllPerTurnFunctions = timerAllPerTurnFunctions - timerAllPerTurnFunctionsStart + Clock()
+	timerAllPerTurnFunctions = timerAllPerTurnFunctions - timerAllPerTurnFunctionsStart + clock()
 
 end
 local function X_OnPlayerDoTurn(iPlayer) return HandleError10(OnPlayerDoTurn, iPlayer) end

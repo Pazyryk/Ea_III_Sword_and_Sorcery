@@ -59,7 +59,7 @@ local neighborsPos = 0
 local ptVisited = {}
 
 function DBSCAN_Cluster(pts, eps, minPts)  --unitPositions, unitUnitDistMatrix, 4, 4
-	print("Running DBSCAN_Cluster ", pts, ptsDistMatrix, eps, minPts)
+	print("Running DBSCAN_Cluster ", pts, eps, minPts)
 	local size = #pts
 	for i = 1, size do
 		ptVisited[i] = false

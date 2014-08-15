@@ -773,7 +773,7 @@ end
 
 local function AddNonCombatOptions()
 	g_nonCombatCallCount = g_nonCombatCallCount + 1
-	print("Running AddNonCombatOptions", bSpellCaster)
+	print("Running AddNonCombatOptions")
 	local TestAddOption = TestAddOption
 
 	--cycle through all registered actions and then spells (if any)
@@ -1121,7 +1121,7 @@ function AIGPTestCombatInterrupt(iPlayer, iPerson, unit)		--called each turn (un
 			print("Examining iPlayer, unit cluster ", iLoopPlayer, i)
 			local cluster = clusters[i]
 			if iLoopPlayer == iPlayer then		--Our unit cluster (maybe we are on the move)
-				if not bIsConstrainedLeader and cluster.iPlayerTarget then
+				if cluster.iPlayerTarget then
 					if cluster.intent == "Hostile" then
 						if PlotDistance(gpX, gpY, cluster.x, cluster.y) < 24 then	--"pre-screen" here to prevent excessive AStar pathfinding
 							--local tt = EaPersonAStarTurns(iPlayer, iPerson, gpX, gpY, cluster.x, cluster.y)

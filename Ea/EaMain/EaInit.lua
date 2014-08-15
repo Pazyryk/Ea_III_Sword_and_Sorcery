@@ -8,7 +8,7 @@ local HandleError10 = HandleError10
 
 local function InitForNewGame()
 
-	--gWorld; nils listed for bookkeeping
+	--gWorld (nils listed for bookkeeping)
 	gWorld.personCount =				0
 	gWorld.sumOfAllMana =				MapModData.EaSettings.STARTING_SUM_OF_ALL_MANA
 	gWorld.armageddonStage =			0
@@ -24,6 +24,7 @@ local function InitForNewGame()
 	gWorld.weaveConvertNum =			0
 	gWorld.livingTerrainConvertStr =	0
 	gWorld.panCivsEver =				0
+	gWorld.bActivePlayerTimeStop =		nil
 	gWorld.encampments =				{}
 	gWorld.calledMajorSpirits =			{}
 	

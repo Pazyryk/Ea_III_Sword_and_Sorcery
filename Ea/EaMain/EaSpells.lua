@@ -386,7 +386,7 @@ local function TestEaSpellForHumanUI(eaActionID, iPlayer, unit, iPerson, testX, 
 	MapModData.text = "no help text"	--will change below or take eaAction.Help value
 
 	--By default, text will be from eaAction.Help. If we want something else, then we must change below or in action-specific SetUI function.
-	if gWorld.evilControl == "Sealed" and g_eaPlyaer.bIsFallen and g_eaAction.AhrimansVaultMatters then
+	if gWorld.evilControl == "Sealed" and g_eaPlayer.bIsFallen and g_eaAction.AhrimansVaultMatters then
 		MapModData.text = "[COLOR_WARNING_TEXT]Ahriman's Vault has been sealed; the Fallen can no longer cast spells[ENDCOLOR]"
 	end
 
@@ -546,7 +546,7 @@ function TestEaSpell(eaActionID, iPlayer, unit, iPerson, testX, testY, bAINonTar
 	g_worldManaDepletion = 1 - gWorld.sumOfAllMana / STARTING_SUM_OF_ALL_MANA
 
 	--Block for fallen after Ahriman's Vault sealed
-	if gWorld.evilControl == "Sealed" and g_eaPlyaer.bIsFallen and g_eaAction.AhrimansVaultMatters then return false end
+	if gWorld.evilControl == "Sealed" and g_eaPlayer.bIsFallen and g_eaAction.AhrimansVaultMatters then return false end
 
 	--Specific action test (runs if it exists)
 	if Test[eaActionID] and not Test[eaActionID]() then return false end
@@ -2512,7 +2512,7 @@ end
 Do[GameInfoTypes.EA_SPELL_TIME_STOP] = function()
 	g_eaPerson.timeStop = g_int1
 	if g_iPlayer == g_iActivePlayer then
-		gg_bActivePlayerTimeStop = true
+		gWorld.bActivePlayerTimeStop = true
 	end
 	UseManaOrDivineFavor(g_iPlayer, g_iPerson, g_int1 * 100, false)
 	return true

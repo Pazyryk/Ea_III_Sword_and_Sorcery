@@ -47,7 +47,7 @@ MapModData.MAP_SIZE = MAP_SIZE
 MapModData.GAME_SPEED_MULTIPLIER = GAME_SPEED_MULTIPLIER
 MapModData.MAP_SIZE_MULTIPLIER = MAP_SIZE_MULTIPLIER
 
-print("Game speed, map size, speed multiplier, size multiplier = ", gameSpeed, mapSize, GAME_SPEED_MULTIPLIER, MAP_SIZE_MULTIPLIER)
+print("Game speed, map size, speed multiplier, size multiplier = ", GAME_SPEED, MAP_SIZE, GAME_SPEED_MULTIPLIER, MAP_SIZE_MULTIPLIER)
 
 --------------------------------------------------------------
 -- Settings

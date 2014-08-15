@@ -140,9 +140,9 @@ function EaCivsInit(bNewGame)
 			local race = eaPlayer.race
 			local plot = player:GetStartingPlot()
 			local unitTypeID = GameInfoTypes.UNIT_WARRIORS_MAN
-			if race == EARACE_SIDHE then
+			if race == GameInfoTypes.EARACE_SIDHE then
 				unitTypeID = GameInfoTypes.UNIT_WARRIORS_SIDHE
-			elseif race == EARACE_HELDEOFOL then
+			elseif race == GameInfoTypes.EARACE_HELDEOFOL then
 				unitTypeID = GameInfoTypes.UNIT_WARRIORS_ORC
 			end
 			player:InitUnit(unitTypeID, plot:GetX(), plot:GetY())

@@ -209,7 +209,7 @@ end
 -- Test functions
 --
 
-highlights = {
+local highlights = {
   RED     = {x=1.0, y=0.0, z=0.0, w=1.0},
   GREEN   = {x=0.0, y=1.0, z=0.0, w=1.0},
   BLUE    = {x=0.0, y=0.0, z=1.0, w=1.0},

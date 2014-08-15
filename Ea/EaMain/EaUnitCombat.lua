@@ -14,6 +14,8 @@ local print = ENABLE_PRINT and print or function() end
 local BARB_PLAYER_INDEX =							BARB_PLAYER_INDEX
 local ANIMALS_PLAYER_INDEX =						ANIMALS_PLAYER_INDEX
 
+local MAX_CITY_HIT_POINTS =							GameDefines.MAX_CITY_HIT_POINTS
+
 local BUILDING_INTERNMENT_CAMP =					GameInfoTypes.BUILDING_INTERNMENT_CAMP
 local DOMAIN_LAND =									DomainTypes.DOMAIN_LAND
 local EACIV_GAZIYA =								GameInfoTypes.EACIV_GAZIYA
@@ -39,6 +41,7 @@ local UNIT_WORKERS_ORC =							GameInfoTypes.UNIT_WORKERS_ORC
 
 --localized tables
 local MapModData =					MapModData
+local gWorld =						gWorld
 local gPlayers =					gPlayers
 local gPeople =						gPeople
 local Players =						Players
@@ -71,6 +74,8 @@ local g_iAttackingPlayer = -1
 local g_iAttackingUnit = -1
 local g_defendingUnitTypeID = -1
 local g_defendingUnitXP = -1
+local g_defendingUnitRace = EARACE_MAN
+local g_defendingCityRace = EARACE_MAN
 
 --------------------------------------------------------------
 -- Cached Tables
@@ -286,7 +291,7 @@ local function ForceUnitSelection(iPlayer, iUnit, hexX, hexY, iUnknown, bSelecte
 	--runs for unselected first, then new selected
 
 	--Time Stop unit
-	if gg_bActivePlayerTimeStop and not bSelected then
+	if gWorld.bActivePlayerTimeStop and not bSelected then
 		local bFoundTimeStopUnit = false
 		for iPerson, eaPerson in pairs(gPeople) do
 			if eaPerson.timeStop then
@@ -300,7 +305,7 @@ local function ForceUnitSelection(iPlayer, iUnit, hexX, hexY, iUnknown, bSelecte
 			end
 		end
 		if not bFoundTimeStopUnit then
-			gg_bActivePlayerTimeStop = false
+			gWorld.bActivePlayerTimeStop = false
 		end
 	end
 
@@ -312,7 +317,7 @@ function CheckTimeStopUnit(unit, eaPerson)
 		eaPerson.timeStop = eaPerson.timeStop - 1
 		if eaPerson.timeStop == 0 then
 			eaPerson.timeStop = nil
-			gg_bActivePlayerTimeStop = false
+			gWorld.bActivePlayerTimeStop = false
 		end
 		unit:SetMoves(120)
 		unit:SetMadeAttack(false)
@@ -470,9 +475,9 @@ local function OnCombatResult(iAttackingPlayer, iAttackingUnit, attackerDamage, 
 
 	g_defendingUnitTypeID = -1
 	g_defendingUnitXP = -1
-	if defenderMaxHP == 200	then	--city; TO DO: get hp from Defines
+	if defenderMaxHP == MAX_CITY_HIT_POINTS	then	--this is a city
 		--TO DO: get city race
-		gg_defendingCityRace = EARACE_MAN		--use this in city conquest event for slaves
+		g_defendingCityRace = EARACE_MAN		--use this in city conquest event for slaves
 	else
 		local defendingUnit = defendingPlayer:GetUnitByID(iDefendingUnit)	
 		if defendingUnit then
@@ -508,18 +513,19 @@ local function OnCombatEnded(iAttackingPlayer, iAttackingUnit, attackerDamage, a
 	if iAttackingPlayer == -1 then return end
 	local attackingPlayer = Players[iAttackingPlayer]
 	local attackingUnit = attackingPlayer:GetUnitByID(iAttackingUnit)	--unit will be nil if dead
+	local attackingUnitTypeID = attackingUnit and attackingUnit:GetUnitType()
 	local defendingPlayer = Players[iDefendingPlayer]
 	local defendingUnit = defendingPlayer:GetUnitByID(iDefendingUnit)
 
 	--print
-	local attackerUnitType = attackingUnit and GameInfo.Units[attackingUnit:GetUnitType()].Type or "nil"
+	local attackerUnitType = attackingUnit and GameInfo.Units[attackingUnitTypeID].Type or "nil"
 	local defenderUnitType = defendingUnit and GameInfo.Units[defendingUnit:GetUnitType()].Type or "nil"
 	print("Attacker: " .. attackerUnitType .. "; Defender: " .. defenderUnitType)
 
 	if fullCivs[iAttackingPlayer] then	--if full civ then do various functions
 		if attackingUnit then
 			
-			local attackingUnitTypeID = attackingUnit:GetUnitType()
+			
 			if gg_gpTempType[attackingUnitTypeID] then					--was a special GP attack (e.g., Magic Missile)
 				local bEnergyDrain = gg_gpTempType[attackingUnitTypeID] == "EnergyDrain"
 				local bStunChance = gg_gpTempType[attackingUnitTypeID] == "PlasmaBurst"
@@ -605,7 +611,7 @@ local function OnCombatEnded(iAttackingPlayer, iAttackingUnit, attackerDamage, a
 		end
 	end
 	--archer city conquest test
-	if iAttackingUnitDamage == 0 and attackingUnit and iAttackingPlayer < BARB_PLAYER_INDEX and not defendingUnit and defenderMaxHP - 1 <= defenderFinalDamage and defenderMaxHP == 200 and not gg_gpTempType[attackingUnitTypeID] then	--archer defeated city
+	if attackerFinalDamage == 0 and attackingUnit and iAttackingPlayer < BARB_PLAYER_INDEX and not defendingUnit and defenderMaxHP - 1 <= defenderFinalDamage and defenderMaxHP == MAX_CITY_HIT_POINTS and not gg_gpTempType[attackingUnitTypeID] then	--archer defeated city
 		local plot = GetPlotFromXY(plotX, plotY)
 		local city = plot:GetPlotCity()
 		if city and city:GetDamage() >= MAX_CITY_HIT_POINTS - 1 then
@@ -615,7 +621,7 @@ local function OnCombatEnded(iAttackingPlayer, iAttackingUnit, attackerDamage, a
 	end
 
 	if fullCivs[iDefendingPlayer] and defendingUnit then	--defender Warrior points
-		if dummyUnit[attackingUnitTypeID] then
+		if attackingUnitTypeID and dummyUnit[attackingUnitTypeID] then
 			UpdateWarriorPoints(iDefendingPlayer, false, true)
 		else
 			UpdateWarriorPoints(iDefendingPlayer, true)
@@ -711,7 +717,7 @@ local function OnCanSaveUnit(iPlayer, iUnit, bDelay)	--fires for combat and non-
 
 	local attackingPlayer = Players[g_iAttackingPlayer]
 	if attackingPlayer then
-		local attackingUnit = attackingPlayer:GetUnitByID(iAttackingUnit)
+		local attackingUnit = attackingPlayer:GetUnitByID(g_iAttackingPlayer)
 		if attackingUnit and attackingUnit:IsGreatPerson() then
 			print("A GP was killed by an attacking unit in GP layer")
 

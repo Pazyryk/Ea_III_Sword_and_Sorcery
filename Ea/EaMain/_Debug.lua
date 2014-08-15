@@ -97,12 +97,12 @@ end
 
 --[[
 function ListenerTest1(...)
-	print("GameplayFX", unpack(arg))
+	print("GameplayFX", ...)
 end
 Events.GameplayFX.Add(ListenerTest1)
 
 function ListenerTest2(...)
-	print("UnitStateChangeDetected", unpack(arg))
+	print("UnitStateChangeDetected", ...)
 end
 Events.UnitStateChangeDetected.Add(ListenerTest2)
 
@@ -113,49 +113,49 @@ local i = 0
 
 local function OnNewGameTurn(...)
 	i = i + 1
-	print("turnEventTest NewGameTurn", unpack(arg), i)
+	print("turnEventTest NewGameTurn", ..., i)
 end
 Events.NewGameTurn.Add(OnNewGameTurn)
 
 local function OnActivePlayerTurnStart(...)
 	i = i + 1
-	print("turnEventTest ActivePlayerTurnStart", unpack(arg), i)
+	print("turnEventTest ActivePlayerTurnStart", ..., i)
 end
 Events.ActivePlayerTurnStart.Add(OnActivePlayerTurnStart)
 
 local function OnPlayerDoTurn(...)
 	i = i + 1
-	print("turnEventTest PlayerDoTurn", unpack(arg), i)
+	print("turnEventTest PlayerDoTurn", ..., i)
 end
 GameEvents.PlayerDoTurn.Add(OnPlayerDoTurn)
 
 local function OnPlayerPreAIUnitUpdate(...)
 	i = i + 1
-	print("turnEventTest PlayerPreAIUnitUpdate", unpack(arg), i)
+	print("turnEventTest PlayerPreAIUnitUpdate", ..., i)
 end
 GameEvents.PlayerPreAIUnitUpdate.Add(OnPlayerPreAIUnitUpdate)
 
 local function OnAIProcessingStartedForPlayer(...)
 	i = i + 1
-	print("turnEventTest AIProcessingStartedForPlayer", unpack(arg), i)
+	print("turnEventTest AIProcessingStartedForPlayer", ..., i)
 end
 Events.AIProcessingStartedForPlayer.Add(OnAIProcessingStartedForPlayer)
 
 local function OnAIProcessingEndedForPlayer(...)
 	i = i + 1
-	print("turnEventTest AIProcessingEndedForPlayer", unpack(arg), i)
+	print("turnEventTest AIProcessingEndedForPlayer", ..., i)
 end
 Events.AIProcessingEndedForPlayer.Add(OnAIProcessingEndedForPlayer)
 
 local function OnActivePlayerTurnEnd(...)
 	i = i + 1
-	print("turnEventTest ActivePlayerTurnEnd", unpack(arg), i)
+	print("turnEventTest ActivePlayerTurnEnd", ..., i)
 end
 Events.ActivePlayerTurnEnd.Add(OnActivePlayerTurnEnd)
 
 local function OnGameCoreTestVictory(...)
 	i = i + 1
-	print("turnEventTest GameCoreTestVictory", unpack(arg), i)
+	print("turnEventTest GameCoreTestVictory", ..., i)
 end
 GameEvents.GameCoreTestVictory.Add(OnGameCoreTestVictory)
 

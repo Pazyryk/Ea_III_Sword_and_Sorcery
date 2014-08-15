@@ -443,12 +443,12 @@ function ConvertUnitProductionByMatch(iPlayer, fromStr, toStr)
 	local fromMatches = gg_unitPrefixUnitIDs[fromStr]
 	for i = 1, #fromMatches do
 		local unitTypeID = fromMatches[i]
+		local unitType = GameInfo.Units[unitTypeID].Type
+		local newUnitType = gsub(unitType, fromStr, toStr)
+		local newUnitTypeID = GameInfoTypes[newUnitType]
 		for city in player:Cities() do
 			local unitProd = city:GetUnitProduction(unitTypeID)
 			if 0 < unitProd then
-				local unitType = GameInfo.Units[unitTypeID].Type
-				local newUnitType = gsub(unitType, fromStr, toStr)
-				local newUnitTypeID = GameInfoTypes[newUnitType]
 				city:SetUnitProduction(newUnitTypeID, unitProd)
 				city:SetUnitProduction(unitTypeID, 0)
 			end
@@ -1253,10 +1253,10 @@ for processInfo in GameInfo.Processes() do
 		processPolicyReq[processInfo.ID] = GameInfoTypes[policyType]
 	end
 end
-conversionWorldKeyByProcess = {	[PROCESS_WORLD_WEAVE] = "weaveConvertNum",
-								[PROCESS_WORLD_SALVATION] = "azzConvertNum",
-								[PROCESS_WORLD_CORRUPTION] = "anraConvertNum",
-								[PROCESS_EA_BLESSINGS] = "livingTerrainConvertStr"	}
+local conversionWorldKeyByProcess = {	[PROCESS_WORLD_WEAVE] = "weaveConvertNum",
+										[PROCESS_WORLD_SALVATION] = "azzConvertNum",
+										[PROCESS_WORLD_CORRUPTION] = "anraConvertNum",
+										[PROCESS_EA_BLESSINGS] = "livingTerrainConvertStr"	}
 
 local function OnPlayerCanMaintain(iPlayer, processTypeID)
 	--print("PazDebug OnPlayerCanMaintain ", iPlayer, processTypeID)
@@ -1377,8 +1377,8 @@ end
 local function X_OnCityBuildingsIsBuildingSellable(iPlayer, buildingTypeID) return HandleError21(OnCityBuildingsIsBuildingSellable, iPlayer, buildingTypeID) end
 GameEvents.CityBuildingsIsBuildingSellable.Add(X_OnCityBuildingsIsBuildingSellable)
 
-g_numCaravansCanTrain = 0
-g_numCargoShipsCanTrain = 0
+--local g_numCaravansCanTrain = 0
+--local g_numCargoShipsCanTrain = 0
 
 --local TestPlayerCanTrain = {}
 local function OnPlayerCanTrain(iPlayer, unitTypeID)
@@ -1501,8 +1501,12 @@ TestCityCanTrain[GameInfoTypes.UNIT_FISHING_BOATS] = function(iPlayer, iCity)
 	for iPlot, type in pairs(gg_remoteImprovePlot) do
 		if type == "Lake" then		--no stealing
 			local dist = GetMemoizedPlotIndexDistance(iPlot, iCityPlot)
-			if dist < 4 and iOwner == -1 or (iOwner == iPlayer and plot:GetImprovementType() == -1) then
-				return true
+			if dist < 4 then
+				local plot = GetPlotByIndex(iPlot)
+				local iOwner = plot:GetOwner()
+				if iOwner == -1 or (iOwner == iPlayer and plot:GetImprovementType() == -1) then
+					return true
+				end
 			end
 		elseif bCoastal and type == "FishingRes" then
 			local dist = GetMemoizedPlotIndexDistance(iPlot, iCityPlot)

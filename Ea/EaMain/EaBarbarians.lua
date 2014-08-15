@@ -194,8 +194,8 @@ local function AddEncampmentBaseUnit(plot, encampmentID)
 		if g_currentBaseUnit2[encampmentID] and Rand(2, "hello") < 1 then
 			unitTypeID = g_currentBaseUnit2[encampmentID]
 		end
-		print("PazDebug Adding Encampment base unit ", unitTypeID, x, y, encampmentID, GameInfo.EaEncampments[encampmentID].Type, GameInfo.Units[unitTypeID].Type)
 		local x, y = plot:GetXY()
+		print("PazDebug Adding Encampment base unit ", unitTypeID, x, y, encampmentID, GameInfo.EaEncampments[encampmentID].Type, GameInfo.Units[unitTypeID].Type)
 		local unit = barbPlayer:InitUnit(unitTypeID, x, y)
 		if unit then
 			unit:SetScenarioData(encampmentID)

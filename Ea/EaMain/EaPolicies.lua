@@ -204,7 +204,7 @@ function OnPlayerAdoptPolicyBranch(iPlayer, policyBranchTypeID)					--called by 
 		else
 			
 			--error("The Weave of Ea wasn't already founded")
-			iCapitalCity = capital:GetID()
+			local iCapitalCity = capital:GetID()
 			FoundReligion(iPlayer, iCapitalCity, RELIGION_THE_WEAVE_OF_EA)	--always The Fay
 		end
 
@@ -378,7 +378,7 @@ end
 local function X_OnPlayerCanAdoptPolicyBranch(iPlayer, policyBranchTypeID) return HandleError21(OnPlayerCanAdoptPolicyBranch, iPlayer, policyBranchTypeID) end
 GameEvents.PlayerCanAdoptPolicyBranch.Add(X_OnPlayerCanAdoptPolicyBranch)
 
-local function OnPlayerCanAdoptPolicy(playerID, policyID)
+local function OnPlayerCanAdoptPolicy(iPlayer, policyID)
 	local policyBranchTypeID = policyBranch[policyID]
 	if policyBranchTypeID == POLICY_BRANCH_ANTI_THEISM then
 		local eaPlayer = gPlayers[iPlayer]

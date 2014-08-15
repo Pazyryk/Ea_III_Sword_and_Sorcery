@@ -53,6 +53,7 @@ local PROMOTION_MITHRIL_WEAPONS =					GameInfoTypes.PROMOTION_MITHRIL_WEAPONS
 local RELIGION_CULT_OF_EPONA =						GameInfoTypes.RELIGION_CULT_OF_EPONA
 local RESOURCE_CITRUS =								GameInfoTypes.RESOURCE_CITRUS
 local TECH_STEEL_WORKING = 							GameInfoTypes.TECH_STEEL_WORKING
+local TECH_MITHRIL_WORKING = 						GameInfoTypes.TECH_MITHRIL_WORKING
 local UNITCOMBAT_MOUNTED = 							GameInfoTypes.UNITCOMBAT_MOUNTED
 local UNITCOMBAT_NAVAL =							GameInfoTypes.UNITCOMBAT_NAVAL
 local UNIT_FISHING_BOATS =							GameInfoTypes.UNIT_FISHING_BOATS
@@ -581,12 +582,12 @@ function UnitPerCivTurn(iPlayer)	--runs for full civs and city states
 							end
 						end
 					end
-					if unitCombatTypeID == UNITCOMBAT_NAVAL then
-						if bRemoveOceanBlock then
-							unit:SetHasPromotion(PROMOTION_OCEAN_IMPASSABLE_UNTIL_ASTRONOMY, false)
-							unit:SetHasPromotion(PROMOTION_OCEAN_IMPASSABLE, false)
-						end
+					--remove ocean block for applicable civs
+					if bRemoveOceanBlock then
+						unit:SetHasPromotion(PROMOTION_OCEAN_IMPASSABLE_UNTIL_ASTRONOMY, false)
+						unit:SetHasPromotion(PROMOTION_OCEAN_IMPASSABLE, false)
 					end
+				
 				elseif bHorseMounted[unitTypeID] then
 					if unit:IsHasPromotion(PROMOTION_STALLIONS_OF_EPONA) then
 						gg_counts.stallionsOfEpona = gg_counts.stallionsOfEpona + 1

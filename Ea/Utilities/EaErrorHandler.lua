@@ -48,7 +48,7 @@ end
 --or make one with appropriate arg number (extra add miniscule overhead but work).
 --[[
 function HandleError(f, ...)	--f can have any number of args and return values
-	local g = function() return f(unpack(arg)) end
+	local g = function() return f(...) end
 	local result = {xpcall(g, Traceback)}
 	if result[1] then
 		return unpack(result, 2)

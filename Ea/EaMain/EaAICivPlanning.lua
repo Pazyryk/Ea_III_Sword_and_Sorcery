@@ -187,9 +187,9 @@ CachePolicyPrereqsRecursionByType = nil
 for policyBranchInfo in GameInfo.PolicyBranchTypes() do		--finishers have prereqs too so they can be used to tell AI to finish a branch
 	local finisher = policyBranchInfo.FreeFinishingPolicy
 	if finisher then
-		finisherID = GameInfoTypes[finisher]
-		branchType = policyBranchInfo.Type
-		openerID = GameInfoTypes[policyBranchInfo.FreePolicy]
+		local finisherID = GameInfoTypes[finisher]
+		local branchType = policyBranchInfo.Type
+		local openerID = GameInfoTypes[policyBranchInfo.FreePolicy]
 		local prereqs = {}
 		count = 1
 		prereqs[1] = openerID
@@ -832,7 +832,7 @@ local newPlans = {}		--build up this table, then sort, then replace old plans if
 TestSetContingencyPlans = function(iPlayer)
 	--Contingency1 means better than CONTINGENCY_THRESHOLD
 	--Contingency2 means <= CONTINGENCY_THRESHOLD; used only if we are desperate for plan
-	print("Running TestSetContingencyPlans ", iPlayer, bContingency2)
+	print("Running TestSetContingencyPlans ", iPlayer)
 	local eaPlayer = gPlayers[iPlayer]
 	local cont1Plans = eaPlayer.aiContingency1Plans
 	local numCont1 = #cont1Plans
@@ -883,7 +883,7 @@ TestSetContingencyPlans = function(iPlayer)
 	local plotSpecialScores = bPantheistic and panContingencyScoreByPlotSpecialPlan or agContingencyScoreByPlotSpecialPlan
 	for plotSpecial, number in pairs(eaPlayer.plotSpecialsInBorders) do
 		if 0 < number then
-			local scores = plotSpecialScores[resourceID]
+			local scores = plotSpecialScores[plotSpecial]
 			if scores then
 				for planID, score in pairs(scores) do
 					planScores[planID] = (planScores[planID] or 0) + score * number

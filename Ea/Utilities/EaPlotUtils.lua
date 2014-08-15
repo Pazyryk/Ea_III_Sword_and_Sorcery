@@ -68,7 +68,7 @@ function AdjacentPlotIterator(plot, bRandomize, bIncludeCenter)		--this is so co
 			local adjY = y + offsets[i][2]
 			if 0 <= adjY and adjY < iH then
 				local adjX = x + offsets[i][1]
-				if bXWrap then						--skip bWrapY, not gonna happen
+				if bWrapX then						--skip bWrapY, not gonna happen
 					if adjX < 0 then
 						adjX = adjX + iW
 					elseif iW <= adjX then
@@ -91,7 +91,7 @@ function GetRandomAdjacentPlot(plot)	--will return nil rather than invalid off-m
 	local adjY = y + offset[2]
 	if 0 <= adjY and adjY < iH then
 		local adjX = x + offset[1]
-		if bXWrap then						--skip bWrapY, not gonna happen
+		if bWrapX then						--skip bWrapY, not gonna happen
 			if adjX < 0 then
 				adjX = adjX + iW
 			elseif iW <= adjX then
@@ -168,7 +168,7 @@ function PlotToRadiusIterator(x, y, radius, myX, myY, bExcludeCenter)
 
 	local i = 0
 	return function()
-		local x, y, bWrapY, bWrapY, number, xOffest, yOffset = x, y, bWrapY, bWrapY, number, xOffest, yOffset	--for speed
+		local x, y, bWrapX, number, xOffset, yOffset = x, y, bWrapX, number, xOffset, yOffset	--for speed
 		while i < number do
 			i = i + 1
 			local xAdj = x + xOffset[i]
@@ -180,13 +180,13 @@ function PlotToRadiusIterator(x, y, radius, myX, myY, bExcludeCenter)
 					xAdj = xAdj - iW
 				end
 			end
-			if bWrapY then
-				if yAdj < 0 then
-					yAdj = yAdj + iH
-				elseif yAdj >= iH then
-					yAdj = yAdj - iH
-				end
-			end
+			--if bWrapY then
+			--	if yAdj < 0 then
+			--		yAdj = yAdj + iH
+			--	elseif yAdj >= iH then
+			--		yAdj = yAdj - iH
+			--	end
+			--end
 			if yAdj >= 0 and yAdj < iH and xAdj >= 0 and xAdj < iW and (not bExcludeCenter or x ~= xAdj or y ~= yAdj) then		--only return a valid map coordinant
 				return xAdj, yAdj
 			end

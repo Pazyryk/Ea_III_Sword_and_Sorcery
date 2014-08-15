@@ -198,7 +198,7 @@ end
 --
 
 -- Array of highlight colours
-highlights = { Red     = Vector4(1.0, 0.0, 0.0, 1.0),
+local highlights = { Red     = Vector4(1.0, 0.0, 0.0, 1.0),
                Green   = Vector4(0.0, 1.0, 0.0, 1.0),
                Blue    = Vector4(0.0, 0.0, 1.0, 1.0),
                Cyan    = Vector4(0.0, 1.0, 1.0, 1.0),

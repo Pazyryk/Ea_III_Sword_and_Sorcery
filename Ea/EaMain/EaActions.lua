@@ -16,6 +16,8 @@ local DOMAIN_LAND =							DomainTypes.DOMAIN_LAND
 local DOMAIN_SEA =							DomainTypes.DOMAIN_SEA
 local EA_ACTION_GO_TO_PLOT =				GameInfoTypes.EA_ACTION_GO_TO_PLOT
 local EA_WONDER_ARCANE_TOWER =				GameInfoTypes.EA_WONDER_ARCANE_TOWER
+local EARACE_SIDHE =						GameInfoTypes.EARACE_SIDHE
+local EARACE_HELDEOFOL =					GameInfoTypes.EARACE_HELDEOFOL
 local EACIV_NEZELIBA =						GameInfoTypes.EACIV_NEZELIBA
 local IMPROVEMENT_ARCANE_TOWER =			GameInfoTypes.IMPROVEMENT_ARCANE_TOWER
 local INVISIBLE_SUBMARINE =					GameInfoTypes.INVISIBLE_SUBMARINE
@@ -159,7 +161,7 @@ local g_obj1, g_obj2
 local g_integers = {}
 local g_integers2 = {}
 local g_integersPos = 0
-local g_table = {}	--anything else
+local g_objects = {}
 
 local g_tradeAvailableTable = {}
 
@@ -353,6 +355,7 @@ local function FinishEaAction(eaActionID)		--only called from DoEaAction so file
 		--	g_eaPerson.cult = cultID
 			local freeSpellType = GameInfo.Religions[cultID].EaFreeCultSpell
 			if freeSpellType then
+				local spellID = GameInfoTypes[freeSpellType]
 				local spells = g_eaPerson.spells
 				local numSpells = #spells
 				local bLearnFreeSpell = true
@@ -363,18 +366,18 @@ local function FinishEaAction(eaActionID)		--only called from DoEaAction so file
 					end	
 				end
 				if bLearnFreeSpell then
-					spells[numSpells + 1] = GameInfoTypes[freeSpellType]
+					spells[numSpells + 1] = spellID
 				end
 			end
 		--end
 		if gReligions[cultID] then		--already founded
 			for i = -1, HIGHEST_RELIGION_ID do
-				if g_tablePointer[i] > 0 then
+				if g_obj1[i] > 0 then
 					--need percentage (round up or down???)
-					local convertPercent = floor(0.9 + 100 * g_tablePointer[i] / g_city:GetNumFollowers(i))
+					local convertPercent = floor(0.9 + 100 * g_obj1[i] / g_city:GetNumFollowers(i))
 					g_city:ConvertPercentFollowers(cultID, i, convertPercent)
 					if i == RELIGION_ANRA and not g_eaPlayer.bIsFallen then
-						g_eaPlayer.fallenFollowersDestr = (g_eaPlayer.fallenFollowersDestr or 0) + (2 * g_tablePointer[i])
+						g_eaPlayer.fallenFollowersDestr = (g_eaPlayer.fallenFollowersDestr or 0) + (2 * g_obj1[i])
 					end
 				end
 			end
@@ -499,7 +502,7 @@ local function TestEaActionForHumanUI(eaActionID, iPlayer, unit, iPerson, testX,
 
 	--By default, bShow follows bAllow and text will be from eaAction.Help. If we want bShow=true when bAllow=false,
 	--then we must change below in g_bUniqueBlocked code or in action-specific SetUI function.
-	if gWorld.evilControl == "Sealed" and g_eaPlyaer.bIsFallen and g_eaAction.AhrimansVaultMatters then
+	if gWorld.evilControl == "Sealed" and g_eaPlayer.bIsFallen and g_eaAction.AhrimansVaultMatters then
 		MapModData.text = "[COLOR_WARNING_TEXT]Ahriman's Vault has been sealed; the Fallen can no do this action[ENDCOLOR]"
 	end
 
@@ -740,7 +743,7 @@ function TestEaAction(eaActionID, iPlayer, unit, iPerson, testX, testY, bAINonTa
 	end
 
 	--Block for fallen after Ahriman's Vault sealed
-	if gWorld.evilControl == "Sealed" and g_eaPlyaer.bIsFallen and g_eaAction.AhrimansVaultMatters then return false end
+	if gWorld.evilControl == "Sealed" and g_eaPlayer.bIsFallen and g_eaAction.AhrimansVaultMatters then return false end
 
 	--Specific action test (runs if it exists)
 	if Test[eaActionID] and not Test[eaActionID]() then return false end
@@ -2226,7 +2229,7 @@ TestTarget[GameInfoTypes.EA_ACTION_RALLY_TROOPS] = function()
 				local unitTypeID = unit:GetUnitType()
 				if gg_regularCombatType[unitTypeID] == "troops" and unit:IsEnemyInMovementRange(false, false) then
 					numQualifiedUnits = numQualifiedUnits + 1
-					g_table[numQualifiedUnits] = unit
+					g_objects[numQualifiedUnits] = unit
 					value = value + unit:GetPower()
 				end
 			end
@@ -2252,7 +2255,7 @@ end
 
 Do[GameInfoTypes.EA_ACTION_RALLY_TROOPS] = function()
 	for i = 1, g_int1 do
-		local unit = g_table[i]
+		local unit = g_objects[i]
 		local floatUp = "+" .. g_mod .. " [ICON_HAPPINESS_1] Morale"
 		unit:GetPlot():AddFloatUpMessage(floatUp, 1)
 		unit:ChangeMorale(g_mod)
@@ -3934,7 +3937,7 @@ TestTarget[GameInfoTypes.EA_ACTION_PROSELYTIZE] = function()
 	local totalConversions, bFlip, religionConversionTable = GetConversionOutcome(g_city, RELIGION_AZZANDARAYASNA, g_mod)
 	--print("GetConversionOutcome", totalConversions, bFlip, religionConversionTable)
 	if totalConversions == 0 then return false end
-	g_tablePointer = religionConversionTable
+	g_obj1 = religionConversionTable
 	g_bool1 = bFlip
 	g_value = 10 * totalConversions + (bFlip and 100 or 0) --for AI; passing conversion threshold worth 10 citizens 
 	--print(g_value)
@@ -3945,14 +3948,14 @@ SetUI[GameInfoTypes.EA_ACTION_PROSELYTIZE] = function()
 	if g_bNonTargetTestsPassed and g_bIsCity then
 		MapModData.bShow = true
 		if g_bAllTestsPassed then
-			local atheistsConverted = g_tablePointer[-1]
+			local atheistsConverted = g_obj1[-1]
 			if atheistsConverted > 0 then
 				MapModData.text = "Will convert " .. atheistsConverted .. " non-followers[NEWLINE]"
 			else
 				MapModData.text = ""
 			end
 			for i = 0, HIGHEST_RELIGION_ID do
-				local numConverted = g_tablePointer[i]
+				local numConverted = g_obj1[i]
 				if numConverted > 0 then
 					MapModData.text = MapModData.text .. "Will convert ".. numConverted .. " followers of ".. Locale.ConvertTextKey(GameInfo.Religions[i].Description) .. "[NEWLINE]"
 				end
@@ -3977,13 +3980,13 @@ end
 Finish[GameInfoTypes.EA_ACTION_PROSELYTIZE] = function()
 	print("Finish EA_ACTION_PROSELYTIZE")
 	for i = -1, HIGHEST_RELIGION_ID do
-		if g_tablePointer[i] > 0 then
-			print("about to convert", i, g_tablePointer[i])
+		if g_obj1[i] > 0 then
+			print("about to convert", i, g_obj1[i])
 			--need percentage (round up or down???)
-			local convertPercent = floor(0.9 + 100 * g_tablePointer[i] / g_city:GetNumFollowers(i))
+			local convertPercent = floor(0.9 + 100 * g_obj1[i] / g_city:GetNumFollowers(i))
 			g_city:ConvertPercentFollowers(RELIGION_AZZANDARAYASNA, i, convertPercent)
 			if i == RELIGION_ANRA then
-				g_eaPlayer.fallenFollowersDestr = (g_eaPlayer.fallenFollowersDestr or 0) + (2 * g_tablePointer[i])
+				g_eaPlayer.fallenFollowersDestr = (g_eaPlayer.fallenFollowersDestr or 0) + (2 * g_obj1[i])
 			end
 		end
 	end
@@ -3996,7 +3999,7 @@ TestTarget[GameInfoTypes.EA_ACTION_ANTIPROSELYTIZE] = function()
 	local totalConversions, bFlip, religionConversionTable = GetConversionOutcome(g_city, RELIGION_ANRA, g_mod)
 	--print("GetConversionOutcome", totalConversions, bFlip, religionConversionTable)
 	if totalConversions == 0 then return false end
-	g_tablePointer = religionConversionTable
+	g_obj1 = religionConversionTable
 	g_bool1 = bFlip
 	g_value = 10 * totalConversions + (bFlip and 100 or 0) --for AI; passing conversion threshold worth 10 citizens 
 	--print(g_value)
@@ -4007,14 +4010,14 @@ SetUI[GameInfoTypes.EA_ACTION_ANTIPROSELYTIZE] = function()
 	if g_bNonTargetTestsPassed and g_bIsCity then
 		MapModData.bShow = true
 		if g_bAllTestsPassed then
-			local atheistsConverted = g_tablePointer[-1]
+			local atheistsConverted = g_obj1[-1]
 			if atheistsConverted > 0 then
 				MapModData.text = "Will convert " .. atheistsConverted .. " non-followers[NEWLINE]"
 			else
 				MapModData.text = ""
 			end
 			for i = 0, HIGHEST_RELIGION_ID do
-				local numConverted = g_tablePointer[i]
+				local numConverted = g_obj1[i]
 				if numConverted > 0 then
 					MapModData.text = MapModData.text .. "Will convert ".. numConverted .. " followers of ".. Locale.ConvertTextKey(GameInfo.Religions[i].Description) .. "[NEWLINE]"
 				end
@@ -4038,9 +4041,9 @@ end
 
 Finish[GameInfoTypes.EA_ACTION_ANTIPROSELYTIZE] = function()
 	for i = -1, HIGHEST_RELIGION_ID do
-		if g_tablePointer[i] > 0 then
+		if g_obj1[i] > 0 then
 			--need percentage (round up or down???)
-			local convertPercent = floor(0.9 + 100 * g_tablePointer[i] / g_city:GetNumFollowers(i))
+			local convertPercent = floor(0.9 + 100 * g_obj1[i] / g_city:GetNumFollowers(i))
 			g_city:ConvertPercentFollowers(RELIGION_ANRA, i, convertPercent)
 		end
 	end
@@ -4074,7 +4077,7 @@ local function ModelCultRitual_TestTarget()
 			g_testTargetSwitch = 2
 			return false
 		end
-		g_tablePointer = religionConversionTable
+		g_obj1 = religionConversionTable
 		g_bool1 = bFlip
 		g_value = totalConversions + (bFlip and 10 or 0) --for AI; passing conversion threshold worth 10 citizens 
 		if gReligions[g_int1].founder ~= g_iPlayer then
@@ -4096,14 +4099,14 @@ local function ModelCultRitual_SetUI()
 		MapModData.bShow = true
 		if g_bAllTestsPassed then
 			if gReligions[g_int1] then		--already founded
-				local atheistsConverted = g_tablePointer[-1]
+				local atheistsConverted = g_obj1[-1]
 				if atheistsConverted > 0 then
 					MapModData.text = "Will convert " .. atheistsConverted .. " non-followers[NEWLINE]"
 				else
 					MapModData.text = ""
 				end
 				for i = 0, HIGHEST_RELIGION_ID do
-					local numConverted = g_tablePointer[i]
+					local numConverted = g_obj1[i]
 					if numConverted > 0 then
 						MapModData.text = MapModData.text .. "Will convert ".. numConverted .. " followers of ".. Locale.ConvertTextKey(GameInfo.Religions[i].Description) .. "[NEWLINE]"
 					end

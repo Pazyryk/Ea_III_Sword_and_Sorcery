@@ -319,7 +319,7 @@ function CityStatePerCivTurn(iPlayer)	-- called for true city states only
 				local atheists = city:GetNumFollowers(-1)
 				if 0 < atheists then
 					print("Converting 1 citizen in Holy City State")
-					local convertPercent = floor(100 / atheists + 1)
+					local convertPercent = floor(100 / atheists + 0.9)
 					city:ConvertPercentFollowers(RELIGION_AZZANDARAYASNA, -1, convertPercent)
 				end
 			end
@@ -431,7 +431,7 @@ function FullCivPerCivTurn(iPlayer)		-- called for full civs only
 	local faithFromPolicyFinisher = GetFaithFromPolicyFinisher(player)
 	local cultureManaFromWildlands = eaPlayer.cultureManaFromWildlands or 0
 
-	local cultFounderMana = eaPlayer.manaForCultOfLeavesFounder or 0	--calculated in EaPlots.lua
+	local cultFounderMana = eaPlayer.manaForCultOfLeavesFounder	--calculated in EaPlots.lua
 	cultFounderMana = cultFounderMana + (eaPlayer.manaForCultOfCahraFounder or 0)
 
 	if gReligions[RELIGION_CULT_OF_ABZU] and iPlayer == gReligions[RELIGION_CULT_OF_ABZU].founder then

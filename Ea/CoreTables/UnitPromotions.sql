@@ -63,7 +63,7 @@ INSERT INTO UnitPromotions (Type,		Description,								Help,											PediaType
 
 
 
---non-GP and combined (GP/nonGP) selected
+--non-GP selected
 INSERT INTO UnitPromotions (Type,		Description,								Help,											PediaType,			PediaEntry,										OrderPriority,	PortraitIndex,	PromotionPrereq,				IconAtlas	) VALUES
 ('PROMOTION_COMBAT_1',					'TXT_KEY_EA_PROMOTION_COMBAT_1',			'TXT_KEY_EA_PROMOTION_COMBAT_HELP',				'PEDIA_MELEE',		'TXT_KEY_EA_PEDIA_PROMOTION_COMBAT',			3,				44,				NULL,							'PROMOTION_ATLAS'				),
 ('PROMOTION_COMBAT_2',					'TXT_KEY_EA_PROMOTION_COMBAT_2',			'TXT_KEY_EA_PROMOTION_COMBAT_HELP',				'PEDIA_MELEE',		'TXT_KEY_EA_PEDIA_PROMOTION_COMBAT',			3,				45,				'PROMOTION_COMBAT_1',			'PROMOTION_ATLAS'				),
@@ -573,10 +573,30 @@ UPDATE UnitPromotions SET EnemyHealChange = -5, NeutralHealChange = 5, FriendlyH
 UPDATE UnitPromotions SET MovesChange = 2 WHERE Type = 'PROMOTION_RIDE_LIKE_THE_WINDS';
 UPDATE UnitPromotions SET MovesChange = 1 WHERE Type = 'PROMOTION_FAIR_WINDS';
 
+--Ea support table
+CREATE TABLE UnitPromotions_EaPeopleValidPrefixes (	'PromotionPrefix' TEXT );
+INSERT INTO UnitPromotions_EaPeopleValidPrefixes (PromotionPrefix) VALUES
+('PROMOTION_GP_COMBAT'),
+('PROMOTION_LOGISTICS'),
+('PROMOTION_CONSTRUCTION'),
+('PROMOTION_COMBAT_ENGINEERING'),
+('PROMOTION_TRADE'),
+('PROMOTION_ESPIONAGE'),
+('PROMOTION_SCHOLARSHIP'),
+('PROMOTION_BARDING'),
+('PROMOTION_PROSELYTISM'),
+('PROMOTION_DEVOTION'),
+('PROMOTION_DIVINATION'),
+('PROMOTION_ABJURATION'),
+('PROMOTION_EVOCATION'),
+('PROMOTION_TRANSMUTATION'),
+('PROMOTION_CONJURATION'),
+('PROMOTION_NECROMANCY'),
+('PROMOTION_ENCHANTMENT'),
+('PROMOTION_ILLUSION');
 
 
-
---Subtables
+--Base Subtables
 DELETE FROM UnitPromotions_CivilianUnitType;
 DELETE FROM UnitPromotions_UnitClasses;
 DELETE FROM UnitPromotions_Features;

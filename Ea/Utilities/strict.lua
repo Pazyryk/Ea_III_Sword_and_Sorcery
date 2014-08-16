@@ -19,7 +19,7 @@
 -- this file.
 -- 
 -- Regardless of settings, a global name can be removed from strict.lua scrutiny anywhere at any time (after this file
--- has been included) by use of AddStrictLuaExceptions("globalName1", "globalName2", "globalName3", ...).
+-- has been included) by use of Globals("globalName1", "globalName2", "globalName3", ...).
 --
 -- To work, user must enable the debug library by setting EnableLuaDebugLibrary = 1 in their config.ini file. Otherwise,
 -- strict.lua is not operating, though it will do no harm and calls to included utility functions will do nothing safely.
@@ -34,7 +34,7 @@
 --
 -- Includes three utility funcions:
 --	
--- AddStrictLuaExceptions(...) allows user to declare global after this file is included (anywhere regardless of settings)
+-- Globals(...) allows user to declare global after this file is included (anywhere regardless of settings)
 -- PrintStrictLuaErrors(bSkipRepeats) if bAssert = false, this will print all strict.lua errors that have occured
 -- PrintGlobals(bSorted) allows user to see all globals and their contents in the current environment
 --
@@ -52,10 +52,11 @@ local bSkipTablesInMainBody = false		--don't object to global tables declared in
 --------------------------------------------------------------
 -- strict.lua for Civ5
 --------------------------------------------------------------
-
-function AddStrictLuaExceptions() end	--safely does nothing if debug library not enabled
-function PrintStrictLuaErrors() return "Only works if debug library enabled by setting EnableLuaDebugLibrary = 1 in config.ini" end
-function PrintGlobals() return "Only works if debug library enabled by setting EnableLuaDebugLibrary = 1 in config.ini" end
+--these functions safely do nothing if debug library not enabled
+function Globals() print("Called Globals but debug library is not enabled; set EnableLuaDebugLibrary = 1 in config.ini") end	
+function PrintStrictLuaErrors() print("Called PrintStrictLuaErrors but debug library is not enabled; set EnableLuaDebugLibrary = 1 in config.ini") end
+function PrintGlobals() print("Called PrintGlobals but debug library is not enabled; set EnableLuaDebugLibrary = 1 in config.ini") end
+function MakeTableStrict() print("Called MakeTableStrict but debug library is not enabled; set EnableLuaDebugLibrary = 1 in config.ini") end
 
 --bail out of this file if debug library not enabled (can't do anything)
 if not debug then
@@ -65,110 +66,123 @@ end
 
 print("Setting strict.lua!")
 
---get the environment and environment metatable
-local _G = debug.getfenv(AddStrictLuaExceptions)
-local mt = getmetatable(_G)
-if mt == nil then
-	mt = {}
-	setmetatable(_G, mt)
-end
-
---add a place to remember declared global names (and access attempts to keep print statements usable)
-mt.__declared = {}
-if not bAssert then
-	mt.__accessAttempts = {}
-end
-
 --localized stuff
 local getinfo = debug.getinfo
 local rawset = debug.getfenv(pairs).rawset	--PM me if you have questions
 local strictLuaErrors = {}
-local errorLine = 0
+local numErrors = 0
 
---intercept undeclared assignments: global = x
-mt.__newindex = function (t, k, v)
-	if not mt.__declared[k] then
-		local info = getinfo(2, "S")
-		--print("__newindex ", info.what, k, v)
-		if info.what ~= "C" and (info.what ~= "main" or (bTestMainBody
-				and (not bSkipFunctionsInMainBody or type(v) ~= "function")
-				and (not bSkipTablesInMainBody or type(v) ~= "table")  )) then
-			info = getinfo(2, "Snl")
-			local name = info.name or info.what or "<unknown>"
-			local str = "(strict.lua) Assigned to an undeclared variable '" .. k .. "' in " .. name
-			if bAssert then
-				error(str)
-			else
-				errorLine = errorLine + 1
-				strictLuaErrors[errorLine] = "ERROR! " .. str .. " at:"
-				print(strictLuaErrors[errorLine])
-				errorLine = errorLine + 1
-				strictLuaErrors[errorLine] = string.format("  %s: %d", (info.source or "nil"), (info.currentline or "-1"))
-				print(strictLuaErrors[errorLine])
-			end
-		end
-		mt.__declared[k] = true
+--get the environment
+local _G = debug.getfenv(Globals)
+
+function MakeTableStrict(table)
+	local bEnv = table == _G
+	print("MakeTableStrict ", table, bEnv)
+
+	--bail out if table has metatable already
+	local mt = getmetatable(table)
+	if mt then
+		print("ERROR! MakeTableStrict called for a table that already has a metatable; modify strict.lua if you want this to work")
+		return
 	end
-	rawset(t, k, v)
-end
-  
---intercept undeclared accesses: x = global
-mt.__index = function (t, k)
-	if not mt.__declared[k] then
-		local info = getinfo(2, "S")
-		--print("__index ", info.what, k)
-		if info.what ~= "C" then
-			info = getinfo(2, "Snl")
-			local name = info.name or info.what or "<unknown>"
-			local str = "(strict.lua) Accessed an undeclared variable '" .. k .. "' in " .. name
-			if bAssert then
-				error(str)
-			else
-				local bRepeat = mt.__accessAttempts[k]
-				if bRepeat then
-					print("ERROR (repeat)!" .. str .. " at:")
-					print(string.format("  %s: %d", (info.source or "nil"), (info.currentline or "-1")))
+
+	--add a metatable
+	mt = {}
+	setmetatable(table, mt)
+
+	--add a place to remember declared keys (and access attempts to keep print statements usable)
+	mt.__declared = {}
+
+	--intercept undeclared assignments: table(key) = x, for nonexistent key
+	mt.__newindex = function (t, k, v)
+		if not mt.__declared[k] then
+			local info = getinfo(2, "S")
+			--print("__newindex ", info.what, k, v)
+			if info.what ~= "C" and (not bEnv or info.what ~= "main" or (bTestMainBody
+					and (not bSkipFunctionsInMainBody or type(v) ~= "function")
+					and (not bSkipTablesInMainBody or type(v) ~= "table")  )) then
+				info = getinfo(2, "Snl")
+				local name = info.name or info.what or "<unknown>"
+				local str = "(strict.lua) Assigned to an undeclared " .. (bEnv and "global" or "table key") .. " '" .. k .. "' in " .. name
+				if bAssert then
+					error(str)
 				else
-					errorLine = errorLine + 1
-					strictLuaErrors[errorLine] = (bRepeat and "ERROR (repeat)!" or "ERROR! ") .. str .. " at:"
-					print(strictLuaErrors[errorLine])
-					errorLine = errorLine + 1
-					strictLuaErrors[errorLine] = string.format("  %s: %d", (info.source or "nil"), (info.currentline or "-1"))
-					print(strictLuaErrors[errorLine])
+					print("ERROR! " .. str)
+					local str2 = string.format("  %s: %d", (info.source or "nil"), (info.currentline or "-1"))
+					print(str2)
+					numErrors = numErrors + 1
+					local memoryKey = str .. " at: \n" .. str2
+					strictLuaErrors[memoryKey] = strictLuaErrors[memoryKey] or numErrors	--use string as key for easy unique handling, numErrors can be used to sort by first occurance
+				end
+			end
+			mt.__declared[k] = true
+		end
+		rawset(t, k, v)
+	end
+  
+	--intercept undeclared accesses: x = table(key), for nonexistent key
+	mt.__index = function (t, k)
+		if not mt.__declared[k] then
+			local info = getinfo(2, "S")
+			--print("__index ", info.what, k)
+			if info.what ~= "C" then
+				info = getinfo(2, "Snl")
+				local name = info.name or info.what or "<unknown>"
+				local str = "(strict.lua) Accessed an undeclared " .. (bEnv and "global" or "table key") .. " '" .. k .. "' in " .. name
+				if bAssert then
+					error(str)
+				else
+					print("ERROR! " .. str)
+					local str2 = string.format("  %s: %d", (info.source or "nil"), (info.currentline or "-1"))
+					print(str2)
+					numErrors = numErrors + 1
+					local memoryKey = str .. " at: \n" .. str2
+					strictLuaErrors[memoryKey] = strictLuaErrors[memoryKey] or numErrors
 				end
 			end
 		end
-		if not bAssert then
-			mt.__accessAttempts[k] = true		--so we don't keep seeing the same error
-		end
+		return nil
 	end
-	return nil
 end
+
+MakeTableStrict(_G)
+
 
 --------------------------------------------------------------
 -- utility functions for user
 --------------------------------------------------------------
 
-AddStrictLuaExceptions = function(...)	--allows declaration of globals after this file included
+function Globals(...)	--allows declaration of globals after this file included
+	local mt = getmetatable(_G)
 	for _, name in pairs({...}) do
 		print("Global name will be ignored by strict.lua: ", name)
 		mt.__declared[name] = true
 	end
 end
 
-PrintStrictLuaErrors = function()
+function PrintStrictLuaErrors()
 	if bAssert then
 		print("We don't save errors if bAssert = true; check Lua.log for Runtime Errors")
-	elseif errorLine == 0 then
+	elseif numErrors == 0 then
 		print("There have been no strict.lua errors")
 	else
-		for line = 1, errorLine do
-			print(strictLuaErrors[line])
+		print("Printing non-redundant strict.lua errors:")
+		local n = 0
+		local errors = {}
+		for k, v in pairs(strictLuaErrors) do
+			n = n + 1
+			errors[n] = {v, k}		--v is error first occurance number; k is unique error string
 		end
+		table.sort(errors, function(a, b) return a[1] < b[1] end)
+		for i = 1, n do
+			local error = errors[i]
+			print("ERROR #" .. error[1] .. " " .. error[2])
+		end
+		print("Total number of strict.lua errors including redundant: " .. numErrors)
 	end
 end
 
-PrintGlobals = function()	--try it!
+function PrintGlobals()	--try it!
 	local n = 0
 	local names = {}
 	for k, v in pairs(_G) do
@@ -183,4 +197,4 @@ PrintGlobals = function()	--try it!
 end
 
 --this one caused in Fire Tuner, so exclude here
-AddStrictLuaExceptions("_cmdr")
+Globals("_cmdr")

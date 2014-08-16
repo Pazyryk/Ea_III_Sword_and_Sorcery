@@ -73,7 +73,6 @@ local BUILDING_PLUS_1_SEA_XP =					GameInfoTypes.BUILDING_PLUS_1_SEA_XP
 
 
 local BUILDING_TRADE_HOUSE =					GameInfoTypes.BUILDING_TRADE_HOUSE
-local BUILDING_MEGALOS_FAROS_MOD =				GameInfoTypes.BUILDING_MEGALOS_FAROS_MOD
 
 local EA_ARTIFACT_TOME_OF_TOMES =				GameInfoTypes.EA_ARTIFACT_TOME_OF_TOMES
 
@@ -251,9 +250,6 @@ function UpdateCityYields(iPlayer, iSpecificCity, effectType, bPerTurnCall)
 	end
 	local bPerTurnFullCivUpdate = bFullCiv and bPerTurnCall
 	local numCities = player:GetNumCities()
-
-	local bHasMegalosFaros = gWonders[EA_WONDER_MEGALOS_FAROS] and Map.GetPlotByIndex(gWonders[EA_WONDER_MEGALOS_FAROS].iPlot):GetOwner() == iPlayer
-	local megalosFarosMod = bHasMegalosFaros and gWonders[EA_WONDER_MEGALOS_FAROS].mod or 0
 	local nameTrait = bFullCiv and eaPlayer.eaCivNameID
 	local capital = player:GetCapitalCity()
 

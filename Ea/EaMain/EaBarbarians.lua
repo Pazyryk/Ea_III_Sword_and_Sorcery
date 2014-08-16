@@ -10,22 +10,22 @@ local Dprint = DEBUG_PRINT and print or function() end
 --------------------------------------------------------------
 -- Settings
 --------------------------------------------------------------
-local BARB_TURN_CEILING =				MapModData.EaSettings.BARB_TURN_CEILING					--stop increasing barb threat at this turn
-local ENCAMPMENT_HEALING =				MapModData.EaSettings.ENCAMPMENT_HEALING
+local BARB_TURN_CEILING =				EaSettings.BARB_TURN_CEILING					--stop increasing barb threat at this turn
+local ENCAMPMENT_HEALING =				EaSettings.ENCAMPMENT_HEALING
 
 --Roaming land units
-local ROAM_SPAWN_MULTIPLIER =			MapModData.EaSettings.ROAM_SPAWN_MULTIPLIER				--Raise for faster spawning
-local ROAM_TURN_EXPONENT =				MapModData.EaSettings.ROAM_TURN_EXPONENT				--Raise to increase spawning as a function of turn number
-local ROAM_DENSITY_FEEDBACK_EXPONENT =	MapModData.EaSettings.ROAM_DENSITY_FEEDBACK_EXPONENT	--Raise to increase negative feedback from area density
-local ROAM_POWER_FEEDBACK_EXPONENT =	MapModData.EaSettings.ROAM_POWER_FEEDBACK_EXPONENT		--Raise to increase negative feedback from unit power (less ogers compared to goblins)
+local ROAM_SPAWN_MULTIPLIER =			EaSettings.ROAM_SPAWN_MULTIPLIER				--Raise for faster spawning
+local ROAM_TURN_EXPONENT =				EaSettings.ROAM_TURN_EXPONENT				--Raise to increase spawning as a function of turn number
+local ROAM_DENSITY_FEEDBACK_EXPONENT =	EaSettings.ROAM_DENSITY_FEEDBACK_EXPONENT	--Raise to increase negative feedback from area density
+local ROAM_POWER_FEEDBACK_EXPONENT =	EaSettings.ROAM_POWER_FEEDBACK_EXPONENT		--Raise to increase negative feedback from unit power (less ogers compared to goblins)
 
 --Sea units
-local SEA_SPAWN_MULTIPLIER =			MapModData.EaSettings.SEA_SPAWN_MULTIPLIER
-local SEA_TURN_EXPONENT =				MapModData.EaSettings.SEA_TURN_EXPONENT					
-local SEA_DENSITY_FEEDBACK_EXPONENT =	MapModData.EaSettings.SEA_DENSITY_FEEDBACK_EXPONENT	
-local SEA_POWER_FEEDBACK_EXPONENT =		MapModData.EaSettings.SEA_POWER_FEEDBACK_EXPONENT
-local USE_MINIMUM_PIRATE_COVE_NUMBER =	MapModData.EaSettings.USE_MINIMUM_PIRATE_COVE_NUMBER
-local USE_MAXIMUM_PIRATE_COVE_NUMBER =	MapModData.EaSettings.USE_MAXIMUM_PIRATE_COVE_NUMBER
+local SEA_SPAWN_MULTIPLIER =			EaSettings.SEA_SPAWN_MULTIPLIER
+local SEA_TURN_EXPONENT =				EaSettings.SEA_TURN_EXPONENT					
+local SEA_DENSITY_FEEDBACK_EXPONENT =	EaSettings.SEA_DENSITY_FEEDBACK_EXPONENT	
+local SEA_POWER_FEEDBACK_EXPONENT =		EaSettings.SEA_POWER_FEEDBACK_EXPONENT
+local USE_MINIMUM_PIRATE_COVE_NUMBER =	EaSettings.USE_MINIMUM_PIRATE_COVE_NUMBER
+local USE_MAXIMUM_PIRATE_COVE_NUMBER =	EaSettings.USE_MAXIMUM_PIRATE_COVE_NUMBER
 
 if Game.IsOption(GameOptionTypes.GAMEOPTION_RAGING_BARBARIANS) then
 	ROAM_SPAWN_MULTIPLIER = ROAM_SPAWN_MULTIPLIER * 2
@@ -42,7 +42,7 @@ end
 -- local defs
 --------------------------------------------------------------
 
-local STARTING_SUM_OF_ALL_MANA =			MapModData.EaSettings.STARTING_SUM_OF_ALL_MANA
+local STARTING_SUM_OF_ALL_MANA =			EaSettings.STARTING_SUM_OF_ALL_MANA
 
 local BARB_PLAYER_INDEX =					BARB_PLAYER_INDEX
 local GAME_SPEED_MULTIPLIER =				GAME_SPEED_MULTIPLIER

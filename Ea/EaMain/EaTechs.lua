@@ -10,8 +10,8 @@ local print = ENABLE_PRINT and print or function() end
 -- Settings
 --------------------------------------------------------------
 --knowledge maintenence
-local KM_PER_TECH_PER_CITIZEN =		MapModData.EaSettings.KM_PER_TECH_PER_CITIZEN
-local FAVORED_TECH_COST_REDUCTION = MapModData.EaSettings.FAVORED_TECH_COST_REDUCTION
+local KM_PER_TECH_PER_CITIZEN =		EaSettings.KM_PER_TECH_PER_CITIZEN
+local FAVORED_TECH_COST_REDUCTION = EaSettings.FAVORED_TECH_COST_REDUCTION
 
 --------------------------------------------------------------
 -- local defs

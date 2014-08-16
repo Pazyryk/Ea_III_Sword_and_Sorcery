@@ -8,16 +8,17 @@
 local MapModData = MapModData
 MapModData.gT = MapModData.gT or {}
 local gT = MapModData.gT
+local EaSettings = MapModData.EaSettings
 
 --------------------------------------------------------------
 --Settings
 --------------------------------------------------------------
-local POLICY_MULTIPLIER =			MapModData.EaSettings.POLICY_MULTIPLIER				--policies as a function of culture generation / population
-local POLICY_ADD =					MapModData.EaSettings.POLICY_ADD					--extra policies you would get with no culture
+local POLICY_MULTIPLIER =			EaSettings.POLICY_MULTIPLIER				--policies as a function of culture generation / population
+local POLICY_ADD =					EaSettings.POLICY_ADD					--extra policies you would get with no culture
 
-local CL_APPROACH_FACTOR =			MapModData.EaSettings.CL_APPROACH_FACTOR			--try to approach steady state level by this fraction of the difference each turn
-local CL_TARGET_CHANGE =			MapModData.EaSettings.CL_TARGET_CHANGE				--reduce or increase per turn change toward this level; IMPORTANT!!!: Update EXPECTED_CL_CHANGE in EaAICivPlanning.lua to match this
-local CL_CHANGE_DAMPING_EXPONENT =	MapModData.EaSettings.CL_CHANGE_DAMPING_EXPONENT	--lower value pushes per turn change toward target change
+local CL_APPROACH_FACTOR =			EaSettings.CL_APPROACH_FACTOR			--try to approach steady state level by this fraction of the difference each turn
+local CL_TARGET_CHANGE =			EaSettings.CL_TARGET_CHANGE				--reduce or increase per turn change toward this level; IMPORTANT!!!: Update EXPECTED_CL_CHANGE in EaAICivPlanning.lua to match this
+local CL_CHANGE_DAMPING_EXPONENT =	EaSettings.CL_CHANGE_DAMPING_EXPONENT	--lower value pushes per turn change toward target change
 
 
 --------------------------------------------------------------

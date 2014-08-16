@@ -9,9 +9,9 @@ local print = ENABLE_PRINT and print or function() end
 --------------------------------------------------------------
 -- Settings
 --------------------------------------------------------------
-local CONTINGENCY_THRESHOLD = MapModData.EaSettings.CONTINGENCY_THRESHOLD		--Lower makes it easier to add contingency plan
-local CONTINGENCY_TURN_INTERVAL = MapModData.EaSettings.CONTINGENCY_TURN_INTERVAL
-local EXPECTED_CL_CHANGE = MapModData.EaSettings.CL_TARGET_CHANGE				--Good expectation at game start
+local CONTINGENCY_THRESHOLD = EaSettings.CONTINGENCY_THRESHOLD		--Lower makes it easier to add contingency plan
+local CONTINGENCY_TURN_INTERVAL = EaSettings.CONTINGENCY_TURN_INTERVAL
+local EXPECTED_CL_CHANGE = EaSettings.CL_TARGET_CHANGE				--Good expectation at game start
 
 --------------------------------------------------------------
 -- File Locals

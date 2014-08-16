@@ -283,9 +283,7 @@ UPDATE Buildings SET River = 1 WHERE Type IN ('BUILDING_WATERMILL', 'BUILDING_RI
 UPDATE Buildings SET Mountain = 1 WHERE Type = 'BUILDING_OBSERVATORY';
 UPDATE Buildings SET TrainedFreePromotion = 'PROMOTION_STALLIONS_OF_EPONA' WHERE Type = 'BUILDING_CULT_OF_EPONA_FOLLOWER';
 UPDATE Buildings SET TrainedFreePromotion = 'PROMOTION_DRUNKARD' WHERE Type = 'BUILDING_CULT_OF_BAKKHEIA_FOLLOWER';
-
 UPDATE Buildings SET UnmoddedHappiness = -2, MutuallyExclusiveGroup = 1 WHERE Type = 'BUILDING_RACIAL_DISHARMONY';
-
 UPDATE Buildings SET Happiness = 1 WHERE Type = 'BUILDING_PLUS_1_LOCAL_HAPPY';
 
 --check these:
@@ -300,6 +298,8 @@ UPDATE Buildings SET GoldMaintenance = 0, EaProhibitSell = 1, ConquestProb = 100
 UPDATE Buildings SET Experience = 1 WHERE Type = 'BUILDING_KOLOSSOS_MOD';
 UPDATE Buildings SET WorkerSpeedModifier = 1 WHERE Type = 'BUILDING_UUC_YABNAL_MOD';
 UPDATE Buildings SET UnmoddedHappiness = 1 WHERE Type = 'BUILDING_DA_BAOEN_SI_MOD';
+UPDATE Buildings SET TradeRouteSeaDistanceModifier = 1, TradeRouteSeaGoldBonus = 1 WHERE Type = 'BUILDING_MEGALOS_FAROS_MOD';
+
 
 
 --DEBUG

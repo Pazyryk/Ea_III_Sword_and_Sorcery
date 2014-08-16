@@ -11,11 +11,9 @@ local EA_MEDIA_PACK_MIN_VERSION = 5
 -------------------------------------------------------------------------------------------------------
 
 include("EaErrorHandler.lua")
-local HandleError10 = HandleError10
 
 include("EaDefines.lua")	
-include("strict.lua")	--all globals must be declared before this except functions in main body or by using AddStrictLuaExceptions
---AddStrictLuaExceptions("RiverManager", "River", "RiverSegmentManager", "RiverSegment")
+include("strict.lua")	--all globals must be declared before this except functions in main body or by using Globals
 
 -------------------------------------------------------------------------------------------------------
 -- Load printout
@@ -52,6 +50,8 @@ print("")
 -------------------------------------------------------------------------------------------------------
 -- Includes
 -------------------------------------------------------------------------------------------------------
+--First, init some globals used by foreign code for strict.lua
+Globals("RiverManager", "River", "RiverSegmentManager", "RiverSegment")
 
 --Utilities that don't need gT data
 include("EaPlotUtils.lua")	
@@ -143,6 +143,7 @@ local PeoplePerCivTurn =			PeoplePerCivTurn
 local UpdateGlobalYields =			UpdateGlobalYields
 local UpdateCityYields =			UpdateCityYields
 local PeopleAfterTurn =				PeopleAfterTurn
+local HandleError10 =				HandleError10
 
 --shared
 local MapModData = MapModData
@@ -277,6 +278,11 @@ local function OnPlayerDoTurn(iPlayer)	-- Runs at begining of turn for all livin
 		AnimalsPerTurn()
 		ReligionPerGameTurn()
 		TestEnableProtectorConditions()
+
+		if gameTurn % 50 == 0 then
+			PrintStrictLuaErrors()
+		end
+
 	end
 
 	g_bHumanOrFirstInAutoplayTurn = g_bHumanOrFirstInAutoplayTurn or iPlayer == g_iActivePlayer

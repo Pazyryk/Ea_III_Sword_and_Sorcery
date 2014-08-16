@@ -14,7 +14,7 @@ local print = ENABLE_PRINT and print or function() end
 ---------------------------------------------------------------
 
 --constants
-local STARTING_SUM_OF_ALL_MANA =			MapModData.EaSettings.STARTING_SUM_OF_ALL_MANA
+local STARTING_SUM_OF_ALL_MANA =			EaSettings.STARTING_SUM_OF_ALL_MANA
 
 local DOMAIN_LAND =							DomainTypes.DOMAIN_LAND
 local DOMAIN_SEA =							DomainTypes.DOMAIN_SEA
@@ -51,7 +51,7 @@ local UNITCOMBAT_MOUNTED =					GameInfoTypes.UNITCOMBAT_MOUNTED
 local UNHAPPINESS_PER_CITY =				GameDefines.UNHAPPINESS_PER_CITY
 local UNIT_SUFFIXES =						UNIT_SUFFIXES
 local NUM_UNIT_SUFFIXES =					#UNIT_SUFFIXES
-local MOD_MEMORY_HALFLIFE =					MapModData.EaSettings.MOD_MEMORY_HALFLIFE
+local MOD_MEMORY_HALFLIFE =					EaSettings.MOD_MEMORY_HALFLIFE
 
 local MAX_RANGE =							MAX_RANGE
 local FIRST_SPELL_ID =						FIRST_SPELL_ID

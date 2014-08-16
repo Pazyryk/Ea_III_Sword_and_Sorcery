@@ -43,13 +43,14 @@ local ENEMY_HEAL_RATE =						GameDefines.ENEMY_HEAL_RATE
 local NEUTRAL_HEAL_RATE =					GameDefines.NEUTRAL_HEAL_RATE
 local FRIENDLY_HEAL_RATE =					GameDefines.FRIENDLY_HEAL_RATE
 
-local STARTING_SUM_OF_ALL_MANA =			MapModData.EaSettings.STARTING_SUM_OF_ALL_MANA
+local STARTING_SUM_OF_ALL_MANA =			EaSettings.STARTING_SUM_OF_ALL_MANA
 local UNIT_SUFFIXES =						UNIT_SUFFIXES
 local NUM_UNIT_SUFFIXES =					#UNIT_SUFFIXES
-local MOD_MEMORY_HALFLIFE =					MapModData.EaSettings.MOD_MEMORY_HALFLIFE
+local MOD_MEMORY_HALFLIFE =					EaSettings.MOD_MEMORY_HALFLIFE
 local FIRST_SPELL_ID =						FIRST_SPELL_ID
 
 --global tables
+local GameDefines =							GameDefines
 local GameInfoTypes =						GameInfoTypes
 local MapModData =							MapModData
 local realCivs =							MapModData.realCivs
@@ -916,7 +917,7 @@ function TestEaActionTarget(eaActionID, testX, testY, bAITargetTest)
 		if g_eaAction.NormalCombatUnit then
 			g_int2 = g_unit:UpgradePrice(g_int1)	--upgrade cost
 		else
-			g_int2 = 50
+			g_int2 = EaSettings.SLAVE_UPGRD_TO_WARRIOR_COST
 		end
 		print("-upgrade price = ", g_int2)
 		if g_player:GetGold() < g_int2 then
@@ -1411,7 +1412,7 @@ end
 ------------------------------------------------------------------------------------------------------------------------------
 --EA_ACTION_SELL_SLAVES
 Do[GameInfoTypes.EA_ACTION_SELL_SLAVES] = function()
-	local sellGold = 30
+	local sellGold = EaSettings.SLAVE_SELL_PRICE
 	if g_eaPlayer.eaCivNameID == EACIV_NEZELIBA then
 		sellGold = 36
 	end
@@ -1437,7 +1438,7 @@ TestTarget[GameInfoTypes.EA_ACTION_RENDER_SLAVES] = function()
 end
 
 Do[GameInfoTypes.EA_ACTION_RENDER_SLAVES] = function()
-	local renderProd = 20
+	local renderProd = EaSettings.SLAVE_RENDER_PRODUCTION	--20
 	if g_eaPlayer.eaCivNameID == EACIV_NEZELIBA then
 		renderProd = 24
 	end
@@ -2753,7 +2754,7 @@ end
 
 --EA_ACTION_PURGE
 Test[GameInfoTypes.EA_ACTION_PURGE] = function()
-	return gWorld.bAnraHolyCityExists == false and not g_eaPlayer.bIsFallen and not g_eaPlayer.bRenouncedMaleficium
+	return not gWorld.bAnraHolyCityExists and not g_eaPlayer.bIsFallen and not g_eaPlayer.bRenouncedMaleficium and gReligions[RELIGION_ANRA]
 end
 
 TestTarget[GameInfoTypes.EA_ACTION_PURGE] = function()

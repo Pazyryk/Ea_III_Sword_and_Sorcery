@@ -13,8 +13,8 @@ local Dprint = DEBUG_PRINT and print or function() end
 -- Settings
 --------------------------------------------------------------
 
-local STARTING_SUM_OF_ALL_MANA =				 MapModData.EaSettings.STARTING_SUM_OF_ALL_MANA
-local FULL_WARMONGER_DISCOUNT_AT_MANA_CONSUMED = MapModData.EaSettings.FULL_WARMONGER_DISCOUNT_AT_PERCENT_MANA * STARTING_SUM_OF_ALL_MANA / 100
+local STARTING_SUM_OF_ALL_MANA =				 EaSettings.STARTING_SUM_OF_ALL_MANA
+local FULL_WARMONGER_DISCOUNT_AT_MANA_CONSUMED = EaSettings.FULL_WARMONGER_DISCOUNT_AT_PERCENT_MANA * STARTING_SUM_OF_ALL_MANA / 100
 
 --------------------------------------------------------------
 -- File Locals
@@ -84,7 +84,7 @@ function EaDiplomacyInit(bNewGame)
 			if eaPlayer.race == EARACE_HELDEOFOL then
 				Players[iPlayer]:SetWarmongerModifier(100)		--fully discounted
 			else
-				Players[iPlayer]:SetWarmongerModifier(MapModData.EaSettings.CITY_STATE_WARMONGER_DISCOUNT)	--need discout to lessen the "last city" effect
+				Players[iPlayer]:SetWarmongerModifier(EaSettings.CITY_STATE_WARMONGER_DISCOUNT)	--need discout to lessen the "last city" effect
 			end
 		end
 	end

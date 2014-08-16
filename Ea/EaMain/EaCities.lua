@@ -10,8 +10,8 @@ local print = ENABLE_PRINT and print or function() end
 -- Settings
 --------------------------------------------------------------
 
-local MANA_CONSUMED_PER_ANRA_FOLLOWER_PER_TURN =	MapModData.EaSettings.MANA_CONSUMED_PER_ANRA_FOLLOWER_PER_TURN
-local RACE_HATRED_FOR_RAZED_POP =					MapModData.EaSettings.RACE_HATRED_FOR_RAZED_POP		--eg, 0.5 for standard/standard
+local MANA_CONSUMED_PER_ANRA_FOLLOWER_PER_TURN =	EaSettings.MANA_CONSUMED_PER_ANRA_FOLLOWER_PER_TURN
+local RACE_HATRED_FOR_RAZED_POP =					EaSettings.RACE_HATRED_FOR_RAZED_POP		--eg, 0.5 for standard/standard
 
 --------------------------------------------------------------
 -- File Locals
@@ -921,7 +921,7 @@ local function OnPlayerCityFounded(iPlayer, x, y)
 	InitCityPlotIndexGlobals(iPlayer, iCity)
 
 	-- Ea city init
-	local eaCity = {iOwner = iPlayer,	-- !!!!!!!!!!!!!!!!  INIT NEW EaCity HERE !!!!!!!!!!!!!!!!
+	local eaCity = {iOwner = iPlayer,			-- !!!!!!!!!!!!!!!!  INIT NEW EaCity HERE !!!!!!!!!!!!!!!!
 					x = x,
 					y = y,
 					openLandTradeRoutes = {},	-- index by other eaCityIndex; holds other city owner (so trade route is open on re-conqest)
@@ -940,8 +940,31 @@ local function OnPlayerCityFounded(iPlayer, x, y)
 					culturePercentBoost = 0,
 					eligibleCults = {},
 					unimprovedForestJungle = 0,
-					desertCahraFollower = 0
+					desertCahraFollower = 0,
+
+					--keys below are added for strict table function
+					conscriptTurn = false,
+					autoIndenturePop = false,
+					holyCityFor = false,
+					
+					gpHappiness = false,
+					gpFaith = false,
+					gpCulture = false,
+					gpGold = false,
+					gpScience = false,
+					gpProduction = false,
+					residentSeaXP = false,
+					gpTraining = false,
+					residentLandXP = false,
+					gpDivineScience = false,
+					gpArcaneScience = false,
+					scienceDistributionCarryover = false,
+					leaderSeaXP = false,
+					leaderLandXP = false,
+
 					}
+
+	MakeTableStrict(eaCity)
 
 	gCities[iPlot] = eaCity
 
@@ -1131,7 +1154,6 @@ local function OnCityCaptureComplete(iPlayer, bCapital, x, y, iNewOwner, iOldPop
 		if iConqueringPlayer then
 
 			--Credit for conquest
-			eaConqueringPlayer.conquests = eaConqueringPlayer.conquests or {}
 			local uniqueConquestStr = iPlot .. "-" .. city:GetGameTurnFounded()
 			if not eaConqueringPlayer.conquests[uniqueConquestStr] then
 				eaConqueringPlayer.conquests[uniqueConquestStr] = oldSize
@@ -1412,6 +1434,11 @@ GameEvents.PlayerCanTrain.Add(X_OnPlayerCanTrain)
 local TestCityCanTrain = {}
 local function OnCityCanTrain(iPlayer, iCity, unitTypeID)
 	--print("PazDebug OnCityCanTrain ", iPlayer, iCity, unitTypeID)
+	if unitTypeID == UNIT_SETTLERS_MAN or unitTypeID == UNIT_SETTLERS_SIDHE or unitTypeID == UNIT_SETTLERS_ORC then
+		local city = Players[iPlayer]:GetCityByID(iCity)
+		if city:GetPopulation() < 2 then return false end
+	end
+
 	if TestCityCanTrain[unitTypeID] then
 		return TestCityCanTrain[unitTypeID](iPlayer, iCity)
 	end

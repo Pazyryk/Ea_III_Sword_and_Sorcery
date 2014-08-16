@@ -9,8 +9,6 @@ CREATE TABLE EaSettings ('Name' TEXT NOT NULL,
 
 -- Under Construction (most setting still at top of applicable Lua file)
 
--- Access in mod code with MapModData.EaSettings.<Name>
-
 INSERT INTO EaSettings (Name, Value, GameLengthExp, MapSizeExp, Int) VALUES
 
 --Mana
@@ -21,6 +19,13 @@ INSERT INTO EaSettings (Name, Value, GameLengthExp, MapSizeExp, Int) VALUES
 
 --Great People
 ('GP_TARGET_NUMBER',							3,		0,	1,	0	),
+
+--Slaves
+('SLAVE_SELL_PRICE',							30,		0,	0,	0	),
+('SLAVE_RENDER_PRODUCTION',						20,		0,	0,	0	),
+('SLAVE_UPGRD_TO_WARRIOR_COST',					50,		0,	0,	0	),
+('SLAVE_BUY_PRICE_FROM_CS',						35,		0,	0,	0	),
+
 
 --Resources
 ('TIMBER_DURATION_FROM_CHOP',					40,		1,	0,	1	),

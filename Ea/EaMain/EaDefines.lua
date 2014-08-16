@@ -53,7 +53,8 @@ print("Game speed, map size, speed multiplier, size multiplier = ", GAME_SPEED, 
 -- Settings
 --------------------------------------------------------------
 
-MapModData.EaSettings = {}				--Find Ea gameplay settings in EaTables/_EaSettings.sql
+EaSettings = {}						--Find Ea gameplay settings in EaTables/_EaSettings.sql
+MapModData.EaSettings = EaSettings	
 print("Adjusted Ea Game Settings:")
 for row in GameInfo.EaSettings() do
 	local value = row.Value
@@ -66,7 +67,7 @@ for row in GameInfo.EaSettings() do
 		end
 	end
 	print(row.Name, value)
-	MapModData.EaSettings[row.Name] = value
+	EaSettings[row.Name] = value
 end
 
 --------------------------------------------------------------

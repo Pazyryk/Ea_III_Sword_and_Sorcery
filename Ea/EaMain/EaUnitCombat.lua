@@ -107,8 +107,8 @@ end
 -- Interface
 --------------------------------------------------------------
 
-function CalculateXPManaForAttack(unitTypeId, damage, bKill)
-	local basePower = gg_normalizedUnitPower[unitTypeId] or 18			--city treated as unit with power 18
+function CalculateXPManaForAttack(unitTypeID, damage, bKill)
+	local basePower = gg_normalizedUnitPower[unitTypeID] or 18			--city treated as unit with power 18
 	return floor((damage + (bKill and 50 or 0)) * basePower / 18)		-- 1 pt per 2 hp for a Warriors unit; kill is worth an additional 33 hp
 end
 
@@ -382,6 +382,16 @@ function DoSequencedAttacks()	--called directly and at end of OnCombatEnded when
 					if bAllow and attackingUnit:CanMoveOrAttackInto(plot) then
 						attackingUnit:PopMission()
 						attackingUnit:PushMission(MissionTypes.MISSION_MOVE_TO, x, y, 0, 0, 1)
+
+						if attack.unitShouldFollow then				--Warrior after Lead Attack
+							local followingUnit = attack.unitShouldFollow
+							if not followingUnit:IsDelayedDeath() and not followingUnit:IsDead() then
+								if attackingUnit:GetX() == x and attackingUnit:GetY() == y then
+									followingUnit:SetXY(x, y)
+								end
+							end
+						end
+
 						return
 					end
 				end
@@ -415,7 +425,7 @@ local function WarriorLeadCharge(iPlayer, attackingUnit, targetX, targetY)
 
 				--{attackingUnit = unit, defendingPlot = plot or defendingUnit = unit, bRanged, bMoveIfNoEnemy}			
 				gg_sequencedAttacks.pos = gg_sequencedAttacks.pos + 1
-				gg_sequencedAttacks[gg_sequencedAttacks.pos] = {attackingUnit = unit, defendingPlot = GetPlotFromXY(targetX, targetY), bMoveIfNoEnemy = true}
+				gg_sequencedAttacks[gg_sequencedAttacks.pos] = {attackingUnit = unit, defendingPlot = GetPlotFromXY(targetX, targetY), bMoveIfNoEnemy = true, unitShouldFollow = attackingUnit}
 				--above should happen from OnCombatEnded
 
 

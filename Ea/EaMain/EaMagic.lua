@@ -347,7 +347,7 @@ OnPlotEffect[GameInfoTypes.EA_PLOTEFFECT_EXPLOSIVE_RUNE] = function(iPlayer, iUn
 			local afterDamage = unit and unit:GetDamage() or maxHP
 			local damage = afterDamage - beforeDamage
 			print("Damage to unit = ", damage)
-			local xpMana = CalculateXPManaForAttack(unitTypeId, damage, damage == maxHP)
+			local xpMana = CalculateXPManaForAttack(unitTypeID, damage, damage == maxHP)
 			UseManaOrDivineFavor(iPlotEffectPlayer, iPlotEffectCaster, xpMana)	--safe to use if iPlotEffectCaster is dead
 			local iPlot = GetPlotIndexFromXY(x, y) 
 			UpdatePlotEffectHighlight(iPlot)
@@ -390,7 +390,7 @@ OnPlotEffect[GameInfoTypes.EA_PLOTEFFECT_DEATH_RUNE] = function(iPlayer, iUnit, 
 				local unitTypeID = unit:GetUnitType()
 				MapModData.bBypassOnCanSaveUnit = true
 				unit:Kill(true, iPlotEffectPlayer)
-				local stdPts = CalculateXPManaForAttack(unitTypeId, hp, true)
+				local stdPts = CalculateXPManaForAttack(unitTypeID, hp, true)
 				local xpMana = threshold < stdPts and stdPts or threshold
 				print("Death Rune killed the unit; xp/mana = ", xpMana)
 				UseManaOrDivineFavor(iPlotEffectPlayer, iPlotEffectCaster, xpMana)	--safe to use if iPlotEffectCaster is dead

@@ -10,8 +10,8 @@ local print = ENABLE_PRINT and print or function() end
 -- Settings
 --------------------------------------------------------------
 
-local STARTING_SUM_OF_ALL_MANA =		MapModData.EaSettings.STARTING_SUM_OF_ALL_MANA
-local TIMBER_DURATION_FROM_CHOP =		MapModData.EaSettings.TIMBER_DURATION_FROM_CHOP
+local STARTING_SUM_OF_ALL_MANA =		EaSettings.STARTING_SUM_OF_ALL_MANA
+local TIMBER_DURATION_FROM_CHOP =		EaSettings.TIMBER_DURATION_FROM_CHOP
 
 --------------------------------------------------------------
 -- File Locals
@@ -1378,7 +1378,8 @@ local function ListenerSerialEventHexCultureChanged(hexX, hexY, iPlayer)	--fires
 			local plot = GetPlotFromXY(x, y)
 			--debug
 			if plot:GetOwner() ~= iPlayer then
-				error("plot:GetOwner() ~= iPlayer for SerialEventHexCultureChanged")
+				print("!!!! ERROR: plot:GetOwner() ~= iPlayer for SerialEventHexCultureChanged; " .. plot:GetOwner() .. " " .. iPlayer)
+				return
 			end
 
 			if plot:IsPlayerCityRadius(iPlayer) then

@@ -7,10 +7,10 @@
 local MapModData = MapModData
 MapModData.gT = MapModData.gT or {}
 local gT = MapModData.gT
-
+local EaSettings = MapModData.EaSettings
 
 --Settings
-local GP_TARGET_NUMBER = MapModData.EaSettings.GP_TARGET_NUMBER
+local GP_TARGET_NUMBER = EaSettings.GP_TARGET_NUMBER
 
 
 --Constants

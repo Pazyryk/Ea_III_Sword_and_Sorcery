@@ -317,4 +317,12 @@ WHERE AutoPrty IS NOT NULL;
 
 --God I hate flavors, but we really need new ones...
 
+
+
+
+
+
+
+
+
 INSERT INTO EaDebugTableCheck(FileName) SELECT 'EaPeople.sql';

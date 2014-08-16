@@ -10,8 +10,8 @@ local print = ENABLE_PRINT and print or function() end
 -- Settings
 -------------------------------------------------------------
 
-local MANA_CONSUMED_BY_ANRA_FOUNDING =	MapModData.EaSettings.MANA_CONSUMED_BY_ANRA_FOUNDING
-local MANA_CONSUMED_BY_CIV_FALL =		MapModData.EaSettings.MANA_CONSUMED_BY_CIV_FALL
+local MANA_CONSUMED_BY_ANRA_FOUNDING =	EaSettings.MANA_CONSUMED_BY_ANRA_FOUNDING
+local MANA_CONSUMED_BY_CIV_FALL =		EaSettings.MANA_CONSUMED_BY_CIV_FALL
 
 --------------------------------------------------------------
 -- File Locals
@@ -143,7 +143,7 @@ function ReligionPerGameTurn()
 					local city = eligibleCitiesAtheists[index]
 					local numAtheists = city:GetNumFollowers(-1)
 					local numReligionBefore = city:GetNumFollowers(religionID)
-					city:ConvertPercentFollowers(religionID, -1, floor(100 / numAtheists + 0.5))
+					city:ConvertPercentFollowers(religionID, -1, floor(100 / numAtheists + 0.9))
 					local thisConversionNum = city:GetNumFollowers(religionID) - numReligionBefore
 					numConverted = numConverted + thisConversionNum
 					if thisConversionNum ~= 1 then
@@ -168,7 +168,7 @@ function ReligionPerGameTurn()
 							citizenNumber = citizenNumber + loopFollowers
 							if citizenToConvert < citizenNumber then
 								local numReligionBefore = city:GetNumFollowers(religionID)
-								city:ConvertPercentFollowers(religionID, loopReligionID, floor(100 / loopFollowers + 0.5))
+								city:ConvertPercentFollowers(religionID, loopReligionID, floor(100 / loopFollowers + 0.9))
 								local thisConversionNum = city:GetNumFollowers(religionID) - numReligionBefore
 								numConverted = numConverted + (thisConversionNum * 5)	--5x harder to convert from religion
 								if thisConversionNum ~= 1 then
@@ -343,10 +343,12 @@ function FoundReligion(iPlayer, iCity, religionID)	--call should make sure that 
 		local convertID, followers
 		repeat
 			convertID = Rand(HIGHEST_RELIGION_ID + 2, "hello") - 1
-			followers = (convertID == -1 or gReligions[convertID]) and city:GetNumFollowers(convertID)
+			if convertID ~= religionID then
+				followers = (convertID == -1 or gReligions[convertID]) and city:GetNumFollowers(convertID)
+			end
 		until followers
 		print("Converting random religions until founded is majority; converting religionID = ", convertID)
-		local convertPercent = floor(1 + 100 / followers)
+		local convertPercent = floor(100 / followers + 0.9)
 		city:ConvertPercentFollowers(religionID, convertID, convertPercent)
 	end
 
@@ -453,6 +455,7 @@ end
 
 function ChangeMaleficiumLevelWithTests(iPlayer, change)
 	--some checks here to make sure we're not doing this wrong
+	if not fullCivs[iPlayer] then return end
 	local eaPlayer = gPlayers[iPlayer]
 	if eaPlayer.bRenouncedMaleficium then return end		--these guys never go positive or negative, so won't offer or ask for Renounce Maleficium
 	if change < 0 then

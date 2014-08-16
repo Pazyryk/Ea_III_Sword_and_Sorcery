@@ -93,13 +93,12 @@ function GetConquerorVictoryData(iPlayer)
 
 	local conqueredPopulation = 0
 	local conqueredCities = 0
-	if eaPlayer.conquests then
-		for key, population in pairs(eaPlayer.conquests) do
-			conqueredPopulation = conqueredPopulation + population
-			conqueredCities = conqueredCities + 1
-		end
-	end
 
+	for key, population in pairs(eaPlayer.conquests) do
+		conqueredPopulation = conqueredPopulation + population
+		conqueredCities = conqueredCities + 1
+	end
+	
 	local uncontrolledCities = 0
 	for iLoopPlayer in pairs(MapModData.fullCivs) do
 		if iLoopPlayer ~= iPlayer then

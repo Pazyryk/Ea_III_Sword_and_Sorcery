@@ -100,6 +100,12 @@ for promoInfo in GameInfo.UnitPromotions() do
 		nonTransferableGPPromos[numNonTransferableGPPromos] = promoInfo.ID
 	end
 end
+
+local gpPromoPrefixes = {number = 0}
+for row in GameInfo.UnitPromotions_EaPeopleValidPrefixes() do
+	gpPromoPrefixes.number = gpPromoPrefixes.number + 1
+	gpPromoPrefixes[gpPromoPrefixes.number] = row.PromotionPrefix
+end
 --------------------------------------------------------------
 -- Local Functions
 --------------------------------------------------------------
@@ -216,8 +222,12 @@ function EaPeopleInit(bNewGame)
 						title = "TXT_KEY_EA_QUEEN",
 						portrait = "Fand_SueMarino_0.70_636x944.dds",
 						eaActionID = -1,
-						gotoEaActionID = -1
-						}
+						gotoEaActionID = -1,
+						eaPersonRowID = GameInfoTypes.EAPERSON_FAND
+
+						 }
+
+		MakeTableStrict(gPeople[0])
 	end
 
 	for iPerson, eaPerson in pairs(gPeople) do
@@ -610,9 +620,9 @@ function GenerateGreatPerson(iPlayer, class, subclass, eaPersonRowID, bAsLeader,
 						iUnit = -1,							-- need this!
 						iUnitJoined = -1,
 						unitTypeID = unitTypeID,
-						subclass = subclass,
+						subclass = subclass or false,
 						class1 = class1,
-						class2 = class2,
+						class2 = class2 or false,
 						level = 1,
 						race = eaPlayer.race,		--takes civ race here; may change when ungenerisized (e.g., Heldeofol takes a subrace)
 						birthYear = Game.GetGameTurn() - 20,
@@ -624,7 +634,36 @@ function GenerateGreatPerson(iPlayer, class, subclass, eaPersonRowID, bAsLeader,
 						moves = 0,	
 						promotions = {},
 						progress = {},
-						modMemory = {}	}		
+						modMemory = {},	
+						leaderLevel = 0,
+						
+						--all below are set elsewhere, but need a non-nil value for strict table function
+						eaPersonRowID = false,
+						name = false,
+						spells = false,
+						templeID = false,
+						predestinedAgeOfDeath = false,
+						deathStayAction = false,
+						activePlayerEndTurnXP = false,
+						activePlayerEndTurnManaDivineFavor = false,
+						aiHasCombatRole = false,
+						learningSpellID = false,
+						x = false,
+						y = false,
+						xp = false,
+						assumedLeadershipTurn = false,
+						title = false,
+						timeStop = false,
+						aiBlacklist = false,
+
+						}
+
+	for i = 1, gpPromoPrefixes.number do
+		local promoPrefix = gpPromoPrefixes[i]
+		eaPerson[promoPrefix] = 0					--this makes for much faster access
+	end
+
+	MakeTableStrict(eaPerson)	--this is a strict table: no more keys can be added
 		
 	gPeople[iPerson] = eaPerson
 	RegisterGPActions(iPerson)		--only needs class1, class2 and subclass to work
@@ -710,9 +749,6 @@ function UpdateGreatPersonStatsFromUnit(unit, eaPerson)		--info we may need if u
 	eaPerson.y = unit:GetY()
 	eaPerson.level = unit:GetLevel()
 	eaPerson.xp = unit:GetExperience()
-
-	--v4 hotfix c patch for save compatibility; TO DO: Remove
-	eaPerson.promotions = eaPerson.promotions or {}
 
 	local promotions = eaPerson.promotions
 	for promotionID = 0, HIGHEST_PROMOTION_ID do
@@ -1235,14 +1271,14 @@ function GetGPMod(iPerson, modType1, modType2)
 
 	local promos
 	if modType1 == "EAMOD_LEADERSHIP" then
-		promos = eaPerson.leaderLevel or 0		--counted as if promo level (so biggest bump early)
+		promos = eaPerson.leaderLevel		--counted as if promo level (so biggest bump early)
 	else
 		promos = GetHighestPromotionLevel(modsPromotionTable[modType1], nil, iPerson)
 	end
 
 	if modType2 then
 		if modType2 == "EAMOD_LEADERSHIP" then
-			promos = promos + (eaPerson.leaderLevel or 0)
+			promos = promos + eaPerson.leaderLevel
 		else
 			promos = promos + GetHighestPromotionLevel(modsPromotionTable[modType2], nil, iPerson)
 		end

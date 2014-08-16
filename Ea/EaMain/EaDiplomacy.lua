@@ -99,7 +99,7 @@ function DiploPerCivTurn(iPlayer)	--full civs only
 	local eaPlayer = gPlayers[iPlayer]
 
 	--Mana consumption Warmonger
-	if 0 < gWorld.armageddonStage and eaPlayer.manaConsumed and (eaPlayer.race == EARACE_MAN or eaPlayer.race == EARACE_SIDHE) then	--Heldeofol are already fully discounted for warmonger penalty, so can't get worse
+	if 0 < gWorld.armageddonStage and eaPlayer.manaConsumed ~= 0 and (eaPlayer.race == EARACE_MAN or eaPlayer.race == EARACE_SIDHE) then	--Heldeofol are already fully discounted for warmonger penalty, so can't get worse
 		local iWarmongerDiscout = floor(100 * eaPlayer.manaConsumed / FULL_WARMONGER_DISCOUNT_AT_MANA_CONSUMED)
 		iWarmongerDiscout = iWarmongerDiscout < 100 and iWarmongerDiscout or 100
 		print("SetWarmongerModifier; iPlayer, iWarmongerDiscout = ", iPlayer, iWarmongerDiscout)
@@ -137,7 +137,7 @@ local function CalculateDiploModifiers(iPlayer1, iPlayer2)
 	local divineLiturgyTechs = team2:IsHasTech(TECH_DIVINE_LITURGY) and 1 or 0	--these will become counts later (when downstream are added)
 	local maleficiumTechs = team2:IsHasTech(TECH_MALEFICIUM) and 1 or 0
 	local manaEaterPts = 0
-	if eaPlayer2.manaConsumed and 0 < gWorld.armageddonStage then
+	if eaPlayer2.manaConsumed ~= 0 and 0 < gWorld.armageddonStage then
 		manaEaterPts = 100 * eaPlayer2.manaConsumed / STARTING_SUM_OF_ALL_MANA	--mod by observer class
 	end
 

@@ -1218,7 +1218,7 @@ function FaithTipHandler( control )
 		end
 
 		if eaPlayer.bIsFallen then
-			local consumed = eaPlayer.manaConsumed or 0
+			local consumed = eaPlayer.manaConsumed
 			local percentStr
 			if consumed == 0 then
 				percentStr = "0"

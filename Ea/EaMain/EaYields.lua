@@ -264,7 +264,7 @@ function UpdateCityYields(iPlayer, iSpecificCity, effectType, bPerTurnCall)
 	if bFullCiv then
 		if effectType == nil or effectType == "Food" then
 			if player:HasPolicy(POLICY_INDUSTRIALIZATION) then
-				local food = eaPlayer.foodDistributionCarryover or 0
+				local food = eaPlayer.foodDistributionCarryover
 				for city in player:Cities() do
 					local orderType, orderID = city:GetOrderFromQueue(0)
 					if orderType == ORDER_MAINTAIN and orderID == PROCESS_INDUSTRIAL_AGRICULTURE then	
@@ -285,7 +285,7 @@ function UpdateCityYields(iPlayer, iSpecificCity, effectType, bPerTurnCall)
 			if player:HasPolicy(POLICY_SLAVE_CASTES) then
 				local unhappiness = -player:GetExcessHappiness()
 				unhappiness = unhappiness < 0 and 0 or unhappiness
-				local production = (eaPlayer.productionDistributionCarryover or 0) + unhappiness
+				local production = eaPlayer.productionDistributionCarryover + unhappiness
 				if player:HasPolicy(POLICY_SLAVERY_FINISHER) then
 					production = production + floor(player:GetTotalJONSCulturePerTurn() / 3)
 				end
@@ -295,7 +295,7 @@ function UpdateCityYields(iPlayer, iSpecificCity, effectType, bPerTurnCall)
 		end
 
 		if effectType == nil or effectType == "Science" then
-			local science = (eaPlayer.scienceDistributionCarryover or 0)
+			local science = eaPlayer.scienceDistributionCarryover
 			if player:HasPolicy(POLICY_TRADITION_FINISHER) then
 				science = science + floor(player:GetTotalJONSCulturePerTurn() / 3)
 			end
@@ -330,17 +330,10 @@ function UpdateCityYields(iPlayer, iSpecificCity, effectType, bPerTurnCall)
 				eaPlayer.scienceDistributionCarryover = bPerTurnCall and science % numCities or eaPlayer.scienceDistributionCarryover	--no change if this is just a UI update
 			end
 		end
-		--[[
-		if player:HasPolicy(POLICY_TRADITION_FINISHER) then
-			local science = (eaPlayer.scienceDistributionCarryover or 0) + floor(player:GetTotalJONSCulturePerTurn() / 3)
-			scienceDistribution = floor(science / numCities)
-			eaPlayer.scienceDistributionCarryover = bPerTurnCall and science % numCities or eaPlayer.scienceDistributionCarryover	--no change if this is just a UI update
-		end
-		]]
 		
 		if effectType == nil or effectType == "Gold" then
 			if player:HasPolicy(POLICY_COMMERCE_FINISHER) then
-				local gold = (eaPlayer.goldDistributionCarryover or 0) + floor(player:GetTotalJONSCulturePerTurn() / 3)
+				local gold = eaPlayer.goldDistributionCarryover + floor(player:GetTotalJONSCulturePerTurn() / 3)
 				goldDistribution = floor(gold / numCities)
 				eaPlayer.goldDistributionCarryover = bPerTurnCall and gold % numCities or eaPlayer.goldDistributionCarryover	--no change if this is just a UI update
 			end
@@ -359,55 +352,8 @@ function UpdateCityYields(iPlayer, iSpecificCity, effectType, bPerTurnCall)
 			local population = city:GetPopulation()
 			local followerReligion = city:GetReligiousMajority()
 
-			--[[
-			if effectType == nil or effectType == "CityStateUpdate" or effectType == "RemoteResources" then
-				local remotePlots = eaCity.remotePlots
-				local numCampRes, numFishingRes, numWhales = 0, 0, 0
-				for i = 1, #remotePlots do
-					local iRemotePlot = remotePlots[i]
-					local remotePlot = GetPlotByIndex(iRemotePlot)
-					local improvementID = remotePlot:GetImprovementType()
-					if improvementID == IMPROVEMENT_CAMP then
-						numCampRes = numCampRes + 1
-					elseif improvementID == IMPROVEMENT_FISHING_BOATS then
-						numFishingRes = numFishingRes + 1
-					elseif improvementID == IMPROVEMENT_WHALING_BOATS then
-						numWhales = numWhales + 1
-					end
-				end
-				local food, production, gold = 0, 0, 0
-				if 0 < city:GetNumBuilding(BUILDING_SMOKEHOUSE) then
-					food = food + numCampRes
-				end
-				if 0 < city:GetNumBuilding(BUILDING_HUNTING_LODGE) then
-					food = food + numCampRes
-					gold = gold + numCampRes
-				end
-				if 0 < city:GetNumBuilding(BUILDING_HARBOR) then
-					food = food + numFishingRes + numWhales
-				end
-				if 0 < city:GetNumBuilding(BUILDING_PORT) then
-					food = food + numFishingRes + numWhales
-					gold = gold + numFishingRes + numWhales
-				end
-				if 0 < city:GetNumBuilding(BUILDING_WHALERY) then
-					food = food + numWhales
-					production = production + numWhales		
-				end
-				city:SetNumRealBuilding(BUILDING_REMOTE_RES_1_FOOD, food)
-				city:SetNumRealBuilding(BUILDING_REMOTE_RES_1_PRODUCTION, production)
-				city:SetNumRealBuilding(BUILDING_REMOTE_RES_1_GOLD, gold)
-			end
-
-			if effectType == nil or effectType == "CityStateUpdate" or effectType == "Trade" then
-
-			end
-			]]
-
 			if effectType == nil or effectType == "LandXP" or effectType == "Training" then
-				local residentLandXP = eaCity.residentLandXP or 0
-				local leaderLandXP = eaPlayer.leaderLandXP or 0
-				local xp = residentLandXP + leaderLandXP
+				local xp = eaPlayer.leaderLandXP
 				if eaCity.gpTraining then
 					for iPerson, trainingXP in pairs(eaCity.gpTraining) do
 						xp = xp + trainingXP
@@ -418,9 +364,7 @@ function UpdateCityYields(iPlayer, iSpecificCity, effectType, bPerTurnCall)
 			end
 
 			if effectType == nil or effectType == "SeaXP" or effectType == "Training" then
-				local residentSeaXP = eaCity.residentSeaXP or 0
-				local leaderSeaXP = eaPlayer.leaderSeaXP or 0
-				local xp = residentSeaXP + leaderSeaXP
+				local xp = eaPlayer.leaderSeaXP
 				if eaCity.gpTraining then
 					for iPerson, trainingXP in pairs(eaCity.gpTraining) do
 						xp = xp + trainingXP
@@ -533,7 +477,7 @@ function UpdateCityYields(iPlayer, iSpecificCity, effectType, bPerTurnCall)
 						faithFromToAhrimanTribute = faithFromToAhrimanTribute + manaBurn
 						if bPerTurnFullCivUpdate then
 							gWorld.sumOfAllMana = gWorld.sumOfAllMana - manaBurn
-							eaPlayer.manaConsumed = (eaPlayer.manaConsumed or 0) + manaBurn
+							eaPlayer.manaConsumed = eaPlayer.manaConsumed + manaBurn
 						end
 					end
 				end

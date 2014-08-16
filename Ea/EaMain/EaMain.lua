@@ -4,7 +4,7 @@
 --------------------------------------------------------------
 
 local HOTFIX = "none"
-local DLL_COMMIT = "90f1f21"
+local DLL_COMMIT = "3f32507"
 local DLL_DEBUG_BUILD = false
 local EA_MEDIA_PACK_MIN_VERSION = 5
 

@@ -138,7 +138,7 @@ function GetHelpTextForBuilding(iBuildingID, bExcludeName, bExcludeHeader, bNoMa
 		number = pCity:GetNumBuilding(iBuildingID)
 		number = number < 1 and 1 or number
 	end
-	local bUseDivineFavor = false
+	local bUsesDivineFavor = false
 	if gT and gT.gPlayers then
 		local eaPlayer
 		if pCity then
@@ -146,7 +146,7 @@ function GetHelpTextForBuilding(iBuildingID, bExcludeName, bExcludeHeader, bNoMa
 		else
 			eaPlayer = gT.gPlayers[Game.GetActivePlayer()]
 		end
-		bUseDivineFavor = eaPlayer and eaPlayer.bUseDivineFavor
+		bUsesDivineFavor = eaPlayer and eaPlayer.bUsesDivineFavor
 	end
 	--end Paz add
 
@@ -214,7 +214,7 @@ function GetHelpTextForBuilding(iBuildingID, bExcludeName, bExcludeHeader, bNoMa
 	end
 	if (iFaith ~= nil and iFaith ~= 0) then
 		--Paz modified below: table.insert(lines, Locale.ConvertTextKey("TXT_KEY_PRODUCTION_BUILDING_FAITH", iFaith * number));
-		if bUseDivineFavor then
+		if bUsesDivineFavor then
 			table.insert(lines, Locale.ConvertTextKey("TXT_KEY_EA_PRODUCTION_BUILDING_DIVINE_FAVOR", iFaith * number))
 		else
 			table.insert(lines, Locale.ConvertTextKey("TXT_KEY_EA_PRODUCTION_BUILDING_MANA", iFaith * number))
@@ -690,13 +690,6 @@ function GetCultureTooltip(pCity)
 		strCultureToolTip = strCultureToolTip .. "[NEWLINE]";
 		strCultureToolTip = strCultureToolTip .. Locale.ConvertTextKey("TXT_KEY_EA_PRODMOD_YIELD_LEADER", iLeaderMod);
 	end
-
-	-- City Resident
-	local iResidentMod = pCity:GetCityResidentYieldBoost(YieldTypes.YIELD_CULTURE)
-	if iResidentMod ~= 0 then
-		strCultureToolTip = strCultureToolTip .. "[NEWLINE]";
-		strCultureToolTip = strCultureToolTip .. Locale.ConvertTextKey("TXT_KEY_EA_PRODMOD_YIELD_CITY_RESIDENT", iResidentMod);
-	end
 	--end Paz add
 	
 	-- Puppet modifier
@@ -793,13 +786,6 @@ function GetFaithTooltip(pCity)
 		if iLeaderMod ~= 0 then
 			table.insert(faithTips, Locale.ConvertTextKey("TXT_KEY_EA_PRODMOD_YIELD_LEADER", iLeaderMod));
 		end
-
-		-- City Resident
-		local iResidentMod = pCity:GetCityResidentYieldBoost(YieldTypes.YIELD_FAITH)
-		if iResidentMod ~= 0 then
-			table.insert(faithTips, Locale.ConvertTextKey("TXT_KEY_EA_PRODMOD_YIELD_CITY_RESIDENT", iResidentMod));
-		end
-
 		--end Paz add
 
 		-- Puppet modifier
@@ -888,12 +874,6 @@ function GetManaTooltip(pCity)
 			table.insert(faithTips, Locale.ConvertTextKey("TXT_KEY_EA_PRODMOD_YIELD_LEADER", iLeaderMod));
 		end
 
-		-- City Resident
-		local iResidentMod = pCity:GetCityResidentYieldBoost(YieldTypes.YIELD_FAITH)
-		if iResidentMod ~= 0 then
-			table.insert(faithTips, Locale.ConvertTextKey("TXT_KEY_EA_PRODMOD_YIELD_CITY_RESIDENT", iResidentMod));
-		end
-	
 		-- Puppet modifier
 		if (pCity:IsPuppet()) then
 			iAmount = GameDefines.PUPPET_FAITH_MODIFIER;

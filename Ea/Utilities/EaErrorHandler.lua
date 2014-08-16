@@ -5,7 +5,6 @@
 --Best to set EnableLuaDebugLibrary = 1 in config.ini, but this will work either way
 --Use whichever Error Handler you need; the first is fastest and the last the slowest
 
-local getinfo = debug.getinfo
 local format = string.format
 local unpack = unpack
 local xpcall = xpcall
@@ -24,7 +23,7 @@ local function Traceback(str)
 	print("Stack traceback:")
 	str = str .. "[NEWLINE]Stack traceback:"
 	while true do
-		local info = getinfo(level)
+		local info = debug.getinfo(level)
 		if not info then break end
 		local errorLine = ""
 		if info.what == "C" then   -- is a C function?

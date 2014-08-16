@@ -88,7 +88,7 @@ CREATE TABLE EaActions ('ID' INTEGER PRIMARY KEY AUTOINCREMENT,
 						'NoGPNumLimit' BOOLEAN DEFAULT NULL,
 						'FinishMoves' BOOLEAN DEFAULT 1,
 						'StayInvisible' BOOLEAN DEFAULT NULL,
-						'TurnsToComplete' INTEGER DEFAULT 1,	--1 immediate; >1 will run until done; 1000 means run forever for human (changes to 8 for AI; so resident will wake up and look around)
+						'TurnsToComplete' INTEGER DEFAULT 1,	--1 immediate; >1 will run until done; 1000 means run forever for human (changes to 8 for AI so they will wake up and look around)
 						'ProgressHolder' TEXT DEFAULT NULL,			--Person, City or CityCiv or Plot
 						'BuildType' TEXT DEFAULT NULL,				--if above is Plot then this should be a valid BuildType
 						'UniqueType' TEXT DEFAULT NULL,			-- "National" or "World"
@@ -164,12 +164,10 @@ UPDATE EaActions SET PolicyReq = 'POLICY_SLAVE_ARMIES' WHERE Type = 'EA_ACTION_U
 --Common actions
 INSERT INTO EaActions (Type,			GPOnly,	UIType,		AITarget,		City,	GPModType1,			ProgressHolder,	IconIndex,	IconAtlas			) VALUES
 ('EA_ACTION_TAKE_LEADERSHIP',			1,		'Action',	'OwnCapital',	'Own',	'EAMOD_LEADERSHIP',	NULL,			0,			'EA_ACTION_ATLAS'	),
---('EA_ACTION_TAKE_RESIDENCE',			1,		'Action',	'OwnCities',	'Own',	'EAMOD_LEADERSHIP',	'Self',			40,			'UNIT_ACTION_ATLAS'	),
 --('EA_ACTION_JOIN',					1,		'Action',	NULL,			NULL,	NULL,				NULL,			18,			'UNIT_ACTION_ATLAS' ),
 ('EA_ACTION_HEAL',						1,		'Action',	'Self',			NULL,	NULL,				NULL,			40,			'UNIT_ACTION_ATLAS'	);
 
 UPDATE EaActions SET CapitalOnly = 1 WHERE Type = 'EA_ACTION_TAKE_LEADERSHIP';
---UPDATE EaActions SET TurnsToComplete = 1000 WHERE Type = 'EA_ACTION_TAKE_RESIDENCE';
 UPDATE EaActions SET TurnsToComplete = 1, StayInvisible = 1 WHERE Type = 'EA_ACTION_HEAL';
 
 --GP yield actions

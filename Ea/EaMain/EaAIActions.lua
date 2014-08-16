@@ -21,7 +21,6 @@ local TRAVEL_TURNS_WITHIN_AREA = 4
 --constants
 local EA_ACTION_GO_TO_PLOT =				GameInfoTypes.EA_ACTION_GO_TO_PLOT		-- always = 0
 local EA_ACTION_TAKE_LEADERSHIP =			GameInfoTypes.EA_ACTION_TAKE_LEADERSHIP
---local EA_ACTION_TAKE_RESIDENCE =			GameInfoTypes.EA_ACTION_TAKE_RESIDENCE
 local EA_ACTION_LAND_TRADE_ROUTE =			GameInfoTypes.EA_ACTION_LAND_TRADE_ROUTE
 local EA_ACTION_SEA_TRADE_ROUTE =			GameInfoTypes.EA_ACTION_SEA_TRADE_ROUTE
 local BUILDING_LIBRARY =					GameInfoTypes.BUILDING_LIBRARY
@@ -122,10 +121,8 @@ end
 function AIRecalculateNumTradeRoutesTargeted(iPlayer)
 	local player = Players[iPlayer]
 	local eaPlayer = gPlayers[iPlayer]
-	if player:IsHuman() then
-		eaPlayer.aiNumTradeRoutesTargeted = nil
-	else
-		eaPlayer.aiNumTradeRoutesTargeted = 0
+	eaPlayer.aiNumTradeRoutesTargeted = 0
+	if not player:IsHuman() then
 		for iPerson, eaPerson in pairs(gPeople) do
 			if eaPerson.iPlayer == iPlayer then
 				if eaPerson.eaActionID == EA_ACTION_LAND_TRADE_ROUTE or eaPerson.gotoEaActionID == EA_ACTION_LAND_TRADE_ROUTE or eaPerson.eaActionID == EA_ACTION_SEA_TRADE_ROUTE or eaPerson.gotoEaActionID == EA_ACTION_SEA_TRADE_ROUTE then

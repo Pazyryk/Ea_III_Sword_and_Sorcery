@@ -294,8 +294,8 @@ function SetDivineFavorUse(iPlayer, bDivineFavor)
 	--save old accumulation in case flips back
 	local player = Players[iPlayer]
 	local saveFaith = player:GetFaith()
-	player:SetFaith(eaPlayer.savedFaithFromManaDivineFavorSwap or 0)
-	eaPlayer.savedFaithFromManaDivineFavorSwap = 0 < saveFaith and saveFaith or nil
+	player:SetFaith(eaPlayer.savedFaithFromManaDivineFavorSwap)
+	eaPlayer.savedFaithFromManaDivineFavorSwap = 0 < saveFaith and saveFaith or 0
 
 	--notification
 	if iPlayer == g_iActivePlayer and 0 < saveFaith then
@@ -374,7 +374,7 @@ function FoundReligion(iPlayer, iCity, religionID)	--call should make sure that 
 
 		--Burn a good chunk of mana
 		gWorld.sumOfAllMana = gWorld.sumOfAllMana - MANA_CONSUMED_BY_ANRA_FOUNDING
-		eaPlayer.manaConsumed = (eaPlayer.manaConsumed or 0) + MANA_CONSUMED_BY_ANRA_FOUNDING
+		eaPlayer.manaConsumed = eaPlayer.manaConsumed + MANA_CONSUMED_BY_ANRA_FOUNDING
 	end
 end
 
@@ -579,7 +579,7 @@ function BecomeFallen(iPlayer)		--this could happen before, during or after the 
 
 	--Burn a little mana at no cost to civ
 	gWorld.sumOfAllMana = gWorld.sumOfAllMana - MANA_CONSUMED_BY_CIV_FALL
-	eaPlayer.manaConsumed = (eaPlayer.manaConsumed or 0) + MANA_CONSUMED_BY_CIV_FALL
+	eaPlayer.manaConsumed = eaPlayer.manaConsumed + MANA_CONSUMED_BY_CIV_FALL
 end
 
 

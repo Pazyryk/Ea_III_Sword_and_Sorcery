@@ -531,12 +531,12 @@ function PeopleAfterTurn(iPlayer, bActionInfoPanelCall)
 								bActionSuccess = DoEaSpell(eaActionID, iPlayer, unit, iPerson)
 							end
 							if bActionSuccess and unit then
-								if eaPerson.activePlayerEndTurnXP then
+								if eaPerson.activePlayerEndTurnXP ~= 0 then
 									unit:ChangeExperience(eaPerson.activePlayerEndTurnXP)
-									eaPerson.activePlayerEndTurnXP = nil
-								elseif eaPerson.activePlayerEndTurnManaDivineFavor then
+									eaPerson.activePlayerEndTurnXP = 0
+								elseif eaPerson.activePlayerEndTurnManaDivineFavor ~= 0 then
 									UseManaOrDivineFavor(iPlayer, iPerson, eaPerson.activePlayerEndTurnManaDivineFavor)
-									eaPerson.activePlayerEndTurnManaDivineFavor = nil
+									eaPerson.activePlayerEndTurnManaDivineFavor = 0
 								end
 							end
 
@@ -636,6 +636,9 @@ function GenerateGreatPerson(iPlayer, class, subclass, eaPersonRowID, bAsLeader,
 						progress = {},
 						modMemory = {},	
 						leaderLevel = 0,
+						activePlayerEndTurnXP = 0,
+						activePlayerEndTurnManaDivineFavor = 0,
+						turnsToComplete = 0,
 						
 						--all below are set elsewhere, but need a non-nil value for strict table function
 						eaPersonRowID = false,
@@ -644,8 +647,6 @@ function GenerateGreatPerson(iPlayer, class, subclass, eaPersonRowID, bAsLeader,
 						templeID = false,
 						predestinedAgeOfDeath = false,
 						deathStayAction = false,
-						activePlayerEndTurnXP = false,
-						activePlayerEndTurnManaDivineFavor = false,
 						aiHasCombatRole = false,
 						learningSpellID = false,
 						x = false,
@@ -1026,8 +1027,8 @@ function UpdateLeaderEffects(iPlayer)
 	local leaderScience = 0
 	local leaderCulture = 0
 	local leaderManaOrFavor = 0
-	local leaderLandXP
-	local leaderSeaXP
+	local leaderLandXP = 0
+	local leaderSeaXP = 0
 
 
 	local iLeader = eaPlayer.leaderEaPersonIndex
@@ -1064,7 +1065,7 @@ function UpdateLeaderEffects(iPlayer)
 	
 	end
 
-	if class2 then 	--nil unless dual-class
+	if class2 then 	--false unless dual-class
 		mod = mod / 2
 	end
 
@@ -1102,28 +1103,14 @@ function UpdateLeaderEffects(iPlayer)
 		end
 	end
 
-	if player:GetLeaderYieldBoost(YIELD_PRODUCTION) ~= leaderProduction then
-		player:SetLeaderYieldBoost(YIELD_PRODUCTION, leaderProduction)
-	end
-	if player:GetLeaderYieldBoost(YIELD_GOLD) ~= leaderGold then
-		player:SetLeaderYieldBoost(YIELD_GOLD, leaderGold)
-	end
-	if player:GetLeaderYieldBoost(YIELD_SCIENCE) ~= leaderScience then
-		player:SetLeaderYieldBoost(YIELD_SCIENCE, leaderScience)
-	end
-	if player:GetLeaderYieldBoost(YIELD_CULTURE) ~= leaderCulture then
-		player:SetLeaderYieldBoost(YIELD_CULTURE, leaderCulture)
-	end
-	if player:GetLeaderYieldBoost(YIELD_FAITH) ~= leaderManaOrFavor then
-		player:SetLeaderYieldBoost(YIELD_FAITH, leaderManaOrFavor)
-	end
+	--handled in dll
+	player:SetLeaderYieldBoost(YIELD_PRODUCTION, leaderProduction)
+	player:SetLeaderYieldBoost(YIELD_GOLD, leaderGold)
+	player:SetLeaderYieldBoost(YIELD_SCIENCE, leaderScience)
+	player:SetLeaderYieldBoost(YIELD_CULTURE, leaderCulture)
+	player:SetLeaderYieldBoost(YIELD_FAITH, leaderManaOrFavor)
 
-
-	--eaPlayer.leaderProduction = leaderProduction	--these are nil when not needed
-	--eaPlayer.leaderGold = leaderGold
-	--eaPlayer.leaderScience = leaderScience
-	--eaPlayer.leaderCulture = leaderCulture
-	--eaPlayer.leaderManaOrFavor = leaderManaOrFavor
+	--handled in EaYield.lua
 	eaPlayer.leaderLandXP = leaderLandXP
 	eaPlayer.leaderSeaXP = leaderSeaXP
 
@@ -1147,21 +1134,8 @@ function RemoveLeaderEffects(iPlayer)
 	player:SetLeaderYieldBoost(YIELD_FAITH, 0)
 
 	local eaPlayer = gPlayers[iPlayer]
-	eaPlayer.leaderLandXP = nil
-	eaPlayer.leaderSeaXP = nil
-end
-
-function RemoveResidentEffects(city)	--if replaced or walks away
-
-	city:SetCityResidentYieldBoost(YIELD_PRODUCTION, 0)
-	city:SetCityResidentYieldBoost(YIELD_GOLD, 0)
-	city:SetCityResidentYieldBoost(YIELD_SCIENCE, 0)
-	city:SetCityResidentYieldBoost(YIELD_CULTURE, 0)
-	city:SetCityResidentYieldBoost(YIELD_FAITH, 0)
-
-	local eaCity = gCities[city:Plot():GetPlotIndex()]
-	eaCity.residentLandXP = nil
-	eaCity.residentSeaXP = nil
+	eaPlayer.leaderLandXP = 0
+	eaPlayer.leaderSeaXP = 0
 end
 
 

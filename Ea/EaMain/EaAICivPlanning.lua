@@ -682,7 +682,7 @@ function AICivRun(iPlayer)		--called per turn and re-called if free tech or plan
 	-- It should handle the case where a human player becomes an AI in the middle of a game.
 	--------------------------------------------------------------
 
-	if eaPlayer.aiStage == nil then					--Init as AI civ if city founded
+	if not eaPlayer.aiStage then					--Init as AI civ if city founded
 		if not player:IsFoundedFirstCity() then return end
 		for i = 1, numPlanSets do
 			eaPlayer[planSets[i]] = {}	--planSets = {"aiStartPlans", "aiNamingPlans", "aiContingency1Plans", "aiFocusPlans", "aiContingency1Plans"}
@@ -741,7 +741,7 @@ function AICivRun(iPlayer)		--called per turn and re-called if free tech or plan
 	--------------------------------------------------------------
 	if eaPlayer.aiStage == "AchievedName" then			--Achieved name; check for new Start plans and add focus plan
 		print("AI stage: AchievedName")
-		eaPlayer.aiSeekingName = nil
+		eaPlayer.aiSeekingName = false
 		RemoveAllPlans(iPlayer)		--removes all
 		SetPlansForStart(iPlayer)	--may not have finished above, or a different start may be needed due to ag/pan switch
 		AddFocusPlan(iPlayer)

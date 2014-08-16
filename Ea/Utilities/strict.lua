@@ -1,20 +1,24 @@
 -- strict.lua
 -- Author: Pazyryk
 -- DateCreated: 8/13/2014
+--
+-- Version history:
+-- 0.10 (Aut 16, 2014) Release version
+--
 --------------------------------------------------------------
 --
--- Modified from http://metalua.luaforge.net/src/lib/strict.lua.html
+-- Modified and expanded from http://metalua.luaforge.net/src/lib/strict.lua.html
 --
--- Checks uses of undeclared global variables, which often happens due to typos in your code.
+-- Checks uses of undeclared global variables or table keys, which often happens due to typos or logical errors.
 --
 -- If bTestMainBody = false, then global variables can be declared anywhere in your main body code (i.e., not inside
 -- functions) by regular assignment. Even assigning nil will work. Assignment or access to an undeclared global
 -- elswhere will cause an error (if bAssert = true) or print ERROR! <source, line#> to Lua.log (if
 -- bAssert = false; note that assignment and access will still "work" as in normal lua without strict.lua).
 --
--- If bTestMainBody = true, then strict.lua also will object to globals defined in main body after this file has been
+-- If bTestMainBody = true, then strict.lua will object to globals defined in main body after this file has been
 -- included, ignoring global functions declared in the main body if bSkipFunctionsInMainBody = true or global
--- tables declared in the main body if bSkipTablesInMainBody = true). This is a useful way to implement strict.lua
+-- tables declared in the main body if bSkipTablesInMainBody = true. This is a useful way to implement strict.lua
 -- becuase it forces you to declare all of your globals (other than "skipped" types) in one place BEFORE you include
 -- this file.
 -- 
@@ -32,18 +36,22 @@
 -- (non-function) values must be declared before the include. If bTestMainBody = false, then globals can be declared
 -- anywhere in the main body of your code (i.e., not in a function) even after the include.
 --
--- Includes three utility funcions:
+-- Tables must be made strict explicitely using MakeTableStrict(table), after which access or assignment to nonexistent
+-- keys is a strict.lua violation.
+--
+-- Adds three funcions:
 --	
--- Globals(...) allows user to declare global after this file is included (anywhere regardless of settings)
--- PrintStrictLuaErrors(bSkipRepeats) if bAssert = false, this will print all strict.lua errors that have occured
--- PrintGlobals(bSorted) allows user to see all globals and their contents in the current environment
+-- Globals("global1", "g2", "g3", ...) allows user to declare globals after this file is included (regadless of settings)
+-- MakeTableStrict(table)
+-- PrintStrictLuaErrors() if bAssert = false, this will print all non-redundant strict.lua errors that have occured
+-- PrintGlobals() allows user to see all globals and their contents in the current environment
 --
 --------------------------------------------------------------
 -- Settings
 --------------------------------------------------------------
 
-local bAssert = false					--[true] assert error; [false] print ERROR! with source & line number to Lua.log
-local bTestMainBody = true				--[true] test in main body; [false] test in functions only
+local bAssert = false					--If false, print violations and save for later retreval with PrintStrictLuaErrors()
+local bTestMainBody = true				--See details above
 
 --the next two matter only if bTestMainBody = true:
 local bSkipFunctionsInMainBody = true	--don't object to global functions declared in main body after this file included
@@ -53,14 +61,14 @@ local bSkipTablesInMainBody = false		--don't object to global tables declared in
 -- strict.lua for Civ5
 --------------------------------------------------------------
 --these functions safely do nothing if debug library not enabled
-function Globals() print("Called Globals but debug library is not enabled; set EnableLuaDebugLibrary = 1 in config.ini") end	
-function PrintStrictLuaErrors() print("Called PrintStrictLuaErrors but debug library is not enabled; set EnableLuaDebugLibrary = 1 in config.ini") end
-function PrintGlobals() print("Called PrintGlobals but debug library is not enabled; set EnableLuaDebugLibrary = 1 in config.ini") end
-function MakeTableStrict() print("Called MakeTableStrict but debug library is not enabled; set EnableLuaDebugLibrary = 1 in config.ini") end
+function Globals() print("Called Globals but the debug library is not enabled; set EnableLuaDebugLibrary = 1 in config.ini to use strict.lua") end	
+function PrintStrictLuaErrors() print("Called PrintStrictLuaErrors but the debug library is not enabled; set EnableLuaDebugLibrary = 1 in config.ini to use strict.lua") end
+function PrintGlobals() print("Called PrintGlobals but the debug library is not enabled; set EnableLuaDebugLibrary = 1 in config.ini to use strict.lua") end
+function MakeTableStrict() print("Called MakeTableStrict but the debug library is not enabled; set EnableLuaDebugLibrary = 1 in config.ini to use strict.lua") end
 
 --bail out of this file if debug library not enabled (can't do anything)
 if not debug then
-	print("Could not use strict.lua because the debug library was not available! Set EnableLuaDebugLibrary = 1 in config.ini to use strict.lua.")
+	print("The debug library is not enabled! Set EnableLuaDebugLibrary = 1 in config.ini to use strict.lua.")
 	return
 end
 
@@ -77,7 +85,7 @@ local _G = debug.getfenv(Globals)
 
 function MakeTableStrict(table)
 	local bEnv = table == _G
-	print("MakeTableStrict ", table, bEnv)
+	print("(strict.lua) MakeTableStrict ", table, (bEnv and " --this is the environment" or ""))
 
 	--bail out if table has metatable already
 	local mt = getmetatable(table)
@@ -90,14 +98,15 @@ function MakeTableStrict(table)
 	mt = {}
 	setmetatable(table, mt)
 
-	--add a place to remember declared keys (and access attempts to keep print statements usable)
-	mt.__declared = {}
+	--add a place to remember declared globals (and access attempts to keep print statements usable)
+	if bEnv then
+		mt.__declared = {}
+	end
 
 	--intercept undeclared assignments: table(key) = x, for nonexistent key
 	mt.__newindex = function (t, k, v)
-		if not mt.__declared[k] then
+		if not (bEnv and mt.__declared[k]) then
 			local info = getinfo(2, "S")
-			--print("__newindex ", info.what, k, v)
 			if info.what ~= "C" and (not bEnv or info.what ~= "main" or (bTestMainBody
 					and (not bSkipFunctionsInMainBody or type(v) ~= "function")
 					and (not bSkipTablesInMainBody or type(v) ~= "table")  )) then
@@ -115,16 +124,17 @@ function MakeTableStrict(table)
 					strictLuaErrors[memoryKey] = strictLuaErrors[memoryKey] or numErrors	--use string as key for easy unique handling, numErrors can be used to sort by first occurance
 				end
 			end
-			mt.__declared[k] = true
+			if bEnv then
+				mt.__declared[k] = true
+			end
 		end
 		rawset(t, k, v)
 	end
   
 	--intercept undeclared accesses: x = table(key), for nonexistent key
 	mt.__index = function (t, k)
-		if not mt.__declared[k] then
+		if not (bEnv and mt.__declared[k]) then
 			local info = getinfo(2, "S")
-			--print("__index ", info.what, k)
 			if info.what ~= "C" then
 				info = getinfo(2, "Snl")
 				local name = info.name or info.what or "<unknown>"
@@ -155,18 +165,18 @@ MakeTableStrict(_G)
 function Globals(...)	--allows declaration of globals after this file included
 	local mt = getmetatable(_G)
 	for _, name in pairs({...}) do
-		print("Global name will be ignored by strict.lua: ", name)
+		print("(strict.lua) Global name will be ignored: ", name)
 		mt.__declared[name] = true
 	end
 end
 
 function PrintStrictLuaErrors()
 	if bAssert then
-		print("We don't save errors if bAssert = true; check Lua.log for Runtime Errors")
+		print("(strict.lua) We don't save errors if bAssert = true; check Lua.log for Runtime Errors")
 	elseif numErrors == 0 then
-		print("There have been no strict.lua errors")
+		print("(strict.lua) There have been no errors")
 	else
-		print("Printing non-redundant strict.lua errors:")
+		print("(strict.lua) Printing non-redundant errors:")
 		local n = 0
 		local errors = {}
 		for k, v in pairs(strictLuaErrors) do

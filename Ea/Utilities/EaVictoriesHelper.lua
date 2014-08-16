@@ -34,7 +34,7 @@ end
 function GetDestroyerVictoryData(iPlayer)
 	local eaPlayer = gT.gPlayers[iPlayer]
 	
-	local manaConsumed = eaPlayer.manaConsumed or 0
+	local manaConsumed = eaPlayer.manaConsumed
 	local manaStored = 0
 	if not eaPlayer.bUsesDivineFavor then
 		manaStored = Players[iPlayer]:GetFaith()

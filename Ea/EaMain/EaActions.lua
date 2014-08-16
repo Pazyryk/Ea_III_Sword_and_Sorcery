@@ -1506,170 +1506,6 @@ Do[GameInfoTypes.EA_ACTION_TAKE_LEADERSHIP] = function()
 	return true
 end
 
---[[EA_ACTION_TAKE_RESIDENCE
-local classYields = {Warrior = -1, Engineer = YIELD_PRODUCTION, Merchant = YIELD_GOLD, Sage = YIELD_SCIENCE, Artist = YIELD_CULTURE, Devout = YIELD_FAITH, Thaumaturge = YIELD_FAITH}
-
-TestTarget[GameInfoTypes.EA_ACTION_TAKE_RESIDENCE] = function()
-	--print("TestTarget - EA_ACTION_TAKE_RESIDENCE", g_iPerson, g_eaCity.resident)
-	if g_eaCity.resident ~= g_iPerson and g_eaCity.resident ~= -1 then
-		--allow if leader and this is capital (will force AI non-leader to do something else)
-		if g_iPerson ~= g_eaPlayer.leaderEaPersonIndex or not g_city:IsCapital() then
-			g_testTargetSwitch = 1		--someone else is resident here
-			return false
-		end
-	end
-
-	local mod = g_mod
-	local yield1ID = classYields[g_class1]
-	local yield2ID = -99
-	if g_class2 then yield2ID = classYields[g_class2] end		--dual class
-	if yield2ID == yield1ID then yield2ID = -99 end
-	if yield2ID == -99 then mod = mod * 2 end					--double mod for single class
-	local boost1, boost2 = 0, 0
-	if yield1ID ~= -1 then
-		boost1 = mod * g_city:GetBaseYieldRate(yield1ID) / 100
-		--boost1 = mod/2 < boost1 and boost1 or mod/2						--give +mod% or +mod/2, whichever is greater
-	else
-		boost1 = mod	--warrior (need to figure out if city making military)
-	end
-
-	if yield2ID ~= -99 then
-		if yield2ID ~= -1 then
-			boost2 = mod * g_city:GetBaseYieldRate(yield2ID) / 100
-			--boost2 = mod/2 < boost2 and boost2 or mod/2
-		else
-			boost2 = mod
-		end
-	end
-
-	if g_subclass == "SeaWarrior" then
-		yield1ID = -2
-	end
-
-	g_int1 = yield1ID
-	g_int2 = yield2ID
-	g_int3 = boost1
-	g_int4 = boost2
-	g_int5 = mod
-	g_testTargetSwitch = 2
-	return true
-end
-
-SetUI[GameInfoTypes.EA_ACTION_TAKE_RESIDENCE] = function()
-
-	if g_testTargetSwitch == 1 then
-		MapModData.bShow = true
-		MapModData.text = "[COLOR_WARNING_TEXT]Another great person is resident in this city[ENDCOLOR]"
-	elseif g_testTargetSwitch == 2 then
-		--MapModData.bShow = true
-		MapModData.text = ""
-	
-		if g_int1 == -1 then
-			MapModData.text = MapModData.text .. "Provide " .. g_int5 .." xp to all land units built in this city"
-		elseif g_int1 == -2 then
-			MapModData.text = MapModData.text .. "Provide " .. g_int5 .." xp to all sea units built in this city"
-		elseif g_int1 == YIELD_PRODUCTION then
-			MapModData.text = MapModData.text .. "Provide ".. g_int5 .."% boost to city production (" .. g_int3 .. " total)"
-		elseif g_int1 == YIELD_GOLD then
-			MapModData.text = MapModData.text .. "Provide ".. g_int5 .."% boost to city gold (" .. g_int3 .. " total)"
-		elseif g_int1 == YIELD_SCIENCE then
-			MapModData.text = MapModData.text .. "Provide ".. g_int5 .."% boost to city science (" .. g_int3 .. " total)"
-		elseif g_int1 == YIELD_CULTURE then
-			MapModData.text = MapModData.text .. "Provide ".. g_int5 .."% boost to city culture (" .. g_int3 .. " total)"
-		elseif g_int1 == YIELD_FAITH then
-			if g_eaPlayer.bUsesDivineFavor then
-				MapModData.text = MapModData.text .. "Provide ".. g_int5 .."% boost to city divine favor (" .. g_int3 .. " total)"
-			else
-				MapModData.text = MapModData.text .. "Provide ".. g_int5 .."% boost to city mana (" .. g_int3 .. " total)"
-			end
-		end
-
-		if g_int2 ~= -99 then
-			if g_int2 == -1 then
-				MapModData.text = MapModData.text .. "Provide " .. g_int5 .." xp to all land units built in this city"
-			elseif g_int2 == -2 then
-				MapModData.text = MapModData.text .. "Provide " .. g_int5 .." xp to all sea units built in this city"
-			elseif g_int2 == YIELD_PRODUCTION then
-				MapModData.text = MapModData.text .. "Provide ".. g_int5 .."% boost to city production (" .. g_int4 .. " total)"
-			elseif g_int2 == YIELD_GOLD then
-				MapModData.text = MapModData.text .. "Provide ".. g_int5 .."% boost to city gold (" .. g_int4 .. " total)"
-			elseif g_int2 == YIELD_SCIENCE then
-				MapModData.text = MapModData.text .. "Provide ".. g_int5 .."% boost to city science (" .. g_int4 .. " total)"
-			elseif g_int2 == YIELD_CULTURE then
-				MapModData.text = MapModData.text .. "Provide ".. g_int5 .."% boost to city culture (" .. g_int4 .. " total)"
-			elseif g_int2 == YIELD_FAITH then
-				if g_eaPlayer.bUsesDivineFavor then
-					MapModData.text = MapModData.text .. "Provide ".. g_int5 .."% boost to city divine favor (" .. g_int4 .. " total)"
-				else
-					MapModData.text = MapModData.text .. "Provide ".. g_int5 .."% boost to city mana (" .. g_int4 .. " total)"
-				end
-			end	
-		else
-			MapModData.text = MapModData.text .. "[NEWLINE]"
-		end
-
-	end
-end
-
-SetAIValues[GameInfoTypes.EA_ACTION_TAKE_RESIDENCE] = function()
-	gg_aiOptionValues.b = g_int3 + g_int4	--per turn value during "build" turns
-end
-
---local residentEffects = {[-2] = "residentSeaXP", [-1] = "residentLandXP", [YIELD_PRODUCTION] = "residentProduction", [YIELD_GOLD] = "residentGold", [YIELD_SCIENCE] = "residentScience", [YIELD_CULTURE] = "residentCulture", [YIELD_FAITH] = "residentManaOrFavor"}
-
-Do[GameInfoTypes.EA_ACTION_TAKE_RESIDENCE] = function()
-	--check for a previous resident
-	local iOldResident = g_eaCity.resident
-	if iOldResident ~= -1 and iOldResident ~= g_iPerson then
-		local eaOldResident = gPeople[iOldResident]
-		InterruptEaAction(g_iPlayer, iOldResident)	--cancel action, wake up and remove effects
-		--ReappearGP(g_iPlayer, iOldResident)
-	end
-
-	g_eaCity.resident = g_iPerson
-
-	if -1 < g_int1 then		--This is a regular yield
-		if g_city:GetCityResidentYieldBoost(g_int1) ~= g_int5 then
-			g_city:SetCityResidentYieldBoost(g_int1, g_int5)
-		end
-	elseif g_int1 == -1 then
-		g_eaCity.residentLandXP = g_int5
-	elseif g_int1 == -1 then
-		g_eaCity.residentSeaXP = g_int5
-	end
-	if -1 < g_int2 then
-		if g_city:GetCityResidentYieldBoost(g_int2) ~= g_int5 then
-			g_city:SetCityResidentYieldBoost(g_int2, g_int5)
-		end
-	elseif g_int2 == -1 then
-		g_eaCity.residentLandXP = g_int5
-	elseif g_int2 == -1 then
-		g_eaCity.residentSeaXP = g_int5
-	end
-
-	--if g_iPlayer == g_iActivePlayer then
-	--	UpdateCityYields(g_iPlayer, g_iCity) 	--show effect in UI now
-	--end
-	g_eaPerson.eaActionData = g_iPlot
-	return true
-end
-
-Interrupt[GameInfoTypes.EA_ACTION_TAKE_RESIDENCE] = function(iPlayer, iPerson)
-	print("Interrupt - GameInfoTypes.EA_ACTION_TAKE_RESIDENCE", iPlayer, iPerson)
-	local eaPerson = gPeople[iPerson]
-	local eaCityIndex = eaPerson.eaActionData
-	local eaCity = gCities[eaCityIndex]
-	if eaCity then
-		eaCity.resident = -1
-		eaPerson.eaActionData = -1
-		local city = GetPlotByIndex(eaCityIndex):GetPlotCity()
-		if city then
-			RemoveResidentEffects(city)
-		end
-	end
-end
-]]
-
 --EA_ACTION_HEAL	(This is for AI only, since active player can just press Heal button)
 Test[GameInfoTypes.EA_ACTION_HEAL] = function()
 	if not g_bAIControl then return false end
@@ -1776,7 +1612,7 @@ Interrupt[GameInfoTypes.EA_ACTION_BUILD] = function(iPlayer, iPerson)
 	local eaCityIndex = eaPerson.eaActionData
 	local eaCity = gCities[eaCityIndex]
 	eaPerson.eaActionData = -1
-	eaPerson.activePlayerEndTurnXP = nil
+	eaPerson.activePlayerEndTurnXP = 0
 	if eaCity and eaCity.gpProduction then
 		eaCity.gpProduction[iPerson] = nil
 		if iPlayer == g_iActivePlayer then
@@ -1991,7 +1827,7 @@ Interrupt[GameInfoTypes.EA_ACTION_RECRUIT] = function(iPlayer, iPerson)
 	local eaCityIndex = eaPerson.eaActionData
 	local eaCity = gCities[eaCityIndex]
 	eaPerson.eaActionData = -1
-	eaPerson.activePlayerEndTurnXP = nil
+	eaPerson.activePlayerEndTurnXP = 0
 	if eaCity and eaCity.gpProduction then
 		eaCity.gpProduction[iPerson] = nil
 		if iPlayer == g_iActivePlayer then
@@ -3591,7 +3427,7 @@ Test[GameInfoTypes.EA_ACTION_LAND_TRADE_ROUTE] = function()
 	local numAvailable = g_player:GetNumInternationalTradeRoutesAvailable()
 	numAvailable = numAvailable - g_player:GetNumInternationalTradeRoutesUsed()
 	if g_bAIControl then
-		numAvailable = numAvailable - (g_eaPlayer.aiNumTradeRoutesTargeted or 0)
+		numAvailable = numAvailable - g_eaPlayer.aiNumTradeRoutesTargeted
 	end
 	if numAvailable < 1 then
 		g_testTargetSwitch = 5
@@ -3757,7 +3593,7 @@ Test[GameInfoTypes.EA_ACTION_SEA_TRADE_ROUTE] = function()
 	local numAvailable = g_player:GetNumInternationalTradeRoutesAvailable()
 	numAvailable = numAvailable - g_player:GetNumInternationalTradeRoutesUsed()
 	if g_bAIControl then
-		numAvailable = numAvailable - (g_eaPlayer.aiNumTradeRoutesTargeted or 0)
+		numAvailable = numAvailable - g_eaPlayer.aiNumTradeRoutesTargeted
 	end
 	if numAvailable < 1 then
 		g_testTargetSwitch = 5

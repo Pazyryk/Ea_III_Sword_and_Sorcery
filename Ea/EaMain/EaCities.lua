@@ -124,7 +124,6 @@ local PLOT_HILLS =							PlotTypes.PLOT_HILLS
 local PLOT_MOUNTAIN =						PlotTypes.PLOT_MOUNTAIN
 local PROMOTION_SLAVE =						GameInfoTypes.PROMOTION_SLAVE
 local PROMOTION_SLAVERAIDER =				GameInfoTypes.PROMOTION_SLAVERAIDER
---local EA_ACTION_TAKE_RESIDENCE =			GameInfoTypes.EA_ACTION_TAKE_RESIDENCE
 
 local VERY_UNHAPPY_THRESHOLD =				GameDefines.VERY_UNHAPPY_THRESHOLD
 
@@ -730,7 +729,7 @@ function CityPerCivTurn(iPlayer)		--Full civ only		TO DO: must be real civs so t
 					local consumedMana = city:GetNumFollowers(RELIGION_ANRA) * MANA_CONSUMED_PER_ANRA_FOLLOWER_PER_TURN
 					if 0 < consumedMana then
 						gWorld.sumOfAllMana = gWorld.sumOfAllMana - consumedMana
-						eaPlayer.manaConsumed = (eaPlayer.manaConsumed or 0) + consumedMana
+						eaPlayer.manaConsumed = eaPlayer.manaConsumed + consumedMana
 						city:Plot():AddFloatUpMessage(Locale.Lookup("TXT_KEY_EA_CONSUMED_MANA", consumedMana))	
 					end
 				end
@@ -782,7 +781,7 @@ function CityPerCivTurn(iPlayer)		--Full civ only		TO DO: must be real civs so t
 					--elseif orderID == PROCESS_AHRIMANS_TRIBUTE then	
 					--	local manaBurn = floor(productionYieldRate / 4)
 					--	gWorld.sumOfAllMana = gWorld.sumOfAllMana - manaBurn
-					--	eaPlayer.manaConsumed = (eaPlayer.manaConsumed or 0) + manaBurn
+					--	eaPlayer.manaConsumed = eaPlayer.manaConsumed + manaBurn
 					end
 				end
 
@@ -856,33 +855,6 @@ function CityPerCivTurn(iPlayer)		--Full civ only		TO DO: must be real civs so t
 					classPoints[6] = classPoints[6] + city:GetSpecialistCount(SPECIALIST_DISCIPLE) * 2
 					classPoints[7] = classPoints[7] + city:GetSpecialistCount(SPECIALIST_ADEPT) * 2
 
-					--update residence status and effects if GP walks away or dies
-					if eaCity.resident ~= -1 then
-						local x, y = city:GetX(), city:GetY()
-						local iPerson = eaCity.resident
-						local eaPerson = gPeople[iPerson]
-						if eaPerson then
-							local iUnit = eaPerson.iUnit
-							if iUnit ~= -1 then
-								local unit = player:GetUnitByID(iUnit)
-								if unit then
-									local personX, personY = unit:GetX(), unit:GetY()
-									if personX ~= x or personY ~= y then
-										InterruptEaAction(iPlayer, iPerson)
-									end
-								else
-									error("No unit for GP")
-								end
-							else
-								InterruptEaAction(iPlayer, iPerson)
-							end
-						else		--Person died, update city for no resident
-							eaCity.resident = -1
-							RemoveResidentEffects(city)
-						end
-
-					end
-
 					--auto-indenture
 					if eaCity.autoIndenturePop and eaCity.autoIndenturePop < size and eaCity.conscriptTurn ~= gameTurn then
 						AutoIndenture(city, eaCity, size, gameTurn)
@@ -928,7 +900,6 @@ local function OnPlayerCityFounded(iPlayer, x, y)
 					openSeaTradeRoutes = {},	
 					progress = {},
 					civProgress = {},
-					resident = -1,
 					size = 1,				--updated per turn; used to know how much pop lost from conquest
 					disease = 0,			-- +values represent turns remaining for disease, -values represents turns remaining for plague
 					remotePlots = {},		--index by iPlot (holds true for now...)
@@ -942,25 +913,17 @@ local function OnPlayerCityFounded(iPlayer, x, y)
 					unimprovedForestJungle = 0,
 					desertCahraFollower = 0,
 
-					--keys below are added for strict table function
+					--keys below added for strict table function
 					conscriptTurn = false,
 					autoIndenturePop = false,
 					holyCityFor = false,
-					
 					gpHappiness = false,
 					gpFaith = false,
 					gpCulture = false,
 					gpGold = false,
 					gpScience = false,
 					gpProduction = false,
-					residentSeaXP = false,
 					gpTraining = false,
-					residentLandXP = false,
-					gpDivineScience = false,
-					gpArcaneScience = false,
-					scienceDistributionCarryover = false,
-					leaderSeaXP = false,
-					leaderLandXP = false,
 
 					}
 

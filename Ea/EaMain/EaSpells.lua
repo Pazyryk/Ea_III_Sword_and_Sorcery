@@ -2976,7 +2976,7 @@ end
 Interrupt[GameInfoTypes.EA_SPELL_LECTIO_OCCULTUS] = function(iPlayer, iPerson)
 	local eaPlayer = gPlayers[iPlayer]
 	local eaPerson = gPeople[iPerson]
-	eaPerson.activePlayerEndTurnManaDivineFavor = nil
+	eaPerson.activePlayerEndTurnManaDivineFavor = 0
 	if eaPlayer.gpArcaneScience then
 		eaPlayer.gpArcaneScience[iPerson] = nil
 		if iPlayer == g_iActivePlayer then
@@ -3034,7 +3034,7 @@ end
 Interrupt[GameInfoTypes.EA_SPELL_LECTIO_DIVINA] = function(iPlayer, iPerson)
 	local eaPlayer = gPlayers[iPlayer]
 	local eaPerson = gPeople[iPerson]
-	eaPerson.activePlayerEndTurnManaDivineFavor = nil
+	eaPerson.activePlayerEndTurnManaDivineFavor = 0
 	if eaPlayer.gpDivineScience then
 		eaPlayer.gpDivineScience[iPerson] = nil
 		if iPlayer == g_iActivePlayer then

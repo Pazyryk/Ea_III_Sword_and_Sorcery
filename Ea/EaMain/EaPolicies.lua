@@ -312,8 +312,8 @@ function OnPlayerAdoptPolicyDelayedEffect()		--called by closing policy window a
 				if eaPlayer.eaCivNameID then
 					GenerateGreatPerson(iPlayer, policyInfo.EaFirstInBranchGPClass, policyInfo.EaFirstInBranchGPSubclass)
 				else
-					eaPlayer.delayedGPclass = policyInfo.EaFirstInBranchGPClass			--Will spawn after civ naming
-					eaPlayer.delayedGPsubclass = policyInfo.EaFirstInBranchGPSubclass 
+					eaPlayer.delayedGPclass = policyInfo.EaFirstInBranchGPClass or false		--Will spawn after civ naming
+					eaPlayer.delayedGPsubclass = policyInfo.EaFirstInBranchGPSubclass or false 
 				end
 			end
 		end

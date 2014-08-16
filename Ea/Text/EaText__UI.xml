@@ -285,9 +285,6 @@
 		<Row Tag="TXT_KEY_EA_PRODMOD_YIELD_LEADER">
 			<Text>[NEWLINE][ICON_BULLET]Leader Modifier: {1_Num}%</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_PRODMOD_YIELD_CITY_RESIDENT">
-			<Text>[NEWLINE][ICON_BULLET]City Resident Modifier: {1_Num}%</Text>
-		</Row>
 		
 		<!-- POPUPS -->
 		

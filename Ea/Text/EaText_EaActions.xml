@@ -23,9 +23,6 @@
 		<Row Tag="TXT_KEY_EA_ACTION_TAKE_LEADERSHIP_HELP">
 			<Text>Any great person can take leadership of your civilization, but must be in your capital</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_ACTION_TAKE_RESIDENCE">
-			<Text>Take Residence in City</Text>
-		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_JOIN">
 			<Text>Join</Text>
 		</Row>

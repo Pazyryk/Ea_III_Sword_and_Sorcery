@@ -46,7 +46,7 @@ local function InitForNewGame()
 		local eaPlayer = gPlayers[iPlayer]		--player tables added in EaDefines.lua
 		if MapModData.playerType[iPlayer] == "FullCiv" then
 			eaPlayer.eaCivNameID = false
-			eaPlayer.bUseDivineFavor = false
+			eaPlayer.bUsesDivineFavor = false
 			eaPlayer.bIsFallen = false
 			eaPlayer.bRenouncedMaleficium = false	
 			eaPlayer.ImprovementsByID = {}
@@ -82,7 +82,6 @@ local function InitForNewGame()
 			eaPlayer.atWarWith = {[62] = true, [63] = true}
 			eaPlayer.conquests = {}
 
-			
 			eaPlayer.manaForCultOfLeavesFounder = 0
 			eaPlayer.manaForCultOfAbzuFounder = 0
 			eaPlayer.manaForCultOfAegirFounder = 0
@@ -91,13 +90,21 @@ local function InitForNewGame()
 			eaPlayer.manaForCultOfEponaFounder = 0
 			eaPlayer.manaForCultOfBakkheiaFounder = 0
 			eaPlayer.cultureManaFromWildlands = 0
-			
+			eaPlayer.leaderLandXP = 0
+			eaPlayer.leaderSeaXP = 0
+			eaPlayer.scienceDistributionCarryover = 0
+			eaPlayer.foodDistributionCarryover = 0
+			eaPlayer.productionDistributionCarryover = 0
+			eaPlayer.goldDistributionCarryover = 0
+			eaPlayer.aiNumTradeRoutesTargeted = 0
+			eaPlayer.savedFaithFromManaDivineFavorSwap = 0
+			eaPlayer.manaConsumed = 0
+					
 			eaPlayer.delayedGPclass = false
 			eaPlayer.delayedGPsubclass = false
 			eaPlayer.bHasDiscoveredAhrimansVault = false
 			eaPlayer.livingTerrainStrengthAdded = false
 			eaPlayer.livingTerrainAdded = false
-			eaPlayer.manaConsumed = false
 			eaPlayer.fallenFollowersDestr = false
 			eaPlayer.civsCorrectedProvisional = false
 			eaPlayer.civsCorrected = false
@@ -117,7 +124,9 @@ local function InitForNewGame()
 			eaPlayer.aiNamingPlans = false
 			eaPlayer.aiStartPlans = false
 			eaPlayer.aiWarriorsBlock = false
-
+			eaPlayer.gpDivineScience = false
+			eaPlayer.gpArcaneScience = false
+			eaPlayer.manaToSealAhrimansVault = false
 
 			local civID = player:GetCivilizationType()	 
 			local civRace = GameInfo.Civilizations[civID].EaRace
@@ -134,6 +143,7 @@ local function InitForNewGame()
 			end
 		elseif MapModData.playerType[iPlayer] == "Fay" then
 			eaPlayer.bIsFallen = false
+			eaPlayer.bRenouncedMaleficium = false
 			eaPlayer.blockedBuildingsByID = {}
 			eaPlayer.religionID = GameInfoTypes.RELIGION_THE_WEAVE_OF_EA
 			eaPlayer.race = GameInfoTypes.EARACE_FAY
@@ -144,6 +154,8 @@ local function InitForNewGame()
 			eaPlayer.atWarWith = {[62] = true, [63] = true}
 		elseif MapModData.playerType[iPlayer] == "CityState" then
 			eaPlayer.eaCivNameID = false
+			eaPlayer.bIsFallen = false
+			eaPlayer.bRenouncedMaleficium = false
 			eaPlayer.ImprovementsByID = {}
 			eaPlayer.ImprovedResourcesByID = {}
 			eaPlayer.resourcesInBorders = {}	--visible only; for AI and possibly traits
@@ -158,10 +170,14 @@ local function InitForNewGame()
 			eaPlayer.mercenaries = {}
 			eaPlayer.atWarWith = {[62] = true, [63] = true}
 		elseif MapModData.playerType[iPlayer] == "God" then
+			eaPlayer.bIsFallen = false
+			eaPlayer.bRenouncedMaleficium = false
 			eaPlayer.blockedBuildingsByID = {}
 			eaPlayer.religionID = GameInfoTypes.RELIGION_THE_WEAVE_OF_EA
 			eaPlayer.atWarWith = {[62] = true, [63] = true}
 		elseif MapModData.playerType[iPlayer] == "Animals" then
+			eaPlayer.bIsFallen = false
+			eaPlayer.bRenouncedMaleficium = false
 			eaPlayer.sustainedPromotions = {}
 			eaPlayer.atWarWith = {}
 			for iLoopPlayer, loopPlayerType in pairs(MapModData.playerType) do
@@ -170,6 +186,8 @@ local function InitForNewGame()
 				end
 			end
 		elseif MapModData.playerType[iPlayer] == "Barbs" then
+			eaPlayer.bIsFallen = false
+			eaPlayer.bRenouncedMaleficium = false
 			eaPlayer.sustainedPromotions = {}
 			eaPlayer.atWarWith = {}
 			for iLoopPlayer, loopPlayerType in pairs(MapModData.playerType) do

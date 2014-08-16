@@ -152,7 +152,7 @@ function UseManaOrDivineFavor(iPlayer, iPerson, pts, bNoDrain, consumedFloatUpPl
 
 	if eaPlayer.bIsFallen or iPlayer == BARB_PLAYER_INDEX then
 		gWorld.sumOfAllMana = gWorld.sumOfAllMana - pts
-		eaPlayer.manaConsumed = (eaPlayer.manaConsumed or 0) + pts
+		eaPlayer.manaConsumed = eaPlayer.manaConsumed + pts
 		if not consumedFloatUpPlot then
 			local capital = player:GetCapitalCity()
 			if capital then

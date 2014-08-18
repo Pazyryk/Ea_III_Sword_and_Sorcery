@@ -35,8 +35,8 @@ INSERT INTO EaSettings (Name, Value, GameLengthExp, MapSizeExp, Int) VALUES
 ('FAVORED_TECH_COST_REDUCTION',					-20,	0,	0,	0	),
 
 --Culture Level / Policies
-('POLICY_MULTIPLIER',							5,		0,	0,	0	),
-('POLICY_ADD',									4,		0,	0,	0	),
+('POLICY_MULTIPLIER',							6,		0,	0,	0	),	--from 5 in v6
+('POLICY_ADD',									5,		0,	0,	0	),	--from 4 in v6
 ('CL_APPROACH_FACTOR',							0.006,	-1,	0,	0	),
 ('CL_TARGET_CHANGE',							0.06,	-1,	0,	0	),
 ('CL_CHANGE_DAMPING_EXPONENT',					0.5,	0,	0,	0	),

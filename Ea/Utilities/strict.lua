@@ -50,8 +50,9 @@
 -- Settings
 --------------------------------------------------------------
 
-local bAssert = false					--If false, print violations and save for later retreval with PrintStrictLuaErrors()
-local bTestMainBody = true				--See details above
+local bAssert = false					--if false, print violations and save for later retreval with PrintStrictLuaErrors()
+local bPrintUniqueErrorsOnly = true		--print each violation once only
+local bTestMainBody = false				--see details above
 
 --the next two matter only if bTestMainBody = true:
 local bSkipFunctionsInMainBody = true	--don't object to global functions declared in main body after this file included
@@ -110,18 +111,20 @@ function MakeTableStrict(table)
 			if info.what ~= "C" and (not bEnv or info.what ~= "main" or (bTestMainBody
 					and (not bSkipFunctionsInMainBody or type(v) ~= "function")
 					and (not bSkipTablesInMainBody or type(v) ~= "table")  )) then
+				numErrors = numErrors + 1
 				info = getinfo(2, "Snl")
 				local name = info.name or info.what or "<unknown>"
 				local str = "(strict.lua) Assigned to an undeclared " .. (bEnv and "global" or "table key") .. " '" .. k .. "' in " .. name
 				if bAssert then
 					error(str)
 				else
-					print("ERROR! " .. str)
-					local str2 = string.format("  %s: %d", (info.source or "nil"), (info.currentline or "-1"))
-					print(str2)
-					numErrors = numErrors + 1
-					local memoryKey = str .. " at: \n" .. str2
-					strictLuaErrors[memoryKey] = strictLuaErrors[memoryKey] or numErrors	--use string as key for easy unique handling, numErrors can be used to sort by first occurance
+					str = str .. " at: \n" .. string.format("  %s: %d", (info.source or "nil"), (info.currentline or "-1"))
+					if not strictLuaErrors[str] then
+						strictLuaErrors[str] = numErrors	--use string as key for easy unique handling, numErrors can be used to sort by first occurance
+						print("ERROR #" .. numErrors .. " " .. str)
+					elseif not bPrintUniqueErrorsOnly then
+						print("ERROR #" .. numErrors .. " " .. str)
+					end
 				end
 			end
 			if bEnv then
@@ -136,18 +139,20 @@ function MakeTableStrict(table)
 		if not (bEnv and mt.__declared[k]) then
 			local info = getinfo(2, "S")
 			if info.what ~= "C" then
+				numErrors = numErrors + 1
 				info = getinfo(2, "Snl")
 				local name = info.name or info.what or "<unknown>"
 				local str = "(strict.lua) Accessed an undeclared " .. (bEnv and "global" or "table key") .. " '" .. k .. "' in " .. name
 				if bAssert then
 					error(str)
 				else
-					print("ERROR! " .. str)
-					local str2 = string.format("  %s: %d", (info.source or "nil"), (info.currentline or "-1"))
-					print(str2)
-					numErrors = numErrors + 1
-					local memoryKey = str .. " at: \n" .. str2
-					strictLuaErrors[memoryKey] = strictLuaErrors[memoryKey] or numErrors
+					str = str .. " at: \n" .. string.format("  %s: %d", (info.source or "nil"), (info.currentline or "-1"))
+					if not strictLuaErrors[str] then
+						strictLuaErrors[str] = numErrors	--use string as key for easy unique handling, numErrors can be used to sort by first occurance
+						print("ERROR #" .. numErrors .. " " .. str)
+					elseif not bPrintUniqueErrorsOnly then
+						print("ERROR #" .. numErrors .. " " .. str)
+					end
 				end
 			end
 		end

@@ -48,7 +48,6 @@ local RELIGION_CULT_OF_BAKKHEIA =				GameInfoTypes.RELIGION_CULT_OF_BAKKHEIA
 
 local BUILDING_SMOKEHOUSE = 					GameInfoTypes.BUILDING_SMOKEHOUSE
 local BUILDING_HUNTING_LODGE = 					GameInfoTypes.BUILDING_HUNTING_LODGE
-local BUILDING_HARBOR = 						GameInfoTypes.BUILDING_HARBOR
 local BUILDING_PORT = 							GameInfoTypes.BUILDING_PORT
 local BUILDING_WHALERY = 						GameInfoTypes.BUILDING_WHALERY
 local BUILDING_SLAVE_BREEDING_PEN =				GameInfoTypes.BUILDING_SLAVE_BREEDING_PEN
@@ -299,32 +298,6 @@ function UpdateCityYields(iPlayer, iSpecificCity, effectType, bPerTurnCall)
 			if player:HasPolicy(POLICY_TRADITION_FINISHER) then
 				science = science + floor(player:GetTotalJONSCulturePerTurn() / 3)
 			end
-			if eaPlayer.gpArcaneScience and next(eaPlayer.gpArcaneScience) ~= nil then
-				local currentResearchID = player:GetCurrentResearch()
-				if currentResearchID and (gg_eaTechClass[currentResearchID] == "Arcane" or gg_eaTechClass[currentResearchID] == "ArcaneEvil") then
-					for iPerson, arcaneScience in pairs(eaPlayer.gpArcaneScience) do
-						science = science + arcaneScience
-					end
-				else
-					for iPerson in pairs(eaPlayer.gpArcaneScience) do
-						eaPlayer.gpArcaneScience[iPerson] = nil
-						InterruptEaAction(iPlayer, iPerson)
-					end
-				end
-			end
-			if eaPlayer.gpDivineScience and next(eaPlayer.gpDivineScience) ~= nil then
-				local currentResearchID = player:GetCurrentResearch()
-				if currentResearchID and gg_eaTechClass[currentResearchID] == "Divine" then
-					for iPerson, divineScience in pairs(eaPlayer.gpDivineScience) do
-						science = science + divineScience
-					end
-				else
-					for iPerson in pairs(eaPlayer.gpDivineScience) do
-						eaPlayer.gpDivineScience[iPerson] = nil
-						InterruptEaAction(iPlayer, iPerson)
-					end
-				end
-			end
 			if science ~= 0 then
 				scienceDistribution = floor(science / numCities)
 				eaPlayer.scienceDistributionCarryover = bPerTurnCall and science % numCities or eaPlayer.scienceDistributionCarryover	--no change if this is just a UI update
@@ -540,7 +513,7 @@ function UpdateCityYields(iPlayer, iSpecificCity, effectType, bPerTurnCall)
 		if not bPerTurnCall then
 			Events.SerialEventCityInfoDirty()	--update city banner if production changed
 		end
-		if not iCity then			--Top Panel info for active player; run only for all-city update (iCity = nil)
+		if not iSpecificCity then			--Top Panel info for active player; run only for all-city update (iCity = nil)
 			MapModData.faithFromGPs = faithFromGPs
 			MapModData.faithFromAzzTribute = faithFromAzzTribute
 			MapModData.faithFromToAhrimanTribute = faithFromToAhrimanTribute

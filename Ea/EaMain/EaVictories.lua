@@ -178,32 +178,5 @@ function UpdateFayScore(iPlayer)
 	player:ChangeScoreFromScenario1(fayScore - player:GetScore())
 end
 
-function TestEnableProtectorConditions()
-	print("TestEnableProtectorConditions")
 
-	local bAllow = true
-	for iPlayer, eaPlayer in pairs(fullCivs) do
-		if eaPlayer.bIsFallen and not eaPlayer.bRenouncedMaleficium then
-			bAllow = false
-			break
-		end
-	end
-	if bAllow then
-		print(" -there are currently no fallen civs that have not renounced maleficium")
-		if not gReligions[RELIGION_ANRA] or (not Game.GetHolyCityForReligion(RELIGION_ANRA, -1) and Game.GetNumFollowers(RELIGION_ANRA) == 0) then
-			print(" -everything is good... where are we with Prophecy of Simsum and Sealing the Vault?")
-			if gWorld.evilControl == "Sealed" then
-				gWorld.bEnableProtectorVC = true
-				print(" -all Protector VCs met; should have victory now...")
-				TestUpdateVictory(-1)				--will trigger VC
-				return
-			elseif gWorld.evilControl ~= "Open" then
-				print(" -making Seal Ahriman's Vault easy now...")
-				gWorld.bEnableEasyVaultSeal = true	--any GP can do it cheaply now
-				return
-			end
-		end
-	end
-	gWorld.bEnableEasyVaultSeal = false		--conditions might have changed
-end
 

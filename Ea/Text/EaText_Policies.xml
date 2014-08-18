@@ -518,7 +518,7 @@
 			<Text>Socio Arcana</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_SOCIO_ARCANA_HELP">
-			<Text>[COLOR_POSITIVE_TEXT]Socio Arcana[ENDCOLOR][NEWLINE][ICON_BULLET]+1 [ICON_STAR] Mana per citizen [ICON_CITIZEN] DOES THIS WORK ????[NEWLINE][ICON_BULLET]+1 [ICON_STAR] Mana from Gatherer's Hut[NEWLINE][ICON_BULLET]+1 [ICON_STAR] Mana from each arcane building</Text>
+			<Text>[COLOR_POSITIVE_TEXT]Socio Arcana[ENDCOLOR][NEWLINE][ICON_BULLET]+1 [ICON_STAR] Mana per citizen [ICON_CITIZEN][NEWLINE][ICON_BULLET]+1 [ICON_STAR] Mana from Gatherer's Hut[NEWLINE][ICON_BULLET]+1 [ICON_STAR] Mana from each arcane building</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_THAUMATOCRACY">
 			<Text>Thaumatocracy</Text>

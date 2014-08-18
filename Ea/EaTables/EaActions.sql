@@ -216,7 +216,7 @@ UPDATE EaActions SET OrGPClass = 'Sage', NotGPClass = 'Devout', PolicyReq = 'POL
 INSERT INTO EaActions (Type,			GPOnly,	TechReq,					DoXP,	AITarget,		AIAdHocValue,	GPClass,	City,	AhrimansVaultMatters,	UniqueType,	PlayAnywhereSound,					IconIndex,	IconAtlas							) VALUES
 ('EA_ACTION_PROPHECY_YAZATAS',			1,		NULL,						100,	'OwnCities',	10000,			'Devout',	'Own',	NULL,					'World',	'AS2D_EVENT_NOTIFICATION_GOOD',		16,			'EXPANSION_UNIT_ATLAS_1'			),
 ('EA_ACTION_PROPHECY_MITHRA',			1,		NULL,						100,	'OwnCities',	10000,			'Devout',	'Own',	NULL,					'World',	'AS2D_EVENT_NOTIFICATION_GOOD',		16,			'EXPANSION_UNIT_ATLAS_1'			),
-('EA_ACTION_PROPHECY_SIMSUM',			1,		NULL,						100,	'Self',			0,				'Devout',	NULL,	NULL,					'World',	'AS2D_EVENT_NOTIFICATION_VERY_BAD',	16,			'EXPANSION_UNIT_ATLAS_1'			),
+('EA_ACTION_PROPHECY_TZIMTZUM',			1,		NULL,						100,	'Self',			0,				'Devout',	NULL,	NULL,					'World',	'AS2D_EVENT_NOTIFICATION_VERY_BAD',	16,			'EXPANSION_UNIT_ATLAS_1'			),
 ('EA_ACTION_PROPHECY_ANRA',				1,		'TECH_MALEFICIUM',			100,	'OwnCities',	10000,			'Devout',	'Own',	1,						'World',	'AS2D_EVENT_NOTIFICATION_VERY_BAD',	16,			'EXPANSION_UNIT_ATLAS_1'			),
 ('EA_ACTION_PROPHECY_AESHEMA',			1,		NULL,						100,	'Self',			0,				NULL,		NULL,	1,						'World',	'AS2D_EVENT_NOTIFICATION_VERY_BAD',	16,			'EXPANSION_UNIT_ATLAS_1'			),
 ('EA_ACTION_PROPHECY_ORDO_SALUTIS',		1,		'TECH_KNOWLEDGE_OF_HEAVEN',	NULL,	'Self',			0,				'Devout',	NULL,	NULL,					'World',	'AS2D_EVENT_NOTIFICATION_VERY_BAD',	16,			'EXPANSION_UNIT_ATLAS_1'			),
@@ -385,12 +385,14 @@ UPDATE EaActions SET Description = 'TXT_KEY_' || Type, Help = 'TXT_KEY_' || Type
 -- These are EaActions but treated in a special way: All non-target prereqs are only "learn" prereqs
 -- The spell is always castable if it is known and target is valid and player has sufficient mana or divine favor.
 
+-- Class/subclass restrictions not fully implemented for learning spell. Only ExcludeGPSubclass works.
+
 --Arcane
 INSERT INTO EaActions (Type,			SpellClass,	GPModType1,				TechReq,						FinishMoves,	City,	AITarget,			AICombatRole,	TurnsToComplete,	HumanVisibleFX,	IconIndex,	IconAtlas					) VALUES
+('EA_SPELL_LECTIO_OCCULTUS',			'Arcane',	'EAMOD_DIVINATION',		'TECH_THAUMATURGY',				1,				'Not',	'TowerTemple',		NULL,			1000,				NULL,			1,			'EA_SPELLS_ATLAS_ARCANE1'	),
 ('EA_SPELL_SCRYING',					'Arcane',	'EAMOD_DIVINATION',		'TECH_THAUMATURGY',				NULL,			NULL,	NULL,				NULL,			2,					1,				6,			'EA_SPELLS_ATLAS_ARCANE1'	),
 ('EA_SPELL_SEEING_EYE_GLYPH',			'Arcane',	'EAMOD_DIVINATION',		'TECH_THAUMATURGY',				1,				'Not',	'SeeingEyeGlyph',	NULL,			2,					1,				4,			'EA_SPELLS_ATLAS_ARCANE1'	),
 ('EA_SPELL_DETECT_GLYPHS_RUNES_WARDS',	'Arcane',	'EAMOD_DIVINATION',		'TECH_THAUMATURGY',				1,				NULL,	'Self',				NULL,			1,					1,				5,			'EA_SPELLS_ATLAS_ARCANE1'	),
-('EA_SPELL_LECTIO_OCCULTUS',			'Arcane',	'EAMOD_DIVINATION',		'TECH_THAUMATURGY',				NULL,			'Not',	'TowerTemple',		NULL,			1000,				NULL,			1,			'EA_SPELLS_ATLAS_ARCANE1'	),
 ('EA_SPELL_KNOW_WORLD',					'Arcane',	'EAMOD_DIVINATION',		'TECH_TRANSCENDENTAL_THOUGHT',	1,				NULL,	NULL,				NULL,			1,					1,				2,			'EA_SPELLS_ATLAS_ARCANE1'	),
 
 ('EA_SPELL_DISPEL_HEXES',				'Arcane',	'EAMOD_ABJURATION',		'TECH_ABJURATION',				1,				NULL,	NULL,				NULL,			1,					1,				23,			'EA_SPELLS_ATLAS_ARCANE1'	),
@@ -451,20 +453,15 @@ INSERT INTO EaActions (Type,			SpellClass,	GPModType1,				TechReq,						FinishMo
 --('EA_SPELL_SIMULACRUM',				'Arcane',	'EAMOD_ILLUSION',		'TECH_GREATER_ILLUSION',		1,				NULL,	NULL,				NULL,			1,					1,				0,			'EA_SPELLS_ATLAS_ARCANE2'	),
 --('EA_SPELL_PHANTASMAGORIA',			'Arcane',	'EAMOD_ILLUSION',		'TECH_PHANTASMAGORIA',			1,				NULL,	NULL,				NULL,			1,					1,				0,			'EA_SPELLS_ATLAS_ARCANE2'	);
 
-UPDATE EaActions SET FinishMoves = NULL WHERE Type IN ('EA_SPELL_SCRYING', 'EA_SPELL_PLASMA_STORM', 'EA_SPELL_HAIL_OF_PROJECTILES', 'EA_SPELL_MASS_ENERGY_DRAIN', 'EA_SPELL_TIME_STOP');
-UPDATE EaActions SET FinishMoves = NULL WHERE Type IN ('EA_SPELL_BURNING_HANDS', 'EA_SPELL_MAGIC_MISSILE', 'EA_SPELL_FIREBALL', 'EA_SPELL_PLASMA_BOLT', 'EA_SPELL_ENERGY_DRAIN');
-
-
 UPDATE EaActions SET AITarget2 = 'SpacedRingsWide' WHERE Type IN ('EA_SPELL_BREACH', 'EA_SPELL_BLIGHT');
-
+UPDATE EaActions SET TowerTempleOnly = 1 WHERE Type IN ('EA_SPELL_LECTIO_OCCULTUS');
 --
 --UPDATE EaActions SET MinimumModToLearn = 15 WHERE Type = 'EA_SPELL_TIME_STOP';
-
 
 --Divine
 INSERT INTO EaActions (Type,			SpellClass,	GPModType1,				TechReq,						FinishMoves,	City,	AITarget,			AICombatRole,	FallenAltSpell,					TurnsToComplete,	HumanVisibleFX,	IconIndex,	IconAtlas					) VALUES
 ('EA_SPELL_HEAL',						'Divine',	'EAMOD_NECROMANCY',		NULL,							1,				NULL,	NULL,				'Any',			'EA_SPELL_HURT',				1,					1,				0,			'EA_SPELLS_ATLAS_DIVINE1'	),
-('EA_SPELL_LECTIO_DIVINA',				'Divine',	'EAMOD_DIVINATION',		'TECH_DIVINE_LITURGY',			NULL,			'Not',	'Temple',			NULL,			'EA_SPELL_LECTIO_OCCULTUS',		1000,				NULL,			8,			'EA_SPELLS_ATLAS_DIVINE1'	),
+('EA_SPELL_LECTIO_DIVINA',				'Divine',	'EAMOD_DIVINATION',		'TECH_DIVINE_LITURGY',			1,				'Not',	'Temple',			NULL,			'EA_SPELL_LECTIO_OCCULTUS',		1000,				NULL,			8,			'EA_SPELLS_ATLAS_DIVINE1'	),
 ('EA_SPELL_BLESS',						'Divine',	'EAMOD_CONJURATION',	'TECH_DIVINE_LITURGY',			1,				NULL,	NULL,				'Any',			'EA_SPELL_CURSE',				1,					1,				1,			'EA_SPELLS_ATLAS_DIVINE1'	),
 ('EA_SPELL_PROTECTION_FROM_EVIL',		'Divine',	'EAMOD_ABJURATION',		'TECH_DIVINE_LITURGY',			1,				NULL,	NULL,				'Any',			'EA_SPELL_EVIL_EYE',			1,					1,				2,			'EA_SPELLS_ATLAS_DIVINE1'	),
 ('EA_SPELL_SANCTIFY',					'Divine',	'EAMOD_ABJURATION',		'TECH_DIVINE_VITALISM',			1,				NULL,	NULL,				NULL,			'EA_SPELL_DEFILE',				1,					1,				3,			'EA_SPELLS_ATLAS_DIVINE1'	),
@@ -514,7 +511,8 @@ UPDATE EaActions SET Description = 'TXT_KEY_' || Type, Help = 'TXT_KEY_' || Type
 UPDATE EaActions SET GPOnly = 1, ConsiderTowerTemple = 1, AhrimansVaultMatters = 1, UIType = 'Spell' WHERE SpellClass IS NOT NULL;
 UPDATE EaActions SET ProgressHolder = 'Self' WHERE SpellClass IS NOT NULL AND TurnsToComplete > 1;
 
-
+UPDATE EaActions SET TowerTempleOnly = 1 WHERE Type IN ('EA_SPELL_LECTIO_DIVINA');
+UPDATE EaActions SET ExcludeGPSubclass = 'Druid' WHERE Type IN ('EA_SPELL_LECTIO_DIVINA');
 
 UPDATE EaActions SET PolicyTrumpsTechReq = 'POLICY_WITCHCRAFT' WHERE Type IN ('EA_SPELL_SCRYING', 'EA_SPELL_SLOW', 'EA_SPELL_HEX', 'EA_SPELL_DEATH_STAY', 'EA_SPELL_SLEEP');
 UPDATE EaActions SET GPModType2 = 'EAMOD_DEVOTION' WHERE SpellClass IN ('Divine', 'Both');
@@ -537,7 +535,7 @@ UPDATE EaActions SET ProgressHolder = 'Self' WHERE ProgressHolder IS NULL AND Tu
 
 --AutoplayDebug
 --UPDATE EaActions SET TechReq = 'TECH_NEVER' WHERE Type IN ('EA_ACTION_PROSELYTIZE', 'EA_ACTION_ANTIPROSELYTIZE', 'EA_ACTION_PROPHECY_MITHRA',
---'EA_ACTION_PROPHECY_SIMSUM', 'EA_ACTION_PROPHECY_ANRA', 'EA_ACTION_PROPHECY_AESHEMA', 'EA_ACTION_WORSHIP');
+--'EA_ACTION_PROPHECY_TZIMTZUM', 'EA_ACTION_PROPHECY_ANRA', 'EA_ACTION_PROPHECY_AESHEMA', 'EA_ACTION_WORSHIP');
 
 -----------------------------------------------------------------------------------------
 -- Subtables

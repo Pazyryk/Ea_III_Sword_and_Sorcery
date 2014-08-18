@@ -414,9 +414,9 @@ function EaPlotsInit(bNewGame)
 		end
 	else		--Loaded game
 		local SaveDB = Modding.OpenSaveData()
-		MapModData.validForestJunglePlots = SaveDB.GetValue("ValidForestJunglePlots", validForestJunglePlots)
-		MapModData.originalForestJunglePlots = SaveDB.GetValue("OriginalForestJunglePlots", originalForestJunglePlots)
-		MapModData.ownablePlots = SaveDB.GetValue("OwnablePlots", ownablePlots)
+		MapModData.validForestJunglePlots = SaveDB.GetValue("ValidForestJunglePlots")
+		MapModData.originalForestJunglePlots = SaveDB.GetValue("OriginalForestJunglePlots")
+		MapModData.ownablePlots = SaveDB.GetValue("OwnablePlots")
 	end
 
 	--stored stuff needed for new and loaded games

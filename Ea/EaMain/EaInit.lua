@@ -124,9 +124,8 @@ local function InitForNewGame()
 			eaPlayer.aiNamingPlans = false
 			eaPlayer.aiStartPlans = false
 			eaPlayer.aiWarriorsBlock = false
-			eaPlayer.gpDivineScience = false
-			eaPlayer.gpArcaneScience = false
 			eaPlayer.manaToSealAhrimansVault = false
+			eaPlayer.turnBlockEaCivNamingID = false		
 
 			local civID = player:GetCivilizationType()	 
 			local civRace = GameInfo.Civilizations[civID].EaRace
@@ -142,6 +141,7 @@ local function InitForNewGame()
 				eaPlayer.classPoints = {1, 1, 1, 1, 1, 0, 0}
 			end
 		elseif MapModData.playerType[iPlayer] == "Fay" then
+			eaPlayer.bUsesDivineFavor = false
 			eaPlayer.bIsFallen = false
 			eaPlayer.bRenouncedMaleficium = false
 			eaPlayer.blockedBuildingsByID = {}
@@ -154,8 +154,10 @@ local function InitForNewGame()
 			eaPlayer.atWarWith = {[62] = true, [63] = true}
 		elseif MapModData.playerType[iPlayer] == "CityState" then
 			eaPlayer.eaCivNameID = false
+			eaPlayer.bUsesDivineFavor = false
 			eaPlayer.bIsFallen = false
 			eaPlayer.bRenouncedMaleficium = false
+			eaPlayer.manaConsumed = 0		--by Anra followers
 			eaPlayer.ImprovementsByID = {}
 			eaPlayer.ImprovedResourcesByID = {}
 			eaPlayer.resourcesInBorders = {}	--visible only; for AI and possibly traits
@@ -170,12 +172,14 @@ local function InitForNewGame()
 			eaPlayer.mercenaries = {}
 			eaPlayer.atWarWith = {[62] = true, [63] = true}
 		elseif MapModData.playerType[iPlayer] == "God" then
+			eaPlayer.bUsesDivineFavor = false
 			eaPlayer.bIsFallen = false
 			eaPlayer.bRenouncedMaleficium = false
 			eaPlayer.blockedBuildingsByID = {}
 			eaPlayer.religionID = GameInfoTypes.RELIGION_THE_WEAVE_OF_EA
 			eaPlayer.atWarWith = {[62] = true, [63] = true}
 		elseif MapModData.playerType[iPlayer] == "Animals" then
+			eaPlayer.bUsesDivineFavor = false
 			eaPlayer.bIsFallen = false
 			eaPlayer.bRenouncedMaleficium = false
 			eaPlayer.sustainedPromotions = {}
@@ -186,6 +190,7 @@ local function InitForNewGame()
 				end
 			end
 		elseif MapModData.playerType[iPlayer] == "Barbs" then
+			eaPlayer.bUsesDivineFavor = false
 			eaPlayer.bIsFallen = false
 			eaPlayer.bRenouncedMaleficium = false
 			eaPlayer.sustainedPromotions = {}
@@ -200,7 +205,7 @@ local function InitForNewGame()
 end
 
 local function SetStrictTables()
-	--after all keys are added for new or loaded game
+	--after all keys are added for new AND loaded game
 	MakeTableStrict(gWorld)
 	for _, eaPlayer in pairs(gPlayers) do
 		MakeTableStrict(eaPlayer)

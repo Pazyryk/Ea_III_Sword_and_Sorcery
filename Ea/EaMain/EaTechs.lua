@@ -23,7 +23,6 @@ local AI_FREE_TECHS =					GameInfo.HandicapInfos[Game:GetHandicapType()].EaAIFre
 
 local GameInfoTypes =					GameInfoTypes
 local BUILDING_INTELLIGENT_ARCHIVE =	GameInfoTypes.BUILDING_INTELLIGENT_ARCHIVE
-local BUILDING_HARBOR =					GameInfoTypes.BUILDING_HARBOR
 local EACIV_SISUKAS =					GameInfoTypes.EACIV_SISUKAS
 local EARACE_MAN =						GameInfoTypes.EARACE_MAN
 local EARACE_SIDHE =					GameInfoTypes.EARACE_SIDHE
@@ -753,7 +752,7 @@ local function OnPlayerCanEverResearch(iPlayer, techID)
 		if 3 < gg_techTier[techID] and gWorld.evilControl ~= "Open" then return false end
 		if gWorld.evilControl == "Sealed" then return false end
 	elseif gg_eaTechClass[techID] == "Divine" then
-		if  eaPlayer.race ~= EARACE_MAN or eaPlayer.bIsFallen then return false end
+		if not eaPlayer.bUsesDivineFavor then return false end
 	end
 
 	if EverTechReq[techID] and not EverTechReq[techID](iPlayer) then return false end

@@ -60,7 +60,7 @@ INSERT INTO Units (Type,		PrereqTech,					Cost,	Combat,	RangedCombat,	Range,	Mov
 ('UNIT_MUMAKIL',				'TECH_MUMAKIL_RIDING',		500,	24,		24,				1,		2,		'UNITCOMBAT_ARMOR',			'DOMAIN_LAND',	'UNITAI_ATTACK',		1,			1,					1,					NULL,				0,			'ART_DEF_UNIT_U_SIAMESE_WARELEPHANT',	'UNIT_ATLAS_1',				29,				'UNIT_FLAG_ATLAS',				28,					'PHANT'			),
 
 -- Man
-('UNIT_SETTLERS_MAN',			NULL,						250,	0,		0,				0,		2,		NULL,						'DOMAIN_LAND',	'UNITAI_SETTLE',		0,			0,					0,					NULL,				0,			'ART_DEF_UNIT__SETTLER',				'UNIT_ATLAS_1',				0,				'UNIT_FLAG_ATLAS',				0,					'BIPED'			),
+('UNIT_SETTLERS_MAN',			NULL,						1,		0,		0,				0,		2,		NULL,						'DOMAIN_LAND',	'UNITAI_SETTLE',		0,			0,					0,					NULL,				0,			'ART_DEF_UNIT__SETTLER',				'UNIT_ATLAS_1',				0,				'UNIT_FLAG_ATLAS',				0,					'BIPED'			),
 ('UNIT_WORKERS_MAN',			NULL,						100,	0,		0,				0,		2,		NULL,						'DOMAIN_LAND',	'UNITAI_WORKER',		0,			0,					0,					NULL,				0,			'ART_DEF_UNIT__WORKER',					'UNIT_ATLAS_1',				1,				'UNIT_FLAG_ATLAS',				1,					'BIPED'			),
 ('UNIT_SLAVES_MAN',				NULL,						70,		0,		0,				0,		2,		NULL,						'DOMAIN_LAND',	'UNITAI_WORKER',		0,			0,					0,					NULL,				0,			'ART_DEF_UNIT__WORKER',					'UNIT_ATLAS_1',				1,				'UNIT_FLAG_ATLAS',				1,					'BIPED'			),
 
@@ -93,7 +93,7 @@ INSERT INTO Units (Type,		PrereqTech,					Cost,	Combat,	RangedCombat,	Range,	Mov
 ('UNIT_SAGITARII_MAN',			'TECH_WAR_HORSES',			380,	17,		17,				1,		4,		'UNITCOMBAT_GUN',			'DOMAIN_LAND',	'UNITAI_RANGED',		1,			1,					1,					NULL,				0,			'ART_DEF_UNIT_U_MONGOLIAN_KESHIK',		'GENGHIS_UNIT_ATLAS',		0,				'GENGHIS_UNIT_FLAG_ATLAS',		0,					'BIPED'			),
 
 -- Sidhe
-('UNIT_SETTLERS_SIDHE',			NULL,						250,	0,		0,				0,		2,		NULL,						'DOMAIN_LAND',	'UNITAI_SETTLE',		0,			0,					0,					NULL,				0,			'ART_DEF_UNIT__SETTLER',				'UNIT_ATLAS_1',				0,				'UNIT_FLAG_ATLAS',				0,					'BIPED'			),
+('UNIT_SETTLERS_SIDHE',			NULL,						100,	0,		0,				0,		2,		NULL,						'DOMAIN_LAND',	'UNITAI_SETTLE',		0,			0,					0,					NULL,				0,			'ART_DEF_UNIT__SETTLER',				'UNIT_ATLAS_1',				0,				'UNIT_FLAG_ATLAS',				0,					'BIPED'			),
 ('UNIT_WORKERS_SIDHE',			NULL,						100,	0,		0,				0,		2,		NULL,						'DOMAIN_LAND',	'UNITAI_WORKER',		0,			0,					0,					NULL,				0,			'ART_DEF_UNIT__WORKER',					'UNIT_ATLAS_1',				1,				'UNIT_FLAG_ATLAS',				1,					'BIPED'			),
 ('UNIT_SLAVES_SIDHE',			NULL,						70,		0,		0,				0,		2,		NULL,						'DOMAIN_LAND',	'UNITAI_WORKER',		0,			0,					0,					NULL,				0,			'ART_DEF_UNIT__WORKER',					'UNIT_ATLAS_1',				1,				'UNIT_FLAG_ATLAS',				1,					'BIPED'			),
 
@@ -125,7 +125,7 @@ INSERT INTO Units (Type,		PrereqTech,					Cost,	Combat,	RangedCombat,	Range,	Mov
 ('UNIT_SAGITARII_SIDHE',		'TECH_WAR_HORSES',			380,	17,		17,				1,		4,		'UNITCOMBAT_GUN',			'DOMAIN_LAND',	'UNITAI_RANGED',		1,			1,					1,					NULL,				0,			'ART_DEF_UNIT_SIDHE_HORSE_ARCHER',		'GENGHIS_UNIT_ATLAS',		0,				'GENGHIS_UNIT_FLAG_ATLAS',		0,					'BIPED'			),
 
 -- Heldeofol
-('UNIT_SETTLERS_ORC',			NULL,						250,	0,		0,				0,		2,		NULL,						'DOMAIN_LAND',	'UNITAI_SETTLE',		0,			0,					0,					NULL,				0,			'ART_DEF_UNIT__SETTLER',				'UNIT_ATLAS_1',				0,				'UNIT_FLAG_ATLAS',				0,					'BIPED'			),
+('UNIT_SETTLERS_ORC',			NULL,						1,		0,		0,				0,		2,		NULL,						'DOMAIN_LAND',	'UNITAI_SETTLE',		0,			0,					0,					NULL,				0,			'ART_DEF_UNIT__SETTLER',				'UNIT_ATLAS_1',				0,				'UNIT_FLAG_ATLAS',				0,					'BIPED'			),
 ('UNIT_WORKERS_ORC',			NULL,						100,	0,		0,				0,		2,		NULL,						'DOMAIN_LAND',	'UNITAI_WORKER',		0,			0,					0,					NULL,				0,			'ART_DEF_UNIT__WORKER',					'UNIT_ATLAS_1',				1,				'UNIT_FLAG_ATLAS',				1,					'BIPED'			),
 ('UNIT_SLAVES_ORC',				NULL,						70,		0,		0,				0,		2,		NULL,						'DOMAIN_LAND',	'UNITAI_WORKER',		0,			0,					0,					NULL,				0,			'ART_DEF_UNIT__WORKER',					'UNIT_ATLAS_1',				1,				'UNIT_FLAG_ATLAS',				1,					'BIPED'			),
 

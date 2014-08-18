@@ -620,7 +620,7 @@ function TestSetEligibleCityCults(city, eaCity, feedbackCultID)
 end
 local TestSetEligibleCityCults = TestSetEligibleCityCults
 
-function CityPerCivTurn(iPlayer)		--Full civ only		TO DO: must be real civs so that remote plot system works
+function CityPerCivTurn(iPlayer)		--full and city states
 	local floor = math.floor
 	print("CityPerCivTurn; City info (Name/Size/BuildQueue):")
 
@@ -701,10 +701,7 @@ function CityPerCivTurn(iPlayer)		--Full civ only		TO DO: must be real civs so t
 						count = count + cityRemoteImproveCount[improveType]
 					end
 					--print("RemoteImproves Building/Count = ", GameInfo.Buildings[buildingID].Type, count)
-					if 0 < city:GetNumFreeBuilding(buildingID) then	--true if ever given for free
-						city:SetNumFreeBuilding(buildingID, count + 1)
-						city:SetNumRealBuilding(buildingID, 0)
-					elseif 0 < city:GetNumRealBuilding(buildingID) then	--true if ever built
+					if 0 < city:GetNumRealBuilding(buildingID) then	--true if ever built
 						city:SetNumRealBuilding(buildingID, count + 1)
 					else
 						local enablingBuildingID = remoteImproveEnablingBuildings[buildingID]

@@ -602,7 +602,6 @@ function TestEaAction(eaActionID, iPlayer, unit, iPerson, testX, testY, bAINonTa
 	g_eaActionID = g_eaAction.ID
 	g_gameTurn = Game.GetGameTurn()
 	
-	--print("TestEaAction", eaActionID, iPlayer, unit, iPerson, testX, testY, bAINonTargetTest)
 	--print("TestEaAction", g_eaAction.Type, iPlayer, unit, iPerson, testX, testY, bAINonTargetTest)
 
 	g_bNonTargetTestsPassed = false
@@ -766,7 +765,7 @@ function TestEaActionTarget(eaActionID, testX, testY, bAITargetTest)
 	--This function sets all file locals related to the target plot
 	--AI can call this directly but ONLY after a call to TestEaAction so that civ/caster file locals are correct
 
-	--print("TestEaActionTarget",eaActionID, testX, testY, bAITargetTest)
+	--print("TestEaActionTarget", g_eaAction.Type, testX, testY, bAITargetTest)
 
 	g_testTargetSwitch = 0
 	g_bSomeoneElseDoingHere = false
@@ -913,13 +912,13 @@ function TestEaActionTarget(eaActionID, testX, testY, bAITargetTest)
 		end
 		g_int1 = GameInfoTypes[upgradeUnitType]	--upgrade unitID
 		if not g_int1 then return false end
-		print("-upgrade unitID = ", g_int1)
+		--print("-upgrade unitID = ", g_int1)
 		if g_eaAction.NormalCombatUnit then
 			g_int2 = g_unit:UpgradePrice(g_int1)	--upgrade cost
 		else
 			g_int2 = EaSettings.SLAVE_UPGRD_TO_WARRIOR_COST
 		end
-		print("-upgrade price = ", g_int2)
+		--print("-upgrade price = ", g_int2)
 		if g_player:GetGold() < g_int2 then
 			if g_bUICall then
 				g_bSetDelayedFailForUI = true
@@ -2097,8 +2096,7 @@ Do[GameInfoTypes.EA_ACTION_RALLY_TROOPS] = function()
 		unit:GetPlot():AddFloatUpMessage(floatUp, 1)
 		unit:ChangeMorale(g_mod)
 	end
-	local xp = floor(g_mod * g_value / 1000)
-	g_unit:ChangeExperience(xp)
+	g_unit:ChangeExperience(g_mod)
 	g_specialEffectsPlot = g_plot
 	return true
 end
@@ -2651,31 +2649,31 @@ Test[GameInfoTypes.EA_ACTION_PROPHECY_MITHRA] = function()
 end
 
 TestTarget[GameInfoTypes.EA_ACTION_PROPHECY_MITHRA] = function()
-	--If we are here then we must be in a city of our own (otherwise, g_TestTargetSwitch = 0)
+	--If we are here then we must be in a city of our own (otherwise, g_testTargetSwitch = 0)
 	local azzHolyCity = Game.GetHolyCityForReligion(RELIGION_AZZANDARAYASNA, -1)
 	if azzHolyCity then
 		if g_city == azzHolyCity then
-			g_TestTargetSwitch = 1		--this is the holy city (and we own it) so we can do it here
+			g_testTargetSwitch = 1		--this is the holy city (and we own it) so we can do it here
 			return true
 		else
-			g_TestTargetSwitch = 2		--holy city exists and we are not in it
+			g_testTargetSwitch = 2		--holy city exists and we are not in it
 			return false
 		end
 	else
 		if g_city:IsHolyCityAnyReligion() then
-			g_TestTargetSwitch = 3		--we could do it here if this were not a holy city
+			g_testTargetSwitch = 3		--we could do it here if this were not a holy city
 			return false
 		else
-			g_TestTargetSwitch = 4		--holy city razed so we can do it here
+			g_testTargetSwitch = 4		--holy city razed so we can do it here
 			return true
 		end
 	end
 end
 
 SetUI[GameInfoTypes.EA_ACTION_PROPHECY_MITHRA] = function()
-	if g_TestTargetSwitch == 1 then
+	if g_testTargetSwitch == 1 then
 		MapModData.text = "Become the Azzandarayasna founder reborn"
-	elseif g_TestTargetSwitch == 4 then
+	elseif g_testTargetSwitch == 4 then
 		MapModData.text = "Become the Azzandarayasna founder reborn in the Holy City Mithra"
 	else
 		--Change bShow only if 1) we are qualified and 2) holy city is not in the hands of an Azz follower; extra show logic is just UI candy
@@ -2715,18 +2713,18 @@ Do[GameInfoTypes.EA_ACTION_PROPHECY_MITHRA] = function()
 	return true
 end
 
---EA_ACTION_PROPHECY_SIMSUM
+--EA_ACTION_PROPHECY_TZIMTZUM
 --displays EaAction.Help, "All civilizations that know Maleficium will fall"
-Test[GameInfoTypes.EA_ACTION_PROPHECY_SIMSUM] = function()
+Test[GameInfoTypes.EA_ACTION_PROPHECY_TZIMTZUM] = function()
 	return gWorld.evilControl == "Ready"
 end
 
-SetAIValues[GameInfoTypes.EA_ACTION_PROPHECY_SIMSUM] = function()
+SetAIValues[GameInfoTypes.EA_ACTION_PROPHECY_TZIMTZUM] = function()
 	gg_aiOptionValues.i = 100							--Game.GetGameTurn() / 4 - 25	--will happen sometime after turn 100
 end
 
-Do[GameInfoTypes.EA_ACTION_PROPHECY_SIMSUM] = function()	--All civs with Maleficium will fall
-	print("Prophecy of Va")
+Do[GameInfoTypes.EA_ACTION_PROPHECY_TZIMTZUM] = function()	--All civs with Maleficium will fall
+	print("Prophecy of Tzimtzum")
 	gWorld.evilControl = "Open"
 	if gReligions[RELIGION_AZZANDARAYASNA] and not gReligions[RELIGION_ANRA] then	
 		--Azz is founded but Anra is not; maybe Anra will be founded now
@@ -2825,11 +2823,11 @@ end
 
 --EA_ACTION_PROPHECY_AESHEMA
 Test[GameInfoTypes.EA_ACTION_PROPHECY_AESHEMA] = function()
+	--print("Test[GameInfoTypes.EA_ACTION_PROPHECY_AESHEMA]")
 	return false
 end
 
 Do[GameInfoTypes.EA_ACTION_PROPHECY_AESHEMA] = function()
-
 	return true
 end
 
@@ -3777,7 +3775,6 @@ TestTarget[GameInfoTypes.EA_ACTION_PROSELYTIZE] = function()
 	g_obj1 = religionConversionTable
 	g_bool1 = bFlip
 	g_value = 10 * totalConversions + (bFlip and 100 or 0) --for AI; passing conversion threshold worth 10 citizens 
-	--print(g_value)
 	return true
 end
 
@@ -3839,7 +3836,6 @@ TestTarget[GameInfoTypes.EA_ACTION_ANTIPROSELYTIZE] = function()
 	g_obj1 = religionConversionTable
 	g_bool1 = bFlip
 	g_value = 10 * totalConversions + (bFlip and 100 or 0) --for AI; passing conversion threshold worth 10 citizens 
-	--print(g_value)
 	return true
 end
 
@@ -4086,6 +4082,7 @@ end
 
 --EA_ACTION_RITUAL_SEAL_AHRIMANS_VAULT
 Test[GameInfoTypes.EA_ACTION_RITUAL_SEAL_AHRIMANS_VAULT] = function()
+	--print("Test[GameInfoTypes.EA_ACTION_RITUAL_SEAL_AHRIMANS_VAULT]")
 	local minFaith
 	if gWorld.bEnableEasyVaultSeal then					--any GP can do it now with no prereq
 		minFaith = 0
@@ -4106,6 +4103,7 @@ Test[GameInfoTypes.EA_ACTION_RITUAL_SEAL_AHRIMANS_VAULT] = function()
 end
 
 TestTarget[GameInfoTypes.EA_ACTION_RITUAL_SEAL_AHRIMANS_VAULT] = function()
+	--print("TestTarget[GameInfoTypes.EA_ACTION_RITUAL_SEAL_AHRIMANS_VAULT]")
 	return gg_cachedMapPlots.accessAhrimansVault[g_iPlot] == true
 end
 

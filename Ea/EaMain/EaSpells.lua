@@ -93,6 +93,7 @@ local SetAIValues = {}
 local Do = {}
 local Interrupt = {}
 local Finish = {}
+local Turns = {}	--only tested if TurnsToComplete == nil
 
 --file control
 --	All applicable are calculated in TestEaSpell any time we are in this file. Never change anywhere else!
@@ -532,8 +533,8 @@ function TestEaSpell(eaActionID, iPlayer, unit, iPerson, testX, testY, bAINonTar
 		g_value = g_eaAction.FixedFaith
 		return false
 	else
-		local turnsToComplete = g_eaAction.TurnsToComplete
-		g_modSpellTimesTurns = g_mod * turnsToComplete		--this will get set again in TestTargetEaSpell, just need quick value here for early faith bailout
+		local turnsToComplete = g_eaAction.TurnsToComplete	--just need quick value here for early faith bailout
+		g_modSpellTimesTurns = g_mod * ((turnsToComplete and turnsToComplete ~= 1000) and turnsToComplete or 1)	
 		if g_faith < g_modSpellTimesTurns then
 			g_bSufficientFaith = false
 			g_value = g_modSpellTimesTurns
@@ -593,7 +594,7 @@ function TestEaSpellTarget(eaActionID, testX, testY, bAITargetTest)
 			local bBlock = false
 			if targetPlotActions[eaActionID] and targetPlotActions[eaActionID] ~= g_iPerson then		--another AI GP is doing this or building improvement here (or on way for AI)
 				if g_bAIControl then
-					print("TestEaActionTarget returning false for AI becuase someone else has claimed this action at this plot")
+					print("TestEaSpellTarget returning false for AI becuase someone else has claimed this action at this plot")
 					return false
 				else
 					g_bSomeoneElseDoingHere = true
@@ -704,7 +705,11 @@ function TestEaSpellTarget(eaActionID, testX, testY, bAITargetTest)
 	end
 
 	local turnsToComplete = g_eaAction.TurnsToComplete
-	g_modSpellTimesTurns = g_modSpell * turnsToComplete
+	if not turnsToComplete then
+		turnsToComplete = Turns[eaActionID]()
+		g_eaPerson.turnsToComplete = turnsToComplete
+	end
+	g_modSpellTimesTurns = g_modSpell * ((turnsToComplete and turnsToComplete ~= 1000) and turnsToComplete or 1)
 	if g_faith < g_modSpellTimesTurns then			--this is generic minimum; Test or TestTarget can fail on more restrictive value
 		g_bSufficientFaith = false
 		g_value = g_modSpellTimesTurns --for UI
@@ -837,6 +842,10 @@ function DoEaSpell(eaActionID, iPlayer, unit, iPerson, targetX, targetY)
 
 	--Ongoing actions with turnsToComplete > 0 (DoEaSpell is called each turn of construction)
 	local turnsToComplete = g_eaAction.TurnsToComplete
+	if not turnsToComplete then
+		turnsToComplete = Turns[eaActionID]()
+		g_eaPerson.turnsToComplete = turnsToComplete
+	end
 	
 	--Reserve this action at this plot (will cause TestEaSpellTarget fail for other GPs)
 	if 1 < turnsToComplete and not g_eaAction.NoGPNumLimit then
@@ -992,6 +1001,10 @@ function TestSpellLearnable(iPlayer, iPerson, spellID, spellClass, bSuppressMini
 			if eaPerson.class1 ~= "Devout" and eaPerson.class2 ~= "Devout" then return false end
 		end
 		if spellInfo.PantheismCult then return false end		--these are never chosen
+
+		--TO DO: finish class and subclass checks (not used often but may happen)
+		if spellInfo.ExcludeGPSubclass and eaPerson.subclass ~= spellInfo.ExcludeGPSubclass then return false end
+
 		local spells = eaPerson.spells
 		for i = 1, #spells do
 			if spells[i] == spellID then return false end		--already known
@@ -1013,7 +1026,8 @@ function TestSpellLearnable(iPlayer, iPerson, spellID, spellClass, bSuppressMini
 			if spellInfo.AndTechReq and not team:IsHasTech(GameInfoTypes[spellInfo.AndTechReq]) then return false end
 		end
 	end
-	--TO DO: class and subclass checks (not used often but may happen)
+
+
 
 	if spellInfo.PantheismCult and not player:HasPolicy(GameInfoTypes.POLICY_PANTHEISM) then return end		--show cult spell only if Pantheistic
 	if spellInfo.ReligionNotFounded and gReligions[GameInfoTypes[spellInfo.ReligionNotFounded] ] then return false end
@@ -2934,13 +2948,17 @@ end
 
 --EA_SPELL_LECTIO_OCCULTUS
 TestTarget[GameInfoTypes.EA_SPELL_LECTIO_OCCULTUS] = function()
-	g_int1 = g_player:GetCurrentResearch()
-	if gg_eaTechClass[g_int1] == "Arcane" or gg_eaTechClass[g_int1] == "ArcaneEvil" then
-		return true	
-	else
-		g_testTargetSwitch = 1
-		return false
+	for iPos = 1, g_player:GetLengthResearchQueue() do
+		local iTech = g_player:GetQueuedResearch(iPos)
+		if gg_eaTechClass[iTech] == "Arcane" or gg_eaTechClass[iTech] == "ArcaneEvil" then
+			if g_player:CanResearch(iTech) then
+				g_int1 = iTech
+				return true
+			end
+		end
 	end
+	g_testTargetSwitch = 1
+	return false
 end
 
 SetUI[GameInfoTypes.EA_SPELL_LECTIO_OCCULTUS] = function()
@@ -2949,7 +2967,9 @@ SetUI[GameInfoTypes.EA_SPELL_LECTIO_OCCULTUS] = function()
 			local techName = Locale.Lookup(GameInfo.Technologies[g_int1].Description)
 			MapModData.text = "Convert " .. g_modSpell .. " mana per turn into research toward " .. techName
 		elseif g_testTargetSwitch == 1 then
-			MapModData.text = "[COLOR_WARNING_TEXT]Civilization must be researching an arcane technology[ENDCOLOR]"
+			MapModData.text = "[COLOR_WARNING_TEXT]You must have an arcane technology in the research queue to cast this spell[ENDCOLOR]"
+		else
+			MapModData.text = "[COLOR_WARNING_TEXT]Can only be used in the caster's Tower or Temple[ENDCOLOR]"
 		end
 	end
 end
@@ -2959,46 +2979,28 @@ SetAIValues[GameInfoTypes.EA_SPELL_LECTIO_OCCULTUS] = function()
 end
 
 Do[GameInfoTypes.EA_SPELL_LECTIO_OCCULTUS] = function()
-	g_eaPlayer.gpArcaneScience = g_eaPlayer.gpArcaneScience or {}
-	g_eaPlayer.gpArcaneScience[g_iPerson] = g_modSpell
-	if g_iPlayer == g_iActivePlayer then
-		UpdateCityYields(g_iPlayer, nil, "Science")	--instant UI update for human
-		g_unit:PopMission()
-		g_unit:PushMission(MissionTypes.MISSION_SKIP, g_x, g_y, 0, 0, 1)
-		g_eaPerson.activePlayerEndTurnManaDivineFavor = g_modSpell
-	else
-		UseManaOrDivineFavor(g_iPlayer, g_iPerson, g_modSpell)
-		g_unit:FinishMoves()
-	end
+	--convert from mana to research points without any modification
+	local researchLeft = g_player:GetResearchCost(g_int1) - g_player:GetResearchProgress(g_int1) + 15
+	local pts = researchLeft < g_modSpell and researchLeft or g_modSpell	--don't allow much overflow from this spell
+	local teamTechs = g_team:GetTeamTechs()
+	teamTechs:ChangeResearchProgress(g_int1, pts, g_player)
+	UseManaOrDivineFavor(g_iPlayer, g_iPerson, pts)
 	return true
-end
-
-Interrupt[GameInfoTypes.EA_SPELL_LECTIO_OCCULTUS] = function(iPlayer, iPerson)
-	local eaPlayer = gPlayers[iPlayer]
-	local eaPerson = gPeople[iPerson]
-	eaPerson.activePlayerEndTurnManaDivineFavor = 0
-	if eaPlayer.gpArcaneScience then
-		eaPlayer.gpArcaneScience[iPerson] = nil
-		if iPlayer == g_iActivePlayer then
-			UpdateCityYields(iPlayer, nil, "Science")
-			local unit = Players[iPlayer]:GetUnitByID(eaPerson.iUnit)
-			if unit then
-				unit:DoCommand(CommandTypes.COMMAND_WAKE)
-				Events.SerialEventUnitInfoDirty()
-			end
-		end
-	end
 end
 
 --EA_SPELL_LECTIO_DIVINA
 TestTarget[GameInfoTypes.EA_SPELL_LECTIO_DIVINA] = function()
-	g_int1 = g_player:GetCurrentResearch()
-	if gg_eaTechClass[g_int1] == "Divine" then
-		return true	
-	else
-		g_testTargetSwitch = 1
-		return false
+	for iPos = 1, g_player:GetLengthResearchQueue() do
+		local iTech = g_player:GetQueuedResearch(iPos)
+		if gg_eaTechClass[iTech] == "Divine" then
+			if g_player:CanResearch(iTech) then
+				g_int1 = iTech
+				return true
+			end
+		end
 	end
+	g_testTargetSwitch = 1
+	return false
 end
 
 SetUI[GameInfoTypes.EA_SPELL_LECTIO_DIVINA] = function()
@@ -3007,7 +3009,9 @@ SetUI[GameInfoTypes.EA_SPELL_LECTIO_DIVINA] = function()
 			local techName = Locale.Lookup(GameInfo.Technologies[g_int1].Description)
 			MapModData.text = "Convert " .. g_modSpell .. " divine favor per turn into research toward " .. techName
 		elseif g_testTargetSwitch == 1 then
-			MapModData.text = "[COLOR_WARNING_TEXT]Civilization must be researching a divine technology[ENDCOLOR]"
+			MapModData.text = "[COLOR_WARNING_TEXT]You must have a divine technology in the research queue to cast this spell[ENDCOLOR]"
+		else
+			MapModData.text = "[COLOR_WARNING_TEXT]Can only be used in the caster's Temple[ENDCOLOR]"
 		end
 	end
 end
@@ -3017,37 +3021,14 @@ SetAIValues[GameInfoTypes.EA_SPELL_LECTIO_DIVINA] = function()
 end
 
 Do[GameInfoTypes.EA_SPELL_LECTIO_DIVINA] = function()
-	g_eaPlayer.gpDivineScience = g_eaPlayer.gpDivineScience or {}
-	g_eaPlayer.gpDivineScience[g_iPerson] = g_modSpell
-	if g_iPlayer == g_iActivePlayer then
-		UpdateCityYields(g_iPlayer, nil, "Science")	--instant UI update for human
-		g_unit:PopMission()
-		g_unit:PushMission(MissionTypes.MISSION_SKIP, g_x, g_y, 0, 0, 1)
-		g_eaPerson.activePlayerEndTurnManaDivineFavor = g_modSpell
-	else
-		UseManaOrDivineFavor(g_iPlayer, g_iPerson, g_modSpell)
-		g_unit:FinishMoves()
-	end
+	--convert from divine favor to research points without any modification
+	local researchLeft = g_player:GetResearchCost(g_int1) - g_player:GetResearchProgress(g_int1) + 15
+	local pts = researchLeft < g_modSpell and researchLeft or g_modSpell	--don't allow much overflow from this spell
+	local teamTechs = g_team:GetTeamTechs()
+	teamTechs:ChangeResearchProgress(g_int1, pts, g_player)
+	UseManaOrDivineFavor(g_iPlayer, g_iPerson, pts)
 	return true
 end
-
-Interrupt[GameInfoTypes.EA_SPELL_LECTIO_DIVINA] = function(iPlayer, iPerson)
-	local eaPlayer = gPlayers[iPlayer]
-	local eaPerson = gPeople[iPerson]
-	eaPerson.activePlayerEndTurnManaDivineFavor = 0
-	if eaPlayer.gpDivineScience then
-		eaPlayer.gpDivineScience[iPerson] = nil
-		if iPlayer == g_iActivePlayer then
-			UpdateCityYields(iPlayer, nil, "Science")
-			local unit = Players[iPlayer]:GetUnitByID(eaPerson.iUnit)
-			if unit then
-				unit:DoCommand(CommandTypes.COMMAND_WAKE)
-				Events.SerialEventUnitInfoDirty()
-			end
-		end
-	end
-end
-
 
 --EA_SPELL_BLESS
 TestTarget[GameInfoTypes.EA_SPELL_BLESS] = function()

@@ -133,7 +133,7 @@
 			<Text>Harbor</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_HARBOR_HELP">
-			<Text>Provides an additional +1 [ICON_FOOD] Food and +1 [ICON_GOLD] Gold for every improved sea resource owned by this city at any distance (yield added via this building, not plot)[NEWLINE][NEWLINE]Allows the city to form [ICON_CONNECTED] Trade Routes across water.[NEWLINE][NEWLINE]City must be coastal to build.</Text>
+			<Text>+1 Food and 1 Gold from each worked sea resource.[NEWLINE][NEWLINE]Allows the city to form [ICON_CONNECTED] Trade Routes across water.[NEWLINE][NEWLINE]+10% Gold with Merchant Navy.[NEWLINE][NEWLINE]City must be coastal to build.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_TIMBERYARD">
 			<Text>Timberyard</Text>

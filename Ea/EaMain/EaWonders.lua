@@ -158,10 +158,10 @@ function UpdateUniqueWonder(iPlayer, wonderID, bPerTurnCall)	--full Civ only
 		if oldOwner and oldOwner:IsAlive() then
 			for city in oldOwner:Cities() do
 				if buildingID then
-					city:SetNumFreeBuilding(buildingID, 0)
+					city:SetNumRealBuilding(buildingID, 0)
 				end
 				if buildingModID then
-					city:SetNumFreeBuilding(buildingModID, 0)
+					city:SetNumRealBuilding(buildingModID, 0)
 				end		
 			end
 		end
@@ -186,15 +186,15 @@ function UpdateUniqueWonder(iPlayer, wonderID, bPerTurnCall)	--full Civ only
 		local iCity = plot:GetCityPurchaseID()
 		local city = player:GetCityByID(iCity)
 		if buildingID then
-			city:SetNumFreeBuilding(buildingID, 1)
+			city:SetNumRealBuilding(buildingID, 1)
 		end
 		if buildingModID then
-			city:SetNumFreeBuilding(buildingModID, wonder.mod)		--some wonder mods change, so update each turn is ok
+			city:SetNumRealBuilding(buildingModID, wonder.mod)		--some wonder mods change, so update each turn is ok
 		end
 		if wonderID >= EA_WONDER_TEMPLE_FAGUS then	--Pan temple so update mod from relationship
 			local iGod = iGodPlayerByWonderID[wonderID]
 			local friendship = Players[iGod]:GetMinorCivFriendshipWithMajor(iPlayer)
-			local mod = floor(friendship ^ 0.333333)	--cube root
+			local mod = floor(friendship ^ (1/3))	--cube root
 			local temple = gWonders[wonderID]
 			if mod ~= temple.mod then			--update mod and all magic schools
 				temple.mod = mod
@@ -218,10 +218,10 @@ function UpdateUniqueWonder(iPlayer, wonderID, bPerTurnCall)	--full Civ only
 	else
 		for city in player:Cities() do
 			if buildingID then
-				city:SetNumFreeBuilding(buildingID, 0)
+				city:SetNumRealBuilding(buildingID, 0)
 			end
 			if buildingModID then
-				city:SetNumFreeBuilding(buildingModID, 0)
+				city:SetNumRealBuilding(buildingModID, 0)
 			end		
 		end
 	end
@@ -290,10 +290,10 @@ function UpdateInstanceWonder(iPlayer, wonderID, bPerTurnCall)
 	for city in player:Cities() do
 		local iCity = city:GetID()
 		if buildingID then
-			city:SetNumFreeBuilding(buildingID, (cityModSum[iCity] and 0 < cityModSum[iCity]) and 1 or 0)
+			city:SetNumRealBuilding(buildingID, (cityModSum[iCity] and 0 < cityModSum[iCity]) and 1 or 0)
 		end
 		if buildingModID then
-			city:SetNumFreeBuilding(buildingModID, cityModSum[iCity] or 0)
+			city:SetNumRealBuilding(buildingModID, cityModSum[iCity] or 0)
 		end		
 	end
 

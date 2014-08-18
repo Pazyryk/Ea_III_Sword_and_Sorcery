@@ -133,10 +133,10 @@
 		<Row Tag="TXT_KEY_EA_ACTION_PROPHECY_MITHRA">
 			<Text>Prophemi Mithra</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_ACTION_PROPHECY_SIMSUM">
+		<Row Tag="TXT_KEY_EA_ACTION_PROPHECY_TZIMTZUM">
 			<Text>Prophemi Tzimtzūm</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_ACTION_PROPHECY_SIMSUM_HELP">
+		<Row Tag="TXT_KEY_EA_ACTION_PROPHECY_TZIMTZUM_HELP">
 			<Text>All civilizations that know Maleficium will Fall</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_PROPHECY_ANRA">

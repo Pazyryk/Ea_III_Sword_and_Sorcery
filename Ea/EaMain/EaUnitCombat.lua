@@ -518,6 +518,24 @@ end
 local function X_OnCombatResult(iAttackingPlayer, iAttackingUnit, attackerDamage, attackerFinalDamage, attackerMaxHP, iDefendingPlayer, iDefendingUnit, defenderDamage, defenderFinalDamage, defenderMaxHP, iInterceptingPlayer, iInterceptingUnit, interceptorDamage, targetX, targetY) return HandleErrorF0(OnCombatResult, iAttackingPlayer, iAttackingUnit, attackerDamage, attackerFinalDamage, attackerMaxHP, iDefendingPlayer, iDefendingUnit, defenderDamage, defenderFinalDamage, defenderMaxHP, iInterceptingPlayer, iInterceptingUnit, interceptorDamage, targetX, targetY) end
 GameEvents.CombatResult.Add(X_OnCombatResult)
 
+local function GPEscape(player, unit)
+	print("GPEscape ", player, unit)
+	local plot = unit:GetPlot()
+	local sector = Map.Rand(6, "hello") + 1
+	for testPlot in PlotAreaSpiralIterator(plot, 15, sector, false, false, false) do
+		if player:GetPlotDanger(testPlot) == 0 then							--is this plot out of danger?
+			if unit:TurnsToReachTarget(testPlot, 1, 1, 1) < 100 then		--is this plot accessible?
+				unit:SetXY(testPlot:GetX(), testPlot:GetY())
+				unit:SetEmbarked(testPlot:IsWater())
+				testPlot:AddFloatUpMessage("Great Person has escaped!", 1)		--TO DO: txt key
+				print("Great Person has escaped!")
+				return true
+			end
+		end
+	end
+	print("!!!! WARNING: Could not find safe accessible plot for GP to escape to!")
+end
+
 local function OnCombatEnded(iAttackingPlayer, iAttackingUnit, attackerDamage, attackerFinalDamage, attackerMaxHP, iDefendingPlayer, iDefendingUnit, defenderDamage, defenderFinalDamage, defenderMaxHP, iInterceptingPlayer, iInterceptingUnit, interceptorDamage, plotX, plotY)
 	print("OnCombatEnded ", iAttackingPlayer, iAttackingUnit, attackerDamage, attackerFinalDamage, attackerMaxHP, iDefendingPlayer, iDefendingUnit, defenderDamage, defenderFinalDamage, defenderMaxHP, iInterceptingPlayer, iInterceptingUnit, interceptorDamage, plotX, plotY)
 	if iAttackingPlayer == -1 then return end
@@ -620,6 +638,17 @@ local function OnCombatEnded(iAttackingPlayer, iAttackingUnit, attackerDamage, a
 			end
 		end
 	end
+
+	--GPs can escape if defending against non-GP and < 50hp
+	if defenderFinalDamage > 50 and defendingUnit and not defendingUnit:IsDelayedDeath() and not defendingUnit:IsDead() then
+		local iPerson = defendingUnit:GetPersonIndex()
+		if iPerson ~= -1 then
+			if not attackingUnit or attackingUnit:GetPersonIndex() == -1 then
+				GPEscape(defendingPlayer, defendingUnit)
+			end
+		end
+	end
+
 	--archer city conquest test
 	if attackerFinalDamage == 0 and attackingUnit and iAttackingPlayer < BARB_PLAYER_INDEX and not defendingUnit and defenderMaxHP - 1 <= defenderFinalDamage and defenderMaxHP == MAX_CITY_HIT_POINTS and not gg_gpTempType[attackingUnitTypeID] then	--archer defeated city
 		local plot = GetPlotFromXY(plotX, plotY)
@@ -643,6 +672,9 @@ end
 local function X_OnCombatEnded(iAttackingPlayer, iAttackingUnit, attackerDamage, attackerFinalDamage, attackerMaxHP, iDefendingPlayer, iDefendingUnit, defenderDamage, defenderFinalDamage, defenderMaxHP, iInterceptingPlayer, iInterceptingUnit, interceptorDamage, plotX, plotY) return HandleErrorF0(OnCombatEnded, iAttackingPlayer, iAttackingUnit, attackerDamage, attackerFinalDamage, attackerMaxHP, iDefendingPlayer, iDefendingUnit, defenderDamage, defenderFinalDamage, defenderMaxHP, iInterceptingPlayer, iInterceptingUnit, interceptorDamage, plotX, plotY) end
 GameEvents.CombatEnded.Add(X_OnCombatEnded)
 
+
+
+--[[	don't do this!
 local function OnCanSaveUnit(iPlayer, iUnit, bDelay)	--fires for combat and non-combat death (disband, settler settled, etc)
 	--Uses and resets file locals set in OnCombatResult above; always fires after that function if this is a combat death
 	--Note that file locals could be anything if this is not a combat death
@@ -771,21 +803,7 @@ local function OnCanSaveUnit(iPlayer, iUnit, bDelay)	--fires for combat and non-
 end
 local function X_OnCanSaveUnit(iPlayer, iUnit, bDelay) return HandleError31(OnCanSaveUnit, iPlayer, iUnit, bDelay) end
 GameEvents.CanSaveUnit.Add(X_OnCanSaveUnit)
-
-function SaveLich(unit)
-	local iPlayer = unit:GetOwner()
-	local iPerson = unit:GetPersonIndex()
-	local iPlot = gWonders[EA_WONDER_ARCANE_TOWER][iPerson].iPlot
-	local x, y = GetXYFromPlotIndex(iPlot)
-	--TO DO: need to make Lich "dormant" if tower in ruins
-
-	unit:SetXY(x, y)
-	if unit:GetPlot():GetOwner() ~= iPlayer then
-		unit:JumpToNearestValidPlot()		--only kicks out of tower, but the idea is clear
-	end
-
-	UseManaOrDivineFavor(iPlayer, iPerson, unit:GetLevel() * 10)
-end
+]]
 
 
 local function OnCanChangeExperience(iPlayer, iUnit, iSummoner, iExperience, iMax, bFromCombat, bInBorders, bUpdateGlobal)

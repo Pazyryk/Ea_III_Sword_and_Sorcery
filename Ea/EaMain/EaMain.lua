@@ -4,7 +4,7 @@
 --------------------------------------------------------------
 
 local HOTFIX = "none"
-local DLL_COMMIT = "3f32507"
+local DLL_COMMIT = "d10942b"
 local DLL_DEBUG_BUILD = false
 local EA_MEDIA_PACK_MIN_VERSION = 5
 
@@ -277,7 +277,6 @@ local function OnPlayerDoTurn(iPlayer)	-- Runs at begining of turn for all livin
 		BarbSpawnPerTurn()
 		AnimalsPerTurn()
 		ReligionPerGameTurn()
-		TestEnableProtectorConditions()
 
 		if gameTurn % 50 == 0 then
 			PrintStrictLuaErrors()

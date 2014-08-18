@@ -222,10 +222,11 @@ function EaPeopleInit(bNewGame)
 						title = "TXT_KEY_EA_QUEEN",
 						portrait = "Fand_SueMarino_0.70_636x944.dds",
 						eaActionID = -1,
+						eaActionData = -1,
 						gotoEaActionID = -1,
 						eaPersonRowID = GameInfoTypes.EAPERSON_FAND
 
-						 }
+						}
 
 		MakeTableStrict(gPeople[0])
 	end
@@ -534,9 +535,9 @@ function PeopleAfterTurn(iPlayer, bActionInfoPanelCall)
 								if eaPerson.activePlayerEndTurnXP ~= 0 then
 									unit:ChangeExperience(eaPerson.activePlayerEndTurnXP)
 									eaPerson.activePlayerEndTurnXP = 0
-								elseif eaPerson.activePlayerEndTurnManaDivineFavor ~= 0 then
-									UseManaOrDivineFavor(iPlayer, iPerson, eaPerson.activePlayerEndTurnManaDivineFavor)
-									eaPerson.activePlayerEndTurnManaDivineFavor = 0
+								--elseif eaPerson.activePlayerEndTurnManaDivineFavor ~= 0 then
+								--	UseManaOrDivineFavor(iPlayer, iPerson, eaPerson.activePlayerEndTurnManaDivineFavor)
+								--	eaPerson.activePlayerEndTurnManaDivineFavor = 0
 								end
 							end
 
@@ -637,7 +638,7 @@ function GenerateGreatPerson(iPlayer, class, subclass, eaPersonRowID, bAsLeader,
 						modMemory = {},	
 						leaderLevel = 0,
 						activePlayerEndTurnXP = 0,
-						activePlayerEndTurnManaDivineFavor = 0,
+						--activePlayerEndTurnManaDivineFavor = 0,
 						turnsToComplete = 0,
 						
 						--all below are set elsewhere, but need a non-nil value for strict table function
@@ -656,6 +657,8 @@ function GenerateGreatPerson(iPlayer, class, subclass, eaPersonRowID, bAsLeader,
 						title = false,
 						timeStop = false,
 						aiBlacklist = false,
+						bHasTower = false,
+						summonedUnits= false,
 
 						}
 
@@ -719,7 +722,7 @@ function GenerateGreatPerson(iPlayer, class, subclass, eaPersonRowID, bAsLeader,
 end
 --LuaEvents.EaPeopleGenerateGreatPerson.Add(GenerateGreatPerson)
 
-function InitGPUnit(iPlayer, iPerson, x, y, convertUnit, unitTypeID, invisibilityID, morale)	--only first 4 args required
+function InitGPUnit(iPlayer, iPerson, x, y, convertUnit, unitTypeID, invisibilityID, morale, bResurection)	--only first 4 args required
 	local player = Players[iPlayer]
 	local eaPerson = gPeople[iPerson]
 	unitTypeID = unitTypeID or eaPerson.unitTypeID		--default if nil
@@ -741,6 +744,13 @@ function InitGPUnit(iPlayer, iPerson, x, y, convertUnit, unitTypeID, invisibilit
 		end
 		MapModData.bBypassOnCanSaveUnit = true
 		unit:Convert(convertUnit, false)
+	elseif bResurection then
+		unit:SetLevel(eaPerson.level)
+		unit:SetExperience(eaPerson.xp)
+		local promotions = eaPerson.promotions
+		for promotionID = 0, HIGHEST_PROMOTION_ID do
+			unit:SetHasPromotion(promotionID, promotions[promotionID] and true or false)
+		end 
 	end
 	return unit
 end
@@ -750,7 +760,6 @@ function UpdateGreatPersonStatsFromUnit(unit, eaPerson)		--info we may need if u
 	eaPerson.y = unit:GetY()
 	eaPerson.level = unit:GetLevel()
 	eaPerson.xp = unit:GetExperience()
-
 	local promotions = eaPerson.promotions
 	for promotionID = 0, HIGHEST_PROMOTION_ID do
 		if unit:IsHasPromotion(promotionID) then
@@ -1313,7 +1322,7 @@ function GetGPMod(iPerson, modType1, modType2)
 	return totalMod
 end
 
-function SetTowerMods(iPlayer, iPerson)
+function SetTowerMods(iPlayer, iPerson)						--tower mod is from caster; caster gets 50% benefit of tower mods
 	local tower = gWonders[EA_WONDER_ARCANE_TOWER][iPerson]
 	if not tower then return end
 	print("SetTowerMods ", iPlayer, iPerson)
@@ -1326,15 +1335,15 @@ function SetTowerMods(iPlayer, iPerson)
 	local modSum = 0
 	local bestCasterMod, bestTowerMod = 0, 0
 	for i = maxModID - 7, maxModID do
-		local casterMod = GetGPMod(iPerson, modTypes[i], nil)
+		local halfCasterMod = floor(GetGPMod(iPerson, modTypes[i], nil) / 2)
 		local towerMod = tower[i]
-		if bestCasterMod < casterMod then
-			bestCasterMod = casterMod
+		if bestCasterMod < halfCasterMod then
+			bestCasterMod = halfCasterMod
 		end
 		if bestTowerMod < towerMod then
 			bestTowerMod = towerMod
 		end
-		local newMod = towerMod < casterMod and casterMod or towerMod
+		local newMod = towerMod < halfCasterMod and halfCasterMod or towerMod
 		tower[i] = newMod
 		modSum = modSum + newMod
 	end
@@ -1400,6 +1409,46 @@ function AIInturruptGPsForLeadershipOpportunity(iPlayer)	--TO DO: Make this bett
 	end
 end
 
+function ReviveLich(iPerson)		--assumes old unit was killed or being killed
+	print("ReviveLich ", iPerson)
+	--for now, revive somewhere; TO DO: We want an eaPerson to be able to hang out nowhere with iUnit = -1 until conditions are right for revival (e.g., player owns lich's tower
+	local eaPerson = gPeople[iPerson]
+	local iPlayer = eaPerson.iPlayer
+	local player = Players[iPlayer]
+
+	--find appropriate plot
+	local iPlot
+	local tower = gWonders[EA_WONDER_ARCANE_TOWER][iPerson]
+	if tower then
+		iPlot = tower.iPlot
+	elseif eaPerson.templeID then
+		local temple = gWonders[eaPerson.templeID]
+		iPlot = temple.iPlot
+	end
+	if not iPlot then
+		local capital = player:GetCapitalCity()
+		if capital then
+			iPlot = capital:Plot():GetPlotIndex()
+		end
+	end
+	if iPlot then
+		local x, y = GetXYFromPlotIndex(iPlot)
+		local unit = InitGPUnit(iPlayer, iPerson, x, y, nil, nil, nil, nil, true)
+		if unit then
+			if unit:GetPlot():GetOwner() ~= iPlayer then
+				unit:JumpToNearestValidPlot()		--only kicks out of tower, but the idea is clear
+			end
+			UseManaOrDivineFavor(iPlayer, nil, unit:GetLevel() * 10)	--burns mana but unit doesn't get xp for dying
+			print("Lich was revived!")
+			return true
+		end
+	end
+	print("Failed to revive Lich for some reason")
+	return false
+end
+
+
+
 function KillPerson(iPlayer, iPerson, unit, iKillerPlayer, deathType)
 	--Important! Supply unit if unit needs to be killed! iKillerPlayer is optional but only matters only if unit supplied
 	print("KillPerson(iPlayer, iPerson, unit, iKillerPlayer, deathType) ", iPlayer, iPerson, unit, iKillerPlayer, deathType)
@@ -1421,7 +1470,37 @@ function KillPerson(iPlayer, iPerson, unit, iKillerPlayer, deathType)
 	print("class2 = ", eaPerson.class2)
 	print("race = ", eaPerson.race)
 	print("name = ", eaPerson.name)
-	
+
+	--remove unit or make sure it is safely being removed
+	if unit then
+		if not unit:IsDelayedDeath() and not unit:IsDead() then
+			MapModData.bBypassOnCanSaveUnit = true
+			unit:Kill(true, iKillerPlayer or -1)
+		end
+	else	--don't trust call; make sure there is no unit!
+		for iLoopPlayer = 0, BARB_PLAYER_INDEX do
+			local loopPlayer = Players[iLoopPlayer]
+			if loopPlayer:IsAlive() then
+				for loopUnit in loopPlayer:Units() do
+					local iLoopPerson = loopUnit:GetPersonIndex()
+					if iLoopPerson == iPerson then
+						if not loopUnit:IsDelayedDeath() and not loopUnit:IsDead() then
+							MapModData.bBypassOnCanSaveUnit = true			--DEPRECIATE!
+							loopUnit:Kill(true, iKillerPlayer or -1)
+						end						
+					end
+				end
+			end
+		end
+	end
+
+	--Lich?
+	if eaPerson.unitTypeID == UNIT_LICH then
+		if ReviveLich(iPerson) then
+			return
+		end
+	end
+
 	--notification
 	if iPlayer == g_iActivePlayer then
 		if deathType ~= "Renounce Maleficium" then
@@ -1459,11 +1538,7 @@ function KillPerson(iPlayer, iPerson, unit, iKillerPlayer, deathType)
 		end
 	end
 
-	--remove unit if supplied
-	if unit then
-		MapModData.bBypassOnCanSaveUnit = true
-		unit:Kill(true, iKillerPlayer or -1)
-	end
+
 
 	--debug: test all units to make sure no one else has this person index
 

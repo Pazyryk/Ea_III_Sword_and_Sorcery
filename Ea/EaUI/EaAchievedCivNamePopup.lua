@@ -30,7 +30,7 @@ function Show(iPlayer, eaCivID)
 
 	Controls.AcceptButton:RegisterCallback(Mouse.eLClick, function()
 		ContextPtr:SetHide(true)
-		eaPlayer.turnBlockEaCivNamingID = nil		--removes turn block
+		eaPlayer.turnBlockEaCivNamingID = false		--removes turn block
 		LuaEvents.EaCivNamingSetNewCivName(iPlayer, eaCivID)	
 	end)
 
@@ -46,7 +46,7 @@ function Show(iPlayer, eaCivID)
 		Controls.DeclineButton:SetDisabled(false)
 		Controls.DeclineButton:RegisterCallback(Mouse.eLClick, function()
 			eaPlayer.declinedNameID = eaCivID
-			eaPlayer.turnBlockEaCivNamingID = nil		--removes turn block
+			eaPlayer.turnBlockEaCivNamingID = false		--removes turn block
 			ContextPtr:SetHide(true)
 		end)
 	end

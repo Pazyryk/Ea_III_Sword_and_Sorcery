@@ -65,7 +65,7 @@ bool	CanCreateTradeRoute(pOriginCity, pDestCity, DomainTypes, TradeConnectionTyp
 
 int		GetCityResidentYieldBoost(int yieldTypeID)
 void	SetCityResidentYieldBoost(int yieldTypeID, iNewValue)
-void	SetNumFreeBuilding(BuildingTypes iIndex, int iNewValue)
+void	SetNumFreeBuilding(BuildingTypes iIndex, int iNewValue)		--WARNING: Bugged for faith
 int		GetFaithPerTurnFromSpecialists()
 
 --------------------------------------------------------------
@@ -87,6 +87,7 @@ int		GetWarmongerModifier()		--returns the penalty to warmonger levels OTHER pla
 void	SetWarmongerModifier(int)	--100 means actions against this player create NO warmonger effect for anyone
 int		GetMaleficiumLevel()
 void	SetMaleficiumLevel(int)		--set on Lua side to change availability and value of TRADE_ITEM_RENOUCE_MALEFICIUM
+int		player:GetQueuedResearch(iPosition )	--gets techID at queue position (1 to GetLengthResearchQueue)
 
 Need to add player:SetEndTurn(bool)	so we can interupt active player turn without Lua hacks
 

@@ -388,7 +388,6 @@ OnPlotEffect[GameInfoTypes.EA_PLOTEFFECT_DEATH_RUNE] = function(iPlayer, iUnit, 
 				--xp/mana should be the greater of threashold or the standard attack pts
 				local hp = unit:GetMaxHitPoints() - beforeDamage
 				local unitTypeID = unit:GetUnitType()
-				MapModData.bBypassOnCanSaveUnit = true
 				unit:Kill(true, iPlotEffectPlayer)
 				local stdPts = CalculateXPManaForAttack(unitTypeID, hp, true)
 				local xpMana = threshold < stdPts and stdPts or threshold

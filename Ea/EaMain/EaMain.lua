@@ -172,7 +172,6 @@ local function DebugHidden(iPlayer)
 	local player = Players[iPlayer]
 	for unit in player:Units() do
 		print("!!!! ERROR: Hidden civ got a unit; gifted by AI? iPlayer/iUnit = ", iPlayer, unit:GetID())
-		MapModData.bBypassOnCanSaveUnit = true
 		unit:Kill(true, -1)
 	end
 end

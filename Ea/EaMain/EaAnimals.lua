@@ -181,7 +181,6 @@ function AnimalsPerTurn()	--Runs after PlotsPerTurn() so we have current info in
 				end
 			end
 			if bKill then
-				MapModData.bBypassOnCanSaveUnit = true
 				unit:Kill(true, -1)
 			else
 				numAnimals = numAnimals + 1

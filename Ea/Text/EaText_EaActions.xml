@@ -385,78 +385,117 @@
 			<Text>Craft the Völuspá</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_EPIC_VOLUSPA_HELP">
-			<Text>Raises your civilization's cultural level</Text>
+			<Text>Raises your civilization's Cultural Level; requires the Folklore policy</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_EPIC_HAVAMAL">
 			<Text>Craft the Hávamál</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_EPIC_HAVAMAL_HELP">
-			<Text>Raises your civilization's happiness</Text>
+			<Text>Raises your civilization's happiness; requires the Folklore policy</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_EPIC_VAFTHRUTHNISMAL">
 			<Text>Craft the Vafthrúthnismál</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_EPIC_VAFTHRUTHNISMAL_HELP">
-			<Text>Raises your civilizations research</Text>
+			<Text>Lowers research cost for all non-Arcane technologies; requires the Folklore policy</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_EPIC_GRIMNISMAL">
 			<Text>Craft the Grímnismál</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_EPIC_GRIMNISMAL_HELP">
-			<Text>Raises the bonus provided by your leader</Text>
+			<Text>Raises the bonus provided by your leader; requires the Folklore policy</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_EPIC_HYMISKVITHA">
 			<Text>Craft the Hymiskvitha</Text>
 		</Row>	
 		<Row Tag="TXT_KEY_EA_ACTION_EPIC_HYMISKVITHA_HELP">
-			<Text>Raises culture from wine, ale and spirits (improvements and buildings)</Text>
+			<Text>Raises culture from wine, ale and spirits related improvements and buildings; requires the Folklore policy</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_EPIC_NATIONAL">
 			<Text>Craft your Civilization's National Epic</Text>
 		</Row>	
 		<Row Tag="TXT_KEY_EA_ACTION_EPIC_NATIONAL_HELP">
-			<Text>Raises your civilization's generation of great people</Text>
+			<Text>Raises your civilization's generation of great people; requires the Folklore policy</Text>
 		</Row>
-		
+
 		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_EQUUS">
 			<Text>Write the Tome of Equus</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_EQUUS_HELP">
+			<Text>{TXT_KEY_EA_ARTIFACT_TOME_OF_EQUUS_HELP}</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_BEASTS">
 			<Text>Write the Tome of Beasts</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_BEASTS_HELP">
+			<Text>{TXT_KEY_EA_ARTIFACT_TOME_OF_EQUUS_HELP}</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_THE_LEVIATHAN">
 			<Text>Write the Tome of the Leviathan</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_THE_LEVIATHAN_HELP">
+			<Text>{TXT_KEY_EA_ARTIFACT_TOME_OF_EQUUS_HELP}</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_HARVESTS">
 			<Text>Write the Tome of Harvests</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_HARVESTS_HELP">
+			<Text>{TXT_KEY_EA_ARTIFACT_TOME_OF_EQUUS_HELP}</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_TOMES">
 			<Text>Write the Tome of Tomes</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_TOMES_HELP">
+			<Text>{TXT_KEY_EA_ARTIFACT_TOME_OF_EQUUS_HELP}</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_AESTHETICS">
 			<Text>Write the Tome of Æsthetics</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_AESTHETICS_HELP">
+			<Text>{TXT_KEY_EA_ARTIFACT_TOME_OF_EQUUS_HELP}</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_AXIOMS">
 			<Text>Write the Tome of Axioms</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_AXIOMS_HELP">
+			<Text>{TXT_KEY_EA_ARTIFACT_TOME_OF_EQUUS_HELP}</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_FORM">
 			<Text>Write the Tome of Form</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_FORM_HELP">
+			<Text>{TXT_KEY_EA_ARTIFACT_TOME_OF_EQUUS_HELP}</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_METALLURGY">
 			<Text>Write the Tome of Metallurgy</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_METALLURGY_HELP">
+			<Text>{TXT_KEY_EA_ARTIFACT_TOME_OF_EQUUS_HELP}</Text>
+		</Row>
 		
-		<Row Tag="TXT_KEY_EA_ACTION_CORPUS_HERMETICUM">
-			<Text>Write the Tome of Metallurgy</Text>
+		<Row Tag="TXT_KEY_EA_ACTION_TOME_CORPUS_HERMETICUM">
+			<Text>Write the Corpus Hermeticum</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_ACTION_NECRONOMICON">
-			<Text>Write the Tome of Metallurgy</Text>
+		<Row Tag="TXT_KEY_EA_ACTION_TOME_CORPUS_HERMETICUM_HELP">
+			<Text>{TXT_KEY_EA_ARTIFACT_TOME_OF_EQUUS_HELP}</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_ACTION_ARS_GOETIA">
-			<Text>Write the Tome of Metallurgy</Text>
+		<Row Tag="TXT_KEY_EA_ACTION_TOME_NECRONOMICON">
+			<Text>Write the Necronomicon</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_ACTION_BOOK_OF_EIBON">
-			<Text>Write the Tome of Metallurgy</Text>
+		<Row Tag="TXT_KEY_EA_ACTION_TOME_NECRONOMICON_HELP">
+			<Text>{TXT_KEY_EA_ARTIFACT_TOME_OF_EQUUS_HELP}</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TOME_ARS_GOETIA">
+			<Text>Write the Ars Goetia</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TOME_ARS_GOETIA_HELP">
+			<Text>{TXT_KEY_EA_ARTIFACT_TOME_OF_EQUUS_HELP}</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TOME_BOOK_OF_EIBON">
+			<Text>Write the Book of Eibon</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_ACTION_TOME_BOOK_OF_EIBON_HELP">
+			<Text>{TXT_KEY_EA_ARTIFACT_TOME_OF_EQUUS_HELP}</Text>
 		</Row>
 
 		<Row Tag="TXT_KEY_EA_ACTION_FOUNDRY">

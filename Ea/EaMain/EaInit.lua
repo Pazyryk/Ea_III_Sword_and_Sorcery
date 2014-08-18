@@ -49,6 +49,7 @@ local function InitForNewGame()
 			eaPlayer.bUsesDivineFavor = false
 			eaPlayer.bIsFallen = false
 			eaPlayer.bRenouncedMaleficium = false	
+			eaPlayer.manaConsumed = 0
 			eaPlayer.ImprovementsByID = {}
 			eaPlayer.ImprovedResourcesByID = {}
 			eaPlayer.resourcesInBorders = {}	--visible only; for AI and possibly traits
@@ -98,7 +99,6 @@ local function InitForNewGame()
 			eaPlayer.goldDistributionCarryover = 0
 			eaPlayer.aiNumTradeRoutesTargeted = 0
 			eaPlayer.savedFaithFromManaDivineFavorSwap = 0
-			eaPlayer.manaConsumed = 0
 					
 			eaPlayer.delayedGPclass = false
 			eaPlayer.delayedGPsubclass = false
@@ -144,6 +144,7 @@ local function InitForNewGame()
 			eaPlayer.bUsesDivineFavor = false
 			eaPlayer.bIsFallen = false
 			eaPlayer.bRenouncedMaleficium = false
+			eaPlayer.manaConsumed = 0
 			eaPlayer.blockedBuildingsByID = {}
 			eaPlayer.religionID = GameInfoTypes.RELIGION_THE_WEAVE_OF_EA
 			eaPlayer.race = GameInfoTypes.EARACE_FAY
@@ -175,6 +176,7 @@ local function InitForNewGame()
 			eaPlayer.bUsesDivineFavor = false
 			eaPlayer.bIsFallen = false
 			eaPlayer.bRenouncedMaleficium = false
+			eaPlayer.manaConsumed = 0
 			eaPlayer.blockedBuildingsByID = {}
 			eaPlayer.religionID = GameInfoTypes.RELIGION_THE_WEAVE_OF_EA
 			eaPlayer.atWarWith = {[62] = true, [63] = true}
@@ -182,6 +184,7 @@ local function InitForNewGame()
 			eaPlayer.bUsesDivineFavor = false
 			eaPlayer.bIsFallen = false
 			eaPlayer.bRenouncedMaleficium = false
+			eaPlayer.manaConsumed = 0
 			eaPlayer.sustainedPromotions = {}
 			eaPlayer.atWarWith = {}
 			for iLoopPlayer, loopPlayerType in pairs(MapModData.playerType) do
@@ -193,6 +196,7 @@ local function InitForNewGame()
 			eaPlayer.bUsesDivineFavor = false
 			eaPlayer.bIsFallen = false
 			eaPlayer.bRenouncedMaleficium = false
+			eaPlayer.manaConsumed = 0
 			eaPlayer.sustainedPromotions = {}
 			eaPlayer.atWarWith = {}
 			for iLoopPlayer, loopPlayerType in pairs(MapModData.playerType) do

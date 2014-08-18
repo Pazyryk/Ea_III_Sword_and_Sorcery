@@ -2136,7 +2136,6 @@ Finish[GameInfoTypes.EA_SPELL_BANISH] = function()
 	for i = 1, g_count do
 		local unit = g_table[i]
 		local plot = unit:GetPlot()
-		MapModData.bBypassOnCanSaveUnit = true
 		unit:Kill(true, g_iPlayer)
 		plot:AddFloatUpMessage("Banished!", 2)
 	end
@@ -2200,7 +2199,6 @@ Finish[GameInfoTypes.EA_SPELL_BANISH_UNDEAD] = function()
 	for i = 1, g_count do
 		local unit = g_table[i]
 		local plot = unit:GetPlot()
-		MapModData.bBypassOnCanSaveUnit = true
 		unit:Kill(true, g_iPlayer)
 		plot:AddFloatUpMessage("Banished!", 2)
 	end
@@ -2269,11 +2267,9 @@ Finish[GameInfoTypes.EA_SPELL_TURN_UNDEAD] = function()
 			local unitTypeID = unit:GetUnitType()
 			local newUnit = g_player:InitUnit(unitTypeID, x, y)
 			newUnit:SetSummonerIndex(-99)
-			MapModData.bBypassOnCanSaveUnit = true
 			newUnit:Convert(unit, false)
 			turnPlot:AddFloatUpMessage("Turned Undead!", 2)
 		else
-			MapModData.bBypassOnCanSaveUnit = true
 			unit:Kill(true, g_iPlayer)
 			unit:GetPlot():AddFloatUpMessage("Turned Undead!", 2)
 		end
@@ -2338,7 +2334,6 @@ Finish[GameInfoTypes.EA_SPELL_BANISH_DEMONS] = function()
 	for i = 1, g_count do
 		local unit = g_table[i]
 		local plot = unit:GetPlot()
-		MapModData.bBypassOnCanSaveUnit = true
 		unit:Kill(true, g_iPlayer)
 		plot:AddFloatUpMessage("Banished!", 2)
 	end
@@ -2402,7 +2397,6 @@ Finish[GameInfoTypes.EA_SPELL_BANISH_ANGELS] = function()
 	for i = 1, g_count do
 		local unit = g_table[i]
 		local plot = unit:GetPlot()
-		MapModData.bBypassOnCanSaveUnit = true
 		unit:Kill(true, g_iPlayer)
 		plot:AddFloatUpMessage("Banished!", 2)
 	end

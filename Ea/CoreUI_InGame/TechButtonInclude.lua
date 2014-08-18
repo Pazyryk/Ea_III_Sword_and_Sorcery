@@ -507,6 +507,21 @@ function AddSmallButtonsToTechButton( thisTechButtonInstance, tech, maxSmallButt
 		end
 	end
 
+	--Paz add
+
+	--EaActions
+	for row in GameInfo.EaActions("ShowInTechTree IS NOT NULL AND TechReq = '" .. techType .. "'") do
+		local buttonName = "B"..tostring(buttonNum)
+		local thisButton = thisTechButtonInstance[buttonName]
+		if thisButton then
+			IconHookup( row.IconIndex, textureSize, row.IconAtlas, thisButton )
+			thisButton:SetHide( false )
+			local toolTip = "[COLOR_POSITIVE_TEXT]" .. Locale.Lookup(row.Description) .. "[ENDCOLOR][NEWLINE][NEWLINE]" .. Locale.Lookup(row.Help)
+			thisButton:SetToolTipString(toolTip)
+			buttonNum = buttonNum + 1
+		end		
+	end
+
 	--Add anything we want in Technology_EaTechButtonIncludeSpecials
 	for row in GameInfo.Technology_EaTechButtonIncludeSpecials(condition) do
 		local buttonName = "B"..tostring(buttonNum)

@@ -163,7 +163,6 @@ local function OnSerialEventUnitCreated(iPlayer, iUnit, hexVec, unitType, cultur
 				end
 			end
 			if bInternmentCamp then
-				MapModData.bBypassOnCanSaveUnit = true
 				unit:Kill(true, -1)
 				local raceID = GetCityRace(city)		--TO DO: make these unit race, not city race
 				local unitID
@@ -216,7 +215,6 @@ local function OnUnitCaptured(iPlayer, iUnit)
 			local originalOwner = Players[iOriginalOwner]
 			if not originalOwner:IsAlive() or Teams[player:GetTeam()]:IsAtWar(originalOwner:GetTeam()) then
 				print("Non-Slavery human player captured a civilian that can't be returned to original owner; killing")
-				MapModData.bBypassOnCanSaveUnit = true
 				unit:Kill(true, -1)
 				return
 			else
@@ -225,7 +223,6 @@ local function OnUnitCaptured(iPlayer, iUnit)
 			end				
 		else
 			print("Non-Slavery computer player captured a civilian that wasn't returned; killing")
-			MapModData.bBypassOnCanSaveUnit = true
 			unit:Kill(true, -1)
 			return
 		end

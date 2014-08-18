@@ -21,6 +21,7 @@ CREATE TABLE EaActions ('ID' INTEGER PRIMARY KEY AUTOINCREMENT,
 						'IconIndex' INTEGER DEFAULT -1,
 						'IconAtlas' TEXT DEFAULT NULL,
 						'NoFloatUpText' BOOLEAN DEFAULT NULL,
+						'ShowInTechTree' BOOLEAN DEFAULT NULL,
 						--AI
 						'AICombatRole' TEXT DEFAULT NULL,	-- Planned: "CityCapture", "CrowdControl", "Any"; Types don't matter now: any non-NULL understood as having combat role
 						'AIDontCombatOverride' BOOLEAN DEFAULT NULL,	-- =NULL or 1 (eg, Citadel) Otherwise, GP with combat role will drop what they are doing (if <1/2 done) and go to a combat zone
@@ -310,33 +311,33 @@ UPDATE EaActions SET NotGPClass = 'Devout' WHERE Type = 'EA_ACTION_ARCANE_TOWER'
 UPDATE EaActions SET BuildsTemple = 1 WHERE Type GLOB 'EA_ACTION_TEMPLE_*';
 
 --Epics
-INSERT INTO EaActions (Type,			GPOnly,	TechReq,				PolicyReq,			UIType,		FinishXP,	AITarget,			AIAdHocValue,	GPClass,	City,		GPModType1,			TurnsToComplete,	ProgressHolder,	UniqueType,	EaEpic,							IconIndex,	IconAtlas				) VALUES
-('EA_ACTION_EPIC_VOLUSPA',				1,		NULL,					'POLICY_TRADITION',	'Build',	100,		'OwnClosestCity',	1000,			'Artist',	'Any',		'EAMOD_BARDING',	25,					'Self',		'World',	'EA_EPIC_VOLUSPA',				32,			'BW_ATLAS_2'			),
-('EA_ACTION_EPIC_HAVAMAL',				1,		NULL,					'POLICY_FOLKLORE',	'Build',	100,		'OwnClosestCity',	1000,			'Artist',	'Any',		'EAMOD_BARDING',	25,					'Self',		'World',	'EA_EPIC_HAVAMAL',				32,			'BW_ATLAS_2'			),
-('EA_ACTION_EPIC_VAFTHRUTHNISMAL',		1,		'TECH_WRITING',			'POLICY_FOLKLORE',	'Build',	100,		'OwnClosestCity',	1000,			'Artist',	'Any',		'EAMOD_BARDING',	25,					'Self',		'World',	'EA_EPIC_VAFTHRUTHNISMAL',		32,			'BW_ATLAS_2'			),
-('EA_ACTION_EPIC_GRIMNISMAL',			1,		'TECH_DRAMA',			'POLICY_FOLKLORE',	'Build',	100,		'OwnClosestCity',	1000,			'Artist',	'Any',		'EAMOD_BARDING',	25,					'Self',		'World',	'EA_EPIC_GRIMNISMAL',			32,			'BW_ATLAS_2'			),
-('EA_ACTION_EPIC_HYMISKVITHA',			1,		'TECH_ZYMURGY',			'POLICY_FOLKLORE',	'Build',	100,		'OwnClosestCity',	1000,			'Artist',	'Any',		'EAMOD_BARDING',	25,					'Self',		'World',	'EA_EPIC_HYMISKVITHA',			32,			'BW_ATLAS_2'			),
-('EA_ACTION_EPIC_NATIONAL',				1,		'TECH_LITERATURE',		NULL,				'Build',	100,		'OwnClosestCity',	1000,			'Artist',	'Any',		'EAMOD_BARDING',	25,					'Self',		'National',	NULL,							32,			'BW_ATLAS_2'			);
+INSERT INTO EaActions (Type,			GPOnly,	TechReq,				PolicyReq,			UIType,		ShowInTechTree,	FinishXP,	AITarget,			AIAdHocValue,	GPClass,	City,		GPModType1,			TurnsToComplete,	ProgressHolder,	UniqueType,	EaEpic,							IconIndex,	IconAtlas				) VALUES
+('EA_ACTION_EPIC_VOLUSPA',				1,		'TECH_AESTHETICS',		'POLICY_FOLKLORE',	'Build',	1,				100,		'OwnClosestCity',	1000,			'Artist',	'Any',		'EAMOD_BARDING',	25,					'Self',			'World',	'EA_EPIC_VOLUSPA',				32,			'BW_ATLAS_2'			),
+('EA_ACTION_EPIC_HAVAMAL',				1,		'TECH_MUSIC',			'POLICY_FOLKLORE',	'Build',	1,				100,		'OwnClosestCity',	1000,			'Artist',	'Any',		'EAMOD_BARDING',	25,					'Self',			'World',	'EA_EPIC_HAVAMAL',				32,			'BW_ATLAS_2'			),
+('EA_ACTION_EPIC_VAFTHRUTHNISMAL',		1,		'TECH_WRITING',			'POLICY_FOLKLORE',	'Build',	1,				100,		'OwnClosestCity',	1000,			'Artist',	'Any',		'EAMOD_BARDING',	25,					'Self',			'World',	'EA_EPIC_VAFTHRUTHNISMAL',		32,			'BW_ATLAS_2'			),
+('EA_ACTION_EPIC_GRIMNISMAL',			1,		'TECH_DRAMA',			'POLICY_FOLKLORE',	'Build',	1,				100,		'OwnClosestCity',	1000,			'Artist',	'Any',		'EAMOD_BARDING',	25,					'Self',			'World',	'EA_EPIC_GRIMNISMAL',			32,			'BW_ATLAS_2'			),
+('EA_ACTION_EPIC_HYMISKVITHA',			1,		'TECH_ZYMURGY',			'POLICY_FOLKLORE',	'Build',	1,				100,		'OwnClosestCity',	1000,			'Artist',	'Any',		'EAMOD_BARDING',	25,					'Self',			'World',	'EA_EPIC_HYMISKVITHA',			32,			'BW_ATLAS_2'			),
+('EA_ACTION_EPIC_NATIONAL',				1,		'TECH_LITERATURE',		NULL,				'Build',	1,				100,		'OwnClosestCity',	1000,			'Artist',	'Any',		'EAMOD_BARDING',	25,					'Self',			'National',	NULL,							32,			'BW_ATLAS_2'			);
 
 --Items
-INSERT INTO EaActions (Type,			GPOnly,	TechReq,					AndTechReq,		BuildingReq,		UIType,		FinishXP,	AITarget,					AIAdHocValue,	GPClass,	City,	GPModType1,				TurnsToComplete,	ProgressHolder,	UniqueType,	EaArtifact,							IconIndex,	IconAtlas							) VALUES
-('EA_ACTION_TOME_OF_EQUUS',				1,		'TECH_HORSEBACK_RIDING',	'TECH_WRITING',	'BUILDING_LIBRARY',	'Build',	100,		'OwnClosestLibraryCity',	1000,			'Sage',		'Own',	'EAMOD_SCHOLARSHIP',	25,					'Self',		'World',	'EA_ARTIFACT_TOME_OF_EQUUS',		2,			'EXPANSION_SCEN_TECH_ATLAS'			),
-('EA_ACTION_TOME_OF_BEASTS',			1,		'TECH_ELEPHANT_LABOR',		'TECH_WRITING',	'BUILDING_LIBRARY',	'Build',	100,		'OwnClosestLibraryCity',	1000,			'Sage',		'Own',	'EAMOD_SCHOLARSHIP',	25,					'Self',		'World',	'EA_ARTIFACT_TOME_OF_BEASTS',		2,			'EXPANSION_SCEN_TECH_ATLAS'			),
-('EA_ACTION_TOME_OF_THE_LEVIATHAN',		1,		'TECH_HARPOONS',			'TECH_WRITING',	'BUILDING_LIBRARY',	'Build',	100,		'OwnClosestLibraryCity',	1000,			'Sage',		'Own',	'EAMOD_SCHOLARSHIP',	25,					'Self',		'World',	'EA_ARTIFACT_TOME_OF_THE_LEVIATHAN',2,			'EXPANSION_SCEN_TECH_ATLAS'			),
-('EA_ACTION_TOME_OF_HARVESTS',			1,		'TECH_IRRIGATION',			'TECH_WRITING',	'BUILDING_LIBRARY',	'Build',	100,		'OwnClosestLibraryCity',	1000,			'Sage',		'Own',	'EAMOD_SCHOLARSHIP',	25,					'Self',		'World',	'EA_ARTIFACT_TOME_OF_HARVESTS',		2,			'EXPANSION_SCEN_TECH_ATLAS'			),
-('EA_ACTION_TOME_OF_TOMES',				1,		'TECH_PHILOSOPHY',			'TECH_WRITING',	'BUILDING_LIBRARY',	'Build',	100,		'OwnClosestLibraryCity',	1000,			'Sage',		'Own',	'EAMOD_SCHOLARSHIP',	25,					'Self',		'World',	'EA_ARTIFACT_TOME_OF_TOMES',		2,			'EXPANSION_SCEN_TECH_ATLAS'			),
-('EA_ACTION_TOME_OF_AESTHETICS',		1,		'TECH_DRAMA',				'TECH_WRITING',	'BUILDING_LIBRARY',	'Build',	100,		'OwnClosestLibraryCity',	1000,			'Sage',		'Own',	'EAMOD_SCHOLARSHIP',	25,					'Self',		'World',	'EA_ARTIFACT_TOME_OF_AESTHETICS',	2,			'EXPANSION_SCEN_TECH_ATLAS'			),
-('EA_ACTION_TOME_OF_AXIOMS',			1,		'TECH_MATHEMATICS',			'TECH_WRITING',	'BUILDING_LIBRARY',	'Build',	100,		'OwnClosestLibraryCity',	1000,			'Sage',		'Own',	'EAMOD_SCHOLARSHIP',	25,					'Self',		'World',	'EA_ARTIFACT_TOME_OF_AXIOMS',		2,			'EXPANSION_SCEN_TECH_ATLAS'			),
-('EA_ACTION_TOME_OF_FORM',				1,		'TECH_MASONRY',				'TECH_WRITING',	'BUILDING_LIBRARY',	'Build',	100,		'OwnClosestLibraryCity',	1000,			'Sage',		'Own',	'EAMOD_SCHOLARSHIP',	25,					'Self',		'World',	'EA_ARTIFACT_TOME_OF_FORM',			2,			'EXPANSION_SCEN_TECH_ATLAS'			),
-('EA_ACTION_TOME_OF_METALLURGY',		1,		'TECH_BRONZE_WORKING',		'TECH_WRITING',	'BUILDING_LIBRARY',	'Build',	100,		'OwnClosestLibraryCity',	1000,			'Sage',		'Own',	'EAMOD_SCHOLARSHIP',	25,					'Self',		'World',	'EA_ARTIFACT_TOME_OF_METALLURGY',	2,			'EXPANSION_SCEN_TECH_ATLAS'			),
-('EA_ACTION_CORPUS_HERMETICUM',			1,		'TECH_DIVINE_LITURGY',		'TECH_WRITING',	'BUILDING_LIBRARY',	'Build',	100,		'OwnClosestLibraryCity',	1000,			'Sage',		'Own',	'EAMOD_SCHOLARSHIP',	25,					'Self',		'World',	'EA_ARTIFACT_CORPUS_HERMETICUM',	2,			'EXPANSION_SCEN_TECH_ATLAS'			),
-('EA_ACTION_NECRONOMICON',				1,		'TECH_REANIMATION',			'TECH_WRITING',	'BUILDING_LIBRARY',	'Build',	100,		'OwnClosestLibraryCity',	1000,			'Sage',		'Own',	'EAMOD_SCHOLARSHIP',	25,					'Self',		'World',	'EA_ARTIFACT_NECRONOMICON',			2,			'EXPANSION_SCEN_TECH_ATLAS'			),
-('EA_ACTION_ARS_GOETIA',				1,		'TECH_SORCERY',				'TECH_WRITING',	'BUILDING_LIBRARY',	'Build',	100,		'OwnClosestLibraryCity',	1000,			'Sage',		'Own',	'EAMOD_SCHOLARSHIP',	25,					'Self',		'World',	'EA_ARTIFACT_ARS_GOETIA',			2,			'EXPANSION_SCEN_TECH_ATLAS'			),
-('EA_ACTION_BOOK_OF_EIBON',				1,		'TECH_THAUMATURGY',			'TECH_WRITING',	'BUILDING_LIBRARY',	'Build',	100,		'OwnClosestLibraryCity',	1000,			'Sage',		'Own',	'EAMOD_SCHOLARSHIP',	25,					'Self',		'World',	'EA_ARTIFACT_BOOK_OF_EIBON',		2,			'EXPANSION_SCEN_TECH_ATLAS'			);
+INSERT INTO EaActions (Type,			GPOnly,	TechReq,					AndTechReq,		BuildingReq,		UIType,		ShowInTechTree,	FinishXP,	AITarget,					AIAdHocValue,	GPClass,	City,	GPModType1,				TurnsToComplete,	ProgressHolder,	UniqueType,	EaArtifact,							IconIndex,	IconAtlas							) VALUES
+('EA_ACTION_TOME_OF_EQUUS',				1,		'TECH_HORSEBACK_RIDING',	'TECH_WRITING',	'BUILDING_LIBRARY',	'Build',	1,				100,		'OwnClosestLibraryCity',	1000,			'Sage',		'Own',	'EAMOD_SCHOLARSHIP',	25,					'Self',			'World',	'EA_ARTIFACT_TOME_OF_EQUUS',		2,			'EXPANSION_SCEN_TECH_ATLAS'			),
+('EA_ACTION_TOME_OF_BEASTS',			1,		'TECH_ELEPHANT_LABOR',		'TECH_WRITING',	'BUILDING_LIBRARY',	'Build',	1,				100,		'OwnClosestLibraryCity',	1000,			'Sage',		'Own',	'EAMOD_SCHOLARSHIP',	25,					'Self',			'World',	'EA_ARTIFACT_TOME_OF_BEASTS',		2,			'EXPANSION_SCEN_TECH_ATLAS'			),
+('EA_ACTION_TOME_OF_THE_LEVIATHAN',		1,		'TECH_HARPOONS',			'TECH_WRITING',	'BUILDING_LIBRARY',	'Build',	1,				100,		'OwnClosestLibraryCity',	1000,			'Sage',		'Own',	'EAMOD_SCHOLARSHIP',	25,					'Self',			'World',	'EA_ARTIFACT_TOME_OF_THE_LEVIATHAN',2,			'EXPANSION_SCEN_TECH_ATLAS'			),
+('EA_ACTION_TOME_OF_HARVESTS',			1,		'TECH_IRRIGATION',			'TECH_WRITING',	'BUILDING_LIBRARY',	'Build',	1,				100,		'OwnClosestLibraryCity',	1000,			'Sage',		'Own',	'EAMOD_SCHOLARSHIP',	25,					'Self',			'World',	'EA_ARTIFACT_TOME_OF_HARVESTS',		2,			'EXPANSION_SCEN_TECH_ATLAS'			),
+('EA_ACTION_TOME_OF_TOMES',				1,		'TECH_PHILOSOPHY',			'TECH_WRITING',	'BUILDING_LIBRARY',	'Build',	1,				100,		'OwnClosestLibraryCity',	1000,			'Sage',		'Own',	'EAMOD_SCHOLARSHIP',	25,					'Self',			'World',	'EA_ARTIFACT_TOME_OF_TOMES',		2,			'EXPANSION_SCEN_TECH_ATLAS'			),
+('EA_ACTION_TOME_OF_AESTHETICS',		1,		'TECH_DRAMA',				'TECH_WRITING',	'BUILDING_LIBRARY',	'Build',	1,				100,		'OwnClosestLibraryCity',	1000,			'Sage',		'Own',	'EAMOD_SCHOLARSHIP',	25,					'Self',			'World',	'EA_ARTIFACT_TOME_OF_AESTHETICS',	2,			'EXPANSION_SCEN_TECH_ATLAS'			),
+('EA_ACTION_TOME_OF_AXIOMS',			1,		'TECH_MATHEMATICS',			'TECH_WRITING',	'BUILDING_LIBRARY',	'Build',	1,				100,		'OwnClosestLibraryCity',	1000,			'Sage',		'Own',	'EAMOD_SCHOLARSHIP',	25,					'Self',			'World',	'EA_ARTIFACT_TOME_OF_AXIOMS',		2,			'EXPANSION_SCEN_TECH_ATLAS'			),
+('EA_ACTION_TOME_OF_FORM',				1,		'TECH_MASONRY',				'TECH_WRITING',	'BUILDING_LIBRARY',	'Build',	1,				100,		'OwnClosestLibraryCity',	1000,			'Sage',		'Own',	'EAMOD_SCHOLARSHIP',	25,					'Self',			'World',	'EA_ARTIFACT_TOME_OF_FORM',			2,			'EXPANSION_SCEN_TECH_ATLAS'			),
+('EA_ACTION_TOME_OF_METALLURGY',		1,		'TECH_BRONZE_WORKING',		'TECH_WRITING',	'BUILDING_LIBRARY',	'Build',	1,				100,		'OwnClosestLibraryCity',	1000,			'Sage',		'Own',	'EAMOD_SCHOLARSHIP',	25,					'Self',			'World',	'EA_ARTIFACT_TOME_OF_METALLURGY',	2,			'EXPANSION_SCEN_TECH_ATLAS'			),
+('EA_ACTION_TOME_CORPUS_HERMETICUM',	1,		'TECH_DIVINE_LITURGY',		'TECH_WRITING',	'BUILDING_LIBRARY',	'Build',	1,				100,		'OwnClosestLibraryCity',	1000,			'Sage',		'Own',	'EAMOD_SCHOLARSHIP',	25,					'Self',			'World',	'EA_ARTIFACT_TOME_CORPUS_HERMETICUM',2,			'EXPANSION_SCEN_TECH_ATLAS'			),
+('EA_ACTION_TOME_NECRONOMICON',			1,		'TECH_REANIMATION',			'TECH_WRITING',	'BUILDING_LIBRARY',	'Build',	1,				100,		'OwnClosestLibraryCity',	1000,			'Sage',		'Own',	'EAMOD_SCHOLARSHIP',	25,					'Self',			'World',	'EA_ARTIFACT_TOME_NECRONOMICON',	2,			'EXPANSION_SCEN_TECH_ATLAS'			),
+('EA_ACTION_TOME_ARS_GOETIA',			1,		'TECH_SORCERY',				'TECH_WRITING',	'BUILDING_LIBRARY',	'Build',	1,				100,		'OwnClosestLibraryCity',	1000,			'Sage',		'Own',	'EAMOD_SCHOLARSHIP',	25,					'Self',			'World',	'EA_ARTIFACT_TOME_ARS_GOETIA',		2,			'EXPANSION_SCEN_TECH_ATLAS'			),
+('EA_ACTION_TOME_BOOK_OF_EIBON',		1,		'TECH_THAUMATURGY',			'TECH_WRITING',	'BUILDING_LIBRARY',	'Build',	1,				100,		'OwnClosestLibraryCity',	1000,			'Sage',		'Own',	'EAMOD_SCHOLARSHIP',	25,					'Self',			'World',	'EA_ARTIFACT_TOME_BOOK_OF_EIBON',	2,			'EXPANSION_SCEN_TECH_ATLAS'			);
 
-UPDATE EaActions SET GPSubclass = 'Priest' WHERE Type = 'EA_ACTION_CORPUS_HERMETICUM';
-UPDATE EaActions SET AhrimansVaultMatters = 1, GPSubclass = 'Necromancer' WHERE Type = 'EA_ACTION_NECRONOMICON';
-UPDATE EaActions SET AhrimansVaultMatters = 1 WHERE Type = 'EA_ACTION_ARS_GOETIA';
+UPDATE EaActions SET GPSubclass = 'Priest' WHERE Type = 'EA_ACTION_TOME_CORPUS_HERMETICUM';
+UPDATE EaActions SET AhrimansVaultMatters = 1, GPSubclass = 'Necromancer' WHERE Type = 'EA_ACTION_TOME_NECRONOMICON';
+UPDATE EaActions SET AhrimansVaultMatters = 1 WHERE Type = 'EA_ACTION_TOME_ARS_GOETIA';
 
 --GP non-unique builds
 INSERT INTO EaActions (Type,			GPOnly,	UIType,		TechReq,				PolicyReq,				FinishXP,	AITarget,		AISimpleYield,	GPClass,	City,		GPModType1,		TurnsToComplete,	ProgressHolder,	Building,				BuildingMod,			HumanOnlySound,			IconIndex,	IconAtlas				) VALUES

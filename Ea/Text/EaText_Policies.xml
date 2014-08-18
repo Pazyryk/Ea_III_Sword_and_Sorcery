@@ -330,7 +330,7 @@
 			<Text>TRADITION</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_BRANCH_TRADITION_HELP">
-			<Text>[COLOR_POSITIVE_TEXT]Tradition[ENDCOLOR] allows your civilization to excel in the persuit of scholarship and the arts.[NEWLINE][NEWLINE]Adopting Tradition will provide +1 [ICON_RESEARCH] Research and +1 [ICON_CULTURE] Culture from your capital.[NEWLINE][NEWLINE]A free Artist or Sage will appear when the next policy is adopted within this branch (the latter for Scholasticism only). Adopting all policies in the Tradition tree will result in 1/3 of culture being converted to Research divided among all cities.</Text>
+			<Text>[COLOR_POSITIVE_TEXT]Tradition[ENDCOLOR] allows your civilization to excel in the persuit of scholarship and the arts.[NEWLINE][NEWLINE]Adopting Tradition will provide +1 [ICON_RESEARCH] Research and +1 [ICON_CULTURE] Culture from your capital, and enable Tribal Council and Forefather's Statue.[NEWLINE][NEWLINE]A free Artist or Sage will appear when the next policy is adopted within this branch (the latter for Scholasticism only). Adopting all policies in the Tradition tree will result in 1/3 of culture being converted to Research divided among all cities.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_TRADITION">
 			<Text>Tradition</Text>
@@ -345,7 +345,7 @@
 			<Text>Scholasticism</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_SCHOLASTICISM_HELP">
-			<Text>[COLOR_POSITIVE_TEXT]Scholasticism[ENDCOLOR][NEWLINE][ICON_BULLET]+5% [ICON_RESEARCH] Research in all cities</Text>
+			<Text>[COLOR_POSITIVE_TEXT]Scholasticism[ENDCOLOR][NEWLINE][ICON_BULLET]+10% [ICON_RESEARCH] Research in all cities[NEWLINE][ICON_BULLET]+10% [ICON_RESEARCH] Research from Libraries[NEWLINE][ICON_BULLET]Enables Papermill building (with Literature)</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_SCHOLASTICISM_TEXT">
 			<Text>placeholder</Text>
@@ -354,7 +354,7 @@
 			<Text>Academic Tradition</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_ACADEMIC_TRADITION_HELP">
-			<Text>[COLOR_POSITIVE_TEXT]Academic Tradition[ENDCOLOR][NEWLINE][ICON_BULLET]+5% [ICON_RESEARCH] Research in all cities[NEWLINE][ICON_BULLET]+15% [ICON_RESEARCH] Research from Universities</Text>
+			<Text>[COLOR_POSITIVE_TEXT]Academic Tradition[ENDCOLOR][NEWLINE][ICON_BULLET]+15% [ICON_RESEARCH] Research in all cities[NEWLINE][ICON_BULLET]+15% [ICON_RESEARCH] Research from Universities</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_ACADEMIC_TRADITION_TEXT">
 			<Text>placeholder</Text>
@@ -363,7 +363,7 @@
 			<Text>Rationalism</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_RATIONALISM_HELP">
-			<Text>[COLOR_POSITIVE_TEXT]Rationalism[ENDCOLOR][NEWLINE][ICON_BULLET]+5% [ICON_RESEARCH] Research in all cities[NEWLINE][ICON_BULLET]+15% [ICON_RESEARCH] Research from Laboratories[NEWLINE][ICON_BULLET]Allows the [COLOR_POSITIVE_TEXT]Research[ENDCOLOR] Process, which converts 25% of City [ICON_PRODUCTION] Production into [ICON_RESEARCH] Research</Text>
+			<Text>[COLOR_POSITIVE_TEXT]Rationalism[ENDCOLOR][NEWLINE][ICON_BULLET]+15% [ICON_RESEARCH] Research in all cities[NEWLINE][ICON_BULLET]+15% [ICON_RESEARCH] Research from Laboratories[NEWLINE][ICON_BULLET]Allows the [COLOR_POSITIVE_TEXT]Research[ENDCOLOR] Process, which converts 25% of City [ICON_PRODUCTION] Production into [ICON_RESEARCH] Research</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_RATIONALISM_TEXT">
 			<Text>placeholder</Text>
@@ -372,31 +372,31 @@
 			<Text>Folklore</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_FOLKLORE_HELP">
-			<Text>[COLOR_POSITIVE_TEXT]Folklore[ENDCOLOR][NEWLINE][ICON_BULLET]Allows Artists to specialize becoming subclass Bard (in Lieu of taking promotion)</Text>
+			<Text>[COLOR_POSITIVE_TEXT]Folklore[ENDCOLOR][NEWLINE][ICON_BULLET]Required for all Epics (in addition to tech prereq)</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_BARDING">
 			<Text>Barding</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_BARDING_HELP">
-			<Text>[COLOR_POSITIVE_TEXT]Barding[ENDCOLOR][NEWLINE][ICON_BULLET]Allows Bards to craft several Epics, including Völuspá, Hávamál and others</Text>
+			<Text>[COLOR_POSITIVE_TEXT]Barding[ENDCOLOR][NEWLINE][ICON_BULLET]+1 [ICON_CULTURE] Culture per Amphitheater, Theater, Opera House[NEWLINE][ICON_BULLET]+8 Barding modifier for all Artists</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_FOLKART">
 			<Text>Folkart</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_FOLKART_HELP">
-			<Text>[COLOR_POSITIVE_TEXT]Folkart[ENDCOLOR][NEWLINE][ICON_BULLET]+1 [ICON_CULTURE] Culture per Fair, Ivoryworks, Jeweler</Text>
+			<Text>[COLOR_POSITIVE_TEXT]Folkart[ENDCOLOR][NEWLINE][ICON_BULLET]+1 [ICON_CULTURE] Culture per Vineyard, Textiles Plantation, Exotics Plantation and Quarry[NEWLINE][ICON_BULLET]Enables the Jeweller building (with Currency)</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_CRAFTING">
 			<Text>Crafting</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_CRAFTING_HELP">
-			<Text>[COLOR_POSITIVE_TEXT]Crafting[ENDCOLOR][NEWLINE][ICON_BULLET]+1 [ICON_CULTURE] culture per Vineyard, Quarry[NEWLINE][ICON_BULLET]+1 [ICON_CULTURE] Culture per Winery, Brewery, Stoneworks, Textile Mill</Text>
+			<Text>[COLOR_POSITIVE_TEXT]Crafting[ENDCOLOR][NEWLINE][ICON_BULLET]+1 [ICON_CULTURE] Culture per Fair, Jeweler, Ivoryworks, Stoneworks, Brewery, Winery, Distillery and Textile Mill[NEWLINE][ICON_BULLET]Enables the Kiln building (with Construction)</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_THE_ARTS">
 			<Text>The Arts</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_THE_ARTS_HELP">
-			<Text>[COLOR_POSITIVE_TEXT]The Arts[ENDCOLOR][NEWLINE][ICON_BULLET]+2 [ICON_CULTURE] Culture per Theater and Opera House[NEWLINE][ICON_BULLET]+20% [ICON_CULTURE] Culture from Wonders (NOT YET IMPLEMENTED!)[NEWLINE][ICON_BULLET]Allows [COLOR_POSITIVE_TEXT]The Arts[ENDCOLOR] Process, which converts 25% of City [ICON_PRODUCTION] Production into [ICON_CULTURE] Culture</Text>
+			<Text>[COLOR_POSITIVE_TEXT]The Arts[ENDCOLOR][NEWLINE][ICON_BULLET]+2 [ICON_CULTURE] Culture per Theater, Opera House, Meuseum and University[NEWLINE][ICON_BULLET]Allows [COLOR_POSITIVE_TEXT]The Arts[ENDCOLOR] Process, which converts 25% of City [ICON_PRODUCTION] Production into [ICON_CULTURE] Culture</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_THE_ARTS_TEXT">
 			<Text>placeholder</Text>

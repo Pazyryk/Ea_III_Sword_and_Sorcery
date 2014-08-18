@@ -324,7 +324,6 @@ MapModData.integer = 0
 MapModData.bAutoplay = false
 MapModData.bBypassOnCanCreateTradeRoute = false
 MapModData.bReverseOnCanCreateTradeRoute = false
-MapModData.bBypassOnCanSaveUnit = false
 MapModData.forcedUnitSelection = -1
 MapModData.forcedInterfaceMode = -1
 

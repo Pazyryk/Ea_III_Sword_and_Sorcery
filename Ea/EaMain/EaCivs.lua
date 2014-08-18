@@ -161,7 +161,6 @@ function EaCivsInit(bNewGame)
 
 				for unit in player:Units() do
 					print("Killing hidden civ unit / x / y: ", unit, unit:GetX(), unit:GetY())
-					MapModData.bBypassOnCanSaveUnit = true
 					unit:Kill(true, -1)
 				end
 

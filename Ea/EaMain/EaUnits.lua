@@ -185,7 +185,6 @@ function EaUnitsInit(bNewGame)
 					end
 					if newUnitTypeID then
 						local newUnit = player:InitUnit(newUnitTypeID, unit:GetX(), unit:GetY())
-						MapModData.bBypassOnCanSaveUnit = true
 						newUnit:Convert(unit)
 					end
 				end
@@ -203,7 +202,6 @@ function EaUnitsInit(bNewGame)
 					end
 					if newUnitTypeID then
 						local newUnit = player:InitUnit(newUnitTypeID, unit:GetX(), unit:GetY())
-						MapModData.bBypassOnCanSaveUnit = true
 						newUnit:Convert(unit)
 					end
 				end
@@ -263,7 +261,6 @@ function ConvertUnitsByMatch(iPlayer, fromStr, toStr)	--preserves race (e.g., UN
 			local newUnitType = gsub(unitType, fromStr, toStr)
 			local newUnitTypeID = GameInfoTypes[newUnitType]
 			local newUnit = player:InitUnit(newUnitTypeID, unit:GetX(), unit:GetY())
-			MapModData.bBypassOnCanSaveUnit = true
 			newUnit:Convert(unit)
 		end
 	end
@@ -287,7 +284,6 @@ function HireMercenary(iPlayer, unit, upFront, gpt)
 			mercenaries[iOriginalOwner] = mercenaries[iOriginalOwner] or {}
 			mercenaries[iOriginalOwner][iNewUnit] = gpt
 			player:ChangeGold(-upFront)
-			MapModData.bBypassOnCanSaveUnit = true
 			newUnit:Convert(unit)		--sets xp, level, promotions (but not original owner)
 			newUnit:SetHasPromotion(PROMOTION_MERCENARY, true)
 			newUnit:SetHasPromotion(PROMOTION_FOR_HIRE, false)
@@ -332,7 +328,6 @@ function DismissMercenary(iPlayer, iUnit)
 				local newUnit = originalOwner:InitUnit(unitTypeID, x, y)
 				if newUnit then
 					bConverted = true
-					MapModData.bBypassOnCanSaveUnit = true
 					newUnit:Convert(unit)
 					newUnit:SetOriginalOwner(iOriginalOwner)
 					newUnit:SetHasPromotion(PROMOTION_MERCENARY, false)
@@ -355,7 +350,6 @@ function DismissMercenary(iPlayer, iUnit)
 		end
 		if not bConverted then
 			print("!!!! WARNING: Merc was dismissed and original owner exists, but unit could not be returned for some reason")
-			MapModData.bBypassOnCanSaveUnit = true
 			unit:Kill(true, -1)
 		end
 	end
@@ -512,19 +506,16 @@ function UnitPerCivTurn(iPlayer)	--runs for full civs and city states
 							local spawnPlot = GetPlotForSpawn(plot, BARB_PLAYER_INDEX, 2, false, false, false, false, false, false, unit)
 							if spawnPlot then
 								local x, y = spawnPlot:GetXY()
-								MapModData.bBypassOnCanSaveUnit = true
 								local newUnit = Players[BARB_PLAYER_INDEX]:InitUnit(unitTypeID, x, y)
 								newUnit:Convert(unit, false)
 								iUnit = newUnit:GetID()
 								unit = newUnit			
 								spawnPlot:AddFloatUpMessage("Unbound dead has gone hostile!", 1)
 							else
-								MapModData.bBypassOnCanSaveUnit = true
 								unit:Kill(true, -1)
 								plot:AddFloatUpMessage("Unbound dead has un-animated", 1)						
 							end
 						--elseif dice < 3 then
-						--	MapModData.bBypassOnCanSaveUnit = true
 						--	unit:Kill(true, -1)
 						--	plot:AddFloatUpMessage("Unbound dead has un-animated", 1)
 						end				
@@ -803,7 +794,6 @@ UseUnit[GameInfoTypes.UNIT_HUNTERS] = function(iPlayer, unit)
 	else
 		print("!!!! Warning: Hunters built but can't be used; killing unit")
 	end
-	MapModData.bBypassOnCanSaveUnit = true
 	unit:Kill(true, -1)		--remove unit
 end
 
@@ -860,7 +850,6 @@ UseUnit[GameInfoTypes.UNIT_FISHING_BOATS] = function(iPlayer, unit)
 	else
 		print("!!!! Warning: Whaling Boats built but can't be used; killing unit")
 	end
-	MapModData.bBypassOnCanSaveUnit = true
 	unit:Kill(true, -1)		--remove unit
 end
 
@@ -915,7 +904,6 @@ UseUnit[GameInfoTypes.UNIT_WHALING_BOATS] = function(iPlayer, unit)
 	else
 		print("!!!! Warning: Whaling Boats built but can't be used; killing unit")
 	end
-	MapModData.bBypassOnCanSaveUnit = true
 	unit:Kill(true, -1)		--remove unit
 end
 

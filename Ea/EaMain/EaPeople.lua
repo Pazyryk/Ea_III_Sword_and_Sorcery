@@ -253,7 +253,6 @@ function MissingEaPersonHasUnit(iPerson, unit)
 	if gDeadPeople[iPerson] then
 		if unit and not unit:IsDelayedDeath() and not unit:IsDead() then
 			print("!!!! ERROR: Found unit:GetPersonIndex() matching dead person; killing unit; iPerson, unit:GetPersonIndex(), iUnit = ", iPerson, unit:GetPersonIndex(), unit:GetID())
-			MapModData.bBypassOnCanSaveUnit = true
 			unit:Kill(false, -1)
 		end
 	else
@@ -278,7 +277,6 @@ function TestResyncGPIndexes()
 					for i = 1, gpIndexCount do
 						if iPerson == gpIndexes[i] then
 							print("!!!! ERROR: found extra unit with taken PersonIndex; killing unit ", iPerson)
-							MapModData.bBypassOnCanSaveUnit = true
 							unit:Kill(false, -1)
 							bNotRedundant = false
 						end
@@ -742,7 +740,6 @@ function InitGPUnit(iPlayer, iPerson, x, y, convertUnit, unitTypeID, invisibilit
 		for i = 1, numNonTransferableGPPromos do
 			convertUnit:SetHasPromotion(nonTransferableGPPromos[i] , false)
 		end
-		MapModData.bBypassOnCanSaveUnit = true
 		unit:Convert(convertUnit, false)
 	elseif bResurection then
 		unit:SetLevel(eaPerson.level)
@@ -1206,6 +1203,7 @@ local subclassModModifier = {
 }
 
 local modPolicyModifier = {
+	EAMOD_BARDING =			{[GameInfoTypes.POLICY_BARDING] = 8},
 	EAMOD_DIVINATION =		{[GameInfoTypes.POLICY_ARCANA_PRIMUS] = 8},
 	EAMOD_ENCHANTMENT =		{[GameInfoTypes.POLICY_ARCANA_PRIMUS] = 8},
 	EAMOD_ABJURATION =		{[GameInfoTypes.POLICY_ARCANA_PRIMUS] = 8},
@@ -1451,7 +1449,7 @@ end
 
 function KillPerson(iPlayer, iPerson, unit, iKillerPlayer, deathType)
 	--Important! Supply unit if unit needs to be killed! iKillerPlayer is optional but only matters only if unit supplied
-	print("KillPerson(iPlayer, iPerson, unit, iKillerPlayer, deathType) ", iPlayer, iPerson, unit, iKillerPlayer, deathType)
+	print("KillPerson ", iPlayer, iPerson, unit, iKillerPlayer, deathType)
 	local eaPerson = gPeople[iPerson]
 	local player = Players[iPlayer]
 	local eaPlayer = gPlayers[iPlayer]
@@ -1474,8 +1472,11 @@ function KillPerson(iPlayer, iPerson, unit, iKillerPlayer, deathType)
 	--remove unit or make sure it is safely being removed
 	if unit then
 		if not unit:IsDelayedDeath() and not unit:IsDead() then
-			MapModData.bBypassOnCanSaveUnit = true
-			unit:Kill(true, iKillerPlayer or -1)
+			if unit:GetPersonIndex() == iPerson then
+				unit:Kill(true, iKillerPlayer or -1)
+			else
+				print("!!!! ERROR: unit doesn't have correct GetPersonIndex for KillPerson ", iPerson, unit:GetPersonIndex())
+			end
 		end
 	else	--don't trust call; make sure there is no unit!
 		for iLoopPlayer = 0, BARB_PLAYER_INDEX do
@@ -1485,7 +1486,6 @@ function KillPerson(iPlayer, iPerson, unit, iKillerPlayer, deathType)
 					local iLoopPerson = loopUnit:GetPersonIndex()
 					if iLoopPerson == iPerson then
 						if not loopUnit:IsDelayedDeath() and not loopUnit:IsDead() then
-							MapModData.bBypassOnCanSaveUnit = true			--DEPRECIATE!
 							loopUnit:Kill(true, iKillerPlayer or -1)
 						end						
 					end
@@ -1519,31 +1519,7 @@ function KillPerson(iPlayer, iPerson, unit, iKillerPlayer, deathType)
 	end
 
 	--leader
-	if eaPlayer.leaderEaPersonIndex == iPerson then
-		print("Person was leader; changing player leader to No Leader")
-		eaPlayer.leaderEaPersonIndex = -1
-		if eaPlayer.race == GameInfoTypes.EARACE_MAN then
-			player:ChangeLeaderType(GameInfoTypes.LEADER_NO_LDR_MAN)
-		elseif eaPlayer.race == GameInfoTypes.EARACE_SIDHE then
-			player:ChangeLeaderType(GameInfoTypes.LEADER_NO_LDR_SIDHE)
-		elseif eaPlayer.race == GameInfoTypes.EARACE_HELDEOFOL then
-			player:ChangeLeaderType(GameInfoTypes.LEADER_NO_LDR_HELDEOFOL)
-		end
-		PreGame.SetLeaderName(iPlayer, "TXT_KEY_EA_NO_LEADER")
-
-		RemoveLeaderEffects(iPlayer)
-		UpdateGlobalYields(iPlayer)
-		if not player:IsHuman() then
-			AIInturruptGPsForLeadershipOpportunity(iPlayer)
-		end
-	end
-
-
-
-	--debug: test all units to make sure no one else has this person index
-
-
-	--move person info we may want over to gDeadPeople; keep: eaPersonRowID, subclass, class1, class1, name, level
+	local bWasLeader = eaPlayer.leaderEaPersonIndex == iPerson
 
 	--creat dead person table and transfer data we may need later (not table pointers! they break TableSaverLoader!)
 	local eaDeadPerson = {}
@@ -1578,6 +1554,29 @@ function KillPerson(iPlayer, iPerson, unit, iKillerPlayer, deathType)
 
 	gDeadPeople[iPerson] = eaDeadPerson
 	gPeople[iPerson] = nil
+	print("eaPerson has been removed")
+
+	--after death stuff
+	if bWasLeader then
+		print("Person was leader; changing player leader to No Leader")
+		eaPlayer.leaderEaPersonIndex = -1
+		if eaPlayer.race == GameInfoTypes.EARACE_MAN then
+			player:ChangeLeaderType(GameInfoTypes.LEADER_NO_LDR_MAN)
+		elseif eaPlayer.race == GameInfoTypes.EARACE_SIDHE then
+			player:ChangeLeaderType(GameInfoTypes.LEADER_NO_LDR_SIDHE)
+		elseif eaPlayer.race == GameInfoTypes.EARACE_HELDEOFOL then
+			player:ChangeLeaderType(GameInfoTypes.LEADER_NO_LDR_HELDEOFOL)
+		end
+		PreGame.SetLeaderName(iPlayer, "TXT_KEY_EA_NO_LEADER")
+
+		RemoveLeaderEffects(iPlayer)
+		UpdateGlobalYields(iPlayer)
+		if not player:IsHuman() then
+			AIInturruptGPsForLeadershipOpportunity(iPlayer)
+		end
+	end
+
+
 	print("finished KillPerson")
 end
 

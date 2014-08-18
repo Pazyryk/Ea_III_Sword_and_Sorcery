@@ -60,7 +60,7 @@ INSERT INTO Buildings (Type,			Cost,	GoldMaintenance,	PrereqTech,					EaPrereqPo
 ('BUILDING_GOVERNORS_COMPOUND',			200,	0,					'TECH_PHILOSOPHY',			'POLICY_MILITARISM',		NULL,			0,			40,							1,				'ART_DEF_BUILDING_GARDEN',	'BW_ATLAS_1',			24,				0	),
 ('BUILDING_TRIBAL_COUNCIL',				200,	1,					NULL,						'POLICY_TRADITION',			NULL,			0,			0,							1,				'ART_DEF_BUILDING_GARDEN',	'BW_ATLAS_1',			24,				0	),
 ('BUILDING_FOREFATHERS_STATUE',			200,	1,					NULL,						'POLICY_TRADITION',			NULL,			0,			0,							1,				'ART_DEF_BUILDING_GARDEN',	'BW_ATLAS_1',			24,				0	),
-('BUILDING_JEWELLER',					350,	1,					'TECH_CURRENCY',			'POLICY_TRADITION',			NULL,			1,			0,							1,				'ART_DEF_BUILDING_BARRACKS','BW_ATLAS_1',			61,				0	);
+('BUILDING_JEWELLER',					350,	1,					'TECH_CURRENCY',			'POLICY_FOLKART',			NULL,			0,			0,							1,				'ART_DEF_BUILDING_BARRACKS','BW_ATLAS_1',			61,				0	);
 
 -- other early
 INSERT INTO Buildings (Type,			Cost,	GoldMaintenance,	PrereqTech,					NeverCapture,	ArtDefineTag,				IconAtlas,				PortraitIndex,	DisplayPosition) VALUES

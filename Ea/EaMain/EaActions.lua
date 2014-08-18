@@ -1078,7 +1078,6 @@ function DoEaAction(eaActionID, iPlayer, unit, iPerson, targetX, targetY)
 	--Alt unit upgrades
 	if g_eaAction.UnitUpgradeTypePrefix then
 		local newUnit = g_player:InitUnit(g_int1, g_x, g_y)
-		MapModData.bBypassOnCanSaveUnit = true
 		newUnit:Convert(g_unit, true)
 		g_unit = newUnit		--this will finish moves below; watch out because g_unitTypeID is no longer correct
 		g_player:ChangeGold(-g_int2)
@@ -1416,7 +1415,6 @@ Do[GameInfoTypes.EA_ACTION_SELL_SLAVES] = function()
 		sellGold = 36
 	end
 	g_player:ChangeGold(sellGold)
-	MapModData.bBypassOnCanSaveUnit = true
 	g_unit:Kill(true, -1)
 	g_unit = nil
 	return true
@@ -1446,7 +1444,6 @@ Do[GameInfoTypes.EA_ACTION_RENDER_SLAVES] = function()
 	else
 		g_city:ChangeBuildingProduction(g_int1, renderProd)
 	end
-	MapModData.bBypassOnCanSaveUnit = true
 	g_unit:Kill(true, -1)
 	g_unit = nil
 	return true
@@ -2846,7 +2843,6 @@ Do[GameInfoTypes.EA_ACTION_PROPHECY_ORDO_SALUTIS] = function()
 				g_integers[countExisting] = unitTypeID
 				if iPlayer ~= g_iPlayer then
 					local newUnit = g_player:InitUnit(unitTypeID, unit:GetX(), unit:GetY(), nil, unit:GetFacingDirection())
-					MapModData.bBypassOnCanSaveUnit = true
 					newUnit:Convert(unit, false)
 				end
 			end
@@ -2906,7 +2902,6 @@ Do[GameInfoTypes.EA_ACTION_PROPHECY_ORDO_DAMNATIO] = function()
 				g_integers[countExisting] = unitTypeID
 				if iPlayer ~= g_iPlayer then
 					local newUnit = g_player:InitUnit(unitTypeID, unit:GetX(), unit:GetY(), nil, unit:GetFacingDirection())
-					MapModData.bBypassOnCanSaveUnit = true
 					newUnit:Convert(unit, false)
 				end
 			end
@@ -3377,8 +3372,8 @@ end
 
 
 
---EA_ACTION_CORPUS_HERMETICUM
-SetUI[GameInfoTypes.EA_ACTION_CORPUS_HERMETICUM] = function()
+--EA_ACTION_TOME_CORPUS_HERMETICUM
+SetUI[GameInfoTypes.EA_ACTION_TOME_CORPUS_HERMETICUM] = function()
 	if g_bAllTestsPassed then
 		MapModData.text = (g_mod * 2).."% reduced research cost for and knowledge maintenance from Divine Liturgy, Divine Vitalism, Heavenly Cycles, Divine Essence, Celestial Knowldege, Divine Intervention and Knowledge of Heaven"
 	elseif g_bNonTargetTestsPassed then
@@ -3387,8 +3382,8 @@ SetUI[GameInfoTypes.EA_ACTION_CORPUS_HERMETICUM] = function()
 	end
 end
 
---EA_ACTION_NECRONOMICON
-SetUI[GameInfoTypes.EA_ACTION_NECRONOMICON] = function()
+--EA_ACTION_TOME_NECRONOMICON
+SetUI[GameInfoTypes.EA_ACTION_TOME_NECRONOMICON] = function()
 	if g_bAllTestsPassed then
 		MapModData.text = (g_mod * 2).."% reduced research cost for and knowledge maintenance from Maleficium, Reanimation, Necromancy, Soul Binding and Armageddon Rituals"
 	elseif g_bNonTargetTestsPassed then
@@ -3397,8 +3392,8 @@ SetUI[GameInfoTypes.EA_ACTION_NECRONOMICON] = function()
 	end
 end
 
---EA_ACTION_ARS_GOETIA
-SetUI[GameInfoTypes.EA_ACTION_ARS_GOETIA] = function()
+--EA_ACTION_TOME_ARS_GOETIA
+SetUI[GameInfoTypes.EA_ACTION_TOME_ARS_GOETIA] = function()
 	if g_bAllTestsPassed then
 		MapModData.text = (g_mod * 2).."% reduced research cost for and knowledge maintenance from Maleficium, Thaumaturgy, Sorcery, Summoning, Breach and Armageddon Rituals"
 	elseif g_bNonTargetTestsPassed then
@@ -3407,8 +3402,8 @@ SetUI[GameInfoTypes.EA_ACTION_ARS_GOETIA] = function()
 	end
 end
 
---EA_ACTION_BOOK_OF_EIBON
-SetUI[GameInfoTypes.EA_ACTION_BOOK_OF_EIBON] = function()
+--EA_ACTION_TOME_BOOK_OF_EIBON
+SetUI[GameInfoTypes.EA_ACTION_TOME_BOOK_OF_EIBON] = function()
 	if g_bAllTestsPassed then
 		MapModData.text = (g_mod * 2).."% reduced research cost for and knowledge maintenance from Thaumaturgy, Conjuration, Transmutation, Evocation, Abjuration, Invocation, Greater Arcana and Esoteric Arcana"
 	elseif g_bNonTargetTestsPassed then

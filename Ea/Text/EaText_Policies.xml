@@ -10,7 +10,7 @@
 			<Text>DOMINIONISM</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_BRANCH_DOMINIONISM_HELP">
-			<Text>[COLOR_POSITIVE_TEXT]Dominionism[ENDCOLOR] allows your cities to grow very large, improving the land of Éa for productive use while subduing its wildlands.[NEWLINE][NEWLINE]Adopting Dominionism will provide +1 [ICON_FOOD] Food from every Farm and Pasture.[NEWLINE][NEWLINE]Adopting all policies in the Dominionism tree will result in 1/3 of culture being converted to Food divided among all of your cities.</Text>
+			<Text>[COLOR_POSITIVE_TEXT]Dominionism[ENDCOLOR] allows your cities to grow very large, improving the land of Éa for productive use while subduing its wildlands.[NEWLINE][NEWLINE]Adopting Dominionism will provide +1 [ICON_FOOD] Food from every Farm and Pasture.[NEWLINE][NEWLINE]Adopting all policies in the Dominionism tree will result in the gain of extra [ICON_FOOD] Food equal to 1/3 of all [ICON_CULTURE] Culture generation, divided evenly among all cities.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_DOMINIONISM">
 			<Text>Dominionism</Text>
@@ -82,7 +82,7 @@
 			<Text>PANTHEISM</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_BRANCH_PANTHEISM_HELP">
-			<Text>[COLOR_POSITIVE_TEXT]Pantheism[ENDCOLOR] allows your civilization to interact with the Major Spirits of Éa and the land itself in ways not otherwise possible.[NEWLINE][NEWLINE]Adopting Pantheism will result in the spontaneous appearance of The Weave of Éa Religion in your cities, +1 [ICON_STAR] Mana in your capital, and enabling of the Shrine building. Pantheistic civilizations can build improvements on resource plots only. [NEWLINE][NEWLINE]A free Druid [ICON_GREAT_PEOPLE] will appear when the first policy is adopted within this branch. Adopting all policies in the Pantheism tree will result in 1/3 of culture being converted to [ICON_STAR] Mana. It will also allow your Druids to learn the Call Major Spirit spell, allowing then to call a Major Spirit into physical existence for assistance (must be allied with relationship >500; will use up 300 of that)</Text>
+			<Text>[COLOR_POSITIVE_TEXT]Pantheism[ENDCOLOR] allows your civilization to interact with the Major Spirits of Éa and the land itself in ways not otherwise possible.[NEWLINE][NEWLINE]Adopting Pantheism will result in the spontaneous appearance of The Weave of Éa Religion in your cities, +1 [ICON_STAR] Mana in your capital, and enabling of the Shrine building. Pantheistic civilizations can build improvements on resource plots only. [NEWLINE][NEWLINE]A free Druid [ICON_GREAT_PEOPLE] will appear when the first policy is adopted within this branch. Adopting all policies in the Pantheism tree will result in the gain of extra [ICON_STAR] Mana equal to 1/3 of all Culture generation. It will also allow your Druids to learn the Call Major Spirit spell, allowing then to call a Major Spirit into physical existence for assistance (must be allied with relationship >500; will use up 300 of that)</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_PANTHEISM">
 			<Text>Pantheism</Text>
@@ -148,7 +148,7 @@
 			<Text>THEISM</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_BRANCH_THEISM_HELP">
-			<Text>[COLOR_POSITIVE_TEXT]Theism[ENDCOLOR] involves the worship of Azzandara, the Creator, and allows your civilization (and others') to benefit in various ways from the Azzandarayasna Religion.[NEWLINE][NEWLINE]Adopting Theism will grant +1 [ICON_PEACE] Divine Favor in your capital, and enables the Shrine building.[NEWLINE][NEWLINE]A free Priest [ICON_GREAT_PEOPLE] will appear when the next policy is adopted within this branch. Adopting all policies in the Pantheism tree will result in 1/3 of culture being converted to [ICON_PEACE] Divine Favor.</Text>
+			<Text>[COLOR_POSITIVE_TEXT]Theism[ENDCOLOR] involves the worship of Azzandara, the Creator, and allows your civilization (and others') to benefit in various ways from the Azzandarayasna Religion.[NEWLINE][NEWLINE]Adopting Theism will grant +1 [ICON_PEACE] Divine Favor in your capital, and enables the Shrine building.[NEWLINE][NEWLINE]A free Priest [ICON_GREAT_PEOPLE] will appear when the next policy is adopted within this branch. Adopting all policies in the Pantheism tree will result in the gain of extra [ICON_PEACE] Divine Favor equal to 1/3 of all [ICON_CULTURE] Culture generation.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_THEISM">
 			<Text>Theism</Text>
@@ -202,7 +202,7 @@
 			<Text>Theism</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_BRANCH_ANTI_THEISM_HELP">
-			<Text>[COLOR_POSITIVE_TEXT]Theism[ENDCOLOR] (in its purest form) involves the worship of Ahriman, the Anti-Creator, and allows your civilization to benifit in various ways from the Aŋra Religion.[NEWLINE][NEWLINE]Adopting Theism will grant +1 [ICON_STAR] Mana in your capital, and enables the Shrine building.[NEWLINE][NEWLINE]A free Priest [ICON_GREAT_PEOPLE] will appear when the next policy is adopted within this branch. Adopting all policies in the Theism tree will result in 1/3 of culture being converted to [ICON_STAR] Mana.</Text>
+			<Text>[COLOR_POSITIVE_TEXT]Theism[ENDCOLOR] (in its purest form) involves the worship of Ahriman, the Anti-Creator, and allows your civilization to benifit in various ways from the Aŋra Religion.[NEWLINE][NEWLINE]Adopting Theism will grant +1 [ICON_STAR] Mana in your capital, and enables the Shrine building.[NEWLINE][NEWLINE]A free Priest [ICON_GREAT_PEOPLE] will appear when the next policy is adopted within this branch. Adopting all policies in the Theism tree will result in the gain of extra [ICON_STAR] Mana equal to 1/3 of [ICON_CULTURE] Culture generation.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_ANTI_THEISM_HELP">
 			<Text>{TXT_KEY_EA_POLICY_BRANCH_THEISM_HELP}</Text>
@@ -255,7 +255,7 @@
 			<Text>MILITARISM</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_BRANCH_MILITARISM_HELP">
-			<Text>[COLOR_POSITIVE_TEXT]Militarism[ENDCOLOR] allows your civilization to excel in military conquest.[NEWLINE][NEWLINE]Adopting Militarism will increase base free military units by 4.[NEWLINE][NEWLINE]A free Warrior will appear when the next policy is adopted within this branch. Each policy adopted within this branch will reduce unit maintanence by 10% (up to -70%). Adopting all policies in the Militarism tree will result in 1/3 of culture being converted to Experience divided among all military units.</Text>
+			<Text>[COLOR_POSITIVE_TEXT]Militarism[ENDCOLOR] allows your civilization to excel in military conquest.[NEWLINE][NEWLINE]Adopting Militarism will increase base free military units by 4.[NEWLINE][NEWLINE]A free Warrior will appear when the next policy is adopted within this branch. Each policy adopted within this branch will reduce unit maintanence by 10% (up to -70%). Adopting all policies in the Militarism tree will result in the gain of extra Experience equal to 1/3 of all [ICON_CULTURE] Culture generation, divided evenly among all military units.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_MILITARISM">
 			<Text>Militarism</Text>
@@ -297,7 +297,7 @@
 			<Text>Professional Army</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_PROFESSIONAL_ARMY_HELP">
-			<Text>[COLOR_POSITIVE_TEXT]Professional Army[ENDCOLOR][NEWLINE][ICON_BULLET]Upgrading units requires 50% less [ICON_GOLD] Gold[NEWLINE][ICON_BULLET]Allows the [COLOR_POSITIVE_TEXT]Training Exercises[ENDCOLOR] Process, which converts 25% of City [ICON_PRODUCTION] Production into experience divided among all military units</Text>
+			<Text>[COLOR_POSITIVE_TEXT]Professional Army[ENDCOLOR][NEWLINE][ICON_BULLET]Upgrading units requires 50% less [ICON_GOLD] Gold[NEWLINE][ICON_BULLET]Allows the [COLOR_POSITIVE_TEXT]Training Exercises[ENDCOLOR] Process, which converts 25% of City [ICON_PRODUCTION] Production into experience, divided evenly among all military units</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_PROFESSIONAL_ARMY_TEXT">
 			<Text>placeholder</Text>
@@ -330,7 +330,7 @@
 			<Text>TRADITION</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_BRANCH_TRADITION_HELP">
-			<Text>[COLOR_POSITIVE_TEXT]Tradition[ENDCOLOR] allows your civilization to excel in the persuit of scholarship and the arts.[NEWLINE][NEWLINE]Adopting Tradition will provide +1 [ICON_RESEARCH] Research and +1 [ICON_CULTURE] Culture from your capital, and enable Tribal Council and Forefather's Statue.[NEWLINE][NEWLINE]A free Artist or Sage will appear when the next policy is adopted within this branch (the latter for Scholasticism only). Adopting all policies in the Tradition tree will result in 1/3 of culture being converted to Research divided among all cities.</Text>
+			<Text>[COLOR_POSITIVE_TEXT]Tradition[ENDCOLOR] allows your civilization to excel in the persuit of scholarship and the arts.[NEWLINE][NEWLINE]Adopting Tradition will provide +1 [ICON_RESEARCH] Research and +1 [ICON_CULTURE] Culture from your capital, and enable Tribal Council and Forefather's Statue.[NEWLINE][NEWLINE]A free Artist or Sage will appear when the next policy is adopted within this branch (the latter for Scholasticism only). Adopting all policies in the Tradition tree will result in the gain of extra [ICON_RESEARCH] Research equal to 1/3 of all [ICON_CULTURE] Culture generation, divided evenly among all cities.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_TRADITION">
 			<Text>Tradition</Text>
@@ -405,7 +405,7 @@
 			<Text>COMMERCE</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_BRANCH_COMMERCE_HELP">
-			<Text>[COLOR_POSITIVE_TEXT]Commerce[ENDCOLOR] allows your civilization to excel in trade.[NEWLINE][NEWLINE]Adopting Commerce will provide +3 [ICON_GOLD] Gold from your capital and allow Merchants to establish Trade Routes with foreign cities.[NEWLINE][NEWLINE]A free Merchant will appear when the next policy is adopted within this branch. Adopting all policies in the Commerce tree will result in 1/3 of culture being converted to [ICON_GOLD] Gold divided among all cities.</Text>
+			<Text>[COLOR_POSITIVE_TEXT]Commerce[ENDCOLOR] allows your civilization to excel in trade.[NEWLINE][NEWLINE]Adopting Commerce will provide +3 [ICON_GOLD] Gold from your capital and allow Merchants to establish Trade Routes with foreign cities.[NEWLINE][NEWLINE]A free Merchant will appear when the next policy is adopted within this branch. Adopting all policies in the Commerce tree will result in the gain of extra [ICON_GOLD] Gold equal to 1/3 of all [ICON_CULTURE] Culture generation, divided evenly among all cities.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_COMMERCE">
 			<Text>Commerce</Text>
@@ -482,7 +482,7 @@
 			<Text>ARCANA</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_BRANCH_ARCANA_HELP">
-			<Text>[COLOR_POSITIVE_TEXT]Arcana[ENDCOLOR] allows your civilization to excel in the use of arcane magic.[NEWLINE][NEWLINE]Adopting Arcana will grant +1 [ICON_STAR] Mana in your capital, and reveals Moly resource on the map.[NEWLINE][NEWLINE]A free Thaumaturge [ICON_GREAT_PEOPLE] will appear when the next policy is adopted within this branch. Adopting all policies in the Arcana tree will result in 1/3 of culture being converted to [ICON_STAR] Mana.</Text>
+			<Text>[COLOR_POSITIVE_TEXT]Arcana[ENDCOLOR] allows your civilization to excel in the use of arcane magic.[NEWLINE][NEWLINE]Adopting Arcana will grant +1 [ICON_STAR] Mana in your capital, and reveals Moly resource on the map.[NEWLINE][NEWLINE]A free Thaumaturge [ICON_GREAT_PEOPLE] will appear when the next policy is adopted within this branch. Adopting all policies in the Arcana tree will result in the gain of extra [ICON_STAR] Mana equal to 1/3 of all Culture [ICON_CULTURE] generation.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_ARCANA">
 			<Text>Arcana</Text>
@@ -537,7 +537,7 @@
 			<Text>SLAVERY</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_BRANCH_SLAVERY_HELP">
-			<Text>[COLOR_POSITIVE_TEXT]Slavery[ENDCOLOR] allows your civilization to benifit from forced labor.[NEWLINE][NEWLINE]Adopting Slavery will grant you one free Slaves unit and allow you to capture Slaves from other civilization's Slaves, Workers or Settlers. Enables the Gallows building.[NEWLINE][NEWLINE]Adopting all policies in the Slavery tree will result in 1/3 of [ICON_CULTURE] Culture being converted to [ICON_PRODUCTION] Production divided among all cities.</Text>
+			<Text>[COLOR_POSITIVE_TEXT]Slavery[ENDCOLOR] allows your civilization to benifit from forced labor.[NEWLINE][NEWLINE]Adopting Slavery will grant you one free Slaves unit and allow you to capture Slaves from other civilization's Slaves, Workers or Settlers. Enables the Gallows building.[NEWLINE][NEWLINE]Adopting all policies in the Slavery tree will result in the gain of extra [ICON_PRODUCTION] Production equal to 1/3 of all [ICON_CULTURE] Culture generation, divided evenly among all cities.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_SLAVERY">
 			<Text>Slavery</Text>

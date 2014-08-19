@@ -3,6 +3,32 @@
 -- DateCreated: 3/24/2014 10:02:52 AM
 --------------------------------------------------------------
 
+function ScoreEaCivs(bNewGame)
+	--calculate various numbers for civs in a futile attempt to balance
+	
+	--tier 7 is not 6x better despite cost, because it's stupid for most civs to research them
+	--tier 1-3 are so cheap only the KM matters
+	--so calculate total# and tiers > 3 (so tier 4, 5, 6, 7 are scored 1, 2, 3, 4)
+	if not bNewGame then return end
+	print("----- ScoreEaCivs -----")
+	print("Civ", "#FavTechs", "Tiers>3")
+	for eaCiv in GameInfo.EaCivs() do
+		local numFavTechs, numTiersGT3 = 0, 0
+		for row in GameInfo.EaCiv_FavoredTechs("EaCivType = '" .. eaCiv.Type .. "'") do
+			numFavTechs = numFavTechs + 1
+			local tier = gg_techTier[GameInfoTypes[row.TechType] ]
+			if not tier then
+				error("No tier for Favored Tech: " .. row.TechType)
+			end
+			if tier > 3 then
+				numTiersGT3 = numTiersGT3 + tier - 3
+			end
+		end
+		print(Locale.Lookup(eaCiv.Description), numFavTechs, numTiersGT3)
+	end
+end
+
+
 local bHidden =			MapModData.bHidden
 
 local tableByOrderType = {	[OrderTypes.ORDER_TRAIN] = "Units",

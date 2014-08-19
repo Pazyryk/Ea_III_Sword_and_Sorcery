@@ -26,7 +26,7 @@
 				<Stack Anchor="L,T" Size="0,0" Offset="5,39" Padding="12" StackGrowth="Bottom">
 					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="L,T" String="World Population:"/>
 					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="L,T" String="World Land:"/>
-					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="L,T" String="Wld. Lv. Tr. Str.:"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="L,T" String="Own Improved:"/>
 					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="L,T" String="Your Score:"/>
 				</Stack>
 				<Stack Anchor="L,T" Size="0,0" Offset="150,39" Padding="12" StackGrowth="Bottom">

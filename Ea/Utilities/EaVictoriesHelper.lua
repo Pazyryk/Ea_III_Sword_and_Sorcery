@@ -6,6 +6,16 @@
 MapModData.gT = MapModData.gT or {}
 local gT = MapModData.gT
 
+
+local HARMONIC_MEAN_SHIFT =								MapModData.EaSettings.HARMONIC_MEAN_SHIFT
+local ONE_WITH_NATURE_VC_THRESHOLD =					MapModData.EaSettings.ONE_WITH_NATURE_VC_THRESHOLD
+local ONE_WITH_NATURE_ADDED_THRESHOLD_PER_PAN_CIV =		MapModData.EaSettings.ONE_WITH_NATURE_ADDED_THRESHOLD_PER_PAN_CIV
+local ONE_WITH_NATURE_EXPECTED_VALID_PLOTS =			MapModData.EaSettings.ONE_WITH_NATURE_EXPECTED_VALID_PLOTS
+
+local DOMINATION_VC_POPULATION_PERCENT =				MapModData.EaSettings.DOMINATION_VC_POPULATION_PERCENT
+local DOMINATION_VC_LAND_PERCENT =						MapModData.EaSettings.DOMINATION_VC_LAND_PERCENT
+local DOMINATION_VC_IMPROVED_LAND_PERCENT =				MapModData.EaSettings.DOMINATION_VC_IMPROVED_LAND_PERCENT
+
 local floor = math.floor
 
 --Note: bVictory does not always mean THIS player wins. TestUpdateVictory tests other players in cases where score could determine winner.
@@ -55,9 +65,10 @@ function GetRestorerVictoryData(iPlayer)
 
 	local livingTerrainAdded = eaPlayer.livingTerrainAdded or 0
 	local livingTerrainStrengthAdded = eaPlayer.livingTerrainStrengthAdded or 0
-	local aveWorldLivingTerrainStrength = MapModData.totalLivingTerrainStrength / MapModData.validForestJunglePlots
-	local harmonicMean = (MapModData.validForestJunglePlots / MapModData.harmonicMeanDenominator) - 1
-	local hmNeeded = (gT.gWorld.panCivsEver + 2) * 400 / MapModData.validForestJunglePlots
+	--local aveWorldLivingTerrainStrength = MapModData.totalLivingTerrainStrength / MapModData.validForestJunglePlots
+	local harmonicMean = (MapModData.validForestJunglePlots / MapModData.harmonicMeanDenominator) - HARMONIC_MEAN_SHIFT
+	local hmNeeded = (gT.gWorld.panCivsEver * ONE_WITH_NATURE_ADDED_THRESHOLD_PER_PAN_CIV + ONE_WITH_NATURE_VC_THRESHOLD)
+				* ONE_WITH_NATURE_EXPECTED_VALID_PLOTS / MapModData.validForestJunglePlots
 
 
 	--Generate score
@@ -76,16 +87,16 @@ function GetSubduerVictoryData(iPlayer)
 	local playerPopulation = player:GetTotalPopulation()
 	local worldPopulation = 100 * playerPopulation / Game.GetTotalPopulation()
 	local worldLand = 100 * player:GetTotalLand() / MapModData.ownablePlots
-	local aveWorldLivingTerrainStrength = MapModData.totalLivingTerrainStrength / MapModData.validForestJunglePlots
+	local ownImproved = 100 * eaPlayer.improvedPlots / eaPlayer.improvablePlots
+	--local aveWorldLivingTerrainStrength = MapModData.totalLivingTerrainStrength / MapModData.validForestJunglePlots
 	
-
 	--Generate score
 	local score = floor(playerPopulation + 10 * worldLand)
 
 	--Test victory conditions
-	local bVictory = worldPopulation > 70 and worldLand > 40 and aveWorldLivingTerrainStrength < 1 
+	local bVictory = worldPopulation > DOMINATION_VC_POPULATION_PERCENT and worldLand > DOMINATION_VC_LAND_PERCENT and ownImproved > DOMINATION_VC_IMPROVED_LAND_PERCENT 
 
-	return score, bVictory, worldPopulation, worldLand, aveWorldLivingTerrainStrength
+	return score, bVictory, worldPopulation, worldLand, ownImproved
 end
 
 function GetConquerorVictoryData(iPlayer)

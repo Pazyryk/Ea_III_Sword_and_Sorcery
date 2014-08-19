@@ -97,8 +97,12 @@ local function InitForNewGame()
 			eaPlayer.foodDistributionCarryover = 0
 			eaPlayer.productionDistributionCarryover = 0
 			eaPlayer.goldDistributionCarryover = 0
+			eaPlayer.cultureDistributionCarryover = 0
 			eaPlayer.aiNumTradeRoutesTargeted = 0
 			eaPlayer.savedFaithFromManaDivineFavorSwap = 0
+			eaPlayer.trainingXP = 0
+			eaPlayer.improvablePlots = 0
+			eaPlayer.improvedPlots = 0
 					
 			eaPlayer.delayedGPclass = false
 			eaPlayer.delayedGPsubclass = false
@@ -113,7 +117,6 @@ local function InitForNewGame()
 			eaPlayer.faerieTribute = false
 			eaPlayer.majorSpiritsTribute = false
 			eaPlayer.cityStatePatronage = false
-			eaPlayer.trainingXP = false
 			eaPlayer.aiSeekingName = false
 			eaPlayer.aiStage = false
 			eaPlayer.aiObsoletedCivPlans = false
@@ -272,7 +275,7 @@ function OnLoadEaMain()   --Called from the bottom of EaMain after all included 
 	SetStrictTables()
 
 	--init Lua files
-	--TestResyncGPIndexes()
+	ScoreEaCivs(bNewGame)
 	EaEncampmentsInit(bNewGame)
 	EaCivsInit(bNewGame)
 	EaCivNamingInit(bNewGame)

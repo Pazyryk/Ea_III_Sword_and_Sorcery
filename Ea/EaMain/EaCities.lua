@@ -774,7 +774,7 @@ function CityPerCivTurn(iPlayer)		--full and city states
 					elseif orderID == PROCESS_PATRONAGE then	
 						eaPlayer.cityStatePatronage = (eaPlayer.cityStatePatronage or 0) + productionYieldRate / 4
 					elseif orderID == PROCESS_TRAINING_EXERCISES then	
-						eaPlayer.trainingXP = (eaPlayer.trainingXP or 0) + productionYieldRate / 4
+						eaPlayer.trainingXP = eaPlayer.trainingXP + productionYieldRate / 4
 					--elseif orderID == PROCESS_AHRIMANS_TRIBUTE then	
 					--	local manaBurn = floor(productionYieldRate / 4)
 					--	gWorld.sumOfAllMana = gWorld.sumOfAllMana - manaBurn

@@ -17,6 +17,20 @@ INSERT INTO EaSettings (Name, Value, GameLengthExp, MapSizeExp, Int) VALUES
 ('MANA_CONSUMED_BY_ANRA_FOUNDING',				1000,	0,	1,	1	),
 ('MANA_CONSUMED_BY_CIV_FALL',					200,	0,	0,	0	),
 
+--Living Terrain
+('SPREAD_CHANCE_DENOMINATOR',					100,	1,	0,	1	),
+
+--One with Nature VC
+('HARMONIC_MEAN_SHIFT',							10,		0,	0,	0	),	--must be >1; the higher this is the more HM acts like a regular average
+('ONE_WITH_NATURE_VC_THRESHOLD',				2,		0,	0,	0	),	--victory threshold
+('ONE_WITH_NATURE_ADDED_THRESHOLD_PER_PAN_CIV',	1,		0,	-1,	0	),	--raise threshold by this much per pantheistic civ ever
+('ONE_WITH_NATURE_EXPECTED_VALID_PLOTS',		400,	0,	1,	0	),	--how many plots need to reach levels above (if map has more valid plots, needed HM is lower)
+
+--Domination VC
+('DOMINATION_VC_POPULATION_PERCENT',			60,		0,	0,	0	),	--% of world population
+('DOMINATION_VC_LAND_PERCENT',					40,		0,	0,	0	),	--% of world land
+('DOMINATION_VC_IMPROVED_LAND_PERCENT',			80,		0,	0,	0	),	--% of owned improveable land (could have something) that is improved
+
 --Great People
 ('GP_TARGET_NUMBER',							3,		0,	1,	0	),
 
@@ -25,7 +39,6 @@ INSERT INTO EaSettings (Name, Value, GameLengthExp, MapSizeExp, Int) VALUES
 ('SLAVE_RENDER_PRODUCTION',						20,		0,	0,	0	),
 ('SLAVE_UPGRD_TO_WARRIOR_COST',					50,		0,	0,	0	),
 ('SLAVE_BUY_PRICE_FROM_CS',						35,		0,	0,	0	),
-
 
 --Resources
 ('TIMBER_DURATION_FROM_CHOP',					40,		1,	0,	1	),

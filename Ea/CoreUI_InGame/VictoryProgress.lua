@@ -241,8 +241,8 @@ end
 
 function PopulateSubduer()
 	print("PopulateSubduer")
-	local score, bVictory, worldPopulation, worldLand, aveWorldLivingTerrainStrength = GetSubduerVictoryData(g_iActivePlayer)
-	print(score, bVictory, worldPopulation, worldLand, aveWorldLivingTerrainStrength)
+	local score, bVictory, worldPopulation, worldLand, ownImproved = GetSubduerVictoryData(g_iActivePlayer)
+	print(score, bVictory, worldPopulation, worldLand, ownImproved)
 
 	if g_bestModScore < score then
 		g_bestModScore = score
@@ -251,7 +251,7 @@ function PopulateSubduer()
 
 	Controls.SubduerA:SetText(Format("%d%%", worldPopulation))
 	Controls.SubduerB:SetText(Format("%d%%", worldLand))
-	Controls.SubduerC:SetText(Format("%.2f", aveWorldLivingTerrainStrength))
+	Controls.SubduerC:SetText(Format("%d%%", ownImproved))
 	Controls.SubduerScore:SetText(Format("%d", score))
 
 	g_scores[g_iActivePlayer] = score

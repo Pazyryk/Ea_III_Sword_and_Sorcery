@@ -652,7 +652,7 @@ function UnitPerCivTurn(iPlayer)	--runs for full civs and city states
 		if player:HasPolicy(POLICY_MILITARISM_FINISHER) then
 			eaPlayer.trainingXP = eaPlayer.trainingXP + player:GetTotalJONSCulturePerTurn() / 3
 		end
-		if eaPlayer.trainingXP and 10 < eaPlayer.trainingXP and 0 < countCombatUnits then
+		if eaPlayer.trainingXP ~= 0 and 10 < eaPlayer.trainingXP and 0 < countCombatUnits then
 			local distributeXP = floor(eaPlayer.trainingXP / countCombatUnits)
 			if 0 < distributeXP then
 				print("Adding XP to combat units for Training Exercises Process and/or Militarism Finisher (#units / unitXP): ", countCombatUnits, distributeXP)

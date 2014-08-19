@@ -302,7 +302,18 @@ function UpdateCityYields(iPlayer, iSpecificCity, effectType, bPerTurnCall)
 				eaPlayer.scienceDistributionCarryover = bPerTurnCall and science % numCities or eaPlayer.scienceDistributionCarryover	--no change if this is just a UI update
 			end
 		end
-		
+		--[[
+		if effectType == nil or effectType == "Culture" then
+			local culture = eaPlayer.cultureDistributionCarryover
+			if player:HasPolicy(POLICY_TRADITION_FINISHER) then
+				culture = culture + floor(player:GetTotalJONSCulturePerTurn() / 6)
+			end
+			if culture ~= 0 then
+				cultureDistribution = floor(culture / numCities)
+				eaPlayer.cultureDistributionCarryover = bPerTurnCall and culture % numCities or eaPlayer.cultureDistributionCarryover	--no change if this is just a UI update
+			end
+		end
+		]]	
 		if effectType == nil or effectType == "Gold" then
 			if player:HasPolicy(POLICY_COMMERCE_FINISHER) then
 				local gold = eaPlayer.goldDistributionCarryover + floor(player:GetTotalJONSCulturePerTurn() / 3)
@@ -335,6 +346,7 @@ function UpdateCityYields(iPlayer, iSpecificCity, effectType, bPerTurnCall)
 				city:SetNumRealBuilding(BUILDING_PLUS_1_LAND_XP, floor(xp + 0.5))
 			end
 
+			--[[
 			if effectType == nil or effectType == "SeaXP" or effectType == "Training" then
 				local xp = eaPlayer.leaderSeaXP
 				if eaCity.gpTraining then
@@ -344,6 +356,7 @@ function UpdateCityYields(iPlayer, iSpecificCity, effectType, bPerTurnCall)
 				end
 				city:SetNumRealBuilding(BUILDING_PLUS_1_SEA_XP, floor(xp + 0.5))
 			end
+			]]
 
 			if effectType == nil or effectType == "Food" then
 				local newFood = foodDistribution

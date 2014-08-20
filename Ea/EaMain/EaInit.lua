@@ -109,8 +109,8 @@ local function InitForNewGame()
 			eaPlayer.aiNumTradeRoutesTargeted = 0
 			eaPlayer.savedFaithFromManaDivineFavorSwap = 0
 			eaPlayer.trainingXP = 0
-			eaPlayer.improvablePlots = 7
-			eaPlayer.improvedPlots = 1
+			eaPlayer.improvablePlots = 5	--any value to avoid /0
+			eaPlayer.improvedPlots = 0
 					
 			eaPlayer.delayedGPclass = false
 			eaPlayer.delayedGPsubclass = false

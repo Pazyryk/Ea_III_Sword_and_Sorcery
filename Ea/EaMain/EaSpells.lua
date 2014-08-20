@@ -1003,12 +1003,18 @@ function TestSpellLearnable(iPlayer, iPerson, spellID, spellClass, bSuppressMini
 		if spellInfo.PantheismCult then return false end		--these are never chosen
 
 		--TO DO: finish class and subclass checks (not used often but may happen)
-		if spellInfo.ExcludeGPSubclass and eaPerson.subclass ~= spellInfo.ExcludeGPSubclass then return false end
+		if spellInfo.ExcludeGPSubclass and eaPerson.subclass == spellInfo.ExcludeGPSubclass then return false end
+		if spellInfo.RestrictedToGPSubclass and eaPerson.subclass ~= spellInfo.RestrictedToGPSubclass then return false end
 
+		local needsSpell = spellInfo.KnowsSpell
 		local spells = eaPerson.spells
 		for i = 1, #spells do
 			if spells[i] == spellID then return false end		--already known
+			if needsSpell and spells[i] == needsSpell then
+				needsSpell = nil
+			end
 		end
+		if needsSpell then return false end
 	end
 	local eaPlayer = gPlayers[iPlayer]
 	if eaPlayer.bIsFallen then
@@ -1026,8 +1032,6 @@ function TestSpellLearnable(iPlayer, iPerson, spellID, spellClass, bSuppressMini
 			if spellInfo.AndTechReq and not team:IsHasTech(GameInfoTypes[spellInfo.AndTechReq]) then return false end
 		end
 	end
-
-
 
 	if spellInfo.PantheismCult and not player:HasPolicy(GameInfoTypes.POLICY_PANTHEISM) then return end		--show cult spell only if Pantheistic
 	if spellInfo.ReligionNotFounded and gReligions[GameInfoTypes[spellInfo.ReligionNotFounded] ] then return false end
@@ -2983,6 +2987,48 @@ Do[GameInfoTypes.EA_SPELL_LECTIO_OCCULTUS] = function()
 	return true
 end
 
+--EA_SPELL_GREATER_LECTIO_OCCULTUS
+TestTarget[GameInfoTypes.EA_SPELL_GREATER_LECTIO_OCCULTUS] = function()
+	for iPos = 1, g_player:GetLengthResearchQueue() do
+		local iTech = g_player:GetQueuedResearch(iPos)
+		if gg_eaTechClass[iTech] == "Arcane" or gg_eaTechClass[iTech] == "ArcaneEvil" then
+			if g_player:CanResearch(iTech) then
+				g_int1 = iTech
+				return true
+			end
+		end
+	end
+	g_testTargetSwitch = 1
+	return false
+end
+
+SetUI[GameInfoTypes.EA_SPELL_GREATER_LECTIO_OCCULTUS] = function()
+	if g_bNonTargetTestsPassed then
+		if g_bAllTestsPassed then
+			local techName = Locale.Lookup(GameInfo.Technologies[g_int1].Description)
+			MapModData.text = "Convert " .. (g_modSpell * 2) .. " mana per turn into research toward " .. techName
+		elseif g_testTargetSwitch == 1 then
+			MapModData.text = "[COLOR_WARNING_TEXT]You must have an arcane technology in the research queue to cast this spell[ENDCOLOR]"
+		else
+			MapModData.text = "[COLOR_WARNING_TEXT]Can only be used in the caster's Tower or Temple[ENDCOLOR]"
+		end
+	end
+end
+
+SetAIValues[GameInfoTypes.EA_SPELL_GREATER_LECTIO_OCCULTUS] = function()
+	gg_aiOptionValues.b = g_modSpell * g_faith / 9999	
+end
+
+Do[GameInfoTypes.EA_SPELL_GREATER_LECTIO_OCCULTUS] = function()
+	--convert from mana to research points without any modification
+	local researchLeft = g_player:GetResearchCost(g_int1) - g_player:GetResearchProgress(g_int1) + 15
+	local pts = researchLeft < g_modSpell * 2 and researchLeft or g_modSpell * 2	--don't allow much overflow from this spell
+	local teamTechs = g_team:GetTeamTechs()
+	teamTechs:ChangeResearchProgress(g_int1, pts, g_player)
+	UseManaOrDivineFavor(g_iPlayer, g_iPerson, pts)
+	return true
+end
+
 --EA_SPELL_LECTIO_DIVINA
 TestTarget[GameInfoTypes.EA_SPELL_LECTIO_DIVINA] = function()
 	for iPos = 1, g_player:GetLengthResearchQueue() do
@@ -3019,6 +3065,48 @@ Do[GameInfoTypes.EA_SPELL_LECTIO_DIVINA] = function()
 	--convert from divine favor to research points without any modification
 	local researchLeft = g_player:GetResearchCost(g_int1) - g_player:GetResearchProgress(g_int1) + 15
 	local pts = researchLeft < g_modSpell and researchLeft or g_modSpell	--don't allow much overflow from this spell
+	local teamTechs = g_team:GetTeamTechs()
+	teamTechs:ChangeResearchProgress(g_int1, pts, g_player)
+	UseManaOrDivineFavor(g_iPlayer, g_iPerson, pts)
+	return true
+end
+
+--EA_SPELL_GREATER_LECTIO_DIVINA
+TestTarget[GameInfoTypes.EA_SPELL_GREATER_LECTIO_DIVINA] = function()
+	for iPos = 1, g_player:GetLengthResearchQueue() do
+		local iTech = g_player:GetQueuedResearch(iPos)
+		if gg_eaTechClass[iTech] == "Divine" then
+			if g_player:CanResearch(iTech) then
+				g_int1 = iTech
+				return true
+			end
+		end
+	end
+	g_testTargetSwitch = 1
+	return false
+end
+
+SetUI[GameInfoTypes.EA_SPELL_GREATER_LECTIO_DIVINA] = function()
+	if g_bNonTargetTestsPassed then
+		if g_bAllTestsPassed then
+			local techName = Locale.Lookup(GameInfo.Technologies[g_int1].Description)
+			MapModData.text = "Convert " .. (g_modSpell * 2) .. " divine favor per turn into research toward " .. techName
+		elseif g_testTargetSwitch == 1 then
+			MapModData.text = "[COLOR_WARNING_TEXT]You must have a divine technology in the research queue to cast this spell[ENDCOLOR]"
+		else
+			MapModData.text = "[COLOR_WARNING_TEXT]Can only be used in the caster's Temple[ENDCOLOR]"
+		end
+	end
+end
+
+SetAIValues[GameInfoTypes.EA_SPELL_GREATER_LECTIO_DIVINA] = function()
+	gg_aiOptionValues.b = g_modSpell * g_faith / 9999	--little better than non greater 
+end
+
+Do[GameInfoTypes.EA_SPELL_GREATER_LECTIO_DIVINA] = function()
+	--convert from divine favor to research points without any modification
+	local researchLeft = g_player:GetResearchCost(g_int1) - g_player:GetResearchProgress(g_int1) + 15
+	local pts = researchLeft < g_modSpell * 2 and researchLeft or g_modSpell * 2	--don't allow much overflow from this spell
 	local teamTechs = g_team:GetTeamTechs()
 	teamTechs:ChangeResearchProgress(g_int1, pts, g_player)
 	UseManaOrDivineFavor(g_iPlayer, g_iPerson, pts)

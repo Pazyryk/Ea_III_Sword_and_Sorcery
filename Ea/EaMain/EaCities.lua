@@ -56,7 +56,7 @@ local BUILDING_CULT_CAHRA_1F =				GameInfoTypes.BUILDING_CULT_CAHRA_1F
 local PROCESS_WORLD_WEAVE =					GameInfoTypes.PROCESS_WORLD_WEAVE
 local PROCESS_WORLD_SALVATION =				GameInfoTypes.PROCESS_WORLD_SALVATION
 local PROCESS_WORLD_CORRUPTION =			GameInfoTypes.PROCESS_WORLD_CORRUPTION
-
+local PROCESS_AHRIMANS_TRIBUTE =			GameInfoTypes.PROCESS_AHRIMANS_TRIBUTE
 local PROCESS_EA_BLESSINGS =				GameInfoTypes.PROCESS_EA_BLESSINGS
 local PROCESS_MAJOR_SPIRITS_TRIBUTE =		GameInfoTypes.PROCESS_MAJOR_SPIRITS_TRIBUTE
 local PROCESS_FAERIES_TRIBUTE =				GameInfoTypes.PROCESS_FAERIES_TRIBUTE
@@ -722,7 +722,7 @@ function CityPerCivTurn(iPlayer)		--full and city states
 				TestSetEligibleCityCults(city, eaCity, nil)
 
 				--Religion/Cult effects
-				if bAnraFounded then
+				if bAnraFounded and gWorld.evilControl ~= "Sealed" then
 					local consumedMana = city:GetNumFollowers(RELIGION_ANRA) * MANA_CONSUMED_PER_ANRA_FOLLOWER_PER_TURN
 					if 0 < consumedMana then
 						gWorld.sumOfAllMana = gWorld.sumOfAllMana - consumedMana
@@ -1552,6 +1552,11 @@ TestCityCanTrain[GameInfoTypes.UNIT_WHALING_BOATS] = function(iPlayer, iCity)
 	return false
 end
 
+local function OnPlayerCanMaintain(playerID, processTypeID)
+	if processTypeID == PROCESS_AHRIMANS_TRIBUTE and gWorld.evilControl == "Sealed" then return false end
+	return true
+end
+GameEvents.PlayerCanMaintain.Add(OnPlayerCanMaintain)
 
 --Some others we might use:
 --GameEvents.PlayerCanMaintain(playerID, processTypeID); (TestAll)

@@ -19,6 +19,8 @@ local EA_WONDER_ARCANE_TOWER =				GameInfoTypes.EA_WONDER_ARCANE_TOWER
 local EARACE_SIDHE =						GameInfoTypes.EARACE_SIDHE
 local EARACE_HELDEOFOL =					GameInfoTypes.EARACE_HELDEOFOL
 local EACIV_NEZELIBA =						GameInfoTypes.EACIV_NEZELIBA
+local FEATURE_FALLOUT =						GameInfoTypes.FEATURE_FALLOUT
+local FEATURE_BLIGHT =						GameInfoTypes.FEATURE_BLIGHT
 local IMPROVEMENT_ARCANE_TOWER =			GameInfoTypes.IMPROVEMENT_ARCANE_TOWER
 local INVISIBLE_SUBMARINE =					GameInfoTypes.INVISIBLE_SUBMARINE
 local LEADER_FAND =							GameInfoTypes.LEADER_FAND
@@ -4110,6 +4112,13 @@ Finish[GameInfoTypes.EA_ACTION_RITUAL_SEAL_AHRIMANS_VAULT] = function()
 	gWorld.evilControl = "Sealed"
 	g_eaPlayer.protectorProphsRituals = (g_eaPlayer.protectorProphsRituals or 0) + 50
 	UseManaOrDivineFavor(g_iPlayer, nil, g_int1, false)
+	--remove breach (replace with blight)
+	for iPlot = 0, Map.GetNumPlots() - 1 do
+		local plot = GetPlotByIndex(iPlot)
+		if plot:GetFeatureType() == FEATURE_FALLOUT then
+			plot:SetFeatureType(FEATURE_BLIGHT)
+		end
+	end
 	return true
 end
 

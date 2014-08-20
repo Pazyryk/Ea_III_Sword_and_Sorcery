@@ -33,6 +33,12 @@
 		<Row Tag="TXT_KEY_EA_SPELL_LECTIO_OCCULTUS_HELP">
 			<Text>Converts mana to research in arcane techs. The amount per turn is equal to the caster's Divination Modifier.</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_GREATER_LECTIO_OCCULTUS">
+			<Text>Greater Lectio Occultus</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_GREATER_LECTIO_OCCULTUS_HELP">
+			<Text>Converts mana to research in arcane techs. The amount per turn is equal to the caster's Divination Modifier times two.</Text>
+		</Row>
 		
 		<Row Tag="TXT_KEY_EA_SPELL_DISPEL_HEXES">
 			<Text>Dispel Hexes</Text>
@@ -360,6 +366,15 @@
 		<Row Tag="TXT_KEY_EA_SPELL_LECTIO_DIVINA_HELP">
 			<Text>Converts divina favor to research in divine techs (Divine Liturgy to Knowledge of Heaven). The amount per turn is equal to the caster's Spell Modifier.</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_GREATER_LECTIO_DIVINA">
+			<Text>Greater Lectio Divina</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_SPELL_GREATER_LECTIO_DIVINA_HELP">
+			<Text>Converts divina favor to research in divine techs (Divine Liturgy to Knowledge of Heaven). The amount per turn is equal to the caster's Spell Modifier times two.</Text>
+		</Row>
+
+
+		
 		<Row Tag="TXT_KEY_EA_SPELL_BLESS">
 			<Text>Bless</Text>
 		</Row>

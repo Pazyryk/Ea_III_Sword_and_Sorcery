@@ -85,6 +85,8 @@ local RELIGION_CULT_OF_PLOUTON =			GameInfoTypes.RELIGION_CULT_OF_PLOUTON
 local RELIGION_CULT_OF_CAHRA =				GameInfoTypes.RELIGION_CULT_OF_CAHRA
 local RELIGION_CULT_OF_BAKKHEIA =			GameInfoTypes.RELIGION_CULT_OF_BAKKHEIA
 
+local ACCESS_ARIMANS_VAULT_PLOTS = 0		--set below
+
 
 --global tables
 local Players =						Players
@@ -440,21 +442,21 @@ function EaPlotsInit(bNewGame)
 	end
 
 	--cached map plots that may be useful
+	gg_cachedMapPlots.accessAhrimansVault = {}
 	for featureID, nwTable in pairs(gg_naturalWonders) do
 		if featureID == GameInfoTypes.FEATURE_SOLOMONS_MINES then		--really Ahriman's Vault
 			local plot = GetPlotFromXY(nwTable.x, nwTable.y)
 			for adjPlot in AdjacentPlotIterator(plot) do
 				if not (adjPlot:IsWater() or adjPlot:IsMountain() or adjPlot:IsImpassable()) then
-					gg_cachedMapPlots.accessAhrimansVault = gg_cachedMapPlots.accessAhrimansVault or {}
 					gg_cachedMapPlots.accessAhrimansVault[adjPlot:GetPlotIndex()] = true
+					ACCESS_ARIMANS_VAULT_PLOTS = ACCESS_ARIMANS_VAULT_PLOTS + 1
 				end
 			end
 		end
 	end
-	if not gg_cachedMapPlots.accessAhrimansVault then
+	if ACCESS_ARIMANS_VAULT_PLOTS == 0 then
 		error("Ahriman's Vault cannot be reached: this map is unplaybable; RESTART GAME may fix this problem")
 	end
-
 end
 
 --------------------------------------------------------------
@@ -578,6 +580,7 @@ function BlightPlot(plot, iPlayer, iPerson, strength, bTestCanCast)		--last 4 ar
 	local featureID = plot:GetFeatureType()
 	if featureID == FEATURE_BLIGHT or featureID == FEATURE_FALLOUT or featureID >= FEATURE_CRATER or plot:IsCity() then return false end
 	if plot:IsWater() and featureID ~= FEATURE_ATOLL and not plot:IsLake() and plot:GetResourceType(-1) == -1 and not plot:IsAdjacentToLand() then return false end
+	if gWorld.evilControl == "Sealed" then return false end
 
 	if bTestCanCast then return true end
 
@@ -649,6 +652,7 @@ function BreachPlot(plot, iPlayer, iPerson, strength, bTestCanBreach)		--last 4 
 	if featureID == FEATURE_FALLOUT or featureID >= FEATURE_CRATER then return false end
 	local improvementID = plot:GetImprovementType()
 	if blightSafeImprovement[improvementID] then return false end		--saves us trouble for now
+	if gWorld.evilControl == "Sealed" then return false end
 
 	--breach spreads in fault-like pattern; doesn't want 2 adjacent
 	local bOneAdj = false
@@ -894,8 +898,18 @@ end
 function ResetTablesForPlotLoop()
 
 	--bad map; keep harassing player so they don't discover this is important on turn 250
-	if not gg_cachedMapPlots.accessAhrimansVault then
+	if ACCESS_ARIMANS_VAULT_PLOTS == 0 then
 		error("Ahriman's Vault cannot be reached: this map is unplaybable")
+	end
+
+	--set up the demon spawn plot from Ahriman's Valut
+	local count = Rand(ACCESS_ARIMANS_VAULT_PLOTS, "hello")
+	for iPlot in pairs (gg_cachedMapPlots.accessAhrimansVault) do
+		if count == 0 then
+			gg_demonSpawnPlots[1] = iPlot
+			break
+		end
+		count = count - 1
 	end
 
 	local numForestDominionPlayers = 0
@@ -1081,7 +1095,7 @@ function PlotsPerTurn()
 	local grapesWorkedByBakkeiaFollower = 0
 	local earthResWorkedByPloutonFollower = 0
 	gg_undeadSpawnPlots.pos = 0
-	gg_demonSpawnPlots.pos = 0
+	gg_demonSpawnPlots.pos = gWorld.evilControl == "Sealed" and 0 or 1			--1st position always goes to Ahriman's Vault
 
 	--undead/demon spawning and breach/blight spread
 	local blightBreachSpread, blightSpawn, breachSpawn = GetArmageddonPlotStats()
@@ -1105,7 +1119,8 @@ function PlotsPerTurn()
 
 		--Breach/Blight effects
 		if featureID == FEATURE_FALLOUT then
-
+			gg_demonSpawnPlots.pos = gg_demonSpawnPlots.pos + 1
+			gg_demonSpawnPlots[gg_demonSpawnPlots.pos] = iPlot
 			--spread
 			if 0 < blightBreachSpread then
 				local d100 = Rand(SPREAD_CHANCE_DENOMINATOR, "hello")
@@ -1271,26 +1286,23 @@ function PlotsPerTurn()
 
 			if bFullCiv then
 				--improved/improvable status for Domination VC
-				if improvementID ~= -1 and improvementID ~= IMPROVEMENT_BLIGHT then
-					eaOwner.improvedPlots = eaOwner.improvedPlots + 1
-				end
 				local bImprovable = true
-				if improvementID == -1 or improvementID == IMPROVEMENT_BLIGHT then		--no existing improvement
-					if resourceID == -1 or resourceID == RESOURCE_BLIGHT then			--no resource
-						if terrainID == TERRAIN_SNOW or cannotImproveFeatures[featureID] then
-							bImprovable = false
-						else
-							if plotTypeID == PlotTypes.PLOT_LAND then
-								if not bFreshWater and terrainID ~= TERRAIN_GRASS then
-									bImprovable = false
-								end
-							elseif plotTypeID == PlotTypes.PLOT_OCEAN then
-								if not plot:IsLake() then
-									bImprovable = false
-								end
-							elseif plotTypeID == PlotTypes.PLOT_MOUNTAIN then
+				if bIsCity or (improvementID ~= -1 and improvementID ~= IMPROVEMENT_BLIGHT) then
+					eaOwner.improvedPlots = eaOwner.improvedPlots + 1
+				elseif resourceID == -1 or resourceID == RESOURCE_BLIGHT then			--no resource
+					if terrainID == TERRAIN_SNOW or cannotImproveFeatures[featureID] then
+						bImprovable = false
+					else
+						if plotTypeID == PlotTypes.PLOT_LAND then
+							if not bFreshWater and terrainID ~= TERRAIN_GRASS then
 								bImprovable = false
 							end
+						elseif plotTypeID == PlotTypes.PLOT_OCEAN then
+							if not plot:IsLake() then
+								bImprovable = false
+							end
+						elseif plotTypeID == PlotTypes.PLOT_MOUNTAIN then
+							bImprovable = false
 						end
 					end
 				end

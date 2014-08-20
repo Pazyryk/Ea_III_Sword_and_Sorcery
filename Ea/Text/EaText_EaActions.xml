@@ -428,74 +428,74 @@
 			<Text>Write the Tome of Beasts</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_BEASTS_HELP">
-			<Text>{TXT_KEY_EA_ARTIFACT_TOME_OF_EQUUS_HELP}</Text>
+			<Text>{TXT_KEY_EA_ARTIFACT_TOME_OF_BEASTS_HELP}</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_THE_LEVIATHAN">
 			<Text>Write the Tome of the Leviathan</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_THE_LEVIATHAN_HELP">
-			<Text>{TXT_KEY_EA_ARTIFACT_TOME_OF_EQUUS_HELP}</Text>
+			<Text>{TXT_KEY_EA_ARTIFACT_TOME_OF_THE_LEVIATHAN_HELP}</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_HARVESTS">
 			<Text>Write the Tome of Harvests</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_HARVESTS_HELP">
-			<Text>{TXT_KEY_EA_ARTIFACT_TOME_OF_EQUUS_HELP}</Text>
+			<Text>{TXT_KEY_EA_ARTIFACT_TOME_OF_HARVESTS_HELP}</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_TOMES">
 			<Text>Write the Tome of Tomes</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_TOMES_HELP">
-			<Text>{TXT_KEY_EA_ARTIFACT_TOME_OF_EQUUS_HELP}</Text>
+			<Text>{TXT_KEY_EA_ARTIFACT_TOME_OF_TOMES_HELP}</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_AESTHETICS">
 			<Text>Write the Tome of Æsthetics</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_AESTHETICS_HELP">
-			<Text>{TXT_KEY_EA_ARTIFACT_TOME_OF_EQUUS_HELP}</Text>
+			<Text>{TXT_KEY_EA_ARTIFACT_TOME_OF_AESTHETICS_HELP}</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_AXIOMS">
 			<Text>Write the Tome of Axioms</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_AXIOMS_HELP">
-			<Text>{TXT_KEY_EA_ARTIFACT_TOME_OF_EQUUS_HELP}</Text>
+			<Text>{TXT_KEY_EA_ARTIFACT_TOME_OF_AXIOMS_HELP}</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_FORM">
 			<Text>Write the Tome of Form</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_FORM_HELP">
-			<Text>{TXT_KEY_EA_ARTIFACT_TOME_OF_EQUUS_HELP}</Text>
+			<Text>{TXT_KEY_EA_ARTIFACT_TOME_OF_FORM_HELP}</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_METALLURGY">
 			<Text>Write the Tome of Metallurgy</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_TOME_OF_METALLURGY_HELP">
-			<Text>{TXT_KEY_EA_ARTIFACT_TOME_OF_EQUUS_HELP}</Text>
+			<Text>{TXT_KEY_EA_ARTIFACT_TOME_OF_METALLURGY_HELP}</Text>
 		</Row>
 		
 		<Row Tag="TXT_KEY_EA_ACTION_TOME_CORPUS_HERMETICUM">
 			<Text>Write the Corpus Hermeticum</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_TOME_CORPUS_HERMETICUM_HELP">
-			<Text>{TXT_KEY_EA_ARTIFACT_TOME_OF_EQUUS_HELP}</Text>
+			<Text>{TXT_KEY_EA_ARTIFACT_TOME_CORPUS_HERMETICUM_HELP}</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_TOME_NECRONOMICON">
 			<Text>Write the Necronomicon</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_TOME_NECRONOMICON_HELP">
-			<Text>{TXT_KEY_EA_ARTIFACT_TOME_OF_EQUUS_HELP}</Text>
+			<Text>{TXT_KEY_EA_ARTIFACT_TOME_NECRONOMICON_HELP}</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_TOME_ARS_GOETIA">
 			<Text>Write the Ars Goetia</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_TOME_ARS_GOETIA_HELP">
-			<Text>{TXT_KEY_EA_ARTIFACT_TOME_OF_EQUUS_HELP}</Text>
+			<Text>{TXT_KEY_EA_ARTIFACT_TOME_ARS_GOETIA_HELP}</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_TOME_BOOK_OF_EIBON">
 			<Text>Write the Book of Eibon</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_ACTION_TOME_BOOK_OF_EIBON_HELP">
-			<Text>{TXT_KEY_EA_ARTIFACT_TOME_OF_EQUUS_HELP}</Text>
+			<Text>{TXT_KEY_EA_ARTIFACT_TOME_BOOK_OF_EIBON_HELP}</Text>
 		</Row>
 
 		<Row Tag="TXT_KEY_EA_ACTION_FOUNDRY">

@@ -56,13 +56,15 @@ CREATE TABLE EaActions ('ID' INTEGER PRIMARY KEY AUTOINCREMENT,
 						'NotGPClass' TEXT DEFAULT NULL,		
 						'GPSubclass' TEXT DEFAULT NULL,	
 						'OrGPSubclass' TEXT DEFAULT NULL,
-						'ExcludeGPSubclass' TEXT DEFAULT NULL,	
+						'ExcludeGPSubclass' TEXT DEFAULT NULL,
+						'RestrictedToGPSubclass' TEXT DEFAULT NULL,	--only added for spell now
 						'LevelReq' INTEGER DEFAULT NULL,
 						'PromotionReq' TEXT DEFAULT NULL,
 						'PromotionDisallow' TEXT DEFAULT NULL,
 						'PromotionDisallow2' TEXT DEFAULT NULL,
 						'PromotionDisallow3' TEXT DEFAULT NULL,
 						'PantheismCult' TEXT DEFAULT NULL,			--doesn't do anything now except restrict to pantheistic
+						'KnowsSpell' TEXT DEFAULT NULL,				--only works for spell learning
 						--non-GP caster prereqs
 						'UnitCombatType' TEXT DEFAULT NULL,		
 						'NormalCombatUnit' BOOLEAN DEFAULT NULL,		
@@ -145,10 +147,10 @@ INSERT INTO EaActions (Type,			UnitTypePrefix1,		UnitTypePrefix2,		UnitTypePrefi
 ('EA_ACTION_UPGRD_IMMORTALS',			'UNIT_WARRIORS',		'UNIT_LIGHT_INFANTRY',	'UNIT_RANGERS',		'TECH_MITHRIL_WORKING',	'UNIT_IMMORTALS'		),
 ('EA_ACTION_UPGRD_ARQUEBUSSMEN',		'UNIT_ARCHERS',			NULL,					NULL,				'TECH_MACHINERY',		'UNIT_ARQUEBUSSMEN'		),
 ('EA_ACTION_UPGRD_BOWMEN',				'UNIT_TRACKERS',		NULL,					NULL,				'TECH_BOWYERS',			'UNIT_BOWMEN'			),
-('EA_ACTION_UPGRD_MARKSMEN',			'UNIT_RANGERS',			NULL,					NULL,				'TECH_BOWYERS',			'UNIT_MARKSMEN'			),
-('EA_ACTION_UPGRD_ARMORED_CAV',			'UNIT_HORSEMEN',		NULL,					NULL,				'TECH_HORSEBACK_RIDING','UNIT_ARMORED_CAVALRY'	),
+('EA_ACTION_UPGRD_MARKSMEN',			'UNIT_RANGERS',			NULL,					NULL,				'TECH_MARKSMANSHIP',	'UNIT_MARKSMEN'			),
+('EA_ACTION_UPGRD_ARMORED_CAV',			'UNIT_HORSEMEN',		NULL,					NULL,				'TECH_STIRRUPS',		'UNIT_ARMORED_CAVALRY'	),
 ('EA_ACTION_UPGRD_CATAPHRACTS',			'UNIT_EQUITES',			'UNIT_RANGERS',			NULL,				'TECH_WAR_HORSES',		'UNIT_CATAPHRACTS'		),
-('EA_ACTION_UPGRD_CLIBANARII',			'UNIT_EQUITES',			'UNIT_RANGERS',			NULL,				'TECH_WAR_HORSES',		'UNIT_CLIBANARII'		),
+('EA_ACTION_UPGRD_CLIBANARII',			'UNIT_EQUITES',			'UNIT_RANGERS',			NULL,				'TECH_MITHRIL_WORKING',	'UNIT_CLIBANARII'		),
 ('EA_ACTION_UPGRD_F_CATAPULTS',			'UNIT_CATAPULTS',		NULL,					NULL,				'TECH_MATHEMATICS',		'UNIT_FIRE_CATAPULTS'	),
 ('EA_ACTION_UPGRD_F_TREBUCHETS',		'UNIT_TREBUCHETS',		NULL,					NULL,				'TECH_MECHANICS',		'UNIT_FIRE_TREBUCHETS'	),
 ('EA_ACTION_UPGRD_SLAVES_WARRIORS',		'UNIT_SLAVES',			NULL,					NULL,				NULL,					'UNIT_WARRIORS'			);
@@ -156,9 +158,11 @@ INSERT INTO EaActions (Type,			UnitTypePrefix1,		UnitTypePrefix2,		UnitTypePrefi
 UPDATE EaActions SET Description = 'TXT_KEY_COMMAND_UPGRADE' WHERE Type GLOB 'EA_ACTION_UPGRD_*';
 UPDATE EaActions SET UIType = 'Action', AITarget = 'Self', OwnTerritory = 1, IconIndex = 44, IconAtlas = 'UNIT_ACTION_ATLAS' WHERE UnitUpgradeTypePrefix IS NOT NULL;
 UPDATE EaActions SET AndTechReq = 'TECH_CHEMISTRY' WHERE Type = 'EA_ACTION_UPGRD_ARQUEBUSSMEN';
+UPDATE EaActions SET AndTechReq = 'TECH_WAR_HORSES' WHERE Type = 'EA_ACTION_UPGRD_CLIBANARII';
 UPDATE EaActions SET NormalCombatUnit = 1 WHERE UnitUpgradeTypePrefix IS NOT NULL AND Type != 'EA_ACTION_UPGRD_SLAVES_WARRIORS';
 UPDATE EaActions SET PolicyReq = 'POLICY_SLAVE_ARMIES' WHERE Type = 'EA_ACTION_UPGRD_SLAVES_WARRIORS';
 
+--
 --GP actions
 --Lua assumes that EA_ACTION_TAKE_LEADERSHIP is the first GP action
 
@@ -391,6 +395,7 @@ UPDATE EaActions SET Description = 'TXT_KEY_' || Type, Help = 'TXT_KEY_' || Type
 --Arcane
 INSERT INTO EaActions (Type,			SpellClass,	GPModType1,				TechReq,						FinishMoves,	City,	AITarget,			AICombatRole,	TurnsToComplete,	HumanVisibleFX,	IconIndex,	IconAtlas					) VALUES
 ('EA_SPELL_LECTIO_OCCULTUS',			'Arcane',	'EAMOD_DIVINATION',		'TECH_THAUMATURGY',				1,				'Not',	'TowerTemple',		NULL,			1000,				NULL,			1,			'EA_SPELLS_ATLAS_ARCANE1'	),
+('EA_SPELL_GREATER_LECTIO_OCCULTUS',	'Arcane',	'EAMOD_DIVINATION',		NULL,							1,				'Not',	'TowerTemple',		NULL,			1000,				NULL,			1,			'EA_SPELLS_ATLAS_ARCANE1'	),
 ('EA_SPELL_SCRYING',					'Arcane',	'EAMOD_DIVINATION',		'TECH_THAUMATURGY',				NULL,			NULL,	NULL,				NULL,			2,					1,				6,			'EA_SPELLS_ATLAS_ARCANE1'	),
 ('EA_SPELL_SEEING_EYE_GLYPH',			'Arcane',	'EAMOD_DIVINATION',		'TECH_THAUMATURGY',				1,				'Not',	'SeeingEyeGlyph',	NULL,			2,					1,				4,			'EA_SPELLS_ATLAS_ARCANE1'	),
 ('EA_SPELL_DETECT_GLYPHS_RUNES_WARDS',	'Arcane',	'EAMOD_DIVINATION',		'TECH_THAUMATURGY',				1,				NULL,	'Self',				NULL,			1,					1,				5,			'EA_SPELLS_ATLAS_ARCANE1'	),
@@ -455,14 +460,17 @@ INSERT INTO EaActions (Type,			SpellClass,	GPModType1,				TechReq,						FinishMo
 --('EA_SPELL_PHANTASMAGORIA',			'Arcane',	'EAMOD_ILLUSION',		'TECH_PHANTASMAGORIA',			1,				NULL,	NULL,				NULL,			1,					1,				0,			'EA_SPELLS_ATLAS_ARCANE2'	);
 
 UPDATE EaActions SET AITarget2 = 'SpacedRingsWide' WHERE Type IN ('EA_SPELL_BREACH', 'EA_SPELL_BLIGHT');
-UPDATE EaActions SET TowerTempleOnly = 1 WHERE Type IN ('EA_SPELL_LECTIO_OCCULTUS');
---
+UPDATE EaActions SET TowerTempleOnly = 1 WHERE Type IN ('EA_SPELL_LECTIO_OCCULTUS', 'EA_SPELL_GREATER_LECTIO_OCCULTUS');
+UPDATE EaActions SET RestrictedToGPSubclass = 'Archmage' WHERE Type = 'EA_SPELL_GREATER_LECTIO_OCCULTUS';
+
+
 --UPDATE EaActions SET MinimumModToLearn = 15 WHERE Type = 'EA_SPELL_TIME_STOP';
 
 --Divine
 INSERT INTO EaActions (Type,			SpellClass,	GPModType1,				TechReq,						FinishMoves,	City,	AITarget,			AICombatRole,	FallenAltSpell,					TurnsToComplete,	HumanVisibleFX,	IconIndex,	IconAtlas					) VALUES
 ('EA_SPELL_HEAL',						'Divine',	'EAMOD_NECROMANCY',		NULL,							1,				NULL,	NULL,				'Any',			'EA_SPELL_HURT',				1,					1,				0,			'EA_SPELLS_ATLAS_DIVINE1'	),
 ('EA_SPELL_LECTIO_DIVINA',				'Divine',	'EAMOD_DIVINATION',		'TECH_DIVINE_LITURGY',			1,				'Not',	'Temple',			NULL,			'EA_SPELL_LECTIO_OCCULTUS',		1000,				NULL,			8,			'EA_SPELLS_ATLAS_DIVINE1'	),
+('EA_SPELL_GREATER_LECTIO_DIVINA',		'Divine',	'EAMOD_DIVINATION',		NULL,							1,				'Not',	'Temple',			NULL,			'EA_SPELL_LECTIO_OCCULTUS',		1000,				NULL,			8,			'EA_SPELLS_ATLAS_DIVINE1'	),
 ('EA_SPELL_BLESS',						'Divine',	'EAMOD_CONJURATION',	'TECH_DIVINE_LITURGY',			1,				NULL,	NULL,				'Any',			'EA_SPELL_CURSE',				1,					1,				1,			'EA_SPELLS_ATLAS_DIVINE1'	),
 ('EA_SPELL_PROTECTION_FROM_EVIL',		'Divine',	'EAMOD_ABJURATION',		'TECH_DIVINE_LITURGY',			1,				NULL,	NULL,				'Any',			'EA_SPELL_EVIL_EYE',			1,					1,				2,			'EA_SPELLS_ATLAS_DIVINE1'	),
 ('EA_SPELL_SANCTIFY',					'Divine',	'EAMOD_ABJURATION',		'TECH_DIVINE_VITALISM',			1,				NULL,	NULL,				NULL,			'EA_SPELL_DEFILE',				1,					1,				3,			'EA_SPELLS_ATLAS_DIVINE1'	),
@@ -512,8 +520,9 @@ UPDATE EaActions SET Description = 'TXT_KEY_' || Type, Help = 'TXT_KEY_' || Type
 UPDATE EaActions SET GPOnly = 1, ConsiderTowerTemple = 1, AhrimansVaultMatters = 1, UIType = 'Spell' WHERE SpellClass IS NOT NULL;
 UPDATE EaActions SET ProgressHolder = 'Self' WHERE SpellClass IS NOT NULL AND TurnsToComplete > 1;
 
-UPDATE EaActions SET TowerTempleOnly = 1 WHERE Type IN ('EA_SPELL_LECTIO_DIVINA');
-UPDATE EaActions SET ExcludeGPSubclass = 'Druid' WHERE Type IN ('EA_SPELL_LECTIO_DIVINA');
+UPDATE EaActions SET TowerTempleOnly = 1, ExcludeGPSubclass = 'Druid' WHERE Type IN ('EA_SPELL_LECTIO_DIVINA', 'EA_SPELL_GREATER_LECTIO_DIVINA');
+UPDATE EaActions SET RestrictedToGPSubclass = 'Priest', LevelReq = 15 WHERE Type = 'EA_SPELL_GREATER_LECTIO_DIVINA';
+
 
 UPDATE EaActions SET PolicyTrumpsTechReq = 'POLICY_WITCHCRAFT' WHERE Type IN ('EA_SPELL_SCRYING', 'EA_SPELL_SLOW', 'EA_SPELL_HEX', 'EA_SPELL_DEATH_STAY', 'EA_SPELL_SLEEP');
 UPDATE EaActions SET GPModType2 = 'EAMOD_DEVOTION' WHERE SpellClass IN ('Divine', 'Both');

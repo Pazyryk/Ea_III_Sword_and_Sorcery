@@ -150,7 +150,7 @@ function UseManaOrDivineFavor(iPlayer, iPerson, pts, bNoDrain, consumedFloatUpPl
 		end
 	end
 
-	if eaPlayer.bIsFallen or iPlayer == BARB_PLAYER_INDEX then
+	if (eaPlayer.bIsFallen or iPlayer == BARB_PLAYER_INDEX) and gWorld.evilControl ~= "Sealed" then
 		gWorld.sumOfAllMana = gWorld.sumOfAllMana - pts
 		eaPlayer.manaConsumed = eaPlayer.manaConsumed + pts
 		if not consumedFloatUpPlot then

@@ -353,6 +353,8 @@ function FoundReligion(iPlayer, iCity, religionID)	--call should make sure that 
 	local belief2ID = religion.EaInitialBelief2 and GameInfoTypes[religion.EaInitialBelief2] or -1
 	local belief3ID = religion.EaInitialBelief3 and GameInfoTypes[religion.EaInitialBelief3] or -1
 
+	if religionID == RELIGION_ANRA and gWorld.evilControl == "Sealed" then return end	--don't know how but maybe
+
 	--get credit for converting Anra followers
 	local anraFollowersBefore = not eaPlayer.bIsFallen and gReligions[RELIGION_ANRA] and city:GetNumFollowers(RELIGION_ANRA) or 0
 
@@ -605,8 +607,10 @@ function BecomeFallen(iPlayer)		--this could happen before, during or after the 
 	RefreshBeliefs()	--may or may not be redundant with FoundReligion call, but that's OK
 
 	--Burn a little mana at no cost to civ
-	gWorld.sumOfAllMana = gWorld.sumOfAllMana - MANA_CONSUMED_BY_CIV_FALL
-	eaPlayer.manaConsumed = eaPlayer.manaConsumed + MANA_CONSUMED_BY_CIV_FALL
+	if gWorld.evilControl ~= "Sealed" then
+		gWorld.sumOfAllMana = gWorld.sumOfAllMana - MANA_CONSUMED_BY_CIV_FALL
+		eaPlayer.manaConsumed = eaPlayer.manaConsumed + MANA_CONSUMED_BY_CIV_FALL
+	end
 end
 
 

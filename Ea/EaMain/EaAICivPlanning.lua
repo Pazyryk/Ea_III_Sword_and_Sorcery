@@ -570,7 +570,8 @@ function AIPickPolicy(iPlayer)	--called from EaPolicies.lua
 	local planSetNum, planNum = 1, 1
 	local planSet = planSets[1]
 	local plans = eaPlayer[planSet]
-	local planID = plans[1]	
+	local planID = plans[1]
+	local bGeneric = false
 
 	while true do
 		if planID then
@@ -660,9 +661,16 @@ function AIPickPolicy(iPlayer)	--called from EaPolicies.lua
 					plans = eaPlayer[planSet]
 					planNum = 1
 					planID = plans[1]
-				else 
-					planID = EACIVPLAN_GENERIC
-					print("!!!! WARNING: AI resorting to generic plan for policies !!!!")
+				else
+					if bGeneric then
+						print("!!!! ERROR: AI could not find any more policies to take !!!!")
+						player:ChangeNumFreePolicies(-1)
+						return
+					else
+						print("!!!! WARNING: AI resorting to generic plan for policies !!!!")
+						bGeneric = true
+						planID = EACIVPLAN_GENERIC
+					end
 				end
 			end
 		end

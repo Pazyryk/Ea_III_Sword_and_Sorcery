@@ -12,7 +12,6 @@ print("Loading EaPlots.lua...")
 local STARTING_SUM_OF_ALL_MANA =		EaSettings.STARTING_SUM_OF_ALL_MANA
 local SPREAD_CHANCE_DENOMINATOR =		EaSettings.SPREAD_CHANCE_DENOMINATOR
 local TIMBER_DURATION_FROM_CHOP =		EaSettings.TIMBER_DURATION_FROM_CHOP
-local HARMONIC_MEAN_SHIFT =				EaSettings.HARMONIC_MEAN_SHIFT
 
 --------------------------------------------------------------
 -- File Locals
@@ -88,14 +87,14 @@ local RELIGION_CULT_OF_BAKKHEIA =			GameInfoTypes.RELIGION_CULT_OF_BAKKHEIA
 
 
 --global tables
-local Players =		Players
-local Team =		Teams
-local gWorld =		gWorld
-local gPlayers =	gPlayers
-local playerType =	MapModData.playerType
-local bHidden =		MapModData.bHidden
-local fullCivs =	MapModData.fullCivs
-local realCivs =	MapModData.realCivs
+local Players =						Players
+local Team =						Teams
+local gWorld =						gWorld
+local gPlayers =					gPlayers
+local playerType =					MapModData.playerType
+local bHidden =						MapModData.bHidden
+local fullCivs =					MapModData.fullCivs
+local realCivs =					MapModData.realCivs
 local gg_init =						gg_init
 local gg_animalSpawnPlots =			gg_animalSpawnPlots
 local gg_animalSpawnInhibitTeams =	gg_animalSpawnInhibitTeams
@@ -108,14 +107,14 @@ local gg_naturalWonders =			gg_naturalWonders
 local gg_cachedMapPlots =			gg_cachedMapPlots
 
 --localized functions
-local Rand = Map.Rand
-local PlotDistance = Map.PlotDistance
-local GetPlotFromXY = Map.GetPlot
-local GetPlotByIndex = Map.GetPlotByIndex
-local GetPlotIndexFromXY = GetPlotIndexFromXY
-local floor = math.floor
-local HandleError41 = HandleError41
-local HandleError31 = HandleError31
+local Rand =						Map.Rand
+local PlotDistance =				Map.PlotDistance
+local GetPlotFromXY =				Map.GetPlot
+local GetPlotByIndex =				Map.GetPlotByIndex
+local GetPlotIndexFromXY =			GetPlotIndexFromXY
+local floor =						math.floor
+local HandleError41 =				HandleError41
+local HandleError31 =				HandleError31
 
 --file control
 local g_bNotVisibleByResourceID = {}
@@ -163,7 +162,7 @@ for row in GameInfo.Building_EaConvertImprovedResource() do
 	resourceBuildingConverts[GameInfoTypes[row.ImprovedResource]] = {building = GameInfoTypes[row.BuildingType], resource = GameInfoTypes[row.AddResource]}
 end
 
-local livTerTypeByID = {[FEATURE_FOREST]="forest"; [FEATURE_JUNGLE]="jungle"; [FEATURE_MARSH]="marsh"}
+local livTerTypeByID = {[FEATURE_FOREST] = "forest", [FEATURE_JUNGLE] = "jungle", [FEATURE_MARSH] = "marsh"}
 local livTerFeatureIDByType = {FEATURE_FOREST, FEATURE_JUNGLE, FEATURE_MARSH}	--1, 2, 3
 
 local blightSafeImprovement = {}
@@ -305,13 +304,24 @@ function EaPlotsInit(bNewGame)
 		end
 
 		print(" - originalForestJunglePlots, validForestJunglePlots, ownablePlots = ", originalForestJunglePlots, validForestJunglePlots, ownablePlots)
+
+		--[[
 		MapModData.validForestJunglePlots = validForestJunglePlots
 		MapModData.originalForestJunglePlots = originalForestJunglePlots
 		MapModData.ownablePlots = ownablePlots
+		]]
+
+		gWorld.validForestJunglePlots = validForestJunglePlots
+		gWorld.originalForestJunglePlots = originalForestJunglePlots
+		gWorld.ownablePlots = ownablePlots
+
+
+		--[[
 		local SaveDB = Modding.OpenSaveData()
 		SaveDB.SetValue("ValidForestJunglePlots", validForestJunglePlots)
 		SaveDB.SetValue("OriginalForestJunglePlots", originalForestJunglePlots)
 		SaveDB.SetValue("OwnablePlots", ownablePlots)
+		]]
 
 		--Weaken to 0 around Man starting plot (3 radius); remove from 1 radius
 		for iPlayer, eaPlayer in pairs(realCivs) do
@@ -338,10 +348,12 @@ function EaPlotsInit(bNewGame)
 			end
 		end
 	else		--Loaded game
+		--[[
 		local SaveDB = Modding.OpenSaveData()
 		MapModData.validForestJunglePlots = SaveDB.GetValue("ValidForestJunglePlots")
 		MapModData.originalForestJunglePlots = SaveDB.GetValue("OriginalForestJunglePlots")
 		MapModData.ownablePlots = SaveDB.GetValue("OwnablePlots")
+		]]
 	end
 
 	--stored stuff needed for new and loaded games
@@ -353,7 +365,7 @@ function EaPlotsInit(bNewGame)
 		gg_cityRemoteImproveCount[iPlayer] = {}
 	end
 	local totalLivingTerrainStrength = 0
-	local harmonicMeanDenominator = 0
+	local totalLivingTerrainPlots = 0
 	for iPlot = 0, Map.GetNumPlots() - 1 do
 		local x, y = GetXYFromPlotIndex(iPlot)
 		local plot = GetPlotByIndex(iPlot)
@@ -377,12 +389,18 @@ function EaPlotsInit(bNewGame)
 			gg_remoteImprovePlot[iPlot] = "Lake"
 		end
 		--tracking for strength conversion
-		local featureID = plot:GetFeatureType()
-		if livTerTypeByID[featureID] and improvementID == -1 then
-			g_nonImprovedLivingTerrainStr[iPlot] = plot:GetLivingTerrainStrength()
+		if livTerTypeByID[featureID] then
+			totalLivingTerrainPlots = totalLivingTerrainPlots + 1
+			if improvementID == -1 then
+				totalLivingTerrainStrength = totalLivingTerrainStrength + strength		--should be up-to-date if code above is done correctly
+				g_nonImprovedLivingTerrainStr[iPlot] = strength
+			else
+				totalLivingTerrainStrength = totalLivingTerrainStrength + strength / 3	--dicounted for improvement
+			end
 		else
 			g_nonImprovedLivingTerrainStr[iPlot] = nil
 		end
+
 		--Natural Wonders
 		if featureID ~= -1 then
 			local featureInfo = GameInfo.Features[featureID]
@@ -411,14 +429,15 @@ function EaPlotsInit(bNewGame)
 				gg_naturalWonders[featureInfo.ID] = nwTable
 			end
 		end
-		totalLivingTerrainStrength = totalLivingTerrainStrength + (improvementID == -1 and strength or strength/3)
-		if plotTypeID ~= PlotTypes.PLOT_MOUNTAIN and (terrainID == TERRAIN_GRASS or terrainID == TERRAIN_PLAINS or terrainID == TERRAIN_TUNDRA) then
-			harmonicMeanDenominator = harmonicMeanDenominator + (livTerTypeByID[featureID] and 1/(strength + HARMONIC_MEAN_SHIFT) or 1/(HARMONIC_MEAN_SHIFT - 1))
-		end
 	end
 	
-	MapModData.totalLivingTerrainStrength = floor(totalLivingTerrainStrength)
-	MapModData.harmonicMeanDenominator = harmonicMeanDenominator
+	MapModData.totalLivingTerrainStrength = totalLivingTerrainStrength
+	MapModData.totalLivingTerrainPlots = totalLivingTerrainPlots
+
+	if bNewGame then	--some more info for initial map conditions
+		gWorld.initialLivingTerrainPlots = totalLivingTerrainPlots
+		gWorld.initialLivingTerrainAveStr = totalLivingTerrainStrength / gWorld.validForestJunglePlots
+	end
 
 	--cached map plots that may be useful
 	for featureID, nwTable in pairs(gg_naturalWonders) do
@@ -881,6 +900,7 @@ function ResetTablesForPlotLoop()
 
 	local numForestDominionPlayers = 0
 	for iPlayer, eaPlayer in pairs(realCivs) do			--do we need all this for city states???
+		local bFullCiv = fullCivs[iPlayer] ~= nil
 
 		for i, v in pairs(g_addResource[iPlayer]) do
 			g_addResource[iPlayer][i] = 0
@@ -900,8 +920,10 @@ function ResetTablesForPlotLoop()
 			eaPlayer.plotSpecialsInBorders[i] = 0
 		end
 
-		eaPlayer.improvablePlots = 0
-		eaPlayer.improvedPlots = 0
+		if bFullCiv then
+			eaPlayer.improvablePlots = 0
+			eaPlayer.improvedPlots = 0
+		end
 
 		--set player flags so we don't have to check for every plot
 		local player = Players[iPlayer]
@@ -1053,7 +1075,7 @@ function PlotsPerTurn()
 	local numAnimalSpawnInhibitTeams = #gg_animalSpawnInhibitTeams
 	local numAnimalSpawnPlots = 0
 	local totalLivingTerrainStrength = 0
-	local harmonicMeanDenominator = 0
+	local totalLivingTerrainPlots = 0
 	local forestPlots = 0
 	local junglePlots = 0
 	local grapesWorkedByBakkeiaFollower = 0
@@ -1139,10 +1161,6 @@ function PlotsPerTurn()
 		end
 
 		--Simple world-wide counts
-		totalLivingTerrainStrength = totalLivingTerrainStrength + (improvementID == -1 and strength or strength/3)
-		if plotTypeID ~= PlotTypes.PLOT_MOUNTAIN and (terrainID == TERRAIN_GRASS or terrainID == TERRAIN_PLAINS or terrainID == TERRAIN_TUNDRA) then
-			harmonicMeanDenominator = harmonicMeanDenominator + (livTerTypeByID[featureID] and 1/(strength + HARMONIC_MEAN_SHIFT) or 1/(HARMONIC_MEAN_SHIFT - 1))
-		end
 		if plotTypeID ~= PlotTypes.PLOT_MOUNTAIN then
 			if featureID == FEATURE_FOREST then
 				forestPlots = forestPlots + 1
@@ -1230,47 +1248,55 @@ function PlotsPerTurn()
 
 		end
 
-		--track unimproved living terrain
-		featureID = plot:GetFeatureType()		--just reassess after possible changes above
-		if livTerTypeByID[featureID] and improvementID == -1 then
-			g_nonImprovedLivingTerrainStr[iPlot] = plot:GetLivingTerrainStrength()
+		--track living terrain
+		featureID = plot:GetFeatureType()		--reassess after possible changes above
+		if livTerTypeByID[featureID] then
+			totalLivingTerrainPlots = totalLivingTerrainPlots + 1
+			if improvementID == -1 then
+				totalLivingTerrainStrength = totalLivingTerrainStrength + strength		--should be up-to-date if code above is done correctly
+				g_nonImprovedLivingTerrainStr[iPlot] = strength
+			else
+				totalLivingTerrainStrength = totalLivingTerrainStrength + strength / 3	--dicounted for improvement
+			end
 		else
 			g_nonImprovedLivingTerrainStr[iPlot] = nil
 		end
 
-		--improvement and resource counting
+		--improvement and resource counting for owner
 		if iOwner ~= -1 then
-
+			local bFullCiv = fullCivs[iOwner] ~= nil
 			local eaOwner = gPlayers[iOwner]
 			local resourceID = plot:GetResourceType(-1)
 			local bFreshWater = plot:IsFreshWater()
 
-			--improved/improvable status for Domination VC
-			if improvementID ~= -1 and improvementID ~= IMPROVEMENT_BLIGHT then
-				eaOwner.improvedPlots = eaOwner.improvedPlots + 1
-			end
-			local bImprovable = true
-			if improvementID == -1 or improvementID == IMPROVEMENT_BLIGHT then		--no existing improvement
-				if resourceID == -1 or resourceID == RESOURCE_BLIGHT then			--no resource
-					if terrainID == TERRAIN_SNOW or cannotImproveFeatures[featureID] then
-						bImprovable = false
-					else
-						if plotTypeID == PlotTypes.PLOT_LAND then
-							if not bFreshWater and terrainID ~= TERRAIN_GRASS then
-								bImprovable = false
-							end
-						elseif plotTypeID == PlotTypes.PLOT_OCEAN then
-							if not plot:IsLake() then
-								bImprovable = false
-							end
-						elseif plotTypeID == PlotTypes.PLOT_MOUNTAIN then
+			if bFullCiv then
+				--improved/improvable status for Domination VC
+				if improvementID ~= -1 and improvementID ~= IMPROVEMENT_BLIGHT then
+					eaOwner.improvedPlots = eaOwner.improvedPlots + 1
+				end
+				local bImprovable = true
+				if improvementID == -1 or improvementID == IMPROVEMENT_BLIGHT then		--no existing improvement
+					if resourceID == -1 or resourceID == RESOURCE_BLIGHT then			--no resource
+						if terrainID == TERRAIN_SNOW or cannotImproveFeatures[featureID] then
 							bImprovable = false
+						else
+							if plotTypeID == PlotTypes.PLOT_LAND then
+								if not bFreshWater and terrainID ~= TERRAIN_GRASS then
+									bImprovable = false
+								end
+							elseif plotTypeID == PlotTypes.PLOT_OCEAN then
+								if not plot:IsLake() then
+									bImprovable = false
+								end
+							elseif plotTypeID == PlotTypes.PLOT_MOUNTAIN then
+								bImprovable = false
+							end
 						end
 					end
 				end
-			end
-			if bImprovable then
-				eaOwner.improvablePlots = eaOwner.improvablePlots + 1
+				if bImprovable then
+					eaOwner.improvablePlots = eaOwner.improvablePlots + 1
+				end
 			end
 			
 			local owner = Players[iOwner]
@@ -1383,8 +1409,8 @@ function PlotsPerTurn()
 
 	-- housekeeping
 	gg_animalSpawnPlots.pos = numAnimalSpawnPlots
-	MapModData.totalLivingTerrainStrength = floor(totalLivingTerrainStrength)
-	MapModData.harmonicMeanDenominator = harmonicMeanDenominator
+	MapModData.totalLivingTerrainStrength = totalLivingTerrainStrength
+	MapModData.totalLivingTerrainPlots = totalLivingTerrainPlots
 
 	gg_counts.grapeAndSpiritsBuildingsBakkheiaFollowerCities = gg_counts.grapeAndSpiritsBuildingsBakkheiaFollowerCities + grapesWorkedByBakkeiaFollower
 	gg_counts.earthResWorkedByPloutonFollower = earthResWorkedByPloutonFollower

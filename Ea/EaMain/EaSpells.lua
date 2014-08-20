@@ -2658,6 +2658,7 @@ TestTarget[GameInfoTypes.EA_SPELL_BLIGHT] = function()
 
 		--spell can "work" even if blocked, but only to weaken; best AI value is to blight AND weaken
 		local strengthNeeded = 0
+		local featureID = g_plot:GetFeatureType()
 		if featureID == FEATURE_FOREST or featureID == FEATURE_JUNGLE or featureID == FEATURE_MARSH then	--Must overpower any living terrain here
 			strengthNeeded = strengthNeeded + g_plot:GetLivingTerrainStrength()
 		end

@@ -24,7 +24,14 @@ local function InitForNewGame()
 	gWorld.anraConvertNum =				0
 	gWorld.weaveConvertNum =			0
 	gWorld.livingTerrainConvertStr =	0
-	gWorld.panCivsEver =				0
+	gWorld.panCivsEver =				-1		--initing the Fay will increment to 0
+	gWorld.fullCivsEver =				0
+	gWorld.validForestJunglePlots =		0
+	gWorld.originalForestJunglePlots =	0
+	gWorld.ownablePlots =				0
+	gWorld.initialLivingTerrainPlots =	0
+	gWorld.initialLivingTerrainAveStr = 0
+
 	gWorld.bActivePlayerTimeStop =		false
 	gWorld.encampments =				{}
 	gWorld.calledMajorSpirits =			{}
@@ -45,6 +52,7 @@ local function InitForNewGame()
 		local player = Players[iPlayer]
 		local eaPlayer = gPlayers[iPlayer]		--player tables added in EaDefines.lua
 		if MapModData.playerType[iPlayer] == "FullCiv" then
+			gWorld.fullCivsEver = gWorld.fullCivsEver + 1
 			eaPlayer.eaCivNameID = false
 			eaPlayer.bUsesDivineFavor = false
 			eaPlayer.bIsFallen = false
@@ -101,8 +109,8 @@ local function InitForNewGame()
 			eaPlayer.aiNumTradeRoutesTargeted = 0
 			eaPlayer.savedFaithFromManaDivineFavorSwap = 0
 			eaPlayer.trainingXP = 0
-			eaPlayer.improvablePlots = 0
-			eaPlayer.improvedPlots = 0
+			eaPlayer.improvablePlots = 7
+			eaPlayer.improvedPlots = 1
 					
 			eaPlayer.delayedGPclass = false
 			eaPlayer.delayedGPsubclass = false

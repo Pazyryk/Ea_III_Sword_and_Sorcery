@@ -1,15 +1,42 @@
 
+--These are the "standard" game length and map size adjustments:
+
+-- GAMESPEED_QUICK		2/3
+-- GAMESPEED_STANDARD	1
+-- GAMESPEED_EPIC		3/2
+-- GAMESPEED_MARATHON	2	
+
+-- WORLDSIZE_DUEL		1/2
+-- WORLDSIZE_TINY		1/2
+-- WORLDSIZE_SMALL		2/3
+-- WORLDSIZE_STANDARD	1
+-- WORLDSIZE_LARGE		3/2
+-- WORLDSIZE_HUGE		2	
+
+
+-- GameLengthExp and MapSizeExp in table below are exponent on adjustment above, so:
+-- 1 is multiply, -1 is divide, 0 is no effect; but any other exponent (including
+-- fractional) can be used for greater or lesser adjustment.
+--
+-- E.g., to turn a 0.6667 adjustment to a "stronger" 0.5,
+--       0.6667^x = 0.5
+--       x = log 0.5 / log 0.6667
+--       x = 1.7095
+
+-- So use 1.7095 below if we wanted, for example, Small Map to adjust base value by 1/2
+-- rather than 2/3, but all other map size adjustments would be amplified too.
 
 CREATE TABLE EaSettings ('Name' TEXT NOT NULL,
 						'Value' NUMERIC,			-- Type affinity in SQLite will allow text, but will attempt to convert it to number if it looks like one
-						'GameLengthExp' NUMERIC,	-- 1, mulitply; -1 divide; 0 no effect (any other values allowed)
-						'MapSizeExp' NUMERIC,		-- 1, mulitply; -1 divide; 0 no effect (any other values allowed)
-						'Int' INTEGER		);		-- 0, don't round; 1 round after adjusments
-
+						'GameLengthExp' NUMERIC,	-- 1 mulitply; -1 divide; 0 no effect (any other values allowed)
+						'MapSizeExp' NUMERIC,		-- 1 mulitply; -1 divide; 0 no effect (any other values allowed)
+						'RoundAdjVal' INTEGER,		-- 1 -> round after adjusments
+						'Max' NUMERIC DEFAULT NULL,	-- Max, Min value after adjustment
+						'Min' NUMERIC DEFAULT NULL);
 
 -- Under Construction (most setting still at top of applicable Lua file)
 
-INSERT INTO EaSettings (Name, Value, GameLengthExp, MapSizeExp, Int) VALUES
+INSERT INTO EaSettings (Name, Value, GameLengthExp, MapSizeExp, RoundAdjVal) VALUES
 
 --Mana
 ('STARTING_SUM_OF_ALL_MANA',					300000,	1,	1,	1	),	--standard adj for game length & map size, then round to intenger 
@@ -18,13 +45,14 @@ INSERT INTO EaSettings (Name, Value, GameLengthExp, MapSizeExp, Int) VALUES
 ('MANA_CONSUMED_BY_CIV_FALL',					200,	0,	0,	0	),
 
 --Living Terrain
-('SPREAD_CHANCE_DENOMINATOR',					100,	1,	0,	1	),
+('SPREAD_CHANCE_DENOMINATOR',					100,	1,	0,	1	),	--chance per turn = strength / this value (so smaller = faster)
 
---One with Nature VC
-('HARMONIC_MEAN_SHIFT',							10,		0,	0,	0	),	--must be >1; the higher this is the more HM acts like a regular average
-('ONE_WITH_NATURE_VC_THRESHOLD',				2,		0,	0,	0	),	--victory threshold
-('ONE_WITH_NATURE_ADDED_THRESHOLD_PER_PAN_CIV',	1,		0,	-1,	0	),	--raise threshold by this much per pantheistic civ ever
-('ONE_WITH_NATURE_EXPECTED_VALID_PLOTS',		400,	0,	1,	0	),	--how many plots need to reach levels above (if map has more valid plots, needed HM is lower)
+--One with Nature VC (these numbers used to calculate actual thresholds based on initial map conditions)
+('ONE_W_NATURE_VC_LT_COVERAGE',					45,		0,	0,	0	),	--% of valid plots not covered at game start that need to be
+('ONE_W_NATURE_VC_LT_AVE_STR',					2.5,	0,	0,	0	),	--increase from initial average at map generation
+('ONE_W_NATURE_PAN_CIV_RATIO_COVERAGE_EXTRA',	30,		0,	0,	0	),	--extra % needed mulitplied by fraction of civs that were pantheistic (result is capped at 80)
+('ONE_W_NATURE_PAN_CIV_RATIO_AVE_STR_EXTRA',	10,		0,	0,	0	),	--extra ave str needed mulitplied by fraction of civs that were pantheistic
+('ONE_W_NATURE_PLOT_NUMBER_NORMALIZER',			950,	1,	1,	0	),	--more valid plots, less coverage and ave str needed 
 
 --Domination VC
 ('DOMINATION_VC_POPULATION_PERCENT',			60,		0,	0,	0	),	--% of world population
@@ -48,11 +76,12 @@ INSERT INTO EaSettings (Name, Value, GameLengthExp, MapSizeExp, Int) VALUES
 ('FAVORED_TECH_COST_REDUCTION',					-20,	0,	0,	0	),
 
 --Culture Level / Policies
-('POLICY_MULTIPLIER',							6,		0,	0,	0	),	--from 5 in v6
-('POLICY_ADD',									5,		0,	0,	0	),	--from 4 in v6
+('CL_C_PER_POP_MULTIPLIER',						5,		0,	0,	0	),
+('CL_C_PER_POP_ADD',							5,		0,	0,	0	),
 ('CL_APPROACH_FACTOR',							0.006,	-1,	0,	0	),
 ('CL_TARGET_CHANGE',							0.06,	-1,	0,	0	),
 ('CL_CHANGE_DAMPING_EXPONENT',					0.5,	0,	0,	0	),
+('CL_RECENCY_BIAS',								0.015,	-0.5,-1,0	),
 
 --Barbs
 ('BARB_TURN_CEILING',							300,	0,	0,	0	),	--stop increasing barb threat at this turn
@@ -83,6 +112,6 @@ INSERT INTO EaSettings (Name, Value, GameLengthExp, MapSizeExp, Int) VALUES
 ('CITY_STATE_WARMONGER_DISCOUNT',				75,		0,	0,	0	),
 ('RACE_HATRED_FOR_RAZED_POP',					0.5,	-1,	-1,	0	);
 
-
+--UPDATE EaSettings SET Max = 80 WHERE Type = 'ONE_W_NATURE_VC_LT_COVERAGE';
 
 INSERT INTO EaDebugTableCheck(FileName) SELECT '_EaSettings.sql';

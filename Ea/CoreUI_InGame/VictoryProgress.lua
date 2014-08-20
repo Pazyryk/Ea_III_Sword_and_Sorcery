@@ -16,7 +16,7 @@ local gT = MapModData.gT
 
 local floor = math.floor
 local sort = table.sort
-local Format = string.format
+local format = string.format
 
 local g_scores = {}
 local g_numCivs = 0
@@ -79,10 +79,10 @@ function PopulateProtector()
 		g_bestScoreType = GameInfoTypes.VICTORY_PROTECTOR
 	end
 
-	Controls.ProtectorA:SetText(Format("%d", protectorProphsRituals))
-	Controls.ProtectorB:SetText(Format("%d", civsCorrected))
-	Controls.ProtectorC:SetText(Format("%d", fallenFollowersDestr))
-	Controls.ProtectorScore:SetText(Format("%d", score))
+	Controls.ProtectorA:SetText(format("%d", protectorProphsRituals))
+	Controls.ProtectorB:SetText(format("%d", civsCorrected))
+	Controls.ProtectorC:SetText(format("%d", fallenFollowersDestr))
+	Controls.ProtectorScore:SetText(format("%d", score))
 
 	g_scores[g_iActivePlayer] = score
 	for iPlayer in pairs(MapModData.fullCivs) do
@@ -97,7 +97,7 @@ function PopulateProtector()
 	local iPlayer = top[1]
 	if iPlayer and g_scores[iPlayer] > 0 then
 		Controls.ProtectorCiv1:LocalizeAndSetText(PreGame.GetCivilizationShortDescription(iPlayer))
-		Controls.ProtectorScore1:SetText(Format("%d", g_scores[iPlayer]))
+		Controls.ProtectorScore1:SetText(format("%d", g_scores[iPlayer]))
 	else
 		Controls.ProtectorCiv1:SetText("")
 		Controls.ProtectorScore1:SetText("")
@@ -106,7 +106,7 @@ function PopulateProtector()
 	iPlayer = top[2]
 	if iPlayer and g_scores[iPlayer] > 0 then
 		Controls.ProtectorCiv2:LocalizeAndSetText(PreGame.GetCivilizationShortDescription(iPlayer))
-		Controls.ProtectorScore2:SetText(Format("%d", g_scores[iPlayer]))
+		Controls.ProtectorScore2:SetText(format("%d", g_scores[iPlayer]))
 	else
 		Controls.ProtectorCiv2:SetText("")
 		Controls.ProtectorScore2:SetText("")
@@ -115,7 +115,7 @@ function PopulateProtector()
 	iPlayer = top[3]
 	if iPlayer and g_scores[iPlayer] > 0 then
 		Controls.ProtectorCiv3:LocalizeAndSetText(PreGame.GetCivilizationShortDescription(iPlayer))
-		Controls.ProtectorScore3:SetText(Format("%d", g_scores[iPlayer]))
+		Controls.ProtectorScore3:SetText(format("%d", g_scores[iPlayer]))
 	else
 		Controls.ProtectorCiv3:SetText("")
 		Controls.ProtectorScore3:SetText("")
@@ -132,6 +132,28 @@ function PopulateDestroyer()
 		g_bestScoreType = GameInfoTypes.VICTORY_DESTROYER
 	end
 
+	local strManaConsumed
+	if manaConsumed < 10000 then
+		strManaConsumed = tostring(manaConsumed)
+	elseif manaConsumed < 99500 then
+		strManaConsumed = (floor(manaConsumed / 100 + 0.5) / 10) .. "K"
+	elseif manaConsumed < 999500 then
+		strManaConsumed = (floor(manaConsumed / 1000 + 0.5)) .. "K"
+	else
+		strManaConsumed = (floor(manaConsumed / 1000000 + 0.5)) .. "M"
+	end
+
+	local strManaStored
+	if manaStored < 10000 then
+		strManaStored = tostring(manaStored)
+	elseif manaStored < 99500 then
+		strManaStored = (floor(manaStored / 100 + 0.5) / 10) .. "K"
+	elseif manaStored < 999500 then
+		strManaStored = (floor(manaStored / 1000 + 0.5)) .. "K"
+	else
+		strManaStored = (floor(manaStored / 1000000 + 0.5)) .. "M"
+	end
+
 	local strSumOfAllMana
 	if sumOfAllMana < 10000 then
 		strSumOfAllMana = tostring(sumOfAllMana)
@@ -142,11 +164,12 @@ function PopulateDestroyer()
 	else
 		strSumOfAllMana = (floor(sumOfAllMana / 1000000 + 0.5)) .. "M"
 	end
+	strSumOfAllMana = strSumOfAllMana .. " (0)"
 
-	Controls.DestroyerA:SetText(Format("%d", manaConsumed))
-	Controls.DestroyerB:SetText(Format("%d", manaStored))
+	Controls.DestroyerA:SetText(strManaConsumed)
+	Controls.DestroyerB:SetText(strManaStored)
 	Controls.DestroyerC:SetText(strSumOfAllMana)
-	Controls.DestroyerScore:SetText(Format("%d", score))
+	Controls.DestroyerScore:SetText(format("%d", score))
 
 	g_scores[g_iActivePlayer] = score
 	for iPlayer in pairs(MapModData.fullCivs) do
@@ -161,7 +184,7 @@ function PopulateDestroyer()
 	local iPlayer = top[1]
 	if iPlayer and g_scores[iPlayer] > 0 then
 		Controls.DestroyerCiv1:LocalizeAndSetText(PreGame.GetCivilizationShortDescription(iPlayer))
-		Controls.DestroyerScore1:SetText(Format("%d", g_scores[iPlayer]))
+		Controls.DestroyerScore1:SetText(format("%d", g_scores[iPlayer]))
 	else
 		Controls.DestroyerCiv1:SetText("")
 		Controls.DestroyerScore1:SetText("")
@@ -170,7 +193,7 @@ function PopulateDestroyer()
 	iPlayer = top[2]
 	if iPlayer and g_scores[iPlayer] > 0 then
 		Controls.DestroyerCiv2:LocalizeAndSetText(PreGame.GetCivilizationShortDescription(iPlayer))
-		Controls.DestroyerScore2:SetText(Format("%d", g_scores[iPlayer]))
+		Controls.DestroyerScore2:SetText(format("%d", g_scores[iPlayer]))
 	else
 		Controls.DestroyerCiv2:SetText("")
 		Controls.DestroyerScore2:SetText("")
@@ -179,7 +202,7 @@ function PopulateDestroyer()
 	iPlayer = top[3]
 	if iPlayer and g_scores[iPlayer] > 0 then
 		Controls.DestroyerCiv3:LocalizeAndSetText(PreGame.GetCivilizationShortDescription(iPlayer))
-		Controls.DestroyerScore3:SetText(Format("%d", g_scores[iPlayer]))
+		Controls.DestroyerScore3:SetText(format("%d", g_scores[iPlayer]))
 	else
 		Controls.DestroyerCiv3:SetText("")
 		Controls.DestroyerScore3:SetText("")
@@ -188,18 +211,18 @@ end
 
 function PopulateRestorer()
 	print("PopulateRestorer")
-	local score, bVictory, livingTerrainAdded, livingTerrainStrengthAdded, harmonicMean, hmNeeded = GetRestorerVictoryData(g_iActivePlayer)
-	print(score, bVictory, livingTerrainAdded, livingTerrainStrengthAdded, harmonicMean, hmNeeded)
+	local score, bVictory, livingTerrainStrengthAdded, wldWideLivTerrain, wldWideLTAveStr, wldWideLivTerrainVC, wldWideLTAveStrVC = GetRestorerVictoryData(g_iActivePlayer)
+	print(score, bVictory, livingTerrainStrengthAdded, wldWideLivTerrain, wldWideLTAveStr, wldWideLivTerrainVC, wldWideLTAveStrVC)
 
 	if g_bestModScore < score then
 		g_bestModScore = score
 		g_bestScoreType = GameInfoTypes.VICTORY_RESTORER
 	end
 
-	Controls.RestorerA:SetText(Format("%d", livingTerrainAdded))
-	Controls.RestorerB:SetText(Format("%d", livingTerrainStrengthAdded))
-	Controls.RestorerC:SetText(Format("%.2f/%.2f", harmonicMean, hmNeeded))
-	Controls.RestorerScore:SetText(Format("%d", score))
+	Controls.RestorerA:SetText(format("%d", livingTerrainStrengthAdded))
+	Controls.RestorerB:SetText(format("%d%% (%d%%)", wldWideLivTerrain, wldWideLivTerrainVC))
+	Controls.RestorerC:SetText(format("%.1f (%.1f)", wldWideLTAveStr, wldWideLTAveStrVC))
+	Controls.RestorerScore:SetText(format("%d", score))
 
 	g_scores[g_iActivePlayer] = score
 	for iPlayer in pairs(MapModData.fullCivs) do
@@ -214,7 +237,7 @@ function PopulateRestorer()
 	local iPlayer = top[1]
 	if iPlayer and g_scores[iPlayer] > 0 then
 		Controls.RestorerCiv1:LocalizeAndSetText(PreGame.GetCivilizationShortDescription(iPlayer))
-		Controls.RestorerScore1:SetText(Format("%d", g_scores[iPlayer]))
+		Controls.RestorerScore1:SetText(format("%d", g_scores[iPlayer]))
 	else
 		Controls.RestorerCiv1:SetText("")
 		Controls.RestorerScore1:SetText("")
@@ -223,7 +246,7 @@ function PopulateRestorer()
 	iPlayer = top[2]
 	if iPlayer and g_scores[iPlayer] > 0 then
 		Controls.RestorerCiv2:LocalizeAndSetText(PreGame.GetCivilizationShortDescription(iPlayer))
-		Controls.RestorerScore2:SetText(Format("%d", g_scores[iPlayer]))
+		Controls.RestorerScore2:SetText(format("%d", g_scores[iPlayer]))
 	else
 		Controls.RestorerCiv2:SetText("")
 		Controls.RestorerScore2:SetText("")
@@ -232,7 +255,7 @@ function PopulateRestorer()
 	iPlayer = top[3]
 	if iPlayer and g_scores[iPlayer] > 0 then
 		Controls.RestorerCiv3:LocalizeAndSetText(PreGame.GetCivilizationShortDescription(iPlayer))
-		Controls.RestorerScore3:SetText(Format("%d", g_scores[iPlayer]))
+		Controls.RestorerScore3:SetText(format("%d", g_scores[iPlayer]))
 	else
 		Controls.RestorerCiv3:SetText("")
 		Controls.RestorerScore3:SetText("")
@@ -241,18 +264,18 @@ end
 
 function PopulateSubduer()
 	print("PopulateSubduer")
-	local score, bVictory, worldPopulation, worldLand, ownImproved = GetSubduerVictoryData(g_iActivePlayer)
-	print(score, bVictory, worldPopulation, worldLand, ownImproved)
+	local score, bVictory, worldPopulation, worldLand, ownImproved, worldPopulationVC, worldLandVC, ownImprovedVC = GetSubduerVictoryData(g_iActivePlayer)
+	print(score, bVictory, worldPopulation, worldLand, ownImproved, worldPopulationVC, worldLandVC, ownImprovedVC)
 
 	if g_bestModScore < score then
 		g_bestModScore = score
 		g_bestScoreType = GameInfoTypes.VICTORY_SUBDUER
 	end
 
-	Controls.SubduerA:SetText(Format("%d%%", worldPopulation))
-	Controls.SubduerB:SetText(Format("%d%%", worldLand))
-	Controls.SubduerC:SetText(Format("%d%%", ownImproved))
-	Controls.SubduerScore:SetText(Format("%d", score))
+	Controls.SubduerA:SetText(format("%d%% (%d%%)", worldPopulation, worldPopulationVC))
+	Controls.SubduerB:SetText(format("%d%% (%d%%)", worldLand, worldLandVC))
+	Controls.SubduerC:SetText(format("%d%% (%d%%)", ownImproved, ownImprovedVC))
+	Controls.SubduerScore:SetText(format("%d", score))
 
 	g_scores[g_iActivePlayer] = score
 	for iPlayer in pairs(MapModData.fullCivs) do
@@ -267,7 +290,7 @@ function PopulateSubduer()
 	local iPlayer = top[1]
 	if iPlayer and g_scores[iPlayer] > 0 then
 		Controls.SubduerCiv1:LocalizeAndSetText(PreGame.GetCivilizationShortDescription(iPlayer))
-		Controls.SubduerScore1:SetText(Format("%d", g_scores[iPlayer]))
+		Controls.SubduerScore1:SetText(format("%d", g_scores[iPlayer]))
 	else
 		Controls.SubduerCiv1:SetText("")
 		Controls.SubduerScore1:SetText("")
@@ -276,7 +299,7 @@ function PopulateSubduer()
 	iPlayer = top[2]
 	if iPlayer and g_scores[iPlayer] > 0 then
 		Controls.SubduerCiv2:LocalizeAndSetText(PreGame.GetCivilizationShortDescription(iPlayer))
-		Controls.SubduerScore2:SetText(Format("%d", g_scores[iPlayer]))
+		Controls.SubduerScore2:SetText(format("%d", g_scores[iPlayer]))
 	else
 		Controls.SubduerCiv2:SetText("")
 		Controls.SubduerScore2:SetText("")
@@ -285,7 +308,7 @@ function PopulateSubduer()
 	iPlayer = top[3]
 	if iPlayer and g_scores[iPlayer] > 0 then
 		Controls.SubduerCiv3:LocalizeAndSetText(PreGame.GetCivilizationShortDescription(iPlayer))
-		Controls.SubduerScore3:SetText(Format("%d", g_scores[iPlayer]))
+		Controls.SubduerScore3:SetText(format("%d", g_scores[iPlayer]))
 	else
 		Controls.SubduerCiv3:SetText("")
 		Controls.SubduerScore3:SetText("")
@@ -302,10 +325,10 @@ function PopulateConqueror()
 		g_bestScoreType = GameInfoTypes.VICTORY_CONQUEROR
 	end
 
-	Controls.ConquerorA:SetText(Format("%d", conqueredPopulation))
-	Controls.ConquerorB:SetText(Format("%d", conqueredCities))
-	Controls.ConquerorC:SetText(Format("%d", uncontrolledCities))
-	Controls.ConquerorScore:SetText(Format("%d", score))
+	Controls.ConquerorA:SetText(format("%d", conqueredPopulation))
+	Controls.ConquerorB:SetText(format("%d", conqueredCities))
+	Controls.ConquerorC:SetText(format("%d", uncontrolledCities))
+	Controls.ConquerorScore:SetText(format("%d", score))
 
 	g_scores[g_iActivePlayer] = score
 	for iPlayer in pairs(MapModData.fullCivs) do
@@ -320,7 +343,7 @@ function PopulateConqueror()
 	local iPlayer = top[1]
 	if iPlayer and g_scores[iPlayer] > 0 then
 		Controls.ConquerorCiv1:LocalizeAndSetText(PreGame.GetCivilizationShortDescription(iPlayer))
-		Controls.ConquerorScore1:SetText(Format("%d", g_scores[iPlayer]))
+		Controls.ConquerorScore1:SetText(format("%d", g_scores[iPlayer]))
 	else
 		Controls.ConquerorCiv1:SetText("")
 		Controls.ConquerorScore1:SetText("")
@@ -329,7 +352,7 @@ function PopulateConqueror()
 	iPlayer = top[2]
 	if iPlayer and g_scores[iPlayer] > 0 then
 		Controls.ConquerorCiv2:LocalizeAndSetText(PreGame.GetCivilizationShortDescription(iPlayer))
-		Controls.ConquerorScore2:SetText(Format("%d", g_scores[iPlayer]))
+		Controls.ConquerorScore2:SetText(format("%d", g_scores[iPlayer]))
 	else
 		Controls.ConquerorCiv2:SetText("")
 		Controls.ConquerorScore2:SetText("")
@@ -338,7 +361,7 @@ function PopulateConqueror()
 	iPlayer = top[3]
 	if iPlayer and g_scores[iPlayer] > 0 then
 		Controls.ConquerorCiv3:LocalizeAndSetText(PreGame.GetCivilizationShortDescription(iPlayer))
-		Controls.ConquerorScore3:SetText(Format("%d", g_scores[iPlayer]))
+		Controls.ConquerorScore3:SetText(format("%d", g_scores[iPlayer]))
 	else
 		Controls.ConquerorCiv3:SetText("")
 		Controls.ConquerorScore3:SetText("")
@@ -348,15 +371,15 @@ end
 function PopulateScoreSummary()
 	local bestModVictoryStr = Locale.ToUpper(Locale.Lookup(GameInfo.Victories[g_bestScoreType].Description))
 	Controls.BestScoreType:SetText(bestModVictoryStr .. ":")
-	Controls.BestModScore:SetText(Format("%d", g_bestModScore))
-	Controls.PopulationScore:SetText(Format("%d", g_activePlayer:GetScoreFromPopulation()))
-	Controls.CitiesScore:SetText(Format("%d", g_activePlayer:GetScoreFromCities()))
-	Controls.LandScore:SetText(Format("%d", g_activePlayer:GetScoreFromLand()))
-	Controls.WondersScore:SetText(Format("%d", g_activePlayer:GetScoreFromWonders()))
-	Controls.TechsScore:SetText(Format("%d", g_activePlayer:GetScoreFromTechs()))
-	Controls.PoliciesScore:SetText(Format("%d", g_activePlayer:GetScoreFromPolicies()))
-	Controls.ReligionScore:SetText(Format("%d", g_activePlayer:GetScoreFromReligion()))
-	Controls.TotalScore:SetText(Format("%d", g_activePlayer:GetScore()))
+	Controls.BestModScore:SetText(format("%d", g_bestModScore))
+	Controls.PopulationScore:SetText(format("%d", g_activePlayer:GetScoreFromPopulation()))
+	Controls.CitiesScore:SetText(format("%d", g_activePlayer:GetScoreFromCities()))
+	Controls.LandScore:SetText(format("%d", g_activePlayer:GetScoreFromLand()))
+	Controls.WondersScore:SetText(format("%d", g_activePlayer:GetScoreFromWonders()))
+	Controls.TechsScore:SetText(format("%d", g_activePlayer:GetScoreFromTechs()))
+	Controls.PoliciesScore:SetText(format("%d", g_activePlayer:GetScoreFromPolicies()))
+	Controls.ReligionScore:SetText(format("%d", g_activePlayer:GetScoreFromReligion()))
+	Controls.TotalScore:SetText(format("%d", g_activePlayer:GetScore()))
 end
 
 

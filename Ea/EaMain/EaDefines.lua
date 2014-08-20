@@ -62,8 +62,14 @@ for row in GameInfo.EaSettings() do
 	multiplier = multiplier * (row.MapSizeExp and MAP_SIZE_MULTIPLIER ^ row.MapSizeExp or 1)
 	if multiplier ~= 1 then
 		value = value * multiplier
-		if row.Int == 1 then
+		if row.RoundAdjVal == 1 then
 			value = math.floor(value + 0.5)
+		end
+		if row.Max then
+			value = row.Max < value and row.Max or value
+		end
+		if row.Min then
+			value = value < row.Min and row.Min or value
 		end
 	end
 	print(row.Name, value)
@@ -310,10 +316,10 @@ MapModData.faithFromGPs = 0
 MapModData.numberGreatPeople = 0
 MapModData.totalGreatPersonPoints = 0
 MapModData.totalLivingTerrainStrength = 0
-MapModData.validForestJunglePlots = 0
-MapModData.originalForestJunglePlots = 0
-MapModData.harmonicMeanDenominator = 0
-MapModData.ownablePlots = 0
+--MapModData.validForestJunglePlots = 0
+--MapModData.originalForestJunglePlots = 0
+MapModData.totalLivingTerrainPlots = 0
+--MapModData.ownablePlots = 0
 MapModData.techCostHelp = ""
 --Unit Panel UI
 MapModData.bShow = false

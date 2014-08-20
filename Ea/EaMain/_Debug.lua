@@ -30,6 +30,7 @@ end
 
 
 local bHidden =			MapModData.bHidden
+local fullCivs =		MapModData.fullCivs
 
 local tableByOrderType = {	[OrderTypes.ORDER_TRAIN] = "Units",
 							[OrderTypes.ORDER_CONSTRUCT] = "Buildings",
@@ -42,6 +43,23 @@ local function DebugOnPlayerPreAIUnitUpdate(iPlayer)
 
 	print("*************************************")
 	print("DebugOnPlayerPreAIUnitUpdate ", iPlayer)
+
+	if fullCivs[iPlayer] then
+		print("--Policy branches unlocked:")
+		for branchInfo in GameInfo.PolicyBranchTypes() do
+			if player:IsPolicyBranchUnlocked(branchInfo.ID) then
+				print(branchInfo.Type)
+			end
+		end
+		print("--Policies:")
+		for policyInfo in GameInfo.Policies() do
+			if player:HasPolicy(policyInfo.ID) then
+				print(policyInfo.Type)
+			end
+		end
+	end
+
+	print("--Cities:")
 	for city in player:Cities() do
 		local name = city:GetName()
 		print("Build queue for ", name, ":")

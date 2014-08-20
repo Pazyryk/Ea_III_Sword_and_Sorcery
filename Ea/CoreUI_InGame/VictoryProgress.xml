@@ -56,9 +56,9 @@
 			<Box Size="462,144" Color="255,255,255,0">
 				<Label Offset="5,5" Font="EaTwCnMT24" String="TXT_KEY_EA_VICTORY_RESTORER"/>
 				<Stack Anchor="L,T" Size="0,0" Offset="5,39" Padding="12" StackGrowth="Bottom">
-					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="L,T" String="Terrain Added:"/>
-					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="L,T" String="Strength Added:"/>
-					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="L,T" String="Harmonic Mean:"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="L,T" String="Lv Ter Str Added:"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="L,T" String="Wld-Wd Lv Ter:"/>
+					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="L,T" String="Wld-Wd Ave Str:"/>
 					<Label Offset="0,0" Font="EaTwCnMT18" Anchor="L,T" String="Your Score:"/>
 				</Stack>
 				<Stack Anchor="L,T" Size="0,0" Offset="150,39" Padding="12" StackGrowth="Bottom">

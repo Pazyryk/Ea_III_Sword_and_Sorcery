@@ -70,7 +70,7 @@ local TestEaSpellTarget =					TestEaSpellTarget
 local DoEaSpell =							DoEaSpell
 local PlotDistance =						Map.PlotDistance
 local GetPlotFromXY =						Map.GetPlot
-local Format =								string.format
+local format =								string.format
 local GetXYFromPlotIndex =					GetXYFromPlotIndex
 local Rand =								Map.Rand
 
@@ -854,11 +854,11 @@ local function CompareOptions()
 				local blacklistGotoTurn = blacklistGoto and blacklistGoto[option.iPlot]
 				local blacklistActionTurn = blacklist and blacklist[option.eaActionID] and blacklist[option.eaActionID][option.iPlot]
 				if blacklistGotoTurn and Game.GetGameTurn() < blacklistGotoTurn + 30 then
-					print(Format(formatBlkLstStr, index, eaActionType, iArea, option.iPlot, option.travelTurns, option.actionTurns, option.i, option.p, option.b, option.numerator, option.denominator, option.vPP, option.vP), "Blacklist goto turn = ", blacklistGotoTurn)
+					print(format(formatBlkLstStr, index, eaActionType, iArea, option.iPlot, option.travelTurns, option.actionTurns, option.i, option.p, option.b, option.numerator, option.denominator, option.vPP, option.vP), "Blacklist goto turn = ", blacklistGotoTurn)
 				elseif blacklistActionTurn then
-					print(Format(formatBlkLstStr, index, eaActionType, iArea, option.iPlot, option.travelTurns, option.actionTurns, option.i, option.p, option.b, option.numerator, option.denominator, option.vPP, option.vP), "Blacklist action turn = ", blacklistGotoTurn)
+					print(format(formatBlkLstStr, index, eaActionType, iArea, option.iPlot, option.travelTurns, option.actionTurns, option.i, option.p, option.b, option.numerator, option.denominator, option.vPP, option.vP), "Blacklist action turn = ", blacklistGotoTurn)
 				else
-					print(Format(formatOptionStr, index, eaActionType, iArea, option.iPlot, option.travelTurns, option.actionTurns, option.i, option.p, option.b, option.numerator, option.denominator, option.vPP, option.vP))
+					print(format(formatOptionStr, index, eaActionType, iArea, option.iPlot, option.travelTurns, option.actionTurns, option.i, option.p, option.b, option.numerator, option.denominator, option.vPP, option.vP))
 
 					--find best vP
 					if option.vP > vP.value then

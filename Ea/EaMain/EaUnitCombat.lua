@@ -671,7 +671,7 @@ GameEvents.CombatEnded.Add(X_OnCombatEnded)
 
 
 
---[[	don't do this!
+
 local function OnCanSaveUnit(iPlayer, iUnit, bDelay)	--fires for combat and non-combat death (disband, settler settled, etc)
 	--Uses and resets file locals set in OnCombatResult above; always fires after that function if this is a combat death
 	--Note that file locals could be anything if this is not a combat death
@@ -713,6 +713,11 @@ local function OnCanSaveUnit(iPlayer, iUnit, bDelay)	--fires for combat and non-
 		end
 	end
 
+	if not bDelay then return false end
+	g_iDefendingPlayer, g_iDefendingUnit, g_iAttackingPlayer, g_iAttackingUnit = -1, -1, -1, -1
+	return false
+
+	--[[	don't do this!
 	--for everything below, we only want first call for delayed death
 	if not bDelay then return false end		-- too late now!
 
@@ -795,12 +800,12 @@ local function OnCanSaveUnit(iPlayer, iUnit, bDelay)	--fires for combat and non-
 	end
 
 	KillPerson(iPlayer, iPerson, nil, nil, "Failed to save GP")
-	return false
+	]]
 
 end
 local function X_OnCanSaveUnit(iPlayer, iUnit, bDelay) return HandleError31(OnCanSaveUnit, iPlayer, iUnit, bDelay) end
 GameEvents.CanSaveUnit.Add(X_OnCanSaveUnit)
-]]
+
 
 
 local function OnCanChangeExperience(iPlayer, iUnit, iSummoner, iExperience, iMax, bFromCombat, bInBorders, bUpdateGlobal)

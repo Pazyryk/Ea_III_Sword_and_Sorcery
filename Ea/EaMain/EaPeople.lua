@@ -232,6 +232,18 @@ function EaPeopleInit(bNewGame)
 	end
 
 	for iPerson, eaPerson in pairs(gPeople) do
+		--clean up missing summoned units (v7a patch but won't hurt to leave)
+		local summonedUnits = iPerson > 0 and eaPerson.summonedUnits
+		if summonedUnits then
+			local player = Players[eaPerson.iPlayer]
+			for iUnit in pairs(summonedUnits) do
+				local unit = player:GetUnitByID(iUnit)
+				if not unit then
+					summonedUnits[iUnit] = nil
+				end
+			end
+		end
+
 		local eaPersonRowID = eaPerson.eaPersonRowID
 		if eaPersonRowID then
 			gg_peopleEverLivedByRowID[eaPersonRowID] = true

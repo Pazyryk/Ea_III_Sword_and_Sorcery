@@ -14,6 +14,20 @@
 			<Text> </Text>
 		</Row>
 
+		<!-- Generic -->
+		<Row Tag="TXT_KEY_EA_GENERIC_OR_CONNECTER">
+			<Text>{1_Str} or {2_Str}</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GENERIC_AND_CONNECTER">
+			<Text>{1_Str} and {2_Str}</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GENERIC_FOR_EACH_CONNECTER">
+			<Text>{1_Str} for each {2_Str}</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_GENERIC_FOR_EACH_IMPROVED_CONNECTER">
+			<Text>{1_Str} for each improved {2_Str}</Text>
+		</Row>
+
 		<!-- Game Setup -->
 		<Row Tag="TXT_KEY_EA_MODDING_SETUP_TITLE">
 			<Text>Éa Game Setup</Text>
@@ -244,6 +258,17 @@
 		</Row>
 
 		<!-- Info Tooltip -->
+		<Row Tag="TXT_KEY_EA_GENERIC_OR">
+			<Text>or</Text>
+		</Row>
+
+		<Row Tag="TXT_KEY_EA_REQUIRES_NEARBY_HELP_INFO">
+			<Text>[ICON_BULLET] Requires nearby {1_Str}</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PRODUCES_HELP_INFO">
+			<Text>[ICON_BULLET] Produces {1_Str}</Text>
+		</Row>
+		
 		<Row Tag="TXT_KEY_EA_FAVOR_HELP_INFO">
 			<Text>[ICON_PEACE] Divine Favor is used in the casting of spells by Azzandara followers.</Text>
 		</Row>

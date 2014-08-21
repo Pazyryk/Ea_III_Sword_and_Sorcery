@@ -45,7 +45,6 @@ local BUILDING_RACIAL_DISHARMONY =			GameInfoTypes.BUILDING_RACIAL_DISHARMONY
 local BUILDING_FOREFATHERS_STATUE =			GameInfoTypes.BUILDING_FOREFATHERS_STATUE
 local BUILDING_SLAVE_BREEDING_PEN =			GameInfoTypes.BUILDING_SLAVE_BREEDING_PEN
 local BUILDING_HARBOR =						GameInfoTypes.BUILDING_HARBOR
-local BUILDING_SMOKEHOUSE =					GameInfoTypes.BUILDING_SMOKEHOUSE
 local BUILDING_WINERY =						GameInfoTypes.BUILDING_WINERY
 local BUILDING_BREWERY =					GameInfoTypes.BUILDING_BREWERY
 local BUILDING_DISTILLERY =					GameInfoTypes.BUILDING_DISTILLERY
@@ -1281,7 +1280,7 @@ TestCityCanConstruct[GameInfoTypes.BUILDING_GOVERNORS_COMPOUND] = function(iPlay
 	return city:IsOccupied() and not city:IsNoOccupiedUnhappiness()
 end
 
-TestCityCanConstruct[GameInfoTypes.BUILDING_SMOKEHOUSE] = function(iPlayer, iCity)
+TestCityCanConstruct[GameInfoTypes.BUILDING_HUNTING_LODGE] = function(iPlayer, iCity)
 	local player = Players[iPlayer]
 	local city = player:GetCityByID(iCity)
 	if city:IsHasResourceLocal(RESOURCE_DEER, false) or city:IsHasResourceLocal(RESOURCE_BOARS, false) or city:IsHasResourceLocal(RESOURCE_FUR, false) or city:IsHasResourceLocal(RESOURCE_ELEPHANT, false) then
@@ -1297,13 +1296,8 @@ TestCityCanConstruct[GameInfoTypes.BUILDING_SMOKEHOUSE] = function(iPlayer, iCit
 			break
 		end
 	end
-	if bFoundRemote then
-		return true
-	end
-	return false
+	return bFoundRemote
 end
-
-TestCityCanConstruct[GameInfoTypes.BUILDING_HUNTING_LODGE] = TestCityCanConstruct[GameInfoTypes.BUILDING_SMOKEHOUSE]
 
 TestCityCanConstruct[GameInfoTypes.BUILDING_PORT] = function(iPlayer, iCity)
 	local player = Players[iPlayer]
@@ -1322,10 +1316,7 @@ TestCityCanConstruct[GameInfoTypes.BUILDING_PORT] = function(iPlayer, iCity)
 			break
 		end
 	end
-	if bFoundRemote then
-		return true
-	end
-	return false
+	return bFoundRemote
 end
 
 TestCityCanConstruct[GameInfoTypes.BUILDING_WHALERY] = function(iPlayer, iCity)
@@ -1344,10 +1335,7 @@ TestCityCanConstruct[GameInfoTypes.BUILDING_WHALERY] = function(iPlayer, iCity)
 			break
 		end
 	end
-	if bFoundRemote then
-		return true
-	end
-	return false
+	return bFoundRemote
 end
 
 

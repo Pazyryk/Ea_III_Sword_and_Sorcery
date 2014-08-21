@@ -259,10 +259,10 @@ local function OnPlayerTechCostMod(iPlayer, techID)		--Ea API
 	end
 
 	if mod < -50 then
-		mod = -50 - floor(50 * (mod + 50) / mod)		--below -50 becomes asymptotic to -100 (& dll sets min to -90)
+		mod = -50 - 50 * (mod + 50) / mod		--below -50 becomes asymptotic to -100 (& dll sets min to -90)
 	end
 
-	return mod
+	return floor(mod)
 end
 local function X_OnPlayerTechCostMod(iPlayer, techID) return HandleError21(OnPlayerTechCostMod, iPlayer, techID) end
 GameEvents.PlayerTechCostMod.Add(X_OnPlayerTechCostMod)
@@ -355,7 +355,7 @@ end
 --------------------------------------------------------------
 
 function TechPerCivTurn(iPlayer)
-	print("TechPerCivTurn")
+	print("TechPerCivTurn", iPlayer)
 	local floor = math.floor
 	local player = Players[iPlayer]
 	local eaPlayer = gPlayers[iPlayer]
@@ -365,6 +365,13 @@ function TechPerCivTurn(iPlayer)
 	local bAI = not player:IsHuman()
 	local gameTurn = Game.GetGameTurn()
 
+	--v7a patch for negative progress
+	for techID in pairs(gg_techTier) do
+		if teamTechs:GetResearchProgress(techID) < 0 then
+			print("!!!! ERROR: teamTechs had negative research progress (reseting to 0): ", teamTechs:GetResearchProgress(techID))
+			teamTechs:SetResearchProgress(techID, 0, iPlayer)
+		end
+	end
 
 	--zeroing
 	eaPlayer.rpFromDiffusion = 0	--these are only used for display
@@ -434,27 +441,27 @@ local function GetTechCostHelp(iPlayer, techID, bKnown)
 			if tier == 3 then
 				if gWonders[EA_WONDER_ACADEMY_PHILOSOPHY] and gWonders[EA_WONDER_ACADEMY_PHILOSOPHY].iPlayer == iPlayer then
 					local percentReduction = gWonders[EA_WONDER_ACADEMY_PHILOSOPHY].mod * 2
-					str = str .. "[NEWLINE][ICON_BULLET]" .. NAME_ACADEMY_PHILOSOPHY .. ": [COLOR_POSITIVE_TEXT]" .. percentReduction .. "%[ENDCOLOR]"
+					str = str .. "[NEWLINE][ICON_BULLET]" .. NAME_ACADEMY_PHILOSOPHY .. ": [COLOR_POSITIVE_TEXT]" .. -percentReduction .. "%[ENDCOLOR]"
 				end
 			elseif tier == 4 then
 				if gWonders[EA_WONDER_ACADEMY_LOGIC] and gWonders[EA_WONDER_ACADEMY_LOGIC].iPlayer == iPlayer then
 					local percentReduction = gWonders[EA_WONDER_ACADEMY_LOGIC].mod * 2
-					str = str .. "[NEWLINE][ICON_BULLET]" .. NAME_ACADEMY_LOGIC .. ": [COLOR_POSITIVE_TEXT]" .. percentReduction .. "%[ENDCOLOR]"
+					str = str .. "[NEWLINE][ICON_BULLET]" .. NAME_ACADEMY_LOGIC .. ": [COLOR_POSITIVE_TEXT]" .. -percentReduction .. "%[ENDCOLOR]"
 				end
 			elseif tier == 5 then
 				if gWonders[EA_WONDER_ACADEMY_SEMIOTICS] and gWonders[EA_WONDER_ACADEMY_SEMIOTICS].iPlayer == iPlayer then
 					local percentReduction = gWonders[EA_WONDER_ACADEMY_SEMIOTICS].mod * 2
-					str = str .. "[NEWLINE][ICON_BULLET]" .. NAME_ACADEMY_SEMIOTICS .. ": [COLOR_POSITIVE_TEXT]" .. percentReduction .. "%[ENDCOLOR]"
+					str = str .. "[NEWLINE][ICON_BULLET]" .. NAME_ACADEMY_SEMIOTICS .. ": [COLOR_POSITIVE_TEXT]" .. -percentReduction .. "%[ENDCOLOR]"
 				end
 			elseif tier == 6 then
 				if gWonders[EA_WONDER_ACADEMY_METAPHYSICS] and gWonders[EA_WONDER_ACADEMY_METAPHYSICS].iPlayer == iPlayer then
 					local percentReduction = gWonders[EA_WONDER_ACADEMY_METAPHYSICS].mod * 2
-					str = str .. "[NEWLINE][ICON_BULLET]" .. NAME_ACADEMY_METAPHYSICS .. ": [COLOR_POSITIVE_TEXT]" .. percentReduction .. "%[ENDCOLOR]"
+					str = str .. "[NEWLINE][ICON_BULLET]" .. NAME_ACADEMY_METAPHYSICS .. ": [COLOR_POSITIVE_TEXT]" .. -percentReduction .. "%[ENDCOLOR]"
 				end
 			elseif tier == 7 then
 				if gWonders[EA_WONDER_ACADEMY_TRANS_THOUGHT] and gWonders[EA_WONDER_ACADEMY_TRANS_THOUGHT].iPlayer == iPlayer then
 					local percentReduction = gWonders[EA_WONDER_ACADEMY_TRANS_THOUGHT].mod * 2
-					str = str .. "[NEWLINE][ICON_BULLET]" .. NAME_ACADEMY_TRANS_THOUGHT .. ": [COLOR_POSITIVE_TEXT]" .. percentReduction .. "%[ENDCOLOR]"
+					str = str .. "[NEWLINE][ICON_BULLET]" .. NAME_ACADEMY_TRANS_THOUGHT .. ": [COLOR_POSITIVE_TEXT]" .. -percentReduction .. "%[ENDCOLOR]"
 				end
 			end
 

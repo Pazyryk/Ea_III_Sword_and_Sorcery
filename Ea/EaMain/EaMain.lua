@@ -3,7 +3,7 @@
 -- DateCreated: 8/16/2011 7:17:51 PM
 --------------------------------------------------------------
 
-local HOTFIX = "none"
+local HOTFIX = "a"
 local DLL_COMMIT = "d10942b"
 local DLL_DEBUG_BUILD = false
 local EA_MEDIA_PACK_MIN_VERSION = 5

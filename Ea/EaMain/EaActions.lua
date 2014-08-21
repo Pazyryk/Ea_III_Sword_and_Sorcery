@@ -1669,25 +1669,25 @@ end
 --EA_ACTION_RESEARCH
 TestTarget[GameInfoTypes.EA_ACTION_RESEARCH] = function()
 	local scienceModifier = g_city:GetBaseYieldRateModifier(YIELD_SCIENCE)
-	if scienceModifier >= 50 then
-		g_bool1 = true
+	--if scienceModifier >= 50 then
+	--	g_bool1 = true
 		g_int1 = floor(g_mod * scienceModifier / 200 + 0.5)
-	else
-		g_int2 = g_player:GetCurrentResearch()
-		if g_int2 == -1 then return false end
-		g_bool1 = false
-		g_int1 = floor(g_mod / 4) + 1
-	end
+	--else
+	--	g_int2 = g_player:GetCurrentResearch()
+	--	if g_int2 == -1 then return false end
+	--	g_bool1 = false
+	--	g_int1 = floor(g_mod / 4) + 1
+	--end
 	return true
 end
 
 SetUI[GameInfoTypes.EA_ACTION_RESEARCH] = function()
 	if g_bAllTestsPassed then
-		if g_bool1 then
+		--if g_bool1 then
 			MapModData.text = "Provide " .. g_int1 .. " research per turn to this city"
-		else
-			MapModData.text = "Provide " .. g_int1 .. " research (city research modifier no longer applies)"
-		end
+		--else
+		--	MapModData.text = "Provide " .. g_int1 .. " research (city research modifier no longer applies)"
+		--end
 	elseif g_bNonTargetTestsPassed then
 		MapModData.bShow = true
 		MapModData.text = "[COLOR_WARNING_TEXT]You must select a tech to conduct Research[ENDCOLOR]"
@@ -1699,17 +1699,17 @@ SetAIValues[GameInfoTypes.EA_ACTION_RESEARCH] = function()
 end
 
 Do[GameInfoTypes.EA_ACTION_RESEARCH] = function()
-	if g_bool1 then
+	--if g_bool1 then
 		g_eaCity.gpScience = g_eaCity.gpScience or {}
 		g_eaCity.gpScience[g_iPerson] = g_int1
-	else
-		if g_eaCity.gpScience then
-			g_eaCity.gpScience[g_iPerson] = nil
-		end
-		local teamTech = g_team:GetTeamTechs()
-		teamTech:ChangeResearchProgress(g_int2, g_int1, g_iPlayer)	--apply directly to tech
+	--else
+	--	if g_eaCity.gpScience then
+	--		g_eaCity.gpScience[g_iPerson] = nil
+	--	end
+	--	local teamTech = g_team:GetTeamTechs()
+	--	teamTech:ChangeResearchProgress(g_int2, g_int1, g_iPlayer)	--apply directly to tech
 		--need UI for this somehow
-	end
+	--end
 
 	g_eaPerson.eaActionData = g_iPlot
 	g_unit:ChangeExperience(g_int1)

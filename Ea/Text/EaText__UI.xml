@@ -21,11 +21,19 @@
 		<Row Tag="TXT_KEY_EA_GENERIC_AND_CONNECTER">
 			<Text>{1_Str} and {2_Str}</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_GENERIC_OF_CONNECTER">
+			<Text>{1_Str} of {2_Str}</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_GENERIC_FOR_EACH_CONNECTER">
 			<Text>{1_Str} for each {2_Str}</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_GENERIC_FOR_EACH_IMPROVED_CONNECTER">
 			<Text>{1_Str} for each improved {2_Str}</Text>
+		</Row>
+		
+		
+		<Row Tag="TXT_KEY_EA_YEAR">
+			<Text>Year {1_Str}</Text>
 		</Row>
 
 		<!-- Game Setup -->

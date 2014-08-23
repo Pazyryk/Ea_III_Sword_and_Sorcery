@@ -111,8 +111,13 @@ function LeaderMessageHandler( iPlayer, iDiploUIState, szLeaderMessage, iAnimati
 
 	]]
 	
-	
-	local strTitleText = Locale.ConvertTextKey(PreGame.GetLeaderName(iPlayer))
+	local strTitleText
+	local leaderTxtKey, civTxtKey = PreGame.GetLeaderName(g_iAIPlayer), PreGame.GetCivilizationDescription(g_iAIPlayer)
+	if leaderTxtKey == "TXT_KEY_EA_NO_LEADER" then
+		strTitleText = Locale.ConvertTextKey(civTxtKey)
+	else
+		strTitleText = Locale.ConvertTextKey("TXT_KEY_EA_GENERIC_OF_CONNECTER", leaderTxtKey, civTxtKey)
+	end
 	
 	Controls.TitleText:SetText(strTitleText);
 	

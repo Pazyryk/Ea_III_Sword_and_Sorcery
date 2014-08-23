@@ -161,16 +161,15 @@ function AddSmallButtonsToTechButton( thisTechButtonInstance, tech, maxSmallButt
 			if thisBuildingInfo.EaPrereqPolicy then
 				local policyBranchType = GameInfo.Policies[thisBuildingInfo.EaPrereqPolicy].PolicyBranchType
 				if policyBranchType then
-					local policyBranchInfo = GameInfo.PolicyBranchTypes[policyBranchType]
-					if not g_activePlayer:HasPolicy(GameInfoTypes[policyBranchInfo.FreePolicy]) then
+					if not g_activePlayer:IsPolicyBranchUnlocked(GameInfoTypes[policyBranchType]) then
 						bPolicyBranchAllow = false
 					end
 				else
 					for loopBranchInfo in GameInfo.PolicyBranchTypes() do
 						if loopBranchInfo.FreePolicy == thisBuildingInfo.EaPrereqPolicy or loopBranchInfo.FreeFinishingPolicy == thisBuildingInfo.EaPrereqPolicy then
-							if not g_activePlayer:HasPolicy(GameInfoTypes[loopBranchInfo.FreePolicy]) then
+							if not g_activePlayer:IsPolicyBranchUnlocked(loopBranchInfo.ID) then
 								bPolicyBranchAllow = false
-							end
+							end						
 							break
 						end
 					end

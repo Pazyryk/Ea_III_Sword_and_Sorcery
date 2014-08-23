@@ -82,7 +82,7 @@
 			<Text>PANTHEISM</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_BRANCH_PANTHEISM_HELP">
-			<Text>[COLOR_POSITIVE_TEXT]Pantheism[ENDCOLOR] allows your civilization to interact with the Major Spirits of Éa and the land itself in ways not otherwise possible.[NEWLINE][NEWLINE]Adopting Pantheism will result in the spontaneous appearance of The Weave of Éa Religion in your cities, +1 [ICON_STAR] Mana in your capital, and enabling of the Shrine building. Pantheistic civilizations can build improvements on resource plots only. [NEWLINE][NEWLINE]A free Druid [ICON_GREAT_PEOPLE] will appear when the first policy is adopted within this branch. Adopting all policies in the Pantheism tree will result in the gain of extra [ICON_STAR] Mana equal to 1/3 of all Culture generation. It will also allow your Druids to learn the Call Major Spirit spell, allowing then to call a Major Spirit into physical existence for assistance (must be allied with relationship >500; will use up 300 of that)</Text>
+			<Text>[COLOR_POSITIVE_TEXT]Pantheism[ENDCOLOR] allows your civilization to interact with the Major Spirits of Éa and the land itself in ways not otherwise possible.[NEWLINE][NEWLINE]Adopting Pantheism will result in the spontaneous appearance of The Weave of Éa Religion in your cities, +1 [ICON_STAR] Mana in your capital, and enabling of the Shrine building. Pantheistic civilizations can build improvements only on resource plots, lakes and (with appropriate technology) mountains. [NEWLINE][NEWLINE]A free Druid [ICON_GREAT_PEOPLE] will appear when the first policy is adopted within this branch. Adopting all policies in the Pantheism tree will result in the gain of extra [ICON_STAR] Mana equal to 1/3 of all Culture generation; allow your Druids to learn the Call Major Spirit spell; and, with 20000 Mana, allows any spellcaster to Seal Ahriman's Vault (Ritual, 8 turns and must be adjacent to map feature) preventing all further spellcasting by the Fallen.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_PANTHEISM">
 			<Text>Pantheism</Text>
@@ -178,13 +178,13 @@
 			<Text>Heaven's Mandate</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_HEAVENS_MANDATE_HELP">
-			<Text>[COLOR_POSITIVE_TEXT]Heaven's Mandate[ENDCOLOR][NEWLINE][ICON_BULLET]+3 [ICON_PEACE] Divine Favor in capital[NEWLINE][ICON_BULLET]Azzandarayasna gains Founder effect: +2 [ICON_PEACE] Divine Favor for every foreign follower city[NEWLINE][ICON_BULLET]Allows the [COLOR_POSITIVE_TEXT]Azzandara's Tribute[ENDCOLOR] Process, which converts 25% of City [ICON_PRODUCTION] Production into [ICON_PEACE] Divine Favor (Not yet implemented!)</Text>
+			<Text>[COLOR_POSITIVE_TEXT]Heaven's Mandate[ENDCOLOR][NEWLINE][ICON_BULLET]+3 [ICON_PEACE] Divine Favor in capital[NEWLINE][ICON_BULLET]Azzandarayasna gains Founder effect: +2 [ICON_PEACE] Divine Favor for every foreign follower city[NEWLINE][ICON_BULLET]Allows the [COLOR_POSITIVE_TEXT]Azzandara's Tribute[ENDCOLOR] Process, which converts 25% of City [ICON_PRODUCTION] Production into [ICON_PEACE] Divine Favor</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_PRIESTHOOD">
 			<Text>Priesthood</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_PRIESTHOOD_HELP">
-			<Text>[COLOR_POSITIVE_TEXT]Priesthood[ENDCOLOR][NEWLINE][ICON_BULLET]Priests can build Temples[NEWLINE][ICON_BULLET]Azzandarayasna gains Enhancer effect: religion spreads 34% faster</Text>
+			<Text>[COLOR_POSITIVE_TEXT]Priesthood[ENDCOLOR][NEWLINE][ICON_BULLET]Azzandarayasna gains Enhancer effect: religion spreads 34% faster</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_HOLY_ORDER">
 			<Text>Holy Order</Text>
@@ -229,7 +229,7 @@
 			<Text>Hell's Mandate</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_ANTI_HEAVENS_MANDATE_HELP">
-			<Text>[COLOR_POSITIVE_TEXT]Hell's Mandate[ENDCOLOR][NEWLINE][ICON_BULLET]+5 [ICON_STAR] Mana in capital[NEWLINE][ICON_BULLET]Aŋra gains Founder effect: +1 [ICON_STAR] Mana for every follower[NEWLINE][ICON_BULLET]Allows the [COLOR_POSITIVE_TEXT]Ahriman's Tribute[ENDCOLOR] Process, which converts 25% of City [ICON_PRODUCTION] Production into consumed [ICON_STAR] Mana (the Mana is directly consumed and never made available to the civilization) (Not yet implemented!)</Text>
+			<Text>[COLOR_POSITIVE_TEXT]Hell's Mandate[ENDCOLOR][NEWLINE][ICON_BULLET]+5 [ICON_STAR] Mana in capital[NEWLINE][ICON_BULLET]Aŋra gains Founder effect: +1 [ICON_STAR] Mana for every follower[NEWLINE][ICON_BULLET]Allows the [COLOR_POSITIVE_TEXT]Ahriman's Tribute[ENDCOLOR] Process, which converts 25% of City [ICON_PRODUCTION] Production into consumed [ICON_STAR] Mana (the Mana is directly consumed and never made available to the civilization)</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_ANTI_PRIESTHOOD">
 			<Text>Priesthood</Text>
@@ -591,7 +591,7 @@
 			<Text>Servi Aeternam</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_SERVI_AETERNAM_HELP">
-			<Text>[COLOR_POSITIVE_TEXT]Servi Aeternam[ENDCOLOR][NEWLINE][ICON_BULLET]Enables the Internment Camp building which provides +2p and eliminates or enslaves all nearby revolting units[NEWLINE][ICON_BULLET]Allows the [COLOR_POSITIVE_TEXT]Oppression[ENDCOLOR] Process, which converts 25% of City [ICON_PRODUCTION] Production into civilization [ICON_HAPPINESS_4] Unhappiness (Not yet implemented!)</Text>
+			<Text>[COLOR_POSITIVE_TEXT]Servi Aeternam[ENDCOLOR][NEWLINE][ICON_BULLET]Enables the Internment Camp building which provides +2p and eliminates or enslaves all nearby revolting units[NEWLINE][ICON_BULLET]Allows the [COLOR_POSITIVE_TEXT]Oppression[ENDCOLOR] Process, which converts 25% of City [ICON_PRODUCTION] Production into civilization [ICON_HAPPINESS_4] Unhappiness</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_SERVI_AETERNAM_TEXT">
 			<Text>placeholder</Text>

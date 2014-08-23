@@ -24,6 +24,7 @@ local EARACE_SIDHE =					GameInfoTypes.EARACE_SIDHE
 local EARACE_HELDEOFOL =				GameInfoTypes.EARACE_HELDEOFOL
 
 local HandleError10 =					HandleError10
+local HandleError21 =					HandleError21
 
 --------------------------------------------------------------
 -- file control vars
@@ -62,6 +63,99 @@ function ShowEaImagePopup(info)
 end
 LuaEvents.EaImagePopup.Add(function(info) return HandleError10(ShowEaImagePopup, info) end)
 
+local eaPortraitInfoByPersonRowID = {}
+for eaPersonRow in GameInfo.EaPeople() do
+	local eaPortraitType = string.gsub(eaPersonRow.Type, "EAPERSON", "EAPORTRAIT")
+	local eaPortraitInfo = GameInfo.EaPortraits[eaPortraitType]
+	eaPortraitInfoByPersonRowID[eaPersonRow.ID] = eaPortraitInfo
+	print(eaPersonRow.Type, eaPortraitInfo, eaPortraitInfo and eaPortraitInfo.Type)
+end
+
+local g_otherPlayerDialog = false
+
+function ShowHideEaLeaderForDialog(iOtherPlayer)
+	print("ShowHideEaLeaderForDialog ", iOtherPlayer)
+
+	if iOtherPlayer == g_otherPlayerDialog then return end
+	g_otherPlayerDialog = iOtherPlayer
+
+	--[[Paz add
+	MapModData.bTradeLogicOpen = bMyMode
+	local iPerson = 0
+	if g_iThem ~= -1 and bMyMode then
+		local eaPlayer = gT.gPlayers[g_iThem]
+		iPerson = eaPlayer.leaderEaPersonIndex or 0
+	end
+	if g_iAIPlayer ~= -1 or not bMyMode then
+		LuaEvents.ShowHideEaLeaderForDialog(iPerson)
+	end
+
+	--end Paz add
+
+
+
+	print("ShowHideEaLeaderForDialog ", iPerson)
+	print("MapModData.bLeaderHeadRootOpen = ", MapModData.bLeaderHeadRootOpen)
+	print("MapModData.bTradeLogicOpen = ", MapModData.bTradeLogicOpen)
+	local bShow = MapModData.bLeaderHeadRootOpen or MapModData.bTradeLogicOpen
+	if bShow == g_isLeaderDialog then return end
+	print("ShowHideEaLeaderForDialog change; bShow = ", bShow)
+	]]
+
+	if iOtherPlayer then
+		if g_isOpen then
+			if g_lastImageFrame then
+				Controls[g_lastImageFrame]:SetHide(true)
+				Controls[g_lastImageFrame]:UnloadTexture()
+			end			
+		end
+		g_isOpen = false
+		ContextPtr:SetHide(false)
+
+
+		local eaOtherPlayer = gT.gPlayers[iOtherPlayer]
+		local iPerson = eaOtherPlayer.leaderEaPersonIndex or 0
+		
+		local eaPerson = gT.gPeople[iPerson]
+		local eaPersonRowID = eaPerson.eaPersonRowID
+		if not eaPersonRowID then
+			print("!!!! ERROR: Leader is generic?")
+			 eaPersonRowID = 0
+		end
+		g_artInfo = eaPortraitInfoByPersonRowID[eaPerson.eaPersonRowID]
+		local dds = g_artInfo.File
+	
+		local gridSize, gridOffset, imageFrame, imageSize, imageOffset = ScaleImage("Leader", dds, 0)
+		print(imageFrame, imageSize.x, imageSize.y, imageOffset.x, imageOffset.y, gridSize.x, gridSize.y, gridOffset.x, gridOffset.y)
+
+		if gridSize then
+			Controls.TextBox:SetHide(true)
+			Controls.ImageGrid:SetSize(gridSize)
+			Controls.ImageGrid:SetOffsetVal(gridOffset.x, gridOffset.y)
+			Controls.Trim:SetSize({x = gridSize.x - 20, y = 5})
+			Controls[imageFrame]:SetHide(false)
+			Controls[imageFrame]:SetTexture(dds)
+			Controls[imageFrame]:SetSize(imageSize)
+			Controls[imageFrame]:SetOffsetVal(imageOffset.x, imageOffset.y)
+			--Controls[imageFrame]:SetToolTipCallback(ArtCreditToolTip)
+
+			g_lastImageFrame = imageFrame
+		end
+
+	else
+		if g_lastImageFrame then
+			Controls[g_lastImageFrame]:SetHide(true)
+			Controls[g_lastImageFrame]:UnloadTexture()
+		end
+
+		ContextPtr:SetHide(true)
+	end
+
+end
+local function X_ShowHideEaLeaderForDialog(iOtherPlayer) return HandleError10(ShowHideEaLeaderForDialog, iOtherPlayer) end
+LuaEvents.ShowHideEaLeaderForDialog.Add(X_ShowHideEaLeaderForDialog)
+
+
 function ShowGeneric(info)
 	--provide imageInfo and text or textKey
 	print("running ShowGeneric")
@@ -79,6 +173,7 @@ function ShowGeneric(info)
 		--Controls.ImageGrid:SetHide(false)
 		Controls.ImageGrid:SetSize(gridSize)
 		Controls.ImageGrid:SetOffsetVal(gridOffset.x, gridOffset.y)
+		Controls.TextBox:SetHide(false)
 		Controls.TextBox:SetSize({x = imageSize.x, y = 10 + 24 * textRows})
 		Controls.Trim:SetSize({x = gridSize.x - 20, y = 5})
 		Controls[imageFrame]:SetHide(false)
@@ -173,6 +268,7 @@ function ShowPortrait(info)
 		--Controls.ImageGrid:SetHide(false)
 		Controls.ImageGrid:SetSize(gridSize)
 		Controls.ImageGrid:SetOffsetVal(gridOffset.x, gridOffset.y)
+		Controls.TextBox:SetHide(false)
 		Controls.TextBox:SetSize({x = imageSize.x, y = 10 + 24 * textRows})
 		Controls.Trim:SetSize({x = gridSize.x - 20, y = 5})
 		Controls[imageFrame]:SetHide(false)
@@ -229,6 +325,7 @@ function ShowDeath(info)
 		--Controls.ImageGrid:SetHide(false)
 		Controls.ImageGrid:SetSize(gridSize)
 		Controls.ImageGrid:SetOffsetVal(gridOffset.x, gridOffset.y)
+		Controls.TextBox:SetHide(false)
 		Controls.TextBox:SetSize({x = imageSize.x, y = 60})
 		Controls.Trim:SetSize({x = gridSize.x - 20, y = 5})
 		Controls[imageFrame]:SetHide(false)
@@ -266,6 +363,7 @@ function ShowCiv(info)
 
 		Controls.ImageGrid:SetSize(gridSize)
 		Controls.ImageGrid:SetOffsetVal(gridOffset.x, gridOffset.y)
+		Controls.TextBox:SetHide(false)
 		Controls.TextBox:SetSize({x = imageSize.x, y = 10 + 24 * textRows})
 		Controls.Trim:SetSize({x = gridSize.x - 20, y = 5})
 

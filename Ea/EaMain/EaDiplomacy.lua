@@ -48,6 +48,8 @@ local Ln = math.log
 local GetNumPoliciesInBranch = GetNumPoliciesInBranch
 
 --file control
+local g_iActivePlayer = Game.GetActivePlayer()
+local g_iActiveTeam = Players[g_iActivePlayer]:GetTeam()
 local g_gameTurn = 0
 local g_cachedDiploModifiers = {}
 
@@ -250,7 +252,23 @@ local function OnCanContactMajorTeam(iTeam1, iTeam2)
 		end
 	end
 	print("OnCanContactMajorTeam ", iTeam1, iTeam2, "returning: ", true)
+
+	if iTeam1 == g_iActiveTeam or iTeam2 == g_iActiveTeam then
+		PreGame.SetGameType(GameTypes.GAME_NETWORK_MULTIPLAYER)	--Leaderscreen bypass hack
+	end
+
 	return true
 end
 local function X_OnCanContactMajorTeam(iTeam1, iTeam2) return HandleError21(OnCanContactMajorTeam, iTeam1, iTeam2) end
 GameEvents.CanContactMajorTeam.Add(X_OnCanContactMajorTeam) --new Ea API
+
+
+
+----------------------------------------------------------------
+-- Player change
+----------------------------------------------------------------
+local function OnActivePlayerChanged(iActivePlayer, iPrevActivePlayer)
+	g_iActivePlayer = iActivePlayer
+	g_iActiveTeam = Players[g_iActivePlayer]:GetTeam()
+end
+Events.GameplaySetActivePlayer.Add(OnActivePlayerChanged)

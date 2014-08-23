@@ -129,14 +129,53 @@ end
 
 --Listener tests
 
+local function AILeaderMessage(...)
+	print("Listener: AILeaderMessage ", ...)
+end
+Events.AILeaderMessage.Add(AILeaderMessage)
+
+local function LeavingLeaderViewMode(...)
+	print("Listener: LeavingLeaderViewMode ", ...)
+end
+Events.LeavingLeaderViewMode.Add(LeavingLeaderViewMode)
+
+local function ClearDiplomacyTradeTable(...)
+	print("Listener: ClearDiplomacyTradeTable ", ...)
+end
+Events.ClearDiplomacyTradeTable.Add(ClearDiplomacyTradeTable)
+
+local function SerialEventLeaderToggleDebugCam(...)
+	print("Listener: SerialEventLeaderToggleDebugCam ", ...)
+end
+Events.SerialEventLeaderToggleDebugCam.Add(SerialEventLeaderToggleDebugCam)
+
+local function NotifyAILeaderInGame(...)
+	print("Listener: NotifyAILeaderInGame ", ...)
+end
+Events.NotifyAILeaderInGame.Add(NotifyAILeaderInGame)
+
+
+local function OpenPlayerDealScreenEvent(...)
+	print("Listener: OpenPlayerDealScreenEvent ", ...)
+end
+Events.OpenPlayerDealScreenEvent.Add(OpenPlayerDealScreenEvent)
+
+
+
+--OpenPlayerDealScreenEvent
+
+--LeavingLeaderViewMode
+--ClearDiplomacyTradeTable
+--SerialEventLeaderToggleDebugCam
+--NotifyAILeaderInGame
+
+
+
 --function OnCanStartMission(iPlayer, iUnit, missionID)
 --	print("CanStartMission ", iPlayer, iUnit, missionID)
 --	return true
 --end
 --GameEvents.CanStartMission.Add(OnCanStartMission)
-
-
-
 
 
 --[[

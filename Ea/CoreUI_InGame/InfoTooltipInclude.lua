@@ -17,65 +17,133 @@ local ConvertTextKey =		Locale.ConvertTextKey
 local ToUpper =				Locale.ToUpper
 
 --cached info texts
-local cached_Building_ResourceQuantity = {}
-local cached_Building_LocalResourceOrs = {}
-local cached_Building_ResourceYieldChanges = {}
-local cached_Building_EaConvertImprovedResource = {}
+local cached_Building_ResourceQuantity = MapModData and MapModData.cached_Building_ResourceQuantity or {}
+local cached_Building_LocalResourceOrs =  MapModData and MapModData.cached_Building_LocalResourceOrs or {}
+local cached_Building_ResourceYieldChanges =  MapModData and MapModData.cached_Building_ResourceYieldChanges or {}
+local cached_Building_EaConvertImprovedResource =  MapModData and MapModData.cached_Building_EaConvertImprovedResource or {}
 
-local function ResetCashedBuildingStrings(bInit)	--called once for now; could be called for policy updates when those effects added
+		
+--skip over hidden buildings
+local showBuilding = {}
+for buildingInfo in GameInfo.Buildings("EaHidden IS NULL") do
+	showBuilding[buildingInfo.ID] = true
+end
+
+
+local function ResetCashedBuildingStrings(bInit)	--call at game init during mod load and when active player changes policies/techs
 	print("Building cached info strings")
+	local iPlayer = Game.GetActivePlayer()
+	local player = Players[iPlayer]
 
-	print(" -cached_Building_ResourceQuantity")					--assume only one resource type per building 
-	for row in GameInfo.Building_ResourceQuantity() do
-		local buildingID = GameInfoTypes[row.BuildingType]
-		local resourceInfo = GameInfo.Resources[row.ResourceType]
-		local str = row.Quantity .. " " .. resourceInfo.IconString .. " " .. ConvertTextKey(resourceInfo.Description)
-		str = ConvertTextKey("TXT_KEY_EA_PRODUCES_HELP_INFO", str)
-		cached_Building_ResourceQuantity[buildingID] = str
-	end
+	if bInit then
+		--items that can't ever change from policy or tech
 
-	print(" -cached_Building_LocalResourceOrs")
-	local buildingLocalResourceOrs = {}
-	for row in GameInfo.Building_LocalResourceOrs() do
-		buildingLocalResourceOrs[row.BuildingType] = buildingLocalResourceOrs[row.BuildingType] or {count = 0}
-		local resources = buildingLocalResourceOrs[row.BuildingType]
-		resources.count = resources.count + 1
-		resources[resources.count] = row.ResourceType
-	end
-	for buildingType, resources in pairs(buildingLocalResourceOrs) do
-		local buildingID = GameInfoTypes[buildingType]
-		local str
-		for i = 1, resources.count do
-			local resourceType = resources[i]
-			--print("  *", buildingType, resourceType)
-			local resourceInfo = GameInfo.Resources[resourceType]
-			local resourceStr = resourceInfo.IconString .. " " .. ConvertTextKey(resourceInfo.Description)
-			if i == 1 then
-				str = resourceStr
-			elseif i == resources.count then
-				str = ConvertTextKey("TXT_KEY_EA_GENERIC_OR_CONNECTER", str, resourceStr)
-			else
-				str = str .. ", " .. resourceStr
+		print(" -cached_Building_ResourceQuantity")					--assume only one resource type per building 
+		for row in GameInfo.Building_ResourceQuantity() do
+			local buildingID = GameInfoTypes[row.BuildingType]
+			if showBuilding[buildingID] then
+				local resourceInfo = GameInfo.Resources[row.ResourceType]
+				local str = row.Quantity .. " " .. resourceInfo.IconString .. " " .. ConvertTextKey(resourceInfo.Description)
+				str = ConvertTextKey("TXT_KEY_EA_PRODUCES_HELP_INFO", str)
+				cached_Building_ResourceQuantity[buildingID] = str
 			end
 		end
-		str = ConvertTextKey("TXT_KEY_EA_REQUIRES_NEARBY_HELP_INFO", str)
-		cached_Building_LocalResourceOrs[buildingID] = str
+
+		print(" -cached_Building_LocalResourceOrs")
+		local buildingLocalResourceOrs = {}
+		for row in GameInfo.Building_LocalResourceOrs() do
+			local buildingID = GameInfoTypes[row.BuildingType]
+			if showBuilding[buildingID] then
+				buildingLocalResourceOrs[buildingID] = buildingLocalResourceOrs[buildingID] or {count = 0}
+				local resources = buildingLocalResourceOrs[buildingID]
+				resources.count = resources.count + 1
+				resources[resources.count] = row.ResourceType
+			end
+		end
+		for buildingID, resources in pairs(buildingLocalResourceOrs) do
+			local str
+			for i = 1, resources.count do
+				local resourceType = resources[i]
+				--print("  *", buildingID, resourceType)
+				local resourceInfo = GameInfo.Resources[resourceType]
+				local resourceStr = resourceInfo.IconString .. " " .. ConvertTextKey(resourceInfo.Description)
+				if i == 1 then
+					str = resourceStr
+				elseif i == resources.count then
+					str = ConvertTextKey("TXT_KEY_EA_GENERIC_OR_CONNECTER", str, resourceStr)
+				else
+					str = str .. ", " .. resourceStr
+				end
+			end
+			str = ConvertTextKey("TXT_KEY_EA_REQUIRES_NEARBY_HELP_INFO", str)
+			cached_Building_LocalResourceOrs[buildingID] = str
+		end
+
+		print(" -cached_Building_EaConvertImprovedResource")
+		local buildingConvertImprovedResource = {}	--holds table for applicable building indexed by <resource per> text
+		for row in GameInfo.Building_EaConvertImprovedResource() do
+			local buildingID = GameInfoTypes[row.BuildingType]
+			if showBuilding[buildingID] then
+				buildingConvertImprovedResource[buildingID] = buildingConvertImprovedResource[buildingID] or {}
+				--"[ICON_BULLET]Produces 1 [ICON_IVORY] Ivory for each improved ____, ____ and ____"
+				local addResourceInfo = GameInfo.Resources[row.AddResource]
+				local addResourceStr = "[ICON_BULLET]Produces 1 " .. addResourceInfo.IconString .. " " .. ConvertTextKey(addResourceInfo.Description)
+				buildingConvertImprovedResource[buildingID][addResourceStr] = buildingConvertImprovedResource[buildingID][addResourceStr] or {count = 0}
+				local resources = buildingConvertImprovedResource[buildingID][addResourceStr]
+				resources.count = resources.count + 1
+				resources[resources.count] = row.ImprovedResource
+			end
+		end
+		for buildingID, improvedResources in pairs(buildingConvertImprovedResource) do
+			cached_Building_EaConvertImprovedResource[buildingID] = cached_Building_EaConvertImprovedResource[buildingID] or {}
+			local cachedTable = cached_Building_EaConvertImprovedResource[buildingID]
+			for addResourceStr, resources in pairs(improvedResources) do
+				for i = 1, resources.count do
+					local resourceType = resources[i]
+					local resourceInfo = GameInfo.Resources[resourceType]
+					local resourceStr = resourceInfo.IconString .. " " .. ConvertTextKey(resourceInfo.Description)
+					if i == 1 then
+						addResourceStr = ConvertTextKey("TXT_KEY_EA_GENERIC_FOR_EACH_IMPROVED_CONNECTER", addResourceStr, resourceStr)
+					elseif i == resources.count then
+						addResourceStr = ConvertTextKey("TXT_KEY_EA_GENERIC_AND_CONNECTER", addResourceStr, resourceStr)
+					else
+						addResourceStr = addResourceStr .. ", " .. resourceStr
+					end
+				end
+				--print("  *", buildingType, addResourceStr)
+				cachedTable[#cachedTable + 1] = addResourceStr
+			end
+		end
+
 	end
 
+	--items that can change with policies or techs
+
 	print(" -cached_Building_ResourceYieldChanges")
-	local buildingResourceYieldChanges = {}	--holds table for applicable building indexed by <yield per> text
+	local buildingResourceYieldChanges = {}	--holds table for applicable building indexed by [yieldID][resourceID]
 	for row in GameInfo.Building_ResourceYieldChanges() do
-		buildingResourceYieldChanges[row.BuildingType] = buildingResourceYieldChanges[row.BuildingType] or {}
-		--"[ICON_BULLET]+1 [ICON_CULTURE] Culture from each ____, ____ and ____"
-		local yieldInfo = GameInfo.Yields[row.YieldType]
-		local yieldStr = "[ICON_BULLET]+" .. row.Yield .. " " .. yieldInfo.IconString .. " " .. ConvertTextKey(yieldInfo.Description)
-		buildingResourceYieldChanges[row.BuildingType][yieldStr] = buildingResourceYieldChanges[row.BuildingType][yieldStr] or {count = 0}
-		local resources = buildingResourceYieldChanges[row.BuildingType][yieldStr]
-		resources.count = resources.count + 1
-		resources[resources.count] = row.ResourceType
+		local buildingID = GameInfoTypes[row.BuildingType]
+		if showBuilding[buildingID] then
+			buildingResourceYieldChanges[buildingID] = buildingResourceYieldChanges[buildingID] or {}
+
+			--change organization so we can add with Building_TechEnhancedYieldChanges
+			--local yieldID = GameInfoTypes[row.YieldType]
+			--buildingResourceYieldChanges[buildingID][yieldID] = buildingResourceYieldChanges[buildingID][yieldID] or {}
+			--local resourceID = GameInfoTypes[row.ResourceType]
+			--buildingResourceYieldChanges[buildingID][yieldID][resourceID] = (buildingResourceYieldChanges[buildingID][yieldID][resourceID] or 0) + 1
+
+			--"[ICON_BULLET]+1 [ICON_CULTURE] Culture from each ____, ____ and ____"
+			local yieldInfo = GameInfo.Yields[row.YieldType]
+			local yieldStr = "[ICON_BULLET]+" .. row.Yield .. " " .. yieldInfo.IconString .. " " .. ConvertTextKey(yieldInfo.Description)
+			buildingResourceYieldChanges[buildingID][yieldStr] = buildingResourceYieldChanges[buildingID][yieldStr] or {count = 0}
+			local resources = buildingResourceYieldChanges[buildingID][yieldStr]
+			resources.count = resources.count + 1
+			resources[resources.count] = row.ResourceType
+		end
 	end
-	for buildingType, yieldResources in pairs(buildingResourceYieldChanges) do
-		local buildingID = GameInfoTypes[buildingType]
+	--Building_TechEnhancedYieldChanges (not used yet so I haven't modded this yet)
+
+	for buildingID, yieldResources in pairs(buildingResourceYieldChanges) do
 		cached_Building_ResourceYieldChanges[buildingID] = cached_Building_ResourceYieldChanges[buildingID] or {}
 		local cachedTable = cached_Building_ResourceYieldChanges[buildingID]
 		for yieldStr, resources in pairs(yieldResources) do
@@ -96,43 +164,20 @@ local function ResetCashedBuildingStrings(bInit)	--called once for now; could be
 		end
 	end
 
-	print(" -cached_Building_EaConvertImprovedResource")
-	local buildingConvertImprovedResource = {}	--holds table for applicable building indexed by <resource per> text
-	for row in GameInfo.Building_EaConvertImprovedResource() do
-		buildingConvertImprovedResource[row.BuildingType] = buildingConvertImprovedResource[row.BuildingType] or {}
-		--"[ICON_BULLET]Produces 1 [ICON_IVORY] Ivory for each improved ____, ____ and ____"
-		local addResourceInfo = GameInfo.Resources[row.AddResource]
-		local addResourceStr = "[ICON_BULLET]Produces 1 " .. addResourceInfo.IconString .. " " .. ConvertTextKey(addResourceInfo.Description)
-		buildingConvertImprovedResource[row.BuildingType][addResourceStr] = buildingConvertImprovedResource[row.BuildingType][addResourceStr] or {count = 0}
-		local resources = buildingConvertImprovedResource[row.BuildingType][addResourceStr]
-		resources.count = resources.count + 1
-		resources[resources.count] = row.ImprovedResource
-	end
-	for buildingType, improvedResources in pairs(buildingConvertImprovedResource) do
-		local buildingID = GameInfoTypes[buildingType]
-		cached_Building_EaConvertImprovedResource[buildingID] = cached_Building_EaConvertImprovedResource[buildingID] or {}
-		local cachedTable = cached_Building_EaConvertImprovedResource[buildingID]
-		for addResourceStr, resources in pairs(improvedResources) do
-			for i = 1, resources.count do
-				local resourceType = resources[i]
-				local resourceInfo = GameInfo.Resources[resourceType]
-				local resourceStr = resourceInfo.IconString .. " " .. ConvertTextKey(resourceInfo.Description)
-				if i == 1 then
-					addResourceStr = ConvertTextKey("TXT_KEY_EA_GENERIC_FOR_EACH_IMPROVED_CONNECTER", addResourceStr, resourceStr)
-				elseif i == resources.count then
-					addResourceStr = ConvertTextKey("TXT_KEY_EA_GENERIC_AND_CONNECTER", addResourceStr, resourceStr)
-				else
-					addResourceStr = addResourceStr .. ", " .. resourceStr
-				end
-			end
-			--print("  *", buildingType, addResourceStr)
-			cachedTable[#cachedTable + 1] = addResourceStr
-		end
-	end
+
 
 end
 
-if MapModData then ResetCashedBuildingStrings(true) end		--skips when file loads for setup screen
+if MapModData and not MapModData.bInitedToolTipTables then					--this file loads many times!
+	ResetCashedBuildingStrings(true)
+	LuaEvents.ResetCashedBuildingStrings.Add(ResetCashedBuildingStrings)	--for update with active player policy/tech changes
+
+	MapModData.cached_Building_ResourceQuantity = cached_Building_ResourceQuantity
+	MapModData.cached_Building_LocalResourceOrs = cached_Building_LocalResourceOrs
+	MapModData.cached_Building_ResourceYieldChanges = cached_Building_ResourceYieldChanges
+	MapModData.cached_Building_EaConvertImprovedResource = cached_Building_EaConvertImprovedResource
+	MapModData.bInitedToolTipTables = true
+end
 
 ------------------------------------------------
 --end Paz add

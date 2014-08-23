@@ -3,7 +3,7 @@
 
 
     <Box Anchor="C,C" Offset="0,0" Color="0.0.0.0" Size="Full,Full" ID="RootOptions" >
-		<!--Paz add-->
+		<!--Paz add
 		<Grid Size="600,800" Anchor="C,C" Offset="0,0" Style="Grid9DetailSix140" ID="EaLeaderGrid" ConsumeMouse="1" Hidden="1">
 			<Image Size="404,1484" ID="Image404x1484" Anchor="C,C" Hidden="1" />
 			<Image Size="424,1416" ID="Image424x1416" Anchor="C,C" Hidden="1" />
@@ -34,7 +34,7 @@
 			<Image Size="1484,404" ID="Image1484x404" Anchor="C,C" Hidden="1" />
 			<Image Size="1556,384" ID="Image1556x384" Anchor="C,C" Hidden="1" />
 		</Grid>
-		<!--end Paz add-->
+	end Paz add-->
 		
         <Grid Size="650,94" Anchor="C,B" AnchorSide="O.I" Offset="0,40" Style="GridBlackIndent8" ID="LeaderSpeechFrame">
 			<!--Paz changed from Offset="-100,40"-->

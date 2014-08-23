@@ -6,7 +6,7 @@ include( "GameplayUtilities" );
 include( "InfoTooltipInclude" );
 
 --Paz add
-include ("EaImageScaling.lua")
+--include ("EaImageScaling.lua")
 include ("EaTextUtils.lua")
 if not MapModData.gT then
 	MapModData.gT = {}
@@ -163,6 +163,10 @@ function LeaderMessageHandler( iPlayer, iDiploUIState, szLeaderMessage, iAnimati
 	
 	-- Are we in this screen's mode?
 	if (bMyMode) then
+		--Paz add
+		LuaEvents.ShowHideEaLeaderForDialog(iPlayer)
+		--end Paz add
+
 		UI.SetLeaderHeadRootUp( true );
 	    UIManager:QueuePopup( ContextPtr, PopupPriority.LeaderHead );
 
@@ -224,6 +228,10 @@ function OnLeavingLeader()
     -- but just in case...
 	UI.SetLeaderHeadRootUp( false );
     UIManager:DequeuePopup( ContextPtr );
+	--Paz add
+	LuaEvents.ShowHideEaLeaderForDialog(false)
+	PreGame.SetGameType(GameTypes.GAME_SINGLE_PLAYER)
+	--end Paz add
 end
 Events.LeavingLeaderViewMode.Add( OnLeavingLeader );
 
@@ -231,7 +239,7 @@ Events.LeavingLeaderViewMode.Add( OnLeavingLeader );
 local oldCursor = 0;
 
 --Paz add
-local lastImageFrame
+--local lastImageFrame
 --end Paz add
 
 ----------------------------------------------------------------        
@@ -240,6 +248,7 @@ local lastImageFrame
 function OnShowHide( bHide )
 	--print("PazDebug LeaderHeadRood OnShowHide")
 	--Paz add: overlays EaLeader on Civ5 leaderhead (Civ5 "leaderhead" used here as race background)
+	--[[
 	if g_iAIPlayer ~= -1 then
 		local dds
 		if MapModData.fullCivs[g_iAIPlayer] or MapModData.playerType[g_iAIPlayer] == "Fay" then		--major civ or Fay
@@ -276,6 +285,9 @@ function OnShowHide( bHide )
 			end
 		end
 	end
+	]]
+
+
 	--end Paz add
 	
 	-- Showing Screen

@@ -206,7 +206,7 @@ function SetNewCivName(iPlayer, eaCivID)
 	if eaCivInfo.FoundingGPClass or eaCivInfo.FoundingGPSubclass then
 		local class = eaCivInfo.FoundingGPClass
 		local subclass = (not class) and eaCivInfo.FoundingGPSubclass or nil
-		local eaPersonRowID = eaCivInfo.FoundingGPType
+		local eaPersonRowID = GameInfoTypes[eaCivInfo.FoundingGPType]
 		GenerateGreatPerson(iPlayer, class, subclass, eaPersonRowID, true)
 		if class and class == eaPlayer.delayedGPclass then
 			eaPlayer.delayedGPclass = false

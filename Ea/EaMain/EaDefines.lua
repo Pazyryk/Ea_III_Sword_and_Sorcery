@@ -19,7 +19,7 @@ ENABLE_PRINT = true
 DEBUG_PRINT = false
 MapModData.DEBUG_PRINT = DEBUG_PRINT
 MapModData.bDebugShowHiddenBuildings = false
-MapModData.bDisableEnabledPolicies = true
+MapModData.bDisableEnabledPolicies = false
 
 --------------------------------------------------------------
 -- Game Speed and Map Size adjustments

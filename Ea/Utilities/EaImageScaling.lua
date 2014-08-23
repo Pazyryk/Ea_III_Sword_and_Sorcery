@@ -61,10 +61,10 @@ function ScaleImage(style, dds, textRows)
 	end
 
 	if style == "Leader" then
-		local maxX = screenSizeX - 120	--adjustments for this style
-		local maxY = screenSizeY - 130
-		local gridOffset = {x = 0, y = -50}
-		local imageOffset = {x = 0, y = 0}	
+		local maxX = screenSizeX - 160			-- -120
+		local maxY = screenSizeY - 160			-- -130
+		local gridOffset = {x = 0, y = -44}		-- {x = 0, y = -50}	
+		local imageOffset = {x = 0, y = 44}	
 		if x > maxX then scaleX = maxX / x end
 		if y > maxY then scaleY = maxY / y end
 		if scaleX < scalingFactor then scalingFactor = scaleX end

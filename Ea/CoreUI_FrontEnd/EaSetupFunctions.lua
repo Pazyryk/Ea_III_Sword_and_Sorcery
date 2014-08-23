@@ -185,6 +185,7 @@ function SetEaCivs()
 			end
 	
 			PreGame.SetLeaderName(iPlayer, "TXT_KEY_EA_NO_LEADER")	
+			PreGame.SetNickName(iPlayer, "TXT_KEY_EA_NO_LEADER")	
 		end
 	end
 
@@ -199,6 +200,7 @@ function SetEaCivs()
 	PreGame.SetCivilizationShortDescription(iPlayer, "TXT_KEY_EA_CIV_THE_FAY")
 	PreGame.SetCivilizationAdjective(iPlayer, "TXT_KEY_EA_CIV_THE_FAY")
 	PreGame.SetLeaderName(iPlayer, "TXT_KEY_EAPERSON_FAND")
+	PreGame.SetNickName(iPlayer, "TXT_KEY_EAPERSON_FAND")
 
 	--Animals are added by dll
 

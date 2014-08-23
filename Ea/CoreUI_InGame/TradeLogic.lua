@@ -1,6 +1,9 @@
 
 --Paz added support for TRADE_ITEM_RENOUCE_MALEFICIUM (requires dll mod)
 
+--Paz add
+--local gT = MapModData.gT
+--end Paz add
 
 ----------------------------------------------------------------        
 ----------------------------------------------------------------        

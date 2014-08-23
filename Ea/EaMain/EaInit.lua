@@ -111,6 +111,7 @@ local function InitForNewGame()
 			eaPlayer.trainingXP = 0
 			eaPlayer.improvablePlots = 5	--any value to avoid /0
 			eaPlayer.improvedPlots = 0
+			eaPlayer.maxPopEver = 1
 					
 			eaPlayer.delayedGPclass = false
 			eaPlayer.delayedGPsubclass = false
@@ -160,7 +161,7 @@ local function InitForNewGame()
 			eaPlayer.religionID = GameInfoTypes.RELIGION_THE_WEAVE_OF_EA
 			eaPlayer.race = GameInfoTypes.EARACE_FAY
 			eaPlayer.eaCivNameID = -1		--any value here allows appearance in diplo list
-			eaPlayer.leaderEaPersonIndex = GameInfoTypes.EAPERSON_FAND		-- Queen of the Fay
+			eaPlayer.leaderEaPersonIndex = 0		-- gPeople[0] is always Fand
 			eaPlayer.culturalLevel = 20		--used in Diplo relations
 			eaPlayer.revealedNWs = {}
 			eaPlayer.atWarWith = {[62] = true, [63] = true}
@@ -278,6 +279,27 @@ function OnLoadEaMain()   --Called from the bottom of EaMain after all included 
 		InitForNewGame()
 	else
 		print("Initializing for loaded game...")	
+
+		--v7b gamesave compatibility patches (remove with v8)
+		-------------------------------------------
+		for iPlayer, eaPlayer in pairs(MapModData.fullCivs) do
+			if not eaPlayer.maxPopEver then
+				local player = Players[iPlayer]
+				eaPlayer.maxPopEver = player:GetTotalPopulation()
+			end
+			if MapModData.playerType[iPlayer] == "Fay" then
+				eaPlayer.leaderEaPersonIndex = 0			--bug fix
+			end
+		end
+
+		for iPerson, eaPerson in pairs(gPeople) do
+			if eaPerson.eaPersonRowID and GameInfoTypes[eaPerson.eaPersonRowID] then
+				eaPerson.eaPersonRowID = GameInfoTypes[eaPerson.eaPersonRowID]	--bug fix
+			end
+		end
+		--------------------------------------------
+
+
 	end
 
 	SetStrictTables()
@@ -317,6 +339,11 @@ local function OnEnterGame()   --Runs when Begin or Countinue Your Journey press
 
 	--trim dead players (after file inits in case someone is resurected)
 	for iPlayer in pairs(MapModData.realCivs) do
+
+		--v7b gamesave compatibility patch; remove with v8
+		PreGame.SetNickName(iPlayer, PreGame.GetLeaderName(iPlayer))
+
+
 		if not Players[iPlayer]:IsAlive() then
 			DeadPlayer(iPlayer, nil)
 		end

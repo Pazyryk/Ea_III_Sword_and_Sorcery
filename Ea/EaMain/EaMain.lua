@@ -3,7 +3,7 @@
 -- DateCreated: 8/16/2011 7:17:51 PM
 --------------------------------------------------------------
 
-local HOTFIX = "a"
+local HOTFIX = "b"
 local DLL_COMMIT = "d10942b"
 local DLL_DEBUG_BUILD = false
 local EA_MEDIA_PACK_MIN_VERSION = 5
@@ -345,6 +345,28 @@ local function OnPlayerDoTurn(iPlayer)	-- Runs at begining of turn for all livin
 end
 local function X_OnPlayerDoTurn(iPlayer) return HandleError10(OnPlayerDoTurn, iPlayer) end
 GameEvents.PlayerDoTurn.Add(X_OnPlayerDoTurn)
+
+
+--Leader Screen hackery: Leaderscreen is beyond our reach in gDLL, so can't be modded away straightforwardly.
+--So we use a hack where game type switches to multiplayer just in time for dialog (OnCanContactMajorTeam in
+--EaDiplomacy.lua) and then back (OnLeavingLeader in LeaderHeadRoot.lua). But that could possibly leave us
+--in multiplayer game which screws up saves and the game menu. So various other intercepts here:
+
+local GAME_SINGLE_PLAYER = GameTypes.GAME_SINGLE_PLAYER
+
+local function OnActivePlayerTurnStartAndEnd()
+	PreGame.SetGameType(GAME_SINGLE_PLAYER)
+end
+Events.ActivePlayerTurnStart.Add(OnActivePlayerTurnStartAndEnd)
+Events.ActivePlayerTurnEnd.Add(OnActivePlayerTurnStartAndEnd)
+
+local function OnAIProcessingEndedForPlayer(iPlayer)
+	if iPlayer == 63 then
+		PreGame.SetGameType(GAME_SINGLE_PLAYER)	--right before autosave
+	end
+end
+Events.AIProcessingEndedForPlayer.Add(OnAIProcessingEndedForPlayer)
+
 
 ----------------------------------------------------------------
 --Save 

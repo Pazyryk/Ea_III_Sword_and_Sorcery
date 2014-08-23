@@ -790,7 +790,7 @@ function ResetAgeOfDeath(iPerson)
 	if eaPerson.unitTypeID == UNIT_LICH then return end
 
 	local ageDeathReduction = 0
-	local eaPersonRowID = eaPerson.eaPersonRowID	--nil if generic
+	local eaPersonRowID = eaPerson.eaPersonRowID	--false if generic
 	if eaPersonRowID then
 		local personInfo = GameInfo.EaPeople[eaPersonRowID]
 		ageDeathReduction = personInfo.AgeDeathReduction
@@ -1012,6 +1012,7 @@ function MakeLeader(iPlayer, iPerson)
 
 	player:ChangeLeaderType(leaderID)
 	PreGame.SetLeaderName(iPlayer, newName)
+	PreGame.SetNickName(iPlayer, newName)
 
 	local iUnit = eaPerson.iUnit
 	local unit = player:GetUnitByID(iUnit)
@@ -1580,6 +1581,8 @@ function KillPerson(iPlayer, iPerson, unit, iKillerPlayer, deathType)
 			player:ChangeLeaderType(GameInfoTypes.LEADER_NO_LDR_HELDEOFOL)
 		end
 		PreGame.SetLeaderName(iPlayer, "TXT_KEY_EA_NO_LEADER")
+		PreGame.SetNickName(iPlayer, "TXT_KEY_EA_NO_LEADER")
+
 
 		RemoveLeaderEffects(iPlayer)
 		UpdateGlobalYields(iPlayer)

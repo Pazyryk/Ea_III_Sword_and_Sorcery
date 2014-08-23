@@ -76,12 +76,13 @@ INSERT INTO EaSettings (Name, Value, GameLengthExp, MapSizeExp, RoundAdjVal) VAL
 ('FAVORED_TECH_COST_REDUCTION',					-20,	0,	0,	0	),
 
 --Culture Level / Policies
-('CL_C_PER_POP_MULTIPLIER',						5,		0,	0,	0	),
+('CL_C_PER_POP_MULTIPLIER',						6,		0,	0,	0	),
 ('CL_C_PER_POP_ADD',							5,		0,	0,	0	),
 ('CL_APPROACH_FACTOR',							0.006,	-1,	0,	0	),
 ('CL_TARGET_CHANGE',							0.06,	-1,	0,	0	),
 ('CL_CHANGE_DAMPING_EXPONENT',					0.5,	0,	0,	0	),
-('CL_RECENCY_BIAS',								0.015,	-0.5,-1,0	),
+('CL_RECENCY_BIAS',								0.05,	-0.5,-1,0	),
+('CL_LOW_POP_FACTOR',							10,		0,	1,	0	),
 
 --Barbs
 ('BARB_TURN_CEILING',							300,	0,	0,	0	),	--stop increasing barb threat at this turn

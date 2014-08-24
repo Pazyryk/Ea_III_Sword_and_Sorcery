@@ -139,14 +139,22 @@ function EaCivsInit(bNewGame)
 			local player = Players[iPlayer]
 			local race = eaPlayer.race
 			local plot = player:GetStartingPlot()
+			local bSlavers = player:GetMinorCivTrait() == GameInfoTypes.MINOR_TRAIT_SLAVERS
+			
 			local unitTypeID = GameInfoTypes.UNIT_WARRIORS_MAN
+			local unitTypeID2 = bSlavers and GameInfoTypes.UNIT_SLAVES_MAN
+
 			if race == GameInfoTypes.EARACE_SIDHE then
 				unitTypeID = GameInfoTypes.UNIT_WARRIORS_SIDHE
+				unitTypeID2 = bSlavers and GameInfoTypes.UNIT_SLAVES_SIDHE
 			elseif race == GameInfoTypes.EARACE_HELDEOFOL then
 				unitTypeID = GameInfoTypes.UNIT_WARRIORS_ORC
+				unitTypeID2 = bSlavers and GameInfoTypes.UNIT_SLAVES_ORC
 			end
 			player:InitUnit(unitTypeID, plot:GetX(), plot:GetY())
-			--player:InitUnit(GameInfoTypes.UNITCLASS_SETTLERS_MINOR, plot:GetX(), plot:GetY())
+			if unitTypeID2 then
+				player:InitUnit(unitTypeID2, plot:GetX(), plot:GetY())
+			end
 		end
 
 		--Hidded civs init

@@ -15,8 +15,12 @@
 -- WarButton
 -- UnitGiftButton
 -- TileImprovementGiftButton
---
 
+-- Slave buying from CSs by Doopliss (look for Doopliss tags)
+
+--------------------------------------------------------------
+-- Settings (Added in-mod.  Referring to EaSettings seems to break the window, so we're cheating for now)
+--------------------------------------------------------------
 
 include( "IconSupport" );
 include( "InfoTooltipInclude" );
@@ -26,6 +30,10 @@ include( "CityStateStatusHelper" );
 local MapModData = MapModData
 MapModData.gT = MapModData.gT or {}
 local gT = MapModData.gT
+
+local SLAVE_BUY_PRICE_FROM_CS   =             MapModData.EaSettings.SLAVE_BUY_PRICE_FROM_CS		--45
+local SLAVE_CS_FRIEND_DISCOUNT  =             MapModData.EaSettings.SLAVE_CS_FRIEND_DISCOUNT	--15
+local SLAVE_CS_ALLY_DISCOUNT    =             MapModData.EaSettings.SLAVE_CS_ALLY_DISCOUNT		--35
 
 local g_minorCivTrait = -1
 --end Paz add
@@ -47,6 +55,9 @@ local kiGiftedGold = 4;
 local kiPledgedToProtect = 5;
 local kiDeclaredWar = 6;
 local kiRevokedProtection = 7;
+
+local kiBoughtSlave = 31; --Doopliss add
+
 local m_iLastAction = kiNoAction;
 local m_iPendingAction = kiNoAction; -- For bullying dialog popups
 
@@ -483,6 +494,11 @@ function OnDisplay()
 		elseif (m_iLastAction == kiRevokedProtection) then
 			strText = Locale.ConvertTextKey("TXT_KEY_CITY_STATE_DIPLO_JUST_REVOKED_PROTECTION");
 		
+		--Doopliss add: Did we just buy a slave?
+		elseif (m_iLastAction == kiBoughtSlave) then
+			strText = Locale.ConvertTextKey("TXT_KEY_EA_CITY_STATE_DIPLO_JUST_BOUGHT_SLAVE");
+		--End Doopliss add
+
 		-- Normal peaceful hello, with info about active quests
 		else
 			local iPersonality = pPlayer:GetPersonality();
@@ -659,6 +675,49 @@ function OnDisplay()
 			Controls.BuyoutButton:SetToolTipString(Locale.ConvertTextKey("TXT_KEY_EA_HIRE_MERCENARY_DISABLED_TOOLTIP"))
 		end
 
+	--Doopliss add
+	elseif pPlayer:GetMinorCivTrait() == GameInfoTypes.MINOR_TRAIT_SLAVERS then
+		Controls.BuyoutButton:SetHide(false)
+		Controls.BuyoutAnim:SetHide(false)
+
+		local iSlaveCost = SLAVE_BUY_PRICE_FROM_CS;
+		if pPlayer:IsAllies(iActivePlayer) then
+			iSlaveCost = iSlaveCost - SLAVE_CS_ALLY_DISCOUNT
+		elseif pPlayer:IsFriends(iActivePlayer) then
+			iSlaveCost = iSlaveCost - SLAVE_CS_FRIEND_DISCOUNT
+		end
+		local strButtonLabel = Locale.ConvertTextKey("TXT_KEY_EA_BUY_SLAVES", iSlaveCost)
+
+		if pActivePlayer:HasPolicy(GameInfoTypes.POLICY_SLAVERY) then
+			local iSlaveCount = 0;
+			for unit in pPlayer:Units() do
+				if unit:IsHasPromotion(GameInfoTypes.PROMOTION_SLAVE) and unit:WorkRate(false) > 0 then
+					iSlaveCount = iSlaveCount + 1;
+				end
+			end
+			--If we just bought a slave the conversion doesn't seem to go through until this runs again, so there's one less slave available
+			if m_iLastAction == kiBoughtSlave then iSlaveCount = iSlaveCount - 1 end 
+
+			if iSlaveCount > 0 then
+				if pActivePlayer:GetGold() >= iSlaveCost then
+					Controls.BuyoutButton:SetDisabled(false)
+				else
+					strButtonLabel = "[COLOR_WARNING_TEXT]" .. strButtonLabel .. "[ENDCOLOR]";
+					Controls.BuyoutButton:SetDisabled(true)
+				end
+
+				Controls.BuyoutButton:SetToolTipString(Locale.ConvertTextKey("TXT_KEY_EA_BUY_SLAVES_TOOLTIP", pPlayer:GetName()))
+			else
+				Controls.BuyoutButton:SetDisabled(true)
+				Controls.BuyoutButton:SetToolTipString(Locale.ConvertTextKey("TXT_KEY_EA_BUY_SLAVES_SOLD_OUT_TOOLTIP", pPlayer:GetName()))
+			end
+		else
+			Controls.BuyoutButton:SetDisabled(true)
+			Controls.BuyoutButton:SetToolTipString(Locale.ConvertTextKey("TXT_KEY_EA_BUY_SLAVES_NO_POLICY_TOOLTIP"))
+		end
+		Controls.BuyoutLabel:SetText(strButtonLabel)
+
+	--end Doopliss add
 	else
 		Controls.BuyoutButton:SetHide(true)
 		Controls.BuyoutAnim:SetHide(true)
@@ -795,23 +854,80 @@ end
 Controls.BuyoutButton:RegisterCallback( Mouse.eLClick, OnBuyoutButtonClicked );
 ]]
 
---Paz add
+--Paz add/Doopliss edit
 ----------------------------------------------------------------
--- Mercenaries
+-- Mercenaries/Slaves Button
 ----------------------------------------------------------------
+function OnBuyoutButtonLeftClicked()
+    local iPlayer = g_iMinorCivID;
+    local pPlayer = Players[iPlayer];
+	if pPlayer:GetMinorCivTrait() == GameInfoTypes.MINOR_TRAIT_MERCENARY then
+		UIManager:DequeuePopup(ContextPtr)
+		LuaEvents.ShowCityStateMercenariesPopup(g_iMinorCivID)
 
-function OnMercButtonLeftClicked()
-	UIManager:DequeuePopup(ContextPtr)
-	LuaEvents.ShowCityStateMercenariesPopup(g_iMinorCivID)
+	elseif pPlayer:GetMinorCivTrait() == GameInfoTypes.MINOR_TRAIT_SLAVERS then
+		BuySlave()
+	end
 end
-Controls.BuyoutButton:RegisterCallback(Mouse.eLClick, OnMercButtonLeftClicked)
+Controls.BuyoutButton:RegisterCallback(Mouse.eLClick, OnBuyoutButtonLeftClicked)
 
-function OnMercButtonRightClicked()
-	UIManager:DequeuePopup(ContextPtr)
-	LuaEvents.ShowCityStateMercenaryOnMapPopup(g_iMinorCivID)
+function OnBuyoutButtonRightClicked()
+    local iPlayer = g_iMinorCivID;
+    local pPlayer = Players[iPlayer];
+	if pPlayer:GetMinorCivTrait() == GameInfoTypes.MINOR_TRAIT_MERCENARY then
+		UIManager:DequeuePopup(ContextPtr)
+		LuaEvents.ShowCityStateMercenaryOnMapPopup(g_iMinorCivID)
+	end
 end
-Controls.BuyoutButton:RegisterCallback(Mouse.eRClick, OnMercButtonRightClicked)
+Controls.BuyoutButton:RegisterCallback(Mouse.eRClick, OnBuyoutButtonRightClicked)
 --end Paz add
+
+
+--Doopliss add
+----------------------------------------------------------------
+-- Buying Slaves
+----------------------------------------------------------------
+function BuySlave()
+    local iPlayer = g_iMinorCivID;
+    local pPlayer = Players[iPlayer];
+    local iActivePlayer = Game.GetActivePlayer();
+    local pActivePlayer = Players[iActivePlayer];
+
+	local uUnit = nil;
+	local iAvailableSlaves = 0;
+	for unit in pPlayer:Units() do
+		if unit:IsHasPromotion(GameInfoTypes.PROMOTION_SLAVE) and unit:WorkRate(false) > 0 then
+			uUnit = unit;
+			iAvailableSlaves = iAvailableSlaves + 1
+		end
+	end
+	if uUnit then
+		local unitTypeID = uUnit:GetUnitType()
+		local x = uUnit:GetX();
+		local y = uUnit:GetY();
+		local newUnit = pActivePlayer:InitUnit(unitTypeID, x, y)
+		if newUnit then
+--			newUnit:SetOriginalOwner(iOriginalOwner) --Doesn't appear to be necessary.
+			local iSlaveCost = SLAVE_BUY_PRICE_FROM_CS;
+			if pPlayer:IsAllies(iActivePlayer) then
+				iSlaveCost = iSlaveCost - SLAVE_CS_ALLY_DISCOUNT
+			elseif pPlayer:IsFriends(iActivePlayer) then
+				iSlaveCost = iSlaveCost - SLAVE_CS_FRIEND_DISCOUNT
+			end
+			pActivePlayer:ChangeGold(-iSlaveCost)
+			newUnit:Convert(uUnit)
+			m_iLastAction = kiBoughtSlave
+
+		else
+			print("Scripting error - was unable to copy the unit for some reason.")
+		end
+	else
+		print("Scripting error - was unable to find a slave to buy.")
+	end
+
+end
+
+--End Doopliss add
 
 ----------------------------------------------------------------
 -- War

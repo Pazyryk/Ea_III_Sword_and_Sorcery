@@ -254,7 +254,11 @@ local function OnCanContactMajorTeam(iTeam1, iTeam2)
 	print("OnCanContactMajorTeam ", iTeam1, iTeam2, "returning: ", true)
 
 	if iTeam1 == g_iActiveTeam or iTeam2 == g_iActiveTeam then
-		PreGame.SetGameType(GameTypes.GAME_NETWORK_MULTIPLAYER)	--Leaderscreen bypass hack
+		local iPlayer = Game.GetActivePlayer()
+		local player = Players[iPlayer]
+		if player:IsTurnActive() then
+			PreGame.SetGameType(GameTypes.GAME_NETWORK_MULTIPLAYER)	--Leaderscreen bypass hack
+		end
 	end
 
 	return true

@@ -59,7 +59,7 @@ function OnTurnStart ()
 	local iPlayer = Game.GetActivePlayer()
 	local strInfo
 	local leaderTxtKey, civTxtKey = PreGame.GetLeaderName(iPlayer), PreGame.GetCivilizationDescription(iPlayer)
-	if leaderTxtKey == "TXT_KEY_EA_NO_LEADER" then
+	if leaderTxtKey == "TXT_KEY_EA_NO_LEADER" or leaderTxtKey == Locale.Lookup("TXT_KEY_EA_NO_LEADER") then
 		strInfo = Locale.ConvertTextKey(civTxtKey)
 	else
 		strInfo = Locale.ConvertTextKey("TXT_KEY_EA_GENERIC_OF_CONNECTER", leaderTxtKey, civTxtKey)

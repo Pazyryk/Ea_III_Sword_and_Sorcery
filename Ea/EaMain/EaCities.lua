@@ -267,9 +267,26 @@ function EaCityInit(bNewGame)
 	end
 	if bNewGame then
 		for iPlayer, eaPlayer in pairs(realCivs) do
-			BlockUnitMatch(iPlayer, "UNIT_SLAVES", "NonSlavery", true, nil)
+			if cityStates[iPlayer] and Players[iPlayer]:GetMinorCivTrait() == GameInfoTypes.MINOR_TRAIT_SLAVERS then
+				BlockUnitMatch(iPlayer, "UNIT_WORKERS", "Slavery", true, nil)
+			else
+				BlockUnitMatch(iPlayer, "UNIT_SLAVES", "NonSlavery", true, nil)
+			end
 		end
 	else
+
+		--v7b patch (remove with v8)
+		for iPlayer, eaPlayer in pairs(cityStates) do
+			local player = Players[iPlayer]
+			if player:GetMinorCivTrait() == GameInfoTypes.MINOR_TRAIT_SLAVERS then
+				ConvertUnitsByMatch(iPlayer, "UNIT_WORKERS", "UNIT_SLAVES")
+				BlockUnitMatch(iPlayer, "UNIT_SLAVES", "NonSlavery", false, nil)
+				ConvertUnitProductionByMatch(iPlayer, "UNIT_WORKERS", "UNIT_SLAVES")
+				BlockUnitMatch(iPlayer, "UNIT_WORKERS", "Slavery", true, nil)
+			end
+		end
+
+
 		for iPlayer, eaPlayer in pairs(realCivs) do
 			local player = Players[iPlayer]
 			for city in player:Cities() do

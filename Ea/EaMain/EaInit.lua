@@ -356,7 +356,6 @@ local function OnEnterGame()   --Runs when Begin or Countinue Your Journey press
 		LuaEvents.EaErrorPopupDoErrorPopup(MapModData.error)		
 	end
 
-
 	print("Debug - end of OnEnterGame")
 
 	--There is a exe autosave right after this, but GameEvents.GameSave is specifically disabled (in dll)

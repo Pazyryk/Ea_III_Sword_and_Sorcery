@@ -354,11 +354,15 @@ GameEvents.PlayerDoTurn.Add(X_OnPlayerDoTurn)
 
 local GAME_SINGLE_PLAYER = GameTypes.GAME_SINGLE_PLAYER
 
-local function OnActivePlayerTurnStartAndEnd()
+local function OnActivePlayerTurnStart()
 	PreGame.SetGameType(GAME_SINGLE_PLAYER)
 end
-Events.ActivePlayerTurnStart.Add(OnActivePlayerTurnStartAndEnd)
-Events.ActivePlayerTurnEnd.Add(OnActivePlayerTurnStartAndEnd)
+Events.ActivePlayerTurnStart.Add(OnActivePlayerTurnStart)
+
+local function OnActivePlayerTurnEnd()
+	PreGame.SetGameType(GAME_SINGLE_PLAYER)
+end
+Events.ActivePlayerTurnEnd.Add(OnActivePlayerTurnEnd)
 
 local function OnAIProcessingEndedForPlayer(iPlayer)
 	if iPlayer == 63 then

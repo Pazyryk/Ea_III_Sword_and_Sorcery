@@ -66,7 +66,9 @@ INSERT INTO EaSettings (Name, Value, GameLengthExp, MapSizeExp, RoundAdjVal) VAL
 ('SLAVE_SELL_PRICE',							30,		0,	0,	0	),
 ('SLAVE_RENDER_PRODUCTION',						20,		0,	0,	0	),
 ('SLAVE_UPGRD_TO_WARRIOR_COST',					50,		0,	0,	0	),
-('SLAVE_BUY_PRICE_FROM_CS',						35,		0,	0,	0	),
+('SLAVE_BUY_PRICE_FROM_CS',						45,		0,	0,	0	),
+('SLAVE_CS_FRIEND_DISCOUNT',					15,		0,	0,	0	),
+('SLAVE_CS_ALLY_DISCOUNT',						35,		0,	0,	0	),
 
 --Resources
 ('TIMBER_DURATION_FROM_CHOP',					40,		1,	0,	1	),

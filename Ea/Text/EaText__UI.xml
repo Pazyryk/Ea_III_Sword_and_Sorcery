@@ -404,6 +404,23 @@
 			<Text>(If you wish to speak with {1_CivName:textkey} again, click on the god's name in the Diplomacy menu.)</Text>
 		</Row>
 
+		<!-- Slave-buying -->
+		<Row Tag="TXT_KEY_EA_CITY_STATE_DIPLO_JUST_BOUGHT_SLAVE">
+			<Text>It is always a pleasure to do business.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUY_SLAVES">
+			<Text>Buy slaves for {1_NumGold} [ICON_GOLD] Gold</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUY_SLAVES_TOOLTIP">
+			<Text>Gives control of one of {1_CivName:textkey}'s slaves to you.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUY_SLAVES_SOLD_OUT_TOOLTIP">
+			<Text>{1_CivName:textkey} does not have any slaves for sale.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_BUY_SLAVES_NO_POLICY_TOOLTIP">
+			<Text>You must open the Slavery policy tree to buy slaves.</Text>
+		</Row>
+
 		<!-- ReturnCivilianPopup -->
 		<Row Tag="TXT_KEY_EA_POP_RETURN_CIVILIAN_CONFIRMATION_TAKE_SLAVES">
 			<Text>Take them as slaves</Text>

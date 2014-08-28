@@ -300,6 +300,7 @@ function EaTechsInit(bNewGame)
 					team:SetHasTech(GameInfoTypes.TECH_ALLOW_HORSE_TRADE, true)
 				end
 			end
+			player:SetEmbarkedGraphicOverride("ART_DEF_UNIT_BATTLE_GALLEYS")
 		end
 	else
 		for iPlayer, eaPlayer in pairs(fullCivs) do
@@ -319,6 +320,14 @@ function EaTechsInit(bNewGame)
 			gg_fishingRange[iPlayer] = 3
 			gg_whalingRange[iPlayer] = 3
 			gg_campRange[iPlayer] = 3
+			if team:IsHasTech(GameInfoTypes.TECH_NAVIGATION) then
+				player:SetEmbarkedGraphicOverride("ART_DEF_UNIT_U_PORTUGUESE_CARRACKS")
+			elseif team:IsHasTech(GameInfoTypes.TECH_ASTRONOMY) then
+				player:SetEmbarkedGraphicOverride("ART_DEF_UNIT_CARAVELS")
+			else
+				player:SetEmbarkedGraphicOverride("ART_DEF_UNIT_BATTLE_GALLEYS")
+			end
+		
 			if team:IsHasTech(GameInfoTypes.TECH_SHIP_BUILDING) then
 				gg_fishingRange[iPlayer] = gg_fishingRange[iPlayer] + 2
 				gg_whalingRange[iPlayer] = gg_whalingRange[iPlayer] + 2
@@ -695,9 +704,16 @@ OnMajorPlayerTechLearned[GameInfoTypes.TECH_SHIP_BUILDING] = function(iPlayer)
 	gg_whalingRange[iPlayer] = gg_whalingRange[iPlayer] + 2
 end
 
+OnMajorPlayerTechLearned[GameInfoTypes.TECH_ASTRONOMY] = function(iPlayer)
+	local player = Players[iPlayer]
+	player:SetEmbarkedGraphicOverride("ART_DEF_UNIT_CARAVELS")
+end
+
 OnMajorPlayerTechLearned[GameInfoTypes.TECH_NAVIGATION] = function(iPlayer)
 	gg_fishingRange[iPlayer] = gg_fishingRange[iPlayer] + 2
 	gg_whalingRange[iPlayer] = gg_whalingRange[iPlayer] + 2
+	local player = Players[iPlayer]
+	player:SetEmbarkedGraphicOverride("ART_DEF_UNIT_U_PORTUGUESE_CARRACKS")
 end
 
 OnMajorPlayerTechLearned[GameInfoTypes.TECH_WHALING] = function(iPlayer)

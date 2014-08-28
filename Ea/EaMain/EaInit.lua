@@ -280,7 +280,7 @@ function OnLoadEaMain()   --Called from the bottom of EaMain after all included 
 	else
 		print("Initializing for loaded game...")	
 
-		--v7b gamesave compatibility patches (remove with v8)
+		--v7 gamesave compatibility patches (remove with v8)
 		-------------------------------------------
 		for iPlayer, eaPlayer in pairs(MapModData.fullCivs) do
 			if not eaPlayer.maxPopEver then
@@ -295,6 +295,9 @@ function OnLoadEaMain()   --Called from the bottom of EaMain after all included 
 		for iPerson, eaPerson in pairs(gPeople) do
 			if eaPerson.eaPersonRowID and GameInfoTypes[eaPerson.eaPersonRowID] then
 				eaPerson.eaPersonRowID = GameInfoTypes[eaPerson.eaPersonRowID]	--bug fix
+			end
+			if eaPerson.learningSpellID == false then
+				eaPerson.learningSpellID = -1
 			end
 		end
 		--------------------------------------------

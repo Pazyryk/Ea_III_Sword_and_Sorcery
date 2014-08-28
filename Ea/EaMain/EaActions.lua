@@ -239,9 +239,11 @@ function RegisterGPActions(iPerson)
 					or (eaAction.GPSubclass and eaAction.GPSubclass == subclass)
 					or (eaAction.OrGPSubclass and eaAction.OrGPSubclass == subclass) then
 			if not eaAction.ExcludeGPSubclass or eaAction.ExcludeGPSubclass ~= subclass then
-				if not eaAction.NotGPClass or (eaAction.NotGPClass ~= class1 and eaAction.NotGPClass ~= class1) then
-					actions[number] = id
-					number = number + 1
+				if not eaAction.ExcludeGPSubclass2 or eaAction.ExcludeGPSubclass2 ~= subclass then
+					if not eaAction.NotGPClass or (eaAction.NotGPClass ~= class1 and eaAction.NotGPClass ~= class1) then
+						actions[number] = id
+						number = number + 1
+					end
 				end
 			end
 		end

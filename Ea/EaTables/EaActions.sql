@@ -57,6 +57,7 @@ CREATE TABLE EaActions ('ID' INTEGER PRIMARY KEY AUTOINCREMENT,
 						'GPSubclass' TEXT DEFAULT NULL,	
 						'OrGPSubclass' TEXT DEFAULT NULL,
 						'ExcludeGPSubclass' TEXT DEFAULT NULL,
+						'ExcludeGPSubclass2' TEXT DEFAULT NULL,
 						'RestrictedToGPSubclass' TEXT DEFAULT NULL,	--only added for spell now
 						'LevelReq' INTEGER DEFAULT NULL,
 						'PromotionReq' TEXT DEFAULT NULL,
@@ -214,8 +215,8 @@ INSERT INTO EaActions (Type,			GPOnly,	UIType,		GPClass,		OwnTerritory,	AITarget
 
 UPDATE EaActions SET OrGPClass = 'Devout', ConsiderTowerTemple = 1, FinishMoves = NULL, NoGPNumLimit = 1 WHERE Type = 'EA_ACTION_LEARN_SPELL';
 UPDATE EaActions SET NotGPClass = 'Devout' WHERE Type = 'EA_ACTION_OCCUPY_TOWER';
-UPDATE EaActions SET OrGPClass = 'Sage', NotGPClass = 'Devout', PolicyReq = 'POLICY_MAGERY' WHERE Type = 'EA_ACTION_BECOME_MAGE';
-UPDATE EaActions SET OrGPClass = 'Sage', NotGPClass = 'Devout', PolicyReq = 'POLICY_MAGERY', LevelReq = 15 WHERE Type = 'EA_ACTION_BECOME_ARCHMAGE';
+UPDATE EaActions SET OrGPClass = 'Sage', NotGPClass = 'Devout', ExcludeGPSubclass = 'Mage', ExcludeGPSubclass2 = 'Archmage', PolicyReq = 'POLICY_MAGERY' WHERE Type = 'EA_ACTION_BECOME_MAGE';
+UPDATE EaActions SET OrGPClass = 'Sage', NotGPClass = 'Devout', ExcludeGPSubclass = 'Archmage', PolicyReq = 'POLICY_MAGERY', LevelReq = 15 WHERE Type = 'EA_ACTION_BECOME_ARCHMAGE';
 
 --Prophecies
 INSERT INTO EaActions (Type,			GPOnly,	TechReq,					DoXP,	AITarget,		AIAdHocValue,	GPClass,	City,	AhrimansVaultMatters,	UniqueType,	PlayAnywhereSound,					IconIndex,	IconAtlas							) VALUES

@@ -53,16 +53,9 @@
 		<Row Tag="TXT_KEY_EA_UNIT_CARGO_SHIP_HELP">
 			<Text></Text>
 		</Row>
-		
-
-		<Row Tag="TXT_KEY_EA_UNIT_LONGSHIPS">
-			<Text>Longships</Text>
-		</Row>
-		<Row Tag="TXT_KEY_EA_UNIT_LONGSHIPS_HELP">
-			<Text></Text>
-		</Row>	
+			
 		<Row Tag="TXT_KEY_EA_UNIT_BIREMES">
-			<Text>Biremes</Text>
+			<Text>Galleys</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_BIREMES_HELP">
 			<Text></Text>

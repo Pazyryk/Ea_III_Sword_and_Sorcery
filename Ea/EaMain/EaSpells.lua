@@ -2830,7 +2830,7 @@ Finish[GameInfoTypes.EA_SPELL_BECOME_LICH] = function()
 	g_eaPerson.unitTypeID = UNIT_LICH
 	g_eaPerson.predestinedAgeOfDeath = nil
 	g_unit = InitGPUnit(g_iPlayer, g_iPerson, g_x, g_y, g_unit, UNIT_LICH, -1)
-	UseManaOrDivineFavor(g_iPlayer, g_iPerson, pts * 100)
+	UseManaOrDivineFavor(g_iPlayer, g_iPerson, pts)
 	return true
 end
 

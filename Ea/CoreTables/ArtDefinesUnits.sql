@@ -31,6 +31,9 @@ INSERT INTO ArtDefine_StrategicView(StrategicViewType, TileType, Asset) VALUES
 ('ART_DEF_UNIT_NAGA_GREEN',			'Unit',	'SV_Maori.dds'		),
 ('ART_DEF_UNIT_NAGA_BLUE',			'Unit',	'SV_Maori.dds'		),
 --regulars
+('ART_DEF_UNIT_GREAT_BOMBARD',		'Unit',	'SV_Cannon.dds'		),
+('ART_DEF_UNIT_BOMBARD',			'Unit',	'SV_Cannon.dds'		),
+
 ('ART_DEF_UNIT_MAN_CHARIOT',		'Unit',	'SV_Spearman.dds'	),
 
 ('ART_DEF_UNIT_SIDHE_SCOUT',		'Unit',	'SV_Spearman.dds'	),
@@ -75,8 +78,19 @@ INSERT INTO ArtDefine_StrategicView(StrategicViewType, TileType, Asset) VALUES
 ('ART_DEF_UNIT_ANGEL',				'Unit',	'SV_Maori.dds'		),
 ('ART_DEF_UNIT_ARCHANGEL',			'Unit',	'SV_Maori.dds'		),
 ('ART_DEF_UNIT_STORM_GIANT',		'Unit',	'SV_Maori.dds'		),
-
-
+--ships
+('ART_DEF_UNIT_BATTLE_GALLEYS',		'Unit',	'SV_Galley.dds'		),
+('ART_DEF_UNIT_CARRACKS',			'Unit',	'SV_Galley.dds'		),
+('ART_DEF_UNIT_WAR_GALLEONS',		'Unit',	'SV_Ironclad.dds'	),
+('ART_DEF_UNIT_IRONCLADBBS',		'Unit',	'SV_Ironclad.dds'	),
+--(multi member ship adds)
+('ART_DEF_UNIT_BARBARIAN_GALLEYS',	'Unit',	'SV_Galley.dds'		),
+('ART_DEF_UNIT_TRIREMES',			'Unit',	'SV_Trireme.dds'	),
+('ART_DEF_UNIT_U_CARTHAGE_QUINQUEREMES','Unit',	'SV_Galley.dds'	),
+('ART_DEF_UNIT_CARAVELS',			'Unit',	'SV_Galley.dds'		),
+('ART_DEF_UNIT_U_BYZANTIUM_DROMONS','Unit',	'SV_Galley.dds'		),
+('ART_DEF_UNIT_U_PORTUGUESE_CARRACKS','Unit','SV_Galley.dds'	),
+--GPs
 ('ART_DEF_UNIT_EA_ENGINEER',		'Unit',	'SV_Spearman.dds'	),
 ('ART_DEF_UNIT_EA_MERCHANT',		'Unit',	'SV_Spearman.dds'	),
 ('ART_DEF_UNIT_EA_SAGE',			'Unit',	'SV_Spearman.dds'	),
@@ -125,6 +139,9 @@ INSERT INTO ArtDefine_UnitInfos (Type,	DamageStates,	Formation			) VALUES
 ('ART_DEF_UNIT_NAGA_GREEN',				1,				'Barbarian'			),	
 ('ART_DEF_UNIT_NAGA_BLUE',				1,				'Barbarian'			),	
 --regulars
+('ART_DEF_UNIT_GREAT_BOMBARD',			1,				''					),
+('ART_DEF_UNIT_BOMBARD',				1,				'ThreeBigGuns'		),
+
 ('ART_DEF_UNIT_MAN_CHARIOT',			1,				'ChariotElephant'	),
 
 
@@ -170,7 +187,20 @@ INSERT INTO ArtDefine_UnitInfos (Type,	DamageStates,	Formation			) VALUES
 ('ART_DEF_UNIT_ANGEL',					1,				''					),
 ('ART_DEF_UNIT_ARCHANGEL',				1,				''					),
 ('ART_DEF_UNIT_STORM_GIANT',			1,				''					),
+--ships
+('ART_DEF_UNIT_BATTLE_GALLEYS',			1,				'BomberWing'		),
+('ART_DEF_UNIT_CARRACKS',				1,				'BomberWing'		),
+('ART_DEF_UNIT_WAR_GALLEONS',			1,				'BomberWing'		),
+('ART_DEF_UNIT_IRONCLADBBS',			1,				'BomberWing'		),
+--(multi member ship adds)
+('ART_DEF_UNIT_BARBARIAN_GALLEYS',		1,				'BomberWing'		),
+('ART_DEF_UNIT_TRIREMES',				1,				'BomberWing'		),
+('ART_DEF_UNIT_U_CARTHAGE_QUINQUEREMES',1,				'BomberWing'		),
+('ART_DEF_UNIT_CARAVELS',				1,				'BomberWing'		),
+('ART_DEF_UNIT_U_BYZANTIUM_DROMONS',	1,				'BomberWing'		),
+('ART_DEF_UNIT_U_PORTUGUESE_CARRACKS',	1,				'BomberWing'		),
 
+--GPs
 ('ART_DEF_UNIT_EA_ENGINEER',			1,				''					),
 ('ART_DEF_UNIT_EA_MERCHANT',			1,				''					),
 ('ART_DEF_UNIT_EA_SAGE',				1,				''					),
@@ -221,6 +251,9 @@ INSERT INTO ArtDefine_UnitInfoMemberInfos (UnitInfoType,	UnitMemberInfoType,		Nu
 ('ART_DEF_UNIT_NAGA_GREEN',				'ART_DEF_UNIT_MEMBER_NAGA_GREEN',			6		),
 ('ART_DEF_UNIT_NAGA_BLUE',				'ART_DEF_UNIT_MEMBER_NAGA_BLUE',			6		),
 --regulars
+('ART_DEF_UNIT_GREAT_BOMBARD',			'ART_DEF_UNIT_MEMBER_GREAT_BOMBARD',		1		),
+('ART_DEF_UNIT_BOMBARD',				'ART_DEF_UNIT_MEMBER_BOMBARD',				3		),
+
 ('ART_DEF_UNIT_MAN_CHARIOT',			'ART_DEF_UNIT_MEMBER_MAN_CHARIOT',			2		),
 
 
@@ -268,7 +301,19 @@ INSERT INTO ArtDefine_UnitInfoMemberInfos (UnitInfoType,	UnitMemberInfoType,		Nu
 ('ART_DEF_UNIT_ANGEL',					'ART_DEF_UNIT_MEMBER_ANGEL',				1		),
 ('ART_DEF_UNIT_ARCHANGEL',				'ART_DEF_UNIT_MEMBER_ARCHANGEL',			1		),
 ('ART_DEF_UNIT_STORM_GIANT',			'ART_DEF_UNIT_MEMBER_STORM_GIANT',			1		),
-
+--ships
+('ART_DEF_UNIT_BATTLE_GALLEYS',			'ART_DEF_UNIT_MEMBER_BATTLE_GALLEY',		3		),
+('ART_DEF_UNIT_CARRACKS',				'ART_DEF_UNIT_MEMBER_CARRACK',				3		),
+('ART_DEF_UNIT_WAR_GALLEONS',			'ART_DEF_UNIT_MEMBER_WAR_GALLEON',			3		),
+('ART_DEF_UNIT_IRONCLADBBS',			'ART_DEF_UNIT_MEMBER_IRONCLADBB',			3		),
+--(multi member ship adds)
+('ART_DEF_UNIT_BARBARIAN_GALLEYS',		'ART_DEF_UNIT_MEMBER_BARBARIAN_GALLEY',		3		),
+('ART_DEF_UNIT_TRIREMES',				'ART_DEF_UNIT_MEMBER_TRIREME',				3		),
+('ART_DEF_UNIT_U_CARTHAGE_QUINQUEREMES','ART_DEF_UNIT_MEMBER_U_CARTHAGE_QUINQUEREME',3		),
+('ART_DEF_UNIT_CARAVELS',				'ART_DEF_UNIT_MEMBER_CARAVEL',				3		),
+('ART_DEF_UNIT_U_BYZANTIUM_DROMONS',	'ART_DEF_UNIT_MEMBER_U_BYZANTIUM_DROMON',	3		),
+('ART_DEF_UNIT_U_PORTUGUESE_CARRACKS',	'ART_DEF_UNIT_MEMBER_U_PORTUGUESE_CARRACK',	3		),
+--GPs
 ('ART_DEF_UNIT_EA_ENGINEER',			'ART_DEF_UNIT_MEMBER_EA_ENGINEER',			1		),
 ('ART_DEF_UNIT_EA_MERCHANT',			'ART_DEF_UNIT_MEMBER_EA_MERCHANT',			1		),
 ('ART_DEF_UNIT_EA_SAGE',				'ART_DEF_UNIT_MEMBER_EA_SAGE',				1		),
@@ -309,6 +354,9 @@ INSERT INTO ArtDefine_UnitMemberInfos (Type,		Scale,	Domain,		Model,								Mate
 ('ART_DEF_UNIT_MEMBER_NAGA_GREEN',					0.14,	'',			'Naga_Green.fxsxml',				'CLOTH',			'FLESH'			),
 ('ART_DEF_UNIT_MEMBER_NAGA_BLUE',					0.14,	'',			'Naga_Blue.fxsxml',					'CLOTH',			'FLESH'			),
 --regulars
+('ART_DEF_UNIT_MEMBER_GREAT_BOMBARD',				0.12,	'',			'farsakh_cannon.fxsxml',			'WOOD',				'WOODSM'		),
+('ART_DEF_UNIT_MEMBER_BOMBARD',						0.12,	'',			'bombardTurk.fxsxml',				'WOOD',				'WOODSM'		),
+
 ('ART_DEF_UNIT_MEMBER_MAN_CHARIOT',					0.13,	'',			'Chariot_Viking.fxsxml',			'CLOTH',			'WOODSM'		),
 
 ('ART_DEF_UNIT_MEMBER_ELF_WARRIOR',					0.14,	'',			'elf_warrior.fxsxml',				'CLOTH',			'FLESH'			),
@@ -352,7 +400,12 @@ INSERT INTO ArtDefine_UnitMemberInfos (Type,		Scale,	Domain,		Model,								Mate
 ('ART_DEF_UNIT_MEMBER_ANGEL',						0.35,	'',			'angel_spearman.fxsxml',			'CLOTH',			'FLESH'			),
 ('ART_DEF_UNIT_MEMBER_ARCHANGEL',					0.7,	'',			'angel_spearman.fxsxml',			'CLOTH',			'FLESH'			),
 ('ART_DEF_UNIT_MEMBER_STORM_GIANT',					0.7,	'',			'giant.fxsxml',						'CLOTH',			'FLESH'			),
-
+--ships
+('ART_DEF_UNIT_MEMBER_BATTLE_GALLEY',				0.06,	'Sea',		'battle_galley.fxsxml',				'WOOD',				'WOODLRG'		),
+('ART_DEF_UNIT_MEMBER_CARRACK',						0.09,	'Sea',		'carrack.fxsxml',					'WOOD',				'WOODLRG'		),
+('ART_DEF_UNIT_MEMBER_WAR_GALLEON',					0.12,	'Sea',		'WarGalleon.fxsxml',				'WOOD',				'WOODLRG'		),
+('ART_DEF_UNIT_MEMBER_IRONCLADBB',					0.11,	'Sea',		'IroncladBB.fxsxml',				'METAL',			'METALLRG'		),
+--GPs
 ('ART_DEF_UNIT_MEMBER_EA_WIZARD_M1',				0.19,	'',			'Wizard_M1.fxsxml',					'CLOTH',			'FLESH'			),
 ('ART_DEF_UNIT_MEMBER_EA_WIZARD_M2',				0.19,	'',			'Wizard_M2.fxsxml',					'CLOTH',			'FLESH'			),
 ('ART_DEF_UNIT_MEMBER_EA_WIZARD_M2A',				0.19,	'',			'Wizard_M2A.fxsxml',				'CLOTH',			'FLESH'			),
@@ -360,7 +413,10 @@ INSERT INTO ArtDefine_UnitMemberInfos (Type,		Scale,	Domain,		Model,								Mate
 ('ART_DEF_UNIT_MEMBER_EA_WIZARD_M4',				0.19,	'',			'Wizard_M4.fxsxml',					'CLOTH',			'FLESH'			),
 ('ART_DEF_UNIT_MEMBER_EA_WIZARD_M4A',				0.19,	'',			'Wizard_M4A.fxsxml',				'CLOTH',			'FLESH'			);
 
-
+--shrink some existing
+UPDATE ArtDefine_UnitMemberInfos SET Scale = Scale * 0.79 WHERE Type IN ( 'ART_DEF_UNIT_MEMBER_TRIREME', 'ART_DEF_UNIT_MEMBER_CARAVEL');
+UPDATE ArtDefine_UnitMemberInfos SET Scale = Scale * 0.7 WHERE Type IN ('ART_DEF_UNIT_MEMBER_U_PORTUGUESE_CARRACK', 'ART_DEF_UNIT_MEMBER_U_BYZANTIUM_DROMON', 'ART_DEF_UNIT_MEMBER_U_CARTHAGE_QUINQUEREME');
+UPDATE ArtDefine_UnitMemberInfos SET Scale = Scale * 0.67 WHERE Type IN ('ART_DEF_UNIT_MEMBER_BARBARIAN_GALLEY');
 
 
 INSERT INTO ArtDefine_UnitMemberCombats (UnitMemberType, DisableActions, EnableActions,																			ShortMoveRadius,	ShortMoveRate,		TargetHeight,	HasRefaceAfterCombat,	ReformBeforeCombat	) VALUES
@@ -386,6 +442,9 @@ INSERT INTO ArtDefine_UnitMemberCombats (UnitMemberType, DisableActions, EnableA
 ('ART_DEF_UNIT_MEMBER_NAGA_GREEN',				'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					),
 ('ART_DEF_UNIT_MEMBER_NAGA_BLUE',				'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					),
 --regulars
+('ART_DEF_UNIT_MEMBER_GREAT_BOMBARD',			'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady',						NULL,				NULL,				NULL,			1,						1					),
+('ART_DEF_UNIT_MEMBER_BOMBARD',					'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady',						NULL,				NULL,				NULL,			1,						1					),
+
 ('ART_DEF_UNIT_MEMBER_MAN_CHARIOT',				'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk',				24.0,				0.349999994039536,	12,				1,						2					),
 
 ('ART_DEF_UNIT_MEMBER_ELF_WARRIOR',				'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					),
@@ -429,7 +488,12 @@ INSERT INTO ArtDefine_UnitMemberCombats (UnitMemberType, DisableActions, EnableA
 ('ART_DEF_UNIT_MEMBER_ANGEL',					'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					),
 ('ART_DEF_UNIT_MEMBER_ARCHANGEL',				'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					),
 ('ART_DEF_UNIT_MEMBER_STORM_GIANT',				'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						1					),
-
+--ships
+('ART_DEF_UNIT_MEMBER_BATTLE_GALLEY',			'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady AttackSurfaceToAir',	NULL,				NULL,				NULL,			0,						NULL				),
+('ART_DEF_UNIT_MEMBER_CARRACK',					'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady AttackSurfaceToAir',	NULL,				NULL,				NULL,			0,						NULL				),
+('ART_DEF_UNIT_MEMBER_WAR_GALLEON',				'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady AttackSurfaceToAir',	NULL,				NULL,				NULL,			0,						NULL				),
+('ART_DEF_UNIT_MEMBER_IRONCLADBB',				'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady AttackSurfaceToAir',	NULL,				NULL,				NULL,			0,						NULL				),
+--GPs
 ('ART_DEF_UNIT_MEMBER_EA_WIZARD_M1',			'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						NULL				),
 ('ART_DEF_UNIT_MEMBER_EA_WIZARD_M2',			'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						NULL				),
 ('ART_DEF_UNIT_MEMBER_EA_WIZARD_M2A',			'',	'Idle Attack RunCharge AttackCity Bombard Death BombardDefend Run Fortify CombatReady Walk AttackCharge',	12.0,				0.349999994039536,	8,				1,						NULL				),
@@ -447,8 +511,14 @@ UPDATE ArtDefine_UnitMemberCombats SET TurnRateMin = 0.5, TurnRateMax = 0.75, Tu
 UPDATE ArtDefine_UnitMemberCombats SET HasShortRangedAttack = 1, HasLongRangedAttack = 1 WHERE UnitMemberType IN
 ('ART_DEF_UNIT_MEMBER_GOBLIN_ARCHER', 'ART_DEF_UNIT_MEMBER_GOBLIN_BOWMAN', 'ART_DEF_UNIT_MEMBER_GOBLIN_MARKSMAN', 'ART_DEF_UNIT_MEMBER_GOBLIN_CROSSBOWMAN', 'ART_DEF_UNIT_MEMBER_GOBLIN_ARQUEBUSIER');
 
+UPDATE ArtDefine_UnitMemberCombats SET HasShortRangedAttack = 1, HasLongRangedAttack = 1, HasStationaryMelee = 1 WHERE UnitMemberType IN
+('ART_DEF_UNIT_MEMBER_GREAT_BOMBARD', 'ART_DEF_UNIT_MEMBER_BOMBARD');
+
 UPDATE ArtDefine_UnitMemberCombats SET HasShortRangedAttack = 1 WHERE UnitMemberType IN
 ('ART_DEF_UNIT_MEMBER_DRAKE_GREEN', 'ART_DEF_UNIT_MEMBER_DRAKE_BLUE', 'ART_DEF_UNIT_MEMBER_DRAKE_RED');
+
+UPDATE ArtDefine_UnitMemberCombats SET HasShortRangedAttack = 1, HasLeftRightAttack = 1, HasIndependentWeaponFacing = 1 WHERE UnitMemberType IN
+('ART_DEF_UNIT_MEMBER_BATTLE_GALLEY', 'ART_DEF_UNIT_MEMBER_CARRACK', 'ART_DEF_UNIT_MEMBER_WAR_GALLEON', 'ART_DEF_UNIT_MEMBER_IRONCLADBB');
 
 UPDATE ArtDefine_UnitMemberCombats SET RushAttackFormation = '' WHERE RushAttackFormation IS NULL;	--not sure if needed but this matches base units
 
@@ -481,6 +551,9 @@ INSERT INTO ArtDefine_UnitMemberCombatWeapons(UnitMemberType,	"Index",	SubIndex,
 ('ART_DEF_UNIT_MEMBER_NAGA_BLUE',								0,			0,			'',		'BLUNT',			'BLUNT',					NULL,				NULL,				NULL,					''			),
 
 --regulars
+('ART_DEF_UNIT_MEMBER_GREAT_BOMBARD',							0,			0,			'',		'EXPLOSIVE',		'EXPLOSION200POUND',		25,					50,					NULL,					'ART_DEF_VEFFECT_CANNON_IMPACT_$(TERRAIN)'	),
+('ART_DEF_UNIT_MEMBER_BOMBARD',									0,			0,			'',		'EXPLOSIVE',		'EXPLOSION6POUND',			25,					50,					NULL,					'ART_DEF_VEFFECT_CANNON_IMPACT_$(TERRAIN)'	),
+
 ('ART_DEF_UNIT_MEMBER_MAN_CHARIOT',								0,			0,			'',		'METAL',			'SWORD',					NULL,				NULL,				NULL,					''			),
 ('ART_DEF_UNIT_MEMBER_MAN_CHARIOT',								1,			0,			'',		'FLAMING_ARROW',	'',							10,					20,					10,						''			),
 
@@ -563,7 +636,12 @@ INSERT INTO ArtDefine_UnitMemberCombatWeapons(UnitMemberType,	"Index",	SubIndex,
 ('ART_DEF_UNIT_MEMBER_ARCHANGEL',								1,			0,			'',		'FLAMING_ARROW',	'',							10,					20,					10,						''			),
 ('ART_DEF_UNIT_MEMBER_STORM_GIANT',								0,			0,			'',		'METAL',			'SPEAR',					NULL,				NULL,				NULL,					''			),
 ('ART_DEF_UNIT_MEMBER_STORM_GIANT',								1,			0,			'',		'FLAMING_ARROW',	'',							10,					20,					10,						''			),
-
+--ships
+('ART_DEF_UNIT_MEMBER_BATTLE_GALLEY',							0,			0,			'',		'ARROW',			'ARROW',					0,					0,					NULL,					''			),
+('ART_DEF_UNIT_MEMBER_CARRACK',									0,			0,			'',		'EXPLOSIVE',		'EXPLOSION6POUND',			10,					20,					NULL,					'ART_DEF_VEFFECT_CANNON_IMPACT_$(TERRAIN)'	),
+('ART_DEF_UNIT_MEMBER_WAR_GALLEON',								0,			0,			'',		'EXPLOSIVE',		'EXPLOSION20POUND',			25,					50,					NULL,					'ART_DEF_VEFFECT_CANNON_IMPACT_$(TERRAIN)'	),
+('ART_DEF_UNIT_MEMBER_IRONCLADBB',								0,			0,			'',		'EXPLOSIVE',		'EXPLOSION20POUND',			25,					50,					NULL,					'ART_DEF_VEFFECT_CANNON_IMPACT_$(TERRAIN)'	),
+--GPs
 ('ART_DEF_UNIT_MEMBER_EA_WIZARD_M1',							0,			0,			'',		'BLUNT',			'SPEAR',					NULL,				NULL,				NULL,					''			),
 ('ART_DEF_UNIT_MEMBER_EA_WIZARD_M2',							0,			0,			'',		'BLUNT',			'SPEAR',					NULL,				NULL,				NULL,					''			),
 ('ART_DEF_UNIT_MEMBER_EA_WIZARD_M2A',							0,			0,			'',		'BLUNT',			'SPEAR',					NULL,				NULL,				NULL,					''			),
@@ -575,6 +653,8 @@ INSERT INTO ArtDefine_UnitMemberCombatWeapons(UnitMemberType,	"Index",	SubIndex,
 UPDATE ArtDefine_UnitMemberCombatWeapons SET ProjectileSpeed = 5.30000019073486 WHERE "Index" = 1 AND UnitMemberType IN
 ('ART_DEF_UNIT_MEMBER_GOBLIN_BOWMAN', 'ART_DEF_UNIT_MEMBER_GOBLIN_MARKSMAN');
 
+UPDATE ArtDefine_UnitMemberCombatWeapons SET ProjectileSpeed = 5 WHERE UnitMemberType IN
+('ART_DEF_UNIT_MEMBER_GREAT_BOMBARD', 'ART_DEF_UNIT_MEMBER_BOMBARD');
 
 --GPs or other units dirived from existing members
 CREATE TABLE TempList ('ExistingMember' TEXT);

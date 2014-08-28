@@ -33,6 +33,9 @@ INSERT INTO ArtDefine_StrategicView(StrategicViewType, TileType, Asset) VALUES
 --regulars
 ('ART_DEF_UNIT_GREAT_BOMBARD',		'Unit',	'SV_Cannon.dds'		),
 ('ART_DEF_UNIT_BOMBARD',			'Unit',	'SV_Cannon.dds'		),
+('ART_DEF_UNIT_U_INDIAN_WARELEPHANTS','Unit','SV_IndianWarElephant.dds'	),
+('ART_DEF_UNIT_U_SIAMESE_WARELEPHANTS','Unit','SV_SiameseWarElephant.dds'),
+('ART_DEF_UNIT_MUMAKIL',			'Unit','SV_SiameseWarElephant.dds'),
 
 ('ART_DEF_UNIT_MAN_CHARIOT',		'Unit',	'SV_Spearman.dds'	),
 
@@ -83,13 +86,15 @@ INSERT INTO ArtDefine_StrategicView(StrategicViewType, TileType, Asset) VALUES
 ('ART_DEF_UNIT_CARRACKS',			'Unit',	'SV_Galley.dds'		),
 ('ART_DEF_UNIT_WAR_GALLEONS',		'Unit',	'SV_Ironclad.dds'	),
 ('ART_DEF_UNIT_IRONCLADBBS',		'Unit',	'SV_Ironclad.dds'	),
---(multi member ship adds)
+
+--member adds
 ('ART_DEF_UNIT_BARBARIAN_GALLEYS',	'Unit',	'SV_Galley.dds'		),
 ('ART_DEF_UNIT_TRIREMES',			'Unit',	'SV_Trireme.dds'	),
 ('ART_DEF_UNIT_U_CARTHAGE_QUINQUEREMES','Unit',	'SV_Galley.dds'	),
 ('ART_DEF_UNIT_CARAVELS',			'Unit',	'SV_Galley.dds'		),
 ('ART_DEF_UNIT_U_BYZANTIUM_DROMONS','Unit',	'SV_Galley.dds'		),
 ('ART_DEF_UNIT_U_PORTUGUESE_CARRACKS','Unit','SV_Galley.dds'	),
+
 --GPs
 ('ART_DEF_UNIT_EA_ENGINEER',		'Unit',	'SV_Spearman.dds'	),
 ('ART_DEF_UNIT_EA_MERCHANT',		'Unit',	'SV_Spearman.dds'	),
@@ -141,6 +146,9 @@ INSERT INTO ArtDefine_UnitInfos (Type,	DamageStates,	Formation			) VALUES
 --regulars
 ('ART_DEF_UNIT_GREAT_BOMBARD',			1,				''					),
 ('ART_DEF_UNIT_BOMBARD',				1,				'ThreeBigGuns'		),
+('ART_DEF_UNIT_U_INDIAN_WARELEPHANTS',	1,				'ChariotElephant'	),
+('ART_DEF_UNIT_U_SIAMESE_WARELEPHANTS',	1,				'ChariotElephant'	),
+('ART_DEF_UNIT_MUMAKIL',				1,				''					),
 
 ('ART_DEF_UNIT_MAN_CHARIOT',			1,				'ChariotElephant'	),
 
@@ -192,13 +200,15 @@ INSERT INTO ArtDefine_UnitInfos (Type,	DamageStates,	Formation			) VALUES
 ('ART_DEF_UNIT_CARRACKS',				1,				'BomberWing'		),
 ('ART_DEF_UNIT_WAR_GALLEONS',			1,				'BomberWing'		),
 ('ART_DEF_UNIT_IRONCLADBBS',			1,				'BomberWing'		),
---(multi member ship adds)
+
+--member adds
 ('ART_DEF_UNIT_BARBARIAN_GALLEYS',		1,				'BomberWing'		),
 ('ART_DEF_UNIT_TRIREMES',				1,				'BomberWing'		),
 ('ART_DEF_UNIT_U_CARTHAGE_QUINQUEREMES',1,				'BomberWing'		),
 ('ART_DEF_UNIT_CARAVELS',				1,				'BomberWing'		),
 ('ART_DEF_UNIT_U_BYZANTIUM_DROMONS',	1,				'BomberWing'		),
 ('ART_DEF_UNIT_U_PORTUGUESE_CARRACKS',	1,				'BomberWing'		),
+
 
 --GPs
 ('ART_DEF_UNIT_EA_ENGINEER',			1,				''					),
@@ -253,6 +263,9 @@ INSERT INTO ArtDefine_UnitInfoMemberInfos (UnitInfoType,	UnitMemberInfoType,		Nu
 --regulars
 ('ART_DEF_UNIT_GREAT_BOMBARD',			'ART_DEF_UNIT_MEMBER_GREAT_BOMBARD',		1		),
 ('ART_DEF_UNIT_BOMBARD',				'ART_DEF_UNIT_MEMBER_BOMBARD',				3		),
+('ART_DEF_UNIT_U_INDIAN_WARELEPHANTS',	'ART_DEF_UNIT_MEMBER_U_INDIAN_WARELEPHANT',	3		),
+('ART_DEF_UNIT_U_SIAMESE_WARELEPHANTS',	'ART_DEF_UNIT_MEMBER_U_SIAMESE_WARELEPHANT',3		),
+('ART_DEF_UNIT_MUMAKIL',				'ART_DEF_UNIT_MEMBER_MUMAKIL',				1		),
 
 ('ART_DEF_UNIT_MAN_CHARIOT',			'ART_DEF_UNIT_MEMBER_MAN_CHARIOT',			2		),
 
@@ -306,13 +319,17 @@ INSERT INTO ArtDefine_UnitInfoMemberInfos (UnitInfoType,	UnitMemberInfoType,		Nu
 ('ART_DEF_UNIT_CARRACKS',				'ART_DEF_UNIT_MEMBER_CARRACK',				3		),
 ('ART_DEF_UNIT_WAR_GALLEONS',			'ART_DEF_UNIT_MEMBER_WAR_GALLEON',			3		),
 ('ART_DEF_UNIT_IRONCLADBBS',			'ART_DEF_UNIT_MEMBER_IRONCLADBB',			3		),
---(multi member ship adds)
+
+--member adds
 ('ART_DEF_UNIT_BARBARIAN_GALLEYS',		'ART_DEF_UNIT_MEMBER_BARBARIAN_GALLEY',		3		),
 ('ART_DEF_UNIT_TRIREMES',				'ART_DEF_UNIT_MEMBER_TRIREME',				3		),
 ('ART_DEF_UNIT_U_CARTHAGE_QUINQUEREMES','ART_DEF_UNIT_MEMBER_U_CARTHAGE_QUINQUEREME',3		),
 ('ART_DEF_UNIT_CARAVELS',				'ART_DEF_UNIT_MEMBER_CARAVEL',				3		),
 ('ART_DEF_UNIT_U_BYZANTIUM_DROMONS',	'ART_DEF_UNIT_MEMBER_U_BYZANTIUM_DROMON',	3		),
 ('ART_DEF_UNIT_U_PORTUGUESE_CARRACKS',	'ART_DEF_UNIT_MEMBER_U_PORTUGUESE_CARRACK',	3		),
+
+
+
 --GPs
 ('ART_DEF_UNIT_EA_ENGINEER',			'ART_DEF_UNIT_MEMBER_EA_ENGINEER',			1		),
 ('ART_DEF_UNIT_EA_MERCHANT',			'ART_DEF_UNIT_MEMBER_EA_MERCHANT',			1		),
@@ -354,8 +371,8 @@ INSERT INTO ArtDefine_UnitMemberInfos (Type,		Scale,	Domain,		Model,								Mate
 ('ART_DEF_UNIT_MEMBER_NAGA_GREEN',					0.14,	'',			'Naga_Green.fxsxml',				'CLOTH',			'FLESH'			),
 ('ART_DEF_UNIT_MEMBER_NAGA_BLUE',					0.14,	'',			'Naga_Blue.fxsxml',					'CLOTH',			'FLESH'			),
 --regulars
-('ART_DEF_UNIT_MEMBER_GREAT_BOMBARD',				0.12,	'',			'farsakh_cannon.fxsxml',			'WOOD',				'WOODSM'		),
-('ART_DEF_UNIT_MEMBER_BOMBARD',						0.12,	'',			'bombardTurk.fxsxml',				'WOOD',				'WOODSM'		),
+('ART_DEF_UNIT_MEMBER_GREAT_BOMBARD',				0.13,	'',			'farsakh_cannon.fxsxml',			'WOOD',				'WOODSM'		),
+('ART_DEF_UNIT_MEMBER_BOMBARD',						0.13,	'',			'bombardTurk.fxsxml',				'WOOD',				'WOODSM'		),
 
 ('ART_DEF_UNIT_MEMBER_MAN_CHARIOT',					0.13,	'',			'Chariot_Viking.fxsxml',			'CLOTH',			'WOODSM'		),
 
@@ -417,6 +434,7 @@ INSERT INTO ArtDefine_UnitMemberInfos (Type,		Scale,	Domain,		Model,								Mate
 UPDATE ArtDefine_UnitMemberInfos SET Scale = Scale * 0.79 WHERE Type IN ( 'ART_DEF_UNIT_MEMBER_TRIREME', 'ART_DEF_UNIT_MEMBER_CARAVEL');
 UPDATE ArtDefine_UnitMemberInfos SET Scale = Scale * 0.7 WHERE Type IN ('ART_DEF_UNIT_MEMBER_U_PORTUGUESE_CARRACK', 'ART_DEF_UNIT_MEMBER_U_BYZANTIUM_DROMON', 'ART_DEF_UNIT_MEMBER_U_CARTHAGE_QUINQUEREME');
 UPDATE ArtDefine_UnitMemberInfos SET Scale = Scale * 0.67 WHERE Type IN ('ART_DEF_UNIT_MEMBER_BARBARIAN_GALLEY');
+UPDATE ArtDefine_UnitMemberInfos SET Scale = Scale * 0.85 WHERE Type IN ( 'ART_DEF_UNIT_MEMBER_U_INDIAN_WARELEPHANT', 'ART_DEF_UNIT_MEMBER_U_SIAMESE_WARELEPHANT');
 
 
 INSERT INTO ArtDefine_UnitMemberCombats (UnitMemberType, DisableActions, EnableActions,																			ShortMoveRadius,	ShortMoveRate,		TargetHeight,	HasRefaceAfterCombat,	ReformBeforeCombat	) VALUES
@@ -656,9 +674,12 @@ UPDATE ArtDefine_UnitMemberCombatWeapons SET ProjectileSpeed = 5.30000019073486 
 UPDATE ArtDefine_UnitMemberCombatWeapons SET ProjectileSpeed = 5 WHERE UnitMemberType IN
 ('ART_DEF_UNIT_MEMBER_GREAT_BOMBARD', 'ART_DEF_UNIT_MEMBER_BOMBARD');
 
+
+
 --GPs or other units dirived from existing members
 CREATE TABLE TempList ('ExistingMember' TEXT);
 INSERT INTO TempList (ExistingMember) VALUES
+('ART_DEF_UNIT_MEMBER_U_INDIAN_WARELEPHANT'			),
 ('ART_DEF_UNIT_MEMBER_GREATENGINEER_EARLY'			),
 ('ART_DEF_UNIT_MEMBER_GREATMERCHANT_EARLY_LEADER'	),
 ('ART_DEF_UNIT_MEMBER_GREATSCIENTIST_EARLY'			),
@@ -678,6 +699,7 @@ INSERT INTO TempList (ExistingMember) VALUES
 
 
 CREATE TABLE ArtDefine_UnitMemberInfos_Temp AS SELECT * FROM ArtDefine_UnitMemberInfos WHERE Type IN (SELECT ExistingMember FROM TempList);
+UPDATE ArtDefine_UnitMemberInfos_Temp SET Type = 'ART_DEF_UNIT_MEMBER_MUMAKIL', Scale = Scale * 1.8 WHERE Type = 'ART_DEF_UNIT_MEMBER_U_INDIAN_WARELEPHANT';
 UPDATE ArtDefine_UnitMemberInfos_Temp SET Type = 'ART_DEF_UNIT_MEMBER_EA_ENGINEER', Scale = Scale * 1.4 WHERE Type = 'ART_DEF_UNIT_MEMBER_GREATENGINEER_EARLY';
 UPDATE ArtDefine_UnitMemberInfos_Temp SET Type = 'ART_DEF_UNIT_MEMBER_EA_MERCHANT', Scale = Scale * 1.4 WHERE Type = 'ART_DEF_UNIT_MEMBER_GREATMERCHANT_EARLY_LEADER';
 UPDATE ArtDefine_UnitMemberInfos_Temp SET Type = 'ART_DEF_UNIT_MEMBER_EA_SAGE', Scale = Scale * 1.4 WHERE Type = 'ART_DEF_UNIT_MEMBER_GREATSCIENTIST_EARLY';
@@ -690,6 +712,7 @@ INSERT INTO ArtDefine_UnitMemberInfos SELECT * FROM ArtDefine_UnitMemberInfos_Te
 
 
 CREATE TABLE ArtDefine_UnitMemberCombats_Temp AS SELECT * FROM ArtDefine_UnitMemberCombats WHERE UnitMemberType IN (SELECT ExistingMember FROM TempList);
+UPDATE ArtDefine_UnitMemberCombats_Temp SET UnitMemberType = 'ART_DEF_UNIT_MEMBER_MUMAKIL' WHERE UnitMemberType = 'ART_DEF_UNIT_MEMBER_U_INDIAN_WARELEPHANT';
 UPDATE ArtDefine_UnitMemberCombats_Temp SET UnitMemberType = 'ART_DEF_UNIT_MEMBER_EA_ENGINEER' WHERE UnitMemberType = 'ART_DEF_UNIT_MEMBER_GREATENGINEER_EARLY';
 UPDATE ArtDefine_UnitMemberCombats_Temp SET UnitMemberType = 'ART_DEF_UNIT_MEMBER_EA_MERCHANT' WHERE UnitMemberType = 'ART_DEF_UNIT_MEMBER_GREATMERCHANT_EARLY_LEADER';
 UPDATE ArtDefine_UnitMemberCombats_Temp SET UnitMemberType = 'ART_DEF_UNIT_MEMBER_EA_SAGE' WHERE UnitMemberType = 'ART_DEF_UNIT_MEMBER_GREATSCIENTIST_EARLY';
@@ -702,6 +725,7 @@ INSERT INTO ArtDefine_UnitMemberCombats SELECT * FROM ArtDefine_UnitMemberCombat
 
 
 CREATE TABLE ArtDefine_UnitMemberCombatWeapons_Temp AS SELECT * FROM ArtDefine_UnitMemberCombatWeapons WHERE UnitMemberType IN (SELECT ExistingMember FROM TempList);
+UPDATE ArtDefine_UnitMemberCombatWeapons_Temp SET UnitMemberType = 'ART_DEF_UNIT_MEMBER_MUMAKIL' WHERE UnitMemberType = 'ART_DEF_UNIT_MEMBER_U_INDIAN_WARELEPHANT';
 UPDATE ArtDefine_UnitMemberCombatWeapons_Temp SET UnitMemberType = 'ART_DEF_UNIT_MEMBER_EA_ENGINEER' WHERE UnitMemberType = 'ART_DEF_UNIT_MEMBER_GREATENGINEER_EARLY';
 UPDATE ArtDefine_UnitMemberCombatWeapons_Temp SET UnitMemberType = 'ART_DEF_UNIT_MEMBER_EA_MERCHANT' WHERE UnitMemberType = 'ART_DEF_UNIT_MEMBER_GREATMERCHANT_EARLY_LEADER';
 UPDATE ArtDefine_UnitMemberCombatWeapons_Temp SET UnitMemberType = 'ART_DEF_UNIT_MEMBER_EA_SAGE' WHERE UnitMemberType = 'ART_DEF_UNIT_MEMBER_GREATSCIENTIST_EARLY';

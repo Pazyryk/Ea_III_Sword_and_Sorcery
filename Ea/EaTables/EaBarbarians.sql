@@ -40,22 +40,24 @@ CREATE TABLE EaEncampments_TechAwardByTurn ('TechType' TEXT NOT NULL, 'Turn' INT
 --This table can force an encampment upgrade (or base or roaming unit upgrade) as if barbs have learned a tech (barbs don't really learn tech but actual barb techs have no effect in mod anyway)
 
 INSERT INTO EaEncampments_TechAwardByTurn (TechType,	Turn) VALUES
-('TECH_ARCHERY',			60),	--WARNING! Due to lazy coding, Turn values must be unique integers
-('TECH_BRONZE_WORKING',		70),	--Values are for Quick speed and Small/Tiny/Dual map; multipliers are:
-('TECH_SAILING',			80),	--	Speed: Standard 1.5; Epic 2; Marathon 3
-('TECH_TRACKING_TRAPPING',	90),	--  Size:  Standard 1.1; Large 1.2; Huge 1.3
-('TECH_HORSEBACK_RIDING',	100),
-('TECH_MECHANICS',			110),	
-('TECH_ALCHEMY',			120),
-('TECH_IRON_WORKING',		130),
-('TECH_CHEMISTRY',			140),
-('TECH_WAR_HORSES',			150),
-('TECH_SHIP_BUILDING',		160),
-('TECH_WAR_ELEPHANTS',		170),
-('TECH_BOWYERS',			180),
-('TECH_NAVIGATION',			190),
-('TECH_MACHINERY',			200),
-('TECH_MUMAKIL_RIDING',		250);
+('TECH_ARCHERY',			70),	--turn number adjusted for map size and game speed
+('TECH_BRONZE_WORKING',		80),
+('TECH_SAILING',			90),
+('TECH_TRACKING_TRAPPING',	100),
+('TECH_HORSEBACK_RIDING',	110),
+('TECH_MECHANICS',			120),	
+('TECH_ALCHEMY',			130),
+('TECH_IRON_WORKING',		140),
+('TECH_CHEMISTRY',			150),
+('TECH_WAR_HORSES',			160),
+('TECH_SHIP_BUILDING',		170),
+('TECH_WAR_ELEPHANTS',		180),
+('TECH_BOWYERS',			190),
+('TECH_MACHINERY',			260),
+('TECH_NAVIGATION',			270),
+('TECH_MARKSMANSHIP',		280),
+('TECH_MITHRIL_WORKING',	290),
+('TECH_MUMAKIL_RIDING',		300);
 
 
 /*
@@ -96,7 +98,7 @@ INSERT INTO EaEncampments_BaseUnits (EncampmentType,	UnitType,	TechType) VALUES
 ('EA_ENCAMPMENT_ELEPHANTTRIBE',	'UNIT_WARRIORS_BARB',			NULL					),
 ('EA_ENCAMPMENT_PIRATES',		'UNIT_ARQUEBUSSMEN_MAN',		'TECH_MACHINERY'		),
 ('EA_ENCAMPMENT_PIRATES',		'UNIT_MEDIUM_INFANTRY_BARB',	'TECH_IRON_WORKING'		),
-('EA_ENCAMPMENT_PIRATES',		'UNIT_CROSSBOWMEN_MAN',			'TECH_MILLING'			),
+('EA_ENCAMPMENT_PIRATES',		'UNIT_CROSSBOWMEN_MAN',			'TECH_MECHANICS'		),
 ('EA_ENCAMPMENT_PIRATES',		'UNIT_LIGHT_INFANTRY_BARB',		'TECH_BRONZE_WORKING'	),
 ('EA_ENCAMPMENT_PIRATES',		'UNIT_ARCHERS_BARB',			'TECH_SAILING'			),		--looks strange, but barb known tech needed here to trigger base unit update with encampment update
 ('EA_ENCAMPMENT_ORCS',			'UNIT_IMMORTALS_ORC',			'TECH_MITHRIL_WORKING'	),

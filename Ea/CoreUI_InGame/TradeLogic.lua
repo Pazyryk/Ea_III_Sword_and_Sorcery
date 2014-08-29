@@ -541,7 +541,7 @@ function InputHandler( uiMsg, wParam, lParam )
 			return true;
         end
     end
-    return false;
+    return true;	--Paz: changed to true (prevent end turn and other bad things)
 end
 
 ---------------------------------------------------------

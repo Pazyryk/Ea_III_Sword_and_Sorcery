@@ -209,7 +209,7 @@ function SetEaCivs()
 		print(i, PreGame.GetSlotStatus(i), PreGame.GetSlotClaim(i), PreGame.GetCivilization(i))
 	end
 
-	PreGame.SetNumMinorCivs(41)
+	PreGame.SetNumMinorCivs(40)
 
 end
 

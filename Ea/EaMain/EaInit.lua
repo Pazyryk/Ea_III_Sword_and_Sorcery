@@ -76,7 +76,7 @@ local function InitForNewGame()
 			eaPlayer.ownedPlots = 0
 			eaPlayer.culturalLevel = 0
 			eaPlayer.cumCulture = 0
-			eaPlayer.aveCulturePerPop = 0
+			eaPlayer.aveCulturePerPop = 0	--DEPRECIATE; Remove for v8
 			eaPlayer.policyCount = 0
 			eaPlayer.techs = {}
 			eaPlayer.rpFromDiffusion = 0

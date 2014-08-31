@@ -1971,23 +1971,34 @@ TestTarget[GameInfoTypes.EA_ACTION_LEAD_CHARGE] = function()
 			if gg_regularCombatType[unitTypeID] == "troops" then
 				print("EA_ACTION_LEAD_CHARGE has a same-plot melee unit")
 				g_obj2 = unit
-				g_int4 = unit:GetCurrHitPoints()
-				g_int5 = unit:GetBaseCombatStrength()
+				--g_int4 = unit:GetCurrHitPoints()
+				--g_int5 = unit:GetBaseCombatStrength()
+				local currHitPoints = unit:GetCurrHitPoints()
+				local power = gg_baseUnitPower[unitTypeID]
 				--Find best unit for attack (temp: score by damage + ranged - combat)
-				local bestValue = -9999
-				for x, y in PlotToRadiusIterator(g_x, g_y, 1, nil, nil, true) do
-					local loopPlot = GetPlotFromXY(x, y)
-					if loopPlot:IsVisibleEnemyDefender(unit) then
+				local bestValue = -1
+				for loopPlot in AdjacentPlotIterator(g_plot) do
+					--TO DO: add city attack check
+					if loopPlot:IsCity() then
+						if g_eaPlayer.atWarWith[loopPlot:GetOwner()] then
+							local city = loopPlot:GetPlotCity() 
+							local value = city:GetDamage()
+							print("TestTarget - EA_ACTION_LEAD_CHARGE has found potential city target; value = ", value)
+							if bestValue < value then
+								bestValue = value
+								g_obj1 = loopUnit
+							end
+						end
+					elseif loopPlot:IsVisibleEnemyDefender(unit) then
 						print("Found enemy defender on adjacent plot")
-						local loopUnitCount = loopPlot:GetNumUnits()	--TO DO: add city attack ability
-						print(x, y, loopUnitCount)
+						local loopUnitCount = loopPlot:GetNumUnits()
 						for j = 0, loopUnitCount - 1 do
 							local loopUnit = loopPlot:GetUnit(j)
 							if loopUnit:IsCombatUnit() and not loopUnit:IsGreatPerson() then
 								print("Found adjacent combat unit") 
 								if unit:CanMoveOrAttackInto(loopPlot) then
 									print("Melee can attack enemy")
-									local value = loopUnit:GetDamage() + 5 * loopUnit:GetBaseRangedCombatStrength() --	- loopUnit:GetBaseCombatStrength()
+									local value = 1 + loopUnit:GetDamage() + 5 * loopUnit:GetBaseRangedCombatStrength() --	- loopUnit:GetBaseCombatStrength()
 									print("TestTarget - EA_ACTION_LEAD_CHARGE has found potential target; value = ", value)
 									if bestValue < value then
 										bestValue = value
@@ -1998,8 +2009,10 @@ TestTarget[GameInfoTypes.EA_ACTION_LEAD_CHARGE] = function()
 						end
 					end
 				end
-				if bestValue ~= -9999 then
-					g_int2 = bestValue + 100
+				if bestValue ~= -1 then
+					g_value = bestValue * power * currHitPoints
+
+					--g_int2 = bestValue
 					return true
 				else
 					return false
@@ -2027,7 +2040,8 @@ SetAIValues[GameInfoTypes.EA_ACTION_LEAD_CHARGE] = function()
 	elseif g_eaPlayer.race == EARACE_HELDEOFOL then
 		raceMultiplier = 2
 	end
-	gg_aiOptionValues.i = raceMultiplier * (g_mod * g_int3 * g_int4 * g_int5 * g_int2 / 10000000)	
+	gg_aiOptionValues.i = g_value * g_mod * raceMultiplier / 1000000
+	--gg_aiOptionValues.i = raceMultiplier * (g_mod * g_int3 * g_int4 * g_int5 * g_int2 / 10000000)	
 end
 
 Do[GameInfoTypes.EA_ACTION_LEAD_CHARGE] = function()

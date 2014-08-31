@@ -235,7 +235,7 @@ local function JustSettled(iPlayer, city)
 	CheckCapitalBuildings(iPlayer)
 end
 
-local function AutoIndenture(city, eaCity, size, gameTurn)
+local function AutoIndenture(player, city, eaCity, size, gameTurn)
 	eaCity.conscriptTurn = gameTurn
 	city:SetPopulation(size - 1, true)
 	local raceID = GetCityRace(city)
@@ -870,7 +870,7 @@ function CityPerCivTurn(iPlayer)		--full and city states
 
 					--auto-indenture
 					if eaCity.autoIndenturePop and eaCity.autoIndenturePop < size and eaCity.conscriptTurn ~= gameTurn then
-						AutoIndenture(city, eaCity, size, gameTurn)
+						AutoIndenture(player, city, eaCity, size, gameTurn)
 					end
 				end
 			end

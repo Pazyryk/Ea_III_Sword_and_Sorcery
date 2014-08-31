@@ -12,6 +12,7 @@ local Dprint = DEBUG_PRINT and print or function() end
 --------------------------------------------------------------
 local BARB_TURN_CEILING =				EaSettings.BARB_TURN_CEILING					--stop increasing barb threat at this turn
 local ENCAMPMENT_HEALING =				EaSettings.ENCAMPMENT_HEALING
+local MAX_CAPTURED_PER_CIV_PER_ENCAMPMENT =	EaSettings.MAX_CAPTURED_PER_CIV_PER_ENCAMPMENT
 
 --Roaming land units
 local ROAM_SPAWN_MULTIPLIER =			EaSettings.ROAM_SPAWN_MULTIPLIER				--Raise for faster spawning
@@ -79,9 +80,6 @@ local GetPlotByIndex =			Map.GetPlotByIndex
 local GetXYFromPlotIndex =		GetXYFromPlotIndex
 local PlotToRadiusIterator =	PlotToRadiusIterator
 
-
-
-
 local g_barbTechs = {}					--index by techID; nil means not relevant for barbs, false means no one has yet, true means barbs have tech (or have it as far as mod is concered)
 local g_encampmentsByArea = {}			--index by encampmentID, iArea; holds encampment number in area from that encampment type
 --local g_barbsByArea = {}
@@ -94,6 +92,7 @@ local g_currentRoamingUnit1 = {}
 local g_currentRoamingUnit2 = {}
 local g_currentSeaUnit1 = {}
 local g_currentSeaUnit2 = {}
+local g_capturedByPlayerByPlot = {}
 
 local numEncampmentTypes = 0
 
@@ -522,10 +521,6 @@ function InitUpgradeEncampment(iPlot, x, y, plot, upgradeTechID)	--called from P
 	--end
 	if not prevEncampmentID then							--new encampment init
 		AddEncampmentBaseUnit(plot, encampmentID)
-	elseif prevEncampmentID ~= encampmentID then
-
-
-
 	end
 
 	--recycle tables
@@ -575,6 +570,7 @@ function BarbSpawnPerTurn()		--called right after PlotsPerTurn()
 		local campsByArea = g_encampmentsByArea[encampmentID]
 		campsByArea[iArea] = (campsByArea[iArea] or 0) + 1
 	end
+
 	--unit counting and healing at encampment
 	for unit in barbPlayer:Units() do
 		local unitTypeID = unit:GetUnitType()
@@ -594,6 +590,35 @@ function BarbSpawnPerTurn()		--called right after PlotsPerTurn()
 					barbsByArea[iArea] = (barbsByArea[iArea] or 0) + 1				
 				end
 			end
+		else	--captured civilians
+			local iOriginalOwner = unit:GetOriginalOwner()
+			if iOriginalOwner ~= BARB_PLAYER_INDEX then
+				local iPlot = unit:GetPlot():GetPlotIndex()
+				if encampments[iPlot] then		--at encampment
+					g_capturedByPlayerByPlot[iOriginalOwner] = g_capturedByPlayerByPlot[iOriginalOwner] or {}
+					g_capturedByPlayerByPlot[iOriginalOwner][iPlot] = (g_capturedByPlayerByPlot[iOriginalOwner][iPlot] or 0) + 1
+				end
+			end
+		end
+	end
+
+	--kill excess captured civilians
+	for iPlayer, capturedByPlot in pairs(g_capturedByPlayerByPlot) do
+		for iPlot, number in pairs(capturedByPlot) do
+			if MAX_CAPTURED_PER_CIV_PER_ENCAMPMENT < number then
+				local plot = GetPlotByIndex(iPlot)
+				local unitCount = plot:GetNumUnits()
+				for i = 0, unitCount - 1 do
+					local unit = plot:GetUnit(i)
+					if unit:GetOriginalOwner() == iPlayer then
+						print("Killing an excess captured civilian at an encampment")
+						unit:Kill(true, -1)
+						number = number - 1
+					end
+					if number <= MAX_CAPTURED_PER_CIV_PER_ENCAMPMENT then break end 
+				end
+			end
+			capturedByPlot[iPlot] = 0		--reset count for next turn
 		end
 	end
 
@@ -630,6 +655,17 @@ function BarbSpawnPerTurn()		--called right after PlotsPerTurn()
 		local iArea = useWorldDensity[encampmentID] and -1 or plot:GetArea()
 
 		print(GameInfo.EaEncampments[encampmentID].Type, iArea)
+
+		--[[Check civilians
+		for iPlayer in pairs(g_capturedByPlayer) do
+			g_capturedByPlayer[iPlayer] = 0
+		end
+		local unitCount = plot:GetNumUnits()
+		for i = 0, unitCount - 1 do
+			local unit = g_plot:GetUnit(i)
+
+		end
+		]]
 		
 		--Update roaming units
 		local roamUnit1 = g_currentRoamingUnit1[encampmentID]

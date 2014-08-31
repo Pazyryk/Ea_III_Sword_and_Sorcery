@@ -80,8 +80,8 @@ INSERT INTO EaSettings (Name, Value, GameLengthExp, MapSizeExp, RoundAdjVal) VAL
 --Culture Level / Policies
 ('CL_C_PER_POP_MULTIPLIER',						6,		0,	0,	0	),	--approach CL as a function of culture generation / maxPopEver
 ('CL_C_PER_POP_ADD',							5,		0,	0,	0	),	--extra policies (total you would get with no culture)
-('CL_APPROACH_FACTOR',							0.006,	-1,	0,	0	),	--try to approach steady state level by this fraction of the difference each turn
-('CL_TARGET_CHANGE',							0.06,	-1,	0,	0	),	--"tendency" for change/turn (next setting determines strength of this tendency)
+('CL_APPROACH_FACTOR',							0.0055,	-1,	0,	0	),	--try to approach steady state level by this fraction of the difference each turn
+('CL_TARGET_CHANGE',							0.055,	-1,	0,	0	),	--"tendency" for change/turn (next setting determines strength of this tendency)
 ('CL_CHANGE_DAMPING_EXPONENT',					0.75,	0,	0,	0	),	--at 0, rate = CL_TARGET_CHANGE; at 1, rate soley function of asymptotic function (gap & CL_APPROACH_FACTOR)
 --('CL_RECENCY_BIAS',							0.05,	-0.5,-1,0	),	--DEPRECIATED in v7f
 ('CL_LOW_POP_FACTOR',							10,		0,	1,	0	),
@@ -99,6 +99,7 @@ INSERT INTO EaSettings (Name, Value, GameLengthExp, MapSizeExp, RoundAdjVal) VAL
 ('SEA_POWER_FEEDBACK_EXPONENT',					1.4,	0,	0,	0	),
 ('USE_MINIMUM_PIRATE_COVE_NUMBER',				4,		0,	0,	0	),
 ('USE_MAXIMUM_PIRATE_COVE_NUMBER',				10,		0,	0,	0	),
+('MAX_CAPTURED_PER_CIV_PER_ENCAMPMENT',			2,		0,	0,	0	),
 
 --Animals
 ('ANIMAL_SPAWN_SPACER',							750,	0,	0,	0	),	--animals spawn every [random(1 to value) plots * (number existing animals + 10) ^ 3 / 1000] plots from all available plots

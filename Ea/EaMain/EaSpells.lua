@@ -440,6 +440,19 @@ local function TestEaSpellForHumanUI(eaActionID, iPlayer, unit, iPerson, testX, 
 		SetUI[eaActionID]()
 	end
 
+	--Backup UI if not set by SetUI
+	if g_bSetDelayedFailForUI and MapModData.text == "no help text" then
+		if g_eaAction.City == "Not" and g_bIsCity then
+			MapModData.text = "[COLOR_WARNING_TEXT]This spell can be cast only outside of cities[ENDCOLOR]"
+		elseif g_eaAction.City == "Any" and not g_bIsCity then
+			MapModData.text = "[COLOR_WARNING_TEXT]This spell can be cast only in cities[ENDCOLOR]"
+		elseif g_eaAction.City == "Own" and (not g_bIsCity or g_iOwner ~= g_iPlayer) then
+			MapModData.text = "[COLOR_WARNING_TEXT]This spell can be cast only in your own cities[ENDCOLOR]"
+		elseif g_eaAction.City == "Foreign" and (not g_bIsCity or g_iOwner == g_iPlayer) then
+			MapModData.text = "[COLOR_WARNING_TEXT]This spell can be cast only in foreign cities[ENDCOLOR]"
+		end
+	end
+
 	if MapModData.text == "no help text" and g_eaAction.Help then
 		MapModData.text = Locale.ConvertTextKey(g_eaAction.Help)
 		if not g_bAllTestsPassed or g_bSetDelayedFailForUI then
@@ -641,18 +654,37 @@ function TestEaSpellTarget(eaActionID, testX, testY, bAITargetTest)
 
 	if g_eaAction.City then
 		if g_eaAction.City == "Not" then
-			if g_bIsCity then return false end
-		else
-			if not g_bIsCity then return false end
-			if g_eaAction.FoundsSpreadsCult then	--Pantheism cult (can't do in foreign city unless we are founder)
-				if g_iOwner ~= g_iPlayer then
-					local cultID = GameInfoTypes[g_eaAction.FoundsSpreadsCult]
-					if not gReligions[cultID] or gReligions[cultID].founder ~= g_iPlayer then return false end
+			if g_bIsCity then
+				if g_bUICall then
+					g_bSetDelayedFailForUI = true
+				else
+					return false
 				end
-			elseif g_eaAction.City == "Own" then
-				if g_iOwner ~= g_iPlayer then return false end
+			end
+		else
+			if not g_bIsCity then
+				if g_bUICall then
+					g_bSetDelayedFailForUI = true
+				else
+					return false
+				end				
+			end
+			if g_eaAction.City == "Own" then
+				if g_iOwner ~= g_iPlayer then
+					if g_bUICall then
+						g_bSetDelayedFailForUI = true
+					else
+						return false
+					end				
+				end
 			elseif g_eaAction.City == "Foreign" then
-				if g_iOwner == g_iPlayer then return false end
+				if g_iOwner == g_iPlayer then
+					if g_bUICall then
+						g_bSetDelayedFailForUI = true
+					else
+						return false
+					end				
+				end
 			end
 		end
 	end

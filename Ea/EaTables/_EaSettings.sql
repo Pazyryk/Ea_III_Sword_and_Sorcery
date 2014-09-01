@@ -80,8 +80,8 @@ INSERT INTO EaSettings (Name, Value, GameLengthExp, MapSizeExp, RoundAdjVal) VAL
 --Culture Level / Policies
 ('CL_C_PER_POP_MULTIPLIER',						6,		0,	0,	0	),	--approach CL as a function of culture generation / maxPopEver
 ('CL_C_PER_POP_ADD',							5,		0,	0,	0	),	--extra policies (total you would get with no culture)
-('CL_APPROACH_FACTOR',							0.0055,	-1,	0,	0	),	--try to approach steady state level by this fraction of the difference each turn
-('CL_TARGET_CHANGE',							0.055,	-1,	0,	0	),	--"tendency" for change/turn (next setting determines strength of this tendency)
+('CL_APPROACH_FACTOR',							0.005,	-1,	0,	0	),	--try to approach steady state level by this fraction of the difference each turn
+('CL_TARGET_CHANGE',							0.05,	-1,	0,	0	),	--"tendency" for change/turn (next setting determines strength of this tendency)
 ('CL_CHANGE_DAMPING_EXPONENT',					0.75,	0,	0,	0	),	--at 0, rate = CL_TARGET_CHANGE; at 1, rate soley function of asymptotic function (gap & CL_APPROACH_FACTOR)
 --('CL_RECENCY_BIAS',							0.05,	-0.5,-1,0	),	--DEPRECIATED in v7f
 ('CL_LOW_POP_FACTOR',							10,		0,	1,	0	),

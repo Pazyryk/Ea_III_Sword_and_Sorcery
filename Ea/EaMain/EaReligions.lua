@@ -585,12 +585,12 @@ function BecomeFallen(iPlayer)		--this could happen before, during or after the 
 					eaPerson.class2 = "Thaumaturge"
 					RegisterGPActions(iPerson)
 					eaPerson.unitTypeID = GameInfoTypes.UNIT_FALLENPRIEST
-					InitGPUnit(iPlayer, iPerson, unit:GetX(), unit:GetY(), unit)
+					InitGPUnit(iPlayer, iPerson, unit:GetX(), unit:GetY(), unit, nil, nil, nil, nil, true)
 				elseif eaPerson.subclass == "Paladin" then
 					eaPerson.subclass = "Eidolon"
 					RegisterGPActions(iPerson)
 					eaPerson.unitTypeID = GameInfoTypes.UNIT_EIDOLON
-					InitGPUnit(iPlayer, iPerson, unit:GetX(), unit:GetY(), unit)
+					InitGPUnit(iPlayer, iPerson, unit:GetX(), unit:GetY(), unit, nil, nil, nil, nil, true)
 				end
 			end
 		end

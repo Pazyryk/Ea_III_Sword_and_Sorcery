@@ -436,6 +436,17 @@ local function FinishEaAction(eaActionID)		--only called from DoEaAction so file
 		--TO DO! need popup or notification
 		--LuaEvents.EaImagePopupSpecial("EaWonder", artifactID)
 
+		--for plot wonders, we need to remove any partially built
+		if g_eaAction.BuildType then
+			local buildID = GameInfoTypes[g_eaAction.BuildType]
+			for iPlot = 0, Map.GetNumPlots() - 1 do
+				local plot = GetPlotByIndex(iPlot)		
+				if plot:GetBuildProgress(buildID) > 0 and iPlot ~= g_iPlot then
+					plot:ChangeBuildProgress(buildID, -plot:GetBuildProgress(buildID), g_iPlayer)
+				end
+			end
+		end
+
 	elseif g_eaAction.EaEpic then
 		local epicID = GameInfoTypes[g_eaAction.EaEpic]
 		gEpics[epicID] = {mod = g_mod, iPlayer = g_iPlayer}
@@ -502,7 +513,7 @@ local function TestEaActionForHumanUI(eaActionID, iPlayer, unit, iPerson, testX,
 	
 	g_bAllTestsPassed = TestEaAction(eaActionID, iPlayer, unit, iPerson, testX, testY, false)
 	MapModData.bAllow = g_bAllTestsPassed and not g_bSetDelayedFailForUI
-	MapModData.bShow = g_bAllTestsPassed --or (g_bNonTargetTestsPassed and g_eaAction.UIType == "Build")	--may change below
+	MapModData.bShow = g_bAllTestsPassed or g_bSetDelayedFailForUI	--may change below
 	MapModData.text = "no help text"		--will change below or take eaAction.Help value (if bShow)
 
 	--By default, bShow follows bAllow and text will be from eaAction.Help. If we want bShow=true when bAllow=false,
@@ -515,8 +526,8 @@ local function TestEaActionForHumanUI(eaActionID, iPlayer, unit, iPerson, testX,
 		MapModData.text = "[COLOR_WARNING_TEXT]Cannot do action while embarked[ENDCOLOR]"
 	end
 
-	--Set UI for unique builds (generic way; it can be overriden by specific SetUI funtion)
-	if MapModData.text == "no help text" then
+	--Set UI for unique builds (overrides SetUI funtion)
+	if MapModData.text == "no help text" and not MapModData.bShow then
 		if g_bUniqueBlocked then
 			if g_eaAction.UniqueType == "World" then
 				if gWorldUniqueAction[eaActionID] then
@@ -584,6 +595,23 @@ local function TestEaActionForHumanUI(eaActionID, iPlayer, unit, iPerson, testX,
 
 	if MapModData.text == "no help text" and SetUI[eaActionID] then
 		SetUI[eaActionID]()	--always set MapModData.bShow and MapModData.text together (need specific function if we want to show disabled button)
+	end
+
+	--Backup UI if not set by SetUI
+	if g_bSetDelayedFailForUI and MapModData.text == "no help text" then
+		if g_eaAction.City == "Not" and g_bIsCity then
+			MapModData.bShow = true
+			MapModData.text = "[COLOR_WARNING_TEXT]This action can be done only outside of cities[ENDCOLOR]"
+		elseif g_eaAction.City == "Any" and not g_bIsCity then
+			MapModData.bShow = true
+			MapModData.text = "[COLOR_WARNING_TEXT]This action can be done only in cities[ENDCOLOR]"
+		elseif g_eaAction.City == "Own" and (not g_bIsCity or g_iOwner ~= g_iPlayer) then
+			MapModData.bShow = true
+			MapModData.text = "[COLOR_WARNING_TEXT]This action can be done only in your own cities[ENDCOLOR]"
+		elseif g_eaAction.City == "Foreign" and (not g_bIsCity or g_iOwner == g_iPlayer) then
+			MapModData.bShow = true
+			MapModData.text = "[COLOR_WARNING_TEXT]This action can be done only in foreign cities[ENDCOLOR]"
+		end
 	end
 
 	if MapModData.bShow and MapModData.text == "no help text" and g_eaAction.Help then
@@ -864,18 +892,42 @@ function TestEaActionTarget(eaActionID, testX, testY, bAITargetTest)
 
 	if g_eaAction.City then
 		if g_eaAction.City == "Not" then
-			if g_bIsCity then return false end
+			if g_bIsCity then
+				if g_bUICall then
+					g_bSetDelayedFailForUI = true
+				else
+					return false
+				end
+			end
 		else
-			if not g_bIsCity then return false end
+			if not g_bIsCity then
+				if g_bUICall then
+					g_bSetDelayedFailForUI = true
+				else
+					return false
+				end				
+			end
 			if g_eaAction.FoundsSpreadsCult then	--Pantheism cult (can't do in foreign city unless we are founder)
 				if g_iOwner ~= g_iPlayer then
 					local cultID = GameInfoTypes[g_eaAction.FoundsSpreadsCult]
 					if not gReligions[cultID] or gReligions[cultID].founder ~= g_iPlayer then return false end
 				end
 			elseif g_eaAction.City == "Own" then
-				if g_iOwner ~= g_iPlayer then return false end
+				if g_iOwner ~= g_iPlayer then
+					if g_bUICall then
+						g_bSetDelayedFailForUI = true
+					else
+						return false
+					end				
+				end
 			elseif g_eaAction.City == "Foreign" then
-				if g_iOwner == g_iPlayer then return false end
+				if g_iOwner == g_iPlayer then
+					if g_bUICall then
+						g_bSetDelayedFailForUI = true
+					else
+						return false
+					end				
+				end
 			end
 		end
 	end
@@ -1170,7 +1222,7 @@ function DoEaAction(eaActionID, iPlayer, unit, iPerson, targetX, targetY)
 			if progress >= turnsToComplete - 1 then
 				return FinishEaAction(eaActionID)
 			else
-				g_plot:ChangeBuildProgress(buildID, 1, g_iTeam)
+				g_plot:ChangeBuildProgress(buildID, 1, g_iPlayer)	--wiki wrong, needs iPlayer
 			end
 		else
 			local progressTable
@@ -1498,6 +1550,8 @@ end
 SetUI[GameInfoTypes.EA_ACTION_TAKE_LEADERSHIP] = function()
 	if g_bNonTargetTestsPassed then
 		MapModData.bShow = true		--button will show if no leader (but will be disabled if not in capital)
+	else
+		MapModData.bShow = false
 	end
 end
 
@@ -1981,12 +2035,12 @@ TestTarget[GameInfoTypes.EA_ACTION_LEAD_CHARGE] = function()
 					--TO DO: add city attack check
 					if loopPlot:IsCity() then
 						if g_eaPlayer.atWarWith[loopPlot:GetOwner()] then
-							local city = loopPlot:GetPlotCity() 
-							local value = city:GetDamage()
+							local loopCity = loopPlot:GetPlotCity() 
+							local value = loopCity:GetDamage()
 							print("TestTarget - EA_ACTION_LEAD_CHARGE has found potential city target; value = ", value)
 							if bestValue < value then
 								bestValue = value
-								g_obj1 = loopUnit
+								g_obj1 = loopCity
 							end
 						end
 					elseif loopPlot:IsVisibleEnemyDefender(unit) then
@@ -2040,14 +2094,23 @@ SetAIValues[GameInfoTypes.EA_ACTION_LEAD_CHARGE] = function()
 	elseif g_eaPlayer.race == EARACE_HELDEOFOL then
 		raceMultiplier = 2
 	end
-	gg_aiOptionValues.i = g_value * g_mod * raceMultiplier / 1000000
+	gg_aiOptionValues.i = g_value * g_mod * raceMultiplier / 300000
 	--gg_aiOptionValues.i = raceMultiplier * (g_mod * g_int3 * g_int4 * g_int5 * g_int2 / 10000000)	
 end
 
 Do[GameInfoTypes.EA_ACTION_LEAD_CHARGE] = function()
+
+
+	local targetX, targetY = g_obj1:GetX(), g_obj1:GetY()
+	local targetPlot = GetPlotFromXY(targetX, targetY)
+	print("melee can attack before SetGPAttackState: ", g_obj2:CanMoveOrAttackInto(targetPlot))
+
 	g_unit:SetGPAttackState(1)
+
+	print("melee can attack after SetGPAttackState: ", g_obj2:CanMoveOrAttackInto(targetPlot))
+	print("GP can attack after SetGPAttackState: ", g_unit:CanMoveOrAttackInto(targetPlot))
+
 	if g_bAIControl then		--Carry out attack
-		local targetX, targetY = g_obj1:GetX(), g_obj1:GetY()
 		print("AI Warrior about to Lead Charge; damage before: ", g_unit:GetDamage())
 		g_unit:PopMission()
 		g_unit:PushMission(MissionTypes.MISSION_MOVE_TO, targetX, targetY, 0, 0, 1)
@@ -2580,7 +2643,7 @@ Do[GameInfoTypes.EA_ACTION_BECOME_MAGE] = function()
 	g_eaPerson.spells = g_eaPerson.spells or {}
 	RegisterGPActions(g_iPerson)
 	g_eaPerson.unitTypeID = GameInfoTypes.UNIT_MAGE
-	g_unit = InitGPUnit(g_iPlayer, g_iPerson, g_x, g_y, g_unit)
+	g_unit = InitGPUnit(g_iPlayer, g_iPerson, g_x, g_y, g_unit, nil, nil, nil, nil, true)
 	UseManaOrDivineFavor(g_iPlayer, g_iPerson, 100)			
 end
 
@@ -2597,7 +2660,7 @@ Do[GameInfoTypes.EA_ACTION_BECOME_ARCHMAGE] = function()
 	g_eaPerson.spells = g_eaPerson.spells or {}
 	RegisterGPActions(g_iPerson)
 	g_eaPerson.unitTypeID = GameInfoTypes.UNIT_ARCHMAGE
-	g_unit = InitGPUnit(g_iPlayer, g_iPerson, g_x, g_y, g_unit)
+	g_unit = InitGPUnit(g_iPlayer, g_iPerson, g_x, g_y, g_unit, nil, nil, nil, nil, true)
 	UseManaOrDivineFavor(g_iPlayer, g_iPerson, xp)			
 end
 

@@ -154,7 +154,7 @@
 			<Text>Burning Hands</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_BURNING_HANDS_HELP">
-			<Text>Gives the caster a range 1 attack with strength equal to the caster's Transformation Modifier.</Text>
+			<Text>Gives the caster a range 1 attack with strength equal to the caster's Transmutation Modifier.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_HEX">
 			<Text>Hex</Text>

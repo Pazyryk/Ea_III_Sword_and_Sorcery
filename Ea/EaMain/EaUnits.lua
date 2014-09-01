@@ -60,6 +60,9 @@ local UNIT_FISHING_BOATS =							GameInfoTypes.UNIT_FISHING_BOATS
 local UNIT_WHALING_BOATS =							GameInfoTypes.UNIT_WHALING_BOATS
 local UNIT_HUNTERS =								GameInfoTypes.UNIT_HUNTERS
 local UNIT_GREAT_BOMBARDE =							GameInfoTypes.UNIT_GREAT_BOMBARDE
+local UNIT_CARGO_SHIP =								GameInfoTypes.UNIT_CARGO_SHIP
+
+
 
 --state shared
 
@@ -552,7 +555,7 @@ function UnitPerCivTurn(iPlayer)	--runs for full civs and city states
 					end
 				elseif unitDomainTypeID == DOMAIN_SEA then
 					--scurvy
-					if bNoCitrus then
+					if bNoCitrus and unitTypeID ~= UNIT_CARGO_SHIP then
 						local bScurvy = true
 						if iPlotOwner ~= -1 then
 							if iPlotOwner == iPlayer then

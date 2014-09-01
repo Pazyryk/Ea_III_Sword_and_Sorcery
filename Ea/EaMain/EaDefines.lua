@@ -106,8 +106,7 @@ GP_TXT_KEYS = {	Engineer = "TXT_KEY_EA_ENGINEER",
 				Sorcerer = "TXT_KEY_EA_SORCERER",
 				Necromancer = "TXT_KEY_EA_NECROMANCER",
 				Mage = "TXT_KEY_EA_MAGE",
-				Archmage = "TXT_KEY_EA_ARCHMAGE",
-				Lich = "TXT_KEY_EA_LICH"	}
+				Archmage = "TXT_KEY_EA_ARCHMAGE"}
 MapModData.GP_TXT_KEYS = GP_TXT_KEYS
 
 BARB_PLAYER_INDEX = GameDefines.BARBARIAN_PLAYER

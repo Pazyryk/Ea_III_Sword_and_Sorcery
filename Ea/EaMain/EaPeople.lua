@@ -106,6 +106,13 @@ for row in GameInfo.UnitPromotions_EaPeopleValidPrefixes() do
 	gpPromoPrefixes.number = gpPromoPrefixes.number + 1
 	gpPromoPrefixes[gpPromoPrefixes.number] = row.PromotionPrefix
 end
+
+local gpClassSubclassPromotions = {}
+for promoInfo in GameInfo.UnitPromotions() do
+	if promoInfo.EaGPClassSubclass then
+		gpClassSubclassPromotions[promoInfo.EaGPClassSubclass] = promoInfo.ID
+	end
+end
 --------------------------------------------------------------
 -- Local Functions
 --------------------------------------------------------------
@@ -248,6 +255,21 @@ function EaPeopleInit(bNewGame)
 		if eaPersonRowID then
 			gg_peopleEverLivedByRowID[eaPersonRowID] = true
 		end
+
+		--v7g patch (remove for v8)
+		if iPerson > 0 then
+			local player = Players[eaPerson.iPlayer]
+			local unit = player:GetUnitByID(eaPerson.iUnit)
+			if unit then
+				for classSubclass, promotionID in pairs(gpClassSubclassPromotions) do
+					if eaPerson.class1 == classSubclass or eaPerson.class2 == classSubclass or eaPerson.subclass == classSubclass then
+						unit:SetHasPromotion(promotionID, true)
+					end
+					unit:SetHasPromotion(GameInfoTypes.PROMOTION_RIVAL_TERRITORY, true)
+				end
+			end
+		end
+
 	end
 	for _, eaPerson in pairs(gDeadPeople) do
 		local eaPersonRowID = eaPerson.eaPersonRowID
@@ -732,7 +754,8 @@ function GenerateGreatPerson(iPlayer, class, subclass, eaPersonRowID, bAsLeader,
 end
 --LuaEvents.EaPeopleGenerateGreatPerson.Add(GenerateGreatPerson)
 
-function InitGPUnit(iPlayer, iPerson, x, y, convertUnit, unitTypeID, invisibilityID, morale, bResurection)	--only first 4 args required
+
+function InitGPUnit(iPlayer, iPerson, x, y, convertUnit, unitTypeID, invisibilityID, morale, bResurection, bResetClassSubclass)	--only first 4 args required
 	local player = Players[iPlayer]
 	local eaPerson = gPeople[iPerson]
 	unitTypeID = unitTypeID or eaPerson.unitTypeID		--default if nil
@@ -761,6 +784,18 @@ function InitGPUnit(iPlayer, iPerson, x, y, convertUnit, unitTypeID, invisibilit
 			unit:SetHasPromotion(promotionID, promotions[promotionID] and true or false)
 		end 
 	end
+	--class/subclass identifier promotions
+	if bResetClassSubclass then
+		for classSubclass, promotionID in pairs(gpClassSubclassPromotions) do
+			unit:SetHasPromotion(promotionID, false)
+		end
+	end
+	for classSubclass, promotionID in pairs(gpClassSubclassPromotions) do
+		if eaPerson.class1 == classSubclass or eaPerson.class2 == classSubclass or eaPerson.subclass == classSubclass then
+			unit:SetHasPromotion(promotionID, true)
+		end
+	end
+	unit:SetHasPromotion(GameInfoTypes.PROMOTION_RIVAL_TERRITORY, true)
 	return unit
 end
 
@@ -855,8 +890,10 @@ function GetInfoFromSubclassClass(subclass, class)	--class is ignored if subclas
 		return GameInfoTypes.UNIT_NECROMANCER, "Thaumaturge", nil
 	elseif subclass == "Wizard" then
 		return GameInfoTypes.UNIT_WIZARD, "Thaumaturge", nil
-	elseif subclass == "Lich" then
-		return GameInfoTypes.UNIT_LICH, "Thaumaturge", nil
+	elseif subclass == "Mage" then
+		return GameInfoTypes.UNIT_MAGE, "Thaumaturge", "Sage"
+	elseif subclass == "Archmage" then
+		return GameInfoTypes.UNIT_ARCHMAGE, "Thaumaturge", "Sage"
 	--"pure" classes
 	elseif class == "Engineer" then
 		return GameInfoTypes.UNIT_ENGINEER, "Engineer", nil
@@ -909,6 +946,15 @@ function PickPersonRowByClassOrSubclass(iPlayer, classOrSubclass, bAllowRedundan
 	local race = eaPlayer.race
 	local raceType = GameInfo.EaRaces[race].Type
 	local bAllCivsHaveNames = gWorld.bAllCivsHaveNames
+
+	--temp hack for Mage/Archmage (add to table for v8?)
+	if classOrSubclass == "Mage" or classOrSubclass == "Archmage" then
+		if eaPlayer.bIsFallen then
+			classOrSubclass = "Sorcerer"
+		else
+			classOrSubclass = "Wizard"
+		end
+	end
 	
 	--total points for classOrSubclass
 	local totalPointsForSubclass = 0
@@ -1444,7 +1490,7 @@ function ReviveLich(iPerson)		--assumes old unit was killed or being killed
 	end
 	if iPlot then
 		local x, y = GetXYFromPlotIndex(iPlot)
-		local unit = InitGPUnit(iPlayer, iPerson, x, y, nil, nil, nil, nil, true)
+		local unit = InitGPUnit(iPlayer, iPerson, x, y, nil, nil, nil, nil, true, false)
 		if unit then
 			if unit:GetPlot():GetOwner() ~= iPlayer then
 				unit:JumpToNearestValidPlot()		--only kicks out of tower, but the idea is clear

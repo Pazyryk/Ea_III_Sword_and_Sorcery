@@ -430,67 +430,130 @@
 		<Row Tag="TXT_KEY_EA_PROMOTION_ENGINEER">
 			<Text>Engineer</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_ENGINEER_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_MERCHANT">
 			<Text>Merchant</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_MERCHANT_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_SAGE">
 			<Text>Sage</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_SAGE_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_ARTIST">
 			<Text>Artist</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_ARTIST_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_WARRIOR">
 			<Text>Warrior</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_WARRIOR_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_THAUMATURGE">
 			<Text>Thaumaturge</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_THAUMATURGE_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_DEVOUT">
 			<Text>Devout</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_DEVOUT_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_ALCHEMIST">
 			<Text>Alchemist</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_ALCHEMIST_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_BERSERKER">
 			<Text>Berserker</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_BERSERKER_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_PALADIN">
 			<Text>Paladin</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_PALADIN_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_EIDOLON">
 			<Text>Eidolon</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_EIDOLON_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_WITCH">
 			<Text>Witch</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_WITCH_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_WIZARD">
 			<Text>Wizard</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_WIZARD_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_SORCERER">
 			<Text>Sorcerer</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_SORCERER_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_NECROMANCER">
 			<Text>Necromancer</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_NECROMANCER_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_MAGE">
 			<Text>Mage</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_MAGE_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_ARCHMAGE">
 			<Text>Archmage</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_PROMOTION_LICH">
-			<Text>Lich</Text>
+		<Row Tag="TXT_KEY_EA_PROMOTION_ARCHMAGE_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_PRIEST">
 			<Text>Priest</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_PRIEST_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_FALLENPRIEST">
 			<Text>Fallen Priest</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_FALLENPRIEST_HELP">
+			<Text></Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_DRUID">
 			<Text>Druid</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_DRUID_HELP">
+			<Text></Text>
+		</Row>
 
+		<Row Tag="TXT_KEY_EA_PROMOTION_LICH">
+			<Text>Lich</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_LICH_HELP">
+			<Text></Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_MANA_EATER">
 			<Text>Mana Eater</Text>
 		</Row>

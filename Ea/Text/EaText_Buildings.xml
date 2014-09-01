@@ -202,13 +202,13 @@
 		<Row Tag="TXT_KEY_EA_BUILDING_GOVERNORS_COMPOUND_HELP">
 			<Text>Reduces extra [ICON_HAPPINESS_4] Unhappiness from an [ICON_OCCUPIED] Occupied City by 40%. May be built only in occupied cities.</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_TRIBAL_COUNCIL">
+		<Row Tag="TXT_KEY_EA_BUILDING_TRIBAL_COUNCIL">
 			<Text>Tribal Council</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_TRIBAL_COUNCIL_HELP">
 			<Text>May be built only in a City of a different race than your Civilization.</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_FOREFATHERS_STATUE">
+		<Row Tag="TXT_KEY_EA_BUILDING_FOREFATHERS_STATUE">
 			<Text>Forefather's Statue</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_BUILDING_FOREFATHERS_STATUE_HELP">
@@ -676,16 +676,16 @@
 		<Row Tag="TXT_KEY_EA_BUILDING_HELDEOFOL">
 			<Text>HELDEOFOL (HIDDEN)</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_TRADE_PLUS_1_GOLD">
+		<Row Tag="TXT_KEY_EA_BUILDING_TRADE_PLUS_1_GOLD">
 			<Text>TRADE GOLD (HIDDEN)</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_PLUS_1_PERCENT_PRODUCTION">
+		<Row Tag="TXT_KEY_EA_BUILDING_PLUS_1_PERCENT_PRODUCTION">
 			<Text>PERCENT PROD (HIDDEN)</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_PLUS_1_PERCENT_GOLD">
+		<Row Tag="TXT_KEY_EA_BUILDING_PLUS_1_PERCENT_GOLD">
 			<Text>PERCENT GOLD (HIDDEN)</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_PLUS_1_PERCENT_SCIENCE">
+		<Row Tag="TXT_KEY_EA_BUILDING_PLUS_1_PERCENT_SCIENCE">
 			<Text>PERCENT SCIENCE (HIDDEN)</Text>
 		</Row>
 

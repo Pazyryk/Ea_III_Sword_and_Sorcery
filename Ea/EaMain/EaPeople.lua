@@ -34,8 +34,9 @@ local YIELD_FAITH = 					GameInfoTypes.YIELD_FAITH
 
 local fullCivs =						MapModData.fullCivs
 
-local gPlayers =			gPlayers
-local gPeople =				gPeople
+local gPlayers =						gPlayers
+local gPeople =							gPeople
+local gg_livingPeopleRowIDs =		gg_livingPeopleRowIDs
 
 local floor =				math.floor
 local Rand =				Map.Rand
@@ -49,7 +50,6 @@ local int1 =			{}
 local int2 =			{}
 
 local g_iActivePlayer = Game.GetActivePlayer()
-local g_bReservedGPs = not gWorld.bAllCivsHaveNames
 
 --------------------------------------------------------------
 -- Cached Tables
@@ -251,9 +251,8 @@ function EaPeopleInit(bNewGame)
 			end
 		end
 
-		local eaPersonRowID = eaPerson.eaPersonRowID
-		if eaPersonRowID then
-			gg_peopleEverLivedByRowID[eaPersonRowID] = true
+		if eaPerson.eaPersonRowID then
+			gg_livingPeopleRowIDs[eaPerson.eaPersonRowID] = true
 		end
 
 		--v7g patch (remove for v8)
@@ -272,10 +271,12 @@ function EaPeopleInit(bNewGame)
 
 	end
 	for _, eaPerson in pairs(gDeadPeople) do
-		local eaPersonRowID = eaPerson.eaPersonRowID
-		if eaPersonRowID then
-			gg_peopleEverLivedByRowID[eaPersonRowID] = true
+		if eaPerson.eaPersonRowID then
+			gg_livingPeopleRowIDs[eaPerson.eaPersonRowID] = false	--false means they once lived
 		end
+	end
+	if gWorld.bAllCivsHaveNames then
+		UnlockReservedGPs()
 	end
 end
 
@@ -395,7 +396,7 @@ function PeoplePerCivTurn(iPlayer)
 				UngenericizePerson(iPlayer, iPerson, nil)
 			end
 
-			print("Cycle GP", iPerson, eaPerson.iUnit, eaPerson.name, (eaPerson.subclass or eaPerson.class1), eaPerson.eaActionID ~= -1 and GameInfo.EaActions[eaPerson.eaActionID].Type or -1)
+			print("Cycle GP", iPerson, eaPerson.iUnit, eaPerson.name, eaPerson.class1, eaPerson.class2, eaPerson.subclass, eaPerson.eaActionID ~= -1 and GameInfo.EaActions[eaPerson.eaActionID].Type or -1)
 
 			local unit = player:GetUnitByID(eaPerson.iUnit)
 
@@ -918,7 +919,7 @@ function UngenericizePerson(iPlayer, iPerson, eaPersonRowID)
 	eaPersonRowID = eaPersonRowID or PickPersonRowByClassOrSubclass(iPlayer, eaPerson.subclass or eaPerson.class1)
 
 	if eaPersonRowID then
-		gg_peopleEverLivedByRowID[eaPersonRowID] = true
+		gg_livingPeopleRowIDs[eaPersonRowID] = true
 		local eaPersonRow = GameInfo.EaPeople[eaPersonRowID]
 		eaPerson.race = GameInfoTypes[eaPersonRow.Race]
 		local name = eaPersonRow.Description
@@ -939,13 +940,13 @@ function UngenericizePerson(iPlayer, iPerson, eaPersonRowID)
 	--return eaPersonRowID
 end
 
-function PickPersonRowByClassOrSubclass(iPlayer, classOrSubclass, bAllowRedundant)	--returns EaPerson ID
+function PickPersonRowByClassOrSubclass(iPlayer, classOrSubclass, bReuseDead, bReuseLiving)	--returns EaPerson ID
+	print("PickPersonRowByClassOrSubclass ", iPlayer, classOrSubclass, bReuseDead, bReuseLiving)
 	--3rd arg is only set if function calls itself (last ditch effort if no non-redundant can be found)
 	local player = Players[iPlayer]
 	local eaPlayer = gPlayers[iPlayer]
 	local race = eaPlayer.race
 	local raceType = GameInfo.EaRaces[race].Type
-	local bAllCivsHaveNames = gWorld.bAllCivsHaveNames
 
 	--temp hack for Mage/Archmage (add to table for v8?)
 	if classOrSubclass == "Mage" or classOrSubclass == "Archmage" then
@@ -955,6 +956,8 @@ function PickPersonRowByClassOrSubclass(iPlayer, classOrSubclass, bAllowRedundan
 			classOrSubclass = "Wizard"
 		end
 	end
+
+	print(raceType, classOrSubclass, bReuseDead, bReuseLiving)
 	
 	--total points for classOrSubclass
 	local totalPointsForSubclass = 0
@@ -962,7 +965,8 @@ function PickPersonRowByClassOrSubclass(iPlayer, classOrSubclass, bAllowRedundan
 	local rowID = firstRow
 	local eaPersonRow = GameInfo.EaPeople[rowID]
 	while eaPersonRow do
-		if eaPersonRow[classOrSubclass] ~= -1 and not (g_bReservedGPs and reservedGPs[rowID]) and (not gg_peopleEverLivedByRowID[eaPersonRow.ID] or bAllowRedundant) and eaPersonRow.Race == raceType then
+		if eaPersonRow[classOrSubclass] ~= -1 and not (reservedGPs and reservedGPs[rowID]) and eaPersonRow.Race == raceType
+				and (gg_livingPeopleRowIDs[rowID] == nil or (bReuseDead and not gg_livingPeopleRowIDs[rowID]) or bReuseLiving) then
 			int1[rowID] = eaPersonRow[classOrSubclass]
 			totalPointsForSubclass = totalPointsForSubclass + eaPersonRow[classOrSubclass]
 		else
@@ -986,9 +990,10 @@ function PickPersonRowByClassOrSubclass(iPlayer, classOrSubclass, bAllowRedundan
 		print("No more EaPeople with >0 points for this classOrSubclass, picking random valid")
 		local validPeople = 0
 		rowID = firstRow
-		eaPersonRow = GameInfo.EaPeople[1]
+		eaPersonRow = GameInfo.EaPeople[rowID]
 		while eaPersonRow do
-			if eaPersonRow[classOrSubclass] ~= -1 and not (g_bReservedGPs and reservedGPs[rowID]) and (not gg_peopleEverLivedByRowID[eaPersonRow.ID] or bAllowRedundant) and eaPersonRow.Race == raceType then
+			if eaPersonRow[classOrSubclass] ~= -1 and not (reservedGPs and reservedGPs[rowID]) and eaPersonRow.Race == raceType
+					and (gg_livingPeopleRowIDs[rowID] == nil or (bReuseDead and not gg_livingPeopleRowIDs[rowID]) or bReuseLiving) then
 				validPeople = validPeople + 1
 				int1[validPeople] = rowID
 			end		
@@ -1001,18 +1006,21 @@ function PickPersonRowByClassOrSubclass(iPlayer, classOrSubclass, bAllowRedundan
 		end
 	end
 
-	if not bAllowRedundant then
-		print("!!!! WARNING: Could not find any valid EaPeople; retrying allowing redundant persons")
+	if not bReuseDead then
+		print("!!!! WARNING: Could not find any valid EaPeople; retrying with bReuseDead")
 		return PickPersonRowByClassOrSubclass(iPlayer, classOrSubclass, true)
 	end
 
-	print("!!!! ERROR: Could not find any valid EaPeople")
+	if not bReuseLiving then
+		print("!!!! WARNING: Could not find any valid EaPeople; retrying with bReuseLiving")
+		return PickPersonRowByClassOrSubclass(iPlayer, classOrSubclass, true, true)
+	end
 
+	error("Could not find any valid EaPeople")
 end
 
 function UnlockReservedGPs()
-	g_bReservedGPs = false
-	reservedGPs = nil		--garbage collect cached table
+	reservedGPs = false
 end
 
 --------------------------------------------------------------
@@ -1527,6 +1535,8 @@ function KillPerson(iPlayer, iPerson, unit, iKillerPlayer, deathType)
 	print("class2 = ", eaPerson.class2)
 	print("race = ", eaPerson.race)
 	print("name = ", eaPerson.name)
+
+	gg_livingPeopleRowIDs[eaPerson.eaPersonRowID] = false
 
 	--remove unit or make sure it is safely being removed
 	if unit then

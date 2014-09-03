@@ -815,6 +815,15 @@ function Init()
 		local prereq = GameInfo.Policies[row.PrereqPolicy];
 		local policy = GameInfo.Policies[row.PolicyType];
 		--Paz add: skip for anti-Theism or non civ-enabled, and adjust position for civ enabled
+
+		--temp debug
+		if not policy then
+			print("No such policy: ", row.PolicyType)
+		end
+		if not prereq then
+			print("No such policy: ", row.PrereqPolicy)
+		end		
+		 
 		if policy.PolicyBranchType == "POLICY_BRANCH_ANTI_THEISM" or (policy.PolicyBranchType == "POLICY_BRANCH_CIV_ENABLED" and not g_civEnabledPolicies[policy.ID]) then
 			policy = nil
 		elseif policy.PolicyBranchType == "POLICY_BRANCH_CIV_ENABLED" then

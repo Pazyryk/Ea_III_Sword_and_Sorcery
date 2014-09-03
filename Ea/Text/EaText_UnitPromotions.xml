@@ -157,6 +157,24 @@
 		<Row Tag="TXT_KEY_EA_PROMOTION_BLESSED_HELP">
 			<Text>+10% natural healing.</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_SLOWED">
+			<Text>Slowed</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_SLOWED_HELP">
+			<Text>-1 movement.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_ENCHANTED_WEAPONS">
+			<Text>Enchanted Weapons</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_ENCHANTED_WEAPONS_HELP">
+			<Text>+20% combat and ranged strength.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_HASTED">
+			<Text>Hasted</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_PROMOTION_HASTED_HELP">
+			<Text>+1 movement.</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_PROMOTION_PROTECTION_FROM_EVIL">
 			<Text>Protection from Evil</Text>
 		</Row>

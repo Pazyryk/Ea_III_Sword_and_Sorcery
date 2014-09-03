@@ -254,7 +254,7 @@ function SetNewCivName(iPlayer, eaCivID)
 	end
 	if bAllCivsHaveNames and not gWorld.bAllCivsHaveNames then
 		print("All civs have names now; unlocking reserved GPs")
-		gWorld.bAllCivsHaveNames = bAllCivsHaveNames
+		gWorld.bAllCivsHaveNames = true
 		UnlockReservedGPs()
 	end
 

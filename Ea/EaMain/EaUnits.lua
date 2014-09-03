@@ -929,6 +929,47 @@ SustainedPromotionDo[GameInfoTypes.PROMOTION_BLESSED] = function(player, unit, i
 	return UseManaOrDivineFavor(eaPerson.iPlayer, iCaster, 1)		--wear off if caster has no more mana or divine favor
 end
 
+
+SustainedPromotionDo[GameInfoTypes.PROMOTION_SLOWED] = function(player, unit, iCaster)
+	local eaPerson = gPeople[iCaster]
+	if eaPerson then
+		local mod = GetGPMod(iCaster, "EAMOD_TRANSMUTATION", nil)
+		if Rand(mod, "hello") == 0 or not UseManaOrDivineFavor(eaPerson.iPlayer, iCaster, 1) then
+			unit:ChangeMoves(60) --If we're returning false for any reason, add our lost movement point for the turn
+			return false
+		else
+			return true
+		end
+	else
+		unit:ChangeMoves(60) --If we're returning false for any reason, add our lost movement point for the turn
+		return false
+	end
+end
+
+SustainedPromotionDo[GameInfoTypes.PROMOTION_HASTED] = function(player, unit, iCaster)
+	local eaPerson = gPeople[iCaster]
+	if eaPerson then
+		local mod = GetGPMod(iCaster, "EAMOD_TRANSMUTATION", nil)
+		if Rand(mod, "hello") == 0 or not UseManaOrDivineFavor(eaPerson.iPlayer, iCaster, 1) then
+			unit:ChangeMoves(-60) --If we're returning false for any reason, take away our bonus move point for the turn
+			return false
+		else
+			return true
+		end
+	else
+		unit:ChangeMoves(-60) --If we're returning false for any reason, take away our bonus move point for the turn
+		return false
+	end
+end
+
+SustainedPromotionDo[GameInfoTypes.PROMOTION_ENCHANTED_WEAPONS] = function(player, unit, iCaster)
+	local eaPerson = gPeople[iCaster]
+	if not eaPerson then return false end	--caster died
+	local mod = GetGPMod(iCaster, "EAMOD_TRANSMUTATION", nil)
+	if Rand(mod, "hello") == 0 then return false end	--1/mod chance to wear off each turn
+	return UseManaOrDivineFavor(eaPerson.iPlayer, iCaster, 1)		--wear off if caster has no more mana or divine favor
+end
+
 SustainedPromotionDo[GameInfoTypes.PROMOTION_PROTECTION_FROM_EVIL] = function(player, unit, iCaster)
 	local eaPerson = gPeople[iCaster]
 	if not eaPerson then return false end	--caster died

@@ -5,7 +5,7 @@
     <ProjectGuid>{1ea68a23-e242-4461-adc0-8c131ee84e80}</ProjectGuid>
     <Name>Éa III, Sword and Sorcery</Name>
     <Guid>b8e7ce57-3625-43bd-9eaf-56e84bf70266</Guid>
-    <ModVersion>7</ModVersion>
+    <ModVersion>8</ModVersion>
     <Stability>Alpha</Stability>
     <Teaser>Play a fantasy civilization in the world of Éa</Teaser>
     <Description>You begin knowing only that you are a small tribe, belonging to one of three races, without name, leader or history. Your civilization will acquire a name and a specific character over time based on achievements, discoveries, local geography and other factors. Heroes and other great people will arise from the ranks of armies tested in battle, from places of arcane or divine study, or from the alleyways of your most corrupt cities. Some of these individuals will become leaders. All will pass in time (except perhaps for the ageless). Your small tribe has no lore, no epic tales of heroes or gods from times past. There is no past. The story of Ea is yours to make...</Description>
@@ -14,7 +14,7 @@
     </SpecialThanks>
     <Categories>$Categories$</Categories>
     <AffectsSavedGames>true</AffectsSavedGames>
-    <MinCompatibleSaveVersion>7</MinCompatibleSaveVersion>
+    <MinCompatibleSaveVersion>8</MinCompatibleSaveVersion>
     <SupportsSinglePlayer>true</SupportsSinglePlayer>
     <SupportsMultiplayer>true</SupportsMultiplayer>
     <SupportsMac>true</SupportsMac>

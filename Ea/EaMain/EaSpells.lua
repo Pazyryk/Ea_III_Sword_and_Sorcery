@@ -33,6 +33,9 @@ local PLOT_LAND =							PlotTypes.PLOT_LAND
 local PLOT_MOUNTAIN =						PlotTypes.PLOT_MOUNTAIN
 local PLOT_OCEAN =							PlotTypes.PLOT_OCEAN
 local PROMOTION_BLESSED =					GameInfoTypes.PROMOTION_BLESSED
+local PROMOTION_SLOWED =					GameInfoTypes.PROMOTION_SLOWED
+local PROMOTION_HASTED =					GameInfoTypes.PROMOTION_HASTED
+local PROMOTION_ENCHANTED_WEAPONS =         GameInfoTypes.PROMOTION_ENCHANTED_WEAPONS
 local PROMOTION_CURSED =					GameInfoTypes.PROMOTION_CURSED
 local PROMOTION_EVIL_EYE =					GameInfoTypes.PROMOTION_EVIL_EYE
 local PROMOTION_FAIR_WINDS =				GameInfoTypes.PROMOTION_FAIR_WINDS
@@ -2646,9 +2649,180 @@ Finish[GameInfoTypes.EA_SPELL_BREACH] = function()
 end
 
 --EA_SPELL_WISH
+
 --EA_SPELL_SLOW
+TestTarget[GameInfoTypes.EA_SPELL_SLOW] = function()
+	--Priority: strongest adjacent enemy (cost x current hp)
+	--g_obj1 = unit
+	--g_value = unit cost for AI
+	local value = 0
+	for x, y in PlotToRadiusIterator(g_x, g_y, 1) do	--includes center
+		local plot = GetPlotFromXY(x, y)
+		local unitCount = plot:GetNumUnits()
+		for i = 0, unitCount - 1 do
+			local unit = plot:GetUnit(i)
+			if not unit:IsHasPromotion(PROMOTION_SLOWED) then
+				if g_team:IsAtWar(Players[unit:GetOwner()]:GetTeam()) then
+					local unitTypeID = unit:GetUnitType()	
+					if gg_regularCombatType[unitTypeID] == "troops" then
+						local power = unit:GetPower()
+						if value < power then
+							g_obj1 = unit
+							value = power
+						end
+					end
+				end
+			end
+		end
+	end
+	if value == 0 then return false end	--no valid target
+	g_value = value
+	return true
+end
+
+SetUI[GameInfoTypes.EA_SPELL_SLOW] = function()
+	if g_bNonTargetTestsPassed then
+		if g_bAllTestsPassed then
+			local unitTypeInfo = GameInfo.Units[g_obj1:GetUnitType()]
+			local unitText = Locale.ConvertTextKey(unitTypeInfo.Description)
+			MapModData.text = "Slow adjacent " .. unitText
+		else
+			MapModData.text = "[COLOR_WARNING_TEXT]No valid target[ENDCOLOR]"
+		end
+	end
+end
+
+SetAIValues[GameInfoTypes.EA_SPELL_SLOW] = function()
+	gg_aiOptionValues.i = g_modSpell * g_value / 10
+end
+
+Do[GameInfoTypes.EA_SPELL_SLOW] = function()
+	g_obj1:SetHasPromotion(PROMOTION_SLOWED, true)
+	local iOtherPlayer = g_obj1:GetOwner()
+	local iOtherUnit = g_obj1:GetID()
+	local sustainedPromotions = gPlayers[iOtherPlayer].sustainedPromotions
+	sustainedPromotions[iOtherUnit] = sustainedPromotions[iOtherUnit] or {}
+	sustainedPromotions[iOtherUnit][PROMOTION_SLOWED] = g_iPerson
+	g_specialEffectsPlot = g_obj1:GetPlot()
+	return true
+end
+
 --EA_SPELL_HASTE
+TestTarget[GameInfoTypes.EA_SPELL_HASTE] = function()
+	--Priority: strongest same-tile or adjacent ally (cost x current hp)
+	--g_obj1 = unit
+	--g_value = unit cost for AI
+	local value = 0
+	for x, y in PlotToRadiusIterator(g_x, g_y, 1) do	--includes center
+		local plot = GetPlotFromXY(x, y)
+		local unitCount = plot:GetNumUnits()
+		for i = 0, unitCount - 1 do
+			local unit = plot:GetUnit(i)
+			if unit:GetOwner() == g_iPlayer then		--change to allied
+				if not unit:IsHasPromotion(PROMOTION_HASTED) --[[and not unit:IsHasPromotion(PROMOTION_EVIL_EYE)]] then
+					local unitTypeID = unit:GetUnitType()	
+					if gg_regularCombatType[unitTypeID] == "troops" then
+						local power = unit:GetPower()
+						if value < power then
+							g_obj1 = unit
+							value = power
+						end
+					end
+				end
+			end
+		end
+	end
+	if value == 0 then return false end	--no valid target
+	g_value = value
+	return true
+end
+
+SetUI[GameInfoTypes.EA_SPELL_HASTE] = function()
+	if g_bNonTargetTestsPassed then
+		if g_bAllTestsPassed then
+			local unitTypeInfo = GameInfo.Units[g_obj1:GetUnitType()]
+			local unitText = Locale.ConvertTextKey(unitTypeInfo.Description)
+			MapModData.text = "Quicken adjacent " .. unitText
+		else
+			MapModData.text = "[COLOR_WARNING_TEXT]No valid target[ENDCOLOR]"
+		end
+	end
+end
+
+SetAIValues[GameInfoTypes.EA_SPELL_HASTE] = function()
+	gg_aiOptionValues.i = g_modSpell * g_value / 10
+end
+
+Do[GameInfoTypes.EA_SPELL_HASTE] = function()
+	g_obj1:SetHasPromotion(PROMOTION_HASTED, true)
+	g_obj1:ChangeMoves(60) --So we can run off before EOT.  Also, ChangeMoves apparently works in 1/60 move fragments?
+	local iOtherPlayer = g_obj1:GetOwner()
+	local iOtherUnit = g_obj1:GetID()
+	local sustainedPromotions = gPlayers[iOtherPlayer].sustainedPromotions
+	sustainedPromotions[iOtherUnit] = sustainedPromotions[iOtherUnit] or {}
+	sustainedPromotions[iOtherUnit][PROMOTION_HASTED] = g_iPerson
+	g_specialEffectsPlot = g_obj1:GetPlot()
+	return true
+end
+
 --EA_SPELL_ENCHANT_WEAPONS
+TestTarget[GameInfoTypes.EA_SPELL_ENCHANT_WEAPONS] = function()
+	--Priority: strongest same-tile or adjacent ally (cost x current hp)
+	--g_obj1 = unit
+	--g_value = unit cost for AI
+	local value = 0
+	for x, y in PlotToRadiusIterator(g_x, g_y, 1) do	--includes center
+		local plot = GetPlotFromXY(x, y)
+		local unitCount = plot:GetNumUnits()
+		for i = 0, unitCount - 1 do
+			local unit = plot:GetUnit(i)
+			if unit:GetOwner() == g_iPlayer then		--change to allied
+				if not unit:IsHasPromotion(PROMOTION_ENCHANTED_WEAPONS) then
+					local unitTypeID = unit:GetUnitType()	
+					if gg_regularCombatType[unitTypeID] == "troops" then
+						local power = unit:GetPower()
+						if value < power then
+							g_obj1 = unit
+							value = power
+						end
+					end
+				end
+			end
+		end
+	end
+	if value == 0 then return false end	--no valid target
+	g_value = value
+	return true
+end
+
+SetUI[GameInfoTypes.EA_SPELL_ENCHANT_WEAPONS] = function()
+	if g_bNonTargetTestsPassed then
+		if g_bAllTestsPassed then
+			local unitTypeInfo = GameInfo.Units[g_obj1:GetUnitType()]
+			local unitText = Locale.ConvertTextKey(unitTypeInfo.Description)
+			MapModData.text = "Enchant the weapons of adjacent " .. unitText
+		else
+			MapModData.text = "[COLOR_WARNING_TEXT]No valid target[ENDCOLOR]"
+		end
+	end
+end
+
+SetAIValues[GameInfoTypes.EA_SPELL_ENCHANT_WEAPONS] = function()
+	gg_aiOptionValues.i = g_modSpell * g_value / 10
+end
+
+Do[GameInfoTypes.EA_SPELL_ENCHANT_WEAPONS] = function()
+	g_obj1:SetHasPromotion(PROMOTION_ENCHANTED_WEAPONS, true)
+	local iOtherPlayer = g_obj1:GetOwner()
+	local iOtherUnit = g_obj1:GetID()
+	local sustainedPromotions = gPlayers[iOtherPlayer].sustainedPromotions
+	sustainedPromotions[iOtherUnit] = sustainedPromotions[iOtherUnit] or {}
+	sustainedPromotions[iOtherUnit][PROMOTION_ENCHANTED_WEAPONS] = g_iPerson
+	g_specialEffectsPlot = g_obj1:GetPlot()
+	return true
+end
+
+
 --EA_SPELL_POLYMORPH
 
 

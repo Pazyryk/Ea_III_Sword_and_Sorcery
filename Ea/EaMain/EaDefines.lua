@@ -262,7 +262,7 @@ gg_eaNamePlayerTable = {}
 
 --other tables
 gg_aiOptionValues = {}
-gg_peopleEverLivedByRowID = {}
+gg_livingPeopleRowIDs = {}		--true = alive, false = dead, nil = never existed
 gg_tradeAvailableTable = {}
 gg_bHasPatronage = {}
 gg_teamCanMeetGods = {}

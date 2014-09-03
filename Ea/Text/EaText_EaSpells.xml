@@ -124,19 +124,19 @@
 			<Text>Slow</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_SLOW_HELP">
-			<Text>placeholder</Text>
+			<Text>Inflicts an adjacent enemy unit with creeping fatigue, decreasing its movement by 1. Priority is for the strongest living unit. Chance of wearing off each turn is equal to 1 / caster's Spell Modifier.</Text>
 		</Row>		
 		<Row Tag="TXT_KEY_EA_SPELL_HASTE">
 			<Text>Haste</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_HASTE_HELP">
-			<Text>placeholder</Text>
+			<Text>Fills an adjacent allied unit with vigour, increasing its movement by 1. Priority is for the strongest living unit. Chance of wearing off each turn is equal to 1 / caster's Spell Modifier.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_ENCHANT_WEAPONS">
 			<Text>Enchant Weapons</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_ENCHANT_WEAPONS_HELP">
-			<Text>placeholder</Text>
+			<Text>Enchants an adjacent allied unit's weapons and armour, increasing its combat and ranged strength by 20%.  Priority is for the strongest living unit. Chance of wearing off each turn is equal to 1 / caster's Spell Modifier.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_SPELL_POLYMORPH">
 			<Text>Polymorph</Text>

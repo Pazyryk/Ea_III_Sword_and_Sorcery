@@ -88,6 +88,7 @@ local oldCursor = 0;
 -- LEADER MESSAGE HANDLER
 ---------------------------------------------------------
 function LeaderMessageHandler( iPlayer, iDiploUIState, szLeaderMessage, iAnimationAction, iData1 )
+	print("TradeLogic LeaderMessageHandler ", iPlayer, iDiploUIState, szLeaderMessage, iAnimationAction, iData1 )
     g_bPVPTrade = false;
     
     -- If we were just in discussion mode and the human offered to make concessions, make a note of that
@@ -253,7 +254,7 @@ end
 -- Used by SimpleDiploTrade to display pvp deals
 ----------------------------------------------------------------
 function OnOpenPlayerDealScreen( iOtherPlayer )
-    
+    print("TradeLogic OnOpenPlayerDealScreen ", iOtherPlayer )
     --print( "OpenPlayerDealScreen: " .. iOtherPlayer );
 
     -- open a new deal with iThem
@@ -325,7 +326,7 @@ end
 -- used by DiploOverview to display active deals
 ----------------------------------------------------------------
 function OpenDealReview()
-
+	print("TradeLogic OpenDealReview")
     --print( "OpenDealReview" );
     
 	g_iUs = Game:GetActivePlayer();
@@ -448,6 +449,7 @@ Controls.CancelButton:RegisterCallback( Mouse.eLClick, OnBack );
 -- SHOW/HIDE
 ----------------------------------------------------------------        
 function OnShowHide( isHide, bIsInit )
+	print("TradeLogic OnShowHide ", isHide, bIsInit )
 	
 	-- WARNING: Don't put anything important in here related to gameplay. This function may be called when you don't expect it
 	
@@ -484,7 +486,7 @@ function OnShowHide( isHide, bIsInit )
             		iLoopTeam = pLoopPlayer:GetTeam();
 					
 					--print("iLoopPlayer: " .. iLoopPlayer);
-					
+				
 					if (pLoopPlayer:IsEverAlive()) then
 						
         				if( g_iUs ~= iLoopPlayer and g_iThem ~= iLoopPlayer and
@@ -494,9 +496,15 @@ function OnShowHide( isHide, bIsInit )
             				g_OtherPlayersButtons[ iLoopPlayer ].UsPocket.Button:SetHide( false );
             				g_OtherPlayersButtons[ iLoopPlayer ].ThemPocket.Button:SetHide( false );
             				g_iNumOthers = g_iNumOthers + 1;
+							--Paz debug
+							print("Show 3rd party: ", g_iUs, g_iThem, iLoopPlayer)
+							--end Paz
         				else
             				g_OtherPlayersButtons[ iLoopPlayer ].UsPocket.Button:SetHide( true );
             				g_OtherPlayersButtons[ iLoopPlayer ].ThemPocket.Button:SetHide( true );
+							--Paz debug
+							print("Hide 3rd party: ", g_iUs, g_iThem, iLoopPlayer)
+							--end Paz
             			end
             		end
             	end
@@ -548,7 +556,7 @@ end
 -- UI Deal was modified somehow
 ---------------------------------------------------------
 function DoUIDealChangedByHuman()
-	
+	print("TradeLogic DoUIDealChangedByHuman")
 	--print("UI Deal Changed");
 		
 	-- Set state to the default so that it doesn't cause any funny behavior later
@@ -565,7 +573,7 @@ end
 -- Update buttons at the bottom
 ---------------------------------------------------------
 function DoUpdateButtons()
-	
+	print("TradeLogic DoUpdateButtons")
 	-- Dealing with a human in a MP game
     if (g_bPVPTrade) then
 		
@@ -737,7 +745,7 @@ end
 -- Clear all items off the table (both UI and CvDeal)
 ---------------------------------------------------------
 function DoClearDeal()
-	
+	print("TradeLogic DoClearDeal")
 	--print("Clearing Table");
 	
     g_Deal:ClearItems();
@@ -921,7 +929,7 @@ end
 ----------------------------------------------------------------        
 ----------------------------------------------------------------        
 function ResetDisplay()
-	
+	print("TradeLogic ResetDisplay")
 	--print("ResetDisplay");
 	
 	if g_iUs == -1 or g_iThem == -1 then
@@ -1735,6 +1743,7 @@ end
 ----------------------------------------------------------------        
 ----------------------------------------------------------------        
 function DoClearTable()
+	print("TradeLogic DoClearTable")
     g_UsTableCitiesIM:ResetInstances();
     g_ThemTableCitiesIM:ResetInstances();
     g_UsTableVoteIM:ResetInstances();
@@ -1780,6 +1789,41 @@ function DoClearTable()
 	    table.ThemTableWar.Button:SetHide( true );
 	    table.ThemTablePeace.Button:SetHide( true );
     end
+
+	--Paz add
+	    -- hide unmet players
+    if( g_bEnableThirdParty ) then
+        g_iNumOthers = 0;
+        for iLoopPlayer = 0, GameDefines.MAX_CIV_PLAYERS-1, 1 do
+            pLoopPlayer = Players[ iLoopPlayer ];
+            iLoopTeam = pLoopPlayer:GetTeam();
+					
+			--print("iLoopPlayer: " .. iLoopPlayer);
+				
+			if (pLoopPlayer:IsEverAlive()) then
+						
+        		if( g_iUs ~= iLoopPlayer and g_iThem ~= iLoopPlayer and
+                	g_pUsTeam:IsHasMet( iLoopTeam ) and g_pThemTeam:IsHasMet( iLoopTeam ) and
+                	pLoopPlayer:IsAlive()) then
+
+            		g_OtherPlayersButtons[ iLoopPlayer ].UsPocket.Button:SetHide( false );
+            		g_OtherPlayersButtons[ iLoopPlayer ].ThemPocket.Button:SetHide( false );
+            		g_iNumOthers = g_iNumOthers + 1;
+					--Paz debug
+					--print("Show 3rd party: ", g_iUs, g_iThem, iLoopPlayer)
+					--end Paz
+        		else
+            		g_OtherPlayersButtons[ iLoopPlayer ].UsPocket.Button:SetHide( true );
+            		g_OtherPlayersButtons[ iLoopPlayer ].ThemPocket.Button:SetHide( true );
+					--Paz debug
+					--print("Hide 3rd party: ", g_iUs, g_iThem, iLoopPlayer)
+					--end Paz
+            	end
+            end
+        end
+    end
+	--end Paz add
+
 	
 	-- loop over resources
 	for n, instance in pairs( g_UsTableResources ) do
@@ -1854,6 +1898,7 @@ end
 ----------------------------------------------------------------        
 ----------------------------------------------------------------        
 function DisplayDeal()
+	print("TradeLogic DisplayDeal")
     g_UsTableCitiesIM:ResetInstances();
     g_ThemTableCitiesIM:ResetInstances();
     g_UsTableVoteIM:ResetInstances();
@@ -3137,7 +3182,7 @@ Controls.ThemPocketCities:RegisterCallback( Mouse.eLClick, ShowCityChooser );
 -----------------------------------------------------------------------------------------------------------------------
 function ShowOtherPlayerChooser( isUs, type )
 
-    --print( "ShowOtherPlayerChooser" );
+    print("TradeLogic ShowOtherPlayerChooser" )
     local SubTableName;
     local iFromPlayer;
     local tradeType;
@@ -3189,11 +3234,12 @@ function ShowOtherPlayerChooser( isUs, type )
     		if( g_iUsTeam ~= iLoopTeam and g_iThemTeam ~= iLoopTeam and
     		    g_pUsTeam:IsHasMet( iLoopTeam ) and g_pThemTeam:IsHasMet( iLoopTeam ) and
                 g_Deal:IsPossibleToTradeItem( iFromPlayer, iToPlayer, tradeType, iLoopTeam ) ) then
-                
+			    
     		    otherPlayerButtonSubTableNameButton:SetDisabled( false );
     		    otherPlayerButtonSubTableNameButton:SetAlpha( 1 );
+
             else
-                        
+			                     
     		    otherPlayerButtonSubTableNameButton:SetDisabled( true );
     		    otherPlayerButtonSubTableNameButton:SetAlpha( 0.5 );
     		    
@@ -3253,6 +3299,13 @@ function ShowOtherPlayerChooser( isUs, type )
 			
 			-- Tooltip
 			otherPlayerButtonSubTableNameButton:SetToolTipString(strToolTip);
+
+			--Paz add
+			if not pLoopPlayer:IsMinorCiv() then
+				local name = PreGame.GetLeaderName(iLoopPlayer) .. " (" .. PreGame.GetCivilizationShortDescription(iLoopPlayer) .. ")"
+				TruncateString(otherPlayerButton[SubTableName].Name, otherPlayerButton[SubTableName].ButtonSize:GetSizeX() - otherPlayerButton[SubTableName].Name:GetOffsetX(), name)
+			end
+			--end Paz add
 			
 		end
 	end
@@ -3437,7 +3490,18 @@ else
             else
         	    szName = pLoopPlayer:GetName();
         	end
-        	szName = szName .. " (" .. Locale.ConvertTextKey(GameInfo.Civilizations[Players[iLoopPlayer]:GetCivilizationType()].ShortDescription) .. ")";
+
+			--Paz modified:	szName = szName .. " (" .. Locale.ConvertTextKey(GameInfo.Civilizations[Players[iLoopPlayer]:GetCivilizationType()].ShortDescription) .. ")";
+			if pLoopPlayer:IsMinorCiv() then
+				if pLoopPlayer:GetMinorCivTrait() == GameInfoTypes.MINOR_TRAIT_RELIGIOUS then
+					szName = szName .. " (God)"
+				else
+					szName = szName .. " (City State)"
+				end
+			else
+				szName = szName .. " (" .. Locale.ConvertTextKey(GameInfo.Civilizations[Players[iLoopPlayer]:GetCivilizationType()].ShortDescription) .. ")"
+			end
+
 
     	    -- Us Pocket
         	local controlTable = {};

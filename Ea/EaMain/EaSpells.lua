@@ -161,6 +161,7 @@ local g_bNonTargetTestsPassed = false
 local g_bAllTestsPassed = false
 local g_bSufficientFaith = true
 local g_bSetDelayedFailForUI = false
+local g_bSetCityFailUI = false
 --local g_bHasSpell = false
 
 --communicate from TestTarget to SetUI or SetAIValues when needed (reset to 0 from Test)
@@ -444,7 +445,7 @@ local function TestEaSpellForHumanUI(eaActionID, iPlayer, unit, iPerson, testX, 
 	end
 
 	--Backup UI if not set by SetUI
-	if g_bSetDelayedFailForUI and MapModData.text == "no help text" then
+	if g_bSetCityFailUI and MapModData.text == "no help text" then
 		if g_eaAction.City == "Not" and g_bIsCity then
 			MapModData.text = "[COLOR_WARNING_TEXT]This spell can be cast only outside of cities[ENDCOLOR]"
 		elseif g_eaAction.City == "Any" and not g_bIsCity then
@@ -464,6 +465,7 @@ local function TestEaSpellForHumanUI(eaActionID, iPlayer, unit, iPerson, testX, 
 	end
 	g_bUICall = false
 	g_bSetDelayedFailForUI = false
+	g_bSetCityFailUI = false
 end
 local function X_TestEaSpellForHumanUI(eaActionID, iPlayer, unit, iPerson, testX, testY) return HandleError61(TestEaSpellForHumanUI, eaActionID, iPlayer, unit, iPerson, testX, testY) end
 LuaEvents.EaSpellsTestEaSpellForHumanUI.Add(X_TestEaSpellForHumanUI)
@@ -646,11 +648,7 @@ function TestEaSpellTarget(eaActionID, testX, testY, bAITargetTest)
 	end
 
 	if g_eaAction.OwnTerritory and g_iOwner ~= g_iPlayer then
-		if g_bUICall and g_eaAction.UnitUpgradeTypePrefix then
-			g_bSetDelayedFailForUI = true
-		else
-			return false
-		end
+		return false
 	end
 
 	g_bIsCity = g_plot:IsCity()
@@ -658,35 +656,23 @@ function TestEaSpellTarget(eaActionID, testX, testY, bAITargetTest)
 	if g_eaAction.City then
 		if g_eaAction.City == "Not" then
 			if g_bIsCity then
-				if g_bUICall then
-					g_bSetDelayedFailForUI = true
-				else
-					return false
-				end
+				g_bSetCityFailUI = g_bUICall
+				return false
 			end
 		else
 			if not g_bIsCity then
-				if g_bUICall then
-					g_bSetDelayedFailForUI = true
-				else
-					return false
-				end				
+				g_bSetCityFailUI = g_bUICall
+				return false		
 			end
 			if g_eaAction.City == "Own" then
 				if g_iOwner ~= g_iPlayer then
-					if g_bUICall then
-						g_bSetDelayedFailForUI = true
-					else
-						return false
-					end				
+					g_bSetCityFailUI = g_bUICall
+					return false		
 				end
 			elseif g_eaAction.City == "Foreign" then
 				if g_iOwner == g_iPlayer then
-					if g_bUICall then
-						g_bSetDelayedFailForUI = true
-					else
-						return false
-					end				
+					g_bSetCityFailUI = g_bUICall
+					return false			
 				end
 			end
 		end

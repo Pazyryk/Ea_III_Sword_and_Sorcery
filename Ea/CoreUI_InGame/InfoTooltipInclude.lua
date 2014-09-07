@@ -255,13 +255,15 @@ function GetHelpTextForUnit(iUnitID, bIncludeRequirementsInfo)
 	local matchStr = "UnitType = '" .. pUnitInfo.Type .. "'"
 	local extraTechCount = 0
 	for row in GameInfo.Unit_TechTypes(matchStr) do
-		extraTechCount = extraTechCount + 1
-		local techInfo = GameInfo.Technologies[row.TechType]
-		if extraTechCount == 1 then
-			strHelpText = strHelpText .. "[NEWLINE]" .. ConvertTextKey("TXT_KEY_EA_EXTRA_TECHS_REQUIRED")
-			strHelpText = strHelpText .. " " .. ConvertTextKey(techInfo.Description)
-		else
-			strHelpText = strHelpText .. ", " .. ConvertTextKey(techInfo.Description)
+		if row.TechType ~= "TECH_NEVER" then
+			extraTechCount = extraTechCount + 1
+			local techInfo = GameInfo.Technologies[row.TechType]
+			if extraTechCount == 1 then
+				strHelpText = strHelpText .. "[NEWLINE]" .. ConvertTextKey("TXT_KEY_EA_EXTRA_TECHS_REQUIRED")
+				strHelpText = strHelpText .. " " .. ConvertTextKey(techInfo.Description)
+			else
+				strHelpText = strHelpText .. ", " .. ConvertTextKey(techInfo.Description)
+			end
 		end
 	end
 	--end Paz add

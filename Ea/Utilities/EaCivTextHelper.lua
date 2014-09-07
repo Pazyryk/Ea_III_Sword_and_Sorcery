@@ -35,7 +35,7 @@ function GetEaCivTriggerText(eaCivID)
 	end
 	if eaCivInfo.UnitClass then
 		triggerText = triggerText and triggerText .. "; train " or "Train "
-		triggerText = triggerText .. Locale.Lookup(GameInfo.UnitClasses[eaCivInfo.UnitClass].Description)
+		triggerText = triggerText .. eaCivInfo.UnitNumber .. " " .. Locale.Lookup(GameInfo.UnitClasses[eaCivInfo.UnitClass].Description)
 	end
 	if eaCivInfo.CapitalNearbyResourceType then
 		triggerText = triggerText and triggerText .. ";  " or ""

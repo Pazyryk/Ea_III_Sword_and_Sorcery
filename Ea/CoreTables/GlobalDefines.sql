@@ -58,6 +58,9 @@ UPDATE Defines SET Value = 3 WHERE Name = 'RECON_VISIBILITY_RANGE';		--changed f
 
 --barbs
 UPDATE Defines SET Value = 75 WHERE Name = 'BARBARIAN_TECH_PERCENT';		--75
+UPDATE Defines SET Value = 150 WHERE Name = 'BARBARIAN_MAX_XP_VALUE';		--30
+
+
 
 --AI
 INSERT INTO Defines (Name, Value) VALUES

@@ -1332,8 +1332,11 @@ function GetGPMod(iPerson, modType1, modType2)
 		end
 	end
 
-	local totalMod = 5 + (level / 3) + (promos * (1 + 10/(promos + 3)))
-	--complicated promo effect gives this progression for I - XVIII (floored): +3 6 8 9 11 12 14 15 16 17 18 20 21 22 23 24 25 26
+	local totalMod = 5 + (level / 3) + (promos * (1 + 2/(promos + 1)))
+	--promo effect gives this progression for I - XVIII: +2 3.3, 4.5, 5.6, 6.7, 7.7, ..., 19.9
+
+	--local totalMod = 5 + (level / 3) + (promos * (1 + 10/(promos + 3)))
+	--promo effect gives this progression for I - XVIII: +3 6 8 9 11 12 14 15 16 17 18 20 21 22 23 24 25 26 (floored)
 
 	--prophet	TO DO: something with this
 	--if eaPerson.promotions[PROMOTION_PROPHET] and (modsProphetBonus[modType1] or (modType2 and modsProphetBonus[modType2])) then

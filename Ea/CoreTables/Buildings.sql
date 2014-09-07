@@ -18,7 +18,7 @@ ALTER TABLE Buildings ADD COLUMN 'EaSpecial' TEXT DEFAULT NULL;		--Arcane, Relig
 
 -- 1st available
 INSERT INTO Buildings (Type,			Cost,	FoodKept,	NeverCapture,	ArtDefineTag,				IconAtlas,				PortraitIndex) VALUES
-('BUILDING_MONUMENT',					80,		0,			1,				'MONUMENT',					'BW_ATLAS_1',			21		),
+('BUILDING_MONUMENT',					120,	0,			1,				'MONUMENT',					'BW_ATLAS_1',			21		),
 ('BUILDING_WARRENS',					150,	10,			1,				'ART_DEF_BUILDING_FORGE',	'NEW_BLDG_ATLAS2_DLC',	1		);
 -- early specialist
 INSERT INTO Buildings (Type,			Cost,	GoldMaintenance,	PrereqTech,					EaPrereqPolicy,		EaSpecial,		Happiness,	SpecialistType,			SpecialistCount,	NeverCapture,	ArtDefineTag,				IconAtlas,				PortraitIndex) VALUES
@@ -984,7 +984,7 @@ INSERT INTO Building_YieldChanges (BuildingType,	YieldType,	Yield) VALUES
 ('BUILDING_PALACE',						'YIELD_PRODUCTION',	2	),
 ('BUILDING_PALACE',						'YIELD_GOLD',		2	),
 ('BUILDING_PALACE',						'YIELD_SCIENCE',	2	),
-('BUILDING_MONUMENT',					'YIELD_CULTURE',	1	),
+('BUILDING_MONUMENT',					'YIELD_CULTURE',	2	),
 ('BUILDING_WARRENS',					'YIELD_FOOD',		3 	),
 ('BUILDING_LIBRARY',					'YIELD_CULTURE',	1	),
 ('BUILDING_MARKETPLACE',				'YIELD_CULTURE',	1	),
@@ -1047,6 +1047,7 @@ INSERT INTO Building_YieldChanges (BuildingType,	YieldType,	Yield) VALUES
 ('BUILDING_FLOATING_GARDENS',			'YIELD_FOOD',		1	),
 ('BUILDING_FOUNDRY',					'YIELD_PRODUCTION',	3	),
 ('BUILDING_FESTIVAL',					'YIELD_CULTURE',	3	),
+
 ('BUILDING_CULT_LEAVES_1F1C',			'YIELD_FOOD',		1 	),
 ('BUILDING_CULT_LEAVES_1F1C',			'YIELD_CULTURE',	1 	),
 ('BUILDING_CULT_CAHRA_1F',				'YIELD_FOOD',		1 	),

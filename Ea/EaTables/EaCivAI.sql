@@ -55,7 +55,7 @@ INSERT INTO EaCivPlans (Type,		Function,		TechModule,					PolicyModule,				Build
 ('EACIVPLAN_MORIQUENDI',			'Naming',		'TECH_MALEFICIUM',			NULL,						NULL,						180	),
 ('EACIVPLAN_LEMURIA',				'Naming',		'TECH_THAUMATURGY',			NULL,						NULL,						600	),
 ('EACIVPLAN_AXAGORIA',				'Naming',		'TECH_PHILOSOPHY',			NULL,						NULL,						600	),
-('EACIVPLAN_IACCHIA',				'Naming',		'TECH_DRAMA',				NULL,						NULL,						600	),
+('EACIVPLAN_PALARE',				'Naming',		'TECH_DRAMA',				NULL,						NULL,						600	),
 ('EACIVPLAN_LAGAD',					'Naming',		'TECH_MATHEMATICS',			NULL,						NULL,						650	),
 ('EACIVPLAN_MAMONAS',				'Naming',		'TECH_COINAGE',				NULL,						NULL,						0	),
 ('EACIVPLAN_SOPHRONIA',				'Naming',		'TECH_MASONRY',				NULL,						NULL,						0	),
@@ -101,20 +101,22 @@ INSERT INTO EaCivPlans (Type,		Function,		TechModule,					PolicyModule,				Build
 ('EACIVPLAN_MOR',					'Naming',		NULL,						'POLICY_MERCENARIES',		NULL,						600	),
 ('EACIVPLAN_DOKKALFAR',				'Naming',		NULL,						'DominionismSlavery',		NULL,						600	),
 ('EACIVPLAN_LJOSALFAR',				'Naming',		NULL,						'PantheismTradition',		NULL,						200	),
-('EACIVPLAN_SEGOYIM',				'Naming',		NULL,						'PantheismArcana',			NULL,						200	),
+('EACIVPLAN_SEGOYIM',				'Naming',		NULL,						'PantheismArcana',			NULL,						200	);
 
+/*	--These are all accidental
 --need building control and/or geography checks to make below work properly (AI gets some accidentaly anyway)
 ('EACIVPLAN_YS',					'Naming',		NULL,						NULL,						'BUILDING_LIBRARY',			0	),
 ('EACIVPLAN_TYRE',					'Naming',		NULL,						NULL,						'BUILDING_MARKETPLACE',		0	),
 ('EACIVPLAN_GERZAH',				'Naming',		NULL,						NULL,						'BUILDING_FORGE',			0	),
-('EACIVPLAN_PALARE',				'Naming',		NULL,						NULL,						'BUILDING_FAIR',			0	),
-('EACIVPLAN_MAYD',					'Naming',		NULL,						NULL,						'UNIT_BIREMES',				0	),
-('EACIVPLAN_SISUKAS',				'Naming',		NULL,						NULL,						'UNIT_LIGHT_INFANTRY*',		0	),
+('EACIVPLAN_CEASSAIR',				'Naming',		NULL,						NULL,						'BUILDING_MONUMENT',		0	),
+('EACIVPLAN_MAYD',					'Naming',		NULL,						NULL,						'UNIT_GALLEYS',				0	),
+('EACIVPLAN_SISUKAS',				'Naming',		NULL,						NULL,						'UNIT_WARRIORS*',			0	),
+('EACIVPLAN_ITH',					'Naming',		NULL,						NULL,						'UNIT_SCOUTS*',				0	),
 ('EACIVPLAN_EBOR',					'Naming',		NULL,						NULL,						'UNIT_MOUNTED_ELEPHANTS',	0	),
 ('EACIVPLAN_PHRYGES',				'Naming',		NULL,						NULL,						'UNIT_HORSEMEN*',			0	),
 ('EACIVPLAN_HY_BREASIL',			'Naming',		'TECH_FISHING',				NULL,						'Workboat',					0	),
 ('EACIVPLAN_AGARTHA',				'Naming',		'TECH_MINING',				NULL,						'Worker',					0	);
-
+*/
 
 INSERT INTO EaCivPlans (Type,		Function,		TechModule,					PolicyModule,				BuildModule) VALUES
 --contingencies (based on visible resources, plot specials or other factors)
@@ -344,13 +346,13 @@ INSERT INTO EaCivPlans_NamingResourceScores (PlanType, ResourceType, Score)	VALU
 ('EACIVPLAN_AXAGORIA',		'RESOURCE_OPIUM',		2	),
 ('EACIVPLAN_AXAGORIA',		'RESOURCE_TEA',			2	),
 
-('EACIVPLAN_IACCHIA',		'RESOURCE_PEARLS',		2	),
-('EACIVPLAN_IACCHIA',		'RESOURCE_DEER',		2	),
-('EACIVPLAN_IACCHIA',		'RESOURCE_BOARS',		2	),
-('EACIVPLAN_IACCHIA',		'RESOURCE_DYE',			6	),
-('EACIVPLAN_IACCHIA',		'RESOURCE_SILK',		2	),
-('EACIVPLAN_IACCHIA',		'RESOURCE_WINE',		6	),
-('EACIVPLAN_IACCHIA',		'RESOURCE_BERRIES',		2	),
+('EACIVPLAN_PALARE',		'RESOURCE_PEARLS',		2	),
+('EACIVPLAN_PALARE',		'RESOURCE_DEER',		2	),
+('EACIVPLAN_PALARE',		'RESOURCE_BOARS',		2	),
+('EACIVPLAN_PALARE',		'RESOURCE_DYE',			6	),
+('EACIVPLAN_PALARE',		'RESOURCE_SILK',		2	),
+('EACIVPLAN_PALARE',		'RESOURCE_WINE',		6	),
+('EACIVPLAN_PALARE',		'RESOURCE_BERRIES',		2	),
 
 ('EACIVPLAN_LAGAD',			'RESOURCE_QUICKSILVER',	2	),
 ('EACIVPLAN_LAGAD',			'RESOURCE_NAPHTHA',		2	),
@@ -666,7 +668,7 @@ INSERT INTO EaCivPlans_FocusPlansByEaTrait (EaTrait, PlanType, Priority) VALUES
 ('EACIV_HIPPUS',		'EACIVPLAN_TRADERS',			20		),
 ('EACIV_HIPPUS',		'EACIVPLAN_HORSELORDS',			20		),
 ('EACIV_IKKOS',			'EACIVPLAN_MERCENARIES',		20		),
-('EACIV_IKKOS',			'EACIVPLAN_HORSELORDS',		20		),
+('EACIV_IKKOS',			'EACIVPLAN_HORSELORDS',			20		),
 ('EACIV_IKKOS',			'EACIVPLAN_CHIVALRY',			20		),
 ('EACIV_IKKOS',			'EACIVPLAN_PASTORALISTS',		20		),
 ('EACIV_AB',			'EACIVPLAN_BEASTMASTERS',		100		),
@@ -704,7 +706,7 @@ INSERT INTO EaCivPlans_FocusPlansByEaTrait (EaTrait, PlanType, Priority) VALUES
 ('EACIV_LEMURIA',		'EACIVPLAN_DESTROYER',			5		),
 
 ('EACIV_AXAGORIA',		'EACIVPLAN_PHILOSOPHERS',		20		),
-('EACIV_IACCHIA',		'EACIVPLAN_MUSICIANS',			20		),
+('EACIV_CEASSAIR',		'EACIVPLAN_MUSICIANS',			20		),
 ('EACIV_LAGAD',			'EACIVPLAN_SCIENTISTS',			20		),
 ('EACIV_MAMONAS',		'EACIVPLAN_TRADERS',			20		),
 ('EACIV_SOPHRONIA',		'EACIVPLAN_BUILDERS',			20		),
@@ -770,13 +772,13 @@ INSERT INTO EaCivPlans_FocusPlansByEaTrait (EaTrait, PlanType, Priority) VALUES
 ('EACIV_SAGUENAY',		'EACIVPLAN_MUSICIANS',			20		),
 ('EACIV_SAGUENAY',		'EACIVPLAN_PHILOSOPHERS',		20		),
 ('EACIV_SAGUENAY',		'EACIVPLAN_SCIENTISTS',			20		),
-('EACIV_SAGUENAY',		'EACIVPLAN_LOW_ARCANE',				20		),
+('EACIV_SAGUENAY',		'EACIVPLAN_LOW_ARCANE',			20		),
 ('EACIV_ALBION',		'EACIVPLAN_MUSICIANS',			80		),
 ('EACIV_ALBION',		'EACIVPLAN_WRITERS',			80		),
 ('EACIV_ALBION',		'EACIVPLAN_PHILOSOPHERS',		20		),
 ('EACIV_ALBION',		'EACIVPLAN_BREWERS',			20		),
 ('EACIV_ALBION',		'EACIVPLAN_SCIENTISTS',			20		),
-('EACIV_ALBION',		'EACIVPLAN_LOW_ARCANE',				20		),
+('EACIV_ALBION',		'EACIVPLAN_LOW_ARCANE',			20		),
 ('EACIV_TIR_ECNE',		'EACIVPLAN_PHILOSOPHERS',		80		),
 ('EACIV_TIR_ECNE',		'EACIVPLAN_SCIENTISTS',			80		),
 ('EACIV_TIR_ECNE',		'EACIVPLAN_WRITERS',			80		),
@@ -849,6 +851,9 @@ INSERT INTO EaCivPlans_FocusPlansByEaTrait (EaTrait, PlanType, Priority) VALUES
 ('EACIV_PALARE',		'EACIVPLAN_WRITERS',			20		),
 ('EACIV_MAYD',			'EACIVPLAN_TRADERS',			20		),
 ('EACIV_SISUKAS',		'EACIVPLAN_INFANTRY',			20		),
+('EACIV_ITH',			'EACIVPLAN_HUNTERS',			80		),
+('EACIV_ITH',			'EACIVPLAN_MARKSMEN',			60		),
+('EACIV_ITH',			'EACIVPLAN_SEAFARERS',			20		),
 ('EACIV_EBOR',			'EACIVPLAN_BEASTMASTERS',		20		),
 ('EACIV_PHRYGES',		'EACIVPLAN_HORSELORDS',			20		);
 

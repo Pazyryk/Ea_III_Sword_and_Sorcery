@@ -102,6 +102,10 @@ local function TestNameConditions(iPlayer, eaCivInfo)
 	if eaCivInfo.CapitalNearbyResourceType then
 		local resourceID = GameInfoTypes[eaCivInfo.CapitalNearbyResourceType]
 		local qualifyingResources = eaPlayer.resourcesNearCapitalByID[resourceID] or 0
+		if eaCivInfo.OrCapitalNearbyResourceType then
+			resourceID = GameInfoTypes[eaCivInfo.OrCapitalNearbyResourceType]
+			qualifyingResources = qualifyingResources + eaPlayer.resourcesNearCapitalByID[resourceID] or 0
+		end
 		if qualifyingResources < eaCivInfo.CapitalNearbyResourceNumber then return false end
 	end
 	if eaCivInfo.UnitClass then
@@ -112,7 +116,7 @@ local function TestNameConditions(iPlayer, eaCivInfo)
 				unitNumber = unitNumber + player:GetUnitClassCount(GameInfoTypes[eaCivInfo.OrUnitClass2])
 			end
 		end
-		if unitNumber < 1 then return false end
+		if unitNumber < eaCivInfo.UnitNumber then return false end
 	end
 	if CivReq[eaCivInfo.ID] and not CivReq[eaCivInfo.ID](iPlayer) then return false end
 	return true
@@ -196,6 +200,7 @@ function SetNewCivName(iPlayer, eaCivID)
 	if Game.GetActivePlayer() == iPlayer  then
 		--Events.AudioPlay2DSound("AS2D_INTERFACE_NEW_ERA")
 		LuaEvents.EaImagePopup({type = "CivNaming", id = eaCivID, sound = "AS2D_INTERFACE_NEW_ERA"})
+		LuaEvents.InitSocialPolicyPopup()
 	else
 		local text = "Travelers tell of faraway " .. Locale.ConvertTextKey(newCivInfo.ShortDescription) .. "..."
 		Players[Game.GetActivePlayer()]:AddNotification(NotificationTypes.NOTIFICATION_WONDER_COMPLETED, text, text, -1, -1)

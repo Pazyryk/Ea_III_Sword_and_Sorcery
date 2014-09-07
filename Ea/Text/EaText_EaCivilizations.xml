@@ -126,10 +126,10 @@
 		<Row Tag="TXT_KEY_EA_CIV_AXAGORIA_HELP">
 			<Text>[ICON_BULLET]50% of extra Happiness [ICON_HAPPINESS_1] added as [ICON_RESEARCH] Research</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_CIV_IACCHIA">
-			<Text>Iacchia</Text>
+		<Row Tag="TXT_KEY_EA_CIV_PALARE">
+			<Text>Palare</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_CIV_IACCHIA_HELP">
+		<Row Tag="TXT_KEY_EA_CIV_PALARE_HELP">
 			<Text>[ICON_BULLET]50% of extra Happiness [ICON_HAPPINESS_1] added as [ICON_CULTURE] Culture</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_LAGAD">
@@ -435,10 +435,10 @@
 		<Row Tag="TXT_KEY_EA_CIV_GERZAH_HELP">
 			<Text>[ICON_BULLET]Free Forge in every city</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_CIV_PALARE">
-			<Text>Palare</Text>
+		<Row Tag="TXT_KEY_EA_CIV_CEASSAIR">
+			<Text>Ceassair</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_CIV_PALARE_HELP">
+		<Row Tag="TXT_KEY_EA_CIV_CEASSAIR_HELP">
 			<Text>[ICON_BULLET]+1 [ICON_CULTURE] Culture from every building that already provides culture</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_MAYD">
@@ -452,6 +452,12 @@
 		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_SISUKAS_HELP">
 			<Text>[ICON_BULLET]All infantry units have Strong Infantry promotion (+30% str)[NEWLINE][ICON_BULLET]Gain one free infantry unit of appropriate type on discovery of Iron Working, Metal Casting and Mithril Working</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_ITH">
+			<Text>Íth</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CIV_ITH_HELP">
+			<Text>[ICON_BULLET]All recon units gain Survivalism and Eagle Eyes for free</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_EBOR">
 			<Text>Ebor</Text>
@@ -529,8 +535,8 @@
 		<Row Tag="TXT_KEY_EA_CAPITAL_AXAGORIA">
 			<Text>Clazomenae</Text>
 		</Row>
-		<Row Tag="TXT_KEY_EA_CAPITAL_IACCHIA">
-			<Text>Iachus</Text>
+		<Row Tag="TXT_KEY_EA_CAPITAL_CEASSAIR">
+			<Text>Cúil Ceasrach</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_CAPITAL_LAGAD">
 			<Text>Lagadha</Text>
@@ -690,6 +696,9 @@
 		</Row>
 		<Row Tag="TXT_KEY_EA_CAPITAL_SISUKAS">
 			<Text>Sisuka</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_CAPITAL_ITH">
+			<Text>Brigantia</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_CAPITAL_EBOR">
 			<Text>Mang Ont</Text>

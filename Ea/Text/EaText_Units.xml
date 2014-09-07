@@ -294,7 +294,7 @@
 			<Text>Marksmen</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_MARKSMEN_HELP">
-			<Text></Text>
+			<Text>Marksmen cannot be trained directly, but must be upgraded from Bowmen of level 6 or higher.</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_CROSSBOWMEN">
 			<Text>Crossbowmen</Text>
@@ -325,7 +325,7 @@
 			<Text>Sagitarii</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_UNIT_SAGITARII_HELP">
-			<Text></Text>
+			<Text>Sagitarii cannot be trained directly, but must be upgraded from Bowed Cavalry of level 6 or higher.</Text>
 		</Row>
 
 		<Row Tag="TXT_KEY_EA_UNIT_GALLEYS_PIRATES">

@@ -720,25 +720,29 @@ end
 
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
-function Init()
+function Init(debugEaCivID)		--Paz: added arg for debugging enabled policies
 	--Paz note: this runs at game start AND after player change. So we can have civ- (or race-)specific differences
 	--Paz note: should have coded Theism as I did civ-enabled (by running Init again)
 	
-	--Paz add: update civ enabled policies (this runs at game init and after player change)
+	--Paz add: update civ enabled policies (this runs at game init and after player change and civ naming)
 	local iPlayer = Game.GetActivePlayer()
 	local player = Players[iPlayer]
 	local civID = player:GetCivilizationType()
 	local civInfo = GameInfo.Civilizations[civID]
 	local eaCivType = civInfo.EaCivName
+
+	--debug
+	if debugEaCivID then
+		eaCivType = GameInfo.EaCivs[debugEaCivID].Type
+	end
+
 	print("Initing SocialPolicyPopup with civType/eaCivType = ", civInfo.Type, eaCivType)
 	for key in pairs(g_civEnabledPolicies) do
 		g_civEnabledPolicies[key] = nil				--in case we do more complex player changes later
 	end
 	if eaCivType and not MapModData.bDisableEnabledPolicies then
-		for row in GameInfo.EaCiv_EnabledPolicies() do
-			if eaCivType == row.EaCivType then
-				g_civEnabledPolicies[GameInfoTypes[row.PolicyType] ] = {x = row.GridX, y = row.GridY}
-			end
+		for row in GameInfo.EaCiv_EnabledPolicies("EaCivType = '" .. eaCivType .. "'") do
+			g_civEnabledPolicies[GameInfoTypes[row.PolicyType] ] = {x = row.GridX, y = row.GridY}
 		end
 		Controls.CivEnabledTitle:SetText(Locale.ToUpper(Locale.ConvertTextKey(civInfo.Description)))
 	else
@@ -1124,6 +1128,10 @@ function Init()
 	end
 	
 end
+
+--Paz add: Init after naming
+LuaEvents.InitSocialPolicyPopup.Add(Init)
+--end Paz add
 
 function OnYes( )
 	Controls.PolicyConfirm:SetHide(true);

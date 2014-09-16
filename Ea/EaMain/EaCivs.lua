@@ -584,13 +584,13 @@ local function OnPlayerMinorFriendshipDecayMod(iMajorPlayer, iMinorPlayer)
 	--print("OnPlayerMinorFriendshipDecayMod ", iMajorPlayer, iMinorPlayer)
 	if cityStates[iMinorPlayer] then	--City States
 		if gg_bHasPatronage[iMajorPlayer] then
-			return -25			-- x2 in dll?
+			return -50
 		end
 		return 0
 	else	-- God
 		local templeWonderID = godTempleID[iMinorPlayer]
 		if templeWonderID and gWonders[templeWonderID] and gWonders[templeWonderID].iPlayer == iMajorPlayer then
-			return -16			-- x2 in dll?
+			return -33
 		end
 		return 0
 	end
@@ -602,7 +602,7 @@ local function OnPlayerMinorFriendshipRecoveryMod(iMajorPlayer, iMinorPlayer)
 	--print("OnPlayerMinorFriendshipRecoveryMod ", iMajorPlayer, iMinorPlayer)
 	if cityStates[iMinorPlayer] then	--City States
 		if gg_bHasPatronage[iMajorPlayer] then
-			return 25			-- x2 in dll?
+			return 50
 		else
 			return 0
 		end

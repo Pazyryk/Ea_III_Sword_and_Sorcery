@@ -104,7 +104,7 @@ local function TestNameConditions(iPlayer, eaCivInfo)
 		local qualifyingResources = eaPlayer.resourcesNearCapitalByID[resourceID] or 0
 		if eaCivInfo.OrCapitalNearbyResourceType then
 			resourceID = GameInfoTypes[eaCivInfo.OrCapitalNearbyResourceType]
-			qualifyingResources = qualifyingResources + eaPlayer.resourcesNearCapitalByID[resourceID] or 0
+			qualifyingResources = qualifyingResources + (eaPlayer.resourcesNearCapitalByID[resourceID] or 0)
 		end
 		if qualifyingResources < eaCivInfo.CapitalNearbyResourceNumber then return false end
 	end

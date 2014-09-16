@@ -619,29 +619,572 @@
 			<Text>CIV-ENABLED</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_BRANCH_CIV_ENABLED_HELP">
-			<Text>(Not yet implemented!)</Text>
-			<!--<Text>This policy branch opens when you acquire a civilization name. It contains policies enabled specifically for your civilization.</Text>-->
+			<Text>This policy branch opens when you acquire a civilization name. It contains policies enabled specifically for your civilization.</Text>
 		</Row>
+
 		<Row Tag="TXT_KEY_EA_POLICY_MYSTICS">
 			<Text>Mystics</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MYSTICS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Mystics[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_DIVINATORS">
 			<Text>Divinators</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_DIVINATORS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Divinators[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_CONJURORS">
 			<Text>Conjurors</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_CONJURORS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Conjurors[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_ENCHANTERS">
 			<Text>Enchanters</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ENCHANTERS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Enchanters[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ILLUSIONISTS">
+			<Text>Illusionists</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ILLUSIONISTS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Illusionists[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_WOODSMEN">
+			<Text>Woodsmen</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_WOODSMEN_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Woodsmen[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_NOMADS">
+			<Text>Nomads</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_NOMADS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Nomads[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_PASTORALISTS">
+			<Text>Pastoralists</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_PASTORALISTS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Pastoralists[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_HUNTERS">
+			<Text>Hunters</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_HUNTERS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Hunters[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ARCHERS">
+			<Text>Archers</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ARCHERS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Archers[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_SEAFARERS">
+			<Text>Seafarers</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_SEAFARERS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Seafarers[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_FARMERS">
+			<Text>Farmers</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_FARMERS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Farmers[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_TRADERS">
+			<Text>Traders</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_TRADERS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Traders[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_CRAFTSMEN">
+			<Text>Craftsmen</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_CRAFTSMEN_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Craftsmen[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_SCHOLARS">
+			<Text>Scholars</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_SCHOLARS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Scholars[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ENGINEERS">
+			<Text>Engineers</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ENGINEERS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Engineers[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_HERBALISTS">
 			<Text>Herbalists</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_HERBALISTS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Herbalists[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_ALCHEMISTS">
 			<Text>Alchemists</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ALCHEMISTS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Alchemists[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_BARDS">
+			<Text>Bards</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_BARDS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Bards[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MISSIONARIES">
+			<Text>Missionaries</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MISSIONARIES_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Missionaries[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MINERS">
+			<Text>Miners</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MINERS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Miners[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_SMELTERS">
+			<Text>Smelters</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_SMELTERS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Smelters[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_WAR_TECTICIANS">
+			<Text>War Tacticians</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_WAR_TECTICIANS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]War Tacticians[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ARISTOCRATS">
+			<Text>Aristocrats</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ARISTOCRATS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Aristocrats[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_SLAVERS">
+			<Text>Slavers</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_SLAVERS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Slavers[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ENVOYS">
+			<Text>Envoys</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ENVOYS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Envoys[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_FOREST_LORDS">
+			<Text>Forest Lords</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_FOREST_LORDS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Forest Lords[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_TUNDRA_NOMADS">
+			<Text>Tundra Nomads</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_TUNDRA_NOMADS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Tundra Nomads[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_DESERT_NOMADS">
+			<Text>Desert Nomads</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_DESERT_NOMADS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Desert Nomads[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ANIMAL_BREEDERS">
+			<Text>Animal Breeders</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ANIMAL_BREEDERS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Animal Breeders[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_HORSE_TRIBES">
+			<Text>Horse Tribes</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_HORSE_TRIBES_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Horse Tribes[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ELEPHANT_TAMERS">
+			<Text>Elephant Tamers</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ELEPHANT_TAMERS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Elephant Tamers[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ANIMAL_MASTERS">
+			<Text>Animal Masters</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ANIMAL_MASTERS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Animal Masters[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MARKSMEN">
+			<Text>Marksmen</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MARKSMEN_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Marksmen[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_CARAVANERS">
+			<Text>Caravaners</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_CARAVANERS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Caravaners[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_SEA_TRADERS">
+			<Text>Sea Traders</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_SEA_TRADERS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Sea Traders[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_SHIP_BUILDERS">
+			<Text>Ship Builders</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_SHIP_BUILDERS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Ship Builders[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_WHALERS">
+			<Text>Whalers</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_WHALERS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Whalers[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MERCHANTS">
+			<Text>Merchants</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MERCHANTS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Merchants[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MILLERS">
+			<Text>Millers</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MILLERS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Millers[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_WEAVERS">
+			<Text>Weavers</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_WEAVERS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Weavers[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_BREWERS">
+			<Text>Brewers</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_BREWERS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Brewers[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_JEWELERS">
+			<Text>Jewelers</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_JEWELERS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Jewelers[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_GOLD_SILVERSMITHS">
+			<Text>Gold- & Silversmiths</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_GOLD_SILVERSMITHS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Gold- & Silversmiths[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_PHILOSOPHERS">
+			<Text>Philosophers</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_PHILOSOPHERS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Philosophers[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ASTRONOMERS">
+			<Text>Astronomers</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ASTRONOMERS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Astronomers[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ASTRONOMERS_2">
+			<Text>Astronomers</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ASTRONOMERS_2_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Astronomers[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_DIVINE_SCHOLARS">
+			<Text>Divine Scholars</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_DIVINE_SCHOLARS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Divine Scholars[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ARCANE_SCHOLARS">
+			<Text>Arcane Scholars</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ARCANE_SCHOLARS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Arcane Scholars[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ZEALOTS">
+			<Text>Zealots</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ZEALOTS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Zealots[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
 		<Row Tag="TXT_KEY_EA_POLICY_POTION_MAKERS">
 			<Text>Potion Makers</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_POTION_MAKERS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Potion Makers[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_BAKKHEIANS">
+			<Text>Bakkheians</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_BAKKHEIANS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Bakkheians[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_PERFORMERS">
+			<Text>Performers</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_PERFORMERS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Performers[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MATHEMATICIANS">
+			<Text>Mathematicians</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MATHEMATICIANS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Mathematicians[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_STONEMASONS">
+			<Text>Stonemasons</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_STONEMASONS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Stonemasons[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_CIVIL_ENGINEERS">
+			<Text>Civil Engineers</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_CIVIL_ENGINEERS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Civil Engineers[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MACHINISTS">
+			<Text>Machinists</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MACHINISTS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Machinists[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ARCHITECTS">
+			<Text>Architects</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ARCHITECTS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Architects[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_WEAPON_SMITHS">
+			<Text>Weapon Smiths</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_WEAPON_SMITHS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Weapon Smiths[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_WAR_STRATEGISTS">
+			<Text>War Strategists</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_WAR_STRATEGISTS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]War Strategists[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ROYALISTS">
+			<Text>Royalists</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ROYALISTS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Royalists[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_DEEP_MINERS">
+			<Text>Deep Miners</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_DEEP_MINERS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Deep Miners[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_UNDERDARK_DENIZENS">
+			<Text>Underdark Denizens</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_UNDERDARK_DENIZENS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Underdark Denizens[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_SLAVE_LORDS">
+			<Text>Slave Lords</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_SLAVE_LORDS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Slave Lords[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_DIPLOMATS">
+			<Text>Diplomats</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_DIPLOMATS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Diplomats[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_HORSELORDS">
+			<Text>Horselords</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_HORSELORDS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Horselords[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ICE_LORDS">
+			<Text>Ice Lords</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ICE_LORDS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Ice Lords[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_DESERT_LORDS">
+			<Text>Desert Lords</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_DESERT_LORDS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Desert Lords[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MASTER_MERCENARIES">
+			<Text>Master Mercenaries</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MASTER_MERCENARIES_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Master Mercenaries[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_LEVIATHAN_HUNTERS">
+			<Text>Leviathan Hunters</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_LEVIATHAN_HUNTERS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Leviathan Hunters[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_NAVAL_ENGINEERS">
+			<Text>Naval Engineers</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_NAVAL_ENGINEERS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Naval Engineers[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ADVANCED_AGRICULTURALISTS">
+			<Text>Advanced Agriculturalists</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_ADVANCED_AGRICULTURALISTS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Advanced Agriculturalists[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_EXOTIC_TRADERS">
+			<Text>Exotic Traders</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_EXOTIC_TRADERS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Exotic Traders[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_BANKERS">
+			<Text>Bankers</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_BANKERS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Bankers[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MASTER_MARKSMEN">
+			<Text>Master Marksmen</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MASTER_MARKSMEN_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Master Marksmen[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MASTER_WEAVERS">
+			<Text>Master Weavers</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MASTER_WEAVERS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Master Weavers[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MASTER_BREWERS">
+			<Text>Master Brewers</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MASTER_BREWERS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Master Brewers[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_OENOLOGISTS">
+			<Text>Œnologists</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_OENOLOGISTS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Œnologists[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_THEOLOGISTS">
+			<Text>Theologists</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_THEOLOGISTS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Theologists[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_CRUSADERS">
+			<Text>Crusaders</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_CRUSADERS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Crusaders[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_DEMONOLOGISTS">
+			<Text>Demonologists</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_DEMONOLOGISTS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Demonologists[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_HELL_DENIZENS">
+			<Text>Hell Denizens</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_HELL_DENIZENS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Hell Denizens[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MASTER_ARCANISTS">
+			<Text>Master Arcanists</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MASTER_ARCANISTS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Master Arcanists[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MASTER_PERFORMERS">
+			<Text>Master Performers</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MASTER_PERFORMERS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Master Performers[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MASTER_MATHEMATICIANS">
+			<Text>Master Mathematicians</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MASTER_MATHEMATICIANS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Master Mathematicians[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MONUMENT_BUILDERS">
+			<Text>Monument Builders</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MONUMENT_BUILDERS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Monument Builders[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MASTER_CITY_ENGINEERS">
+			<Text>City Engineers</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_MASTER_CITY_ENGINEERS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]City Engineers[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_BEASTMASTERS">
+			<Text>Beastmasters</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_BEASTMASTERS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Beastmasters[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_METAPHYSICISTS">
+			<Text>Metaphysicists</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_METAPHYSICISTS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Metaphysicists[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_COSMOLOGISTS">
+			<Text>Cosmologists</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_COSMOLOGISTS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Cosmologists[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_WEAPON_MASTERS">
+			<Text>Weapon Masters</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_WEAPON_MASTERS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Weapon Masters[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_IMPERIALISTS">
+			<Text>Imperialists</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_IMPERIALISTS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Imperialists[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_UNDERDARK_LORDS">
+			<Text>Underdark Lords</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_UNDERDARK_LORDS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Underdark Lords[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_AMBASSADORS">
+			<Text>Ambassadors</Text>
+		</Row>
+		<Row Tag="TXT_KEY_EA_POLICY_AMBASSADORS_HELP">
+			<Text>[COLOR_POSITIVE_TEXT]Ambassadors[ENDCOLOR][NEWLINE][ICON_BULLET]placeholder</Text>
 		</Row>
 
 

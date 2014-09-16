@@ -27,7 +27,7 @@ include("EaCultureLevelHelper.lua")
 MapModData.gT = MapModData.gT or {}
 local gT = MapModData.gT
 local FALLEN_ID_SHIFT = GameInfoTypes.POLICY_ANTI_THEISM - GameInfoTypes.POLICY_THEISM
-local g_civEnabledPolicies = {}		--update at Init(), which also runs after player change
+local g_civEnabledPolicies = {}		--update at Init(), which also runs after player change or civ naming
 --end Paz add
 
 local m_PopupInfo = nil;
@@ -569,6 +569,11 @@ function UpdateDisplay()
 		if (iBranch ~= nil) then
 			
 			local thisPolicyIcon = policyIcons[i];
+			--Paz debug
+			if not thisPolicyIcon then
+				print("thisPolicyIcon is nil ", i, policyInfo.Type)
+			end
+			--end Paz debug
 			
 			-- Tooltip
 			local strTooltip = Locale.ConvertTextKey( policyInfo.Help );
@@ -725,6 +730,13 @@ function Init(debugEaCivID)		--Paz: added arg for debugging enabled policies
 	--Paz note: should have coded Theism as I did civ-enabled (by running Init again)
 	
 	--Paz add: update civ enabled policies (this runs at game init and after player change and civ naming)
+
+	g_CommercePipeManager:ResetInstances()		--these are the Civ-Enabled pipes/policies, which can change
+	g_CommerceInstanceManager:ResetInstances()
+	for key in pairs(policyIcons) do
+		policyIcons[key] = nil
+	end
+
 	local iPlayer = Game.GetActivePlayer()
 	local player = Players[iPlayer]
 	local civID = player:GetCivilizationType()

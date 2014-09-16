@@ -1508,102 +1508,103 @@ PickBestAvailableNamingPlan = function(iPlayer)
 
 				local planType = gsub(traitInfo.Type, "EACIV", "EACIVPLAN")	--EaCivPlans that target names have the same Type suffix as their corresponding EaTrait
 				local planInfo = GameInfo.EaCivPlans[planType]
-				if not planInfo then
-					error("Did not find corresponding naming plan for name traitInfo " .. traitInfo.Type)
-				end
-				local planID = planInfo.ID
+				if planInfo then
+					local planID = planInfo.ID
 
-				print("* Scoring for civ-naming traitInfo / plan type:", traitInfo.Type, planType)
+					print("* Scoring for civ-naming traitInfo / plan type:", traitInfo.Type, planType)
 
-				--nearby resources bunus
-				local resourceScore = 0
-				for row in GameInfo.EaCivPlans_NamingResourceScores() do
-					if row.PlanType == planType then
-						local resourceID = GameInfoTypes[row.ResourceType]
-						if resourcesToRadius3[resourceID] then
-							resourceScore = resourceScore + row.Score * resourcesToRadius3[resourceID] * 5
-						end
-						if resourcesToRadius6[resourceID] then
-							resourceScore = resourceScore + row.Score * resourcesToRadius6[resourceID] * 3
-						end
-						if resourcesToRadius10[resourceID] then
-							resourceScore = resourceScore + row.Score * resourcesToRadius10[resourceID]
-						end
-					end
-				end
-				if 0 < resourceScore then
-					print("  ...resource score:", resourceScore)
-				end
-
-				--plot special bonus
-				local plotSpecialScore = 0
-				for row in GameInfo.EaCivPlans_NamingPlotSpecialScores() do
-					if row.PlanType == planType then
-						local plotSpecial = row.PlotSpecial
-						if plotSpecialsToRadius3[plotSpecial] then
-							plotSpecialScore = plotSpecialScore + row.Score * plotSpecialsToRadius3[plotSpecial]
-						end
-						if plotSpecialsToRadius6[plotSpecial] then
-							plotSpecialScore = plotSpecialScore + row.Score * plotSpecialsToRadius6[plotSpecial] / 3
-						end
-						if plotSpecialsToRadius10[plotSpecial] then
-							plotSpecialScore = plotSpecialScore + row.Score * plotSpecialsToRadius10[plotSpecial] / 10
+					--nearby resources bunus
+					local resourceScore = 0
+					for row in GameInfo.EaCivPlans_NamingResourceScores() do
+						if row.PlanType == planType then
+							local resourceID = GameInfoTypes[row.ResourceType]
+							if resourcesToRadius3[resourceID] then
+								resourceScore = resourceScore + row.Score * resourcesToRadius3[resourceID] * 5
+							end
+							if resourcesToRadius6[resourceID] then
+								resourceScore = resourceScore + row.Score * resourcesToRadius6[resourceID] * 3
+							end
+							if resourcesToRadius10[resourceID] then
+								resourceScore = resourceScore + row.Score * resourcesToRadius10[resourceID]
+							end
 						end
 					end
-				end
-				if 0 < plotSpecialScore then
-					print("  ...plot special score:", plotSpecialScore)
-				end
+					if 0 < resourceScore then
+						print("  ...resource score:", resourceScore)
+					end
 
-				--ad hoc bonus
-				local adHocScore = planInfo.AdHocNamingValue
-				if 0 < adHocScore then
-					print("  ...ad hoc score:", adHocScore)
-				end
+					--plot special bonus
+					local plotSpecialScore = 0
+					for row in GameInfo.EaCivPlans_NamingPlotSpecialScores() do
+						if row.PlanType == planType then
+							local plotSpecial = row.PlotSpecial
+							if plotSpecialsToRadius3[plotSpecial] then
+								plotSpecialScore = plotSpecialScore + row.Score * plotSpecialsToRadius3[plotSpecial]
+							end
+							if plotSpecialsToRadius6[plotSpecial] then
+								plotSpecialScore = plotSpecialScore + row.Score * plotSpecialsToRadius6[plotSpecial] / 3
+							end
+							if plotSpecialsToRadius10[plotSpecial] then
+								plotSpecialScore = plotSpecialScore + row.Score * plotSpecialsToRadius10[plotSpecial] / 10
+							end
+						end
+					end
+					if 0 < plotSpecialScore then
+						print("  ...plot special score:", plotSpecialScore)
+					end
 
-				--invisible hand bonus
-				local invisibleHandScore = 0
-				if (g_prioritizeHolyPlan == true or g_prioritizeHolyPlan == iPlayer) and 15 < gameTurn then
-					invisibleHandScore = planInfo.PrioritizeHolyValue
-				end
-				if 0 < invisibleHandScore then
-					print("  ...invisible hand score:", invisibleHandScore)
-				end
+					--ad hoc bonus
+					local adHocScore = planInfo.AdHocNamingValue
+					if 0 < adHocScore then
+						print("  ...ad hoc score:", adHocScore)
+					end
 
-				--penalize for tech req cost
-				local turnsForTech = 0
-				if traitInfo.KnownTech then
-					local techID = GameInfoTypes[traitInfo.KnownTech]
-					local tech2ID = traitInfo.AndKnownTech and GameInfoTypes[traitInfo.AndKnownTech] or nil
-					local researchNeeded = GetResearchNeededForTechList(teamTechs, {techID, tech2ID})
-					local sciencePerTurn = player:GetScience()
-					sciencePerTurn = sciencePerTurn < 1 and 1 or sciencePerTurn
-					turnsForTech = researchNeeded / sciencePerTurn
-				end
-				print("  ...estimated turns for research:", turnsForTech)
+					--invisible hand bonus
+					local invisibleHandScore = 0
+					if (g_prioritizeHolyPlan == true or g_prioritizeHolyPlan == iPlayer) and 15 < gameTurn then
+						invisibleHandScore = planInfo.PrioritizeHolyValue
+					end
+					if 0 < invisibleHandScore then
+						print("  ...invisible hand score:", invisibleHandScore)
+					end
 
-				--penalize for policy req cost
-				local turnsForPolicy = 0
-				if traitInfo.AdoptedPolicy then
-					local policyID = GameInfoTypes[traitInfo.AdoptedPolicy]
-					local policy2ID = traitInfo.AndAdoptedPolicy and GameInfoTypes[traitInfo.AndAdoptedPolicy] or nil
-					local cultureLevelNeeded = GetCultureLevelNeededForPolicyList(iPlayer, {policyID, policy2ID})
-					turnsForPolicy = cultureLevelNeeded / EXPECTED_CL_CHANGE
-				end
-				print("  ...estimated turns for policy(s):", turnsForPolicy)
+					--penalize for tech req cost
+					local turnsForTech = 0
+					if traitInfo.KnownTech then
+						local techID = GameInfoTypes[traitInfo.KnownTech]
+						local tech2ID = traitInfo.AndKnownTech and GameInfoTypes[traitInfo.AndKnownTech] or nil
+						local researchNeeded = GetResearchNeededForTechList(teamTechs, {techID, tech2ID})
+						local sciencePerTurn = player:GetScience()
+						sciencePerTurn = sciencePerTurn < 1 and 1 or sciencePerTurn
+						turnsForTech = researchNeeded / sciencePerTurn
+					end
+					print("  ...estimated turns for research:", turnsForTech)
 
-				--Temp: make all other traitInfo conditions prohibitive until we add logic for them
-				local turnsForDebugProhibit = 0
-				if traitInfo.CapitalNearbyResourceType or traitInfo.BuildingType or traitInfo.UnitClass or traitInfo.ImprovementType then
-					turnsForDebugProhibit = 100000
-				end
-				print("  ...debug turn prohibitor:", turnsForDebugProhibit)
+					--penalize for policy req cost
+					local turnsForPolicy = 0
+					if traitInfo.AdoptedPolicy then
+						local policyID = GameInfoTypes[traitInfo.AdoptedPolicy]
+						local policy2ID = traitInfo.AndAdoptedPolicy and GameInfoTypes[traitInfo.AndAdoptedPolicy] or nil
+						local cultureLevelNeeded = GetCultureLevelNeededForPolicyList(iPlayer, {policyID, policy2ID})
+						turnsForPolicy = cultureLevelNeeded / EXPECTED_CL_CHANGE
+					end
+					print("  ...estimated turns for policy(s):", turnsForPolicy)
 
-				local score = resourceScore + plotSpecialScore + adHocScore + invisibleHandScore
-				local turns = max(turnsForTech, turnsForPolicy, turnsForDebugProhibit)
-				local finalScore = score / (turns + 1)		--anything we can take now will have a massive advantage
-				print("  ...Final score/max(turns) =", finalScore)
-				scoreByPlanID[planID] = finalScore
+					--Temp: make all other traitInfo conditions prohibitive until we add logic for them
+					local turnsForDebugProhibit = 0
+					if traitInfo.CapitalNearbyResourceType or traitInfo.BuildingType or traitInfo.UnitClass or traitInfo.ImprovementType then
+						turnsForDebugProhibit = 100000
+					end
+					print("  ...debug turn prohibitor:", turnsForDebugProhibit)
+
+					local score = resourceScore + plotSpecialScore + adHocScore + invisibleHandScore
+					local turns = max(turnsForTech, turnsForPolicy, turnsForDebugProhibit)
+					local finalScore = score / (turns + 1)		--anything we can take now will have a massive advantage
+					print("  ...Final score/max(turns) =", finalScore)
+					scoreByPlanID[planID] = finalScore
+				else
+					print("!!!! WARNING: AI has no civ-naming plan for " .. traitInfo.Type)
+				end
 			end
 		end
 	end

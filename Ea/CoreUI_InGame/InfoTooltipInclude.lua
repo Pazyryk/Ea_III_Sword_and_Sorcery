@@ -1167,6 +1167,10 @@ function GetYieldTooltip(pCity, iYieldType, iBase, iTotal, strIconString, strMod
 	if (iYieldFromMisc ~= 0) then
 		if (iYieldType == YieldTypes.YIELD_SCIENCE) then
 			strYieldBreakdown = strYieldBreakdown .. "[ICON_BULLET]" .. ConvertTextKey("TXT_KEY_YIELD_FROM_POP", iYieldFromMisc, strIconString);
+		--Paz add
+		elseif iYieldType == YieldTypes.YIELD_GOLD then
+			strYieldBreakdown = strYieldBreakdown .. "[ICON_BULLET]" .. ConvertTextKey("TXT_KEY_EA_YIELD_FROM_INTEREST", iYieldFromMisc, strIconString)
+		--end Paz add
 		else
 			strYieldBreakdown = strYieldBreakdown .. "[ICON_BULLET]" .. ConvertTextKey("TXT_KEY_YIELD_FROM_MISC", iYieldFromMisc, strIconString);
 		end

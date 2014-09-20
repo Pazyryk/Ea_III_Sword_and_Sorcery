@@ -142,7 +142,7 @@
 			<Text>Mamonas</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_MAMONAS_HELP">
-			<Text>[ICON_BULLET]+1 [ICON_GOLD] Gold from [ICON_RES_GOLD] Gold and [ICON_RES_SILVER] Silver[NEWLINE][ICON_BULLET]Gain 0.5% interest on treasury per turn distributed among all cities</Text>
+			<Text>[ICON_BULLET]+1 [ICON_GOLD] Gold from [ICON_RES_GOLD] Gold and [ICON_RES_SILVER] Silver[NEWLINE][ICON_BULLET]Gain 0.5% interest on treasury per turn distributed in your capital</Text>
 		</Row>
 		<Row Tag="TXT_KEY_EA_CIV_SOPHRONIA">
 			<Text>Sophronia</Text>

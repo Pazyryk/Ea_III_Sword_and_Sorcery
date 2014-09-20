@@ -46,6 +46,7 @@ local NEUTRAL_HEAL_RATE =					GameDefines.NEUTRAL_HEAL_RATE
 local FRIENDLY_HEAL_RATE =					GameDefines.FRIENDLY_HEAL_RATE
 
 local STARTING_SUM_OF_ALL_MANA =			EaSettings.STARTING_SUM_OF_ALL_MANA
+local MAX_INTEREST_GPT =					EaSettings.MAX_INTEREST_GPT
 local UNIT_SUFFIXES =						UNIT_SUFFIXES
 local NUM_UNIT_SUFFIXES =					#UNIT_SUFFIXES
 local MOD_MEMORY_HALFLIFE =					EaSettings.MOD_MEMORY_HALFLIFE
@@ -3124,15 +3125,15 @@ end
 --EA_ACTION_NATIONAL_TREASURY
 SetUI[GameInfoTypes.EA_ACTION_NATIONAL_TREASURY] = function()
 	if g_bAllTestsPassed then
-		MapModData.text = "Will provide " .. g_mod/2 .. "% interest on your treasury at this city"
+		MapModData.text = "Will provide " .. g_mod/20 .. "% interest on your treasury at this city (max: " .. MAX_INTEREST_GPT .. " gold per turn)"
 	end
 end
 
 SetAIValues[GameInfoTypes.EA_ACTION_NATIONAL_TREASURY] = function()
 	local treasury = g_player:GetGold()
-	local treasuryMin = Game.GetGameTurn() * 2	--assume this minimum ammount (likely to be small at first, better to go do trade route)
+	local treasuryMin = Game.GetGameTurn() * 5	--assume this minimum ammount (likely to be small at first, better to go do trade route)
 	treasury = treasury < treasuryMin and treasuryMin or treasury
-	gg_aiOptionValues.p = g_mod * treasury / 200		--mod x 0.5% interest
+	gg_aiOptionValues.p = g_mod * treasury / 2000		--mod x 0.05% interest
 end
 
 Finish[GameInfoTypes.EA_ACTION_NATIONAL_TREASURY] = function()

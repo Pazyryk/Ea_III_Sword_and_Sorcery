@@ -1151,13 +1151,12 @@ Controls.CycleRight:RegisterCallback( Mouse.eLClick, OnCycleRightClicked );
 --------------------------------------------------------------------------------
 function OnUnitNameClicked()
 	--Paz add:
-	local unit = UI.GetHeadSelectedUnit();
+	local unit = UI.GetHeadSelectedUnit()
 	if unit then
 		if unit:IsGreatPerson() then
 			local iPerson = unit:GetPersonIndex()
 			LuaEvents.EaImagePopup({type = "Person", id = iPerson})
 			--Events.SerialEventGameMessagePopup( { Type = ButtonPopupTypes.BUTTONPOPUP_MODDER_1, Data1 = 1, Data2 = iPerson} )
-			return
 		end
 	end
 	--end Paz add
@@ -1165,9 +1164,28 @@ function OnUnitNameClicked()
     -- go to this unit
     UI.LookAtSelectionPlot(0);
 end
-Controls.UnitNameButton:RegisterCallback( Mouse.eLClick, OnUnitNameClicked );
+--Paz disabled: Controls.UnitNameButton:RegisterCallback( Mouse.eLClick, OnUnitNameClicked );
 Controls.UnitPortraitButton:RegisterCallback( Mouse.eLClick, OnUnitNameClicked );
 
+--Paz add
+function OnUnitNameRClicked()
+	-- rename this unit
+	local unit = UI.GetHeadSelectedUnit()
+	if unit and not unit:IsGreatPerson() then
+		local popupInfo = {
+				Type = ButtonPopupTypes.BUTTONPOPUP_RENAME_UNIT,
+				Data1 = UI.GetHeadSelectedUnit():GetID(),
+				Data2 = -1,
+				Data3 = -1,
+				Option1 = false,
+				Option2 = false
+			}
+		Events.SerialEventGameMessagePopup(popupInfo)
+	end
+	UI.LookAtSelectionPlot(0)
+end
+Controls.UnitNameButton:RegisterCallback( Mouse.eRClick, OnUnitNameRClicked );
+--end Paz add
 
 
 function OnUnitRClicked()

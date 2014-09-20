@@ -313,6 +313,9 @@
 		<Row Tag="TXT_KEY_EA_PRODUCTION_BUILDING_HEALTH_NEGATIVE">
 			<Text>[ICON_UNHEALTH] Health: {1_Num}</Text>
 		</Row>
+		<Row Tag="TXT_KEY_EA_YIELD_FROM_INTEREST">
+			<Text>{1_Num} {2_IconString} from interest on treasury</Text>
+		</Row>
 
 		<!-- Info Tooltip and Dll hard-coded -->
 		<Row Tag="TXT_KEY_EA_PRODMOD_YIELD_LEADER">

@@ -64,6 +64,7 @@ local HandleErrorF0 =				HandleErrorF0
 local floor =						math.floor
 local Rand =						Map.Rand
 local GetPlotFromXY =				Map.GetPlot
+local PlotDistance =				Map.PlotDistance
 
 --file control
 local g_iActivePlayer = Game.GetActivePlayer()
@@ -648,11 +649,13 @@ local function OnCombatEnded(iAttackingPlayer, iAttackingUnit, attackerDamage, a
 
 	--archer city conquest test
 	if attackerFinalDamage == 0 and attackingUnit and iAttackingPlayer < BARB_PLAYER_INDEX and not defendingUnit and defenderMaxHP - 1 <= defenderFinalDamage and defenderMaxHP == MAX_CITY_HIT_POINTS and not gg_gpTempType[attackingUnitTypeID] then	--archer defeated city
-		local plot = GetPlotFromXY(plotX, plotY)
-		local city = plot:GetPlotCity()
-		if city and city:GetDamage() >= MAX_CITY_HIT_POINTS - 1 then
-			print("Detected archer attack with adjacent 1 hp enemy city; teleporting archer to city plot")
-			attackingUnit:SetXY(plotX, plotY)			--conquers city!
+		if PlotDistance(plotX, plotY, attackingUnit:GetX(), attackingUnit:GetY()) == 1 then
+			local plot = GetPlotFromXY(plotX, plotY)
+			local city = plot:GetPlotCity()
+			if city and city:GetDamage() >= MAX_CITY_HIT_POINTS - 1 then
+				print("Detected archer attack with adjacent 1 hp enemy city; teleporting archer to city plot")
+				attackingUnit:SetXY(plotX, plotY)			--conquers city!
+			end
 		end
 	end
 

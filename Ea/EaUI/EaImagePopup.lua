@@ -79,29 +79,6 @@ function ShowHideEaLeaderForDialog(iOtherPlayer)
 	if iOtherPlayer == g_otherPlayerDialog then return end
 	g_otherPlayerDialog = iOtherPlayer
 
-	--[[Paz add
-	MapModData.bTradeLogicOpen = bMyMode
-	local iPerson = 0
-	if g_iThem ~= -1 and bMyMode then
-		local eaPlayer = gT.gPlayers[g_iThem]
-		iPerson = eaPlayer.leaderEaPersonIndex or 0
-	end
-	if g_iAIPlayer ~= -1 or not bMyMode then
-		LuaEvents.ShowHideEaLeaderForDialog(iPerson)
-	end
-
-	--end Paz add
-
-
-
-	print("ShowHideEaLeaderForDialog ", iPerson)
-	print("MapModData.bLeaderHeadRootOpen = ", MapModData.bLeaderHeadRootOpen)
-	print("MapModData.bTradeLogicOpen = ", MapModData.bTradeLogicOpen)
-	local bShow = MapModData.bLeaderHeadRootOpen or MapModData.bTradeLogicOpen
-	if bShow == g_isLeaderDialog then return end
-	print("ShowHideEaLeaderForDialog change; bShow = ", bShow)
-	]]
-
 	if iOtherPlayer then
 		if g_isOpen then
 			if g_lastImageFrame then

@@ -288,7 +288,7 @@ function AIMercenaryPerCivTurn(iPlayer)					--controls hiring and putting up for
 				print("Number mercs found = ", disbandConsiderNum)
 				if 0 < disbandConsiderNum then
 					for i = #g_mercDisbandConsideration, disbandConsiderNum + 1, -1 do
-						g_mercDisbandConsideration = nil
+						g_mercDisbandConsideration[i] = nil
 					end
 					sort(g_mercDisbandConsideration, function(a, b) return g_mercSortingScore[a] < g_mercSortingScore[b] end)	--low score first
 					--Disband by resource first (if that is a problem), then gpt

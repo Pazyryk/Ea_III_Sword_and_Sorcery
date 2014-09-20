@@ -307,23 +307,9 @@ function EaPlotsInit(bNewGame)
 
 		print(" - originalForestJunglePlots, validForestJunglePlots, ownablePlots = ", originalForestJunglePlots, validForestJunglePlots, ownablePlots)
 
-		--[[
-		MapModData.validForestJunglePlots = validForestJunglePlots
-		MapModData.originalForestJunglePlots = originalForestJunglePlots
-		MapModData.ownablePlots = ownablePlots
-		]]
-
 		gWorld.validForestJunglePlots = validForestJunglePlots
 		gWorld.originalForestJunglePlots = originalForestJunglePlots
 		gWorld.ownablePlots = ownablePlots
-
-
-		--[[
-		local SaveDB = Modding.OpenSaveData()
-		SaveDB.SetValue("ValidForestJunglePlots", validForestJunglePlots)
-		SaveDB.SetValue("OriginalForestJunglePlots", originalForestJunglePlots)
-		SaveDB.SetValue("OwnablePlots", ownablePlots)
-		]]
 
 		--Weaken to 0 around Man starting plot (3 radius); remove from 1 radius
 		for iPlayer, eaPlayer in pairs(realCivs) do
@@ -349,13 +335,6 @@ function EaPlotsInit(bNewGame)
 				end
 			end
 		end
-	else		--Loaded game
-		--[[
-		local SaveDB = Modding.OpenSaveData()
-		MapModData.validForestJunglePlots = SaveDB.GetValue("ValidForestJunglePlots")
-		MapModData.originalForestJunglePlots = SaveDB.GetValue("OriginalForestJunglePlots")
-		MapModData.ownablePlots = SaveDB.GetValue("OwnablePlots")
-		]]
 	end
 
 	--stored stuff needed for new and loaded games

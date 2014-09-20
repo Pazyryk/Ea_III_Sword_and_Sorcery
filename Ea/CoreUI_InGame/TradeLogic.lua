@@ -1792,7 +1792,7 @@ function DoClearTable()
 
 	--Paz add
 	    -- hide unmet players
-    if( g_bEnableThirdParty ) then
+    if g_bEnableThirdParty and g_iUs ~= -1 then
         g_iNumOthers = 0;
         for iLoopPlayer = 0, GameDefines.MAX_CIV_PLAYERS-1, 1 do
             pLoopPlayer = Players[ iLoopPlayer ];

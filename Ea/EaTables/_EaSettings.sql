@@ -70,8 +70,9 @@ INSERT INTO EaSettings (Name, Value, GameLengthExp, MapSizeExp, RoundAdjVal) VAL
 ('SLAVE_CS_FRIEND_DISCOUNT',					15,		0,	0,	0	),
 ('SLAVE_CS_ALLY_DISCOUNT',						35,		0,	0,	0	),
 
---Resources
+--Resources / gold
 ('TIMBER_DURATION_FROM_CHOP',					40,		1,	0,	1	),
+('MAX_INTEREST_GPT',							100,	0,	1,	1	),	-- x2 for Mamonos OR with Bankers policy (x3 for Mamonos with Bankers) 
 
 --Techs / KM
 ('KM_PER_TECH_PER_CITIZEN',						0.1,	0,	0,	0	),	--bigger map means more citizens and more research points, so call it a wash for adjustments

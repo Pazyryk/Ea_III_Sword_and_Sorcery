@@ -7,6 +7,12 @@ print("Loading EaYields.lua...")
 local print = ENABLE_PRINT and print or function() end
 
 --------------------------------------------------------------
+-- Settings
+--------------------------------------------------------------
+
+local MAX_INTEREST_GPT =		EaSettings.MAX_INTEREST_GPT
+
+--------------------------------------------------------------
 -- local defs
 --------------------------------------------------------------
 
@@ -58,17 +64,10 @@ local BUILDING_REMOTE_RES_1_GOLD =				GameInfoTypes.BUILDING_REMOTE_RES_1_GOLD
 local EA_WONDER_HANGING_GARDENS =				GameInfoTypes.EA_WONDER_HANGING_GARDENS
 local EA_WONDER_MEGALOS_FAROS =					GameInfoTypes.EA_WONDER_MEGALOS_FAROS
 
---local BUILDING_PLUS_1_GLOBAL_XP =				GameInfoTypes.BUILDING_PLUS_1_GLOBAL_XP
 local BUILDING_PLUS_1_LAND_XP =					GameInfoTypes.BUILDING_PLUS_1_LAND_XP
 local BUILDING_PLUS_1_SEA_XP =					GameInfoTypes.BUILDING_PLUS_1_SEA_XP
 
-
-local BUILDING_TRADE_HOUSE =					GameInfoTypes.BUILDING_TRADE_HOUSE
-
 local EA_ARTIFACT_TOME_OF_TOMES =				GameInfoTypes.EA_ARTIFACT_TOME_OF_TOMES
-
---local EAPERSON_PARTHOLON =						GameInfoTypes.EAPERSON_PARTHOLON
---local EAPERSON_FODLA =						GameInfoTypes.EAPERSON_FODLA
 
 local IMPROVEMENT_CAMP =						GameInfoTypes.IMPROVEMENT_CAMP
 local IMPROVEMENT_FISHING_BOATS =				GameInfoTypes.IMPROVEMENT_FISHING_BOATS
@@ -409,10 +408,14 @@ function UpdateCityYields(iPlayer, iSpecificCity, effectType, bPerTurnCall)
 					end
 				end
 				if 0 < city:GetNumBuilding(BUILDING_NATIONAL_TREASURY) then
-					newGold = newGold + floor(player:GetGold() * city:GetNumBuilding(BUILDING_NATIONAL_TREASURY) / 2000 + 0.5)
+					local interestGold = floor(player:GetGold() * city:GetNumBuilding(BUILDING_NATIONAL_TREASURY) / 2000 + 0.5)
+					interestGold = interestGold < MAX_INTEREST_GPT and interestGold or MAX_INTEREST_GPT
+					newGold = newGold + interestGold
 				end
 				if nameTrait == EACIV_MAMONAS and city == capital then
-					newGold = newGold + floor(player:GetGold() * 0.005 + 0.5)
+					local interestGold = floor(player:GetGold() * 0.005 + 0.5)
+					interestGold = interestGold < MAX_INTEREST_GPT and interestGold or MAX_INTEREST_GPT
+					newGold = newGold + interestGold
 				end
 				--local prevGold = eaCity.goldBoost
 				local prevGold = city:GetBaseYieldRateFromMisc(YIELD_GOLD)
